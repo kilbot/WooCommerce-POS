@@ -76,7 +76,7 @@ class WooCommerce_POS_Admin {
 		/*
 		 * Define custom functionality.
 		 */
-		add_action( 'github_update', array( $this, 'github_update' ) );
+		add_action( 'update_plugin', array( $this, 'github_update' ) );
 		// add_filter( '@TODO', array( $this, 'filter_method_name' ) );
 
 	}
