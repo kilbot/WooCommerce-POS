@@ -76,7 +76,7 @@ class WooCommerce_POS_Admin {
 		/*
 		 * Define custom functionality.
 		 */
-		add_action( 'update_plugin', array( $this, 'github_update' ) );
+		add_action( 'init', array( $this, 'github_update' ) );
 		// add_filter( '@TODO', array( $this, 'filter_method_name' ) );
 
 	}
@@ -221,7 +221,8 @@ class WooCommerce_POS_Admin {
 	 * @since    0.0.1
 	 */
 	public function github_update() {
-		include_once( 'includes/updater.php' );
+
+		require_once( 'includes/updater.php' );
 
 		define( 'WP_GITHUB_FORCE_UPDATE', true );
 

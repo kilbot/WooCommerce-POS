@@ -17,6 +17,6 @@ This plugin is in alpha at the moment and should be used by no one! However, if 
 
 ### Changelog
 
-~Current Version:0.0.1~
+~Current Version:0.2~
 
 - proof of concept
