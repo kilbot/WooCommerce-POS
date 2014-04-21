@@ -68,6 +68,7 @@ class WooCommerce_POS_Admin {
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
+		add_action( 'admin_init', array( $this, 'github_updater_check' ) );
 
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
@@ -76,7 +77,6 @@ class WooCommerce_POS_Admin {
 		/*
 		 * Define custom functionality.
 		 */
-		add_action( 'init', array( $this, 'github_update' ) );
 		// add_filter( '@TODO', array( $this, 'filter_method_name' ) );
 
 	}
@@ -212,35 +212,23 @@ class WooCommerce_POS_Admin {
 	}
 
 	/**
-	 * NOTE:     Actions are points in the execution of a page or process
-	 *           lifecycle that WordPress fires.
-	 *
-	 *           Actions:    http://codex.wordpress.org/Plugin_API#Actions
-	 *           Reference:  http://codex.wordpress.org/Plugin_API/Action_Reference
-	 *
-	 * @since    0.0.1
+	 * Check for GitHub Updater Plugin
 	 */
-	public function github_update() {
+	function github_updater_check() {
+		if ( is_admin() && current_user_can( 'activate_plugins' ) && !is_plugin_active( 'github-updater/github-updater.php' ) ) {
+			add_action( 'admin_notices', array( $this, 'get_github_updater_plugin' ) );
+		}
+	}
 
-		require_once( 'includes/updater.php' );
-
-		define( 'WP_GITHUB_FORCE_UPDATE', true );
-
-		$config = array(
-			'slug' => $this->plugin_slug,
-			'proper_folder_name' => 'woocommerce-pos',
-			'api_url' => 'https://api.github.com/repos/kilbot/WooCommerce-POS',
-			'raw_url' => 'https://raw.github.com/kilbot/WooCommerce-POS/master',
-			'github_url' => 'https://github.com/kilbot/WooCommerce-POS',
-			'zip_url' => 'https://github.com/kilbot/WooCommerce-POS/archive/master.zip',
-			'sslverify' => true,
-			'requires' => '3.0',
-			'tested' => '3.9',
-			'readme' => 'README.md',
-			'access_token' => '',
-		);
-
-		new WP_GitHub_Updater( $config );
+	/**
+	 * Display the admin warning about GitHub Updater Plugin
+	 */
+	function get_github_updater_plugin()	{
+		?>
+		<div class="error">
+			<p><strong>WooCommerce POS</strong> requires the <a href="https://github.com/afragen/github-updater">GitHub Updater</a> plugin for updates. You can download and install the GitHub Updater plugin from <a href="https://github.com/afragen/github-updater">https://github.com/afragen/github-updater</a></p>
+		</div>
+		<?php
 	}
 
 	/**
