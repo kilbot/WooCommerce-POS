@@ -1,23 +1,34 @@
-<table id="products" class="shop_table table-stroke products" cellspacing="0">
+<table id="products" data-role="table" class="display ui-responsive" cellspacing="0">
 	<thead>
 		<tr>
-			<th width="100"></th>
+			<th width="70"></th>
 			<th><?php _e( 'Product', 'woocommerce' ); ?></th>
 			<th width="60"><?php _e( 'Price', 'woocommerce' ); ?></th>
 			<th width="60"></th>
 		</tr>
 	</thead>
 	<tbody>
-	<?php $found_products = apply_filters('all_products_and_variations'); if($found_products) foreach ( $found_products as $id => $sales ) : $product = get_product( $id ); ?>
+	<?php $found_products = self::get_all_products(); if($found_products) foreach ( $found_products as $id => $sales ) : $product = get_product( $id ); ?>
 		<?php if(!$product->is_type('variable')) : ?>
 		<tr>
 			<td><?= $product->get_image(); ?></td>
-			<td><strong><?= $product->get_title(); ?> <?= $product->is_type('variation') ? '- <em>'.implode( ', ', $product->get_variation_attributes() ).'</em>' : '' ; ?></strong><br />
-			<em><?= $product->get_stock_quantity(); ?> in stock</em>
+			<td>
+				<strong><?= $product->get_title(); ?>
+				<?php
+					if($product->is_type('variation')): 
+						$attributes = array();
+					foreach($product->get_variation_attributes() as $name => $attribute):
+						$attributes[] = $attribute; // how do we turn this into proper title??
+					endforeach;
+						echo ' - '.implode(', ', $attributes);
+					endif;
+				?>
+				</strong><br />
+				<em><?= $product->get_stock_quantity(); ?> in stock</em>
 			</td>
 			<td><?= $product->get_price_html(); ?>
 			<td class="add">
-				<a data-role="button" data-theme="g" data-icon="plus" href="<?php do_action('pos_add_to_cart_url',$product); ?>">Add</a>
+				<a class="ui-btn ui-btn-icon-left ui-icon-plus" href="<?php self::get_pos_add_to_cart_url($product); ?>" title="Add to Cart">Add</a>
 			</td>
 		</tr>
 		<?php endif; ?>
@@ -26,10 +37,17 @@
 </table>
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function(){
-	$('#products').dataTable({
-		"bSort": false, // turn off default sorting
-		"iDisplayLength": 5, // number of rows
-		"aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]] // rows per page drop down
+	$('#products').DataTable({
+		renderer: "jqueryui", 	// use jqueryui styling
+		ordering: false, 		// turn off default sorting
+		pageLength: 5, 			// 5 products per page
+		lengthMenu: [ 5, 10, 25, 50 ],
+		columns: [
+    		{ "searchable": false }, 	// column 1: image
+    		null, 						// column 2: product name
+   			{ "searchable": false }, 	// column 3: price
+    		{ "searchable": false }, 	// column 4: add to cart
+  		],
 	});
 });
 </script>

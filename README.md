@@ -6,6 +6,8 @@ A simple front-end for taking WooCommerce orders at the Point of Sale.
 
 This plugin is in alpha at the moment and should be used by no one! However, if you are a developer and have a development install of WooCommerce then please do download, install and play. I'm happy to take advice and feature requests via https://github.com/kilbot/WooCommerce-POS/issues
 
+Once the plugin is installed you should go to http://yourshop.com/pos to see the Point of Sale interface.
+
 ### TODO
 
 * Fix receipt screen
@@ -17,6 +19,6 @@ This plugin is in alpha at the moment and should be used by no one! However, if 
 
 ### Changelog
 
-~Current Version:0.2~
+*0.2*
 
 - proof of concept

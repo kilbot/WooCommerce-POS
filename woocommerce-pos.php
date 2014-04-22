@@ -26,8 +26,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// Check if WooCommerce is active and deactivate extension if it's not
-if ( ! is_woocommerce_active() )
+// If WooCommerce not installed, abort.
+if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) )
 	return;
 
 /*----------------------------------------------------------------------------*

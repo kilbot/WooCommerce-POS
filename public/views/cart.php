@@ -68,7 +68,7 @@
 					
 					<td class="product-remove">
 						<?php
-							echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf( '<a data-role="button" data-theme="r" data-icon="minus" href="%s" class="remove" title="%s">Remove</a>', esc_url( WC()->cart->get_remove_url( $cart_item_key ) ), __( 'Remove', 'woocommerce' ) ), $cart_item_key );
+							echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf( '<a class="ui-btn ui-btn-icon-left ui-icon-delete" href="%s" title="%s">Remove</a>', esc_url( WC()->cart->get_remove_url( $cart_item_key ) ), __( 'Remove', 'woocommerce' ) ), $cart_item_key );
 						?>
 					</td>
 				</tr>
@@ -129,7 +129,7 @@
 		
 		<tr>
 			<td colspan="6" class="actions">
-				<input type="submit" class="checkout-button button alt wc-forward" name="pos_checkout" value="<?php _e( 'Checkout', 'woocommerce' ); ?>" />
+				<input type="submit" data-icon="arrow-r" data-iconpos="right" name="pos_checkout" value="<?php _e( 'Checkout', 'woocommerce' ); ?>" />
 				<?php wp_nonce_field('checkout','woocommerce-pos_checkout'); ?>
 			</td>
 		</tr>
