@@ -28,26 +28,10 @@
 			</td>
 			<td><?= $product->get_price_html(); ?>
 			<td class="add">
-				<a class="ui-btn ui-btn-icon-left ui-icon-plus" href="<?php self::get_pos_add_to_cart_url($product); ?>" title="Add to Cart">Add</a>
+				<a class="add_to_cart_button ui-btn ui-btn-icon-left ui-icon-plus" href="<?php self::get_pos_add_to_cart_url($product); ?>" title="Add to Cart" data-product_id='<?= $product->id; ?>'>Add</a>
 			</td>
 		</tr>
 		<?php endif; ?>
 	<?php endforeach; ?>
 	</tbody>
 </table>
-<script type="text/javascript" charset="utf-8">
-$(document).ready(function(){
-	$('#products').DataTable({
-		renderer: "jqueryui", 	// use jqueryui styling
-		ordering: false, 		// turn off default sorting
-		pageLength: 5, 			// 5 products per page
-		lengthMenu: [ 5, 10, 25, 50 ],
-		columns: [
-    		{ "searchable": false }, 	// column 1: image
-    		null, 						// column 2: product name
-   			{ "searchable": false }, 	// column 3: price
-    		{ "searchable": false }, 	// column 4: add to cart
-  		],
-	});
-});
-</script>

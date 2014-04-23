@@ -40,6 +40,13 @@ class WooCommerce_POS_Admin {
 	protected $plugin_screen_hook_suffix = null;
 
 	/**
+	 * Plugin variables
+	 * @var string
+	 */
+	public $msg_type; 	// type of admin message
+	public $msg; 		// admin message
+
+	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
 	 * settings page and menu.
 	 *
@@ -68,7 +75,7 @@ class WooCommerce_POS_Admin {
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-		add_action( 'admin_init', array( $this, 'github_updater_check' ) );
+		add_action( 'admin_init', array( $this, 'sanity_check' ) );
 
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
@@ -212,23 +219,32 @@ class WooCommerce_POS_Admin {
 	}
 
 	/**
-	 * Check for GitHub Updater Plugin
+	 * Check for WooCommerce POS dependancies
 	 */
-	function github_updater_check() {
+	function sanity_check() {
+		// check for GitHub Updater
 		if ( is_admin() && current_user_can( 'activate_plugins' ) && !is_plugin_active( 'github-updater/github-updater.php' ) ) {
-			add_action( 'admin_notices', array( $this, 'get_github_updater_plugin' ) );
+			$this->msg_type = 'update-nag';
+			$this->msg 		= '<strong>WooCommerce POS</strong> requires the <a href="https://github.com/afragen/github-updater">GitHub Updater</a> plugin for updates. You can download and install the GitHub Updater plugin from <a href="https://github.com/afragen/github-updater">https://github.com/afragen/github-updater</a>.';
+			add_action( 'admin_notices', array( $this, 'admin_notices' ), 10, 2 );
+		}
+
+		// check if pretty permalinks are being used
+		global $wp_rewrite;
+		if ( is_admin() &&  $wp_rewrite->permalink_structure == '' ) {
+			$this->msg_type = 'error';
+			$this->msg 		= '<strong>WooCommerce POS</strong> requires <em>pretty</em> permalinks to work correctly. Please enable <a href="'.admin_url('options-permalink.php').'">permalinks</a>.';
+			add_action( 'admin_notices', array( $this, 'admin_notices' ), 10, 2 );
 		}
 	}
 
 	/**
 	 * Display the admin warning about GitHub Updater Plugin
 	 */
-	function get_github_updater_plugin()	{
-		?>
-		<div class="error">
-			<p><strong>WooCommerce POS</strong> requires the <a href="https://github.com/afragen/github-updater">GitHub Updater</a> plugin for updates. You can download and install the GitHub Updater plugin from <a href="https://github.com/afragen/github-updater">https://github.com/afragen/github-updater</a></p>
-		</div>
-		<?php
+	function admin_notices() {
+		echo '<div class="' . $this->msg_type . '">
+			<p>' . $this->msg . '</p>
+		</div>';
 	}
 
 	/**

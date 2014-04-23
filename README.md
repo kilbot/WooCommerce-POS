@@ -8,6 +8,10 @@ This plugin is in alpha at the moment and should be used by no one! However, if 
 
 Once the plugin is installed you should go to http://yourshop.com/pos to see the Point of Sale interface.
 
+## DEMO
+
+To view a live demo of the WooCommerce POS Plugin go to http://woocommerce-pos.kilbot.com.au/pos/ with login/pass: demo/demo.
+
 ### TODO
 
 * Fix receipt screen

@@ -1,6 +1,6 @@
 <?php global $woocommerce; ?>
 
-<form action="/pos/" method="post">
+<form id="cart_fragment" action="/pos/" method="post">
 
 <table id="cart" class="shop_table table-stroke cart" cellspacing="0">
 	<thead>

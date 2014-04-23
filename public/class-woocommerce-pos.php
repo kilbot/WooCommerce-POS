@@ -24,7 +24,7 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION 			= '0.2';
+	const VERSION 			= '0.2.1';
 	const JQUERY 			= '1.10.2'; // http://jquery.com/
 	const JQUERY_MOBILE 	= '1.4.2'; 	// http://jquerymobile.com/
 	const JQUERY_DATATABLES = '1.10.0-beta.2'; 	// https://datatables.net/
@@ -71,6 +71,12 @@ class WooCommerce_POS {
 		//add_action('wp_ajax_product_search', array( $this, 'product_search_callback') );
 		// change customer id
 		//add_filter( 'woocommerce_checkout_customer_id', array( $this, 'pos_change_customer_id') );
+		
+		// AJAX method
+		add_action( 'wp_ajax_pos_add_to_cart', array( $this, 'ajax_add_to_cart' ) );
+		add_action( 'wp_ajax_nopriv_pos_add_to_cart', array( $this, 'ajax_add_to_cart' ) );
+		add_action( 'wp_ajax_pos_remove_item', array( $this, 'ajax_remove_item' ) );
+		add_action( 'wp_ajax_nopriv_pos_remove_item', array( $this, 'ajax_remove_item' ) );
 	}
 
 	/**
@@ -116,13 +122,25 @@ class WooCommerce_POS {
 		global $wp_rewrite;
 		add_rewrite_rule('pos','index.php?custom_page=pos','top');
 		$wp_rewrite->flush_rules( false ); // false will not overwrite .htaccess
+
+		// add the manage_woocommerce_pos capability to administrator and shop_manager
+		$administrator = get_role( 'administrator' );
+		$administrator->add_cap( 'manage_woocommerce_pos' );
+		$shop_manager = get_role( 'shop_manager' );
+		$shop_manager->add_cap( 'manage_woocommerce_pos' );
 	}
 
 	/**
 	 * Fired when the plugin is deactivated.
 	 */
 	public static function deactivate( ) {
-		// nothing at the moment
+		// can not remove rewrite rule on deactivation AFAIK
+
+		// remove the manage_woocommerce_pos capability to administrator and shop_manager
+		$administrator = get_role( 'administrator' );
+		$administrator->remove_cap( 'manage_woocommerce_pos' );
+		$shop_manager = get_role( 'shop_manager' );
+		$shop_manager->remove_cap( 'manage_woocommerce_pos' );
 	}
 
 	/**
@@ -154,11 +172,11 @@ class WooCommerce_POS {
 		global $wp_query;
 		$custom_page = isset($wp_query->query_vars['custom_page']) ? $wp_query->query_vars['custom_page'] : null;
 		// make sure administrator has logged in
-		if ($custom_page == 'pos' && current_user_can('manage_options')) {
+		if ($custom_page == 'pos' && current_user_can('manage_woocommerce_pos')) {
 			// we've found our page, call render_page and exit
 			$this->render_page();
 			exit;
-		} elseif ($custom_page == 'pos' && !current_user_can('manage_options')) {
+		} elseif ($custom_page == 'pos' && !current_user_can('manage_woocommerce_pos')) {
 			// redirect to login page
 			auth_redirect();
 		}
@@ -199,6 +217,102 @@ class WooCommerce_POS {
 		$chosen_shipping_methods[0] = 'local_pickup';
 		WC()->session->set( 'chosen_shipping_methods', $chosen_shipping_methods );
 		WC()->cart->calculate_totals();
+	}
+
+	/**
+	 * Add to cart handler for AJAX requests
+	 * bit of a hack here: the native woo ajax only deals with single product ids
+	 * we want to be able to add variations so we recreate the form handler from woocommerce
+	 */
+	public function ajax_add_to_cart() {
+		global $woocommerce;
+
+		$href = $_POST['href'];
+		parse_url( $href, PHP_URL_QUERY );
+		parse_str( parse_url($href, PHP_URL_QUERY ), $query_arr);
+
+		if( !isset( $query_arr['add-to-cart'] ) ) {
+			$this->json_headers();
+			echo json_encode( array( 'error' => true, 'msg' => 'There was no product id to add to cart' ) );
+			die();	
+		}
+
+		// assign known queries
+		$product_id 	= $query_arr['add-to-cart'];
+		$quantity 		= isset($query_arr['quantity']) ? $query_arr['quantity'] : 1 ;
+		$variation_id 	= isset($query_arr['variation_id']) ? $query_arr['variation_id'] : '' ;
+		
+		// unset known queries
+		unset($query_arr['add-to-cart']);
+		unset($query_arr['quantity']);
+		unset($query_arr['variation_id']);
+
+		// whatever is left is the variation
+		$variation 		= $query_arr;
+
+		$added_to_cart = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation);
+		if( !$added_to_cart ) {
+			$this->json_headers();
+			echo json_encode( array ( 'error' => true, 'msg' => 'There was a problem adding the item to the cart' ) );
+			die();
+		} else {
+			$this->get_refreshed_fragments();
+		}
+	}
+
+	/**
+	 * Remove from cart handler for AJAX requests
+	 */
+	public function ajax_remove_item() {
+		global $woocommerce;
+
+		$href = $_POST['href'];
+		parse_url( $href, PHP_URL_QUERY );
+		parse_str( parse_url($href, PHP_URL_QUERY ), $query_arr);
+
+		if( !isset( $query_arr['remove_item'] ) && isset( $query_arr['_wpnonce'] ) && wp_verify_nonce( $query_arr['_wpnonce'], 'woocommerce-cart' ) ) {
+			$this->json_headers();
+			echo json_encode( array( 'error' => true, 'msg' => 'There was no product to remove from cart' ) );
+			die();	
+		}
+
+		WC()->cart->set_quantity( $query_arr['remove_item'], 0 );
+		wc_add_notice( __( 'Cart updated.', 'woocommerce' ) );
+		$this->get_refreshed_fragments();
+	}
+
+	/**
+	 * Output headers for JSON requests
+	 */
+	private function json_headers() {
+		header( 'Content-Type: application/json; charset=utf-8' );
+	}
+
+
+	/**
+	 * Get a refreshed cart fragment
+	 */
+	public function get_refreshed_fragments() {
+		global $woocommerce;
+
+		$this->json_headers();
+
+		// Get mini cart
+		ob_start();
+
+		include_once( 'views/cart.php' );
+
+		$cart = ob_get_clean();
+
+		// Fragments and mini cart are returned
+		$data = array(
+			'fragments' => $cart,
+			'cart_hash' => WC()->cart->get_cart() ? md5( json_encode( WC()->cart->get_cart() ) ) : ''
+		);
+
+		echo json_encode( $data );
+
+		die();
 	}
 	
 	/**
@@ -341,9 +455,9 @@ class WooCommerce_POS {
 	 */
 	public function pos_print_css() {
 		echo '
-		<link rel="stylesheet" href="//code.jquery.com/mobile/'.self::JQUERY_MOBILE.'/jquery.mobile-'.self::JQUERY_MOBILE.'.min.css" type="text/css" media="all" />
-		<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/'.self::JQUERY_DATATABLES.'/css/jquery.dataTables.css">
-		<link rel="stylesheet" href="'. $this->plugin_url .'/public/assets/css/pos.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="//code.jquery.com/mobile/'.self::JQUERY_MOBILE.'/jquery.mobile-'.self::JQUERY_MOBILE.'.min.css" type="text/css" media="all" />
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/'.self::JQUERY_DATATABLES.'/css/jquery.dataTables.css">
+	<link rel="stylesheet" href="'. $this->plugin_url .'/public/assets/css/pos.css" type="text/css" media="all" />
 		';
 	}
 
@@ -351,16 +465,26 @@ class WooCommerce_POS {
 	 * Print the head JS for public facing templates
 	 * @return [type] [description]
 	 */
-	public function pos_print_js_head () {
-		echo '
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/'.self::JQUERY.'/jquery.min.js"></script>
-		<script type="text/javascript">
-		$(document).bind("mobileinit", function () {
-		    $.mobile.ajaxEnabled = false;
-		});
-		</script>
-		<script src="//code.jquery.com/mobile/'.self::JQUERY_MOBILE.'/jquery.mobile-'.self::JQUERY_MOBILE.'.min.js"></script>
-		<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/'.self::JQUERY_DATATABLES.'/js/jquery.dataTables.js"></script>
-		';
+	public function pos_print_js ($section = '') {
+		if($section == 'head') {
+			echo '
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/'.self::JQUERY.'/jquery.min.js"></script>
+	<script type="text/javascript">
+	$(document).bind("mobileinit", function () {
+	    $.mobile.ajaxEnabled = false;
+	});
+	</script>
+	<script src="//code.jquery.com/mobile/'.self::JQUERY_MOBILE.'/jquery.mobile-'.self::JQUERY_MOBILE.'.min.js"></script>
+	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/'.self::JQUERY_DATATABLES.'/js/jquery.dataTables.js"></script>
+			';
+		}
+		if($section == 'footer') {
+			echo '
+	<script type="text/javascript">
+	var ajax_url = \'' . admin_url( 'admin-ajax.php', 'relative' ) . '\';
+	</script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/pos.js"></script>
+			';
+		}
 	}	
 }

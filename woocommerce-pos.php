@@ -10,7 +10,7 @@
  * Plugin Name:       WooCommerce POS
  * Plugin URI:        https://github.com/kilbot/WooCommerce-POS
  * Description:       A simple front-end for taking WooCommerce orders at the Point of Sale.
- * Version:           0.2
+ * Version:           0.2.1
  * Author:            kilbot
  * Author URI:        http://www.kilbot.com.au
  * Text Domain:       woocommerce-pos-locale
@@ -26,7 +26,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// If WooCommerce not installed, abort.
+// If WooCommerce not installed, abort. Can't use is_plugin_active before admin_init.
 if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) )
 	return;
 
