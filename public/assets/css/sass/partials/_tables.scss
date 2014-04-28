@@ -1,0 +1,26 @@
+table {
+	thead {
+		th, td {
+			border-bottom: 1px solid $border-dark;
+		}
+	}
+	th, td {
+		padding: $vspacing/2 !important;
+		vertical-align: middle;
+		img {
+			vertical-align: bottom;
+			min-width: 60px;
+		}
+	}
+	tr {
+		&.even {
+			background-color: $even-background;
+		}
+		&.odd {
+			background-color: $odd-background;
+		}
+	}
+	td {
+		border-bottom: 1px solid $border-light;
+	}
+}

@@ -1,0 +1,79 @@
+/* Susy Settings =================================================== */
+
+$susy: (
+	columns: 12,
+	gutters: 1/8,
+);
+
+$small 		: 600px;	// phone
+$medium 	: 800px;	// tablet
+$large 		: 1200px; 	// desktop
+
+/* Layout =================================================== */
+#main {
+	@include container();
+	padding: gutter();
+}
+.col {
+	background: $panel-background;
+	// display: flex;
+	border: 1px solid $panel-border;
+	@include box-shadow(0 1px 1px rgba(black, 0.04));
+	&.leftcol {
+		margin-bottom: gutter();
+	}
+}
+
+@include breakpoint($small) {
+	header .btn span {
+		display: inline !important;
+	}
+	.leftcol {
+		@include span(6);
+
+	}
+	.rightcol {
+		@include span(6 last);
+	}
+}
+
+/* Header =================================================== */
+header {
+	color: $menu-text;
+	background-color: $menu-background;
+	// the page title
+	h1 {
+		text-align: center;
+		clear: none;
+		line-height: $vspacing*1.5;
+	}
+	// all header links
+	a {
+		color: $menu-text;
+		text-decoration: none;
+		@include hoverActiveFocus {
+			color: $link-focus;
+		}
+		// header buttons
+		&.btn {
+			color: $menu-text;
+			background-color: $menu-background;
+			padding: 0 $vspacing/2;
+			line-height: $vspacing*1.5;
+			height: auto;
+			@include hoverActiveFocus {
+				background-color: $menu-highlight-background;
+				text-decoration: none;
+			}
+			span {
+				display: none;
+			}
+		}
+		&.btn-left {
+			@extend .alignleft;
+		}
+		&.btn-right {
+			@extend .alignright;
+		}
+	}
+}

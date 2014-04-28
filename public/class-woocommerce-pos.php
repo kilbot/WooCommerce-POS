@@ -24,9 +24,8 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION 			= '0.2.1';
-	const JQUERY 			= '1.10.2'; // http://jquery.com/
-	const JQUERY_MOBILE 	= '1.4.2'; 	// http://jquerymobile.com/
+	const VERSION 			= '0.2.2';
+	const JQUERY 			= '2.1.0'; // http://jquery.com/
 	const JQUERY_DATATABLES = '1.10.0-beta.2'; 	// https://datatables.net/
 
 	/**
@@ -455,9 +454,8 @@ class WooCommerce_POS {
 	 */
 	public function pos_print_css() {
 		echo '
-	<link rel="stylesheet" href="//code.jquery.com/mobile/'.self::JQUERY_MOBILE.'/jquery.mobile-'.self::JQUERY_MOBILE.'.min.css" type="text/css" media="all" />
 	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/'.self::JQUERY_DATATABLES.'/css/jquery.dataTables.css">
-	<link rel="stylesheet" href="'. $this->plugin_url .'/public/assets/css/pos.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="'. $this->plugin_url .'/public/assets/css/pos.min.css" type="text/css" media="all" />
 		';
 	}
 
@@ -469,22 +467,34 @@ class WooCommerce_POS {
 		if($section == 'head') {
 			echo '
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/'.self::JQUERY.'/jquery.min.js"></script>
-	<script type="text/javascript">
-	$(document).bind("mobileinit", function () {
-	    $.mobile.ajaxEnabled = false;
-	});
-	</script>
-	<script src="//code.jquery.com/mobile/'.self::JQUERY_MOBILE.'/jquery.mobile-'.self::JQUERY_MOBILE.'.min.js"></script>
 	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/'.self::JQUERY_DATATABLES.'/js/jquery.dataTables.js"></script>
+	<!-- Modernizr: uses CSS 3D Transforms -->
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/vendor/modernizr.custom.js"></script>
 			';
 		}
 		if($section == 'footer') {
+			$this->pos_localize_script();
 			echo '
-	<script type="text/javascript">
-	var ajax_url = \'' . admin_url( 'admin-ajax.php', 'relative' ) . '\';
-	</script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/pos.js"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/plugins.min.js"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/pos.min.js"></script>
 			';
 		}
-	}	
+	}
+
+	/**
+	 * Add variables for use by js scripts
+	 * @return [type] [description]
+	 */
+	public function pos_localize_script() {
+		;
+		$js_vars = array(
+				'ajax_url' => admin_url( 'admin-ajax.php', 'relative' ),
+				'loading_icon' => $this->plugin_url . '/assets/ajax-loader.gif',
+			);
+		echo '
+			<script type="text/javascript">
+			var pos_cart_params = ' . json_encode($js_vars) . ';
+			</script>
+		';
+	}
 }

@@ -1,0 +1,126 @@
+/*! Pushy - v0.9.1 - 2013-9-16
+* Pushy is a responsive off-canvas navigation menu using CSS transforms & transitions.
+* https://github.com/christophery/pushy/
+* by Christopher Yee */
+
+/* #page =================================================== */
+html, body{
+    overflow-x: hidden; /* prevents horizontal scroll bars */
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* disable webkit tap highlight */
+    height: 100%; /* fixes focus scrolling in Safari (OS X) */
+}
+#page{
+    position: relative;
+}
+
+/* Menu =================================================== */
+#menu {
+    ul {
+        list-style: none;
+        margin: 0;
+        // margin-top: $vspacing*1.5;
+        padding: 0;
+    }
+}
+
+/* Pushy =================================================== */
+.pushy {
+    position: fixed;
+    width: $menu-panel-width;
+    height: 100%;
+    top: 0;
+    z-index: 9999;
+    background: $menu-background;
+    @include box-shadow(inset -10px 0 6px -9px rgba(0, 0, 0, .7));
+    overflow: auto;
+    -webkit-overflow-scrolling: touch; /* enables momentum scrolling in iOS overflow elements */
+
+    a {
+        display: block;
+        color: $menu-text;
+        padding: 0 $vspacing/2;
+        line-height: $vspacing*1.5;
+        // border-bottom: 1px solid rgba(0, 0, 0, .1);
+        border-top: 1px solid rgba(255, 255, 255, .1);
+        text-decoration: none; 
+
+        @include hoverActiveFocus {
+            background: $menu-highlight-background;
+            color: $menu-text;
+        }     
+    }
+
+    li:first-child a {
+        border-top: 0;
+    }
+
+}
+
+/* Menu Movement */
+.pushy-left {
+    @include translate3d(-($menu-panel-width),0,0);
+}
+
+.pushy-open {
+    @include translate3d(0,0,0);
+}
+
+.page-push, .push-push {
+    @include translate3d($menu-panel-width,0,0);
+}
+
+/* Menu Transitions */
+
+.pushy, #page, .push {
+    @include transition(.2s cubic-bezier(.16, .68, .43, .99));
+    /* improves performance issues on mobile*/
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000;
+}
+
+/* Site Overlay */
+
+.site-overlay {
+    display: none;
+}
+
+.pushy-active .site-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: $menu-panel-width;
+    z-index: 9999;
+}
+
+/* User Actions =================================================== */
+#user-actions {
+    display: none;
+    background: $menu-background;
+    position: absolute;
+    right: 0;
+    top: $vspacing*1.5;
+    width: $menu-panel-width;
+
+    ul {
+        list-style: none;
+        margin: 0;
+        // margin-top: $vspacing*1.5;
+        padding: 0;
+
+        a {
+            display: block;
+            color: $menu-text;
+            padding: 0 $vspacing/2;
+            line-height: $vspacing*1.5;
+            // border-bottom: 1px solid rgba(0, 0, 0, .1);
+            border-top: 1px solid rgba(255, 255, 255, .1);
+            text-decoration: none; 
+            @include hoverActiveFocus {
+                background: $menu-highlight-background;
+                color: $menu-text;
+            }
+        }
+    }     
+}

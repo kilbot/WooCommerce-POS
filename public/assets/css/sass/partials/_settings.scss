@@ -1,0 +1,75 @@
+/**
+ * Using Font-Awesome for icons 
+ * Using the default Wordpress fonts and palette - it is known and familiar
+ */
+
+// base typography
+@import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
+
+$base-font: 'Open Sans', Sans-Serif;
+$header-font: $base-font;
+
+
+// heights & widths
+$vspacing: 1.5em;
+$btn-height: 32px; // needs to be in px to work across a, input, button etc
+$menu-panel-width: 200px;
+
+
+// base color scheme
+
+$text-color: #444 !default; // main text color
+$icon-color: hsl( hue( $text-color ), 7%, 95% ) !default;
+$highlight-color: #0074a2 !default;
+$notification-color: #d54e21 !default;
+
+
+// global
+
+$body-background: #f1f1f1 !default;  
+
+$link-color: #0074a2 !default;
+$link-focus: lighten( $link-color, 10% ) !default;
+
+$button-color: $highlight-color !default;
+$form-checked: $highlight-color !default;
+
+
+// header & menu
+
+$base-color: #222 !default;	// block color for header, menu
+$menu-text: #eee !default; // menu text, contrast base-color
+$menu-icon: hsl( hue( $menu-text ), 7%, 95% ) !default;
+$menu-background: $base-color !default;
+
+$menu-highlight-text: $text-color !default;
+$menu-highlight-icon: $text-color !default;
+$menu-highlight-background: $highlight-color !default;
+
+$menu-current-text: $menu-highlight-text !default;
+$menu-current-icon: $menu-highlight-icon !default;
+$menu-current-background: $menu-highlight-background !default;
+
+$menu-submenu-text: mix( $base-color, $text-color, 30% ) !default;
+$menu-submenu-background: darken( $base-color, 7% ) !default;
+$menu-submenu-background-alt: desaturate( lighten( $menu-background, 7% ), 7% ) !default;
+
+$menu-submenu-focus-text: $highlight-color !default;
+$menu-submenu-current-text: $text-color !default;
+
+
+// Compass defaults
+
+$default-border-radius: 10px;
+
+// panels
+
+$panel-border: #e5e5e5;
+$panel-background: #fff !default; 
+ 
+// tables 
+
+$border-light: #eee;
+$border-dark: darken($border-light, 10%);
+$even-background: #fff;
+$odd-background: #f9f9f9;

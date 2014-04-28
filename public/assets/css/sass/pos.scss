@@ -1,0 +1,21 @@
+@import "compass";
+@import "breakpoint";
+@import "susy";
+
+// configure the style from settings
+@import "partials/settings";
+
+// reset styles should stay at the top
+@import "partials/reset";
+
+// move mixins to their own partial
+@import "partials/mixins";
+
+// now the rest
+@import "partials/global";
+@import "partials/typography";
+@import "partials/forms";
+@import "partials/tables";
+@import "partials/layout";
+@import "partials/buttons";
+@import "partials/menu";

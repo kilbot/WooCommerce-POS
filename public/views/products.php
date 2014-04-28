@@ -1,10 +1,10 @@
-<table id="products" data-role="table" class="display ui-responsive" cellspacing="0">
+<table id="products">
 	<thead>
 		<tr>
-			<th width="70"></th>
+			<th></th>
 			<th><?php _e( 'Product', 'woocommerce' ); ?></th>
-			<th width="60"><?php _e( 'Price', 'woocommerce' ); ?></th>
-			<th width="60"></th>
+			<th><?php _e( 'Price', 'woocommerce' ); ?></th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -28,7 +28,7 @@
 			</td>
 			<td><?= $product->get_price_html(); ?>
 			<td class="add">
-				<a class="add_to_cart_button ui-btn ui-btn-icon-left ui-icon-plus" href="<?php self::get_pos_add_to_cart_url($product); ?>" title="Add to Cart" data-product_id='<?= $product->id; ?>'>Add</a>
+				<a class="add_to_cart_button btn btn-circle btn-flat-action" href="<?php self::get_pos_add_to_cart_url($product); ?>" title="Add to Cart" data-product_id='<?= $product->id; ?>'><i class="fa fa-plus"></i></a>
 			</td>
 		</tr>
 		<?php endif; ?>

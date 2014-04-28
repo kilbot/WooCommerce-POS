@@ -11,9 +11,16 @@
 	
 </head>
 <body>
-<div data-role="page">
-	<div data-theme="b" data-role="header">
-		<a href="#nav" data-icon="bars">Menu</a>
+<div id="page" class="site">
+	<header id="masthead" role="banner" class="site-header">
+		<a href="#menu" id="menu-btn" class="btn btn-left btn-flat"><i class="fa fa-bars"></i> <span>Menu</span></a>
+		<a href="#user-actions" id="user-actions-btn" class="btn btn-right btn-flat">
+			<i class="fa fa-cog"></i> <span>Howdy, <?php global $current_user; get_currentuserinfo(); echo $current_user->display_name ?></span>
+		</a>
+		<div id="user-actions">
+			<ul>
+				<li><a href="<?php echo wp_logout_url( home_url() ); ?>" title="Logout">Logout</a></li>
+			</ul>
+		</div><!-- /user  -->
 		<h1>Point of Sale - <a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-		<a href="#popupMenu" data-rel="popup" data-transition="none" class="ui-btn ui-icon-gear ui-btn-icon-left ui-btn-b">Howdy, <?php global $current_user; get_currentuserinfo(); echo $current_user->display_name ?></a>
-	</div><!-- /header -->
+	</header><!-- /header -->
