@@ -10,7 +10,7 @@ Once the plugin is installed you should go to http://yourshop.com/pos to see the
 
 ## DEMO
 
-To view a live demo of the WooCommerce POS Plugin go to http://woocommerce-pos.kilbot.com.au/pos/ with login/pass: demo/demo.
+To view a live demo of the WooCommerce POS Plugin go to http://woopos.com.au/pos/ with login/pass: demo/demo.
 
 ### TODO
 
