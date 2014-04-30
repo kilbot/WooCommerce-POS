@@ -1,16 +1,9 @@
 <?php
 /**
- * @package   WooCommerce POS
- * @author    Paul Kilmurray <paul@kilbot.com.au>
- * @license   GPL-2.0+
- * @link      http://www.kilbot.com.au
- * @copyright 2014 The Kilbot Factory
- *
- * @wordpress-plugin
  * Plugin Name:       WooCommerce POS
  * Plugin URI:        https://github.com/kilbot/WooCommerce-POS
  * Description:       A simple front-end for taking WooCommerce orders at the Point of Sale.
- * Version:           0.2.2
+ * Version:           0.2.3
  * Author:            kilbot
  * Author URI:        http://www.kilbot.com.au
  * Text Domain:       woocommerce-pos-locale
@@ -19,6 +12,11 @@
  * Domain Path:       /languages
  * GitHub Plugin URI: https://github.com/kilbot/woocommerce-pos
  * GitHub Branch:     master
+ * 
+ * @package   WooCommerce POS
+ * @author    Paul Kilmurray <paul@kilbot.com.au>
+ * @link      http://woopos.com.au
+ *
  */
 
 // If this file is called directly, abort.
@@ -35,7 +33,7 @@ if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins',
  *----------------------------------------------------------------------------*/
 
 // require the initial plugin class
-require_once( plugin_dir_path( __FILE__ ) . 'public/class-woocommerce-pos.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'public/class-pos.php' );
 
 // Register hooks that are fired when the plugin is activated or deactivated.
 // When the plugin is deleted, the uninstall.php file is loaded.
@@ -51,7 +49,7 @@ add_action( 'plugins_loaded', array( 'WooCommerce_POS', 'get_instance' ) );
 
 if ( is_admin() ) {
 
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-woocommerce-pos-admin.php' );
+	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-pos-admin.php' );
 	add_action( 'plugins_loaded', array( 'WooCommerce_POS_Admin', 'get_instance' ) );
 
 }

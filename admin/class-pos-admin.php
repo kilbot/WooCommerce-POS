@@ -1,24 +1,15 @@
 <?php
-/**
- * @package   WooCommerce POS
- * @author    Paul Kilmurray <paul@kilbot.com.au>
- * @license   GPL-2.0+
- * @link      http://www.kilbot.com.au
- * @copyright 2014 The Kilbot Factory
- */
 
 /**
- * Plugin class. This class should ideally be used to work with the
- * administrative side of the WordPress site.
- *
- * If you're interested in introducing public-facing
- * functionality, then refer to `class-plugin-name.php`
- *
- * @TODO: Rename this class to a proper name for your plugin.
- *
- * @package Woocommerce POS
- * @author  Paul Kilmurray <paul@kilbot.com.au>
+ * WP Admin Class
+ * 
+ * @class 	  WooCommerce_POS_Admin
+ * @version   0.3
+ * @package   WooCommerce POS
+ * @author    Paul Kilmurray <paul@kilbot.com.au>
+ * @link      http://www.woopos.com.au
  */
+
 class WooCommerce_POS_Admin {
 
 	/**

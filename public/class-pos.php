@@ -1,24 +1,16 @@
 <?php
-/**
- * Plugin Name.
- *
- * @package   WooCommerce POS
- * @author    Paul Kilmurray <paul@kilbot.com.au>
- * @license   GPL-2.0+
- * @link      http://example.com
- * @copyright 2013 Your Name or Company Name
- */
 
 /**
- * Plugin class. This class should ideally be used to work with the
- * public-facing side of the WordPress site.
+ * Frontend POS Class
  *
- * If you're interested in introducing administrative or dashboard
- * functionality, then refer to `class-woocommerce-pos-admin.php`
- *
- * @package WooCommerce POS
- * @author  Paul Kilmurray <paul@kilbot.com.au>
+ * 
+ * @class 	  WooCommerce_POS
+ * @version   0.3
+ * @package   WooCommerce POS
+ * @author    Paul Kilmurray <paul@kilbot.com.au>
+ * @link      http://www.woopos.com.au
  */
+
 class WooCommerce_POS {
 
 	/**
@@ -26,7 +18,6 @@ class WooCommerce_POS {
 	 */
 	const VERSION 			= '0.2.2';
 	const JQUERY 			= '2.1.0'; // http://jquery.com/
-	const JQUERY_DATATABLES = '1.10.0-beta.2'; 	// https://datatables.net/
 
 	/**
 	 * Unique identifier
@@ -48,16 +39,30 @@ class WooCommerce_POS {
 	public $plugin_url;
 
 	/**
-	 * Initialize the plugin
+	 * @var WooCommerce_POS_Product $product
+	 */
+	public $product = null;
+
+	/**
+	 * @var WooCommerce_POS_Cart $cart
+	 */
+	public $cart = null;
+
+	/**
+	 * Initialize WooCommerce_POS
 	 */
 	private function __construct() {
+		// include required files
+		$this->includes();
+
 		$this->plugin_path = trailingslashit( dirname( dirname(__FILE__) ) );
 		$this->plugin_dir = trailingslashit( basename( $this->plugin_path ) );
 		$this->plugin_url = plugins_url().'/'.$this->plugin_dir;
 
 		// Load plugin text domain
 		//add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
-		
+		add_action( 'init', array( $this, 'init' ), 0 );
+
 		// Set up templates
 		add_filter('generate_rewrite_rules', array( $this, 'pos_generate_rewrite_rules') );
 		add_filter('query_vars', array( $this, 'pos_query_vars') );
@@ -76,6 +81,9 @@ class WooCommerce_POS {
 		add_action( 'wp_ajax_nopriv_pos_add_to_cart', array( $this, 'ajax_add_to_cart' ) );
 		add_action( 'wp_ajax_pos_remove_item', array( $this, 'ajax_remove_item' ) );
 		add_action( 'wp_ajax_nopriv_pos_remove_item', array( $this, 'ajax_remove_item' ) );
+
+		add_action( 'wp_ajax_get_products', array( $this, 'get_products_json' ) );
+		add_action( 'wp_ajax_nopriv_get_products', array( $this, 'get_products_json' ) );
 	}
 
 	/**
@@ -113,7 +121,7 @@ class WooCommerce_POS {
 
 	}
 
-		/**
+	/**
 	 * Fired when the plugin is activated.
 	 */
 	public static function activate( ) {
@@ -140,6 +148,17 @@ class WooCommerce_POS {
 		$administrator->remove_cap( 'manage_woocommerce_pos' );
 		$shop_manager = get_role( 'shop_manager' );
 		$shop_manager->remove_cap( 'manage_woocommerce_pos' );
+	}
+
+
+	private function includes() {
+		include_once( 'includes/class-pos-product.php' );
+		include_once( 'includes/class-pos-cart.php' );
+	}
+
+	public function init() {
+		$this->product  = new WooCommerce_POS_Product();
+		$this->cart     = new WooCommerce_POS_Cart();
 	}
 
 	/**
@@ -173,6 +192,7 @@ class WooCommerce_POS {
 		// make sure administrator has logged in
 		if ($custom_page == 'pos' && current_user_can('manage_woocommerce_pos')) {
 			// we've found our page, call render_page and exit
+			
 			$this->render_page();
 			exit;
 		} elseif ($custom_page == 'pos' && !current_user_can('manage_woocommerce_pos')) {
@@ -187,7 +207,10 @@ class WooCommerce_POS {
 	 */
 	public function render_page() {
 		global $woocommerce;
-		if(!empty($_POST['pos_checkout']) && !wp_verify_nonce($_POST['woocommerce-pos_checkout'],'woocommerce-pos_checkout')) {
+		if(!empty($_REQUEST['product']) && $_REQUEST['product'] == 'all' ):
+			// page is asking for all products
+			$this->product->get_all_products_json();
+		elseif( !empty( $_POST['pos_checkout'] ) && !wp_verify_nonce( $_POST['woocommerce-pos_checkout'], 'woocommerce-pos_checkout') ) :
 			if (!defined( 'WOOCOMMERCE_CHECKOUT')) define( 'WOOCOMMERCE_CHECKOUT', true );
 			if ( sizeof( WC()->cart->get_cart() ) == 0 ) {
 				include_once( 'views/pos.php' );
@@ -201,12 +224,12 @@ class WooCommerce_POS {
 			include_once( 'views/receipt.php' );
 			$woocommerce_checkout = WC()->checkout();
 			$woocommerce_checkout->process_checkout();
-		} else {
+		else :
 			// we're in the chopping cart
 			if (!defined( 'WOOCOMMERCE_CART')) define( 'WOOCOMMERCE_CART', true );
 			$this->set_local_pickup();
 			include_once( 'views/pos.php' );
-		}
+		endif;
 	}
 
 	/**
@@ -226,28 +249,10 @@ class WooCommerce_POS {
 	public function ajax_add_to_cart() {
 		global $woocommerce;
 
-		$href = $_POST['href'];
-		parse_url( $href, PHP_URL_QUERY );
-		parse_str( parse_url($href, PHP_URL_QUERY ), $query_arr);
-
-		if( !isset( $query_arr['add-to-cart'] ) ) {
-			$this->json_headers();
-			echo json_encode( array( 'error' => true, 'msg' => 'There was no product id to add to cart' ) );
-			die();	
-		}
-
-		// assign known queries
-		$product_id 	= $query_arr['add-to-cart'];
-		$quantity 		= isset($query_arr['quantity']) ? $query_arr['quantity'] : 1 ;
-		$variation_id 	= isset($query_arr['variation_id']) ? $query_arr['variation_id'] : '' ;
-		
-		// unset known queries
-		unset($query_arr['add-to-cart']);
-		unset($query_arr['quantity']);
-		unset($query_arr['variation_id']);
-
-		// whatever is left is the variation
-		$variation 		= $query_arr;
+		$product_id 	= $_REQUEST['id'];
+		$quantity 		= 1;
+		$variation_id 	= isset($_REQUEST['variation_id']) ? $_REQUEST['variation_id'] : '' ;
+		$variation 		= '';
 
 		$added_to_cart = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation);
 		if( !$added_to_cart ) {
@@ -313,150 +318,40 @@ class WooCommerce_POS {
 
 		die();
 	}
-	
-	/**
-	 * Get all products, ordered by recent best sellers
-	 * @return array
-	 */
-	public function get_all_products() {
-		// get array of all products and variations, set to zero sales
-		$args = array(
-			'post_type'			=> array('product', 'product_variation'),
-			'post_status' 		=> array('private', 'publish'),
-			'posts_per_page' 	=> -1,
-			'fields'			=> 'ids'
-		);
-		$products = get_posts( $args );
-		$zero_sales = array();
+
+	public function get_products_json() {
+		$this->json_headers();
+
+		// set up the product data
+		$products = $this->product->get_all_products();
+		$total = count($products);
+
 		if($products) {
-			foreach( $products as $product ) {
-				$zero_sales[ $product ] = 0;
-			}
+			$data = array(
+				'status' 		=> 'success',
+				'total_count'	=> $total,
+				'products'			=> $products
+			);
 		}
-		
-		// combine with best selling products and variations
-		$product_sales = $this->get_best_sellers();
-		$variation_sales = $this->get_best_sellers(array('product_id'=>'_variation_id'));
-		$all_sales = $variation_sales + $product_sales + $zero_sales;
-		
-		// sort array and return best selling products and variations
-		asort( $all_sales );
-		$best_sellers = array_reverse( $all_sales, true );
-
-		return $best_sellers;
+		else {
+			// throw error
+			$data = array(
+				'status' => 'error',
+			);
+		}
+		echo json_encode( $data );
+		die();
 	}
 	
-	/**
-	 * Get best sellers from the last 30 days
-	 * @param  array $args
-	 * @return array
-	 */
-	public function get_best_sellers($args='') {
-		global $wpdb;
-		
-		$defaults = array(
-			'start_date'	=> date( 'Ymd', strtotime( '-30 days' ) ),
-			'end_date'		=> date( 'Ymd', current_time( 'timestamp' ) ),
-			'order_statuses'=> array( 'completed', 'processing', 'on-hold' ),
-			'product_id' 	=> '_product_id'
-		);
-
-		$args = wp_parse_args( $args, $defaults );
-
-		extract( $args );
-		
-		$start_date = strtotime( $start_date );
-		$end_date = strtotime( $end_date );
-		$order_statuses = implode("','", $order_statuses);
-		
-		$order_items = $wpdb->get_results("
-			SELECT order_item_meta_2.meta_value as product_id, SUM( order_item_meta.meta_value ) as item_quantity FROM {$wpdb->prefix}woocommerce_order_items as order_items
-			LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta ON order_items.order_item_id = order_item_meta.order_item_id
-			LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta_2 ON order_items.order_item_id = order_item_meta_2.order_item_id
-			LEFT JOIN {$wpdb->posts} AS posts ON order_items.order_id = posts.ID
-			LEFT JOIN {$wpdb->term_relationships} AS rel ON posts.ID = rel.object_ID
-			LEFT JOIN {$wpdb->term_taxonomy} AS tax USING( term_taxonomy_id )
-			LEFT JOIN {$wpdb->terms} AS term USING( term_id )
-			WHERE 	posts.post_type 	= 'shop_order'
-			AND 	posts.post_status 	= 'publish'
-			AND 	tax.taxonomy		= 'shop_order_status'
-			AND		term.slug			IN ('" . $order_statuses . "')
-			AND 	post_date > '" . date('Y-m-d', $start_date ) . "'
-			AND 	post_date < '" . date('Y-m-d', strtotime('+1 day', $end_date ) ) . "'
-			AND 	order_items.order_item_type = 'line_item'
-			AND 	order_item_meta.meta_key = '_qty'
-			AND 	order_item_meta_2.meta_key = '" . $product_id . "'
-			GROUP BY order_item_meta_2.meta_value
-		");
-		
-		$found_products = array();
-
-		if ( $order_items ) {
-			foreach ( $order_items as $order_item ) {
-				if($order_item->product_id) $found_products[ $order_item->product_id ] = $order_item->item_quantity;
-			}
-		}
-		
-		return $found_products;
-	}
-	
-	/**
-	 * Remove required fields so we process cart with out address
-	 * @param  array $address_fields
-	 * @return array
-	 */
-	public function pos_remove_required_fields( $address_fields ) {
-		$address_fields['billing_first_name']['required'] = false;
-		$address_fields['billing_last_name']['required'] = false;
-		$address_fields['billing_company']['required'] = false;
-		$address_fields['billing_address_1']['required'] = false;
-		$address_fields['billing_address_2']['required'] = false;
-		$address_fields['billing_city']['required'] = false;
-		$address_fields['billing_postcode']['required'] = false;
-		$address_fields['billing_country']['required'] = false;
-		$address_fields['billing_state']['required'] = false;
-		$address_fields['billing_email']['required'] = false;
-		$address_fields['billing_phone']['required'] = false;
-		return $address_fields;
-	}
-	
-	/**
-	 * After order has been processed successfully
-	 * @param  int $order_id
-	 * @param  [type] $posted
-	 */
-	public function pos_order_processed($order_id, $posted) {
-		if(!empty($_POST['pos_receipt']) && !wp_verify_nonce($_POST['woocommerce-pos_receipt'],'woocommerce-pos_receipt')) {
-			global $order_id;
-			WC()->cart->empty_cart();
-			exit;
-		} else {
-			return;
-		}
-	}
-	
-	/**
-	 * Get Add to Cart link for POS
-	 * @param  object $product
-	 */
-	public function get_pos_add_to_cart_url($product) {
-		if ( $product->is_type('variation') ) {
-			$url = remove_query_arg( 'added-to-cart', add_query_arg( array_merge( array( 'variation_id' => $product->variation_id, 'add-to-cart' => $product->id ), $product->variation_data ) ) );
-		} else {
-			$url = remove_query_arg( 'added-to-cart', add_query_arg( 'add-to-cart', $product->id ) );
-		}
-		echo apply_filters( 'woocommerce_product_add_to_cart_url', $url, $product );
-	}
-
 	/**
 	 * Print the CSS for public facing templates
 	 * @return [type] [description]
 	 */
 	public function pos_print_css() {
-		echo '
-	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/'.self::JQUERY_DATATABLES.'/css/jquery.dataTables.css">
+		$html = '
 	<link rel="stylesheet" href="'. $this->plugin_url .'/public/assets/css/pos.min.css" type="text/css" media="all" />
 		';
+		echo $html;
 	}
 
 	/**
@@ -465,19 +360,27 @@ class WooCommerce_POS {
 	 */
 	public function pos_print_js ($section = '') {
 		if($section == 'head') {
-			echo '
+			$html = '
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/'.self::JQUERY.'/jquery.min.js"></script>
-	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/'.self::JQUERY_DATATABLES.'/js/jquery.dataTables.js"></script>
 	<!-- Modernizr: uses CSS 3D Transforms -->
 	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/vendor/modernizr.custom.js"></script>
 			';
+			echo $html;
 		}
 		if($section == 'footer') {
+			do_action( 'pos_add_to_footer' );
 			$this->pos_localize_script();
-			echo '
+			$html = '
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/underscore.js"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/backbone.js"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/backbone-pageable.js"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/backgrid.js"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/backgrid-paginator.js"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/backgrid-filter.js"></script>
 	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/plugins.min.js"></script>
 	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/pos.min.js"></script>
 			';
+			echo $html;
 		}
 	}
 
@@ -491,10 +394,18 @@ class WooCommerce_POS {
 				'ajax_url' => admin_url( 'admin-ajax.php', 'relative' ),
 				'loading_icon' => $this->plugin_url . '/assets/ajax-loader.gif',
 			);
-		echo '
+		$html = '
 			<script type="text/javascript">
 			var pos_cart_params = ' . json_encode($js_vars) . ';
 			</script>
 		';
+		echo $html;
 	}
+}
+
+/**
+ * Returns main instance
+ */
+function WC_POS() {
+	return WooCommerce_POS::get_instance();
 }

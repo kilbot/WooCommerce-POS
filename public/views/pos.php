@@ -2,12 +2,15 @@
 
 <main id="main" class="site-main" role="main">
 	<section class="col leftcol">
-
-		<?php include_once( 'products.php' ); ?>
+	
+		<div id="products"></div>
 
 	</section><!-- /left col --> 
 
 	<section class="col rightcol">  
+
+
+		<div id="cart"></div>
 
 		<?php include_once( 'cart.php' ); ?>
 

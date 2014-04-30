@@ -8,7 +8,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	<?php $found_products = self::get_all_products(); if($found_products) foreach ( $found_products as $id => $sales ) : $product = get_product( $id ); ?>
+	<?php $found_products = WC_POS()->product->get_all_products(); if($found_products) foreach ( $found_products as $id => $sales ) : $product = get_product( $id ); ?>
 		<?php if(!$product->is_type('variable')) : ?>
 		<tr>
 			<td><?= $product->get_image(); ?></td>
@@ -28,7 +28,7 @@
 			</td>
 			<td><?= $product->get_price_html(); ?>
 			<td class="add">
-				<a class="add_to_cart_button btn btn-circle btn-flat-action" href="<?php self::get_pos_add_to_cart_url($product); ?>" title="Add to Cart" data-product_id='<?= $product->id; ?>'><i class="fa fa-plus"></i></a>
+				<a class="add_to_cart_button btn btn-circle btn-flat-action" href="<?= $this->product->get_pos_add_to_cart_url($product); ?>" title="Add to Cart" data-product_id='<?= $product->id; ?>'><i class="fa fa-plus"></i></a>
 			</td>
 		</tr>
 		<?php endif; ?>

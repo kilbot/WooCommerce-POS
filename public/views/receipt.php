@@ -1,13 +1,16 @@
+<?php include_once( 'footer.php' ); ?>
+
+
 <?php include_once( 'header.php' ); ?>
 
-<div data-role="content" style="padding:0;">
-	<div class="col leftcol">
-
+<main id="main" class="site-main" role="main">
+	<section class="col leftcol">
+	
 		<?php include_once( 'view-order.php' ); ?>
 
-	</div><!-- /left col --> 
+	</section><!-- /left col --> 
 
-	<div class="col rightcol">  
+	<section class="col rightcol">  
 
 		<form action="/pos/" method="post" accept-charset="utf-8">
 			<input type="text" name="email" value="" id="email">
@@ -16,9 +19,7 @@
 		
 		<a data-role="button" data-theme="g" href="/pos/">Back to Point of Sale</a>
 
-	</div><!-- /right col -->
-</div><!-- /content -->
+	</section><!-- /right col -->
+</main><!-- /main -->
 	
-<?php include_once( 'menu.php' ); ?>
-
 <?php include_once( 'footer.php' ); ?>
