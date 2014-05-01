@@ -49,6 +49,11 @@ class WooCommerce_POS {
 	public $cart = null;
 
 	/**
+	 * @var WooCommerce_POS_Checkout $checkout
+	 */
+	public $checkout = null;
+
+	/**
 	 * Initialize WooCommerce_POS
 	 */
 	private function __construct() {
@@ -66,17 +71,12 @@ class WooCommerce_POS {
 		// Set up templates
 		add_filter('generate_rewrite_rules', array( $this, 'pos_generate_rewrite_rules') );
 		add_filter('query_vars', array( $this, 'pos_query_vars') );
-		add_action('template_redirect', array( $this, 'pos_template_redirect') );
+		add_action('template_redirect', array( $this, 'pos_login') );
 		
-		add_action('pos_add_to_cart_url', array( $this, 'get_pos_add_to_cart_url'), 10, 1 );
 		add_action('woocommerce_checkout_order_processed', array( $this, 'pos_order_processed'), 10, 2);
 		
-		// add ajax callback for product search
-		//add_action('wp_ajax_product_search', array( $this, 'product_search_callback') );
-		// change customer id
-		//add_filter( 'woocommerce_checkout_customer_id', array( $this, 'pos_change_customer_id') );
-		
-		// AJAX method
+
+		// AJAX methods
 		add_action( 'wp_ajax_pos_add_to_cart', array( $this, 'ajax_add_to_cart' ) );
 		add_action( 'wp_ajax_nopriv_pos_add_to_cart', array( $this, 'ajax_add_to_cart' ) );
 		add_action( 'wp_ajax_pos_remove_item', array( $this, 'ajax_remove_item' ) );
@@ -156,11 +156,16 @@ class WooCommerce_POS {
 	private function includes() {
 		include_once( 'includes/class-pos-product.php' );
 		include_once( 'includes/class-pos-cart.php' );
+		include_once( 'includes/class-pos-checkout.php' );
+		if ( defined( 'DOING_AJAX' ) ) {
+			include_once( 'includes/class-pos-ajax.php' );
+		}
 	}
 
 	public function init() {
 		$this->product  = new WooCommerce_POS_Product();
 		$this->cart     = new WooCommerce_POS_Cart();
+		$this->cart     = new WooCommerce_POS_Checkout();
 	}
 
 	/**
@@ -187,162 +192,24 @@ class WooCommerce_POS {
 	/**
 	 * Redirect to POS templates
 	 */
-	public function pos_template_redirect() {
+	public function pos_login() {
+		
 		// $pagename = $this->options['pagename']; TODO: set custom pagename as an option
 		global $wp_query;
 		$custom_page = isset($wp_query->query_vars['custom_page']) ? $wp_query->query_vars['custom_page'] : null;
+		
 		// make sure administrator has logged in
 		if ($custom_page == 'pos' && current_user_can('manage_woocommerce_pos')) {
-			// we've found our page, call render_page and exit
 			
-			$this->render_page();
+			// we've good to go, render the page
+			include_once( 'views/pos.php' );
 			exit;
+
 		} elseif ($custom_page == 'pos' && !current_user_can('manage_woocommerce_pos')) {
+
 			// redirect to login page
 			auth_redirect();
 		}
-	}
-
-	/**
-	 * Render the POS templates
-	 * @return [type] [description]
-	 */
-	public function render_page() {
-		global $woocommerce;
-		if(!empty($_REQUEST['product']) && $_REQUEST['product'] == 'all' ):
-			// page is asking for all products
-			$this->product->get_all_products_json();
-		elseif( !empty( $_POST['pos_checkout'] ) && !wp_verify_nonce( $_POST['woocommerce-pos_checkout'], 'woocommerce-pos_checkout') ) :
-			if (!defined( 'WOOCOMMERCE_CHECKOUT')) define( 'WOOCOMMERCE_CHECKOUT', true );
-			if ( sizeof( WC()->cart->get_cart() ) == 0 ) {
-				include_once( 'views/pos.php' );
-				exit;
-			}
-			add_filter( 'woocommerce_checkout_customer_id', 0 );
-			add_filter( 'woocommerce_cart_needs_shipping', '__return_false' );
-			add_filter( 'woocommerce_cart_needs_payment', '__return_false' );
-			add_filter( 'woocommerce_billing_fields', array( $this, 'pos_remove_required_fields'), 10, 1 );
-			add_filter( 'woocommerce_checkout_no_payment_needed_redirect', '__return_false' );
-			include_once( 'views/receipt.php' );
-			$woocommerce_checkout = WC()->checkout();
-			$woocommerce_checkout->process_checkout();
-		else :
-			// we're in the chopping cart
-			if (!defined( 'WOOCOMMERCE_CART')) define( 'WOOCOMMERCE_CART', true );
-			$this->set_local_pickup();
-			include_once( 'views/pos.php' );
-		endif;
-	}
-
-	/**
-	 * Force the shipping method to be local pickup, ie: instore purchase
-	 */
-	public function set_local_pickup() {
-		$chosen_shipping_methods[0] = 'local_pickup';
-		WC()->session->set( 'chosen_shipping_methods', $chosen_shipping_methods );
-		WC()->cart->calculate_totals();
-	}
-
-	/**
-	 * Add to cart handler for AJAX requests
-	 * bit of a hack here: the native woo ajax only deals with single product ids
-	 * we want to be able to add variations so we recreate the form handler from woocommerce
-	 */
-	public function ajax_add_to_cart() {
-		global $woocommerce;
-
-		$product_id 	= $_REQUEST['id'];
-		$quantity 		= 1;
-		$variation_id 	= isset($_REQUEST['variation_id']) ? $_REQUEST['variation_id'] : '' ;
-		$variation 		= '';
-
-		$added_to_cart = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation);
-		if( !$added_to_cart ) {
-			$this->json_headers();
-			echo json_encode( array ( 'error' => true, 'msg' => 'There was a problem adding the item to the cart' ) );
-			die();
-		} else {
-			$this->get_refreshed_fragments();
-		}
-	}
-
-	/**
-	 * Remove from cart handler for AJAX requests
-	 */
-	public function ajax_remove_item() {
-		global $woocommerce;
-
-		$href = $_POST['href'];
-		parse_url( $href, PHP_URL_QUERY );
-		parse_str( parse_url($href, PHP_URL_QUERY ), $query_arr);
-
-		if( !isset( $query_arr['remove_item'] ) && isset( $query_arr['_wpnonce'] ) && wp_verify_nonce( $query_arr['_wpnonce'], 'woocommerce-cart' ) ) {
-			$this->json_headers();
-			echo json_encode( array( 'error' => true, 'msg' => 'There was no product to remove from cart' ) );
-			die();	
-		}
-
-		WC()->cart->set_quantity( $query_arr['remove_item'], 0 );
-		wc_add_notice( __( 'Cart updated.', 'woocommerce' ) );
-		$this->get_refreshed_fragments();
-	}
-
-	/**
-	 * Output headers for JSON requests
-	 */
-	private function json_headers() {
-		header( 'Content-Type: application/json; charset=utf-8' );
-	}
-
-
-	/**
-	 * Get a refreshed cart fragment
-	 */
-	public function get_refreshed_fragments() {
-		global $woocommerce;
-
-		$this->json_headers();
-
-		// Get mini cart
-		ob_start();
-
-		include_once( 'views/cart.php' );
-
-		$cart = ob_get_clean();
-
-		// Fragments and mini cart are returned
-		$data = array(
-			'fragments' => $cart,
-			'cart_hash' => WC()->cart->get_cart() ? md5( json_encode( WC()->cart->get_cart() ) ) : ''
-		);
-
-		echo json_encode( $data );
-
-		die();
-	}
-
-	public function get_products_json() {
-		$this->json_headers();
-
-		// set up the product data
-		$products = $this->product->get_all_products();
-		$total = count($products);
-
-		if($products) {
-			$data = array(
-				'status' 		=> 'success',
-				'total_count'	=> $total,
-				'products'			=> $products
-			);
-		}
-		else {
-			// throw error
-			$data = array(
-				'status' => 'error',
-			);
-		}
-		echo json_encode( $data );
-		die();
 	}
 	
 	/**
@@ -407,11 +274,4 @@ class WooCommerce_POS {
 		';
 		echo $html;
 	}
-}
-
-/**
- * Returns main instance
- */
-function WC_POS() {
-	return WooCommerce_POS::get_instance();
 }

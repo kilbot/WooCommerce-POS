@@ -130,7 +130,7 @@
 		
 		<tr>
 			<td colspan="6" class="actions">
-				<button type="submit" class="btn btn-flat-action" name="pos_checkout" value="checkout"><?php _e( 'Checkout', 'woocommerce' ); ?> <i class="fa fa-chevron-right"></i></button>
+				<button type="submit" class="btn btn-flat-action btn-checkout" name="pos_checkout" id="pos_checkout" value="checkout"><?php _e( 'Checkout', 'woocommerce' ); ?> <i class="fa fa-chevron-right"></i></button>
 				<?php wp_nonce_field('checkout','woocommerce-pos_checkout'); ?>
 			</td>
 		</tr>

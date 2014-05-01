@@ -27,7 +27,7 @@
 		// You can remap the query parameters from `state` keys from
 		// the default to those your server supports
 		queryParams: {
-			action: "get_products",
+			action: "pos_get_products",
 			totalPages: null,
 			totalRecords: null,
 			sortKey: "sort",

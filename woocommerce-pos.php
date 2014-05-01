@@ -40,8 +40,11 @@ require_once( plugin_dir_path( __FILE__ ) . 'public/class-pos.php' );
 register_activation_hook( __FILE__, array( 'WooCommerce_POS', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'WooCommerce_POS', 'deactivate' ) );
 
-// instantiate the initial plugin class
-add_action( 'plugins_loaded', array( 'WooCommerce_POS', 'get_instance' ) );
+add_action( 'plugins_loaded', 'WC_POS' );
+// returns the main instance of POS, global function
+function WC_POS() {
+	return WooCommerce_POS::get_instance();
+}
 
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality

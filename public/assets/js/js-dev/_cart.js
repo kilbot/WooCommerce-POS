@@ -57,7 +57,7 @@
 			cartPark.on('reset', this.render, this);
 			mediator.subscribe("updateCart", function(){ 
 				cartPark.fetch({
-					data: { action: "get_cart_fragment" }, processData: true,
+					data: { action: "pos_get_refreshed_fragments" }, processData: true,
 					reset: true
 				});
 			});
@@ -71,11 +71,14 @@
 			this.$el.html( cart.get( "fragments" ) );
 		},
 
-		events: {"click a.remove-from-cart": "removeFromCart"},
+		events: {
+			"click a.remove-from-cart": "removeFromCart",
+			"click #pos_checkout": "checkout"
+		},
 
 		removeFromCart: function(e) {
 			e.preventDefault();
-console.log($(e.currentTarget).attr( "href" ));
+
 			var data = {
 				action	: "pos_remove_item",
 				href	: $(e.currentTarget).attr( 'href' ),
@@ -102,12 +105,19 @@ console.log($(e.currentTarget).attr( "href" ));
 			});
 		},
 
+		// Checkout click
+		checkout: function(e) {
+			e.preventDefault();
+
+			console.log('checkout');
+		},
+
 	});
 
 	var cartView = new CartView();
 
 	cartPark.fetch({
-		data: { action: "get_cart_fragment" }, processData: true,
+		data: { action: "pos_get_refreshed_fragments" }, processData: true,
 		reset: true
 	});
 

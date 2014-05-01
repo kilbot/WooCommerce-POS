@@ -3,10 +3,9 @@
 /**
  * Product Class
  *
- * Handles the product objects
+ * Handles the products
  * 
  * @class 	  WooCommerce_POS_Product
- * @version   0.3
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
  * @link      http://www.woopos.com.au
@@ -181,61 +180,6 @@ class WooCommerce_POS_Product {
 		}
 		
 		return $found_products;
-	}
-	
-	/**
-	 * Remove required fields so we process cart with out address
-	 * @param  array $address_fields
-	 * @return array
-	 */
-	public function pos_remove_required_fields( $address_fields ) {
-		$address_fields['billing_first_name']['required'] = false;
-		$address_fields['billing_last_name']['required'] = false;
-		$address_fields['billing_company']['required'] = false;
-		$address_fields['billing_address_1']['required'] = false;
-		$address_fields['billing_address_2']['required'] = false;
-		$address_fields['billing_city']['required'] = false;
-		$address_fields['billing_postcode']['required'] = false;
-		$address_fields['billing_country']['required'] = false;
-		$address_fields['billing_state']['required'] = false;
-		$address_fields['billing_email']['required'] = false;
-		$address_fields['billing_phone']['required'] = false;
-		return $address_fields;
-	}
-	
-	/**
-	 * After order has been processed successfully
-	 * @param  int $order_id
-	 * @param  [type] $posted
-	 */
-	public function pos_order_processed($order_id, $posted) {
-		if(!empty($_POST['pos_receipt']) && !wp_verify_nonce($_POST['woocommerce-pos_receipt'],'woocommerce-pos_receipt')) {
-			global $order_id;
-			WC()->cart->empty_cart();
-			exit;
-		} else {
-			return;
-		}
-	}
-	
-	/**
-	 * Get Add to Cart link for POS
-	 * @param  object $product
-	 */
-	public function get_pos_add_to_cart_url($product) {
-		if ( $product->is_type('variation') ) {
-			$url = remove_query_arg( 'added-to-cart', add_query_arg( array_merge( array( 'variation_id' => $product->variation_id, 'add-to-cart' => $product->id ), $product->variation_data ) ) );
-		} else {
-			$url = remove_query_arg( 'added-to-cart', add_query_arg( 'add-to-cart', $product->id ) );
-		}
-		return apply_filters( 'woocommerce_product_add_to_cart_url', $url, $product );
-	}
-
-	/**
-	 * Output headers for JSON requests
-	 */
-	private function json_headers() {
-		header( 'Content-Type: application/json; charset=utf-8' );
 	}
 
 }
