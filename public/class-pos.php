@@ -84,6 +84,8 @@ class WooCommerce_POS {
 
 		add_action( 'wp_ajax_get_products', array( $this, 'get_products_json' ) );
 		add_action( 'wp_ajax_nopriv_get_products', array( $this, 'get_products_json' ) );
+		add_action( 'wp_ajax_get_cart_fragment', array( $this, 'get_refreshed_fragments' ) );
+		add_action( 'wp_ajax_nopriv_get_cart_fragment', array( $this, 'get_refreshed_fragments' ) );
 	}
 
 	/**
@@ -371,6 +373,10 @@ class WooCommerce_POS {
 			do_action( 'pos_add_to_footer' );
 			$this->pos_localize_script();
 			$html = '
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/mediator.js"></script>
+	<script type="text/javascript">
+	var mediator = new Mediator();
+	</script>
 	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/underscore.js"></script>
 	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/backbone.js"></script>
 	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/backbone-pageable.js"></script>

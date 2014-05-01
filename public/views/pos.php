@@ -9,10 +9,7 @@
 
 	<section class="col rightcol">  
 
-
 		<div id="cart"></div>
-
-		<?php include_once( 'cart.php' ); ?>
 
 	</section><!-- /right col -->
 </main><!-- /main -->

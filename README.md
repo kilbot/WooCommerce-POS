@@ -15,7 +15,7 @@ A simple front-end for taking WooCommerce orders at the Point of Sale.
 Imagine [WooCommerce](http://www.woothemes.com/woocommerce/) and [Vend](http://www.vendhq.com/) had a baby. WooCommerce POS is a simple interface for taking orders using your WooCommerce store. No need to sync inventory between your online and bricks&mortar store, no need for monthly subscription fees.
 
 ### DEMO ###
-You can see a demo of the WooCommerce POS plugin in action by going to [woopos.com.au/pos](http://woopos.com.au/pos) with login/pass: `demo/demo`
+You can see a demo of the WooCommerce POS plugin in action by going to [http://woopos.com.au/pos](http://woopos.com.au/pos) with `login/pass` : `demo/demo`
 
 ## Installation ##
 
@@ -40,14 +40,8 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 ## Screenshots ##
 
-### 1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from ###
-![This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from](http://s.wordpress.org/extend/plugins/woocommerce-pos/screenshot-1.png)
-
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets 
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png` 
-(or jpg, jpeg, gif).
-### 2. This is the second screen shot ###
-![This is the second screen shot](http://s.wordpress.org/extend/plugins/woocommerce-pos/screenshot-2.png)
+### 1. WooCommerce POS main screen ###
+![WooCommerce POS main screen](http://s.wordpress.org/extend/plugins/woocommerce-pos/screenshot-1.png)
 
 
 ## Changelog ##

@@ -1,4 +1,5 @@
 table {
+    margin-bottom: 0;
 	thead {
 		th, td {
 			border-bottom: 1px solid $border-dark;
@@ -12,7 +13,6 @@ table {
 			min-width: 60px;
 		}
 	}
-
 	td {
 		border-bottom: 1px solid $border-light;
 	}
@@ -20,16 +20,41 @@ table {
 
 #products table {
 	padding-bottom:  $vspacing/2;
-	margin-bottom: 0;
 	thead { display: none; }
-	tbody tr {
-		&:nth-of-type(even) {
-			background-color: $even-background;
-		}
-		&:nth-of-type(odd) {
-			background-color: $odd-background;
-		}
-	}
+	tbody {
+        tr {
+            &:nth-of-type(even) {
+                background-color: $even-background;
+            }
+            &:nth-of-type(odd) {
+                background-color: $odd-background;
+            }
+        }
+        tr:last-of-type td {
+            border-bottom: 1px solid $border-dark;
+        }
+    }
+}
+
+#cart table {
+    tbody {
+        tr:last-of-type td {
+            border-bottom: 1px solid $border-dark;
+        }
+        input[type=number], input.input-text {
+            width: 4em !important;
+        }
+    }
+    tfoot {
+        tr.order-total {
+            th, td {
+                border-bottom: 1px solid $border-dark;
+            }
+        }
+        td.actions { 
+            text-align: right; 
+        }
+    }
 }
 
 /**

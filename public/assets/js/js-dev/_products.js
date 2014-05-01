@@ -34,7 +34,7 @@
 			q: ""
 		},
 
-		// get the state from Github's search API result
+		// get the state from the server
 		parseState: function (resp, queryParams, state, options) {
 			return {totalRecords: resp.total_count};
 		},
@@ -65,17 +65,22 @@
 			label: "Product",
 			cell: Backgrid.Cell.extend({
 				render: function() {
+
+					// product title
 					var title = '<strong>' + this.model.get("title") + '</strong>';
+
+					// product variations
+					var variation = '';
 					if( this.model.has("variation_id") ) {
 						var variations = [];
 						$.each(this.model.get("variation_data"), function(i,j) {                    
 							var str = j.key + ": " + j.value;
 							variations.push(str);
 						});
-						var variation = '<br /><small>' + variations.join("<br>") + '</small>';
-					} else {
-						var variation = '';
+						variation = '<br /><small>' + variations.join("<br>") + '</small>';
 					}
+
+					// product stock
 					var stock = (this.model.get("stock") === '') ? '' : '<br /><small>' + this.model.get("stock") + ' in stock</small>';
 
 					this.$el.html( title + variation + stock);
@@ -100,33 +105,36 @@
 			label: "",
 			cell: Backgrid.Cell.extend({
 				events: {"click a.add-to-cart": "addToCart"},
+				
 				render: function() {
+					var id 				= this.model.get("id");
+					var variation_id 	= '';
+					var url 			= '?' + $.param({"add-to-cart":this.model.get("id")});
+
 					if( this.model.has("variation_id") ) {
-						var id 				= this.model.get("parent_id");
-						var variation_id 	= this.model.get("variation_id");
-						var url 			= '?' + $.param({"add-to-cart":id, "variation_id":variation_id});
-					} else {
-						var id 				= this.model.get("id");
-						var variation_id 	= '';
-						var url 			= '?' + $.param({"add-to-cart":this.model.get("id")});
-					}
+						id 				= this.model.get("parent_id");
+						variation_id 	= this.model.get("variation_id");
+						url 			= '?' + $.param({"add-to-cart":id, "variation_id":variation_id});
+					} 
+
 					var btn = '<a class="add-to-cart btn btn-circle btn-flat-action" href="' + url + '" data-id="' + id + '" data-variant_id="' + variation_id + '"><i class="fa fa-plus"></i></a>';
 					this.$el.html( btn );
 					return this;
 				},
+
 				addToCart: function(e) {
 					e.preventDefault();
+
+					var data = {
+						action	: "pos_add_to_cart",
+						id		: this.model.get("id")
+					};
 					
 					if( this.model.has("variation_id") ) {
-						var data = {
+						data = {
 							action		: "pos_add_to_cart",
 							id			: this.model.get("parent_id"),
 							variation_id: this.model.get("variation_id")
-						};
-					} else {
-						var data = {
-							action	: "pos_add_to_cart",
-							id		: this.model.get("id")
 						};
 					}
 
@@ -143,8 +151,8 @@
 							return;
 						}
 
-						// render the cart
-						// o.render();
+						// update the cart
+						mediator.publish("updateCart");
 
 					});
 				}
@@ -164,10 +172,7 @@
 			fastForward: null,
 			back: {label: "<i class=\"fa fa-chevron-left\"></i>", title: "Previous"}, 
 			forward: {label: "<i class=\"fa fa-chevron-right\"></i>", title: "Next"},
-		}		, render: function() {
-			this.$el.addClass('hi');
-			return this;
-		}
+		}, 
 	});
 
 	// Initialize a client-side filter to filter on the client

@@ -2,7 +2,7 @@
 
 <form id="cart_fragment" action="/pos/" method="post">
 
-<table id="cart" class="shop_table table-stroke cart" cellspacing="0">
+<table class="shop_table table-stroke cart" cellspacing="0">
 	<thead>
 		<tr>
 			<th class="product-name"><?php _e( 'Product', 'woocommerce' ); ?></th>
@@ -68,7 +68,7 @@
 					
 					<td class="product-remove">
 						<?php
-							echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf( '<a class="btn btn-circle btn-flat-caution" href="%s" title="%s"><i class="fa fa-times"></i></a>', esc_url( WC()->cart->get_remove_url( $cart_item_key ) ), __( 'Remove', 'woocommerce' ) ), $cart_item_key );
+							echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf( '<a class="remove-from-cart btn btn-circle btn-flat-caution" href="%s" title="%s"><i class="fa fa-times"></i></a>', esc_url( WC()->cart->get_remove_url( $cart_item_key ) ), __( 'Remove', 'woocommerce' ) ), $cart_item_key );
 						?>
 					</td>
 				</tr>
@@ -79,7 +79,8 @@
 
 		do_action( 'woocommerce_cart_contents' );
 		?>
-		
+	</tbody>
+	<tfoot>
 		<tr class="cart-subtotal">
 			<th colspan="3"><?php _e( 'Cart Subtotal', 'woocommerce' ); ?></th>
 			<td colspan="2"><?php wc_cart_totals_subtotal_html(); ?></td>
@@ -134,7 +135,7 @@
 			</td>
 		</tr>
 
-	</tbody>
+	</tfoot>
 </table>
 
 </form>
