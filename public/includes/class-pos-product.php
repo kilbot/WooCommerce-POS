@@ -112,7 +112,7 @@ class WooCommerce_POS_Product {
             // If this is a custom option slug, get the options name
             } else {
 				$value              = apply_filters( 'woocommerce_variation_option_name', $value );
-				$product_attributes = $cart_item['data']->get_attributes();
+				$product_attributes = $variation_data;
 				if ( isset( $product_attributes[ str_replace( 'attribute_', '', $name ) ] ) ) {
 					$label = wc_attribute_label( $product_attributes[ str_replace( 'attribute_', '', $name ) ]['name'] );
 				} else {

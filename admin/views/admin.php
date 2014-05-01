@@ -26,7 +26,7 @@
 		<p><a href="<?= home_url('pos/'); ?>">Click here</a> to see start taking orders.</p>
 		<p>
 			The plugin is currently in it's first public beta - it is not meant for production use. 
-			Updates will be frequent over the next few weeks so please check back often.
+			Updates will be frequent over the next few weeks so please <a href="http://woopos.com.au/wp-admin/update-core.php?force-check=1">check</a> back often.
 		</p>
 		<p>If you have questions, comments, feature requests or bug reports please do get in contact so we can make this plugin better:</p>
 		<ul>

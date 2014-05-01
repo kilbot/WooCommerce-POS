@@ -41,6 +41,7 @@
 
 		// get the actual records
 		parseRecords: function (resp, options) {
+			console.log('rendering products');
 			return resp.products;
 		}
 
@@ -167,6 +168,7 @@
 	// Initialize the paginator
 	var paginator = new Backgrid.Extension.Paginator({
 		collection: products,
+		windowSize: 5, // max number of handles
 		controls: {
 			rewind: null,
 			fastForward: null,
@@ -186,6 +188,7 @@
 	$("#products").append(grid.render().$el);
 	$("#products").append(paginator.render().$el);
 
+	console.log('fetching products');
 	products.fetch({reset: true});
 
 }(jQuery));
