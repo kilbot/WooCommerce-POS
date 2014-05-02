@@ -1,10 +1,10 @@
-# WooCommerce POS #
+# WooCommerce POS (beta) #
 **Contributors:** kilbot  
 **Donate link:** https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paul%40kilbot%2ecom%2eau  
 **Tags:** woocommerce, pos, point-of-sale, vend, e-commerce  
 **Requires at least:** 3.8 or higher  
 **Tested up to:** 3.9  
-**Stable tag:** 0.3  
+**Stable tag:** 0.2.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -41,7 +41,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 ## Screenshots ##
 
 ### 1. WooCommerce POS main screen ###
-![WooCommerce POS main screen](http://s.wordpress.org/extend/plugins/woocommerce-pos/screenshot-1.png)
+![WooCommerce POS main screen](http://s.wordpress.org/extend/plugins/woocommerce-pos-(beta)/screenshot-1.png)
 
 
 ## Changelog ##

@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Frontend POS Class
- *
+ * The main POS Class
  * 
  * @class 	  WooCommerce_POS
  * @version   0.3
@@ -72,20 +71,7 @@ class WooCommerce_POS {
 		add_filter('generate_rewrite_rules', array( $this, 'pos_generate_rewrite_rules') );
 		add_filter('query_vars', array( $this, 'pos_query_vars') );
 		add_action('template_redirect', array( $this, 'pos_login') );
-		
-		add_action('woocommerce_checkout_order_processed', array( $this, 'pos_order_processed'), 10, 2);
-		
-
-		// AJAX methods
-		add_action( 'wp_ajax_pos_add_to_cart', array( $this, 'ajax_add_to_cart' ) );
-		add_action( 'wp_ajax_nopriv_pos_add_to_cart', array( $this, 'ajax_add_to_cart' ) );
-		add_action( 'wp_ajax_pos_remove_item', array( $this, 'ajax_remove_item' ) );
-		add_action( 'wp_ajax_nopriv_pos_remove_item', array( $this, 'ajax_remove_item' ) );
-
-		add_action( 'wp_ajax_get_products', array( $this, 'get_products_json' ) );
-		add_action( 'wp_ajax_nopriv_get_products', array( $this, 'get_products_json' ) );
-		add_action( 'wp_ajax_get_cart_fragment', array( $this, 'get_refreshed_fragments' ) );
-		add_action( 'wp_ajax_nopriv_get_cart_fragment', array( $this, 'get_refreshed_fragments' ) );
+				
 	}
 
 	/**
@@ -165,7 +151,7 @@ class WooCommerce_POS {
 	public function init() {
 		$this->product  = new WooCommerce_POS_Product();
 		$this->cart     = new WooCommerce_POS_Cart();
-		$this->cart     = new WooCommerce_POS_Checkout();
+		$this->checkout = new WooCommerce_POS_Checkout();
 	}
 
 	/**

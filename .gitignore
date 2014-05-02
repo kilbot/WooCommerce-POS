@@ -3,3 +3,5 @@ Grunfile.js
 package.json
 node_modules
 Gruntfile.js
+
+deploy.sh

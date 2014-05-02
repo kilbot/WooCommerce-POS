@@ -85,7 +85,6 @@ class WooCommerce_POS_AJAX {
 	 * @return Object JSON
 	 */
 	public function get_products() {
-		$this->json_headers();
 
 		// set up the product data
 		$products = WC_POS()->product->get_all_products();
@@ -104,6 +103,8 @@ class WooCommerce_POS_AJAX {
 				'status' => 'error',
 			);
 		}
+
+		$this->json_headers();
 		echo json_encode( $data );
 		die();
 	}
@@ -115,9 +116,7 @@ class WooCommerce_POS_AJAX {
 	public function get_refreshed_fragments() {
 		global $woocommerce;
 
-		$this->json_headers();
-
-		// Get mini cart
+		// Get cart
 		ob_start();
 
 		include_once( dirname(__FILE__) . '/../views/cart.php' );
@@ -130,6 +129,7 @@ class WooCommerce_POS_AJAX {
 			'cart_hash' => WC()->cart->get_cart() ? md5( json_encode( WC()->cart->get_cart() ) ) : ''
 		);
 
+		$this->json_headers();
 		echo json_encode( $data );
 
 		die();
@@ -140,14 +140,43 @@ class WooCommerce_POS_AJAX {
 	 * @return 
 	 */
 	public function process_order() {
+		global $woocommerce;
 
-		// validate
-		if( !empty( $_REQUEST['pos_checkout'] ) && !wp_verify_nonce( $_REQUEST['woocommerce-pos_checkout'], 'woocommerce-pos_checkout') ) 
+		// no action
+		if( !empty( $_REQUEST['pos_checkout'] ) ) 
 			exit();
-		
+
+		// no nonce
+		parse_str($_REQUEST['cart'], $cart); // $cart is now an array of form data
+		if( !wp_verify_nonce( $cart['woocommerce-pos_checkout'], 'checkout') ) 
+			exit();
+
+		// woocommerce wants to see the nonce
+		$_POST['_wpnonce'] = $cart['woocommerce-pos_checkout'];
+
 		// process order 
-		
-		// return order id?
+		$order_id = WC_POS()->checkout->create_order();
+		$order = new WC_Order( $order_id );
+
+		// get the order id
+
+		// return the receipt screen
+		ob_start();
+
+		include_once( dirname(__FILE__) . '/../views/checkout.php' );
+
+		$receipt = ob_get_clean();
+
+		// Fragments and mini cart are returned
+		$data = array(
+			'fragments' => $receipt,
+			'cart_hash' => $order_id
+		);
+
+		$this->json_headers();
+		echo json_encode( $data );
+
+		die();
 	}
 
 	/**
