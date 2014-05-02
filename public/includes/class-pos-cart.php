@@ -13,21 +13,13 @@
 
 class WooCommerce_POS_Cart {
 
-	/**
-	 * Initialize the cart
-	 */
-	public function init() {
-		if (!defined( 'WOOCOMMERCE_CART')) define( 'WOOCOMMERCE_CART', true );
-		$this->set_local_pickup();
-	}
+	public function __construct() {
 
-	/**
-	 * Force the shipping method to be local pickup, ie: instore purchase
-	 */
-	public function set_local_pickup() {
+		if (!defined( 'WOOCOMMERCE_CART')) define( 'WOOCOMMERCE_CART', true );
+
 		$chosen_shipping_methods[0] = 'local_pickup';
 		WC()->session->set( 'chosen_shipping_methods', $chosen_shipping_methods );
-		WC()->cart->calculate_totals();
+		
 	}
 
 }

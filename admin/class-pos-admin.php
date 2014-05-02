@@ -34,8 +34,8 @@ class WooCommerce_POS_Admin {
 	 * Plugin variables
 	 * @var string
 	 */
-	public $msg_type; 	// type of admin message
-	public $msg; 		// admin message
+	public $msg_type = ''; 	// type of admin message
+	public $msg = ''; 		// admin message
 
 	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
@@ -214,13 +214,6 @@ class WooCommerce_POS_Admin {
 	 * Check for WooCommerce POS dependancies
 	 */
 	function sanity_check() {
-		// check for GitHub Updater
-		if ( is_admin() && current_user_can( 'activate_plugins' ) && !is_plugin_active( 'github-updater/github-updater.php' ) ) {
-			$this->msg_type = 'update-nag';
-			$this->msg 		= '<strong>WooCommerce POS</strong> requires the <a href="https://github.com/afragen/github-updater">GitHub Updater</a> plugin for updates. You can download and install the GitHub Updater plugin from <a href="https://github.com/afragen/github-updater">https://github.com/afragen/github-updater</a>.';
-			add_action( 'admin_notices', array( $this, 'admin_notices' ), 10, 2 );
-		}
-
 		// check if pretty permalinks are being used
 		global $wp_rewrite;
 		if ( is_admin() &&  $wp_rewrite->permalink_structure == '' ) {

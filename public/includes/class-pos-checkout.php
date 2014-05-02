@@ -28,10 +28,10 @@ class WooCommerce_POS_Checkout {
 
 		// added a bunch of filters to bypass validation
 		// total hack until we get full api: http://maxrice.github.io/woocommerce/rest-api/ 
-		// add_filter( 'woocommerce_checkout_customer_id', 0 );
-		// add_filter( 'woocommerce_cart_needs_shipping', '__return_false' );
-		// add_filter( 'woocommerce_cart_needs_payment', '__return_false' );
-		// add_filter( 'woocommerce_billing_fields', array( $this, 'pos_remove_required_fields') );
+		add_filter( 'woocommerce_checkout_customer_id', 0 );
+		add_filter( 'woocommerce_cart_needs_shipping', '__return_false' );
+		add_filter( 'woocommerce_cart_needs_payment', '__return_false' );
+		add_filter( 'woocommerce_billing_fields', array( $this, 'pos_remove_required_fields') );
 
 		// add_filter( 'woocommerce_checkout_no_payment_needed_redirect', '__return_false' );
 

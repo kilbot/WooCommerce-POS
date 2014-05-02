@@ -168,7 +168,7 @@
 	// Initialize the paginator
 	var paginator = new Backgrid.Extension.Paginator({
 		collection: products,
-		windowSize: 5, // max number of handles
+		windowSize: 10, // max number of handles
 		controls: {
 			rewind: null,
 			fastForward: null,
