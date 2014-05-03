@@ -1,5 +1,6 @@
 /**
  * Use backbone.js and backgrid.js to display the products
+ * TODO: get product variations??
  */
 
 (function ( $ ) {
@@ -14,36 +15,41 @@
 	// Works exactly like Backbone.Collection.
 	var Products = Backbone.PageableCollection.extend({
 
-		url: pos_cart_params.ajax_url,
-		mode: "client",
+		url: '/wc-api/v1/products',
+		mode: "server",
 
 		// Initial pagination states
 		state: {
 			pageSize: 5,
-			sortKey: "updated",
+			// sortKey: "updated",
 			// order: 1
 		},
 
 		// You can remap the query parameters from `state` keys from
 		// the default to those your server supports
 		queryParams: {
-			action: "pos_get_products",
+			filter: {limit:5},
+			firstPage: 1,
 			totalPages: null,
 			totalRecords: null,
-			sortKey: "sort",
-			q: ""
+			// sortKey: "sort",
+			// q: "state:active"
 		},
 
 		// get the state from the server
 		parseState: function (resp, queryParams, state, options) {
-			return {totalRecords: resp.total_count};
+
+			// totals are always in the WC API headers
+			var total = parseInt(options.xhr.getResponseHeader('X-WC-Total'));
+			var pages = parseInt(options.xhr.getResponseHeader('X-WC-TotalPages'));
+			return {totalRecords: total, totalPages: pages};
 		},
 
 		// get the actual records
 		parseRecords: function (resp, options) {
-			console.log('rendering products');
+			// console.log(resp);
 			return resp.products;
-		}
+		},
 
 	});
 
@@ -51,11 +57,14 @@
 
 	var grid = new Backgrid.Grid({
 		columns: [{
-			name: "img",
+			name: "featured_src",
 			label: "",
 			cell: Backgrid.Cell.extend({
 				render: function() {
-					this.$el.html( this.model.get("img") );
+					var image_src = this.model.get("featured_src");
+					var thumb_src = image_src.replace(/(\.[\w\d_-]+)$/i, pos_cart_params.thumb_suffix + '$1');
+					var thumb = '<img src="' + thumb_src + '">';
+					this.$el.html( thumb );
 					return this;
 				}
 			}),
@@ -70,19 +79,19 @@
 					// product title
 					var title = '<strong>' + this.model.get("title") + '</strong>';
 
-					// product variations
+					// // product variations
 					var variation = '';
-					if( this.model.has("variation_id") ) {
-						var variations = [];
-						$.each(this.model.get("variation_data"), function(i,j) {                    
-							var str = j.key + ": " + j.value;
-							variations.push(str);
-						});
-						variation = '<br /><small>' + variations.join("<br>") + '</small>';
-					}
+					// if( this.model.has("variation_id") ) {
+					// 	var variations = [];
+					// 	$.each(this.model.get("variation_data"), function(i,j) {                    
+					// 		var str = j.key + ": " + j.value;
+					// 		variations.push(str);
+					// 	});
+					// 	variation = '<br /><small>' + variations.join("<br>") + '</small>';
+					// }
 
-					// product stock
-					var stock = (this.model.get("stock") === '') ? '' : '<br /><small>' + this.model.get("stock") + ' in stock</small>';
+					// // product stock
+					var stock = (this.model.get("managing_stock") === false) ? '' : '<br /><small>' + this.model.get("stock_quantity") + ' in stock</small>';
 
 					this.$el.html( title + variation + stock);
 					return this;
@@ -91,11 +100,11 @@
 			sortable: false,
            	editable: false
 		}, {
-			name: "price",
+			name: "price_html",
 			label: "Price",
 			cell: Backgrid.Cell.extend({
 				render: function() {
-					this.$el.html( this.model.get("price") );
+					this.$el.html( this.model.get("price_html") );
 					return this;
 				}
 			}),

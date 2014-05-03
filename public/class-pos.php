@@ -15,7 +15,7 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION 			= '0.2.2';
+	const VERSION 			= '0.2.5';
 	const JQUERY 			= '2.1.0'; // http://jquery.com/
 
 	/**
@@ -28,6 +28,12 @@ class WooCommerce_POS {
 	 * @var object
 	 */
 	protected static $instance = null;
+
+	/**
+	 * WooCommerce API endpoint
+	 */
+	public $wc_api_endpoint = '/wc-api/v1/';
+	public $wc_api_url;
 
 	/**
 	 * Plugin variables
@@ -59,6 +65,8 @@ class WooCommerce_POS {
 		// include required files
 		$this->includes();
 
+		$this->wc_api_url = get_home_url().$this->wc_api_endpoint;
+
 		$this->plugin_path = trailingslashit( dirname( dirname(__FILE__) ) );
 		$this->plugin_dir = trailingslashit( basename( $this->plugin_path ) );
 		$this->plugin_url = plugins_url().'/'.$this->plugin_dir;
@@ -66,6 +74,9 @@ class WooCommerce_POS {
 		// Load plugin text domain
 		//add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 		add_action( 'init', array( $this, 'init' ), 0 );
+
+		// allow access to the WC REST API 
+		add_filter( 'woocommerce_api_check_authentication', array( $this, 'authenticate' ), 1 );
 
 		// Set up templates
 		add_filter('generate_rewrite_rules', array( $this, 'pos_generate_rewrite_rules') );
@@ -197,6 +208,17 @@ class WooCommerce_POS {
 			auth_redirect();
 		}
 	}
+
+	/**
+	 * [authenticate description]
+	 * @return [type] [description]
+	 */
+	public function authenticate() {
+		// giving admin and shop manager full access to WC API
+		// TODO: check this is a good approach
+		if(current_user_can('manage_woocommerce_pos'))
+			return new WP_User(get_current_user_id());
+	}
 	
 	/**
 	 * Print the CSS for public facing templates
@@ -249,9 +271,14 @@ class WooCommerce_POS {
 	 */
 	public function pos_localize_script() {
 		;
+		// get thumbnail size set in woocommerce settings
+		// print_r(get_option( 'shop_thumbnail_image_size'));
+		$thumb_size = get_option( 'shop_thumbnail_image_size', array( 'width'=>90, 'height'=> 90 ) );
+		$thumb_suffix = '-'.$thumb_size['width'].'x'.$thumb_size['height'];
 		$js_vars = array(
 				'ajax_url' => admin_url( 'admin-ajax.php', 'relative' ),
 				'loading_icon' => $this->plugin_url . '/assets/ajax-loader.gif',
+				'thumb_suffix' => $thumb_suffix,
 			);
 		$html = '
 			<script type="text/javascript">

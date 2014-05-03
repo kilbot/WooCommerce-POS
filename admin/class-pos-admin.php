@@ -66,7 +66,6 @@ class WooCommerce_POS_Admin {
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-		add_action( 'admin_init', array( $this, 'sanity_check' ) );
 
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
@@ -124,7 +123,7 @@ class WooCommerce_POS_Admin {
 
 		$screen = get_current_screen();
 		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
-			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), Plugin_Name::VERSION );
+			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), WooCommerce_POS::VERSION );
 		}
 
 	}
@@ -148,7 +147,7 @@ class WooCommerce_POS_Admin {
 
 		$screen = get_current_screen();
 		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
-			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery' ), Plugin_Name::VERSION );
+			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery' ), WooCommerce_POS::VERSION );
 		}
 
 	}
@@ -208,28 +207,6 @@ class WooCommerce_POS_Admin {
 			$links
 		);
 
-	}
-
-	/**
-	 * Check for WooCommerce POS dependancies
-	 */
-	function sanity_check() {
-		// check if pretty permalinks are being used
-		global $wp_rewrite;
-		if ( is_admin() &&  $wp_rewrite->permalink_structure == '' ) {
-			$this->msg_type = 'error';
-			$this->msg 		= '<strong>WooCommerce POS</strong> requires <em>pretty</em> permalinks to work correctly. Please enable <a href="'.admin_url('options-permalink.php').'">permalinks</a>.';
-			add_action( 'admin_notices', array( $this, 'admin_notices' ), 10, 2 );
-		}
-	}
-
-	/**
-	 * Display the admin warning about GitHub Updater Plugin
-	 */
-	function admin_notices() {
-		echo '<div class="' . $this->msg_type . '">
-			<p>' . $this->msg . '</p>
-		</div>';
 	}
 
 	/**
