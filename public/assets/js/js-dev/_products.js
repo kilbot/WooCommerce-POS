@@ -28,7 +28,7 @@
 		// You can remap the query parameters from `state` keys from
 		// the default to those your server supports
 		queryParams: {
-			filter: {limit:5},
+			filter: {limit: 5},
 			firstPage: 1,
 			totalPages: null,
 			totalRecords: null,
@@ -47,7 +47,7 @@
 
 		// get the actual records
 		parseRecords: function (resp, options) {
-			// console.log(resp);
+			console.log(resp);
 			return resp.products;
 		},
 
@@ -79,21 +79,28 @@
 					// product title
 					var title = '<strong>' + this.model.get("title") + '</strong>';
 
-					// // product variations
-					var variation = '';
-					// if( this.model.has("variation_id") ) {
-					// 	var variations = [];
-					// 	$.each(this.model.get("variation_data"), function(i,j) {                    
-					// 		var str = j.key + ": " + j.value;
-					// 		variations.push(str);
-					// 	});
-					// 	variation = '<br /><small>' + variations.join("<br>") + '</small>';
-					// }
+					// product options
+					var select = '';
+					if( this.model.get("variations").length > 0 ) {
+						var variations = [];
+						$.each(this.model.get("variations"), function(i,variation) {                    
+							var id = variation.id;
+							var options = [];
+							$.each(variation.attributes, function(i,attribute) {
+								var option = attribute.option;
+								options.push(option);
+							});
+							var html = '<option value="' + id + '">' + options.join(", ") + '</option>';
+							variations = variations + html;
+						});
+						select = '<select>' + variations + '</select>';
+					}
+					
 
 					// // product stock
-					var stock = (this.model.get("managing_stock") === false) ? '' : '<br /><small>' + this.model.get("stock_quantity") + ' in stock</small>';
+					// var stock = (this.model.get("managing_stock") === false) ? '' : '<br /><small>' + this.model.get("stock_quantity") + ' in stock</small>';
 
-					this.$el.html( title + variation + stock);
+					this.$el.html( title + select);
 					return this;
 				}
 			}),
@@ -121,13 +128,7 @@
 					var variation_id 	= '';
 					var url 			= '?' + $.param({"add-to-cart":this.model.get("id")});
 
-					if( this.model.has("variation_id") ) {
-						id 				= this.model.get("parent_id");
-						variation_id 	= this.model.get("variation_id");
-						url 			= '?' + $.param({"add-to-cart":id, "variation_id":variation_id});
-					} 
-
-					var btn = '<a class="add-to-cart btn btn-circle btn-flat-action" href="' + url + '" data-id="' + id + '" data-variant_id="' + variation_id + '"><i class="fa fa-plus"></i></a>';
+					var btn = '<a class="add-to-cart btn btn-circle btn-flat-action" href="' + url + '" data-id="' + id + '"><i class="fa fa-plus"></i></a>';
 					this.$el.html( btn );
 					return this;
 				},
@@ -140,11 +141,11 @@
 						id		: this.model.get("id")
 					};
 					
-					if( this.model.has("variation_id") ) {
+					var select = $(e.currentTarget).closest( 'tr' ).find( 'td select' ).val();
+					alert(select);
+					if( select != 'undefined' ) {
 						data = {
-							action		: "pos_add_to_cart",
-							id			: this.model.get("parent_id"),
-							variation_id: this.model.get("variation_id")
+							variation_id: select
 						};
 					}
 

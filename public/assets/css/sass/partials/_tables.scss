@@ -33,6 +33,9 @@ table {
         tr:last-of-type td {
             border-bottom: 1px solid $border-dark;
         }
+        select {
+            width: 100%;
+        }
     }
 }
 
