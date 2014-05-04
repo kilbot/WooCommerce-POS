@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       WooCommerce POS (beta)
- * Plugin URI:        https://github.com/kilbot/WooCommerce-POS
+ * Plugin URI:        https://woopos.com.au
  * Description:       A simple front-end for taking WooCommerce orders at the Point of Sale.
  * Version:           0.2.5
  * Author:            kilbot

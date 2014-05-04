@@ -93,14 +93,12 @@ if( version_compare( WC()->version, '2.1.0' ) >= 0 ) : ?>
 $api_access = false;
 $file_headers = @get_headers(WC_POS()->wc_api_url);
 if($file_headers[0] != 'HTTP/1.1 404 Not Found') {
-	$json 				= file_get_contents(WC_POS()->wc_api_url);
-	$arr 				= json_decode($json,true);
-	$product_support  	= implode( ', ', $arr['store']['routes']['/products']['supports'] );
-	$order_support		= implode( ', ', $arr['store']['routes']['/orders/<id>']['supports'] );
+	$json 	= file_get_contents(WC_POS()->wc_api_url.'products');
+	$str  	= substr( $json, 0, 100);
 	$api_access = true;
 }
 if($api_access): ?>
-					<tr class="alternate"><td class="row-title">WooCommerce API</td><td>Enabled. <code>/products</code> support <?= $product_support ?>, <code>/orders/&lt;id&gt;</code> support <?= $order_support ?>.</td></tr>			
+					<tr class="alternate"><td class="row-title">WooCommerce API</td><td>Enabled, says: <br><code style="font-size:0.8em"><?= $str; ?> ...</code></td></tr>			
 <?php else: ?>
 					<tr class="alternate form-invalid"><td class="row-title">WooCommerce API</td><td>You need to enable the <a href="<?= admin_url('?page=wc-settings') ?>">WooCommerce REST API</a>.</td>				
 <?php endif;

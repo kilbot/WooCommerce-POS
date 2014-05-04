@@ -76,7 +76,7 @@ class WooCommerce_POS {
 		add_action( 'init', array( $this, 'init' ), 0 );
 
 		// allow access to the WC REST API 
-		add_filter( 'woocommerce_api_check_authentication', array( $this, 'authenticate' ), 1 );
+		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ) );
 
 		// Set up templates
 		add_filter('generate_rewrite_rules', array( $this, 'pos_generate_rewrite_rules') );
@@ -187,22 +187,18 @@ class WooCommerce_POS {
 	}
 
 	/**
-	 * Redirect to POS templates
+	 * Display POS page or login screen
 	 */
 	public function pos_login() {
-		
-		// $pagename = $this->options['pagename']; TODO: set custom pagename as an option
-		global $wp_query;
-		$custom_page = isset($wp_query->query_vars['custom_page']) ? $wp_query->query_vars['custom_page'] : null;
-		
-		// make sure administrator has logged in
-		if ($custom_page == 'pos' && current_user_can('manage_woocommerce_pos')) {
+
+		// check page and credentials
+		if ($this->is_pos() && current_user_can('manage_woocommerce_pos')) {
 			
 			// we've good to go, render the page
 			include_once( 'views/pos.php' );
 			exit;
 
-		} elseif ($custom_page == 'pos' && !current_user_can('manage_woocommerce_pos')) {
+		} elseif ($this->is_pos() && !current_user_can('manage_woocommerce_pos')) {
 
 			// redirect to login page
 			auth_redirect();
@@ -210,13 +206,25 @@ class WooCommerce_POS {
 	}
 
 	/**
-	 * [authenticate description]
-	 * @return [type] [description]
+	 * Are we using point of sale front-end?
+	 * @return boolean
 	 */
-	public function authenticate() {
+	public function is_pos() {
+		// $pagename = $this->options['pagename']; TODO: set custom url as an option
+		global $wp_query;
+		$custom_page = isset($wp_query->query_vars['custom_page']) ? $wp_query->query_vars['custom_page'] : null;
+		return ($custom_page == 'pos') ?  true : false ;
+	}
+
+	/**
+	 * Bypass authenication for WC REST API
+	 * @return WP_User object
+	 */
+	public function wc_api_authentication() {
 		// giving admin and shop manager full access to WC API
 		// TODO: check this is a good approach
 		if(current_user_can('manage_woocommerce_pos'))
+			error_log('authenicating user '.get_current_user_id());
 			return new WP_User(get_current_user_id());
 	}
 	
@@ -278,6 +286,7 @@ class WooCommerce_POS {
 		$js_vars = array(
 				'ajax_url' => admin_url( 'admin-ajax.php', 'relative' ),
 				'loading_icon' => $this->plugin_url . '/assets/ajax-loader.gif',
+				'placeholder' => $this->plugin_url . '/assets/placeholder.png',
 				'thumb_suffix' => $thumb_suffix,
 			);
 		$html = '

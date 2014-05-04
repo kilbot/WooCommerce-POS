@@ -16,33 +16,27 @@
 	var Products = Backbone.PageableCollection.extend({
 
 		url: '/wc-api/v1/products',
-		mode: "server",
+		mode: "client", // server may be necessary for large shops, eg: 1000+ products
 
 		// Initial pagination states
 		state: {
 			pageSize: 5,
-			// sortKey: "updated",
-			// order: 1
 		},
 
 		// You can remap the query parameters from `state` keys from
 		// the default to those your server supports
 		queryParams: {
-			filter: {limit: 5},
-			firstPage: 1,
+			// filter: {limit: -1},
 			totalPages: null,
-			totalRecords: null,
-			// sortKey: "sort",
-			// q: "state:active"
 		},
 
-		// get the state from the server
+		// // get the state from the server
 		parseState: function (resp, queryParams, state, options) {
 
 			// totals are always in the WC API headers
 			var total = parseInt(options.xhr.getResponseHeader('X-WC-Total'));
-			var pages = parseInt(options.xhr.getResponseHeader('X-WC-TotalPages'));
-			return {totalRecords: total, totalPages: pages};
+			// var pages = parseInt(options.xhr.getResponseHeader('X-WC-TotalPages'));
+			return {totalRecords: total};
 		},
 
 		// get the actual records
@@ -53,6 +47,10 @@
 
 	});
 
+	/**
+	 * Create the collection of Products
+	 * QUESTION: Products is a nested JS Object, perhaps nest custom model classes instead?
+	 */
 	var products = new Products();
 
 	var grid = new Backgrid.Grid({
@@ -61,10 +59,21 @@
 			label: "",
 			cell: Backgrid.Cell.extend({
 				render: function() {
-					var image_src = this.model.get("featured_src");
-					var thumb_src = image_src.replace(/(\.[\w\d_-]+)$/i, pos_cart_params.thumb_suffix + '$1');
-					var thumb = '<img src="' + thumb_src + '">';
-					this.$el.html( thumb );
+					/**
+					 * Messy due to nested JS Object
+					 */
+					var image_src = '';
+					var thumb_src = '';
+					if( this.model.get("featured_src") !== false ) {
+						image_src = this.model.get("featured_src");
+						thumb_src = image_src.replace(/(\.[\w\d_-]+)$/i, pos_cart_params.thumb_suffix + '$1');
+					} else if ( this.model.get("parent").featured_src !== false  ) {
+						image_src = this.model.get("parent").featured_src;
+						thumb_src = image_src.replace(/(\.[\w\d_-]+)$/i, pos_cart_params.thumb_suffix + '$1');
+					} else {
+						thumb_src = pos_cart_params.placeholder;
+					}
+					this.$el.html( '<img src="' + thumb_src + '">' );
 					return this;
 				}
 			}),
@@ -79,28 +88,21 @@
 					// product title
 					var title = '<strong>' + this.model.get("title") + '</strong>';
 
-					// product options
-					var select = '';
-					if( this.model.get("variations").length > 0 ) {
+					// product variations
+					var variation = '';
+					if( this.model.get("type") === 'variation' ) {
 						var variations = [];
-						$.each(this.model.get("variations"), function(i,variation) {                    
-							var id = variation.id;
-							var options = [];
-							$.each(variation.attributes, function(i,attribute) {
-								var option = attribute.option;
-								options.push(option);
-							});
-							var html = '<option value="' + id + '">' + options.join(", ") + '</option>';
-							variations = variations + html;
+						$.each(this.model.get("attributes"), function(i,j) {                    
+							var str = j.name + ": " + j.option;
+							variations.push(str);
 						});
-						select = '<select>' + variations + '</select>';
+						variation = '<br /><small>' + variations.join("<br>") + '</small>';
 					}
-					
 
-					// // product stock
-					// var stock = (this.model.get("managing_stock") === false) ? '' : '<br /><small>' + this.model.get("stock_quantity") + ' in stock</small>';
+					// product stock
+					var stock = (this.model.get("managing_stock") === false) ? '' : '<br /><small>' + this.model.get("stock_quantity") + ' in stock</small>';
 
-					this.$el.html( title + select);
+					this.$el.html( title + variation + stock);
 					return this;
 				}
 			}),
@@ -124,11 +126,17 @@
 				events: {"click a.add-to-cart": "addToCart"},
 				
 				render: function() {
-					var id 				= this.model.get("id");
-					var variation_id 	= '';
-					var url 			= '?' + $.param({"add-to-cart":this.model.get("id")});
+					var id 			 = this.model.get("id");
+					var variation_id = '';
+					var url 		 = '?' + $.param({"add-to-cart":id});
 
-					var btn = '<a class="add-to-cart btn btn-circle btn-flat-action" href="' + url + '" data-id="' + id + '"><i class="fa fa-plus"></i></a>';
+					if( this.model.get("type") === 'variation' ) {
+						id 			 = this.model.get("parent").id;
+						variation_id = this.model.get("id");
+						url 		 = '?' + $.param({"add-to-cart":id,"variation_id":variation_id});
+					}
+
+					var btn = '<a class="add-to-cart btn btn-circle btn-flat-action" href="' + url + '" data-id="' + id + '" data-variation_id="' + variation_id + '"><i class="fa fa-plus"></i></a>';
 					this.$el.html( btn );
 					return this;
 				},
@@ -136,18 +144,14 @@
 				addToCart: function(e) {
 					e.preventDefault();
 
+					var id = $(e.currentTarget).attr('data-id');
+					var variation_id = $(e.currentTarget).attr('data-variation_id');
+
 					var data = {
-						action	: "pos_add_to_cart",
-						id		: this.model.get("id")
+						action		 : "pos_add_to_cart",
+						id			 : id,
+						variation_id : variation_id
 					};
-					
-					var select = $(e.currentTarget).closest( 'tr' ).find( 'td select' ).val();
-					alert(select);
-					if( select != 'undefined' ) {
-						data = {
-							variation_id: select
-						};
-					}
 
 					// Ajax action
 					$.post( pos_cart_params.ajax_url, data, function( response ) {
@@ -178,7 +182,7 @@
 	// Initialize the paginator
 	var paginator = new Backgrid.Extension.Paginator({
 		collection: products,
-		windowSize: 10, // max number of handles
+		windowSize: 5, // max number of handles
 		controls: {
 			rewind: null,
 			fastForward: null,
