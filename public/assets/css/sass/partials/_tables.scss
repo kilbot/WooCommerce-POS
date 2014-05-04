@@ -18,6 +18,12 @@ table {
 	}
 }
 
+#products .loading {
+    display: block;
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
 #products table {
 	padding-bottom:  $vspacing/2;
 	thead { display: none; }
@@ -77,14 +83,42 @@ table {
 }
 
 .backgrid-filter {
-	padding: $vspacing/2 ;
-	border-bottom: 1px solid $border-dark;
-	span.search { display: none; }
-	input[type=search] {
-		width: 100%;
-		box-sizing: border-box;
-	}
-	a.clear { display: none !important; }
+    padding: $vspacing/2 ;
+    border-bottom: 1px solid $border-dark;
+    span.search { display: none; }
+    input[type=search] {
+        width: 100%;
+        box-sizing: border-box;
+        padding-left: 35px;
+        padding-right: 10px;
+    }
+    a.clear { 
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: #fff;
+        background-color: #ccc;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+        line-height: 1;
+        @include border-radius(20px);
+    }
+}
+
+#filter {
+    position: relative;
+    .fa-search {
+        position: absolute;
+        top: 17px;
+        left: 20px;
+        height: 1em;
+        padding: 3px;
+        display: block;
+    }
 }
 
 $unicorn-btn-bgcolor: #EEE;

@@ -3,7 +3,9 @@
 <main id="main" class="site-main" role="main">
 	<section class="col leftcol">
 	
-		<div id="products"></div>
+		<div id="filter"><i class="fa fa-search"></i></div>
+		<div id="products"><img class="loading" src="<?= WC_POS()->plugin_url ?>/assets/ajax-loader.gif" alt="loading ..."></div>
+		<div id="pagination"></div>
 
 	</section><!-- /left col --> 
 

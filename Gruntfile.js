@@ -92,6 +92,24 @@ module.exports = function(grunt) {
 
         // uglify to concat, minify, and make source maps
         uglify: {
+            lib: {
+                options: {
+                    sourceMap: 'public/assets/js/map/lib-map.js'
+                },
+                files: {
+                    'public/assets/js/lib.min.js': [
+                        'public/assets/js/lib/mediator.js',
+                        'public/assets/js/lib/mediator.init.js',
+                        'public/assets/js/lib/underscore.js',
+                        'public/assets/js/lib/backbone.js',
+                        'public/assets/js/lib/backbone-pageable.js',
+                        'public/assets/js/lib/backbone.localStorage.js',
+                        'public/assets/js/lib/backgrid.js',
+                        'public/assets/js/lib/backgrid-paginator.js',
+                        'public/assets/js/lib/backgrid-filter.js',
+                    ]
+                }
+            },
             plugins: {
                 options: {
                     sourceMap: 'public/assets/js/map/plugins-map.js'

@@ -484,43 +484,50 @@ table td {
 }
 
 /* line 21, sass/partials/_tables.scss */
+#products .loading {
+  display: block;
+  margin: 0 auto;
+  padding: 50px 0;
+}
+
+/* line 27, sass/partials/_tables.scss */
 #products table {
   padding-bottom: 0.75em;
 }
-/* line 23, sass/partials/_tables.scss */
+/* line 29, sass/partials/_tables.scss */
 #products table thead {
   display: none;
 }
-/* line 26, sass/partials/_tables.scss */
+/* line 32, sass/partials/_tables.scss */
 #products table tbody tr:nth-of-type(even) {
   background-color: white;
 }
-/* line 29, sass/partials/_tables.scss */
+/* line 35, sass/partials/_tables.scss */
 #products table tbody tr:nth-of-type(odd) {
   background-color: #f9f9f9;
 }
-/* line 33, sass/partials/_tables.scss */
+/* line 39, sass/partials/_tables.scss */
 #products table tbody tr:last-of-type td {
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 36, sass/partials/_tables.scss */
+/* line 42, sass/partials/_tables.scss */
 #products table tbody select {
   width: 100%;
 }
 
-/* line 44, sass/partials/_tables.scss */
+/* line 50, sass/partials/_tables.scss */
 #cart table tbody tr:last-of-type td {
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 47, sass/partials/_tables.scss */
+/* line 53, sass/partials/_tables.scss */
 #cart table tbody input[type=number], #cart table tbody input.input-text {
   width: 4em !important;
 }
-/* line 53, sass/partials/_tables.scss */
+/* line 59, sass/partials/_tables.scss */
 #cart table tfoot tr.order-total th, #cart table tfoot tr.order-total td {
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 57, sass/partials/_tables.scss */
+/* line 63, sass/partials/_tables.scss */
 #cart table tfoot td.actions {
   text-align: right;
 }
@@ -528,42 +535,72 @@ table td {
 /**
  * Style for the product table filter and pagination
  */
-/* line 66, sass/partials/_tables.scss */
+/* line 72, sass/partials/_tables.scss */
 .backgrid-paginator {
   margin-bottom: 0.75em;
 }
-/* line 68, sass/partials/_tables.scss */
+/* line 74, sass/partials/_tables.scss */
 .backgrid-paginator ul {
   list-style: none;
   margin: 0;
   padding: 0;
   text-align: center;
 }
-/* line 73, sass/partials/_tables.scss */
+/* line 79, sass/partials/_tables.scss */
 .backgrid-paginator ul li {
   display: inline;
 }
 
-/* line 79, sass/partials/_tables.scss */
+/* line 85, sass/partials/_tables.scss */
 .backgrid-filter {
   padding: 0.75em;
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 82, sass/partials/_tables.scss */
+/* line 88, sass/partials/_tables.scss */
 .backgrid-filter span.search {
   display: none;
 }
-/* line 83, sass/partials/_tables.scss */
+/* line 89, sass/partials/_tables.scss */
 .backgrid-filter input[type=search] {
   width: 100%;
   box-sizing: border-box;
+  padding-left: 35px;
+  padding-right: 10px;
 }
-/* line 87, sass/partials/_tables.scss */
+/* line 95, sass/partials/_tables.scss */
 .backgrid-filter a.clear {
-  display: none !important;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #fff;
+  background-color: #ccc;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  line-height: 1;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
 }
 
-/* line 98, sass/partials/_tables.scss */
+/* line 112, sass/partials/_tables.scss */
+#filter {
+  position: relative;
+}
+/* line 114, sass/partials/_tables.scss */
+#filter .fa-search {
+  position: absolute;
+  top: 17px;
+  left: 20px;
+  height: 1em;
+  padding: 3px;
+  display: block;
+}
+
+/* line 132, sass/partials/_tables.scss */
 .backgrid-paginator a {
   -moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
@@ -590,14 +627,14 @@ table td {
   text-decoration: none;
   text-align: center;
 }
-/* line 116, sass/partials/_tables.scss */
+/* line 150, sass/partials/_tables.scss */
 .backgrid-paginator a:hover {
   background-color: #eeeeee;
   background: -moz-linear-gradient(top, #ffffff, #dcdcdc);
   background: -webkit-linear-gradient(top, #ffffff, #dcdcdc);
   background: linear-gradient(to bottom, #ffffff, #dcdcdc);
 }
-/* line 120, sass/partials/_tables.scss */
+/* line 154, sass/partials/_tables.scss */
 .backgrid-paginator a:active {
   -moz-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
   -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
@@ -606,12 +643,12 @@ table td {
   background: #eeeeee;
   color: #bbbbbb;
 }
-/* line 126, sass/partials/_tables.scss */
+/* line 160, sass/partials/_tables.scss */
 .backgrid-paginator a:focus {
   outline: none;
 }
 
-/* line 131, sass/partials/_tables.scss */
+/* line 165, sass/partials/_tables.scss */
 .backgrid-paginator li.active a {
   -moz-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
   -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
@@ -621,7 +658,7 @@ table td {
   color: #eeeeee;
 }
 
-/* line 138, sass/partials/_tables.scss */
+/* line 172, sass/partials/_tables.scss */
 .backgrid-paginator li.disabled a {
   -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
@@ -636,7 +673,7 @@ table td {
   -webkit-appearance: none;
 }
 
-/* line 149, sass/partials/_tables.scss */
+/* line 183, sass/partials/_tables.scss */
 .backgrid-paginator a {
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
@@ -653,11 +690,11 @@ table td {
   border: none;
   text-shadow: none;
 }
-/* line 158, sass/partials/_tables.scss */
+/* line 192, sass/partials/_tables.scss */
 .backgrid-paginator a:hover {
   background: #fbfbfb;
 }
-/* line 161, sass/partials/_tables.scss */
+/* line 195, sass/partials/_tables.scss */
 .backgrid-paginator a:active {
   -moz-transition-duration: 0s;
   -o-transition-duration: 0s;
@@ -666,7 +703,7 @@ table td {
   background: #eeeeee;
   color: #bbbbbb;
 }
-/* line 166, sass/partials/_tables.scss */
+/* line 200, sass/partials/_tables.scss */
 .backgrid-paginator a.disabled {
   -moz-box-shadow: none;
   -webkit-box-shadow: none;

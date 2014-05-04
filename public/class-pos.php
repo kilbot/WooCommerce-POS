@@ -224,7 +224,6 @@ class WooCommerce_POS {
 		// giving admin and shop manager full access to WC API
 		// TODO: check this is a good approach
 		if(current_user_can('manage_woocommerce_pos'))
-			error_log('authenicating user '.get_current_user_id());
 			return new WP_User(get_current_user_id());
 	}
 	
@@ -256,16 +255,7 @@ class WooCommerce_POS {
 			do_action( 'pos_add_to_footer' );
 			$this->pos_localize_script();
 			$html = '
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/mediator.js"></script>
-	<script type="text/javascript">
-	var mediator = new Mediator();
-	</script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/underscore.js"></script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/backbone.js"></script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/backbone-pageable.js"></script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/backgrid.js"></script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/backgrid-paginator.js"></script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib/backgrid-filter.js"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib.min.js"></script>
 	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/plugins.min.js"></script>
 	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/pos.min.js"></script>
 			';

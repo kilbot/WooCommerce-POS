@@ -16,7 +16,7 @@
 	var Products = Backbone.PageableCollection.extend({
 
 		url: '/wc-api/v1/products',
-		mode: "client", // server may be necessary for large shops, eg: 1000+ products
+		mode: "server", // server may be necessary for large shops, eg: 100+ products
 
 		// Initial pagination states
 		state: {
@@ -26,13 +26,12 @@
 		// You can remap the query parameters from `state` keys from
 		// the default to those your server supports
 		queryParams: {
-			// filter: {limit: -1},
+			filter: {limit: 5},
 			totalPages: null,
 		},
 
-		// // get the state from the server
+		// get the state from the server
 		parseState: function (resp, queryParams, state, options) {
-
 			// totals are always in the WC API headers
 			var total = parseInt(options.xhr.getResponseHeader('X-WC-Total'));
 			// var pages = parseInt(options.xhr.getResponseHeader('X-WC-TotalPages'));
@@ -67,7 +66,7 @@
 					if( this.model.get("featured_src") !== false ) {
 						image_src = this.model.get("featured_src");
 						thumb_src = image_src.replace(/(\.[\w\d_-]+)$/i, pos_cart_params.thumb_suffix + '$1');
-					} else if ( this.model.get("parent").featured_src !== false  ) {
+					} else if ( this.model.get("parent") > 0 && this.model.get("parent").featured_src !== false  ) {
 						image_src = this.model.get("parent").featured_src;
 						thumb_src = image_src.replace(/(\.[\w\d_-]+)$/i, pos_cart_params.thumb_suffix + '$1');
 					} else {
@@ -182,7 +181,7 @@
 	// Initialize the paginator
 	var paginator = new Backgrid.Extension.Paginator({
 		collection: products,
-		windowSize: 5, // max number of handles
+		renderIndexedPageHandles: false,
 		controls: {
 			rewind: null,
 			fastForward: null,
@@ -192,17 +191,20 @@
 	});
 
 	// Initialize a client-side filter to filter on the client
-	var filter = new Backgrid.Extension.ClientSideFilter({
+	var filter = new Backgrid.Extension.ServerSideFilter({
 		collection: products,
-		fields: ['title'],
+		// fields: ['title'],
+		name: "filter[q]",
 		placeholder: 'Search products',
 	});
 
-	$("#products").append(filter.render().$el);
-	$("#products").append(grid.render().$el);
-	$("#products").append(paginator.render().$el);
+	$("#filter").append(filter.render().$el);
+	$("#products").html(grid.render().$el);
+	$("#pagination").html(paginator.render().$el);
 
 	console.log('fetching products');
-	products.fetch({reset: true});
+	products.fetch({reset: true}).complete(function(){
+		console.log('products received');
+	});
 
 }(jQuery));

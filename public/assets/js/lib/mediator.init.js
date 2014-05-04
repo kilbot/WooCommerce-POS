@@ -1,0 +1,1 @@
+var mediator = new Mediator();

@@ -98,7 +98,7 @@ if($file_headers[0] != 'HTTP/1.1 404 Not Found') {
 	$api_access = true;
 }
 if($api_access): ?>
-					<tr class="alternate"><td class="row-title">WooCommerce API</td><td>Enabled, says: <br><code style="font-size:0.8em"><?= $str; ?> ...</code></td></tr>			
+					<tr class="alternate"><td class="row-title">WooCommerce API</td><td>Enabled, says: <code style="font-size:0.8em"><?= $str; ?> ...</code></td></tr>			
 <?php else: ?>
 					<tr class="alternate form-invalid"><td class="row-title">WooCommerce API</td><td>You need to enable the <a href="<?= admin_url('?page=wc-settings') ?>">WooCommerce REST API</a>.</td>				
 <?php endif;
