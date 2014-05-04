@@ -62,6 +62,9 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 ## Changelog ##
 
+### 0.2.6 ###
+* Tweak: Products now uses WC REST API for better performance. Tested on 300+ products. 
+
 ### 0.2.4 ###
 * Fix: Cart totals
 * Fix: Notice about updating via github

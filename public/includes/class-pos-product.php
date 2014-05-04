@@ -30,9 +30,10 @@ class WooCommerce_POS_Product {
 	 * @return [type]        [description]
 	 */
 	public function get_all_products( $query ) {
+		global $wp_the_query;
 
-		// hijack any products query coming from POS
-		if( $this->pos_referer() )  {
+		// hijack any products query coming from POS -> going to wc-api
+		if( $this->pos_referer() && isset( $wp_the_query->query_vars['wc-api'] ) ) {
 
 			// show all products
 			// $query->set( 'posts_per_page', -1 ); 
@@ -53,7 +54,7 @@ class WooCommerce_POS_Product {
 
 		}
         
-        error_log( print_R( $query, TRUE ) ); //debug
+        // error_log( print_R( $query, TRUE ) ); //debug
         
 	}
 
