@@ -17,8 +17,6 @@ class WooCommerce_POS_Cart {
 
 		if (!defined( 'WOOCOMMERCE_CART')) define( 'WOOCOMMERCE_CART', true );
 
-		$chosen_shipping_methods[0] = 'local_pickup';
-		WC()->session->set( 'chosen_shipping_methods', $chosen_shipping_methods );
 		
 	}
 

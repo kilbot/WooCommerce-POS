@@ -62,14 +62,16 @@ class WooCommerce_POS {
 	 * Initialize WooCommerce_POS
 	 */
 	private function __construct() {
-		// include required files
-		$this->includes();
-
+		
+		// settings
 		$this->wc_api_url = get_home_url().$this->wc_api_endpoint;
 
 		$this->plugin_path = trailingslashit( dirname( dirname(__FILE__) ) );
 		$this->plugin_dir = trailingslashit( basename( $this->plugin_path ) );
 		$this->plugin_url = plugins_url().'/'.$this->plugin_dir;
+
+		// include required files
+		$this->includes();
 
 		// Load plugin text domain
 		//add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
@@ -268,16 +270,9 @@ class WooCommerce_POS {
 	 * @return [type] [description]
 	 */
 	public function pos_localize_script() {
-		;
-		// get thumbnail size set in woocommerce settings
-		// print_r(get_option( 'shop_thumbnail_image_size'));
-		$thumb_size = get_option( 'shop_thumbnail_image_size', array( 'width'=>90, 'height'=> 90 ) );
-		$thumb_suffix = '-'.$thumb_size['width'].'x'.$thumb_size['height'];
 		$js_vars = array(
 				'ajax_url' => admin_url( 'admin-ajax.php', 'relative' ),
 				'loading_icon' => $this->plugin_url . '/assets/ajax-loader.gif',
-				'placeholder' => $this->plugin_url . '/assets/placeholder.png',
-				'thumb_suffix' => $thumb_suffix,
 			);
 		$html = '
 			<script type="text/javascript">

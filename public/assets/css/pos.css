@@ -117,12 +117,12 @@ a img {
 .comment-content:before,
 .site-header:before,
 .site-content:before,
-.site-footer:before, .clear:after,
+.site-footer:before, #products table tbody dl:before, .clear:after,
 .entry-content:after,
 .comment-content:after,
 .site-header:after,
 .site-content:after,
-.site-footer:after {
+.site-footer:after, #products table tbody dl:after {
   content: "";
   display: table;
 }
@@ -132,7 +132,7 @@ a img {
 .comment-content:after,
 .site-header:after,
 .site-content:after,
-.site-footer:after {
+.site-footer:after, #products table tbody dl:after {
   clear: both;
 }
 
@@ -511,23 +511,36 @@ table td {
   border-bottom: 1px solid #d4d4d4;
 }
 /* line 42, sass/partials/_tables.scss */
-#products table tbody select {
+#products table tbody dl {
   width: 100%;
+  font-size: 0.8em;
+}
+/* line 46, sass/partials/_tables.scss */
+#products table tbody dl dt {
+  font-weight: normal;
+  float: left;
+  width: 40%;
+}
+/* line 51, sass/partials/_tables.scss */
+#products table tbody dl dd {
+  float: right;
+  margin: 0;
+  width: 60%;
 }
 
-/* line 50, sass/partials/_tables.scss */
+/* line 63, sass/partials/_tables.scss */
 #cart table tbody tr:last-of-type td {
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 53, sass/partials/_tables.scss */
+/* line 66, sass/partials/_tables.scss */
 #cart table tbody input[type=number], #cart table tbody input.input-text {
   width: 4em !important;
 }
-/* line 59, sass/partials/_tables.scss */
+/* line 72, sass/partials/_tables.scss */
 #cart table tfoot tr.order-total th, #cart table tfoot tr.order-total td {
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 63, sass/partials/_tables.scss */
+/* line 76, sass/partials/_tables.scss */
 #cart table tfoot td.actions {
   text-align: right;
 }
@@ -535,39 +548,39 @@ table td {
 /**
  * Style for the product table filter and pagination
  */
-/* line 72, sass/partials/_tables.scss */
+/* line 85, sass/partials/_tables.scss */
 .backgrid-paginator {
   margin-bottom: 0.75em;
 }
-/* line 74, sass/partials/_tables.scss */
+/* line 87, sass/partials/_tables.scss */
 .backgrid-paginator ul {
   list-style: none;
   margin: 0;
   padding: 0;
   text-align: center;
 }
-/* line 79, sass/partials/_tables.scss */
+/* line 92, sass/partials/_tables.scss */
 .backgrid-paginator ul li {
   display: inline;
 }
 
-/* line 85, sass/partials/_tables.scss */
+/* line 98, sass/partials/_tables.scss */
 .backgrid-filter {
   padding: 0.75em;
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 88, sass/partials/_tables.scss */
+/* line 101, sass/partials/_tables.scss */
 .backgrid-filter span.search {
   display: none;
 }
-/* line 89, sass/partials/_tables.scss */
+/* line 102, sass/partials/_tables.scss */
 .backgrid-filter input[type=search] {
   width: 100%;
   box-sizing: border-box;
   padding-left: 35px;
   padding-right: 10px;
 }
-/* line 95, sass/partials/_tables.scss */
+/* line 108, sass/partials/_tables.scss */
 .backgrid-filter a.clear {
   position: absolute;
   top: 20px;
@@ -586,11 +599,11 @@ table td {
   border-radius: 20px;
 }
 
-/* line 112, sass/partials/_tables.scss */
+/* line 125, sass/partials/_tables.scss */
 #filter {
   position: relative;
 }
-/* line 114, sass/partials/_tables.scss */
+/* line 127, sass/partials/_tables.scss */
 #filter .fa-search {
   position: absolute;
   top: 17px;
@@ -600,7 +613,7 @@ table td {
   display: block;
 }
 
-/* line 132, sass/partials/_tables.scss */
+/* line 145, sass/partials/_tables.scss */
 .backgrid-paginator a {
   -moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
@@ -627,14 +640,14 @@ table td {
   text-decoration: none;
   text-align: center;
 }
-/* line 150, sass/partials/_tables.scss */
+/* line 163, sass/partials/_tables.scss */
 .backgrid-paginator a:hover {
   background-color: #eeeeee;
   background: -moz-linear-gradient(top, #ffffff, #dcdcdc);
   background: -webkit-linear-gradient(top, #ffffff, #dcdcdc);
   background: linear-gradient(to bottom, #ffffff, #dcdcdc);
 }
-/* line 154, sass/partials/_tables.scss */
+/* line 167, sass/partials/_tables.scss */
 .backgrid-paginator a:active {
   -moz-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
   -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
@@ -643,12 +656,12 @@ table td {
   background: #eeeeee;
   color: #bbbbbb;
 }
-/* line 160, sass/partials/_tables.scss */
+/* line 173, sass/partials/_tables.scss */
 .backgrid-paginator a:focus {
   outline: none;
 }
 
-/* line 165, sass/partials/_tables.scss */
+/* line 178, sass/partials/_tables.scss */
 .backgrid-paginator li.active a {
   -moz-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
   -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
@@ -658,7 +671,7 @@ table td {
   color: #eeeeee;
 }
 
-/* line 172, sass/partials/_tables.scss */
+/* line 185, sass/partials/_tables.scss */
 .backgrid-paginator li.disabled a {
   -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
@@ -673,7 +686,7 @@ table td {
   -webkit-appearance: none;
 }
 
-/* line 183, sass/partials/_tables.scss */
+/* line 196, sass/partials/_tables.scss */
 .backgrid-paginator a {
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
@@ -690,11 +703,11 @@ table td {
   border: none;
   text-shadow: none;
 }
-/* line 192, sass/partials/_tables.scss */
+/* line 205, sass/partials/_tables.scss */
 .backgrid-paginator a:hover {
   background: #fbfbfb;
 }
-/* line 195, sass/partials/_tables.scss */
+/* line 208, sass/partials/_tables.scss */
 .backgrid-paginator a:active {
   -moz-transition-duration: 0s;
   -o-transition-duration: 0s;
@@ -703,7 +716,7 @@ table td {
   background: #eeeeee;
   color: #bbbbbb;
 }
-/* line 200, sass/partials/_tables.scss */
+/* line 213, sass/partials/_tables.scss */
 .backgrid-paginator a.disabled {
   -moz-box-shadow: none;
   -webkit-box-shadow: none;

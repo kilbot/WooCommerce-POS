@@ -16,7 +16,7 @@
 	var Products = Backbone.PageableCollection.extend({
 
 		url: '/wc-api/v1/products',
-		mode: "server", // server may be necessary for large shops, eg: 100+ products
+		mode: "client", // server may be necessary for large shops, eg: 100+ products
 
 		// Initial pagination states
 		state: {
@@ -26,8 +26,8 @@
 		// You can remap the query parameters from `state` keys from
 		// the default to those your server supports
 		queryParams: {
-			filter: {limit: 5},
-			totalPages: null,
+			filter: {limit: -1},
+			// totalPages: null,
 		},
 
 		// get the state from the server
@@ -58,21 +58,7 @@
 			label: "",
 			cell: Backgrid.Cell.extend({
 				render: function() {
-					/**
-					 * Messy due to nested JS Object
-					 */
-					var image_src = '';
-					var thumb_src = '';
-					if( this.model.get("featured_src") !== false ) {
-						image_src = this.model.get("featured_src");
-						thumb_src = image_src.replace(/(\.[\w\d_-]+)$/i, pos_cart_params.thumb_suffix + '$1');
-					} else if ( this.model.get("parent") > 0 && this.model.get("parent").featured_src !== false  ) {
-						image_src = this.model.get("parent").featured_src;
-						thumb_src = image_src.replace(/(\.[\w\d_-]+)$/i, pos_cart_params.thumb_suffix + '$1');
-					} else {
-						thumb_src = pos_cart_params.placeholder;
-					}
-					this.$el.html( '<img src="' + thumb_src + '">' );
+					this.$el.html( '<img src="' + this.model.get("featured_src") + '">' );
 					return this;
 				}
 			}),
@@ -88,18 +74,10 @@
 					var title = '<strong>' + this.model.get("title") + '</strong>';
 
 					// product variations
-					var variation = '';
-					if( this.model.get("type") === 'variation' ) {
-						var variations = [];
-						$.each(this.model.get("attributes"), function(i,j) {                    
-							var str = j.name + ": " + j.option;
-							variations.push(str);
-						});
-						variation = '<br /><small>' + variations.join("<br>") + '</small>';
-					}
+					var variation = ( this.model.get("type") === 'variation' ) ? this.model.get("variation_html") : '' ;
 
 					// product stock
-					var stock = (this.model.get("managing_stock") === false) ? '' : '<br /><small>' + this.model.get("stock_quantity") + ' in stock</small>';
+					var stock = ( this.model.get("managing_stock") === false ) ? '' : '<small>' + this.model.get("stock_quantity") + ' in stock</small>';
 
 					this.$el.html( title + variation + stock);
 					return this;
@@ -130,7 +108,7 @@
 					var url 		 = '?' + $.param({"add-to-cart":id});
 
 					if( this.model.get("type") === 'variation' ) {
-						id 			 = this.model.get("parent").id;
+						id 			 = this.model.get("parent_id");
 						variation_id = this.model.get("id");
 						url 		 = '?' + $.param({"add-to-cart":id,"variation_id":variation_id});
 					}
@@ -191,10 +169,10 @@
 	});
 
 	// Initialize a client-side filter to filter on the client
-	var filter = new Backgrid.Extension.ServerSideFilter({
+	var filter = new Backgrid.Extension.ClientSideFilter({
 		collection: products,
-		// fields: ['title'],
-		name: "filter[q]",
+		fields: ['title'],
+		// name: "filter[q]",
 		placeholder: 'Search products',
 	});
 

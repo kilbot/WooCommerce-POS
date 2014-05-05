@@ -39,9 +39,22 @@ table {
         tr:last-of-type td {
             border-bottom: 1px solid $border-dark;
         }
-        select {
+        dl {
+            @extend %clearfix;
             width: 100%;
+            font-size: $small-font;
+            dt {
+                font-weight: normal;
+                float: left;
+                width: 40%; 
+            }
+            dd {
+                 float: right;
+                 margin: 0;
+                 width: 60%; 
+            }
         }
+
     }
 }
 
