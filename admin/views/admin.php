@@ -13,14 +13,11 @@
  */
 ?>
 
-<div class="wrap">
+<div class="wrap clear">
 
 	<div>
-		<div id="icon-options-general" class="icon32"></div>
-			<h1 style="font-size:2.4em;font-weight:normal"><?php echo esc_html( get_admin_page_title() ); ?></h1>
-			<p style="font-size:1.4em" class="about-text">A simple front-end for taking WooCommerce orders at the Point of Sale.</p>
-			<hr ?>
-		</div>
+		<h1 style="font-size:2.4em;font-weight:normal"><?php echo esc_html( get_admin_page_title() ); ?></h1>
+		<p style="font-size:1.4em" class="about-text">A simple front-end for taking WooCommerce orders at the Point of Sale.</p>
 	</div>
 	
 	<div id="poststuff" style="margin-right:20px">
@@ -85,22 +82,15 @@
 if( version_compare( WC()->version, '2.1.0' ) >= 0 ) : ?>
 					<tr><td class="row-title">WooCommerce Version</td><td><?php echo esc_html( WC()->version ); ?></td></tr>
 <?php else: ?>
-					<tr class="form-invalid"><td class="row-title">WooCommerce Version</td><td><strong><?php echo esc_html( WC()->version ); ?></td>
+					<tr class="form-invalid"><td class="row-title">WooCommerce Version</td><td><strong><?php echo esc_html( WC()->version ); ?></td></tr>
 <?php endif; 
 // end check woocommerce ?>
 
 <?php // check woocommerce api
-$api_access = false;
-$file_headers = @get_headers(WC_POS()->wc_api_url);
-if($file_headers[0] != 'HTTP/1.1 404 Not Found') {
-	$json 	= file_get_contents(WC_POS()->wc_api_url.'products');
-	$str  	= substr( $json, 0, 100);
-	$api_access = true;
-}
-if($api_access): ?>
-					<tr class="alternate"><td class="row-title">WooCommerce API</td><td>Enabled, says: <code style="font-size:0.8em"><?= $str; ?> ...</code></td></tr>			
+if( $api_on = check_api_access() ): ?>
+					<tr class="alternate"><td class="row-title">WooCommerce API</td><td>Enabled, says: <code style="font-size:0.8em"><?= $api_on; ?> ...</code></td></tr>			
 <?php else: ?>
-					<tr class="alternate form-invalid"><td class="row-title">WooCommerce API</td><td>You need to enable the <a href="<?= admin_url('?page=wc-settings') ?>">WooCommerce REST API</a>.</td>				
+					<tr class="alternate form-invalid"><td class="row-title">WooCommerce API</td><td>You need to enable the <a href="<?= admin_url('?page=wc-settings') ?>">WooCommerce REST API</a>.</td></tr>		
 <?php endif;
 // end check woocommerce api ?>
 
@@ -108,14 +98,30 @@ if($api_access): ?>
 global $wp_rewrite; if($wp_rewrite->permalink_structure != ''): ?>
 					<tr><td class="row-title">Permalinks</td><td>Permalinks are enabled, nice!</td></tr>
 <?php else: ?>
-					<tr class="form-invalid"><td class="row-title">Permalinks</td><td><strong>WooCommerce POS</strong> requires <em>pretty</em> permalinks to work correctly. Please enable <a href="<?= admin_url('options-permalink.php') ?>">permalinks</a>.</td>
+					<tr class="form-invalid"><td class="row-title">Permalinks</td><td><strong>WooCommerce POS</strong> requires <em>pretty</em> permalinks to work correctly. Please enable <a href="<?= admin_url('options-permalink.php') ?>">permalinks</a>.</td></tr>
 <?php endif; 
 // end check permalinks ?>
 
+<?php // check variation orphans 
+if( $orphans = find_orphans_variations() ): ?>
+					<tr class="form-invalid"><td class="row-title">Orphaned Variations</td><td>Some of your variations are orphaned :( ... the post ids of the orphans are: <code style="font-size:0.8em"><?= $orphans ?></code></td></tr>
+<?php else: ?>
+					<tr><td class="row-title">Orphaned Variations</td><td>No orphans. That's a good thing.</td></tr>
+<?php endif; 
+// end check variation orphans  ?>
+
+<?php // check permalinks 
+if ( $shortcodes = find_shortcodes() ): ?>
+					<tr class="form-invalid"><td class="row-title">Shortcodes</td><td>Some of your products may contain a shortcode in the descriptions. This is probably not a problem, but can cause performance issues with the REST API. The post ids of products with shortcodes are: <code style="font-size:0.8em"><?= $shortcodes ?></code></td></tr>
+<?php else: ?>
+					<tr><td class="row-title">Shortcodes</td><td>No shortcodes in your product descriptions. This is a good thing.</td></tr>
+<?php endif; 
+// end check permalinks ?>
 
 				</tbody>
 			</table>
 		</div>
+
 		<br class="clear">
 
 	</div> <!-- #poststuff -->

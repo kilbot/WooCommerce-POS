@@ -130,8 +130,6 @@ class WooCommerce_POS_Product {
 			unset($product_data[$key]);
 		}
 
-		error_log( print_R( $product_data, TRUE ) ); //debug
-
 		return $product_data;
 	}
 

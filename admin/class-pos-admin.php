@@ -75,6 +75,10 @@ class WooCommerce_POS_Admin {
 		 * Define custom functionality.
 		 */
 		// add_filter( '@TODO', array( $this, 'filter_method_name' ) );
+		
+
+		// include required files
+		$this->includes();
 
 	}
 
@@ -102,6 +106,10 @@ class WooCommerce_POS_Admin {
 		}
 
 		return self::$instance;
+	}
+
+	private function includes() {
+		include_once( 'includes/sanity-checks.php' );
 	}
 
 	/**
