@@ -1,5 +1,6 @@
 /**
- * Use backbone.js and backgrid.js to display the cart
+ * Cart UI
+ * TODO: update qty & price via backbone
  */
 
 (function ( $ ) {
@@ -102,8 +103,11 @@
 					_wpnonce	: wpnonce,
 				}, 
 				processData: true,
+				success: function() {
+					// update the totals view
+					mediator.publish("updateTotals");
+				},
 			});
-
 		},
 
 		render: function() {
@@ -152,13 +156,15 @@
 			cartItems.fetch({
 				data: {
 					action			: "pos_add_to_cart",
-					'add-to-cart'	: id,
+					add_to_cart		: id,
 					variation_id	: variation_id,
 				}, 
 				processData: true,
-				async:false
+				success: function() {
+					// update the totals view
+					mediator.publish("updateTotals");
+				},
 			});
-
 		},
 
 		defaultMessage: function() {
@@ -337,6 +343,16 @@
 
 	// show the totals
 	var cartTotalsView = new CartTotalsView();
+
+	// listen for updateTotals events
+	mediator.subscribe('updateTotals', function( ){ 
+
+		cartTotals.fetch({
+			data: { action: 'pos_get_cart_totals' }, 
+			processData: true,
+		});
+
+	});
 
 
 }(jQuery));

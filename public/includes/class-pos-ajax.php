@@ -46,7 +46,7 @@ class WooCommerce_POS_AJAX {
 	public function add_to_cart() {
 		global $woocommerce;
 
-		$product_id 	= $_REQUEST['add-to-cart'];
+		$product_id 	= $_REQUEST['add_to_cart'];
 		$quantity 		= 1;
 		$variation_id 	= isset($_REQUEST['variation_id']) ? $_REQUEST['variation_id'] : '' ;
 		$variation 		= '';
@@ -172,11 +172,11 @@ class WooCommerce_POS_AJAX {
 
 		// no nonce
 		parse_str($_REQUEST['cart'], $cart); // $cart is now an array of form data
-		if( !wp_verify_nonce( $cart['woocommerce-pos_checkout'], 'checkout') ) 
-			exit();
+		// if( !wp_verify_nonce( $cart['woocommerce-pos_checkout'], 'checkout') ) 
+		// 	exit();
 
-		// woocommerce wants to see the nonce
-		$_POST['_wpnonce'] = $cart['woocommerce-pos_checkout'];
+		// // woocommerce wants to see the nonce
+		// $_POST['_wpnonce'] = $cart['woocommerce-pos_checkout'];
 
 		// process order 
 		$order_id = WC_POS()->checkout->create_order();
@@ -187,18 +187,12 @@ class WooCommerce_POS_AJAX {
 		// return the receipt screen
 		ob_start();
 
-		include_once( dirname(__FILE__) . '/../views/checkout.php' );
+		include_once( dirname(__FILE__) . '/../views/receipt.php' );
 
 		$receipt = ob_get_clean();
 
-		// Fragments and mini cart are returned
-		$data = array(
-			'fragments' => $receipt,
-			'cart_hash' => $order_id
-		);
-
 		$this->json_headers();
-		echo json_encode( $data );
+		echo json_encode( $receipt );
 
 		die();
 	}

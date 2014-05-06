@@ -1,6 +1,6 @@
 /**
  * Use backbone.js and backgrid.js to display the products
- * TODO: get product variations??
+ * TODO: localStorage for products
  */
 
 (function ( $ ) {
