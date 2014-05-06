@@ -127,7 +127,9 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'public/assets/js/pos.min.js': [
-                        'public/assets/js/js-dev/**/*.js',
+                        'public/assets/js/js-dev/global.js',
+                        'public/assets/js/js-dev/products.js',
+                        'public/assets/js/js-dev/cart.js',
                     ]
                 }
             },

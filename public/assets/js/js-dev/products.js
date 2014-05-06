@@ -130,23 +130,9 @@
 						variation_id : variation_id
 					};
 
-					// Ajax action
-					$.post( pos_cart_params.ajax_url, data, function( response ) {
+					// send to the cart
+					mediator.publish("addToCart", this.model);
 
-						if ( ! response ) {
-							console.log('No response from server');
-							return;
-						}
-
-						if ( response.error ) {
-							console.log(response.error);
-							return;
-						}
-
-						// update the cart
-						mediator.publish("updateCart");
-
-					});
 				}
 			}),
 			sortable: false,

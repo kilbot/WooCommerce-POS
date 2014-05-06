@@ -19,10 +19,7 @@ class WooCommerce_POS_Product {
 		// we're going to manipulate the wp_query to display products
 		add_action( 'pre_get_posts', array( $this, 'get_all_products' ) );
 
-		// and limit searches to the titles
-		add_filter( 'posts_search', array( $this, 'search_by_title_only' ), 500, 2 );
-
-		//
+		// and we're going to filter on the way out
 		add_filter('woocommerce_api_product_response', array( $this, 'filter_product_response' ) );
 
 	}
@@ -141,39 +138,6 @@ class WooCommerce_POS_Product {
 		$referer = wp_get_referer();
 		$parsed_referrer = parse_url( $referer );
 		return ( $parsed_referrer['path'] == '/pos/' ) ? true : false ;
-	}
-
-	/**
-	 * Search only product titles
-	 * @param  [type] $search   [description]
-	 * @param  [type] $wp_query [description]
-	 * @return [type]           [description]
-	 */
-	public function search_by_title_only( $search, &$wp_query ) {
-		global $wpdb;
-
-		if ( empty( $search ) || !$this->pos_referer() )
-			return $search;
-
-		$q = $wp_query->query_vars;
-		$n = ! empty( $q['exact'] ) ? '' : '%';
-		$search = '';
-		$searchand = '';
-
-		foreach ( (array) $q['search_terms'] as $term ) {
-			$term = esc_sql( like_escape( $term ) );
-			$search .= "{$searchand}($wpdb->posts.post_title LIKE '{$n}{$term}{$n}')";
-			$searchand = ' AND ';
-		}
-
-		if ( ! empty( $search ) ) {
-			$search = " AND ({$search}) ";
-
-		if ( ! is_user_logged_in() )
-			$search .= " AND ($wpdb->posts.post_password = '') ";
-		}
-
-		return $search;
 	}
 
 }

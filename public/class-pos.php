@@ -81,9 +81,9 @@ class WooCommerce_POS {
 		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ) );
 
 		// Set up templates
-		add_filter('generate_rewrite_rules', array( $this, 'pos_generate_rewrite_rules') );
-		add_filter('query_vars', array( $this, 'pos_query_vars') );
-		add_action('template_redirect', array( $this, 'pos_login') );
+		add_filter('generate_rewrite_rules', array( $this, 'generate_rewrite_rules') );
+		add_filter('query_vars', array( $this, 'add_query_vars') );
+		add_action('template_redirect', array( $this, 'login') );
 				
 	}
 
@@ -128,7 +128,7 @@ class WooCommerce_POS {
 	public static function activate( ) {
 		// Refresh the rewrite rule cache
 		global $wp_rewrite;
-		add_rewrite_rule('pos','index.php?custom_page=pos','top');
+		add_rewrite_rule('pos','index.php?pos=1','top');
 		$wp_rewrite->flush_rules( false ); // false will not overwrite .htaccess
 
 		// add the manage_woocommerce_pos capability to administrator and shop_manager
@@ -173,7 +173,7 @@ class WooCommerce_POS {
 	 */
 	public function pos_generate_rewrite_rules($wp_rewrite) {
 		$custom_page_rules = array(
-			'pos' => 'index.php?custom_page=pos',
+			'pos' => 'index.php?pos=1',
 		);
 		$wp_rewrite->rules = $custom_page_rules + $wp_rewrite->rules;
 	}
@@ -183,15 +183,15 @@ class WooCommerce_POS {
 	 * @param  array $public_query_vars
 	 * @return array
 	 */
-	public function pos_query_vars($public_query_vars) {
-		$public_query_vars[] = "custom_page";
+	public function add_query_vars($public_query_vars) {
+		$public_query_vars[] = "pos";
 		return $public_query_vars;
 	}
 
 	/**
 	 * Display POS page or login screen
 	 */
-	public function pos_login() {
+	public function login() {
 
 		// check page and credentials
 		if ($this->is_pos() && current_user_can('manage_woocommerce_pos')) {
@@ -214,8 +214,8 @@ class WooCommerce_POS {
 	public function is_pos() {
 		// $pagename = $this->options['pagename']; TODO: set custom url as an option
 		global $wp_query;
-		$custom_page = isset($wp_query->query_vars['custom_page']) ? $wp_query->query_vars['custom_page'] : null;
-		return ($custom_page == 'pos') ?  true : false ;
+		$is_pos = isset($wp_query->query_vars['pos']) ? $wp_query->query_vars['pos'] : false ;
+		return $is_pos;
 	}
 
 	/**
@@ -235,7 +235,7 @@ class WooCommerce_POS {
 	 */
 	public function pos_print_css() {
 		$html = '
-	<link rel="stylesheet" href="'. $this->plugin_url .'/public/assets/css/pos.min.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="'. $this->plugin_url .'/public/assets/css/pos.min.css?ver='. self::VERSION .'" type="text/css" media="all" />
 		';
 		echo $html;
 	}
@@ -257,9 +257,9 @@ class WooCommerce_POS {
 			do_action( 'pos_add_to_footer' );
 			$this->pos_localize_script();
 			$html = '
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib.min.js"></script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/plugins.min.js"></script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/pos.min.js"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib.min.js?ver='. self::VERSION .'"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/plugins.min.js?ver='. self::VERSION .'"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/pos.min.js?ver='. self::VERSION .'"></script>
 			';
 			echo $html;
 		}

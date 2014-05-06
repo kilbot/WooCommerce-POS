@@ -58,26 +58,32 @@ table {
     }
 }
 
-#cart table {
-    tbody {
-        tr:last-of-type td {
-            border-bottom: 1px solid $border-dark;
-        }
-        input[type=number], input.input-text {
-            width: 4em !important;
-        }
-    }
-    tfoot {
-        tr.order-total {
-            th, td {
+#cart {
+    table {
+        tbody {
+            tr:last-of-type td {
                 border-bottom: 1px solid $border-dark;
             }
+            input[type=number], input.input-text {
+                width: 4em !important;
+            }
         }
-        td.actions { 
-            text-align: right; 
+        tfoot {
+            tr:last-of-type {
+                th, td {
+                    border-bottom: 1px solid $border-dark;
+                }
+            }
         }
     }
-}
+    .actions {
+        padding: $vspacing/2;
+        text-align: right;
+    }
+} 
+
+
+
 
 /**
  * Style for the product table filter and pagination
@@ -101,7 +107,7 @@ table {
     span.search { display: none; }
     input[type=search] {
         width: 100%;
-        box-sizing: border-box;
+        @include box-sizing(border-box);
         padding-left: 35px;
         padding-right: 10px;
     }

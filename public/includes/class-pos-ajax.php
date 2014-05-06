@@ -4,7 +4,7 @@
  * AJAX Event Handler
  *
  * Handles the ajax
- * Borrows heavily from WooCommerce
+ * Borrows heavily from WooCommerce, hopefully can be replaced by WC API in time
  * 
  * @class 	  WooCommerce_POS_AJAX
  * @package   WooCommerce POS
@@ -19,13 +19,16 @@ class WooCommerce_POS_AJAX {
 	 */
 	public function __construct() {
 
+		if ( ! defined( 'WOOCOMMERCE_CART' ) ) define( 'WOOCOMMERCE_CART', true );
+		if ( ! defined( 'WOOCOMMERCE_CHECKOUT' ) ) define( 'WOOCOMMERCE_CHECKOUT', true );
+
 		// woocommerce_EVENT => nopriv
 		$ajax_events = array(
-			'add_to_cart'             				=> true,
-			'remove_item'             				=> true,
-			'get_products'             				=> true,
-			'get_refreshed_fragments'             	=> true,
-			'process_order'             			=> true,
+			'add_to_cart'             	=> true,
+			'remove_item'             	=> true,
+			'get_cart_items'			=> true,
+			'get_cart_totals'			=> true,
+			'process_order'             => true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -43,7 +46,7 @@ class WooCommerce_POS_AJAX {
 	public function add_to_cart() {
 		global $woocommerce;
 
-		$product_id 	= $_REQUEST['id'];
+		$product_id 	= $_REQUEST['add-to-cart'];
 		$quantity 		= 1;
 		$variation_id 	= isset($_REQUEST['variation_id']) ? $_REQUEST['variation_id'] : '' ;
 		$variation 		= '';
@@ -54,7 +57,7 @@ class WooCommerce_POS_AJAX {
 			echo json_encode( array ( 'error' => true, 'msg' => 'There was a problem adding the item to the cart' ) );
 			die();
 		} else {
-			$this->get_refreshed_fragments();
+			$this->get_cart_items();
 		}
 	}
 
@@ -63,38 +66,59 @@ class WooCommerce_POS_AJAX {
 	 * @return Object JSON
 	 */
 	public function remove_item() {
-		global $woocommerce;
 
-		$href = $_POST['href'];
-		parse_url( $href, PHP_URL_QUERY );
-		parse_str( parse_url($href, PHP_URL_QUERY ), $query_arr);
+		// if( !isset( $query_arr['remove_item'] ) && isset( $query_arr['_wpnonce'] ) && wp_verify_nonce( $query_arr['_wpnonce'], 'woocommerce-cart' ) ) {
+		// 	$this->json_headers();
+		// 	echo json_encode( array( 'error' => true, 'msg' => 'There was no product to remove from cart' ) );
+		// 	die();	
+		// }
 
-		if( !isset( $query_arr['remove_item'] ) && isset( $query_arr['_wpnonce'] ) && wp_verify_nonce( $query_arr['_wpnonce'], 'woocommerce-cart' ) ) {
-			$this->json_headers();
-			echo json_encode( array( 'error' => true, 'msg' => 'There was no product to remove from cart' ) );
-			die();	
-		}
+		// set product quantity to zero
+		WC()->cart->set_quantity( $_REQUEST['remove_item'], 0 );
 
-		WC()->cart->set_quantity( $query_arr['remove_item'], 0 );
-		// wc_add_notice( __( 'Cart updated.', 'woocommerce' ) );
-		$this->get_refreshed_fragments();
+		// send back new cart
+		$this->get_cart_items();
 	}
 
 	/**
-	 * Get products
+	 * Get cart
 	 * @return Object JSON
 	 */
-	public function get_products() {
+	public function get_cart_items() {
 
 		// set up the product data
-		$products = WC_POS()->product->get_all_products();
-		$total = count($products);
+		$items = WC_POS()->cart->get_cart_items();
 
-		if($products) {
+		if($items || empty($items)) {
 			$data = array(
-				'status' 		=> 'success',
-				'total_count'	=> $total,
-				'products'		=> $products
+				'nonce' => wp_create_nonce('woocommerce-pos_checkout'),
+				'items' => $items
+			);
+		}
+		else {
+			// throw error
+			$data = array(
+				'status' => 'error',
+			);
+		}
+
+		$this->json_headers();
+		echo json_encode( $data );
+		die();
+	}
+
+	/**
+	 * Get cart
+	 * @return Object JSON
+	 */
+	public function get_cart_totals() {
+
+		// set up the product data
+		$totals = WC_POS()->cart->get_cart_totals();
+
+		if($totals) {
+			$data = array(
+				'totals' => $totals
 			);
 		}
 		else {

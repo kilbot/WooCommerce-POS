@@ -11,19 +11,37 @@
 
 	<section class="col rightcol">  
 
-		<div id="cart"></div>
+		<div id="cart">
+			<table class="shop_table table-stroke cart" cellspacing="0">
+				<thead>
+					<tr>
+						<th>Qty</th>
+						<th>Product</th>
+						<th>Price</th>
+						<th>Total</th>
+						<th>&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody id="cart-items"></tbody>
+				<tfoot id="cart-totals"></tfoot>
+			</table>
+			<div class="actions">
+				<button type="submit" class="btn btn-flat-action btn-checkout" name="pos_checkout" id="pos_checkout" value="checkout">Checkout <i class="fa fa-chevron-right"></i></button>
+			</div>
+		</div>
 
-		<?php
-		global $woocommerce;
-		error_log( print_R( $woocommerce->cart->get_cart(), TRUE ) ); //debug
+		<script type="text/template" id="tmpl-cart-item">
+			<td class="qty"><%= qty %></td>
+			<td class="name"><%= title %></td>
+			<td class="item-price" data-price="<%= price %>"><%= price_html %></td>
+			<td class="sub-total"><%= total %></td>
+			<td class="remove-item"><a class="remove-from-cart btn btn-circle btn-flat-caution" href="?remove_item=<%= cart_item_key %>" data-cart_item_key="<%= cart_item_key %>"><i class="fa fa-times"></i></a></td>
+		</script>
 
-		error_log( 'Cart Subtotal: ' . $woocommerce->cart->get_cart_subtotal() ); //debug
-		// error_log( 'Cart Total: ' . $woocommerce->cart->get_cart_total() ); //debug
-		error_log( 'Tax: ' . $woocommerce->cart->get_cart_tax() ); //debug
-		error_log( 'Discount: ' . $woocommerce->cart->get_total_discount() ); //debug
-		error_log( 'Total: ' . $woocommerce->cart->get_total() ); //debug
-
-		?>
+		<script type="text/template" id="tmpl-cart-total">
+			<th colspan="3"><%= title %></th>
+			<td colspan="2"><%= total %></td>
+	    </script>
 
 	</section><!-- /right col -->
 </main><!-- /main -->
