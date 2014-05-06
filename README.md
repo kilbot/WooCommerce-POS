@@ -4,7 +4,7 @@
 **Tags:** woocommerce, pos, point-of-sale, vend, e-commerce  
 **Requires at least:** 3.8  
 **Tested up to:** 3.9  
-**Stable tag:** 0.2.7  
+**Stable tag:** 0.2.9  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -61,6 +61,10 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 
 ## Changelog ##
+
+### 0.2.8 ###
+* Tweak: Improvement to cart add/remove products.
+* New: Added some sanity check on the settings page.
 
 ### 0.2.6 ###
 * Tweak: Products now uses WC REST API for better performance. Tested on 300+ products. 

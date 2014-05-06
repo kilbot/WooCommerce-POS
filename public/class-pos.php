@@ -4,7 +4,7 @@
  * The main POS Class
  * 
  * @class 	  WooCommerce_POS
- * @version   0.2.7
+ * @version   0.2.9
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
  * @link      http://www.woopos.com.au
@@ -15,7 +15,7 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION 			= '0.2.5';
+	const VERSION 			= '0.2.8';
 	const JQUERY 			= '2.1.0'; // http://jquery.com/
 
 	/**
@@ -171,7 +171,7 @@ class WooCommerce_POS {
 	 * Add rewrite rules for pos
 	 * @param  object $wp_rewrite
 	 */
-	public function pos_generate_rewrite_rules($wp_rewrite) {
+	public function generate_rewrite_rules($wp_rewrite) {
 		$custom_page_rules = array(
 			'pos' => 'index.php?pos=1',
 		);
@@ -214,7 +214,7 @@ class WooCommerce_POS {
 	public function is_pos() {
 		// $pagename = $this->options['pagename']; TODO: set custom url as an option
 		global $wp_query;
-		$is_pos = isset($wp_query->query_vars['pos']) ? $wp_query->query_vars['pos'] : false ;
+		$is_pos = isset($wp_query->query_vars['pos']) && $wp_query->query_vars['pos'] == 1 ? $wp_query->query_vars['pos'] : false ;
 		return $is_pos;
 	}
 
