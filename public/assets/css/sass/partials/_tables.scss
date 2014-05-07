@@ -28,6 +28,7 @@ table {
 	padding-bottom:  $vspacing/2;
 	thead { display: none; }
 	tbody {
+        strong { display: block; }
         tr {
             &:nth-of-type(even) {
                 background-color: $even-background;
@@ -64,8 +65,8 @@ table {
             tr:last-of-type td {
                 border-bottom: 1px solid $border-dark;
             }
-            input[type=number], input.input-text {
-                width: 4em !important;
+            input[type=text] {
+                width: 3em !important;
             }
         }
         tfoot {

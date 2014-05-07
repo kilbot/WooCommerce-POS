@@ -5,9 +5,13 @@ $susy: (
 	gutters: 1/8,
 );
 
-$small 		: 600px;	// phone
-$medium 	: 800px;	// tablet
-$large 		: 1200px; 	// desktop
+$mobile 			: 320px;
+$mobile-horizontal 	: 480px;
+$tablet 			: 768px;
+$tablet-horizontal 	: 1024px;
+$desktop 			: 1280px;
+$desktop-wide 		: 1500px;
+
 
 /* Layout =================================================== */
 #main {
@@ -24,7 +28,7 @@ $large 		: 1200px; 	// desktop
 	}
 }
 
-@include breakpoint($small) {
+@include breakpoint($tablet) {
 	header .btn span {
 		display: inline !important;
 	}
@@ -34,6 +38,20 @@ $large 		: 1200px; 	// desktop
 	}
 	.rightcol {
 		@include span(6 last);
+	}
+}
+
+#page {
+	font-size: 0.8em;
+}
+@include breakpoint($mobile) {
+	#page {
+		font-size: 0.9em;
+	}
+}
+@include breakpoint($mobile-horizontal) {
+	#page {
+		font-size: 1em;
 	}
 }
 

@@ -32,8 +32,23 @@
 			'cart_item_key'	: '',
 		},
 
+		idAttribute: 'cart_item_key', // set cart_item_key as unique id
+
 		// debug
 		initialize: function() { this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); },
+
+		// parse: function(response,options) {
+
+		// 	//
+		// 	console.log(response); //debug
+		// 	this.setNonce(response.nonce);
+		// 	return response.items;
+
+		// },
+
+		// setNonce: function(nonce) {
+		// 	wpnonce = nonce;
+		// },
 
 	});
 
@@ -75,18 +90,21 @@
 			this.render();
 
 			// If this models contents change, we re-render
-			this.model.on('add remove', function(){
+			this.model.on('add remove change', function(){
 				this.render();
 			}, this);
 
 		},
 
 		events: {
-			"click a.remove-from-cart": "removeFromCart",
+			"click a.remove-from-cart"	: "removeFromCart",
+			"click .qty input"  		: "edit",
+			"keypress .qty input"  		: "updateOnEnter",
+      		"blur .qty input"      		: "close"
 		},
 
 		removeFromCart: function(e) {
-			e.preventDefault();
+			if( typeof e !== 'undefined' ) e.preventDefault();
 
 			// Fade out item out from the shopping cart list
 			this.$el.fadeOut(500, function(){
@@ -99,15 +117,64 @@
 			cartItems.fetch({
 				data: {
 					action		: "pos_remove_item",
-					remove_item	: $(e.currentTarget).attr( 'data-cart_item_key' ),
+					remove_item	: this.model.get('cart_item_key'),
 					_wpnonce	: wpnonce,
 				}, 
 				processData: true,
 				success: function() {
 					// update the totals view
-					mediator.publish("updateTotals");
+					mediator.publish('updateTotals');
 				},
 			});
+		},
+
+		edit: function() {
+			this.$el.addClass('editing');
+			this.$('.qty input').attr('contenteditable', true).focus();
+		},
+
+
+		close: function() {
+			var value = this.$('.qty input').val();
+
+			// return if qty hasn't changed
+			if(value == this.model.get('qty')) {
+				return;
+			}
+
+			// remove if qty is 0
+			if (value == 0) {
+				console.log('0 qty');
+				this.removeFromCart();
+				return;
+			}
+
+			// else, update value
+			if (value) {
+				cartItems.fetch({
+					data: { 
+						'action'		: 'pos_update_cart',
+						'cart_item_key' : this.model.get('cart_item_key'),
+						'qty'			: value,
+					}, 
+					processData: true,
+					success: function() {
+						// update the totals view
+						mediator.publish("updateTotals");
+					},
+				});
+				this.$el.removeClass('editing');
+				this.$('.qty input').removeAttr('contenteditable');
+			} else {
+				this.$('.qty input').attr('contenteditable', true).focus();
+			}
+		},
+
+		updateOnEnter: function(e) {
+
+			// TODO: Blur and key event both happen, ie: double save :(
+			if (e.keyCode == 13) this.close(); 
+			_.delay( function() { self.$('.qty button').blur(), 100 });
 		},
 
 		render: function() {
@@ -140,9 +207,6 @@
 
 			// render cart items on add
 			this.collection.on( 'add change', function( item ){
-
-				// update totals 
-				cartTotals.trigger('update');
 
 				// re-render
 				this.render();

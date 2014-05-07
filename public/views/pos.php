@@ -31,7 +31,7 @@
 		</div>
 
 		<script type="text/template" id="tmpl-cart-item">
-			<td class="qty"><%= qty %></td>
+			<td class="qty"><input class="btn btn-pill btn-flat" type="text" value="<%= qty %>"></td>
 			<td class="name"><%= title %></td>
 			<td class="item-price" data-price="<%= price %>"><%= price_html %></td>
 			<td class="sub-total"><%= total %></td>

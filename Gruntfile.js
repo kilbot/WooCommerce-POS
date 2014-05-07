@@ -94,10 +94,11 @@ module.exports = function(grunt) {
         uglify: {
             lib: {
                 options: {
-                    sourceMap: 'public/assets/js/map/lib-map.js',
-                    compress: {
-                        drop_console: true
-                    }
+                    sourceMap: true,
+                    sourceMapName: 'public/assets/js/map/lib.map'
+                    // compress: {
+                    //     drop_console: true
+                    // }
                 },
                 files: {
                     'public/assets/js/lib.min.js': [
@@ -115,10 +116,11 @@ module.exports = function(grunt) {
             },
             plugins: {
                 options: {
-                    sourceMap: 'public/assets/js/map/plugins-map.js',
-                    compress: {
-                        drop_console: true
-                    }
+                    sourceMap: true,
+                    sourceMapName: 'public/assets/js/map/plugins.map',
+                    // compress: {
+                        // drop_console: true
+                    // }
                 },
                 files: {
                     'public/assets/js/plugins.min.js': [
@@ -129,9 +131,10 @@ module.exports = function(grunt) {
             },
             pos: {
                 options: {
-                    sourceMap: 'public/assets/js/map/pos-map.js',
+                    sourceMap: true,
+                    sourceMapName: 'public/assets/js/map/pos.map',
                     compress: {
-                        drop_console: true
+                        // drop_console: true
                     }
                 },
                 files: {
@@ -145,9 +148,10 @@ module.exports = function(grunt) {
             },
             admin: {
                 options: {
-                    sourceMap: 'admin/assets/js/map/admin-map.js',
+                    sourceMap: true,
+                    sourceMapName: 'admin/assets/js/map/admin.map',
                     compress: {
-                        drop_console: true
+                        // drop_console: true
                     }
                 },
                 files: {

@@ -498,49 +498,53 @@ table td {
 #products table thead {
   display: none;
 }
-/* line 32, sass/partials/_tables.scss */
+/* line 31, sass/partials/_tables.scss */
+#products table tbody strong {
+  display: block;
+}
+/* line 33, sass/partials/_tables.scss */
 #products table tbody tr:nth-of-type(even) {
   background-color: white;
 }
-/* line 35, sass/partials/_tables.scss */
+/* line 36, sass/partials/_tables.scss */
 #products table tbody tr:nth-of-type(odd) {
   background-color: #f9f9f9;
 }
-/* line 39, sass/partials/_tables.scss */
+/* line 40, sass/partials/_tables.scss */
 #products table tbody tr:last-of-type td {
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 42, sass/partials/_tables.scss */
+/* line 43, sass/partials/_tables.scss */
 #products table tbody dl {
   width: 100%;
   font-size: 0.8em;
 }
-/* line 46, sass/partials/_tables.scss */
+/* line 47, sass/partials/_tables.scss */
 #products table tbody dl dt {
   font-weight: normal;
   float: left;
   width: 40%;
 }
-/* line 51, sass/partials/_tables.scss */
+/* line 52, sass/partials/_tables.scss */
 #products table tbody dl dd {
   float: right;
   margin: 0;
   width: 60%;
 }
 
-/* line 64, sass/partials/_tables.scss */
+/* line 65, sass/partials/_tables.scss */
 #cart table tbody tr:last-of-type td {
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 67, sass/partials/_tables.scss */
-#cart table tbody input[type=number], #cart table tbody input.input-text {
-  width: 4em !important;
+/* line 68, sass/partials/_tables.scss */
+#cart table tbody input[type=text] {
+  width: 3em !important;
 }
-/* line 73, sass/partials/_tables.scss */
+/* line 74, sass/partials/_tables.scss */
 #cart table tfoot tr:last-of-type th, #cart table tfoot tr:last-of-type td {
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 79, sass/partials/_tables.scss */
+/* line 80, sass/partials/_tables.scss */
 #cart .actions {
   padding: 0.75em;
   text-align: right;
@@ -549,32 +553,32 @@ table td {
 /**
  * Style for the product table filter and pagination
  */
-/* line 91, sass/partials/_tables.scss */
+/* line 92, sass/partials/_tables.scss */
 .backgrid-paginator {
   margin-bottom: 0.75em;
 }
-/* line 93, sass/partials/_tables.scss */
+/* line 94, sass/partials/_tables.scss */
 .backgrid-paginator ul {
   list-style: none;
   margin: 0;
   padding: 0;
   text-align: center;
 }
-/* line 98, sass/partials/_tables.scss */
+/* line 99, sass/partials/_tables.scss */
 .backgrid-paginator ul li {
   display: inline;
 }
 
-/* line 104, sass/partials/_tables.scss */
+/* line 105, sass/partials/_tables.scss */
 .backgrid-filter {
   padding: 0.75em;
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 107, sass/partials/_tables.scss */
+/* line 108, sass/partials/_tables.scss */
 .backgrid-filter span.search {
   display: none;
 }
-/* line 108, sass/partials/_tables.scss */
+/* line 109, sass/partials/_tables.scss */
 .backgrid-filter input[type=search] {
   width: 100%;
   -moz-box-sizing: border-box;
@@ -583,7 +587,7 @@ table td {
   padding-left: 35px;
   padding-right: 10px;
 }
-/* line 114, sass/partials/_tables.scss */
+/* line 115, sass/partials/_tables.scss */
 .backgrid-filter a.clear {
   position: absolute;
   top: 20px;
@@ -602,11 +606,11 @@ table td {
   border-radius: 20px;
 }
 
-/* line 131, sass/partials/_tables.scss */
+/* line 132, sass/partials/_tables.scss */
 #filter {
   position: relative;
 }
-/* line 133, sass/partials/_tables.scss */
+/* line 134, sass/partials/_tables.scss */
 #filter .fa-search {
   position: absolute;
   top: 17px;
@@ -616,7 +620,7 @@ table td {
   display: block;
 }
 
-/* line 151, sass/partials/_tables.scss */
+/* line 152, sass/partials/_tables.scss */
 .backgrid-paginator a {
   -moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
@@ -643,14 +647,14 @@ table td {
   text-decoration: none;
   text-align: center;
 }
-/* line 169, sass/partials/_tables.scss */
+/* line 170, sass/partials/_tables.scss */
 .backgrid-paginator a:hover {
   background-color: #eeeeee;
   background: -moz-linear-gradient(top, #ffffff, #dcdcdc);
   background: -webkit-linear-gradient(top, #ffffff, #dcdcdc);
   background: linear-gradient(to bottom, #ffffff, #dcdcdc);
 }
-/* line 173, sass/partials/_tables.scss */
+/* line 174, sass/partials/_tables.scss */
 .backgrid-paginator a:active {
   -moz-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
   -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
@@ -659,12 +663,12 @@ table td {
   background: #eeeeee;
   color: #bbbbbb;
 }
-/* line 179, sass/partials/_tables.scss */
+/* line 180, sass/partials/_tables.scss */
 .backgrid-paginator a:focus {
   outline: none;
 }
 
-/* line 184, sass/partials/_tables.scss */
+/* line 185, sass/partials/_tables.scss */
 .backgrid-paginator li.active a {
   -moz-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
   -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
@@ -674,7 +678,7 @@ table td {
   color: #eeeeee;
 }
 
-/* line 191, sass/partials/_tables.scss */
+/* line 192, sass/partials/_tables.scss */
 .backgrid-paginator li.disabled a {
   -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
@@ -689,7 +693,7 @@ table td {
   -webkit-appearance: none;
 }
 
-/* line 202, sass/partials/_tables.scss */
+/* line 203, sass/partials/_tables.scss */
 .backgrid-paginator a {
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
@@ -706,11 +710,11 @@ table td {
   border: none;
   text-shadow: none;
 }
-/* line 211, sass/partials/_tables.scss */
+/* line 212, sass/partials/_tables.scss */
 .backgrid-paginator a:hover {
   background: #fbfbfb;
 }
-/* line 214, sass/partials/_tables.scss */
+/* line 215, sass/partials/_tables.scss */
 .backgrid-paginator a:active {
   -moz-transition-duration: 0s;
   -o-transition-duration: 0s;
@@ -719,7 +723,7 @@ table td {
   background: #eeeeee;
   color: #bbbbbb;
 }
-/* line 219, sass/partials/_tables.scss */
+/* line 220, sass/partials/_tables.scss */
 .backgrid-paginator a.disabled {
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
@@ -729,7 +733,7 @@ table td {
 
 /* Susy Settings =================================================== */
 /* Layout =================================================== */
-/* line 13, sass/partials/_layout.scss */
+/* line 17, sass/partials/_layout.scss */
 #main {
   max-width: 100%;
   margin-left: auto;
@@ -743,7 +747,7 @@ table td {
   clear: both;
 }
 
-/* line 17, sass/partials/_layout.scss */
+/* line 21, sass/partials/_layout.scss */
 .col {
   background: white;
   border: 1px solid #e5e5e5;
@@ -751,43 +755,60 @@ table td {
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
-/* line 22, sass/partials/_layout.scss */
+/* line 26, sass/partials/_layout.scss */
 .col.leftcol {
   margin-bottom: 0.93458%;
 }
 
-@media (min-width: 600px) {
-  /* line 28, sass/partials/_layout.scss */
+@media (min-width: 768px) {
+  /* line 32, sass/partials/_layout.scss */
   header .btn span {
     display: inline !important;
   }
 
-  /* line 31, sass/partials/_layout.scss */
+  /* line 35, sass/partials/_layout.scss */
   .leftcol {
     width: 49.53271%;
     float: left;
     margin-right: 0.93458%;
   }
 
-  /* line 35, sass/partials/_layout.scss */
+  /* line 39, sass/partials/_layout.scss */
   .rightcol {
     width: 49.53271%;
     float: right;
   }
 }
+/* line 44, sass/partials/_layout.scss */
+#page {
+  font-size: 0.8em;
+}
+
+@media (min-width: 320px) {
+  /* line 48, sass/partials/_layout.scss */
+  #page {
+    font-size: 0.9em;
+  }
+}
+@media (min-width: 480px) {
+  /* line 53, sass/partials/_layout.scss */
+  #page {
+    font-size: 1em;
+  }
+}
 /* Header =================================================== */
-/* line 41, sass/partials/_layout.scss */
+/* line 59, sass/partials/_layout.scss */
 header {
   color: #eeeeee;
   background-color: #222222;
 }
-/* line 45, sass/partials/_layout.scss */
+/* line 63, sass/partials/_layout.scss */
 header h1 {
   text-align: center;
   clear: none;
   line-height: 2.25em;
 }
-/* line 51, sass/partials/_layout.scss */
+/* line 69, sass/partials/_layout.scss */
 header a {
   color: #eeeeee;
   text-decoration: none;
@@ -796,7 +817,7 @@ header a {
 header a:hover, header a:active, header a:focus {
   color: #0099d5;
 }
-/* line 58, sass/partials/_layout.scss */
+/* line 76, sass/partials/_layout.scss */
 header a.btn {
   color: #eeeeee;
   background-color: #222222;
@@ -809,7 +830,7 @@ header a.btn:hover, header a.btn:active, header a.btn:focus {
   background-color: #0074a2;
   text-decoration: none;
 }
-/* line 68, sass/partials/_layout.scss */
+/* line 86, sass/partials/_layout.scss */
 header a.btn span {
   display: none;
 }

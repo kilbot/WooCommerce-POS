@@ -22,5 +22,5 @@
 				<li><a href="<?php echo wp_logout_url( home_url() ); ?>" title="Logout">Logout</a></li>
 			</ul>
 		</div><!-- /user  -->
-		<h1>Point of Sale - <?php bloginfo( 'name' ); ?></h1>
+		<h1><?php bloginfo( 'name' ); ?></h1>
 	</header><!-- /header -->

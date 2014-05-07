@@ -60,7 +60,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
-= 0.2.8 =
+= 0.2.9 =
 * Tweak: Improvement to cart add/remove products.
 * New: Added some sanity check on the settings page.
 

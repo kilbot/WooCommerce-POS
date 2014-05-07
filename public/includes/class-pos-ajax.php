@@ -26,6 +26,7 @@ class WooCommerce_POS_AJAX {
 		$ajax_events = array(
 			'add_to_cart'             	=> true,
 			'remove_item'             	=> true,
+			'update_cart'				=> true,
 			'get_cart_items'			=> true,
 			'get_cart_totals'			=> true,
 			'process_order'             => true,
@@ -75,6 +76,15 @@ class WooCommerce_POS_AJAX {
 
 		// set product quantity to zero
 		WC()->cart->set_quantity( $_REQUEST['remove_item'], 0 );
+
+		// send back new cart
+		$this->get_cart_items();
+	}
+
+	public function update_cart() {
+
+		// update the cart
+		WC_POS()->cart->update_cart();
 
 		// send back new cart
 		$this->get_cart_items();

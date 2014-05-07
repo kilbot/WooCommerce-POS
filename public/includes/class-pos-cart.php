@@ -14,6 +14,25 @@
 class WooCommerce_POS_Cart {
 
 	/**
+	 * Update the cart
+	 */
+	public function update_cart() {
+
+		// if there is json data through the http body
+		$request_body = file_get_contents('php://input');
+
+		if($request_body) {
+			$data = json_decode($request_body);
+			error_log( print_R( $data, TRUE ) ); //debug
+			WC()->cart->set_quantity( $data->cart_item_key, $data->qty );
+		}
+
+		elseif (isset($_REQUEST['cart_item_key'])) {
+			WC()->cart->set_quantity( $_REQUEST['cart_item_key'], $_REQUEST['qty'] );
+		}
+	}
+
+	/**
 	 * Get the current cart
 	 */
 	public function get_cart_items() {
