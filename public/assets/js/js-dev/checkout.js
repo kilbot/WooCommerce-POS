@@ -11,7 +11,6 @@
 
 			var data = {
 				action 		: 'pos_process_order',
-				cart 		: $( '#cart form' ).serialize(),
  			};
 
 			// Ajax action

@@ -20,52 +20,53 @@ class WooCommerce_POS_Product {
 		add_action( 'pre_get_posts', array( $this, 'get_all_products' ) );
 
 		// and we're going to filter on the way out
-		add_filter('woocommerce_api_product_response', array( $this, 'filter_product_response' ) );
+		add_filter( 'woocommerce_api_product_response', array( $this, 'filter_product_response' ) );
 
 	}
 
 	/**
 	 * Get all the things
-	 * @param  [type] $query [description]
-	 * @return [type]        [description]
+	 * @param  $query 		the wordpress query
 	 */
 	public function get_all_products( $query ) {
-		global $wp_the_query;
 
-		// hijack any products query coming from POS
-		if( $this->pos_referer() ) {
+		// effects only requests from POS
+		if( !WC_POS()->is_pos_referer() )
+			return;
 
-			// show all products
-			// $query->set( 'posts_per_page', -1 ); 
+		// show all products
+		// $query->set( 'posts_per_page', -1 ); 
 
-			// plus variations
-			$query->set( 'post_type', array( 'product', 'product_variation' ) );
+		// plus variations
+		$query->set( 'post_type', array( 'product', 'product_variation' ) );
 
-			// minus variable products
-			$tax_query =  array(
-				array(
-					'taxonomy' 	=> 'product_type',
-					'field' 	=> 'slug',
-					'terms' 	=> array( 'variable' ),
-					'operator'	=> 'NOT IN'
-				),
-			);
-			$query->set( 'tax_query', $tax_query );
+		// minus variable products
+		$tax_query =  array(
+			array(
+				'taxonomy' 	=> 'product_type',
+				'field' 	=> 'slug',
+				'terms' 	=> array( 'variable' ),
+				'operator'	=> 'NOT IN'
+			),
+		);
+		$query->set( 'tax_query', $tax_query );
 
-		}
-        
         // error_log( print_R( $query, TRUE ) ); //debug
         
 	}
 
 	/**
 	 * Filter product response from WC REST API for easier handling by backbone.js
-	 * unset unnecessary data
-	 * falt some nest arrays
-	 * @param  [type] $product_data [description]
-	 * @return [type]               [description]
+	 * - unset unnecessary data
+	 * - flatten some nest arrays
+	 * @param  array $product_data
+	 * @return array $product_data
 	 */
 	public function filter_product_response( $product_data ) {
+
+		// effects only requests from POS
+		if( !WC_POS()->is_pos_referer() )
+			return;		
 
 		// flatten variable data
 		if( $product_data['type'] == 'variation' ) {
@@ -128,16 +129,6 @@ class WooCommerce_POS_Product {
 		}
 
 		return $product_data;
-	}
-
-	/**
-	 * Check if request came from POS
-	 * @return [type] [description]
-	 */
-	public function pos_referer() {
-		$referer = wp_get_referer();
-		$parsed_referrer = parse_url( $referer );
-		return ( $parsed_referrer['path'] == '/pos/' ) ? true : false ;
 	}
 
 }

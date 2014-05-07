@@ -4,7 +4,7 @@
  * The main POS Class
  * 
  * @class 	  WooCommerce_POS
- * @version   0.2.9
+ * @version   0.2.10
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
  * @link      http://www.woopos.com.au
@@ -15,8 +15,8 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION 			= '0.2.8';
-	const JQUERY 			= '2.1.0'; // http://jquery.com/
+	const VERSION 	= '0.2.10';
+	const JQUERY 	= '2.1.0';
 
 	/**
 	 * Unique identifier
@@ -54,11 +54,6 @@ class WooCommerce_POS {
 	public $cart = null;
 
 	/**
-	 * @var WooCommerce_POS_Checkout $checkout
-	 */
-	public $checkout = null;
-
-	/**
 	 * Initialize WooCommerce_POS
 	 */
 	private function __construct() {
@@ -77,13 +72,13 @@ class WooCommerce_POS {
 		//add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 		add_action( 'init', array( $this, 'init' ), 0 );
 
-		// allow access to the WC REST API 
-		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ) );
-
 		// Set up templates
 		add_filter('generate_rewrite_rules', array( $this, 'generate_rewrite_rules') );
 		add_filter('query_vars', array( $this, 'add_query_vars') );
 		add_action('template_redirect', array( $this, 'login') );
+
+		// allow access to the WC REST API 
+		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ) );
 				
 	}
 
@@ -164,7 +159,6 @@ class WooCommerce_POS {
 	public function init() {
 		$this->product  = new WooCommerce_POS_Product();
 		$this->cart     = new WooCommerce_POS_Cart();
-		$this->checkout = new WooCommerce_POS_Checkout();
 	}
 
 	/**
@@ -214,8 +208,35 @@ class WooCommerce_POS {
 	public function is_pos() {
 		// $pagename = $this->options['pagename']; TODO: set custom url as an option
 		global $wp_query;
-		$is_pos = isset($wp_query->query_vars['pos']) && $wp_query->query_vars['pos'] == 1 ? $wp_query->query_vars['pos'] : false ;
+		$is_pos = isset($wp_query->query_vars['pos']) && $wp_query->query_vars['pos'] == 1 ? true : false ;
+
+		// // // DEBUG
+		// if($is_pos) {
+		// 	error_log('you are in POS');
+		// } else {
+		// 	error_log('you are not in POS');
+		// }
+
 		return $is_pos;
+	}
+
+	/**
+	 * Did the request come from the POS?
+	 * @return boolean
+	 */
+	public function is_pos_referer() {
+		$referer = wp_get_referer();
+		$parsed_referrer = parse_url( $referer );
+		$is_pos_referer = ( $parsed_referrer['path'] == '/pos/' ) ? true : false ;
+
+		// // DEBUG
+		// if($is_pos_referer) {
+		// 	error_log('request came from POS');
+		// } else {
+		// 	error_log('request did not come from POS');
+		// }
+		
+		return $is_pos_referer;
 	}
 
 	/**
@@ -223,7 +244,7 @@ class WooCommerce_POS {
 	 * @return WP_User object
 	 */
 	public function wc_api_authentication() {
-		// giving admin and shop manager full access to WC API
+		// giving admin and shop manager access to WC API
 		// TODO: check this is a good approach
 		if(current_user_can('manage_woocommerce_pos'))
 			return new WP_User(get_current_user_id());

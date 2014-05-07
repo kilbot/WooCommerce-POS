@@ -36,7 +36,15 @@
 								Updates will be frequent over the next few weeks so please <a href="http://woopos.com.au/wp-admin/update-core.php?force-check=1">check</a> back often.
 							</p>
 							<h4>The following features are currently being worked on:</h4>
-
+							<ul style="list-style:disc outside none; margin-left:20px;">
+								<li>Local storage for inventory</li>
+								<li>Change item price in cart</li>
+								<li>Add discounts and coupons to orders</li>
+								<li>Assign order to existing customer</li>
+								<li>Print/Email receipt</li>
+								<li>Select payment method, eg: cash, card</li>
+							</ul>
+							
 							<p>If you have questions, comments, feature requests or bug reports please do get in contact so we can make this plugin better.</p>
 						</div>
 					</div> <!-- .postbox -->
@@ -55,14 +63,23 @@
 								<li><a href="https://github.com/kilbot/WooCommerce-POS">GitHub Repo</a></li>
 				
 							</ul>
+						</div> <!-- .inside -->
+					</div> <!-- .postbox -->
+				</div> <!-- .meta-box-sortables -->	
+
+				<div class="meta-box-sortables">
+					<div class="postbox">
+						<h3 style="cursor:auto">Donate</h3>
+						<div class="inside">
 							<p>A small donation will also go a long way to keeping development moving.</p>
 							<ul>
-								<li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paul%40kilbot%2ecom%2eau">Donate</a></li>
+								<li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paul%40kilbot%2ecom%2eau">Donate Now</a></li>
 							</ul>
+							Thanks to <a href="http://www.speldorado.com/">Egbert</a> for donating!
 						</div> <!-- .inside -->
 					</div> <!-- .postbox -->
 				</div> <!-- .meta-box-sortables -->					
-			</div> <!-- #postbox-container-1 .postbox-container -->				
+			</div> <!-- #postbox-container-1 .postbox-container -->		
 		
 		</div> <!-- #post-body .metabox-holder .columns-2 -->
 

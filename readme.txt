@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paul%
 Tags: woocommerce, pos, point-of-sale, vend, e-commerce
 Requires at least: 3.8
 Tested up to: 3.9
-Stable tag: 0.2.9
+Stable tag: 0.2.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ A simple front-end for taking WooCommerce orders at the Point of Sale.
 Imagine [WooCommerce](http://www.woothemes.com/woocommerce/) and [Vend](http://www.vendhq.com/) had a baby. WooCommerce POS is a simple interface for taking orders using your WooCommerce store. No need to sync inventory between your online and bricks&mortar store, no need for monthly subscription fees.
 
 = BETA =
-This plugin has only just been released and should *not* be used on a production site. A [roadmap for development](http://woopos.com.au/roadmap) is available on our website, please feel free to request features or ask questions in the comments. Bug reports can be made through the website or via the [GitHub repository](https://github.com/kilbot/WooCommerce-POS/issues).
+This plugin has only just been released and should **not** be used on a production site. A [roadmap for development](http://woopos.com.au/roadmap) is available on our website, please feel free to request features or ask questions in the comments. Bug reports can be made through the website or via the [GitHub repository](https://github.com/kilbot/WooCommerce-POS/issues).
 
 * Roadmap: http://woopos.com.au/roadmap
 * GitHub: https://github.com/kilbot/WooCommerce-POS/
@@ -59,6 +59,12 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 1. WooCommerce POS main screen
 
 == Changelog ==
+
+= 0.2.10 =
+* New: Update cart quanitity
+* Tweak: Improvement to cart load time
+* Tweak: Prevent New Order emails to admin
+* Fix: No shipping fees on cart items
 
 = 0.2.9 =
 * Tweak: Improvement to cart add/remove products.

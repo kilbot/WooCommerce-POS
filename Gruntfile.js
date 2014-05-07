@@ -142,7 +142,7 @@ module.exports = function(grunt) {
                         'public/assets/js/js-dev/global.js',
                         'public/assets/js/js-dev/products.js',
                         'public/assets/js/js-dev/cart.js',
-                        'public/assets/js/js-dev/order.js',
+                        'public/assets/js/js-dev/checkout.js',
                     ]
                 }
             },

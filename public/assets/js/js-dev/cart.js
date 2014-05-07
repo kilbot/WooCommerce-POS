@@ -37,19 +37,6 @@
 		// debug
 		initialize: function() { this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); },
 
-		// parse: function(response,options) {
-
-		// 	//
-		// 	console.log(response); //debug
-		// 	this.setNonce(response.nonce);
-		// 	return response.items;
-
-		// },
-
-		// setNonce: function(nonce) {
-		// 	wpnonce = nonce;
-		// },
-
 	});
 
 	// collection of cart items
