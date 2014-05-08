@@ -60,13 +60,13 @@ class WooCommerce_POS_Product {
 	 * - unset unnecessary data
 	 * - flatten some nest arrays
 	 * @param  array $product_data
-	 * @return array $product_data
+	 * @return array modified data array $product_data
 	 */
 	public function filter_product_response( $product_data ) {
 
 		// effects only requests from POS
 		if( !WC_POS()->is_pos_referer() )
-			return;		
+			return $product_data ;		
 
 		// flatten variable data
 		if( $product_data['type'] == 'variation' ) {

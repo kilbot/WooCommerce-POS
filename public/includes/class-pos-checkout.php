@@ -59,8 +59,7 @@ class WooCommerce_POS_Checkout {
 		// set up the order
 		$order = new WC_Order( $order_id );			
 		$order->payment_complete(); 
-		$order->update_status( 'completed', 'POS Sale completed' );
-		$order->reduce_order_stock();
+		$order->update_status( 'completed', 'POS Transaction completed.' );
 
 	}
 

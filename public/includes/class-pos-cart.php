@@ -21,7 +21,7 @@ class WooCommerce_POS_Cart {
 		if ( ! defined( 'WOOCOMMERCE_CART' ) ) 
 			define( 'WOOCOMMERCE_CART', true );
 
-		add_filter( 'woocommerce_cart_needs_shipping', array($this, 'remove_shipping') );
+		add_filter( 'woocommerce_cart_needs_shipping', array($this, 'remove_shipping'), 10, 1 );
 	
 	}
 
@@ -29,10 +29,14 @@ class WooCommerce_POS_Cart {
 	 * Remove any shipping from the POS cart
 	 * @return boolean
 	 */
-	public function remove_shipping() {	
+	public function remove_shipping( $needs_shipping ) {	
 		
-		if( WC_POS()->is_pos() || WC_POS()->is_pos_referer() ) 
+		if( WC_POS()->is_pos() || WC_POS()->is_pos_referer() ) {
 			return false;
+		}
+		else {
+			return $needs_shipping;
+		}
 
 	}
 

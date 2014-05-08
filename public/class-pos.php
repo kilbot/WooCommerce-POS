@@ -15,7 +15,7 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION 	= '0.2.10';
+	const VERSION 	= '0.2.11';
 	const JQUERY 	= '2.1.0';
 
 	/**
@@ -78,7 +78,7 @@ class WooCommerce_POS {
 		add_action('template_redirect', array( $this, 'login') );
 
 		// allow access to the WC REST API 
-		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ) );
+		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 1 );
 				
 	}
 
@@ -165,7 +165,7 @@ class WooCommerce_POS {
 	 * Add rewrite rules for pos
 	 * @param  object $wp_rewrite
 	 */
-	public function generate_rewrite_rules($wp_rewrite) {
+	public function generate_rewrite_rules( $wp_rewrite ) {
 		$custom_page_rules = array(
 			'pos' => 'index.php?pos=1',
 		);
@@ -177,7 +177,7 @@ class WooCommerce_POS {
 	 * @param  array $public_query_vars
 	 * @return array
 	 */
-	public function add_query_vars($public_query_vars) {
+	public function add_query_vars( $public_query_vars ) {
 		$public_query_vars[] = "pos";
 		return $public_query_vars;
 	}
@@ -243,11 +243,19 @@ class WooCommerce_POS {
 	 * Bypass authenication for WC REST API
 	 * @return WP_User object
 	 */
-	public function wc_api_authentication() {
-		// giving admin and shop manager access to WC API
-		// TODO: check this is a good approach
-		if(current_user_can('manage_woocommerce_pos'))
-			return new WP_User(get_current_user_id());
+	public function wc_api_authentication( $user ) {
+
+		// make everyone admin :(
+		$admins = get_users( 'role=administrator&number=1' );
+		return $admins[0];
+
+		// // this doesn't work!! WC API has set current_user to 0?! 
+		// if( current_user_can( 'manage_woocommerce_pos' ) ) {
+		// 	return new WP_User( get_current_user_id() );
+		// } else {
+		// 	return $user;
+		// }
+
 	}
 	
 	/**

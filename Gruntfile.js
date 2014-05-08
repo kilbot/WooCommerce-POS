@@ -134,7 +134,7 @@ module.exports = function(grunt) {
                     sourceMap: true,
                     sourceMapName: 'public/assets/js/map/pos.map',
                     compress: {
-                        // drop_console: true
+                        drop_console: true
                     }
                 },
                 files: {
@@ -151,7 +151,7 @@ module.exports = function(grunt) {
                     sourceMap: true,
                     sourceMapName: 'admin/assets/js/map/admin.map',
                     compress: {
-                        // drop_console: true
+                        drop_console: true
                     }
                 },
                 files: {

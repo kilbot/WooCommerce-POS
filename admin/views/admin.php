@@ -104,8 +104,10 @@ if( version_compare( WC()->version, '2.1.0' ) >= 0 ) : ?>
 // end check woocommerce ?>
 
 <?php // check woocommerce api
-if( $api_on = check_api_access() ): ?>
-					<tr class="alternate"><td class="row-title">WooCommerce API</td><td>Enabled, says: <code style="font-size:0.8em"><?= $api_on; ?> ...</code></td></tr>			
+$api_on = check_api_access();
+$auth = check_api_authentication();
+if( $api_on ): ?>
+					<tr class="alternate"><td class="row-title">WooCommerce API</td><td>Enabled, says: <code style="font-size:0.8em"><?= $auth ? $auth : 'authentication error' ; ?> ...</code></td></tr>			
 <?php else: ?>
 					<tr class="alternate form-invalid"><td class="row-title">WooCommerce API</td><td>You need to enable the <a href="<?= admin_url('?page=wc-settings') ?>">WooCommerce REST API</a>.</td></tr>		
 <?php endif;
@@ -126,14 +128,6 @@ if( $orphans = find_orphans_variations() ): ?>
 					<tr><td class="row-title">Orphaned Variations</td><td>No orphans. That's a good thing.</td></tr>
 <?php endif; 
 // end check variation orphans  ?>
-
-<?php // check permalinks 
-if ( $shortcodes = find_shortcodes() ): ?>
-					<tr class="form-invalid"><td class="row-title">Shortcodes</td><td>Some of your products may contain a shortcode in the descriptions. This is probably not a problem, but can cause performance issues with the REST API. The post ids of products with shortcodes are: <code style="font-size:0.8em"><?= $shortcodes ?></code></td></tr>
-<?php else: ?>
-					<tr><td class="row-title">Shortcodes</td><td>No shortcodes in your product descriptions. This is a good thing.</td></tr>
-<?php endif; 
-// end check permalinks ?>
 
 				</tbody>
 			</table>

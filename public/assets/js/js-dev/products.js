@@ -16,7 +16,7 @@
 	var Products = Backbone.PageableCollection.extend({
 
 		url: '/wc-api/v1/products',
-		mode: "client", // server may be necessary for large shops, eg: 100+ products
+		mode: "server", // server may be necessary for large shops, eg: 100+ products
 
 		// Initial pagination states
 		state: {
@@ -26,8 +26,8 @@
 		// You can remap the query parameters from `state` keys from
 		// the default to those your server supports
 		queryParams: {
-			filter: {limit: -1},
-			// totalPages: null,
+			filter: {limit: 5},
+			totalPages: null,
 		},
 
 		// get the state from the server
@@ -155,10 +155,10 @@
 	});
 
 	// Initialize a client-side filter to filter on the client
-	var filter = new Backgrid.Extension.ClientSideFilter({
+	var filter = new Backgrid.Extension.ServerSideFilter({
 		collection: products,
-		fields: ['title'],
-		// name: "filter[q]",
+		// fields: ['title'],
+		name: "filter[q]",
 		placeholder: 'Search products',
 	});
 
