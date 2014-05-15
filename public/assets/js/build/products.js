@@ -44,7 +44,8 @@
 		database: database,
 		storeName: 'products',
 		model: Product,
-		mode: "client",
+		mode: 'client',
+		fields: 'title',
 
 		state: {
 			pageSize: 5,
@@ -55,27 +56,6 @@
 		initialize: function() { 
 			this.on('all', function(e) { console.log("Product Collection event: " + e); }); 
 		},
-
-		// clear: function( options ) {
-  //     		Backbone.sync('clear', this);
-  // 		},
-
-		// currentStatus : function(status){
-		// 	return _(this.filter(function(data) {
-		// 		return data.get("completed") == status;
-		// 	}));
-		// },
-
-		// search : function(letters){
-		// 	if(letters == "") return this;
-
-		// 	console.log('searching for '+letters);
-		// 	var pattern = new RegExp(letters,"gi");
-		// 	return _(this.filter(function(data) {
-		// 		console.log(pattern.test(data.get("title")));
-		// 		return pattern.test(data.get("title"));
-		// 	}));
-		// }
 
 	});
 	// set up the products collection
@@ -122,6 +102,7 @@
 
 		},
 
+		// TODO: clean this up, remove self references and _.each
 		render: function() {
 			console.log('render the products'); // debug
 			var self = this;
@@ -150,11 +131,116 @@
 	 Filter the Products
 	 borrows heavily from backgrid-filter.js
 	 =====================================*/ 
-	
-	$("#filter input[type=search]").on("keyup", function( e ) {
-		var filter = $(this).val();
-		products.search(filter);
+
+	var ProductFilter = Backbone.View.extend({
+		el: $('#filter'),
+		collection: products,
+		fields: ['title'],
+		events: {
+			'keydown input[type=search]': 'search',
+			'submit': function (e) {
+				e.preventDefault();
+				this.search();
+			},
+			'click a.clear': function (e) {
+        		e.preventDefault();
+        		this.clear();
+      		},
+		},
+		wait: 149,
+
+		initialize: function (options) {
+
+			this._debounceMethods(["search", "clear"]);
+
+			var collection = this.collection = this.collection.fullCollection || this.collection;
+			var shadowCollection = this.shadowCollection = collection.clone();
+
+			this.listenTo(collection, "add", function (model, collection, options) {
+				shadowCollection.add(model, options);
+			});
+			this.listenTo(collection, "remove", function (model, collection, options) {
+				shadowCollection.remove(model, options);
+			});
+			this.listenTo(collection, "sort", function (col) {
+				if (!this.searchBox().val()) { shadowCollection.reset(col.models); }
+			});
+			this.listenTo(collection, "reset", function (col, options) {
+				options = _.extend({reindex: true}, options || {});
+				if (options.reindex && options.from == null && options.to == null) {
+					shadowCollection.reset(col.models);
+				}
+			});
+		},
+
+		_debounceMethods: function (methodNames) {
+			if (_.isString(methodNames)) { methodNames = [methodNames]; }
+
+			this.undelegateEvents();
+
+			for (var i = 0, l = methodNames.length; i < l; i++) {
+				var methodName = methodNames[i];
+				var method = this[methodName];
+				this[methodName] = _.debounce(method, this.wait);
+			}
+
+			this.delegateEvents();
+		},
+
+		makeRegExp: function (query) {
+      		return new RegExp(query.trim().split(/\s+/).join("|"), "i");
+    	},
+
+    	makeMatcher: function (query) {
+			var regexp = this.makeRegExp(query);
+			return function (model) {
+				var keys = this.fields || model.keys();
+				for (var i = 0, l = keys.length; i < l; i++) {
+					if (regexp.test(model.get(keys[i]) + "")) { return true; }
+				}
+				return false;
+			};
+		},
+
+		searchBox: function () {
+			return this.$el.find("input[type=search]");
+		},
+
+		search: function () {
+			this.showClearButtonMaybe();
+			var matcher = _.bind(this.makeMatcher(this.searchBox().val()), this);
+			var col = this.collection;
+			if (col.pageableCollection) { col.pageableCollection.getFirstPage({silent: true}); }
+			col.reset(this.shadowCollection.filter(matcher), {reindex: false});
+		},
+
+		clearButton: function () {
+			return this.$el.find("a.clear");
+		},
+
+		clear: function () {
+			this.clearSearchBox();
+			var col = this.collection;
+			if (col.pageableCollection) { col.pageableCollection.getFirstPage({silent: true}); }
+			col.reset(this.shadowCollection.models, {reindex: false});
+		},
+
+		clearSearchBox: function() {
+			this.value = null;
+			this.searchBox().val(null);
+			this.showClearButtonMaybe();
+		},
+
+		showClearButtonMaybe: function () {
+			var $clearButton = this.clearButton();
+			var searchTerms = this.searchBox().val();
+			if (searchTerms) { $clearButton.show(); }
+			else { $clearButton.hide(); }
+		},
+
 	});
+
+	var productFilter = new ProductFilter();
 
 
 	/*======================================
@@ -222,6 +308,7 @@
 			return false;
 		},
 	});
+
 	var productPagination = new ProductPagination();
 
 
@@ -356,7 +443,7 @@
 			saveProducts( data ); 
 		}, function( err ) {
 			console.log( err );
-		})
+		});
 
 	}
 
@@ -381,7 +468,7 @@
 				error: function(model, response) {
 					console.log('error saving model: ' + response.title);
 				}
-			})
+			});
 		}
 	}
 
@@ -488,7 +575,7 @@
 	function getPosMeta(key) {
 		if ( !Modernizr.localstorage ) { return false; }
 		var value = localStorage.getItem('posMeta-' + key);
-		console.log('retrieved ' + key + ': ' + value);
+		// console.log('retrieved ' + key + ': ' + value);
 		return value;
 	}
 

@@ -3,7 +3,11 @@
 <main id="main" class="site-main" role="main">
 	<section class="col leftcol">
 	
-		<div id="filter"><i class="fa fa-search"></i><input type="search" placeholder="Search for products" tabindex="1"></div>
+		<div id="filter">
+			<i class="fa fa-search"></i>
+			<input type="search" placeholder="Search for products" tabindex="1">
+			<a class="clear" href="#"><i class="fa fa-times-circle fa-lg"></i></a>
+		</div>
 		<div id="products">
 			<table cellspacing="0">
 				<thead>

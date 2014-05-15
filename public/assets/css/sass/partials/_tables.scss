@@ -34,15 +34,35 @@ table {
         height: $vspacing*1.5;
         @include box-sizing(border-box);
         padding-left: 35px;
-        // padding-right: 10px;
+        padding-right: 35px;
+        -webkit-appearance: textfield;
+        &::-webkit-search-decoration {
+            -webkit-appearance: none;
+        }
+        &::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+        }
+        &::-ms-clear {
+            display: none;
+        }
     }
-    i {
+    i.fa-search {
         position: absolute;
         top: 0;
         left: 0;
         padding: 0 10px;
         margin: $vspacing/2 $vspacing/2;
         pointer-events: none;
+        line-height: $vspacing*1.5;
+    }
+    a.clear {
+        display: none;
+        color: $text-color;
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0 10px;
+        margin: $vspacing/2 $vspacing/2;
         line-height: $vspacing*1.5;
     }
 }
