@@ -30,6 +30,7 @@ class WooCommerce_POS_AJAX {
 			'get_cart_items'			=> true,
 			'get_cart_totals'			=> true,
 			'process_order'             => true,
+			'get_product_ids'			=> true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -45,7 +46,6 @@ class WooCommerce_POS_AJAX {
 	 * @return  Object JSON
 	 */
 	public function add_to_cart() {
-		global $woocommerce;
 
 		$product_id 	= $_REQUEST['add_to_cart'];
 		$quantity 		= 1;
@@ -190,6 +190,17 @@ class WooCommerce_POS_AJAX {
 
 		$this->json_headers();
 		echo json_encode( $receipt );
+
+		die();
+	}
+
+	public function get_product_ids() {
+
+		// get an array of product ids
+		$ids = WC_POS()->product->get_all_ids();
+
+		$this->json_headers();
+		echo json_encode( $ids );
 
 		die();
 	}

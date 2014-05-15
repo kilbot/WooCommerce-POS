@@ -117,12 +117,12 @@ a img {
 .comment-content:before,
 .site-header:before,
 .site-content:before,
-.site-footer:before, #products table tbody dl:before, .clear:after,
+.site-footer:before, #products table tbody dl:before, #pagination:before, .clear:after,
 .entry-content:after,
 .comment-content:after,
 .site-header:after,
 .site-content:after,
-.site-footer:after, #products table tbody dl:after {
+.site-footer:after, #products table tbody dl:after, #pagination:after {
   content: "";
   display: table;
 }
@@ -132,7 +132,7 @@ a img {
 .comment-content:after,
 .site-header:after,
 .site-content:after,
-.site-footer:after, #products table tbody dl:after {
+.site-footer:after, #products table tbody dl:after, #pagination:after {
   clear: both;
 }
 
@@ -388,6 +388,50 @@ textarea {
   /* Improves appearance and consistency in all browsers */
 }
 
+/* line 10, sass/partials/_forms.scss */
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  border: 1px solid #ccc;
+  border-color: #ccc #ccc #bbb #ccc;
+  border-radius: 3px;
+  background: #e6e6e6;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 15px 17px rgba(255, 255, 255, 0.5), inset 0 -5px 12px rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  /* Improves usability and consistency of cursor style between image-type 'input' and others */
+  -webkit-appearance: button;
+  /* Corrects inability to style clickable 'input' types in iOS */
+  font-size: 12px;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: .6em 1em .4em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* line 28, sass/partials/_forms.scss */
+button:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover,
+input[type="submit"]:hover {
+  border-color: #ccc #bbb #aaa #bbb;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 15px 17px rgba(255, 255, 255, 0.8), inset 0 -5px 12px rgba(0, 0, 0, 0.02);
+}
+
+/* line 35, sass/partials/_forms.scss */
+button:focus,
+input[type="button"]:focus,
+input[type="reset"]:focus,
+input[type="submit"]:focus,
+button:active,
+input[type="button"]:active,
+input[type="reset"]:active,
+input[type="submit"]:active {
+  border-color: #aaa #bbb #bbb #bbb;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
 /* line 46, sass/partials/_forms.scss */
 input[type="checkbox"],
 input[type="radio"] {
@@ -477,258 +521,138 @@ table th, table td {
 table th img, table td img {
   vertical-align: bottom;
   min-width: 60px;
+  max-width: 90px;
 }
-/* line 16, sass/partials/_tables.scss */
+/* line 17, sass/partials/_tables.scss */
 table td {
   border-bottom: 1px solid #eeeeee;
 }
 
-/* line 21, sass/partials/_tables.scss */
+/* line 22, sass/partials/_tables.scss */
 #products .loading {
   display: block;
   margin: 0 auto;
   padding: 50px 0;
 }
 
-/* line 27, sass/partials/_tables.scss */
-#products table {
-  padding-bottom: 0.75em;
+/* line 28, sass/partials/_tables.scss */
+#filter {
+  padding: 0.75em;
+  border-bottom: 1px solid #d4d4d4;
+  position: relative;
 }
-/* line 29, sass/partials/_tables.scss */
+/* line 32, sass/partials/_tables.scss */
+#filter input[type=search] {
+  width: 100%;
+  height: 2.25em;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-left: 35px;
+}
+/* line 39, sass/partials/_tables.scss */
+#filter i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0 10px;
+  margin: 0.75em 0.75em;
+  pointer-events: none;
+  line-height: 2.25em;
+}
+
+/* line 51, sass/partials/_tables.scss */
 #products table thead {
   display: none;
 }
-/* line 31, sass/partials/_tables.scss */
+/* line 53, sass/partials/_tables.scss */
 #products table tbody strong {
   display: block;
 }
-/* line 33, sass/partials/_tables.scss */
+/* line 55, sass/partials/_tables.scss */
 #products table tbody tr:nth-of-type(even) {
   background-color: white;
 }
-/* line 36, sass/partials/_tables.scss */
+/* line 58, sass/partials/_tables.scss */
 #products table tbody tr:nth-of-type(odd) {
   background-color: #f9f9f9;
 }
-/* line 40, sass/partials/_tables.scss */
+/* line 62, sass/partials/_tables.scss */
 #products table tbody tr:last-of-type td {
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 43, sass/partials/_tables.scss */
+/* line 65, sass/partials/_tables.scss */
 #products table tbody dl {
   width: 100%;
   font-size: 0.8em;
 }
-/* line 47, sass/partials/_tables.scss */
+/* line 69, sass/partials/_tables.scss */
 #products table tbody dl dt {
   font-weight: normal;
   float: left;
   width: 40%;
 }
-/* line 52, sass/partials/_tables.scss */
+/* line 74, sass/partials/_tables.scss */
 #products table tbody dl dd {
   float: right;
   margin: 0;
   width: 60%;
 }
 
-/* line 65, sass/partials/_tables.scss */
+/* line 84, sass/partials/_tables.scss */
+#pagination {
+  padding: 0.75em;
+  position: relative;
+}
+/* line 88, sass/partials/_tables.scss */
+#pagination small {
+  text-align: center;
+  display: block;
+  margin: 0 60px;
+  line-height: 1.3;
+}
+/* line 94, sass/partials/_tables.scss */
+#pagination div {
+  position: relative;
+  z-index: 99;
+}
+/* line 98, sass/partials/_tables.scss */
+#pagination span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+/* line 107, sass/partials/_tables.scss */
+#pagination.working {
+  background-color: rgba(125, 181, 0, 0.3);
+}
+/* line 109, sass/partials/_tables.scss */
+#pagination.working span {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+  opacity: 0.3;
+  background-image: url(../../../assets/bg-working.gif);
+}
+
+/* line 119, sass/partials/_tables.scss */
 #cart table tbody tr:last-of-type td {
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 68, sass/partials/_tables.scss */
+/* line 122, sass/partials/_tables.scss */
 #cart table tbody input[type=text] {
   width: 3em !important;
 }
-/* line 74, sass/partials/_tables.scss */
+/* line 128, sass/partials/_tables.scss */
 #cart table tfoot tr:last-of-type th, #cart table tfoot tr:last-of-type td {
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 80, sass/partials/_tables.scss */
+/* line 134, sass/partials/_tables.scss */
 #cart .actions {
   padding: 0.75em;
   text-align: right;
-}
-
-/**
- * Style for the product table filter and pagination
- */
-/* line 92, sass/partials/_tables.scss */
-.backgrid-paginator {
-  margin-bottom: 0.75em;
-}
-/* line 94, sass/partials/_tables.scss */
-.backgrid-paginator ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-}
-/* line 99, sass/partials/_tables.scss */
-.backgrid-paginator ul li {
-  display: inline;
-}
-
-/* line 105, sass/partials/_tables.scss */
-.backgrid-filter {
-  padding: 0.75em;
-  border-bottom: 1px solid #d4d4d4;
-}
-/* line 108, sass/partials/_tables.scss */
-.backgrid-filter span.search {
-  display: none;
-}
-/* line 109, sass/partials/_tables.scss */
-.backgrid-filter input[type=search] {
-  width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  padding-left: 35px;
-  padding-right: 10px;
-}
-/* line 115, sass/partials/_tables.scss */
-.backgrid-filter a.clear {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  color: #fff;
-  background-color: #ccc;
-  text-decoration: none;
-  display: block;
-  text-align: center;
-  width: 20px;
-  height: 20px;
-  font-size: 20px;
-  line-height: 1;
-  -moz-border-radius: 20px;
-  -webkit-border-radius: 20px;
-  border-radius: 20px;
-}
-
-/* line 132, sass/partials/_tables.scss */
-#filter {
-  position: relative;
-}
-/* line 134, sass/partials/_tables.scss */
-#filter .fa-search {
-  position: absolute;
-  top: 17px;
-  left: 20px;
-  height: 1em;
-  padding: 3px;
-  display: block;
-}
-
-/* line 152, sass/partials/_tables.scss */
-.backgrid-paginator a {
-  -moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
-  -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
-  box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
-  background-color: #eeeeee;
-  background: -moz-linear-gradient(top, #fbfbfb, #e1e1e1);
-  background: -webkit-linear-gradient(top, #fbfbfb, #e1e1e1);
-  background: linear-gradient(to bottom, #fbfbfb, #e1e1e1);
-  display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
-  *zoom: 1;
-  *display: inline;
-  border: 1px solid #d4d4d4;
-  height: 32px;
-  line-height: 32px;
-  padding: 0px 25.6px;
-  font-weight: 400;
-  font-size: 16px;
-  font-family: proxima-nova, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #666666;
-  text-shadow: 0 1px 1px white;
-  margin: 0;
-  text-decoration: none;
-  text-align: center;
-}
-/* line 170, sass/partials/_tables.scss */
-.backgrid-paginator a:hover {
-  background-color: #eeeeee;
-  background: -moz-linear-gradient(top, #ffffff, #dcdcdc);
-  background: -webkit-linear-gradient(top, #ffffff, #dcdcdc);
-  background: linear-gradient(to bottom, #ffffff, #dcdcdc);
-}
-/* line 174, sass/partials/_tables.scss */
-.backgrid-paginator a:active {
-  -moz-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
-  -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
-  box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4);
-  background: #eeeeee;
-  color: #bbbbbb;
-}
-/* line 180, sass/partials/_tables.scss */
-.backgrid-paginator a:focus {
-  outline: none;
-}
-
-/* line 185, sass/partials/_tables.scss */
-.backgrid-paginator li.active a {
-  -moz-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
-  -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
-  box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4);
-  background: #999999;
-  color: #eeeeee;
-}
-
-/* line 192, sass/partials/_tables.scss */
-.backgrid-paginator li.disabled a {
-  -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
-  opacity: 0.8;
-  background: #EEE;
-  border: 1px solid #DDD;
-  text-shadow: 0 1px 1px white;
-  color: #CCC;
-  cursor: default;
-  -webkit-appearance: none;
-}
-
-/* line 203, sass/partials/_tables.scss */
-.backgrid-paginator a {
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  -moz-transition-property: background;
-  -o-transition-property: background;
-  -webkit-transition-property: background;
-  transition-property: background;
-  -moz-transition-duration: 0.3s;
-  -o-transition-duration: 0.3s;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  background: #eeeeee;
-  border: none;
-  text-shadow: none;
-}
-/* line 212, sass/partials/_tables.scss */
-.backgrid-paginator a:hover {
-  background: #fbfbfb;
-}
-/* line 215, sass/partials/_tables.scss */
-.backgrid-paginator a:active {
-  -moz-transition-duration: 0s;
-  -o-transition-duration: 0s;
-  -webkit-transition-duration: 0s;
-  transition-duration: 0s;
-  background: #eeeeee;
-  color: #bbbbbb;
-}
-/* line 220, sass/partials/_tables.scss */
-.backgrid-paginator a.disabled {
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  -webkit-appearance: none;
 }
 
 /* Susy Settings =================================================== */

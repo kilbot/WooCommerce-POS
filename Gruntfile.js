@@ -1,4 +1,3 @@
-'use strict';
 module.exports = function(grunt) {
 
     // load all grunt tasks matching the `grunt-*` pattern
@@ -79,13 +78,17 @@ module.exports = function(grunt) {
                 "globals": {
                     "jQuery": true,
                     "alert": true,
-                    "pos_cart_params": true 
+                    "pos_cart_params": true,
+                    "Backbone": true,
+                    "Modernizr": true,
+                    "mediator": true,
+                    "_": true,
                 },
                 "force": true
             },
             all: [
                 'Gruntfile.js',
-                'public/assets/js/js-dev/**/*.js',
+                'public/assets/js/build/**/*.js',
                 'admin/assets/js/admin.js'
             ]
         },
@@ -106,11 +109,13 @@ module.exports = function(grunt) {
                         'public/assets/js/lib/mediator.init.js',
                         'public/assets/js/lib/underscore.js',
                         'public/assets/js/lib/backbone.js',
-                        'public/assets/js/lib/backbone-pageable.js',
-                        'public/assets/js/lib/backbone.localStorage.js',
-                        'public/assets/js/lib/backgrid.js',
-                        'public/assets/js/lib/backgrid-paginator.js',
-                        'public/assets/js/lib/backgrid-filter.js',
+                        'public/assets/js/lib/backbone.paginator.js',
+                        // 'public/assets/js/lib/backbone-pageable.js',
+                        // 'public/assets/js/lib/backbone.localStorage.js',
+                        'public/assets/js/lib/backbone-indexeddb.js',
+                        // 'public/assets/js/lib/backgrid.js',
+                        // 'public/assets/js/lib/backgrid-paginator.js',
+                        // 'public/assets/js/lib/backgrid-filter.js',
                     ]
                 }
             },
@@ -134,15 +139,15 @@ module.exports = function(grunt) {
                     sourceMap: true,
                     sourceMapName: 'public/assets/js/map/pos.map',
                     compress: {
-                        drop_console: true
+                        // drop_console: true
                     }
                 },
                 files: {
                     'public/assets/js/pos.min.js': [
-                        'public/assets/js/js-dev/global.js',
-                        'public/assets/js/js-dev/products.js',
-                        'public/assets/js/js-dev/cart.js',
-                        'public/assets/js/js-dev/checkout.js',
+                        'public/assets/js/build/global.js',
+                        'public/assets/js/build/products.js',
+                        'public/assets/js/build/cart.js',
+                        'public/assets/js/build/checkout.js',
                     ]
                 }
             },

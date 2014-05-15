@@ -25,12 +25,39 @@ class WooCommerce_POS_Product {
 	}
 
 	/**
+	 * Get all the product ids 
+	 * @return array
+	 */
+	public function get_all_ids() {
+
+		// set up the args
+		$args = array(
+			'posts_per_page' =>  -1,
+			'post_type' => array( 'product', 'product_variation' ),
+			'tax_query' => array(
+				array(
+					'taxonomy' 	=> 'product_type',
+					'field' 	=> 'slug',
+					'terms' 	=> array( 'variable' ),
+					'operator'	=> 'NOT IN'
+				)
+			),
+			'fields'        => 'ids', // only get post IDs.
+		);
+
+		return(get_posts( $args ));
+
+	}
+
+	/**
 	 * Get all the things
 	 * @param  $query 		the wordpress query
 	 */
 	public function get_all_products( $query ) {
 
 		// effects only requests from POS
+		// TODO: this needs to be less clumsy
+		// it effects going from pos to admin & shop
 		if( !WC_POS()->is_pos_referer() )
 			return;
 
@@ -58,7 +85,7 @@ class WooCommerce_POS_Product {
 	/**
 	 * Filter product response from WC REST API for easier handling by backbone.js
 	 * - unset unnecessary data
-	 * - flatten some nest arrays
+	 * - flatten some nested arrays
 	 * @param  array $product_data
 	 * @return array modified data array $product_data
 	 */

@@ -11,6 +11,7 @@ table {
 		img {
 			vertical-align: bottom;
 			min-width: 60px;
+            max-width: 90px;
 		}
 	}
 	td {
@@ -24,8 +25,29 @@ table {
     padding: 50px 0;
 }
 
+#filter {
+    padding: $vspacing/2 ;
+    border-bottom: 1px solid $border-dark;
+    position: relative;
+    input[type=search] {
+        width: 100%;
+        height: $vspacing*1.5;
+        @include box-sizing(border-box);
+        padding-left: 35px;
+        // padding-right: 10px;
+    }
+    i {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 0 10px;
+        margin: $vspacing/2 $vspacing/2;
+        pointer-events: none;
+        line-height: $vspacing*1.5;
+    }
+}
+
 #products table {
-	padding-bottom:  $vspacing/2;
 	thead { display: none; }
 	tbody {
         strong { display: block; }
@@ -59,6 +81,38 @@ table {
     }
 }
 
+#pagination {
+    @extend %clearfix;
+    padding: $vspacing/2;
+    position: relative;
+    small {
+        text-align: center;
+        display: block;
+        margin: 0 60px;
+        line-height: 1.3;
+    }
+    div {
+        position: relative;
+        z-index: 99;
+    }
+    span {
+        display: block;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+    }
+    &.working {
+        background-color: rgba(#7db500, 0.3);
+        span {
+            @include opacity(0.3);
+            background-image: url(../../../assets/bg-working.gif);
+        }
+    }
+}
+
 #cart {
     table {
         tbody {
@@ -82,143 +136,3 @@ table {
         text-align: right;
     }
 } 
-
-
-
-
-/**
- * Style for the product table filter and pagination
- */
-.backgrid-paginator {
-	margin-bottom:  $vspacing/2;
-	ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		text-align: center;
-		li {
-			display: inline;
-		}
-	}
-}
-
-.backgrid-filter {
-    padding: $vspacing/2 ;
-    border-bottom: 1px solid $border-dark;
-    span.search { display: none; }
-    input[type=search] {
-        width: 100%;
-        @include box-sizing(border-box);
-        padding-left: 35px;
-        padding-right: 10px;
-    }
-    a.clear { 
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        color: #fff;
-        background-color: #ccc;
-        text-decoration: none;
-        display: block;
-        text-align: center;
-        width: 20px;
-        height: 20px;
-        font-size: 20px;
-        line-height: 1;
-        @include border-radius(20px);
-    }
-}
-
-#filter {
-    position: relative;
-    .fa-search {
-        position: absolute;
-        top: 17px;
-        left: 20px;
-        height: 1em;
-        padding: 3px;
-        display: block;
-    }
-}
-
-$unicorn-btn-bgcolor: #EEE;
-$unicorn-btn-height: 32px;
-$unicorn-btn-font-color: #666;
-$unicorn-btn-font-size: 16px;
-$unicorn-btn-font-weight: 400;
-$unicorn-btn-font-family: proxima-nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
-
-
-.backgrid-paginator a {
-    @include box-shadow(inset 0px 1px 0px rgba(255, 255, 255, .5), 0px 1px 2px rgba(0, 0, 0, .15));
-    background-color: $unicorn-btn-bgcolor;
-    @include background(linear-gradient(top,  lighten($unicorn-btn-bgcolor, 5%), darken($unicorn-btn-bgcolor, 5%)));
-    @include inline-block(middle);
-    border: 1px solid darken($unicorn-btn-bgcolor, 10%);
-    height: $unicorn-btn-height;
-    line-height: $unicorn-btn-height;
-    padding: 0px ($unicorn-btn-height * .8);
-    font-weight: $unicorn-btn-font-weight;
-    font-size: $unicorn-btn-font-size;
-    font-family: $unicorn-btn-font-family;
-    color:  $unicorn-btn-font-color;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 1);
-    margin: 0;
-    text-decoration: none;
-    text-align: center;
-
-    &:hover {
-        background-color: $unicorn-btn-bgcolor;
-        @include background(linear-gradient(top,  lighten($unicorn-btn-bgcolor, 10%), darken($unicorn-btn-bgcolor, 7%)));
-    }
-    &:active {
-        @include box-shadow(inset 0px 1px 3px rgba(0, 0, 0, .3), 0px 1px 0px rgba(255, 255, 255, 1));
-        text-shadow: 0px 1px 0px rgba(255, 255, 255, .4);
-        background: desaturate($unicorn-btn-bgcolor, 20%);
-        color: darken($unicorn-btn-bgcolor, 20%);
-    }
-    &:focus {
-        outline: none;
-    }
-}
-
-.backgrid-paginator li.active a {
-    @include box-shadow(inset 0px 1px 3px rgba(0, 0, 0, .3), 0px 1px 0px rgba(255, 255, 255, 1));
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, .4);
-    background: lighten($unicorn-btn-font-color, 20%);
-    color: $unicorn-btn-bgcolor;
-}
-
-.backgrid-paginator li.disabled a {
-    @include box-shadow(0px 1px 2px rgba(0, 0, 0, .10));
-    @include opacity(.8);
-    background: #EEE;
-    border: 1px solid #DDD;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 1);
-    color: #CCC;
-    cursor: default;
-    -webkit-appearance: none;
-}
-
-.backgrid-paginator a {
-    $unicorn-btn-background: $unicorn-btn-bgcolor;
-    @include box-shadow(none);
-    @include transition-property(background);
-    @include transition-duration(.3s);
-    background: $unicorn-btn-background;
-    border: none;
-    text-shadow: none;
-
-    &:hover {
-        background: lighten($unicorn-btn-background, 5%);
-    }
-    &:active {
-        @include transition-duration(0s);
-        background: desaturate($unicorn-btn-background, 20%);
-        color: darken($unicorn-btn-background, 20%);
-    }
-    &.disabled {
-        @include box-shadow(none);
-        -webkit-appearance: none;
-    }
-}

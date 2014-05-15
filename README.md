@@ -62,6 +62,11 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 ## Changelog ##
 
+### 0.2.11 ###
+* Fix: Bug caused WC REST API authentication problems
+* Fix: Bug caused no shipping fees for all users
+* Tweak: Back to server side filtering until localstorage is complete
+
 ### 0.2.10 ###
 * New: Update cart quanitity
 * Tweak: Improvement to cart load time

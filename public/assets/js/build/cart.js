@@ -35,7 +35,7 @@
 		idAttribute: 'cart_item_key', // set cart_item_key as unique id
 
 		// debug
-		initialize: function() { this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); },
+		// initialize: function() { this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); },
 
 	});
 
@@ -46,7 +46,7 @@
 		url: pos_cart_params.ajax_url,
 
 		// debug
-		initialize: function() { this.on('all', function(e) { console.log("Item Collection event: " + e); }); },
+		// initialize: function() { this.on('all', function(e) { console.log("Item Collection event: " + e); }); },
 
 		parse: function(response){
 
@@ -72,7 +72,7 @@
 		initialize: function() {
 
 			// debug
-			this.on('all', function(e) { console.log("Individual Item View event: " + e); });
+			// this.on('all', function(e) { console.log("Individual Item View event: " + e); });
 
 			this.render();
 
@@ -286,7 +286,7 @@
 		},
 
 		// debug
-		initialize: function() { this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); },
+		// initialize: function() { this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); },
 
 	});
 
@@ -297,7 +297,7 @@
 		url: pos_cart_params.ajax_url,
 
 		// debug
-		initialize: function() { this.on('all', function(e) { console.log("Total Collection event: " + e); }); },
+		// initialize: function() { this.on('all', function(e) { console.log("Total Collection event: " + e); }); },
 
 		parse: function(response){
 
@@ -318,7 +318,7 @@
 		initialize: function() {
 
 			// debug
-			this.on('all', function(e) { console.log("Individual Total View event: " + e); });
+			// this.on('all', function(e) { console.log("Individual Total View event: " + e); });
 
 			this.render();
 
@@ -347,7 +347,7 @@
 		initialize: function() {
 
 			// debug
-			this.on('all', function(e) { console.log("Totals View event: " + e); });
+			// this.on('all', function(e) { console.log("Totals View event: " + e); });
 
 			// make a reference to the collection this view dances with
 			this.collection = cartTotals;

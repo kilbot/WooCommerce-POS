@@ -249,7 +249,7 @@ class WooCommerce_POS {
 		$admins = get_users( 'role=administrator&number=1' );
 		return $admins[0];
 
-		// // this doesn't work!! WC API has set current_user to 0?! 
+		// this doesn't work!! WC API has set current_user to 0?! 
 		// if( current_user_can( 'manage_woocommerce_pos' ) ) {
 		// 	return new WP_User( get_current_user_id() );
 		// } else {
