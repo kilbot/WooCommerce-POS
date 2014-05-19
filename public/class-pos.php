@@ -69,7 +69,7 @@ class WooCommerce_POS {
 		$this->includes();
 
 		// Load plugin text domain
-		//add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 		add_action( 'init', array( $this, 'init' ), 0 );
 
 		// Set up templates
@@ -278,7 +278,7 @@ class WooCommerce_POS {
 			$html = '
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/'.self::JQUERY.'/jquery.min.js"></script>
 	<!-- Modernizr: uses CSS 3D Transforms -->
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/vendor/modernizr.custom.js"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/vendor/modernizr.custom.min.js"></script>
 			';
 			echo $html;
 		}
@@ -299,13 +299,53 @@ class WooCommerce_POS {
 	 * @return [type] [description]
 	 */
 	public function pos_localize_script() {
+		$currency_pos = get_option( 'woocommerce_currency_pos' );
+		switch ( $currency_pos ) {
+			case 'left' :
+				$format = array('pos' => '%s%v', 'neg' => '- %s%v', 'zero' => '%s%v');
+			break;
+			case 'right' :
+				$format = array('pos' => '%v%s', 'neg' => '- %v%s', 'zero' => '%v%s');
+			break;
+			case 'left_space' :
+				$format = array('pos' => '%s&nbsp;%v', 'neg' => '- %s&nbsp;%v', 'zero' => '%s&nbsp;%v');
+			break;
+			case 'right_space' :
+				$format = array('pos' => '%v&nbsp;%s', 'neg' => '- %v&nbsp;%s', 'zero' => '%v&nbsp;%s');
+			break;
+		}
+
 		$js_vars = array(
-				'ajax_url' => admin_url( 'admin-ajax.php', 'relative' ),
-				'loading_icon' => $this->plugin_url . '/assets/ajax-loader.gif',
-			);
+			'ajax_url' => admin_url( 'admin-ajax.php', 'relative' ),
+			'loading_icon' => $this->plugin_url . '/assets/ajax-loader.gif',
+			'accounting' => array(
+				'settings' => array(
+					'currency' => array(
+						'symbol' => get_woocommerce_currency_symbol( get_woocommerce_currency() ),   
+						'format' => $format,
+						'decimal' => get_option( 'woocommerce_price_decimal_sep' ),  
+						'thousand'=> get_option( 'woocommerce_price_thousand_sep' ),  
+						'precision' => get_option( 'woocommerce_price_num_decimals' ),
+					),
+					'number' => array(
+						'precision' => get_option( 'woocommerce_price_num_decimals' ),  
+						'thousand'	=> '',
+						'decimal' 	=> get_option( 'woocommerce_price_decimal_sep' ),
+					)
+				)
+			),
+			'wc' => array(
+				'tax_label' => WC()->countries->tax_or_vat(), 
+				'calc_taxes' => get_option( 'woocommerce_calc_taxes' ),
+				'prices_include_tax' => get_option( 'woocommerce_prices_include_tax' ),
+				'tax_round_at_subtotal' => get_option( 'woocommerce_tax_round_at_subtotal' ),
+				'tax_display_cart' => get_option( 'woocommerce_tax_display_cart' ),
+				'tax_total_display' => get_option( 'woocommerce_tax_total_display' ),
+			),
+		);
 		$html = '
 			<script type="text/javascript">
-			var pos_cart_params = ' . json_encode($js_vars) . ';
+			var pos_cart_params = ' . json_encode($js_vars) . '
 			</script>
 		';
 		echo $html;

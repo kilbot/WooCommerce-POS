@@ -126,31 +126,41 @@ class WooCommerce_POS_Product {
 		} else {
 			$product_data['featured_src'] = WC_POS()->plugin_url . '/assets/placeholder.png';
 		}
+		
+		// if taxable, calculate taxes and add them to the product array
+		if( $product_data['taxable'] ) {
+			$taxes = $this->calc_line_taxes( $product_data['price'] );
+			$product_data['taxes'] = $taxes;
+			// error_log( print_R( $taxes, TRUE ) ); //debug
+		}
 
-		//
+		// remove some unnecessary keys
+		// - saves storage space in IndexedDB
+		// - saves bandwidth transferring the data
+		// eg: removing 'description' reduces object size by ~25%
 		$removeKeys = array(
-						'dimensions', 
-						'shipping_required',
-						'shipping_taxable',
-						'shipping_class',
-						'shipping_class_id',
-						'description',
-						'short_description',
-						'reviews_allowed',
-						'average_rating',
-						'rating_count',
-						'related_ids',
-						'upsell_ids',
-						'cross_sell_ids',
-						'tags',
-						'images',
-						'downloads',
-						'download_limit',
-						'download_expiry',
-						'download_type',
-						'weight',
-					);
-
+			'average_rating',
+			'cross_sell_ids',
+			'description',
+			'dimensions', 
+			'download_expiry',
+			'download_limit',
+			'download_type',
+			'downloads',
+			'images',
+			'parent',
+			'rating_count',
+			'related_ids',
+			'reviews_allowed',
+			'shipping_class',
+			'shipping_class_id',
+			'shipping_required',
+			'shipping_taxable',
+			'short_description',
+			'tags',
+			'upsell_ids',
+			'weight',
+		);
 		foreach($removeKeys as $key) {
 			unset($product_data[$key]);
 		}
@@ -158,4 +168,62 @@ class WooCommerce_POS_Product {
 		return $product_data;
 	}
 
+
+	/**
+	 * Calc line tax
+	 * based on the same function in woocommerce/includes/class-wc-ajax.php
+	 */
+	public function calc_line_taxes( $price ) {
+		global $wpdb;
+
+		$tax      = new WC_Tax();
+		$taxes    = array();
+		$itemized = array();
+
+		// calculate tax rates at store base
+		// this could be conditional on get_option for stores with more than one location
+		$base = get_option( 'woocommerce_default_country' );
+		if ( strstr( $base, ':' ) ) {
+			list( $country, $state ) = explode( ':', $base );
+		} else {
+			$country = $base;
+			$state = '';
+		}
+		$tax_rates = $tax->find_rates( array( 'country' => $country, 'state' => $state ) );
+
+		// get user settings
+		$price_includes_tax = get_option( 'woocommerce_prices_include_tax' ) == 'yes' ? true : false ;
+		$suppress_rounding = get_option( 'woocommerce_tax_round_at_subtotal' ) == 'yes' ? true : false ;
+
+		// calculate sales tax
+		$tax_itemized 	= $tax->calc_tax( $price, $tax_rates, $price_includes_tax, $suppress_rounding );
+		$tax_total 		= array_sum( $tax_itemized );
+
+		// create an array of itemized tax info
+		foreach ( array_keys( $tax_itemized ) as $key ) {
+
+			$item                        = array();
+			$item['rate_id']             = $key;
+			$item['name']                = $tax->get_rate_code( $key );
+			$item['label']               = $tax->get_rate_label( $key );
+			$item['compound']            = $tax->is_compound( $key ) ? 1 : 0;
+			$item['tax_amount']          = wc_format_decimal( isset( $tax_itemized[ $key ] ) ? $tax_itemized[ $key ] : 0 );
+
+			if ( ! $item['label'] ) {
+				$item['label'] = WC()->countries->tax_or_vat();
+			}
+
+			$itemized[$key] = $item;
+
+		}
+
+		// set up taxes array
+		$taxes['itemized'] = $itemized;
+		$taxes['total'] = $tax_total;
+
+		return $taxes;
+	}
+
 }
+
+

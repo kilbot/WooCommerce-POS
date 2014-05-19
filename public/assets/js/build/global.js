@@ -36,4 +36,10 @@ function tabIndexProducts() {
 	searchFocus();
 	tabIndexProducts();
 
+	/**
+	 * Autowidth for the cart inputs
+	 */
+	$('#cart input').autosizeInput();
+
+
 }(jQuery));

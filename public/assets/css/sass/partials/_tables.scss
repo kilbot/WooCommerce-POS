@@ -5,18 +5,38 @@ table {
 			border-bottom: 1px solid $border-dark;
 		}
 	}
-	th, td {
-		padding: $vspacing/2 !important;
-		vertical-align: middle;
-		img {
-			vertical-align: bottom;
-			min-width: 60px;
-            max-width: 90px;
-		}
-	}
-	td {
-		border-bottom: 1px solid $border-light;
-	}
+    tbody.empty tr { background-color: $even-background !important; }
+    tr {
+        &.odd { background-color: $odd-background; }
+        &.even { background-color: $even-background; }
+        th, td {
+            padding: $vspacing/2 !important;
+            vertical-align: middle;
+            img {
+                vertical-align: bottom;
+                min-width: 60px;
+                max-width: 90px;
+            }
+        }
+        td {
+            border-bottom: 1px solid $border-light;
+            dl {
+                @extend %clearfix;
+                width: 100%;
+                font-size: $small-font;
+                dt {
+                    font-weight: normal;
+                    float: left;
+                    padding-right: 5px;
+                    clear: left;
+                }
+                dd {
+                    float: left;
+                    margin: 0;
+                }
+            }
+        }
+    }
 }
 
 #products .loading {
@@ -82,22 +102,6 @@ table {
         tr:last-of-type td {
             border-bottom: 1px solid $border-dark;
         }
-        dl {
-            @extend %clearfix;
-            width: 100%;
-            font-size: $small-font;
-            dt {
-                font-weight: normal;
-                float: left;
-                width: 40%; 
-            }
-            dd {
-                 float: right;
-                 margin: 0;
-                 width: 60%; 
-            }
-        }
-
     }
 }
 
@@ -139,20 +143,39 @@ table {
             tr:last-of-type td {
                 border-bottom: 1px solid $border-dark;
             }
-            input[type=text] {
-                width: 3em !important;
-            }
-        }
-        tfoot {
-            tr:last-of-type {
-                th, td {
-                    border-bottom: 1px solid $border-dark;
+            input[type=number] {
+                text-align: center;
+                min-width: 2em;
+                width: 4em;
+                max-width: 6em;
+                background-color: $odd-background;
+                border: 1px solid $border-dark;
+                -moz-appearance: textfield;
+                // outline: none;
+                @include border-radius(16px);
+                &::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                &::-webkit-outer-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                &:hover {
+                    cursor: pointer;
                 }
             }
         }
-    }
-    .actions {
-        padding: $vspacing/2;
-        text-align: right;
+        tfoot {
+            th {
+                text-align: right;
+            }
+            tr.actions {
+                th, td {
+                    text-align: right;
+                    border-top: 1px solid $border-dark;
+                }
+            }
+        }
     }
 } 

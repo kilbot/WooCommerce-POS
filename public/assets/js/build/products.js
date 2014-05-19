@@ -7,9 +7,11 @@
 	'use strict';
 
 
-	/*======================================
+	/*============================================================================
 	 IndexedDB
-	 =====================================*/ 
+	 ===========================================================================*/ 
+
+	// the datbase object
 	var database = {
 		id: 'productsDB',
 		description: 'Products database',
@@ -28,10 +30,11 @@
 	};
 
 
-	/*======================================
-	 Display the Products
-	 =====================================*/
+	/*============================================================================
+	 Products List
+	 ===========================================================================*/
 
+	// storage for the product data
 	var Product = Backbone.Model.extend({
 		database: database,
 		storeName: 'products',
@@ -40,16 +43,18 @@
 		initialize: function() { this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); },
 	});
 
+	// the pageable product list
 	var Products = Backbone.PageableCollection.extend({
 		database: database,
 		storeName: 'products',
 		model: Product,
 		mode: 'client',
-		fields: 'title',
 
 		state: {
 			pageSize: 5,
 			totalRecords: null,
+			sortKey: "updated_at",
+    		order: 1
   		},
 
   		// debug
@@ -58,32 +63,44 @@
 		},
 
 	});
-	// set up the products collection
+	
+	// init the product list and make available elsewhere
 	var products = new Products();
 
-	// view holds individual cart items
+	// view for individual products
 	var ProductView = Backbone.View.extend({
 		tagName : 'tr',
 		model: new Product(),
 		template: _.template($('#tmpl-product').html()),
 
+		events: {
+			'click a.add-to-cart'	: 'addToCart',
+		},
+
 		initialize: function() {
 			this.model.on('all', function(e) { console.log("Product View event: " + e); }); // debug
-			// this.template = _.template($('#tmpl-product').html());
 		},
 
 		render: function() {
 			var item = this.model.toJSON();
+			console.log(item);
 			this.$el.html( ( this.template( item ) ) );
 			return this;
 		},
 
+		addToCart: function(e) {
+			e.preventDefault();
+			// send to the cart
+			mediator.publish("addToCart", this.model);
+		},
+
 	});
 
+	// pageable view for the entire list
 	var ProductListView = Backbone.View.extend({
 		el: $('#product-list'),
-		tagName: 'tbody',
 		model: products,
+		elEmpty: $('#product-list').contents().clone(),
 
 		initialize: function() {
 			this.model.on('all', function(e) { console.log("Product List event: " + e); }); // debug
@@ -92,9 +109,6 @@
 			// get products from indexedDB (if any)
 			products.fetch().done( function() {
 				console.log( 'init collection with ' + products.length + ' products from indexedDB' );
-
-				// init the pagination
-				
 			});
 
 			// sync products with the server on page load
@@ -102,23 +116,32 @@
 
 		},
 
-		// TODO: clean this up, remove self references and _.each
 		render: function() {
 			console.log('render the products'); // debug
-			var self = this;
-			// empty the #product-list tbody
-			self.$el.html( '' );
 
-			// loop through each model in the collection
-			_.each( this.model.toArray(), function ( product, i ) {
+			// if empty, add empty message
+			if( products.length === 0 ) {
+				this.emptyMessage();
 
-				// render each model row into single product view
-				var newProduct = new ProductView({ model: product });
-				self.$el.append( newProduct.render().$el );
+			// Else, clear the view ready for new products
+			} else {
+				this.$el.removeClass('empty').html('');
+			}
 
-			});
-			return this; // pass this total view context
+			// Loop through the collection
+			products.each(function( item ){
 
+				// Render each item model into this List view
+				var newProduct = new ProductView({ model : item });
+				this.$el.append( newProduct.render().el );
+
+			// Pass this list views context
+			}, this);
+
+		},
+
+		emptyMessage: function() {
+			this.$el.addClass('empty').html(this.elEmpty);
 		},
 
 	});
@@ -127,25 +150,20 @@
 	var productListView = new ProductListView();
 
 
-	/*======================================
-	 Filter the Products
+	/*============================================================================
+	 Product Filter
 	 borrows heavily from backgrid-filter.js
-	 =====================================*/ 
+	 ===========================================================================*/ 
 
+	// view attaches to the search field
 	var ProductFilter = Backbone.View.extend({
 		el: $('#filter'),
 		collection: products,
 		fields: ['title'],
 		events: {
 			'keydown input[type=search]': 'search',
-			'submit': function (e) {
-				e.preventDefault();
-				this.search();
-			},
-			'click a.clear': function (e) {
-        		e.preventDefault();
-        		this.clear();
-      		},
+			'submit'		: 'search',
+			'click a.clear'	: 'clear',
 		},
 		wait: 149,
 
@@ -206,7 +224,8 @@
 			return this.$el.find("input[type=search]");
 		},
 
-		search: function () {
+		search: function (e) {
+			if( typeof e !== 'undefined' ) { e.preventDefault(); }
 			this.showClearButtonMaybe();
 			var matcher = _.bind(this.makeMatcher(this.searchBox().val()), this);
 			var col = this.collection;
@@ -218,7 +237,8 @@
 			return this.$el.find("a.clear");
 		},
 
-		clear: function () {
+		clear: function (e) {
+			if( typeof e !== 'undefined' ) { e.preventDefault(); }
 			this.clearSearchBox();
 			var col = this.collection;
 			if (col.pageableCollection) { col.pageableCollection.getFirstPage({silent: true}); }
@@ -243,13 +263,13 @@
 	var productFilter = new ProductFilter();
 
 
-	/*======================================
-	 Pagination View
-	 =====================================*/
+	/*============================================================================
+	 Product Pagination
+	 ===========================================================================*/
 	
+	// view handles the pagination and page info
 	var ProductPagination = Backbone.View.extend({
 		el: $('#pagination'),
-		tagName: 'div',
 		template: _.template($('#tmpl-pagination').html()),
 
 		initialize: function() {
@@ -312,7 +332,7 @@
 	var productPagination = new ProductPagination();
 
 
-	/*======================================
+	/*============================================================================
 	 Server Sync
 	 1. get a list of all product ids from server
 	 2. check against ids in local db
@@ -320,7 +340,12 @@
 	 4. check for updates since last_update
 	 5. download products
 	 6. set updated products in local db
-	 =====================================*/ 
+
+	 TODO: chain an id audit on the end of the server sync to catch any problems
+	 closeSync() should fire always but errors need to display somewhere
+	 updated_at_min only takes 2014-04-04 can we go down to minutes, seconds?
+	 also need to look into server time versus local browser time, poss conflict
+	 ===========================================================================*/ 
 	
 	function productSync() {
 
@@ -356,7 +381,7 @@
 
 				// if we need less than 10, get less than 10
 				// if we need more than 10, get limit of 10 at a time
-				var limit = ( count < 10 ) ? count : 10 ;
+				var limit = ( count < 100 ) ? count : 100 ;
 
 				// queue the products to update
 				// calls to server will be asynchronous
@@ -375,7 +400,7 @@
 	/**
 	 * Get a number of products about to be returned
 	 * @param  int updated_at_min
-	 * @return int count
+	 * @return promise, then int count
 	 */
 	function getUpdatedCount(updated_at_min) {
 
@@ -396,10 +421,14 @@
 
 
 	/**
-	 * [queueProducts description]
-	 * @param  {[type]} count          [description]
-	 * @param  {[type]} limit          [description]
-	 * @param  {[type]} updated_at_min [description]
+	 * This breaks the product requests into manageable chunks for
+	 * the server. If a store has 1,000's of products the REST API 
+	 * will timeout. This is a bit of a work around.
+	 *
+	 * Returns a promise which resolves when all products are 
+	 * downloaded and saved.
+	 * 
+	 * @param  int count, limit, updated_at_min
 	 * @return promise
 	 */
 	function queueProducts(count, limit, updated_at_min) {
@@ -417,7 +446,7 @@
 		}
 		console.log(requests.length + ' ajax calls queued');
 		
-		return $.when.apply($, requests).done(function ( data ) {
+		return $.when.apply($, requests).always(function ( data ) {
     		console.log('All products retrieved and saved');
 		});
 		
@@ -441,8 +470,8 @@
 		return $.getJSON( '/wc-api/v1/products/', { 'filter[limit]': limit, 'filter[offset]': offset, 'filter[updated_at_min]': updated_at_min } )
 		.then( function( data ) { 
 			saveProducts( data ); 
-		}, function( err ) {
-			console.log( err );
+		}, function( jqXHR, textStatus, errorThrown ) {
+			alert( errorThrown );
 		});
 
 	}
@@ -474,12 +503,12 @@
 
 	/**
 	 * Check local product ids against a the server
-	 * @return jqxhr
+	 * @return promise, then array of ids
 	 */
 	function auditProducts() {
 
 		// get list of product ids from the server
-		var promise = $.getJSON( pos_cart_params.ajax_url , { 'action' : 'pos_get_product_ids' } )
+		return $.getJSON( pos_cart_params.ajax_url , { 'action' : 'pos_get_product_ids' } )
 		.then( function( sids ) {
 			if (sids instanceof Array) {  
 
@@ -504,14 +533,12 @@
 			console.log('incoming Text ' + jqXHR.responseText);
 			alert(errorThrown);
 		});
-
-		return promise;
 	}
 
 	/**
 	 * Remove the products the local database
 	 * @param  array expects and array of product ids
-	 * @return 
+	 * @return null
 	 */
 	function removeProducts(models) {
 		if (models instanceof Array) { 
@@ -522,7 +549,6 @@
 				products.remove(model);
 			}
 			console.log(i + ' products removed');
-			return;
 		}
 	}
 
@@ -539,16 +565,19 @@
 	}
 
 
-	/*======================================
+	/*============================================================================
 	 Helper Functions
-	 =====================================*/ 
+	 ===========================================================================*/ 
 
 	function deleteDB(dbObj) {
 		try {
+			// close any open connections
 			products.sync( 'closeall' );
 
+		    var indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB ;
+
 			// clobber the database 
-			var dbreq = window.indexedDB.deleteDatabase(dbObj.id);
+			var dbreq = indexedDB.deleteDatabase(dbObj.id);
 			dbreq.onsuccess = function (event) {
 				var db = event.result;
 				console.log("indexedDB: " + dbObj.id + " deleted");

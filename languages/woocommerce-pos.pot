@@ -1,0 +1,77 @@
+# Copyright (C) 2014 kilbot
+# This file is distributed under the GPL-2.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce POS (beta) 0.2.11\n"
+"Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
+"POT-Creation-Date: 2014-05-19 01:03:17+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Team Name <team@example.com>\n"
+
+#: admin/class-pos-admin.php:185 admin/class-pos-admin.php:186
+msgid "WooCommerce POS"
+msgstr ""
+
+#: admin/class-pos-admin.php:212
+msgid "Settings"
+msgstr ""
+
+#: admin/class-pos-admin.php:213
+msgid "View POS"
+msgstr ""
+
+#: public/views/cart.php:11
+msgid "Qty"
+msgstr ""
+
+#: public/views/cart.php:12 public/views/receipt.php:4
+msgid "Product"
+msgstr ""
+
+#: public/views/cart.php:13
+msgid "Price"
+msgstr ""
+
+#: public/views/cart.php:14 public/views/receipt.php:5
+msgid "Total"
+msgstr ""
+
+#: public/views/cart.php:20
+msgid "Cart is empty"
+msgstr ""
+
+#: public/views/cart.php:47
+msgid "Checkout"
+msgstr ""
+
+#: public/views/products.php:24
+msgid "No products"
+msgstr ""
+
+#: public/views/receipt.php:35
+msgid "Download file%s"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WooCommerce POS (beta)"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://woopos.com.au"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "A simple front-end for taking WooCommerce orders at the Point of Sale."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "kilbot"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.kilbot.com.au"
+msgstr ""

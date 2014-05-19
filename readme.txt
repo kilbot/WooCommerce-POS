@@ -60,6 +60,13 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.2.12 =
+* Improved: Product list now uses local IndexedDB for fast searching and filtering. Polyfill for webSQL
+* Improved: Cart logic now handled client-side, no more waiting for the server to respond
+* New: Pagination info and last update time added to the product list
+* New: Cart item price can now be changed
+* New: Added text domain, readying the plugin for translation
+
 = 0.2.11 =
 * Fix: Bug caused WC REST API authentication problems
 * Fix: Bug caused no shipping fees for all users

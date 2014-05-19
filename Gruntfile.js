@@ -110,12 +110,8 @@ module.exports = function(grunt) {
                         'public/assets/js/lib/underscore.js',
                         'public/assets/js/lib/backbone.js',
                         'public/assets/js/lib/backbone.paginator.js',
-                        // 'public/assets/js/lib/backbone-pageable.js',
-                        // 'public/assets/js/lib/backbone.localStorage.js',
                         'public/assets/js/lib/backbone-indexeddb.js',
-                        // 'public/assets/js/lib/backgrid.js',
-                        // 'public/assets/js/lib/backgrid-paginator.js',
-                        // 'public/assets/js/lib/backgrid-filter.js',
+                        'public/assets/js/lib/deep-model.js',
                     ]
                 }
             },
@@ -193,10 +189,28 @@ module.exports = function(grunt) {
             }
         },
 
+        // Localize
+        makepot: {
+            target: {
+                options: {
+                    cwd: '',
+                    domainPath: '/languages',
+                    mainFile: 'woocommerce-pos.php',
+                    potFilename: 'woocommerce-pos.pot',
+                    processPot: function( pot, options ) {
+                        pot.headers['report-msgid-bugs-to'] = 'https://github.com/kilbot/WooCommerce-POS/issues';
+                        pot.headers['language-team'] = 'Team Name <team@example.com>';
+                        return pot;
+                    },
+                    type: 'wp-plugin'
+                }
+            }
+        }
+
     });
 
 
     // register task
-    grunt.registerTask('default', ['wp_readme_to_markdown', 'compass', 'cssmin', 'jshint', 'uglify', 'watch']);
+    grunt.registerTask('default', ['makepot', 'wp_readme_to_markdown', 'compass', 'cssmin', 'jshint', 'uglify', 'watch']);
 
 };

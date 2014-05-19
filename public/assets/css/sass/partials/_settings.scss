@@ -3,30 +3,36 @@
  * Using the default Wordpress fonts and palette - it is known and familiar
  */
 
-// base typography
+/*============================================================================
+ Typography
+ ===========================================================================*/ 
 @import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
 
 $base-font: 'Open Sans', Sans-Serif;
 $header-font: $base-font;
 
 
-// heights & widths
+/*============================================================================
+Heights & Widths
+ ===========================================================================*/ 
 $vspacing: 1.5em;
 $btn-height: 32px; // needs to be in px to work across a, input, button etc
 $menu-panel-width: 200px;
 $small-font: 0.8em;
 
 
-// base color scheme
-
+/*============================================================================
+Base Colour Scheme
+ ===========================================================================*/ 
 $text-color: #444 !default; // main text color
 $icon-color: hsl( hue( $text-color ), 7%, 95% ) !default;
 $highlight-color: #0074a2 !default;
 $notification-color: #d54e21 !default;
 
 
-// global
-
+/*============================================================================
+ Global
+ ===========================================================================*/ 
 $body-background: #f1f1f1 !default;  
 
 $link-color: #0074a2 !default;
@@ -36,8 +42,9 @@ $button-color: $highlight-color !default;
 $form-checked: $highlight-color !default;
 
 
-// header & menu
-
+/*============================================================================
+ Header & Menu
+ ===========================================================================*/ 
 $base-color: #222 !default;	// block color for header, menu
 $menu-text: #eee !default; // menu text, contrast base-color
 $menu-icon: hsl( hue( $menu-text ), 7%, 95% ) !default;
@@ -59,18 +66,35 @@ $menu-submenu-focus-text: $highlight-color !default;
 $menu-submenu-current-text: $text-color !default;
 
 
-// Compass defaults
-
+/*============================================================================
+ Compass defaults
+ ===========================================================================*/ 
 $default-border-radius: 10px;
 
-// panels
 
+/*============================================================================
+ Panels
+ ===========================================================================*/ 
 $panel-border: #e5e5e5;
 $panel-background: #fff !default; 
  
-// tables 
 
+ /*============================================================================
+ Tables
+ ===========================================================================*/ 
 $border-light: #eee;
 $border-dark: darken($border-light, 10%);
 $even-background: #fff;
 $odd-background: #f9f9f9;
+
+
+/*============================================================================
+ Buttons
+ ===========================================================================*/ 
+$btn-bgcolor: #EEE;
+$btn-height: 32px;
+$btn-glow-color: #2c9adb;
+$btn-actions: ('primary' #00A1CB #FFFFFF) ('action' #7db500 #FFFFFF) ('highlight' #F18D05 #FFFFFF) ('caution' #E54028 #FFFFFF) ('royal' #87318C #FFFFFF) ;
+
+
+
