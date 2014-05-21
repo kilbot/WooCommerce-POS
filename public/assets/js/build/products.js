@@ -83,7 +83,6 @@
 
 		render: function() {
 			var item = this.model.toJSON();
-			console.log(item);
 			this.$el.html( ( this.template( item ) ) );
 			return this;
 		},
@@ -91,7 +90,7 @@
 		addToCart: function(e) {
 			e.preventDefault();
 			// send to the cart
-			mediator.publish("addToCart", this.model);
+			mediator.publish('addToCart', this.model);
 		},
 
 	});
@@ -485,11 +484,8 @@
 		console.log('saving ' + ajaxResponse.products.length + ' products' );
 
 		// for each product in the WC API response
-		// native js for loop performs best
-		for (var i = 0; i < ajaxResponse.products.length; i++) { 
-
-			var model = products.fullCollection.create( ajaxResponse.products[i],
-				{
+		_.each(ajaxResponse.products, function( product ) {
+			products.fullCollection.create( product, {
 				merge: true,
 				success: function(model, response) {
 					console.log('saved: ' + response.title);
@@ -497,8 +493,8 @@
 				error: function(model, response) {
 					console.log('error saving model: ' + response.title);
 				}
-			});
-		}
+			})
+		});
 	}
 
 	/**

@@ -32,14 +32,14 @@
 	</td>
 	<td class="price"><input type="number" value="<%= price %>" size="10" step="any" data-id="price"></td>
 	<td class="total">
-		<% if( discount !== 0) { %>
-			<del><%= prediscount %></del>
-			<ins><%= total %></ins>
+		<% if( typeof discounted !== 'undefined' ) { %>
+			<del><%= total %></del>
+			<ins><%= discounted %></ins>
 		<% } else { %>
 			<%= total %>
 		<% } %>
 	</td>
-	<td class="remove"><a class="btn btn-circle btn-flat-caution" href="#"><i class="fa fa-times"></i></a></td>
+	<td class="remove"><a class="btn btn-circle btn-danger" href="#"><i class="fa fa-times"></i></a></td>
 </script>
 
 <script type="text/template" id="tmpl-cart-total">
@@ -50,9 +50,8 @@
 <script type="text/template" id="tmpl-cart-action">
 	<tr class="actions">
 		<td colspan="5">
-			<button type="submit" class="btn btn-flat-action btn-checkout" name="pos_checkout" id="pos_checkout" value="checkout">
+			<button type="submit" class="btn btn-success btn-checkout" name="pos_checkout" id="pos_checkout" value="checkout">
 				<?php _e( 'Checkout', 'woocommerce-pos' ); ?> 
-				<i class="fa fa-chevron-right"></i>
 			</button>
 		</td>
 	</tr>

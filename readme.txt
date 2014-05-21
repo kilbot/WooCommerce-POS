@@ -1,6 +1,5 @@
 === WooCommerce POS (beta) ===
 Contributors: kilbot
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paul%40kilbot%2ecom%2eau
 Tags: woocommerce, pos, point-of-sale, vend, e-commerce
 Requires at least: 3.8
 Tested up to: 3.9
@@ -41,10 +40,6 @@ To install a WordPress Plugin manually:
 4. Go to Plugins screen and find the newly uploaded Plugin in the list.
 5. Click Activate Plugin to activate it.
 
-= Bleeding Edge = 
-1. Install WooCommerce POS as described above.
-2. Install [Wordpress Github Plugin Updater](https://github.com/jkudish/WordPress-GitHub-Plugin-Updater).
-3. Check for updates in your WordPress dashboard.
 
 == Frequently Asked Questions ==
 

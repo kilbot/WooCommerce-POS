@@ -88,34 +88,3 @@ html, body{
     left: $menu-panel-width;
     z-index: 9999;
 }
-
-/* User Actions =================================================== */
-#user-actions {
-    display: none;
-    background: $menu-background;
-    position: absolute;
-    right: 0;
-    top: $vspacing*1.5;
-    width: $menu-panel-width;
-
-    ul {
-        list-style: none;
-        margin: 0;
-        // margin-top: $vspacing*1.5;
-        padding: 0;
-
-        a {
-            display: block;
-            color: $menu-text;
-            padding: 0 $vspacing/2;
-            line-height: $vspacing*1.5;
-            // border-bottom: 1px solid rgba(0, 0, 0, .1);
-            border-top: 1px solid rgba(255, 255, 255, .1);
-            text-decoration: none; 
-            @include hoverActiveFocus {
-                background: $menu-highlight-background;
-                color: $menu-text;
-            }
-        }
-    }     
-}

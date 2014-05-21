@@ -13,5 +13,5 @@
 
 	</section><!-- /right col -->
 </main><!-- /main -->
-	
+
 <?php include_once( 'footer.php' ); ?>

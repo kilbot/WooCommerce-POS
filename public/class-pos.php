@@ -277,7 +277,7 @@ class WooCommerce_POS {
 		if($section == 'head') {
 			$html = '
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/'.self::JQUERY.'/jquery.min.js"></script>
-	<!-- Modernizr: uses CSS 3D Transforms -->
+	<!-- Modernizr: checks: indexeddb, websql, localstrorage and CSS 3D transforms -->
 	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/vendor/modernizr.custom.min.js"></script>
 			';
 			echo $html;

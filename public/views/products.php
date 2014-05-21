@@ -36,13 +36,13 @@
 		<small><%= managing_stock ? stock_quantity + ' in stock' : '' %></small>
 	</td>
 	<td class="price"><%= price_html %></td>
-	<td class="add"><a class="add-to-cart btn btn-circle btn-flat-action" href="#"><i class="fa fa-plus"></i></a></td>
+	<td class="add"><a class="add-to-cart btn btn-success btn-circle" href="#"><i class="fa fa-plus"></i></a></td>
 </script>
 
 <script type="text/template" id="tmpl-pagination">
 	<div>
-		<a href="#" class="prev btn btn-flat alignleft"><i class="fa fa-chevron-left"></i></a> 
-		<a href="#" class="next btn btn-flat alignright"><i class="fa fa-chevron-right"></i></a>
+		<a href="#" class="prev btn btn-default alignleft"><i class="fa fa-chevron-left"></i></a> 
+		<a href="#" class="next btn btn-default alignright"><i class="fa fa-chevron-right"></i></a>
 		<small>
 			Page <%= currentPage %> of <%= totalPages ? totalPages : 1 %>. Showing <%= currentRecords %> of <%= totalRecords ? totalRecords : 0  %> products. <br>
 			Last updated <%= last_update %>. <a href="#" class="sync"><i class="fa fa-refresh"></i> sync</a> | <a href="#" class="destroy"><i class="fa fa-times-circle"></i> clear</a>

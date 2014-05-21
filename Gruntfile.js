@@ -83,6 +83,7 @@ module.exports = function(grunt) {
                     "Modernizr": true,
                     "mediator": true,
                     "_": true,
+                    "accounting": true,
                 },
                 "force": true
             },
@@ -105,6 +106,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'public/assets/js/lib.min.js': [
+                        'public/assets/js/lib/IndexedDBShim.js',
                         'public/assets/js/lib/mediator.js',
                         'public/assets/js/lib/mediator.init.js',
                         'public/assets/js/lib/underscore.js',
@@ -112,6 +114,7 @@ module.exports = function(grunt) {
                         'public/assets/js/lib/backbone.paginator.js',
                         'public/assets/js/lib/backbone-indexeddb.js',
                         'public/assets/js/lib/deep-model.js',
+                        'public/assets/js/lib/backbone.bootstrap-modal.js',
                     ]
                 }
             },
@@ -125,8 +128,14 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'public/assets/js/plugins.min.js': [
-                        'public/assets/js/vendor/**/*.js',
-                        '!public/assets/js/vendor/modernizr*.js'
+                        'public/assets/js/vendor/accounting.js',
+                        'public/assets/js/vendor/alert.js',
+                        'public/assets/js/vendor/jquery.autosize.input.js',
+                        'public/assets/js/vendor/modal.js',
+                        'public/assets/js/vendor/tooltip.js',
+                        'public/assets/js/vendor/popover.js',
+                        'public/assets/js/vendor/pushy.js',
+                        'public/assets/js/vendor/dropdown.js',
                     ]
                 }
             },

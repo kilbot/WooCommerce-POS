@@ -1,4 +1,6 @@
-
+/**
+ * kilbot: I've added support for [type=number]
+ */
 var Plugins;
 (function (Plugins) {
     var AutosizeInput = (function () {

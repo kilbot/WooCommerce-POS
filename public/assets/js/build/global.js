@@ -1,45 +1,30 @@
 /**
- * Focus on search box
+ * 
  */
-function searchFocus() {
-	$('#filter input[type=search]').focus();
-}
-
-/**
- * Add tabindex to products
- */
-function tabIndexProducts() {
-	$('#products > tbody > tr').each( function( index ) {
-		$('.add-to-cart').attr( 'tabindex', index );
-	});
-}
-
 
 (function ( $ ) {
 	'use strict';
 
-	/**
-	 * User actions: logout
-	 */
-	$('#user-actions-btn, #user-actions').hover(
-		function () {
-			$('#user-actions').show();
-		},
-		function () {
-			$('#user-actions').hide();
-		}
-	);
+	/*============================================================================
+	 UI init
+	 ===========================================================================*/ 
+	
+	// put focus on the search
+	$('#filter input[type=search]').focus();
 
-	/**
-	 * Search box focus on page load
-	 */
-	searchFocus();
-	tabIndexProducts();
+	/*============================================================================
+	 Check browser support
+	 ===========================================================================*/ 
+	if( !Modernizr.indexeddb && !Modernizr.websqldatabase ) {
 
-	/**
-	 * Autowidth for the cart inputs
-	 */
-	$('#cart input').autosizeInput();
+		var init = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content">Hi!</div></div></div>');
+
+		$.get( pos_cart_params.ajax_url , { action: 'pos_get_modal', template: 'browser-support' } )
+		.done(function( data ) {
+			init.modal('show').find('.modal-content').html(data);
+		});
+
+	}
 
 
 }(jQuery));

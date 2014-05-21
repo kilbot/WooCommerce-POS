@@ -14,8 +14,8 @@ table {
             vertical-align: middle;
             img {
                 vertical-align: bottom;
-                min-width: 60px;
-                max-width: 90px;
+                // min-width: 60px;
+                // max-width: 90px;
             }
         }
         td {
@@ -35,6 +35,14 @@ table {
                     margin: 0;
                 }
             }
+        }
+        &:last-of-type th, &:last-of-type td {
+            border-bottom: 1px solid $border-dark;
+        }
+    }
+    tfoot {
+        th {
+            text-align: right;
         }
     }
 }
@@ -140,9 +148,6 @@ table {
 #cart {
     table {
         tbody {
-            tr:last-of-type td {
-                border-bottom: 1px solid $border-dark;
-            }
             input[type=number] {
                 text-align: center;
                 min-width: 2em;
@@ -167,9 +172,6 @@ table {
             }
         }
         tfoot {
-            th {
-                text-align: right;
-            }
             tr.actions {
                 th, td {
                     text-align: right;

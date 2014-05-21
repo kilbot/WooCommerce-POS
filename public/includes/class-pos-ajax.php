@@ -31,6 +31,7 @@ class WooCommerce_POS_AJAX {
 			'get_cart_totals'			=> true,
 			'process_order'             => true,
 			'get_product_ids'			=> true,
+			'get_modal'					=> true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -179,18 +180,11 @@ class WooCommerce_POS_AJAX {
 		// create order 
 		$checkout = new WooCommerce_POS_Checkout();
 		$order_id = $checkout ->create_order();
-		$order = new WC_Order( $order_id );
-
-		// return the receipt screen
-		ob_start();
-
-		include_once( dirname(__FILE__) . '/../views/receipt.php' );
-
-		$receipt = ob_get_clean();
 
 		$this->json_headers();
-		echo json_encode( $receipt );
-
+		
+		echo file_get_contents( WC_POS()->wc_api_url . 'orders/' . $order_id );
+		
 		die();
 	}
 
@@ -202,6 +196,12 @@ class WooCommerce_POS_AJAX {
 		$this->json_headers();
 		echo json_encode( $ids );
 
+		die();
+	}
+
+	public function get_modal() {
+
+		include_once( dirname(__FILE__) . '/../views/modal/' . $_REQUEST['template'] . '.php' );
 		die();
 	}
 

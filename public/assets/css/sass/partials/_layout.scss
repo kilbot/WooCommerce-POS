@@ -29,7 +29,7 @@ $desktop-wide 		: 1500px;
 }
 
 @include breakpoint($tablet) {
-	header .btn span {
+	header .btn-header span {
 		display: inline !important;
 	}
 	.leftcol {
@@ -73,12 +73,13 @@ header {
 			color: $link-focus;
 		}
 		// header buttons
-		&.btn {
+		&.btn-header {
 			color: $menu-text;
 			background-color: $menu-background;
 			padding: 0 $vspacing/2;
 			line-height: $vspacing*1.5;
 			height: auto;
+			display: block;
 			@include hoverActiveFocus {
 				background-color: $menu-highlight-background;
 				text-decoration: none;
@@ -87,11 +88,11 @@ header {
 				display: none;
 			}
 		}
-		&.btn-left {
-			@extend .alignleft;
-		}
-		&.btn-right {
-			@extend .alignright;
-		}
+	}
+}
+
+.pushy-active {
+	#menu-btn {
+		background-color: $menu-highlight-background;
 	}
 }

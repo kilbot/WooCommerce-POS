@@ -4,18 +4,25 @@
 
 // configure the style from settings
 @import "partials/settings";
-
-// reset styles should stay at the top
-@import "partials/reset";
-
-// move mixins to their own partial
 @import "partials/mixins";
 
-// now the rest
+// reset styles should stay at the top
+@import "partials/print";
+@import "partials/reset";
+
+// core css
 @import "partials/global";
 @import "partials/typography";
-@import "partials/forms";
-@import "partials/tables";
-@import "partials/layout";
 @import "partials/buttons";
+@import "partials/close";
+@import "partials/dropdowns";
+@import "partials/forms";
+@import "partials/layout";
 @import "partials/menu";
+@import "partials/tables";
+
+// js components
+@import "partials/alerts";
+@import "partials/modals";
+@import "partials/popovers";
+@import "partials/tooltip";
