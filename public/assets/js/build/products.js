@@ -493,7 +493,7 @@
 				error: function(model, response) {
 					console.log('error saving model: ' + response.title);
 				}
-			})
+			});
 		});
 	}
 

@@ -69,7 +69,8 @@ class WooCommerce_POS_Checkout {
 		update_post_meta( $order_id, '_prices_include_tax', 	get_option( 'woocommerce_prices_include_tax' ) );
 
 		// now final clean up before we hand off the order_id
-		
+		$order = new WC_Order( $order_id );                     
+		$order->update_status( 'completed', 'POS Transaction completed.' );
 
 		return $order_id;
 	}

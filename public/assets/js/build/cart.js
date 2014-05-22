@@ -2,6 +2,8 @@
  * 1. Display items in the cart
  * 2. Calculate totals
  * 3. Send cart to server
+ *
+ * TODO: tax calculations stink :(  needs to be cleaned up 
  */
 
 (function ( $ ) {
@@ -165,6 +167,8 @@
 
 			// grab the model
 			var item = this.model.toJSON();
+
+			item.price = displayLinePrice( this.model );
 
 			// format item price & total
 			if( item.discount !== 0 ) {
@@ -448,9 +452,14 @@
 			total = 0;
 
 		// if cart item is taxable, get tax
-		if( model.get('taxable') ) { tax = model.get('taxes').line_total } 
+		if( model.get('taxable') ) { tax = model.get('taxes').line_total; } 
 
-		if( wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'incl' ) {
+		if( wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl' ) {
+			tax = model.get('taxes').total;
+			total = ( price - tax ) * qty;
+		}
+
+		else if( wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'incl' ) {
 			total = ( qty * price ) - tax;
 		}
 
@@ -485,10 +494,6 @@
 			tax = ( tax / ( price - tax_total ) ) * ( price - tax_total - discount );
 		} 
 
-		// else if( discount !== 0 && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'incl' ) {
-		// 	tax = ( tax / price ) * ( price - discount );
-		// } 
-
 		else if( discount !== 0 ) {
 			tax = ( tax / price ) * ( price - discount );
 		}
@@ -510,7 +515,7 @@
 			discount = 0;
 
 		// if cart item is taxable, get tax
-		if( model.get('taxable') ) { tax = model.get('taxes').total } 
+		if( model.get('taxable') ) { tax = model.get('taxes').total; } 
 
 		// round price now if required
 		if( wc.round_at_subtotal === 'no' ) {
@@ -572,12 +577,35 @@
 	function displayLineTotal(model) {
 		var price = model.get('price'),
 			qty = model.get('qty'),
-			total = 0;
+			total = 0,
+			tax = 0;
 
-		total = price * qty;
+		if( model.get('taxable') ) { tax = model.get('taxes').total; } 
+
+		if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl'  ) {
+			total = ( price - tax ) * qty;
+		}
+
+		else {
+			total = price * qty;
+		}
 
 		return total;
 
+	}
+
+	function displayLinePrice(model) {
+		var price = model.get('price'),
+			tax = 0;
+
+		// if cart item is taxable, get tax
+		if( model.get('taxable') ) { tax = model.get('taxes').total; } 
+
+		if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl' ) {
+			price = price - tax;
+		}
+
+		return price;
 	}
 
 	/**
@@ -587,23 +615,20 @@
 	 */
 	function calcSubtotal(collection) {
 		var line_subtotal = 0,
-			line_discount = 0,
+			// line_discount = 0,
 			line_tax = 0,
 			subtotal = 0;
 
+		line_subtotal = _.reduce(collection.pluck('total'), function(memo, num){ return memo + num; }, 0);
+		// line_discount = _.reduce(collection.pluck('total_discount'), function(memo, num){ return memo + num; }, 0);
+
 		// if price includes tax: cart subtotal = sum(line_subtotal) + sum(line_tax)
 		if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'incl' ) {
-			line_subtotal = _.reduce(collection.pluck('total'), function(memo, num){ return memo + num; }, 0);
-			line_discount = _.reduce(collection.pluck('total_discount'), function(memo, num){ return memo + num; }, 0);
 			line_tax = _.reduce(collection.pluck('taxes.line_total'), function(memo, num){ return memo + num; }, 0);
-			subtotal = line_subtotal - line_discount + line_tax;
 		} 
 
-		// else: cart subtotal = sum(line_subtotal)
-		else {
-			line_subtotal = _.reduce(collection.pluck('total'), function(memo, num){ return memo + num; }, 0);
-			subtotal = line_subtotal;
-		}
+		// subtotal = line_subtotal - line_discount + line_tax;
+		subtotal = line_subtotal + line_tax;
 
 		return subtotal;
 	}
@@ -619,28 +644,14 @@
 			line_tax = 0,
 			total = 0;
 
-		// if price includes tax: cart total = sum(line_subtotal) - sum(line_discount) + sum(line_tax)
-		if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'incl' ) {
-			line_subtotal = _.reduce(collection.pluck('total'), function(memo, num){ return memo + num; }, 0);
-			line_discount = _.reduce(collection.pluck('total_discount'), function(memo, num){ return memo + num; }, 0);
-			line_tax = _.reduce(collection.pluck('taxes.line_total'), function(memo, num){ return memo + num; }, 0);
-			total = line_subtotal - line_discount + line_tax;
-		} 
+		line_subtotal = _.reduce(collection.pluck('total'), function(memo, num){ return memo + num; }, 0);
+		line_discount = _.reduce(collection.pluck('total_discount'), function(memo, num){ return memo + num; }, 0);
 
-		// if price includes tax: cart total = sum(line_subtotal) - sum(line_discount) + sum(line_tax)
-		else if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'no' && wc.tax_display_cart === 'excl' ) {
-			line_subtotal = _.reduce(collection.pluck('total'), function(memo, num){ return memo + num; }, 0);
-			line_discount = _.reduce(collection.pluck('total_discount'), function(memo, num){ return memo + num; }, 0);
+		if ( wc.calc_taxes === 'yes' ) {
 			line_tax = _.reduce(collection.pluck('taxes.line_total'), function(memo, num){ return memo + num; }, 0);
-			total = line_subtotal - line_discount + line_tax;
-		} 
-
-		// else: cart total = sum(line_subtotal) - sum(line_discount)
-		else {
-			line_subtotal = _.reduce(collection.pluck('total'), function(memo, num){ return memo + num; }, 0);
-			line_discount = _.reduce(collection.pluck('total_discount'), function(memo, num){ return memo + num; }, 0);
-			total = line_subtotal - line_discount;
 		}
+
+		total = line_subtotal - line_discount + line_tax;
 
 		return total;
 	}

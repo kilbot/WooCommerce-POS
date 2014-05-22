@@ -14,6 +14,8 @@
 		var wc = pos_cart_params.wc;
 	}
 
+	var cartTotal;
+
 	/*============================================================================
 	 The Receipt
 	 ===========================================================================*/
@@ -42,7 +44,6 @@
 			_.each( order.line_items, function( item ){
 
 				if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'incl' ) {
-
 					item.total = accounting.formatMoney( parseFloat(item.total) + parseFloat(item.total_tax) );
 				} else {
 					item.total = accounting.formatMoney( parseFloat(item.total) );
@@ -86,6 +87,12 @@
 			// total
 			this.$el.find('tfoot').append( this.total_template( { label: 'Total:', total: accounting.formatMoney( parseFloat(order.total) ) } ) );
 
+			// test WC vs POS total
+			console.log('wc: ' + order.total + ', pos: ' + cartTotal); //debug
+			if( parseFloat(order.total) !== parseFloat(cartTotal) ) {
+				this.$el.find('tfoot').append( '<tr><td colspan="3"><div class="alert alert-danger textcenter"><i class="fa fa-warning"></i> <strong>Total mismatch!</strong> The total calculated at the POS is different to the total calculated by WooCommerce. Please report this problem to <a href="mailto:support@woopos.com.au?subject=Total mismatch">support</a> so we can look into it.</div></td></tr>' );
+			}
+
 			return this;
 		},
 
@@ -96,7 +103,10 @@
 	 ===========================================================================*/ 
 
 	// subscribe to addToCart from the product list
-	mediator.subscribe('checkout', function( cartCollection, totalsCollection ){
+	mediator.subscribe('checkout', function( cartCollection, cartTotals ){
+
+		// set the cartTotal variable
+		cartTotal = accounting.formatNumber( cartTotals.get('Total:').toJSON().total );
 
 		// pick the data from the cartCollection we are going to send
 		var items = cartCollection.map(function(model) {
@@ -112,13 +122,13 @@
 				// okText: 'New Order',
 				// cancelText: false,
 				// allowCancel: false,
-				template: _.template('\
-					<div class="modal-dialog"><div class="modal-content">\
-					<div class="modal-header"><h4>Order ' + data.order.order_number + '</h4></div>\
-					<div class="modal-body" style="padding:0">{{content}}</div>\
-					<div class="modal-footer"><a href="#" class="btn ok btn-primary">New Order</a></div>\
-					</div></div>\
-				'),
+				template: _.template(
+					'<div class="modal-dialog"><div class="modal-content">' + 
+					'<div class="modal-header"><h4>Order ' + data.order.order_number + '</h4></div>' +
+					'<div class="modal-body" style="padding:0">{{content}}</div>' +
+					'<div class="modal-footer"><a href="#" class="btn ok btn-primary">New Order</a></div>' +
+					'</div></div>'
+				),
 			}).open();
 		})
 		.fail(function( jqXHR, textStatus, errorThrown ) {

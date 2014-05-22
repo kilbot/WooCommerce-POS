@@ -49,11 +49,6 @@ class WooCommerce_POS {
 	public $product = null;
 
 	/**
-	 * @var WooCommerce_POS_Cart $cart
-	 */
-	public $cart = null;
-
-	/**
 	 * Initialize WooCommerce_POS
 	 */
 	private function __construct() {
@@ -149,7 +144,6 @@ class WooCommerce_POS {
 
 	private function includes() {
 		include_once( 'includes/class-pos-product.php' );
-		include_once( 'includes/class-pos-cart.php' );
 		include_once( 'includes/class-pos-checkout.php' );
 		if ( defined( 'DOING_AJAX' ) ) {
 			include_once( 'includes/class-pos-ajax.php' );
@@ -158,7 +152,6 @@ class WooCommerce_POS {
 
 	public function init() {
 		$this->product  = new WooCommerce_POS_Product();
-		$this->cart     = new WooCommerce_POS_Cart();
 	}
 
 	/**
