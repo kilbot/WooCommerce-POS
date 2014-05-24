@@ -34,38 +34,39 @@
 
 		// debug
 		initialize: function() { 
-			this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
+			// this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
 
-			// update cart item subtotals
-			this.listenTo(this, 'add change:qty change:discount', this.update );
+			// update line item subtotals
+			this.listenTo( this, 'add change:qty change:discount', this.updateLineTotals );
 			
 		},
 
-		// Set the total for the cart item ( input price x quantity )
-		update: function() {
+		// 
+		updateLineTotals: function() {
+			var qty = this.get('qty');
 
 			// do taxes first
 			if( this.get('taxable') ) {
 				var tax_total = calcTaxLineTotal( this );
 				this.set('taxes.line_total', tax_total);
+				this.set('taxes.line_subtotal', this.get('taxes.total') * qty )
 
 				// if itemized
 				if( wc.tax_total_display === 'itemized' ) {
 					var itemized = this.get('taxes').itemized;
 					_.each(itemized, function(tax_rate) {
 						this.set('taxes.itemized.' + tax_rate.rate_id + '.line_total', calcTaxLineTotal( this, tax_rate.tax_amount ) );
+						this.set('taxes.itemized.' + tax_rate.rate_id + '.line_subtotal', tax_rate.tax_amount * qty );
 					}, this);
 				}
 			}
 
 			// update discount
-			this.set('total_discount', this.get('qty') * this.get('discount') );
+			this.set('total_discount', this.get('discount') * qty );
 
-			// update total
-			var total = calcLineTotal(this, false);
+			// update line total
+			var total = calcLineTotal(this);
 			this.set('total', total);
-
-
 		},
 
 		// Increase or decrease the quantity
@@ -84,63 +85,6 @@
   		// debug
 		initialize: function() { 
 			this.on('all', function(e) { console.log("Cart Collection event: " + e); }); // debug
-
-			// update cart totals
-			this.listenTo( this, 'add change:qty change:discount remove', this.updateTotals );
-		},
-
-		// update the CartTotals model
-		updateTotals: function() {
-
-			// if cart is empty, clear the models and bail
-			if(this.length === 0) {
-				cartTotals.removeAll();
-				return;
-			}
-
-			var totals = [], // the totals array
-				subtotal = calcSubtotal( this ),
-				cartdiscount = calcCartDiscount( this ),
-				tax_total = calcTaxTotal( this ),
-				tax_labels = this.tax_labels(),
-				total = calcTotal( this );
-
-			// add subtotal
-			totals.push( { label: 'Subtotal:', total: subtotal } );
-
-			// add discount
-			if( cartdiscount !== 0 ) {
-				totals.push( { label: 'Cart Discount:', total: cartdiscount } );
-			}
-
-			// add tax
-			if( wc.calc_taxes === 'yes' && tax_total > 0 ) {
-				if (wc.tax_total_display === 'itemized') {
-					_.each(tax_labels, function(tax) {
-						totals.push( { label: tax.label + ':', total: calcTaxTotal( this, tax.id ) } );
-					}, this);
-				}
-				else {
-					totals.push( { label: wc.tax_label + ':', total: tax_total } );
-				}
-			}
-
-			// add total
-			totals.push( { label: 'Total:', total: total } );
-
-			// update the CartTotals model
-			// update all at once so there is only one change event
-			cartTotals.set( totals );
-		},
-
-		// get the tax ids and labels (from the first item in cart, should be same for all items)
-		tax_labels: function() {
-			var labels = [];
-			var taxes = this.at(0).get('taxes.itemized');
-			_.each(taxes, function(tax) {
-				labels.push( { id: tax.rate_id, label: wc.tax_label + ' (' + tax.label + ')' });
-			});
-			return labels;
 		},
 
 	});
@@ -185,8 +129,9 @@
 			// render the single cart item
 			this.$el.html( ( this.template( item ) ) );
 
-			// add a fucntion to autosize the Qty & Price inputs
-			this.$el.find('input[type=number]').autosizeInput();
+			// add a function to autosize the Qty & Price inputs
+			this.$('input[type=number]').autoGrowInput();
+
 			return this;
 		},
 
@@ -210,7 +155,7 @@
 			switch( key ) {
 				case 'qty':
 					if ( value === this.model.get('qty') ) { break; }
-					if ( value === '0' ) {
+					if ( value === 0 ) {
 						this.removeFromCart();
 						break;
 					}
@@ -244,18 +189,16 @@
 	var CartItemsView = Backbone.View.extend({
 		el: $('#cart-items'),
 		elEmpty: $('#cart-items').contents().clone(),
-		// model: cartItems,
 
 		initialize: function() {
 
 			// listen for changes
 			this.listenTo(cartItems, 'add', this.addOne);
 			this.listenTo(cartItems, 'reset', this.addAll);
-			this.listenTo(cartItems, 'all', this.render);			
+			this.listenTo(cartItems, 'remove', this.render);			
 		},
 
 		render: function() {
-			console.log('render the cart items'); // debug
 
 			// if empty, add empty message
 			if( cartItems.length === 0 ) {
@@ -269,7 +212,6 @@
 			// if first, remove empty message and init the totals view
 			if( cartItems.length === 1 ) {
 				this.$el.removeClass('empty').html('');
-				var cartTotalsView = new CartTotalsView();
 			}
 
 			// create a new CartItemView
@@ -303,27 +245,115 @@
 	 ===========================================================================*/
 
 	var CartTotal = Backbone.Model.extend({
+		defaults: {
+			label: '',
+			total: 0.00
+		},
 		idAttribute: 'label',
 
-		initialize: function() {
-			this.on('all', function(e) { console.log("Totals Model: " + e); }); // debug
-		}
+		initialize: function() { 
+			// this.on('all', function(e) { console.log(this.get('label') + " event: " + e); }); // debug
+		},
 	});
 
 	var CartTotals = Backbone.Collection.extend({
 		model: CartTotal,
+		comparator: 'id', // order by id
 
 		// debug
 		initialize: function() { 
-			this.on('all', function(e) { console.log("Total Collection event: " + e); }); // debug
+			// this.on('all', function(e) { console.log("Total Collection event: " + e); }); // debug
+			
+			// listen to line_totals, update subtotal on change or remove
+			this.listenTo( cartItems, 'change remove', this.updateTotals );
 		},
 
-		removeAll: function() {
-			this.each( function(item) {
-				this.remove( item );
-			}, this);
+		updateTotals: function() {
+			var totals = [],
+				subtotal_sum = 0,
+				discount_sum = 0,
+				tax_sum = 0,
+				total_sum =0,
+				tax_labels = [];
 
+			// clear the totals
 			this.reset();
+
+			// bail if the cart is empty
+			if( cartItems.length === 0 ) { 
+				return; 
+			} 
+
+			// sum up the line totals
+			subtotal_sum = _.reduce( cartItems.pluck('total'), function(memo, num){ return memo + num; }, 0 );
+			totals.push( { id: 1, label: 'Subtotal:', total: subtotal_sum } );
+
+			// sum the line discounts
+			discount_sum = _.reduce( cartItems.pluck('total_discount'), function(memo, num){ return memo + num; }, 0 );
+			if( discount_sum !== 0 ) {
+				totals.push( { id: 2, label: 'Cart Discount:', total: discount_sum } );
+			} 
+
+			// sum up the line totals
+			if( wc.calc_taxes === 'yes' ) {
+				tax_labels = this.tax_labels();
+				tax_sum = _.reduce( cartItems.pluck('taxes.line_total'), function(memo, num){ return memo + num; }, 0 );
+				if( tax_sum !== 0 ) {
+					if (wc.tax_total_display === 'itemized') {
+						_.each(tax_labels, function(tax) {
+							var i = 3;
+							tax_sum = _.reduce( cartItems.pluck('taxes.itemized.' + tax.id + '.line_total' ), function(memo, num){ return memo + num; }, 0 );
+							totals.push( { id: i, label: tax.label, total: tax_sum } );
+							i++;
+						}, this);
+					}
+					else {
+						totals.push( { id: 3, label: tax_labels[0].label, total: tax_sum } );
+					}
+				}
+			}
+
+			// special case for cart includes tax
+			if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'no' && wc.tax_display_cart === 'incl' ) {
+				tax_sum = _.reduce( cartItems.pluck('taxes.line_subtotal'), function(memo, num){ return memo + num; }, 0 );
+				totals[0].total = subtotal_sum + tax_sum;
+			}
+
+			else if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'incl' ) {
+				tax_sum = _.reduce( cartItems.pluck('taxes.line_total'), function(memo, num){ return memo + num; }, 0 );
+				totals[0].total = subtotal_sum + tax_sum;
+			}
+
+			// remove the old total, add up the totals and set the new total
+			total_sum = subtotal_sum - discount_sum + tax_sum;
+			totals.push( { id: 100, label: 'Total:', total: total_sum } );
+
+			// update the CartTotals models
+			this.reset( totals );
+
+		},
+
+		// get the tax ids and labels 
+		// TODO: what happens if first item not taxable???
+		tax_labels: function() {
+			var labels = [],
+				prefix = '';
+			var taxes = cartItems.at(0).get('taxes.itemized');
+
+			// special case for cart includes tax
+			if( wc.calc_taxes === 'yes' && wc.tax_display_cart === 'incl' ) {
+				prefix = 'includes ';
+			}
+
+			if( wc.tax_total_display === 'itemized' ) {
+				_.each(taxes, function(tax) {
+					labels.push( { id: tax.rate_id, label: prefix + wc.tax_label + ' (' + tax.label + '):' });
+				});
+			}
+			else {
+				labels.push( { id: 0, label: prefix + wc.tax_label + ':' });
+			}
+			return labels;
 		},
 
 	});
@@ -331,14 +361,10 @@
 	// the view contining a single total
 	var CartTotalView = Backbone.View.extend({
 		tagName : 'tr',
-		// model: new CartTotal(),
-		model: CartTotal,
 		template: _.template($('#tmpl-cart-total').html()),
 
 		initialize: function() {
 
-			// listen for changes to CartItem model
-			this.listenTo( this.model, 'add change', this.render );
 		},
 
 		render: function() {
@@ -374,16 +400,10 @@
 		},
 
 		initialize: function() {
-
-			this.listenTo(cartTotals, 'all', this.render);	
-			
-			// render on init
-			this.render();
+			this.listenTo( cartTotals, 'reset', this.render );
 		},
 
 		render: function() {
-
-			console.log('render the totals'); // debug
 
 			this.$el.removeClass('empty').html('');
 
@@ -411,8 +431,11 @@
 	});
 
 
-	// init the collection and make available elsewhere
+	// init the cart total collection and make available elsewhere
 	var cartTotals = new CartTotals();
+
+	// itit the cart total view
+	var cartTotalsView = new CartTotalsView();
 
 
 	/*============================================================================
@@ -442,29 +465,21 @@
 
 	/**
 	 * Calculate the line total
-	 * @param  {object} model           the product
-	 * @return {float}                  the total
+	 * @param  {object} model 	the product
+	 * @return {float} total 	the total
 	 */
-	function calcLineTotal(model) {
-		var qty = model.get('qty'),
-			price = model.get('price'),
+	function calcLineTotal(product) {
+		var qty = product.get('qty'),
+			price = product.get('price'),
 			tax = 0,
 			total = 0;
 
 		// if cart item is taxable, get tax
-		if( model.get('taxable') ) { tax = model.get('taxes').line_total; } 
-
-		if( wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl' ) {
-			tax = model.get('taxes').total;
-			total = ( price - tax ) * qty;
-		}
-
-		else if( wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'incl' ) {
-			total = ( qty * price ) - tax;
-		}
-
-		//
-		else {
+		if( product.get('taxable') ) { tax = product.get('taxes').line_total; } 
+		
+		if( wc.prices_include_tax === 'yes' ) {
+			total = (qty * price) - tax;
+		} else {
 			total = qty * price;
 		}
 
@@ -479,18 +494,22 @@
 	/**
 	 * Calculate the line item tax total
 	 * @param  {object} model 	the product
-	 * @return {float} line_total
+	 * @return {float} line_total tax
 	 */
 	function calcTaxLineTotal(model, itemized) {
-		var tax_total = model.get('taxes').total,
-			price = model.get('price'),
-			discount = model.get('discount'),
-			qty = model.get('qty'),
-			line_total = 0;
+		var tax_total = parseFloat( model.get('taxes.total') ),
+			price = parseFloat( model.get('price') ),
+			discount = parseFloat( model.get('discount') ),
+			qty = parseFloat( model.get('qty') );
 
 		var tax = typeof itemized !== 'undefined' ? itemized : tax_total ; // default is the total tax
 
-		if( discount !== 0 && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl' ) {
+
+		if( discount !== 0 && wc.prices_include_tax === 'no' && wc.tax_display_cart === 'incl' ) {
+			tax = ( tax / ( price + tax_total ) ) * ( price + tax_total - discount );
+		}
+
+		else if( discount !== 0 && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl' ) {
 			tax = ( tax / ( price - tax_total ) ) * ( price - tax_total - discount );
 		} 
 
@@ -498,9 +517,7 @@
 			tax = ( tax / price ) * ( price - discount );
 		}
 
-		line_total = tax * qty;
-
-		return line_total;
+		return tax * qty;
 	}
 
 	/**
@@ -509,64 +526,51 @@
 	 * @param  {object}	model	the product 
 	 * @return {float} discount 
 	 */
-	function calcLineDiscount(price, model) {
-		var original = model.get('price'),
+	function calcLineDiscount(newprice, model) {
+		var original = parseFloat( model.get('price') ),
 			tax = 0,
 			discount = 0;
 
 		// if cart item is taxable, get tax
-		if( model.get('taxable') ) { tax = model.get('taxes').total; } 
+		if( model.get('taxable') ) { tax = parseFloat( model.get('taxes.total') ); } 
 
-		// round price now if required
+		if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'no' && wc.tax_display_cart === 'incl' ) {
+			discount = original + tax - newprice;
+		}
+
+		else if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl' ) {
+			discount = original - tax - newprice;
+		}
+
+		else {
+			discount = original - newprice;
+		}
+
+		// round discount if required
 		if( wc.round_at_subtotal === 'no' ) {
-			original = accounting.formatNumber(original);
-		}
-
-		if( wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl' ) {
-			discount = ( original - tax ) - price;
-		}
-		else {
-			discount = original - price;
+			discount = accounting.formatNumber(discount);
 		}
 
 		return discount;
 	}
 
 
+	function displayLinePrice(model) {
+		var price = parseFloat( model.get('price') ),
+			tax = 0;
 
-	/**
-	 * Loop over all items in cart and calculate the discounts
-	 * @param  {object} collection 	the cart items
-	 * @return {float} discount
-	 */
-	function calcCartDiscount(collection) {
-		var discount = 0;
+		// if cart item is taxable, get tax
+		if( model.get('taxable') ) { tax = parseFloat( model.get('taxes.total') ); } 
 
-		// cart discount = sum(total_discount)
-		discount = _.reduce(collection.pluck('total_discount'), function(memo, num){ return memo + num; }, 0);
-
-		return discount;
-	}
-
-	/**
-	 * Loop over all items in cart and calculate the tax
-	 * @param  {object} collection 	the cart items 
-	 * @return {float} tax
-	 */
-	function calcTaxTotal(collection, rate_id) {
-		var tax = 0;
-
-		// if rate_id is specified, then sum total tax for that id
-		if( typeof rate_id !== 'undefined' ) {
-			tax = _.reduce(collection.pluck('taxes.itemized.' + rate_id + '.line_total'), function(memo, num){ return memo + num; }, 0);
+		if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'no' && wc.tax_display_cart === 'incl' ) {
+			price = price + tax;
 		}
 
-		// else, just sum the total tax
-		else {
-			tax = _.reduce(collection.pluck('taxes.line_total'), function(memo, num){ return memo + num; }, 0);
+		else if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl' ) {
+			price = price - tax;
 		}
 
-		return tax;
+		return price;
 	}
 
 	/**
@@ -575,14 +579,18 @@
 	 * @return {float} subtotal
 	 */
 	function displayLineTotal(model) {
-		var price = model.get('price'),
-			qty = model.get('qty'),
+		var price = parseFloat( model.get('price') ),
+			qty = parseFloat( model.get('qty') ),
 			total = 0,
 			tax = 0;
 
-		if( model.get('taxable') ) { tax = model.get('taxes').total; } 
+		if( model.get('taxable') ) { tax = parseFloat( model.get('taxes.total') ); } 
 
-		if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl'  ) {
+		if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'no' && wc.tax_display_cart === 'incl'  ) {
+			total = ( price + tax ) * qty;
+		}
+
+		else if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl'  ) {
 			total = ( price - tax ) * qty;
 		}
 
@@ -592,68 +600,6 @@
 
 		return total;
 
-	}
-
-	function displayLinePrice(model) {
-		var price = model.get('price'),
-			tax = 0;
-
-		// if cart item is taxable, get tax
-		if( model.get('taxable') ) { tax = model.get('taxes').total; } 
-
-		if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl' ) {
-			price = price - tax;
-		}
-
-		return price;
-	}
-
-	/**
-	 * Display the cart subtotal
-	 * @param  {object} collection 	the cart items
-	 * @return {float} subtotal
-	 */
-	function calcSubtotal(collection) {
-		var line_subtotal = 0,
-			// line_discount = 0,
-			line_tax = 0,
-			subtotal = 0;
-
-		line_subtotal = _.reduce(collection.pluck('total'), function(memo, num){ return memo + num; }, 0);
-		// line_discount = _.reduce(collection.pluck('total_discount'), function(memo, num){ return memo + num; }, 0);
-
-		// if price includes tax: cart subtotal = sum(line_subtotal) + sum(line_tax)
-		if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'incl' ) {
-			line_tax = _.reduce(collection.pluck('taxes.line_total'), function(memo, num){ return memo + num; }, 0);
-		} 
-
-		// subtotal = line_subtotal - line_discount + line_tax;
-		subtotal = line_subtotal + line_tax;
-
-		return subtotal;
-	}
-
-	/**
-	 * Display the cart total
-	 * @param  {object} collection 	the cart items
-	 * @return {float} subtotal
-	 */
-	function calcTotal(collection) {
-		var line_subtotal = 0,
-			line_discount = 0,
-			line_tax = 0,
-			total = 0;
-
-		line_subtotal = _.reduce(collection.pluck('total'), function(memo, num){ return memo + num; }, 0);
-		line_discount = _.reduce(collection.pluck('total_discount'), function(memo, num){ return memo + num; }, 0);
-
-		if ( wc.calc_taxes === 'yes' ) {
-			line_tax = _.reduce(collection.pluck('taxes.line_total'), function(memo, num){ return memo + num; }, 0);
-		}
-
-		total = line_subtotal - line_discount + line_tax;
-
-		return total;
 	}
 
 

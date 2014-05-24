@@ -18,6 +18,8 @@ class WooCommerce_POS_Checkout {
 	 */
 	public function __construct() {
 
+		// remove the New Order admin emails
+		add_filter( 'woocommerce_email', array( $this, 'remove_new_order_emails' ), 99 );
 	}
 
 	/**
@@ -284,6 +286,29 @@ class WooCommerce_POS_Checkout {
 
 		// return the total tax
 		return $item_tax;
+
+	}
+
+
+	/**
+	 * Stop WC sending email notifications
+	 */
+	public function remove_new_order_emails( WC_Emails $wc_emails ) {
+
+		// Hooks for sending emails during store events
+		
+		//' woocommerce_low_stock_notification'
+		// 'woocommerce_no_stock_notification'
+		// 'woocommerce_product_on_backorder_notification'
+		remove_action('woocommerce_order_status_pending_to_processing_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_pending_to_completed_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_failed_to_processing_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_failed_to_completed_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_failed_to_on-hold_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_pending_to_processing_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_completed_notification', array($wc_emails->emails['WC_Email_Customer_Completed_Order'], 'trigger'));
 
 	}
 

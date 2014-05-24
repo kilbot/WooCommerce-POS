@@ -257,7 +257,7 @@ class WooCommerce_POS {
 	 */
 	public function pos_print_css() {
 		$html = '
-	<link rel="stylesheet" href="'. $this->plugin_url .'/public/assets/css/pos.min.css?ver='. self::VERSION .'" type="text/css" media="all" />
+	<link rel="stylesheet" href="'. $this->plugin_url .'public/assets/css/pos.min.css?ver='. self::VERSION .'" type="text/css" media="all" />
 		';
 		echo $html;
 	}
@@ -271,7 +271,7 @@ class WooCommerce_POS {
 			$html = '
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/'.self::JQUERY.'/jquery.min.js"></script>
 	<!-- Modernizr: checks: indexeddb, websql, localstrorage and CSS 3D transforms -->
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/vendor/modernizr.custom.min.js"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'public/assets/js/vendor/modernizr.custom.min.js"></script>
 			';
 			echo $html;
 		}
@@ -279,9 +279,9 @@ class WooCommerce_POS {
 			do_action( 'pos_add_to_footer' );
 			$this->pos_localize_script();
 			$html = '
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/lib.min.js?ver='. self::VERSION .'"></script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/plugins.min.js?ver='. self::VERSION .'"></script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'/public/assets/js/pos.min.js?ver='. self::VERSION .'"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'public/assets/js/lib.min.js?ver='. self::VERSION .'"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'public/assets/js/plugins.min.js?ver='. self::VERSION .'"></script>
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'public/assets/js/pos.min.js?ver='. self::VERSION .'"></script>
 			';
 			echo $html;
 		}

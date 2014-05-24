@@ -14,9 +14,9 @@
 	// the datbase object
 	var database = {
 		id: 'productsDB',
-		description: 'Products database',
+		description: 'POS products database',
 		migrations : [{
-			version: "1.0",
+			version: "1",
 			migrate: function(transaction , next) {
 				var store;
 				if(!transaction.db.objectStoreNames.contains( 'products' )){
@@ -39,8 +39,7 @@
 		database: database,
 		storeName: 'products',
 
-		// debug
-		initialize: function() { this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); },
+		// initialize: function() { this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); }, // debug
 	});
 
 	// the pageable product list
@@ -57,20 +56,16 @@
     		order: 1
   		},
 
-  		// debug
+  		
 		initialize: function() { 
-			this.on('all', function(e) { console.log("Product Collection event: " + e); }); 
+			// this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
 		},
 
 	});
-	
-	// init the product list and make available elsewhere
-	var products = new Products();
 
 	// view for individual products
 	var ProductView = Backbone.View.extend({
 		tagName : 'tr',
-		model: new Product(),
 		template: _.template($('#tmpl-product').html()),
 
 		events: {
@@ -78,7 +73,9 @@
 		},
 
 		initialize: function() {
-			this.model.on('all', function(e) { console.log("Product View event: " + e); }); // debug
+
+			// listen for changes to Product model
+			this.listenTo( this.model, 'change', this.render );
 		},
 
 		render: function() {
@@ -95,28 +92,28 @@
 
 	});
 
-	// pageable view for the entire list
+	// paginated view for the entire list
 	var ProductListView = Backbone.View.extend({
 		el: $('#product-list'),
-		model: products,
 		elEmpty: $('#product-list').contents().clone(),
 
 		initialize: function() {
-			this.model.on('all', function(e) { console.log("Product List event: " + e); }); // debug
-			this.model.on( 'all', this.render, this );
+			// listen to the product collection and render on all events
+			this.listenTo(products, 'all', this.render);	
 
 			// get products from indexedDB (if any)
-			products.fetch().done( function() {
-				console.log( 'init collection with ' + products.length + ' products from indexedDB' );
-			});
+			// products.fetch().done( function() {
+			// 	console.log( 'init collection with ' + products.length + ' products from indexedDB' );
+			// });
+			
+			products.fetch();
 
 			// sync products with the server on page load
 			productSync();
-
 		},
 
 		render: function() {
-			console.log('render the products'); // debug
+			// console.log('render the products'); // debug
 
 			// if empty, add empty message
 			if( products.length === 0 ) {
@@ -144,6 +141,9 @@
 		},
 
 	});
+
+	// init the product list and make available elsewhere
+	var products = new Products();
 
 	// show the list of Products
 	var productListView = new ProductListView();
@@ -485,6 +485,12 @@
 
 		// for each product in the WC API response
 		_.each(ajaxResponse.products, function( product ) {
+
+			// use collection create convenience method
+			// equivalent to:
+			// newProduct = new Product(product);
+			// newProduct.save();
+			// products.add(newProduct, {merge: true});
 			products.fullCollection.create( product, {
 				merge: true,
 				success: function(model, response) {

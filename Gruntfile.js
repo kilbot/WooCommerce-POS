@@ -106,7 +106,6 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'public/assets/js/lib.min.js': [
-                        'public/assets/js/lib/IndexedDBShim.js',
                         'public/assets/js/lib/mediator.js',
                         'public/assets/js/lib/mediator.init.js',
                         'public/assets/js/lib/underscore.js',
