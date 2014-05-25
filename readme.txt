@@ -22,6 +22,10 @@ This plugin has only just been released and should **not** be used on a producti
 = DEMO = 
 You can see a demo of the WooCommerce POS plugin in action by going to [http://woopos.com.au/pos](http://woopos.com.au/pos) with `login/pass` : `demo/demo`
 
+= REQUIREMENTS =
+WooCommerce POS uses IndexedDB to persist the product database on your computer or device. [http://www.w3.org/TR/IndexedDB/](IndexedDB) is currently a 'Candidate Recommendation' specification by the W3C and is not implemented by all browsers. To see if your browser is compatible please check [http://caniuse.com/indexeddb](caniuse.com).
+
+If your browser does not support IndexedDB, WooCommerce POS will degrade to using the product database on your server via the WooCommerce REST API. The Point of Sale system will still function but searching and filtering will be slower. Some planned features for WooCommerce POS will also only be available for browsers that support IndexdedDB. 
 
 == Installation ==
 

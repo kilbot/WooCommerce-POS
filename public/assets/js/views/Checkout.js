@@ -1,9 +1,5 @@
-/**
- * Order UI
- */
-
-(function ( $ ) {
-	"use strict";
+define(['backbone', 'accounting', 'backbone.bootstrap-modal', 'models/Order', 'collections/CartItems', 'bootstrap-modal'], 
+	function(Backbone, accounting, BootstrapModal, Order, CartItems) {
 
 	// pos_cart_params is required to continue, ensure the object exists
 	if ( typeof pos_cart_params === 'undefined' ) {
@@ -16,12 +12,8 @@
 
 	var cartTotal;
 
-	/*============================================================================
-	 The Receipt
-	 ===========================================================================*/
-	var Order = Backbone.Model.extend({});
-
-	var Receipt = Backbone.View.extend({
+	// 
+	var Checkout = Backbone.View.extend({
 		model: Order,
 		tagName: 'table',
 		item_template: _.template('<tr><td><%= name %></td><td><%= quantity %></td><td><%= total %></td></tr>'),
@@ -33,9 +25,6 @@
 
 		render: function() {
 			var order = this.model.toJSON();
-
-			// remove padding from modal-content
-			this.$el.parent('div').css('padding',0);
 
 			// insert a table
 			this.$el.append('<thead><tr><th>Product</th><th>Qty</th><th>Price</th></thead><tbody></tbody><tfoot></tfoot>');
@@ -96,28 +85,27 @@
 			return this;
 		},
 
+		process: function(cartTotals) {
+
+			// set the cartTotal variable
+			cartTotal = accounting.formatNumber( cartTotals.get('Total:').toJSON().total );
+
+			// pick the data from the cartCollection we are going to send
+			var items = CartItems.map(function(model) {
+	    		return _.pick(model.toJSON(), ['id','qty','price','discount','total','total_discount']);  
+			});
+
+			showModal(items);			
+		}
+
 	});
 
-	/*============================================================================
-	 Mediator
-	 ===========================================================================*/ 
-
-	// subscribe to addToCart from the product list
-	mediator.subscribe('checkout', function( cartCollection, cartTotals ){
-
-		// set the cartTotal variable
-		cartTotal = accounting.formatNumber( cartTotals.get('Total:').toJSON().total );
-
-		// pick the data from the cartCollection we are going to send
-		var items = cartCollection.map(function(model) {
-    		return _.pick(model.toJSON(), ['id','qty','price','discount','total','total_discount']);  
-		});
-
+	function showModal(items) {
 		// send the cart data to the server
 		$.post( pos_cart_params.ajax_url , { action: 'pos_process_order', cart: items } )
 		.done(function( data ) {
 			var modal = new Backbone.BootstrapModal({
-				content: new Receipt({ model: new Order(data.order) }),
+				content: new Checkout({ model: new Order(data.order) }),
 				// title: 'Order: ' + data.order.order_number,
 				// okText: 'New Order',
 				// cancelText: false,
@@ -134,7 +122,7 @@
 		.fail(function( jqXHR, textStatus, errorThrown ) {
 			console.log(jqXHR);
 		});
+	}
 
-	});
-
-}(jQuery));
+	return Checkout;
+});

@@ -1,6 +1,5 @@
 /**
- * Use backbone.js and backgrid.js to display the products
- * TODO: localStorage for products
+ * TODO: make this modular
  */
 
 (function ( $ ) {

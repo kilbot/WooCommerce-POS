@@ -1,0 +1,18 @@
+{
+  "name": "woocommerce-pos",
+  "version": "0.2.10",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-contrib-compass": "^0.7.2",
+    "grunt-contrib-imagemin": "~0.6.1",
+    "grunt-contrib-cssmin": "~0.9.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "load-grunt-tasks": "~0.4.0",
+    "grunt-wp-readme-to-markdown": "^0.7.0",
+    "grunt-wp-i18n": "^0.4.4",
+    "grunt-contrib-requirejs": "^0.4.4"
+  }
+}

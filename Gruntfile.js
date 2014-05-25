@@ -13,7 +13,7 @@ module.exports = function(grunt) {
             },
             js: {
                 files: '<%= jshint.all %>',
-                tasks: ['jshint', 'uglify']
+                tasks: ['jshint']
             },
             readme: {
                 files: 'readme.txt',
@@ -76,100 +76,102 @@ module.exports = function(grunt) {
                 "trailing": true,
                 "undef": true,
                 "globals": {
-                    "jQuery": true,
+                    "define": true,
                     "alert": true,
                     "pos_cart_params": true,
-                    "Backbone": true,
+                    // "Backbone": true,
                     "Modernizr": true,
-                    "mediator": true,
+                    // "mediator": true,
                     "_": true,
-                    "accounting": true,
+                    // "accounting": true,
                 },
                 "force": true
             },
             all: [
                 'Gruntfile.js',
-                'public/assets/js/build/**/*.js',
-                'admin/assets/js/admin.js'
+                'public/assets/js/**/*.js',
+                'admin/assets/js/admin.js',
+                '!public/assets/js/require.js',
+                '!public/assets/js/vendor/**/*.js',
             ]
         },
 
-        // uglify to concat, minify, and make source maps
-        uglify: {
-            lib: {
-                options: {
-                    sourceMap: true,
-                    sourceMapName: 'public/assets/js/map/lib.map'
-                    // compress: {
-                    //     drop_console: true
-                    // }
-                },
-                files: {
-                    'public/assets/js/lib.min.js': [
-                        'public/assets/js/lib/mediator.js',
-                        'public/assets/js/lib/mediator.init.js',
-                        'public/assets/js/lib/underscore.js',
-                        'public/assets/js/lib/backbone.js',
-                        'public/assets/js/lib/backbone.paginator.js',
-                        'public/assets/js/lib/backbone-indexeddb.js',
-                        'public/assets/js/lib/deep-model.js',
-                        'public/assets/js/lib/backbone.bootstrap-modal.js',
-                    ]
-                }
-            },
-            plugins: {
-                options: {
-                    sourceMap: true,
-                    sourceMapName: 'public/assets/js/map/plugins.map',
-                    // compress: {
-                        // drop_console: true
-                    // }
-                },
-                files: {
-                    'public/assets/js/plugins.min.js': [
-                        'public/assets/js/vendor/accounting.js',
-                        'public/assets/js/vendor/alert.js',
-                        'public/assets/js/vendor/jquery.autosize.input.js',
-                        'public/assets/js/vendor/modal.js',
-                        'public/assets/js/vendor/tooltip.js',
-                        'public/assets/js/vendor/popover.js',
-                        'public/assets/js/vendor/pushy.js',
-                        'public/assets/js/vendor/dropdown.js',
-                    ]
-                }
-            },
-            pos: {
-                options: {
-                    sourceMap: true,
-                    sourceMapName: 'public/assets/js/map/pos.map',
-                    compress: {
-                        // drop_console: true
-                    }
-                },
-                files: {
-                    'public/assets/js/pos.min.js': [
-                        'public/assets/js/build/global.js',
-                        'public/assets/js/build/products.js',
-                        'public/assets/js/build/cart.js',
-                        'public/assets/js/build/checkout.js',
-                    ]
-                }
-            },
-            admin: {
-                options: {
-                    sourceMap: true,
-                    sourceMapName: 'admin/assets/js/map/admin.map',
-                    compress: {
-                        drop_console: true
-                    }
-                },
-                files: {
-                    'admin/assets/js/admin.min.js': [
-                        'admin/assets/js/admin.js'
-                    ]
-                }
-            }
-        },
+        // // uglify to concat, minify, and make source maps
+        // uglify: {
+        //     lib: {
+        //         options: {
+        //             sourceMap: true,
+        //             sourceMapName: 'public/assets/js/map/lib.map'
+        //             // compress: {
+        //             //     drop_console: true
+        //             // }
+        //         },
+        //         files: {
+        //             'public/assets/js/lib.min.js': [
+        //                 'public/assets/js/lib/mediator.js',
+        //                 'public/assets/js/lib/mediator.init.js',
+        //                 'public/assets/js/lib/underscore.js',
+        //                 'public/assets/js/lib/backbone.js',
+        //                 'public/assets/js/lib/backbone.paginator.js',
+        //                 'public/assets/js/lib/backbone-indexeddb.js',
+        //                 'public/assets/js/lib/deep-model.js',
+        //                 'public/assets/js/lib/backbone.bootstrap-modal.js',
+        //             ]
+        //         }
+        //     },
+        //     plugins: {
+        //         options: {
+        //             sourceMap: true,
+        //             sourceMapName: 'public/assets/js/map/plugins.map',
+        //             // compress: {
+        //                 // drop_console: true
+        //             // }
+        //         },
+        //         files: {
+        //             'public/assets/js/plugins.min.js': [
+        //                 'public/assets/js/vendor/accounting.js',
+        //                 'public/assets/js/vendor/alert.js',
+        //                 'public/assets/js/vendor/jquery.autosize.input.js',
+        //                 'public/assets/js/vendor/modal.js',
+        //                 'public/assets/js/vendor/tooltip.js',
+        //                 'public/assets/js/vendor/popover.js',
+        //                 'public/assets/js/vendor/pushy.js',
+        //                 'public/assets/js/vendor/dropdown.js',
+        //             ]
+        //         }
+        //     },
+        //     pos: {
+        //         options: {
+        //             sourceMap: true,
+        //             sourceMapName: 'public/assets/js/map/pos.map',
+        //             compress: {
+        //                 // drop_console: true
+        //             }
+        //         },
+        //         files: {
+        //             'public/assets/js/pos.min.js': [
+        //                 'public/assets/js/build/global.js',
+        //                 'public/assets/js/build/products.js',
+        //                 'public/assets/js/build/cart.js',
+        //                 'public/assets/js/build/checkout.js',
+        //             ]
+        //         }
+        //     },
+        //     admin: {
+        //         options: {
+        //             sourceMap: true,
+        //             sourceMapName: 'admin/assets/js/map/admin.map',
+        //             compress: {
+        //                 drop_console: true
+        //             }
+        //         },
+        //         files: {
+        //             'admin/assets/js/admin.min.js': [
+        //                 'admin/assets/js/admin.js'
+        //             ]
+        //         }
+        //     }
+        // },
 
         // // image optimization
         // imagemin: {
@@ -219,6 +221,6 @@ module.exports = function(grunt) {
 
 
     // register task
-    grunt.registerTask('default', ['makepot', 'wp_readme_to_markdown', 'compass', 'cssmin', 'jshint', 'uglify', 'watch']);
+    grunt.registerTask('default', ['makepot', 'wp_readme_to_markdown', 'compass', 'cssmin', 'jshint', 'watch']);
 
 };
