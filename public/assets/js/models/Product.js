@@ -1,24 +1,8 @@
-define(['backbone'], function(Backbone){
-
-	var database = {
-		id: 'productsDB',
-		description: 'POS products database',
-		migrations : [{
-			version: "1",
-			migrate: function(transaction , next) {
-				var store;
-				if(!transaction.db.objectStoreNames.contains( 'products' )){
-					store = transaction.db.createObjectStore( 'products', { keyPath: 'id' } );
-				}
-				store = transaction.objectStore( 'products' );
-				store.createIndex( 'titleIndex', 'title', { unique: false} );
-				next();
-			}
-		}]
-	};
+define(['backbone', 'db/ProductsDB'], 
+	function(Backbone, Database){
 
 	var Product = Backbone.Model.extend({
-		database: database,
+		database: Database,
 		storeName: 'products',
 
 		// initialize: function() { this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); }, // debug

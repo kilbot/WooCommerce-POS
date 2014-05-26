@@ -1,27 +1,9 @@
-// Filename: collections/projects
-define(['backbone', 'backbone.paginator', 'models/Product', 'settings', 'indexeddb'], 
-	function(Backbone, PageableCollection, Product, Settings){
+define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Product', 'settings', 'db/ProductsDB'], 
+	function($, _, Backbone, PageableCollection, Product, Settings, Database){
 	
-	var database = {
-		id: 'productsDB',
-		description: 'POS products database',
-		migrations : [{
-			version: "1",
-			migrate: function(transaction , next) {
-				var store;
-				if(!transaction.db.objectStoreNames.contains( 'products' )){
-					store = transaction.db.createObjectStore( 'products', { keyPath: 'id' } );
-				}
-				store = transaction.objectStore( 'products' );
-				store.createIndex( 'titleIndex', 'title', { unique: false} );
-				next();
-			}
-		}]
-	};
-
 	// the pageable product list
 	var Products = Backbone.PageableCollection.extend({
-		database: database,
+		database: Database,
 		storeName: 'products',
 		model: Product,
 		mode: 'client',
@@ -71,7 +53,7 @@ define(['backbone', 'backbone.paginator', 'models/Product', 'settings', 'indexed
 			this.auditProducts()
 			.then( function( productArray ) {
 				if( productArray.length > 0 ) { 
-					return this.removeProducts( productArray ); 
+					return that.removeProducts( productArray ); 
 				}
 			})
 			.then( function(){
@@ -277,7 +259,7 @@ define(['backbone', 'backbone.paginator', 'models/Product', 'settings', 'indexed
 			if(deleteComplete && saveComplete) {
 				console.log( 'sync is done! ' );
 				Settings.set( 'last_update', Date.now() );
-				this.trigger('reset');
+				this.trigger('sync');
 				$('#pagination').removeClass('working');
 			}
 		},
@@ -321,10 +303,10 @@ define(['backbone', 'backbone.paginator', 'models/Product', 'settings', 'indexed
 			    var indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB ;
 
 				// clobber the database 
-				var dbreq = indexedDB.deleteDatabase(database.id);
+				var dbreq = indexedDB.deleteDatabase(Database.id);
 				dbreq.onsuccess = function (event) {
 					var db = event.result;
-					console.log("indexedDB: " + database.id + " deleted");
+					console.log("indexedDB: " + Database.id + " deleted");
 				};
 				dbreq.onerror = function (event) {
 					console.error("indexedDB.delete Error: " + event.message);

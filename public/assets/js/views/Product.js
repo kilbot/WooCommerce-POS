@@ -1,4 +1,5 @@
-define(['backbone', 'collections/CartItems'], function(Backbone, CartItems) {
+define(['jquery', 'underscore', 'backbone', 'collections/CartItems'], 
+	function($, _, Backbone, CartItems) {
 
 	// view for individual products
 	var Product = Backbone.View.extend({

@@ -1,4 +1,5 @@
-define(['backbone', 'deepmodel', 'accounting'], function(Backbone, DeepModel, accounting){
+define(['backbone', 'backbone-deepmodel', 'accounting'], 
+	function(Backbone, DeepModel, accounting){
 
 	// pos_cart_params is required to continue, ensure the object exists
 	if ( typeof pos_cart_params === 'undefined' ) {

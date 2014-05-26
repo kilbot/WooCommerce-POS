@@ -1,4 +1,5 @@
-define(['backbone', 'models/CartTotal', 'collections/CartItems'], function(Backbone, CartTotal, CartItems){
+define(['underscore', 'backbone', 'models/CartTotal', 'collections/CartItems'], 
+	function(_, Backbone, CartTotal, CartItems){
 
 	// pos_cart_params is required to continue, ensure the object exists
 	if ( typeof pos_cart_params === 'undefined' ) {

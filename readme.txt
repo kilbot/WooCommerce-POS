@@ -23,9 +23,11 @@ This plugin has only just been released and should **not** be used on a producti
 You can see a demo of the WooCommerce POS plugin in action by going to [http://woopos.com.au/pos](http://woopos.com.au/pos) with `login/pass` : `demo/demo`
 
 = REQUIREMENTS =
-WooCommerce POS uses IndexedDB to persist the product database on your computer or device. [http://www.w3.org/TR/IndexedDB/](IndexedDB) is currently a 'Candidate Recommendation' specification by the W3C and is not implemented by all browsers. To see if your browser is compatible please check [http://caniuse.com/indexeddb](caniuse.com).
+WooCommerce POS uses IndexedDB to persist the product database on your computer or device. [IndexedDB](http://www.w3.org/TR/IndexedDB/) is currently a 'Candidate Recommendation' specification by the W3C and is not implemented by all browsers. To see if your browser is compatible please check [caniuse.com](http://caniuse.com/indexeddb).
 
-If your browser does not support IndexedDB, WooCommerce POS will degrade to using the product database on your server via the WooCommerce REST API. The Point of Sale system will still function but searching and filtering will be slower. Some planned features for WooCommerce POS will also only be available for browsers that support IndexdedDB. 
+If your browser does not support IndexedDB, WooCommerce POS will degrade to using the product database on your server via the WooCommerce REST API. The Point of Sale system will still function but searching and filtering will be slower. Some planned features for WooCommerce POS will also only be available for browsers that support IndexdedDB.
+
+** For the best experience please use a modern browser such as [Chrome](http://www.google.com/chrome) or [Firefox](http://getfirefox.com) **
 
 == Installation ==
 
@@ -60,7 +62,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.2.12 =
-* Improved: Product list now uses local IndexedDB for fast searching and filtering. Polyfill for webSQL
+* Improved: Product list now uses local IndexedDB for fast searching and filtering. Fallback to server-side filtering
 * Improved: Cart logic now handled client-side, no more waiting for the server to respond
 * New: Pagination info and last update time added to the product list
 * New: Cart item price can now be changed

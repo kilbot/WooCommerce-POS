@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'collections/Products', 'views/Product', 'views/ProductFilter', 'views/ProductPagination'], 
-	function($, _, Backbone, ProductsCollection, ProductView, ProductFilter, ProductPagination) {
+define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/ProductFilter', 'views/ProductPagination', 'collections/ProductsFallback'], 
+	function($, Backbone, ProductsCollection, ProductView, ProductFilter, ProductPagination, ProductsFallbackCollection) {
 
 	// paginated view for the entire list
 	var ProductList = Backbone.View.extend({
@@ -9,10 +9,12 @@ define(['jquery', 'underscore', 'backbone', 'collections/Products', 'views/Produ
 		initialize: function() {
 			if(Modernizr.indexeddb) {
 				this.collection = new ProductsCollection();
+				// sync products with server on init
+				this.collection.serverSync();
 			} else {
-				// this.collection = new ProductsFallbackCollection();
+				this.collection = new ProductsFallbackCollection();
 			}
-			
+	
 			// init product filter & pagination
   			var productFilter = new ProductFilter( { collection: this.collection } );
   			var productPagination = new ProductPagination( { collection: this.collection } );
@@ -20,11 +22,8 @@ define(['jquery', 'underscore', 'backbone', 'collections/Products', 'views/Produ
 			// listen to the product collection and render on all events
 			this.listenTo(this.collection, 'all', this.render);	
 
-			// get products from indexedDB (if any)
+			// get products from indexedDB or fallback 
 			this.collection.fetch();
-
-			// sync products with server on init
-			this.collection.serverSync();
 
 		},
 

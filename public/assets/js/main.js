@@ -9,21 +9,23 @@ require.config({
 	paths: {
 
 		// Core Libraries
-		'jquery': '../../../bower_components/jquery/dist/jquery',
-		'underscore': '../../../bower_components/lodash/dist/lodash',
+		// 'jquery': '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
+		'jquery': '../../../bower_components/jquery/dist/jquery.min',
+		'underscore': '../../../bower_components/lodash/dist/lodash.min',
 		// 'underscore': '../../../bower_components/underscore/underscore',
 		'backbone': '../../../bower_components/backbone/backbone',
-		'deepmodel': '../../../bower_components/backbone-deep-model/distribution/deep-model',
-		'accounting': '../../../bower_components/accounting/accounting',
+		'accounting': '../../../bower_components/accounting/accounting.min',
 		
 		// Convenince methods for getting and setting User settings
 		'settings': '../../../public/assets/js/plugins/pos-settings',
 
 		// Plugins
-		'backbone.paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator',
-		'indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
 		'bootstrap-modal': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal',
-		'backbone.bootstrap-modal': '../../../bower_components/backbone.bootstrap-modal/src/backbone.bootstrap-modal',
+		'backbone-modal': '../../../bower_components/backbone.bootstrap-modal/src/backbone.bootstrap-modal',
+		'backbone-deepmodel': '../../../bower_components/backbone-deep-model/distribution/deep-model',
+		'backbone-indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
+		'backbone-paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
+
 		// 'bootstrap': '../libs/plugins/bootstrap',
 		// 'text': '../libs/plugins/text',
 		// 'jasminejquery': '../libs/plugins/jasmine-jquery'
@@ -36,8 +38,7 @@ require.config({
 	// Sets the configuration for third party scripts that are not AMD compatible
 	shim: {
 
-
-	}
+    }
 
 });
 

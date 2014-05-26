@@ -1,4 +1,5 @@
-define(['underscore', 'backbone', 'models/CartItem'], function(_, Backbone, CartItem){
+define(['underscore', 'backbone', 'models/CartItem'], 
+	function(_, Backbone, CartItem){
 
 	// the collection of cart items
 	var CartItems = Backbone.Collection.extend({

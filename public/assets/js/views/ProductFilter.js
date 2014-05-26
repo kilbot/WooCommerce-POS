@@ -1,4 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'collections/Products'], function($, _, Backbone, Products) {
+define(['jquery', 'underscore', 'backbone'], 
+	function($, _, Backbone) {
 
 	/*============================================================================
 	 Product Filter
@@ -8,8 +9,6 @@ define(['jquery', 'underscore', 'backbone', 'collections/Products'], function($,
 	// view attaches to the search field
 	var ProductFilter = Backbone.View.extend({
 		el: $('#filter'),
-		collection: Products,
-		fields: ['title'],
 		events: {
 			'keydown input[type=search]': 'search',
 			'submit'		: 'search',
@@ -18,27 +17,47 @@ define(['jquery', 'underscore', 'backbone', 'collections/Products'], function($,
 		wait: 149,
 
 		initialize: function (options) {
+			var collection;
+			var self = this;
 
-			this._debounceMethods(["search", "clear"]);
+			// first determine if we're using server or client
+			if(this.collection.mode === 'server') {
+				this.name = 'filter[q]';
 
-			var collection = this.collection = this.collection.fullCollection || this.collection;
-			var shadowCollection = this.shadowCollection = collection.clone();
-
-			this.listenTo(collection, "add", function (model, collection, options) {
-				shadowCollection.add(model, options);
-			});
-			this.listenTo(collection, "remove", function (model, collection, options) {
-				shadowCollection.remove(model, options);
-			});
-			this.listenTo(collection, "sort", function (col) {
-				if (!this.searchBox().val()) { shadowCollection.reset(col.models); }
-			});
-			this.listenTo(collection, "reset", function (col, options) {
-				options = _.extend({reindex: true}, options || {});
-				if (options.reindex && options.from == null && options.to == null) {
-					shadowCollection.reset(col.models);
+				// Persist the query on pagination
+				collection = this.collection;
+				if (Backbone.PageableCollection && collection instanceof Backbone.PageableCollection) {
+					collection.queryParams[this.name] = function () {
+						return self.searchBox().val() || null;
+					};
 				}
-			});
+			}
+
+			// client side
+			else {
+				this.fields = ['title'];
+
+				this._debounceMethods(["search", "clear"]);
+
+				collection = this.collection = this.collection.fullCollection || this.collection;
+				var shadowCollection = this.shadowCollection = collection.clone();
+
+				this.listenTo(collection, "add", function (model, collection, options) {
+					shadowCollection.add(model, options);
+				});
+				this.listenTo(collection, "remove", function (model, collection, options) {
+					shadowCollection.remove(model, options);
+				});
+				this.listenTo(collection, "sort", function (col) {
+					if (!this.searchBox().val()) { shadowCollection.reset(col.models); }
+				});
+				this.listenTo(collection, "reset", function (col, options) {
+					options = _.extend({reindex: true}, options || {});
+					if (options.reindex && options.from == null && options.to == null) {
+						shadowCollection.reset(col.models);
+					}
+				});
+			}
 		},
 
 		_debounceMethods: function (methodNames) {
@@ -74,13 +93,44 @@ define(['jquery', 'underscore', 'backbone', 'collections/Products'], function($,
 			return this.$el.find("input[type=search]");
 		},
 
-		search: function (e) {
+		search: function(e) {
+			if(this.collection.mode === "server") {
+				this.serverSearch(e);
+			}
+			else {
+				this.clientSearch(e);
+			}
+		},
+
+		clientSearch: function(e) {
 			if( typeof e !== 'undefined' ) { e.preventDefault(); }
 			this.showClearButtonMaybe();
 			var matcher = _.bind(this.makeMatcher(this.searchBox().val()), this);
 			var col = this.collection;
 			if (col.pageableCollection) { col.pageableCollection.getFirstPage({silent: true}); }
 			col.reset(this.shadowCollection.filter(matcher), {reindex: false});
+		},
+
+		serverSearch: function(e) {
+			this.showClearButtonMaybe();
+
+			// only search on enter
+			if (e.keyCode === 13) {
+				var data = {};
+				var query = this.searchBox().val();
+				if (query) { data[this.name] = query; }
+
+				var collection = this.collection;
+
+				// go back to the first page on search
+				if (Backbone.PageableCollection &&
+					collection instanceof Backbone.PageableCollection) {
+					collection.getFirstPage({data: data, reset: true, fetch: true});
+				}
+				else { 
+					collection.fetch({data: data, reset: true});
+				}
+			}
 		},
 
 		clearButton: function () {
@@ -90,9 +140,20 @@ define(['jquery', 'underscore', 'backbone', 'collections/Products'], function($,
 		clear: function (e) {
 			if( typeof e !== 'undefined' ) { e.preventDefault(); }
 			this.clearSearchBox();
-			var col = this.collection;
-			if (col.pageableCollection) { col.pageableCollection.getFirstPage({silent: true}); }
-			col.reset(this.shadowCollection.models, {reindex: false});
+
+			if(this.collection.mode === 'server') {
+				// go back to the first page on clear
+				if (Backbone.PageableCollection && this.collection instanceof Backbone.PageableCollection) {
+					this.collection.getFirstPage({reset: true, fetch: true});
+				}
+				else {
+					this.collection.fetch({reset: true});
+				}
+			}
+			else {
+				if (this.collection.pageableCollection) { this.collection.pageableCollection.getFirstPage({silent: true}); }
+				this.collection.reset(this.shadowCollection.models, {reindex: false});
+			}
 		},
 
 		clearSearchBox: function() {

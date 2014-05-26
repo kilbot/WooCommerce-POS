@@ -1,5 +1,5 @@
-define(['backbone', 'collections/CartTotals', 'views/CartTotal', 'views/Checkout'], 
-	function(Backbone, CartTotals, CartTotalView, Checkout) {
+define(['jquery', 'underscore', 'backbone', 'collections/CartTotals', 'views/CartTotal', 'views/Checkout'], 
+	function($, _, Backbone, CartTotals, CartTotalView, Checkout) {
 
 	// the view containing all the totals, and the action buttons
 	var CartTotalsView = Backbone.View.extend({

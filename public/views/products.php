@@ -49,3 +49,14 @@
 		</small>
 	</div>
 </script>
+
+<script type="text/template" id="tmpl-fallback-pagination">
+	<div>
+		<a href="#" class="prev btn btn-default alignleft"><i class="fa fa-chevron-left"></i></a> 
+		<a href="#" class="next btn btn-default alignright"><i class="fa fa-chevron-right"></i></a>
+		<small>
+			Page <%= currentPage %> of <%= totalPages ? totalPages : 1 %>. Showing <%= currentRecords %> of <%= totalRecords ? totalRecords : 0  %> products. <br>
+			<?php _e( 'Your browser does not support indexeddb', 'woocommerce-pos' ); ?>
+		</small>
+	</div>
+</script>

@@ -269,7 +269,6 @@ class WooCommerce_POS {
 	public function pos_print_js ($section = '') {
 		if($section == 'head') {
 			$html = '
-	<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/'.self::JQUERY.'/jquery.min.js"></script> -->
 	<!-- Modernizr: checks: indexeddb, websql, localstrorage and CSS 3D transforms -->
 	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'public/assets/js/vendor/modernizr.custom.min.js"></script>
 			';
@@ -278,12 +277,8 @@ class WooCommerce_POS {
 		if($section == 'footer') {
 			do_action( 'pos_add_to_footer' );
 			$this->pos_localize_script();
-			$html = '
-	<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>
-	<!-- <script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'public/assets/js/lib.min.js?ver='. self::VERSION .'"></script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'public/assets/js/plugins.min.js?ver='. self::VERSION .'"></script>
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'public/assets/js/pos.min.js?ver='. self::VERSION .'"></script> -->
-			';
+	$html = '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
+	$html = '<script src="'. $this->plugin_url .'public/assets/js/scripts.min.js"></script>';
 			echo $html;
 		}
 	}
@@ -337,11 +332,11 @@ class WooCommerce_POS {
 				'tax_total_display' => get_option( 'woocommerce_tax_total_display' ),
 			),
 		);
-		$html = '
-			<script type="text/javascript">
-			var pos_cart_params = ' . json_encode($js_vars) . '
-			</script>
-		';
+	$html = '
+	<script type="text/javascript">
+	var pos_cart_params = ' . json_encode($js_vars) . '
+	</script>
+	';
 		echo $html;
 	}
 }

@@ -1,5 +1,7 @@
-define(['backbone', 'accounting', 'backbone.bootstrap-modal', 'models/Order', 'collections/CartItems', 'bootstrap-modal'], 
-	function(Backbone, accounting, BootstrapModal, Order, CartItems) {
+// define(['jquery', 'underscore', 'backbone', 'accounting', 'backbone-modal', 'models/Order', 'collections/CartItems', 'bootstrap-modal'], 
+// 	function($, _, Backbone, accounting, BootstrapModal, Order, CartItems) {
+define(['jquery', 'underscore', 'backbone', 'accounting', 'models/Order', 'collections/CartItems', 'bootstrap-modal'], 
+	function($, _, Backbone, accounting, Order, CartItems) {
 
 	// pos_cart_params is required to continue, ensure the object exists
 	if ( typeof pos_cart_params === 'undefined' ) {

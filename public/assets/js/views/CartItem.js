@@ -1,5 +1,5 @@
-define(['backbone', 'accounting', 'autoGrowInput', 'collections/CartItems'], 
-	function(Backbone, accounting, autoGrowInput, CartItems) {
+define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput', 'collections/CartItems'], 
+	function($, _, Backbone, accounting, autoGrowInput, CartItems) {
 
 	// pos_cart_params is required to continue, ensure the object exists
 	if ( typeof pos_cart_params === 'undefined' ) {

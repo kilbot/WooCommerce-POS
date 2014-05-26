@@ -1,4 +1,5 @@
-define(['backbone', 'accounting'], function(Backbone, accounting) {
+define(['jquery', 'underscore', 'backbone', 'accounting'], 
+	function($, _, Backbone, accounting) {
 
 	// pos_cart_params is required to continue, ensure the object exists
 	if ( typeof pos_cart_params === 'undefined' ) {
