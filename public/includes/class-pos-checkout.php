@@ -49,9 +49,7 @@ class WooCommerce_POS_Checkout {
 		$total = 0;
 		$cart_discount = 0;
 		foreach ($_REQUEST['cart'] as $key => $item) {
-			$this->add_order_item( $order_id, $item['id'], $item['qty'], $item['total'] - $item['total_discount'] );
-			$total += $item['total'];
-			$cart_discount += $item['total_discount'];
+			$this->add_order_item( $order_id, $item['id'], $item['qty'], $item['line_total'] );
 		}
 
 		// now calculate the taxes (doubles up, but stays consistent with class-wc-ajax.php = easier maintenance)
@@ -60,10 +58,10 @@ class WooCommerce_POS_Checkout {
 		// now calculate the final totals & update the post_meta
 		update_post_meta( $order_id, '_order_shipping', 		wc_format_decimal( 0 ) );
 		update_post_meta( $order_id, '_order_discount', 		wc_format_decimal( 0 ) );
-		update_post_meta( $order_id, '_cart_discount', 			wc_format_decimal( $cart_discount ) );
+		// update_post_meta( $order_id, '_cart_discount', 			wc_format_decimal( $cart_discount ) );
 		update_post_meta( $order_id, '_order_tax', 				wc_format_decimal( $tax_total ) );
 		update_post_meta( $order_id, '_order_shipping_tax', 	wc_format_decimal( 0 ) );
-		update_post_meta( $order_id, '_order_total', 			wc_format_decimal( $total - $cart_discount + $tax_total, get_option( 'woocommerce_price_num_decimals' ) ) );
+		// update_post_meta( $order_id, '_order_total', 			wc_format_decimal( $total - $cart_discount + $tax_total, get_option( 'woocommerce_price_num_decimals' ) ) );
 
 		update_post_meta( $order_id, '_order_key', 				'wc_' . apply_filters('woocommerce_generate_order_key', uniqid('order_') ) );
 		update_post_meta( $order_id, '_customer_user', 			absint( 0 ) );

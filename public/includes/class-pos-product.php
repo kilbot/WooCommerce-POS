@@ -27,6 +27,9 @@ class WooCommerce_POS_Product {
 	/**
 	 * Get all the product ids 
 	 * @return array
+	 * TODO: there is a problem with updates returning the wrong result.
+	 * product_variations do not modify their date in the database,
+	 * either need a workaround based on parent_id, or submit change to wc
 	 */
 	public function get_all_ids() {
 
@@ -129,7 +132,7 @@ class WooCommerce_POS_Product {
 		
 		// if taxable, calculate taxes and add them to the product array
 		if( $product_data['taxable'] ) {
-			$taxes = $this->calc_line_taxes( $product_data['price'] );
+			$taxes = $this->calc_line_taxes( $product_data['price'], $product_data['tax_class'] );
 			$product_data['taxes'] = $taxes;
 			// error_log( print_R( $taxes, TRUE ) ); //debug
 		}
@@ -160,6 +163,7 @@ class WooCommerce_POS_Product {
 			'tags',
 			'upsell_ids',
 			'weight',
+			'variations'
 		);
 		foreach($removeKeys as $key) {
 			unset($product_data[$key]);
@@ -172,8 +176,10 @@ class WooCommerce_POS_Product {
 	/**
 	 * Calc line tax
 	 * based on the same function in woocommerce/includes/class-wc-ajax.php
+	 * TODO: remove this function?
+	 * can we just add tax rates to pos_params and do calcs client side?
 	 */
-	public function calc_line_taxes( $price ) {
+	public function calc_line_taxes( $price, $tax_class ) {
 		global $wpdb;
 
 		$tax      = new WC_Tax();
@@ -189,7 +195,7 @@ class WooCommerce_POS_Product {
 			$country = $base;
 			$state = '';
 		}
-		$tax_rates = $tax->find_rates( array( 'country' => $country, 'state' => $state ) );
+		$tax_rates = $tax->find_rates( array( 'country' => $country, 'state' => $state, 'tax_class' => $tax_class ) );
 
 		// get user settings
 		$price_includes_tax = get_option( 'woocommerce_prices_include_tax' ) == 'yes' ? true : false ;
@@ -202,12 +208,13 @@ class WooCommerce_POS_Product {
 		// create an array of itemized tax info
 		foreach ( array_keys( $tax_itemized ) as $key ) {
 
-			$item                        = array();
-			$item['rate_id']             = $key;
-			$item['name']                = $tax->get_rate_code( $key );
-			$item['label']               = $tax->get_rate_label( $key );
-			$item['compound']            = $tax->is_compound( $key ) ? 1 : 0;
-			$item['tax_amount']          = wc_format_decimal( isset( $tax_itemized[ $key ] ) ? $tax_itemized[ $key ] : 0 );
+			$item                          = array();
+			$item['rate_id']               = $key;
+			$item['rate']             	   = $tax_rates[ $key ]['rate'];
+			$item['name']                  = $tax->get_rate_code( $key );
+			$item['label']                 = $tax_rates[ $key ]['label'];
+			$item['compound']              = $tax->is_compound( $key ) ? 1 : 0;
+			$item['unit_tax_pre_discount'] = wc_format_decimal( isset( $tax_itemized[ $key ] ) ? $tax_itemized[ $key ] : 0 );
 
 			if ( ! $item['label'] ) {
 				$item['label'] = WC()->countries->tax_or_vat();
@@ -219,7 +226,7 @@ class WooCommerce_POS_Product {
 
 		// set up taxes array
 		$taxes['itemized'] = $itemized;
-		$taxes['total'] = $tax_total;
+		$taxes['unit_tax_pre_discount'] = $tax_total;
 
 		return $taxes;
 	}

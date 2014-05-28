@@ -76,7 +76,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Tweak: Back to server side filtering until localstorage is complete
 
 ### 0.2.10 ###
-* New: Update cart quanitity
+* New: Update cart quantity
 * Tweak: Improvement to cart load time
 * Tweak: Prevent New Order emails to admin
 * Fix: No shipping fees on cart items

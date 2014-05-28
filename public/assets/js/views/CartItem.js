@@ -1,14 +1,8 @@
 define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput', 'collections/CartItems'], 
 	function($, _, Backbone, accounting, autoGrowInput, CartItems) {
 
-	// pos_cart_params is required to continue, ensure the object exists
-	if ( typeof pos_cart_params === 'undefined' ) {
-		console.log('No pos_cart_params');
-		return false;
-	} else {
-		accounting.settings = pos_cart_params.accounting.settings;
-		var wc = pos_cart_params.wc;
-	}
+	accounting.settings = pos_params.accounting.settings;
+	var wc = pos_params.wc;
 
 	// view holds individual cart items
 	var CartItem = Backbone.View.extend({
@@ -33,14 +27,17 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput', 'coll
 			// grab the model
 			var item = this.model.toJSON();
 
-			item.price = this.displayLinePrice( this.model );
 
-			// format item price & total
-			if( item.discount !== 0 ) {
-				item.price = item.price - item.discount;
-				item.discounted = accounting.formatMoney( this.displayLineTotal(this.model) - item.total_discount );
+			// format display price, just in case
+			item.display_price = accounting.formatNumber( item.display_price );
+
+			// add discounted if required
+			if( item.total_discount !== 0 ) {
+				item.discounted = accounting.formatMoney( parseFloat(item.display_total) - item.total_discount );
 			}
-			item.total = accounting.formatMoney( this.displayLineTotal(this.model) );
+			
+			// format display total
+			item.display_total = accounting.formatMoney( item.display_total );
 
 			// add 'ex. tax' if necessary
 			// if( wc.tax_display_cart === 'excl') {
@@ -90,7 +87,7 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput', 'coll
 
 				case 'price':
 					if( value ) {
-						this.model.set( { discount: this.calcLineDiscount( value, this.model ) } );
+						this.model.set( { display_price: value } );
 					} else {
 						input.focus();
 					}

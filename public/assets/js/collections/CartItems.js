@@ -1,9 +1,9 @@
-define(['underscore', 'backbone', 'models/CartItem'], 
-	function(_, Backbone, CartItem){
+define(['underscore', 'backbone', 'models/CartItem', 'settings'], 
+	function(_, Backbone, CartItem, Settings){
 
 	// the collection of cart items
 	var CartItems = Backbone.Collection.extend({
-		url: pos_cart_params.ajax_url,
+		url: pos_params.ajax_url,
 		model: CartItem,
 
   		// debug

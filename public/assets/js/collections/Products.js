@@ -35,8 +35,6 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 
 		TODO: chain an id audit on the end of the server sync to catch any problems
 		closeSync() should fire always but errors need to display somewhere
-		updated_at_min only takes 2014-04-04 can we go down to minutes, seconds?
-		also need to look into server time versus local browser time, poss conflict
 		===========================================================================*/ 
 
 		serverSync: function() {
@@ -209,7 +207,7 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 			var that = this;
 
 			// get list of product ids from the server
-			return $.getJSON( pos_cart_params.ajax_url , { 'action' : 'pos_get_product_ids' } )
+			return $.getJSON( pos_params.ajax_url , { 'action' : 'pos_get_product_ids' } )
 			.then( function( sids ) {
 				if (sids instanceof Array) {  
 					// build an array of ids stored locally
@@ -269,24 +267,25 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 		 * updated_at_min as required by WC REST API
 		 */
 		formatLastUpdateFilter: function(timestamp) {
-			var last_update = new Date(+timestamp);
+			var last_update = new Date( parseInt(timestamp) );
+
+			function leadingZero(value){
+				if(value < 10){
+					return "0" + value.toString();
+				}
+				return value.toString();    
+			}
 
 			// test for valid timestamps
 			if(last_update.getTime() > 0) {
-				var year 	= new Date( last_update ).getFullYear();
-		        var month 	= new Date( last_update ).getMonth() + 1; // starts month at 0
-		        // var month 	= new Date( last_update ).getMonth(); // debug
-		        var date 	= new Date( last_update ).getDate();
+				var year 	= last_update.getUTCFullYear();
+		        var month 	= leadingZero( last_update.getUTCMonth() + 1 ); // starts month at 0
+		        var date 	= leadingZero( last_update.getUTCDate() );
+		        var hours 	= leadingZero( last_update.getUTCHours() );
+		        var mins 	= leadingZero( last_update.getUTCMinutes() );
+		        var secs 	= leadingZero( last_update.getUTCSeconds() );
 
-		        if (month < 10) {
-					month = '0' + month;
-				}
-
-				if (date < 10) {
-					date = '0' + date;
-				}
-
-		        return year + '-' + month + '-' + date;
+		        return year + '-' + month + '-' + date + 'T' + hours + ':' + mins + ':' + secs + 'Z';
 			} else {
 				return null;
 			}

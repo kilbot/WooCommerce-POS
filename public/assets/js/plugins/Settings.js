@@ -19,6 +19,6 @@ define([], function() {
 
 	return {
 		get: _get,
-		set: _set
+		set: _set,
 	};
 });

@@ -30,13 +30,13 @@
 		<%= title %>
 		<%= typeof(variation_html) !== 'undefined' ? variation_html : '' %>
 	</td>
-	<td class="price"><input type="number" value="<%= price %>" size="10" step="any" data-id="price"></td>
+	<td class="price"><input type="number" value="<%= display_price %>" size="10" step="any" data-id="price" data-precise="<%= item_price %>"></td>
 	<td class="total">
-		<% if( typeof discounted !== 'undefined' ) { %>
-			<del><%= total %></del>
+		<% if( total_discount !== 0 ) { %>
+			<del><%= display_total %></del>
 			<ins><%= discounted %></ins>
 		<% } else { %>
-			<%= total %>
+			<%= display_total %>
 		<% } %>
 	</td>
 	<td class="remove"><a class="btn btn-circle btn-danger" href="#"><i class="fa fa-times"></i></a></td>

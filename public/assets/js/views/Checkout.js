@@ -3,15 +3,8 @@
 define(['jquery', 'underscore', 'backbone', 'accounting', 'models/Order', 'collections/CartItems', 'bootstrap-modal'], 
 	function($, _, Backbone, accounting, Order, CartItems) {
 
-	// pos_cart_params is required to continue, ensure the object exists
-	if ( typeof pos_cart_params === 'undefined' ) {
-		console.log('No pos_cart_params');
-		return false;
-	} else {
-		accounting.settings = pos_cart_params.accounting.settings;
-		var wc = pos_cart_params.wc;
-	}
-
+	accounting.settings = pos_params.accounting.settings;
+	var wc = pos_params.wc;
 	var cartTotal;
 
 	// 
@@ -94,17 +87,17 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'models/Order', 'colle
 
 			// pick the data from the cartCollection we are going to send
 			var items = CartItems.map(function(model) {
-	    		return _.pick(model.toJSON(), ['id','qty','price','discount','total','total_discount']);  
+	    		return _.pick(model.toJSON(), ['id','qty','line_total']);  
 			});
 
-			showModal(items);			
+			showModal(items);		
 		}
 
 	});
 
 	function showModal(items) {
 		// send the cart data to the server
-		$.post( pos_cart_params.ajax_url , { action: 'pos_process_order', cart: items } )
+		$.post( pos_params.ajax_url , { action: 'pos_process_order', cart: items } )
 		.done(function( data ) {
 			var modal = new Backbone.BootstrapModal({
 				content: new Checkout({ model: new Order(data.order) }),

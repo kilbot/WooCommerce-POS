@@ -1,0 +1,316 @@
+/**
+ * Test the cart item calculates correct values based on pos_params.
+ *
+ * Params:
+ * calc_taxes
+ * prices_include_tax
+ * tax_display_cart
+ * tax_round_at_subtotal
+ * tax_total_display
+ *
+ * Properties:
+ * {string} display_price
+ * {string} display_total
+ * {float} item_discount
+ * {float} item_price
+ * {float} line_total
+ * {float} qty
+ * {float} taxes.itemized.{tax_code}.line_total
+ * {float} taxes.line_total
+ * {float} total_discount
+ * 
+ */
+
+define(['jquery', 'underscore', 'backbone', 'accounting', 'public/assets/js/models/CartItem', 'json!tests/data/dummy-product.json' ], 
+	function($, _, Backbone, accounting, CartItem, dummy_product) {
+
+	// default params
+	// "tax_label": "Tax",
+	// "calc_taxes": "no",
+	// "prices_include_tax": "no",
+	// "tax_round_at_subtotal": "no",
+	// "tax_display_cart": "excl",
+	// "tax_total_display": "single"
+
+	describe("A cart item", function() {
+
+		it("should be in a valid state", function() {
+			console.log('valid');
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+			expect(this.model.isValid()).toBe(true);
+		});
+
+		it("should initiate with the correct values", function() {
+			console.log('init');
+
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+
+			expect(this.model.get('display_price')).toBe( '2.00' );
+			expect(this.model.get('display_total')).toBe( '2.00' );
+			expect(this.model.get('item_discount')).toBe(0);
+			expect(this.model.get('item_price')).toBe( 2 );
+			expect(this.model.get('line_total')).toBe( 2 );
+			expect(this.model.get('qty')).toBe(1);
+			expect(this.model.get('total_discount')).toBe(0);
+		});
+
+		it("should re-calculate on quantity change to any floating point number", function() {
+			console.log('qty change');
+
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+
+			var qty = _.random(10, true);
+			this.model.set( { 'qty': qty } );
+
+			expect(this.model.get('display_price')).toBe( '2.00' );
+			expect(this.model.get('display_total')).toBe( accounting.formatNumber( dummy_product.price * qty ) );
+			expect(this.model.get('item_discount')).toBe(0);
+			expect(this.model.get('item_price')).toBe( 2 );
+			expect(this.model.get('line_total')).toBe( parseFloat( accounting.formatNumber( (2 * qty), 4 ) ) );
+			expect(this.model.get('qty')).toBe(qty);
+			expect(this.model.get('total_discount')).toBe(0);
+		});
+
+		it("should initiate with correct exclusive tax", function() {
+			console.log('calc exclusive taxes');
+
+			// set up data based on user settings
+			pos_params.wc.calc_taxes = 'yes';
+			pos_params.wc.prices_include_tax = 'no';
+			pos_params.wc.tax_display_cart = 'excl';
+			dummy_product.taxable = true;
+			dummy_product.taxes.unit_tax_pre_discount = 0.28;
+
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+
+			expect(this.model.get('display_price')).toBe( accounting.formatNumber( 2 ) );
+			expect(this.model.get('display_total')).toBe( accounting.formatNumber( 2 ) );
+			expect(this.model.get('item_discount')).toBe(0);
+			expect(this.model.get('item_price')).toBe( 2 );
+			expect(this.model.get('line_total')).toBe( 2 );
+			expect(this.model.get('qty')).toBe(1);
+			expect(this.model.get('total_discount')).toBe(0);
+			expect(this.model.get('taxes.line_total')).toBe(0.28);
+			expect(this.model.get('taxes.itemized.2.line_total')).toBe(0.18);
+			expect(this.model.get('taxes.itemized.3.line_total')).toBe(0.1);
+			
+		});
+
+		it("should display correctly if prices exclude tax but cart includes tax", function() {
+			console.log('calc exclusive taxes, but display inclusive');
+
+			// set up data based on user settings
+			pos_params.wc.calc_taxes = 'yes';
+			pos_params.wc.prices_include_tax = 'no';
+			pos_params.wc.tax_display_cart = 'incl';
+			dummy_product.taxable = true;
+			dummy_product.taxes.unit_tax_pre_discount = 0.28;
+
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+
+			expect(this.model.get('display_price')).toBe( accounting.formatNumber( 2 ) );
+			expect(this.model.get('display_total')).toBe( accounting.formatNumber( 2.28 ) );
+			expect(this.model.get('item_discount')).toBe(0);
+			expect(this.model.get('item_price')).toBe( 2 );
+			expect(this.model.get('line_total')).toBe( 2 );
+			expect(this.model.get('qty')).toBe(1);
+			expect(this.model.get('total_discount')).toBe(0);
+			expect(this.model.get('taxes.line_total')).toBe(0.28);
+			expect(this.model.get('taxes.itemized.2.line_total')).toBe(0.18);
+			expect(this.model.get('taxes.itemized.3.line_total')).toBe(0.1);
+			
+		});
+
+		it("should initiate with correct inclusive tax", function() {
+			console.log('calc inclusive taxes');
+
+			// set up data based on user settings
+			pos_params.wc.calc_taxes = 'yes';
+			pos_params.wc.prices_include_tax = 'yes';
+			pos_params.wc.tax_display_cart = 'incl';
+			dummy_product.taxable = true;
+			dummy_product.taxes.unit_tax_pre_discount = 0.2456;
+
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+
+			expect(this.model.get('display_price')).toBe( accounting.formatNumber( 2 ) );
+			expect(this.model.get('display_total')).toBe( accounting.formatNumber( 2 ) );
+			expect(this.model.get('item_discount')).toBe(0);
+			expect(this.model.get('item_price')).toBe(1.7544);
+			expect(this.model.get('line_total')).toBe(1.7544);
+			expect(this.model.get('qty')).toBe(1);
+			expect(this.model.get('total_discount')).toBe(0);
+			expect(this.model.get('taxes.line_total')).toBe(0.2456);
+			expect(this.model.get('taxes.itemized.2.line_total')).toBe(0.1579);
+			expect(this.model.get('taxes.itemized.3.line_total')).toBe(0.0877);
+			
+		});
+
+		it("should display correctly if prices include tax but cart excludes tax", function() {
+			console.log('calc inclusive taxes, but display exclusive');
+
+			// set up data based on user settings
+			pos_params.wc.calc_taxes = 'yes';
+			pos_params.wc.prices_include_tax = 'yes';
+			pos_params.wc.tax_display_cart = 'excl';
+			dummy_product.taxable = true;
+			dummy_product.taxes.unit_tax_pre_discount = 0.2456;
+
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+
+			expect(this.model.get('display_price')).toBe( accounting.formatNumber( 2 ) );
+			expect(this.model.get('display_total')).toBe( accounting.formatNumber( 1.7544 ) );
+			expect(this.model.get('item_discount')).toBe(0);
+			expect(this.model.get('item_price')).toBe(1.7544);
+			expect(this.model.get('line_total')).toBe(1.7544);
+			expect(this.model.get('qty')).toBe(1);
+			expect(this.model.get('total_discount')).toBe(0);
+			expect(this.model.get('taxes.line_total')).toBe(0.2456);
+			expect(this.model.get('taxes.itemized.2.line_total')).toBe(0.1579);
+			expect(this.model.get('taxes.itemized.3.line_total')).toBe(0.0877);
+			
+		});
+
+		it("should re-calculate exclusive tax with change to quantity", function() {
+			console.log('calc exclusive taxes with change to quantity');
+
+			// set up data based on user settings
+			pos_params.wc.calc_taxes = 'yes';
+			pos_params.wc.prices_include_tax = 'no';
+			pos_params.wc.tax_display_cart = 'excl';
+			dummy_product.taxable = true;
+			dummy_product.taxes.unit_tax_pre_discount = 0.28;
+
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+
+			this.model.set( { 'qty': 3, 'taxable': true } );
+
+			expect(this.model.get('display_price')).toBe( accounting.formatNumber( 2 ) );
+			expect(this.model.get('display_total')).toBe( accounting.formatNumber( 6 ) );
+			expect(this.model.get('item_discount')).toBe(0);
+			expect(this.model.get('item_price')).toBe( 2 );
+			expect(this.model.get('line_total')).toBe( 6 );
+			expect(this.model.get('qty')).toBe(3);
+			expect(this.model.get('total_discount')).toBe(0);
+			expect(this.model.get('taxes.line_total')).toBe(0.84);
+			expect(this.model.get('taxes.itemized.2.line_total')).toBe(0.54);
+			expect(this.model.get('taxes.itemized.3.line_total')).toBe(0.3);
+
+		});
+
+		it("should re-calculate inclusive tax with change to quantity", function() {
+			console.log('calc inclusive taxes with change to quantity');
+
+			// set up data based on user settings
+			pos_params.wc.calc_taxes = 'yes';
+			pos_params.wc.prices_include_tax = 'yes';
+			pos_params.wc.tax_display_cart = 'incl';
+			dummy_product.taxable = true;
+			dummy_product.taxes.unit_tax_pre_discount = 0.2456;
+
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+
+			this.model.set( { 'qty': 3, 'taxable': true } );
+
+			expect(this.model.get('display_price')).toBe( accounting.formatNumber( dummy_product.price ) );
+			expect(this.model.get('display_total')).toBe( accounting.formatNumber( dummy_product.price * 3 ) );
+			expect(this.model.get('item_discount')).toBe(0);
+			expect(this.model.get('item_price')).toBe(1.7544);
+			expect(this.model.get('line_total')).toBe(5.2632);
+			expect(this.model.get('qty')).toBe(3);
+			expect(this.model.get('total_discount')).toBe(0);
+			expect(this.model.get('taxes.line_total')).toBe(0.7369);
+			expect(this.model.get('taxes.itemized.2.line_total')).toBe(0.4737);
+			expect(this.model.get('taxes.itemized.3.line_total')).toBe(0.2632);
+
+		});
+
+		it("should calculate line discount on change to price field", function() {
+			console.log('display price change');
+
+			// set up data based on user settings
+			pos_params.wc.calc_taxes = 'no';
+			dummy_product.taxable = true;
+
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+
+			// set new price to $1.50 = 50 cent discount per item, $1.00 total discount
+			this.model.set( { 'qty': 2, 'display_price': '1.50' } );
+
+			expect(this.model.get('display_price')).toBe( accounting.formatNumber( 1.5 ) );
+			expect(this.model.get('display_total')).toBe( accounting.formatNumber( 4 ) );
+			expect(this.model.get('item_discount')).toBe( 0.5 );
+			expect(this.model.get('item_price')).toBe( 1.5 );
+			expect(this.model.get('line_total')).toBe( 3 );
+			expect(this.model.get('qty')).toBe( 2 );
+			expect(this.model.get('total_discount')).toBe( 1 );
+		});
+
+		it("should re-calculate exclusive tax with item discount", function() {
+			console.log('calc exclusive taxes with discount');
+
+			// set up data based on user settings
+			pos_params.wc.calc_taxes = 'yes';
+			pos_params.wc.prices_include_tax = 'no';
+			pos_params.wc.tax_display_cart = 'excl';
+			dummy_product.taxable = true;
+
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+
+			// set new price to $1.50 = 50 cent discount per item, $1.00 total discount
+			this.model.set( { 'qty': 2, 'display_price': '1.50' } );
+
+			expect(this.model.get('display_price')).toBe( '1.50' );
+			expect(this.model.get('display_total')).toBe( '4.00' );
+			expect(this.model.get('item_discount')).toBe(0.5);
+			expect(this.model.get('item_price')).toBe( 1.5 );
+			expect(this.model.get('line_total')).toBe( 3 );
+			expect(this.model.get('qty')).toBe(2);
+			expect(this.model.get('total_discount')).toBe(1);
+			expect(this.model.get('taxes.line_total')).toBe(0.42);
+			expect(this.model.get('taxes.itemized.2.line_total')).toBe(0.27);
+			expect(this.model.get('taxes.itemized.3.line_total')).toBe(0.15);
+
+		});
+
+		it("should re-calculate inclusive tax with item discount", function() {
+			console.log('calc inclusive taxes with discount');
+
+			// set up data based on user settings
+			pos_params.wc.calc_taxes = 'yes';
+			pos_params.wc.prices_include_tax = 'yes';
+			pos_params.wc.tax_display_cart = 'incl';
+			dummy_product.taxable = true;
+
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+
+			// set new price to $1.50 = 50 cent discount per item, $1.00 total discount
+			this.model.set( { 'qty': 2, 'display_price': '1.50' } );
+
+			expect(this.model.get('display_price')).toBe( '1.50' );
+			expect(this.model.get('display_total')).toBe( '4.00' );
+			expect(this.model.get('item_discount')).toBe(0.5);
+			expect(this.model.get('item_price')).toBe( 1.3158 );
+			expect(this.model.get('line_total')).toBe( 2.6316 );
+			expect(this.model.get('qty')).toBe(2);
+			expect(this.model.get('total_discount')).toBe(1);
+			expect(this.model.get('taxes.line_total')).toBe(0.3684);
+			expect(this.model.get('taxes.itemized.2.line_total')).toBe(0.2368);
+			expect(this.model.get('taxes.itemized.3.line_total')).toBe(0.1316);
+		});
+
+	});
+
+});

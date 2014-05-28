@@ -67,7 +67,7 @@ module.exports = function(grunt) {
 				"globals": {
 					"define": true,
 					"alert": true,
-					"pos_cart_params": true,
+					"pos_params": true,
 					"Modernizr": true,
 					"_": true,
 				},
@@ -94,7 +94,7 @@ module.exports = function(grunt) {
 					paths: {
 						almondLib: '../../../bower_components/almond/almond'
 					},
-					include: 'almondLib'
+					include: 'almondLib',
 				}
 			}
 		},

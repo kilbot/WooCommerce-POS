@@ -20,6 +20,9 @@ define(['jquery', 'underscore', 'backbone'],
 			var collection;
 			var self = this;
 
+			// focus on the search field when page loads
+			this.searchBox().focus();
+
 			// first determine if we're using server or client
 			if(this.collection.mode === 'server') {
 				this.name = 'filter[q]';

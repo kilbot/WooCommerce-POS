@@ -118,7 +118,8 @@ class WooCommerce_POS {
 	public static function activate( ) {
 		// Refresh the rewrite rule cache
 		global $wp_rewrite;
-		add_rewrite_rule('pos','index.php?pos=1','top');
+		add_rewrite_rule('^pos/?$','index.php?pos=1','top');
+		add_rewrite_rule('^pos/([^/]+)/?$','index.php?pos=1&pos-template=$matches[1]','top');
 		$wp_rewrite->flush_rules( false ); // false will not overwrite .htaccess
 
 		// add the manage_woocommerce_pos capability to administrator and shop_manager
@@ -160,7 +161,8 @@ class WooCommerce_POS {
 	 */
 	public function generate_rewrite_rules( $wp_rewrite ) {
 		$custom_page_rules = array(
-			'pos' => 'index.php?pos=1',
+			'^pos/?$' => 'index.php?pos=1',
+			'^pos/([^/]+)/?$' => 'index.php?pos=1&pos-template='.$wp_rewrite->preg_index(1)
 		);
 		$wp_rewrite->rules = $custom_page_rules + $wp_rewrite->rules;
 	}
@@ -171,7 +173,8 @@ class WooCommerce_POS {
 	 * @return array
 	 */
 	public function add_query_vars( $public_query_vars ) {
-		$public_query_vars[] = "pos";
+		$public_query_vars[] = 'pos';
+		$public_query_vars[] = 'pos-template';
 		return $public_query_vars;
 	}
 
@@ -182,14 +185,20 @@ class WooCommerce_POS {
 
 		// check page and credentials
 		if ($this->is_pos() && current_user_can('manage_woocommerce_pos')) {
-			
-			// we've good to go, render the page
-			include_once( 'views/pos.php' );
+
+			// check for template request
+			$template = get_query_var( 'pos-template' );
+			if( $template != '' && file_exists( $this->plugin_path . 'public/views/' . $template . '.php' ) ) {
+				include_once( 'views/' . $template . '.php' );
+			}
+			// else: default to main page
+			else {
+				include_once( 'views/pos.php' );
+			}			
 			exit;
 
+		// else: redirect to login page
 		} elseif ($this->is_pos() && !current_user_can('manage_woocommerce_pos')) {
-
-			// redirect to login page
 			auth_redirect();
 		}
 	}
@@ -258,6 +267,7 @@ class WooCommerce_POS {
 	public function pos_print_css() {
 		$html = '
 	<link rel="stylesheet" href="'. $this->plugin_url .'public/assets/css/pos.min.css?ver='. self::VERSION .'" type="text/css" media="all" />
+	<link rel="stylesheet" href="'. $this->plugin_url .'assets/css/font-awesome.min.css" type="text/css" media="all" />
 		';
 		echo $html;
 	}
@@ -278,7 +288,7 @@ class WooCommerce_POS {
 			do_action( 'pos_add_to_footer' );
 			$this->pos_localize_script();
 	$html = '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
-	$html = '<script src="'. $this->plugin_url .'public/assets/js/scripts.min.js"></script>';
+	// $html = '<script src="'. $this->plugin_url .'public/assets/js/scripts.min.js"></script>';
 			echo $html;
 		}
 	}
@@ -334,7 +344,7 @@ class WooCommerce_POS {
 		);
 	$html = '
 	<script type="text/javascript">
-	var pos_cart_params = ' . json_encode($js_vars) . '
+	var pos_params = ' . json_encode($js_vars) . '
 	</script>
 	';
 		echo $html;

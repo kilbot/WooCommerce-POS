@@ -1,14 +1,7 @@
 define(['jquery', 'underscore', 'backbone', 'accounting'], 
 	function($, _, Backbone, accounting) {
 
-	// pos_cart_params is required to continue, ensure the object exists
-	if ( typeof pos_cart_params === 'undefined' ) {
-		console.log('No pos_cart_params');
-		return false;
-	} else {
-		accounting.settings = pos_cart_params.accounting.settings;
-		var wc = pos_cart_params.wc;
-	}
+	accounting.settings = pos_params.accounting.settings;
 
 	// the view contining a single total
 	var CartTotal = Backbone.View.extend({
