@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'collections/CartItems'], 
-	function($, _, Backbone, CartItems) {
+define(['jquery', 'underscore', 'backbone'], 
+	function($, _, Backbone) {
 
 	// view for individual products
 	var Product = Backbone.View.extend({
@@ -10,7 +10,10 @@ define(['jquery', 'underscore', 'backbone', 'collections/CartItems'],
 			'click a.add-to-cart'	: 'addToCart',
 		},
 
-		initialize: function() {
+		initialize: function(options) {
+
+			// use the cart already initialized
+			this.cart = options.cart;
 
 			// listen for changes to Product model
 			this.listenTo( this.model, 'change', this.render );
@@ -25,8 +28,15 @@ define(['jquery', 'underscore', 'backbone', 'collections/CartItems'],
 		addToCart: function(e) {
 			e.preventDefault();
 
-			// send to the cart
-			CartItems.addToCart(this.model);
+			// if product already exists in cart, increase qty
+			if( _( this.cart.collection.pluck('id') ).contains( this.model.attributes.id ) ) {
+				this.cart.collection.get( this.model.attributes.id ).quantity('increase');
+			}
+
+			// else, add the product
+			else { 
+				this.cart.collection.add(this.model.attributes);
+			}
 		},
 
 	});

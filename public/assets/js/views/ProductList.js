@@ -1,12 +1,14 @@
-define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/ProductFilter', 'views/ProductPagination', 'collections/ProductsFallback'], 
-	function($, Backbone, ProductsCollection, ProductView, ProductFilter, ProductPagination, ProductsFallbackCollection) {
+define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/ProductFilter', 'views/ProductPagination', 'collections/ProductsFallback', 'views/CartList'], 
+	function($, Backbone, ProductsCollection, Product, ProductFilter, ProductPagination, ProductsFallbackCollection, CartList) {
 
 	// paginated view for the entire list
 	var ProductList = Backbone.View.extend({
 		el: $('#product-list'),
 		elEmpty: $('#product-list').contents().clone(),
+		cart: new CartList(), // there can be only one cart
 
 		initialize: function() {
+
 			if(Modernizr.indexeddb) {
 				this.collection = new ProductsCollection();
 				// sync products with server on init
@@ -16,8 +18,8 @@ define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/Pr
 			}
 	
 			// init product filter & pagination
-  			var productFilter = new ProductFilter( { collection: this.collection } );
-  			var productPagination = new ProductPagination( { collection: this.collection } );
+  			new ProductFilter( { collection: this.collection } );
+  			new ProductPagination( { collection: this.collection } );
 
 			// listen to the product collection and render on all events
 			this.listenTo(this.collection, 'all', this.render);	
@@ -43,7 +45,7 @@ define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/Pr
 			this.collection.each(function( item ){
 
 				// Render each item model into this List view
-				var newProduct = new ProductView({ model : item });
+				var newProduct = new Product({ model : item, cart: this.cart });
 				this.$el.append( newProduct.render().el );
 
 			// Pass this list views context
@@ -57,7 +59,5 @@ define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/Pr
 
 	});
 
-  
-
-  return ProductList;
+	return ProductList;
 });

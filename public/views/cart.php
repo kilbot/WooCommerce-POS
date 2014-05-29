@@ -43,11 +43,26 @@
 </script>
 
 <script type="text/template" id="tmpl-cart-total">
-	<th colspan="3"><%= label %></th>
-	<td colspan="2"><%= total %></td>
-</script>
-
-<script type="text/template" id="tmpl-cart-action">
+	<tr>
+		<th colspan="3"><?php _e( 'Subtotal:', 'woocommerce-pos' ); ?></th>
+		<td colspan="2"><%= subtotal %></td>
+	</tr>
+	<% if( show_discount ) { %>
+	<tr>
+		<th colspan="3"><?php _e( 'Cart Discount:', 'woocommerce-pos' ); ?></th>
+		<td colspan="2"><%= cart_discount %></td>
+	</tr>
+	<% } %>
+	<% if( show_tax ) { %>
+	<tr>
+		<th colspan="3"><?php _e( 'Tax:', 'woocommerce-pos' ); ?></th>
+		<td colspan="2"><%= tax %></td>
+	</tr>
+	<% } %>
+	<tr>
+		<th colspan="3"><?php _e( 'Total:', 'woocommerce-pos' ); ?></th>
+		<td colspan="2"><%= total %></td>
+	</tr>
 	<tr class="actions">
 		<td colspan="5">
 			<button type="submit" class="btn btn-success btn-checkout" name="pos_checkout" id="pos_checkout" value="checkout">

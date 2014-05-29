@@ -20,9 +20,7 @@ define(['jquery'], function($) {
 					whiteSpace  : 'nowrap',
 				}).addClass('POS-input-width-tester');
 
-				// Watch for input value changes on all of these events. `resize`
-				// event is called explicitly when the input has been changed without
-				// a single keypress.
+				// Watch for input value changes on all of these events.
 				var events = 'keydown keyup input propertychange change';
 				$input.next('.POS-input-width-tester').remove();
 				$input.after($tester);
@@ -41,7 +39,7 @@ define(['jquery'], function($) {
 				});
 
 				// Sets the width of the input on initialization.
-				$input.trigger('keydown');
+				$input.trigger('change');
 			});
 		},
 

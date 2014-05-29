@@ -1,24 +1,23 @@
-define(['backbone', 'backbone-deepmodel', 'accounting'], 
-	function(Backbone, DeepModel, accounting){
-
-	// accounting.settings = pos_params.accounting.settings;
-	// var wc = pos_params.wc;
+define(['backbone', 'accounting'], 
+	function(Backbone, accounting){
 
   	// store the product data, add qty, total & discount by default
-	var CartItem = Backbone.DeepModel.extend({
+	var CartItem = Backbone.Model.extend({
 		defaults : {
-			'display_price'	: 0,
-			'display_total' : 0,
-			'item_discount'	: 0,
-			'item_price'	: 0,
-			'line_total'	: 0,
-			'qty'			: 1,
-			'total_discount': 0,
+			'display_price'		: 0,
+			'display_total' 	: 0,
+			'item_discount'		: 0,
+			'item_price'		: 0,
+			'line_total'		: 0,
+			'qty'				: 1,
+			'line_tax' 			: 0,
+			'item_tax' 			: 0,
+			'total_discount' 	: 0,
 		},
 		params: pos_params,
 
 		initialize: function() { 
-			// this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
+			this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
 
 			// set the accounting settings
 			accounting.settings = this.params.accounting.settings;
@@ -35,6 +34,7 @@ define(['backbone', 'backbone-deepmodel', 'accounting'],
 			var qty 		   = this.get('qty'),
 				display_price  = parseFloat( this.get('display_price') ),
 				original_price = parseFloat( this.get('price') ),
+				line_tax 	   = 0,
 				discount 	   = 0,
 				item_price 	   = 0,
 				display_total  = 0,
@@ -42,43 +42,11 @@ define(['backbone', 'backbone-deepmodel', 'accounting'],
 
 			// set taxes first
 			if( taxable && this.params.wc.calc_taxes === 'yes' ) {
-				var taxes = [],
-					item_total = 0,
-					line_total = 0,
-					total = 0;
-
-				taxes = this.calcTaxTotal( display_price, this.get('taxes.itemized') );
-
-				_.each(this.get('taxes.itemized'), function(tax_rate) {
-
-					// round now if required
-					if( this.params.wc.tax_round_at_subtotal === 'no' ) {
-						line_total = this.roundNum( taxes[tax_rate.rate_id] * qty );
-					} else {
-						line_total = taxes[tax_rate.rate_id] * qty;
-					}
-
-					// set the itemized tax line_totals
-					this.set('taxes.itemized.' + tax_rate.rate_id + '.line_total', line_total );
-					
-					item_total += taxes[tax_rate.rate_id];
-					total += line_total;
-				}, this);
-
-				// round again if required
-				if( this.params.wc.tax_round_at_subtotal === 'no' ) {
-					item_total = this.roundNum( item_total );
-					total = this.roundNum( total );
-				}
-
-				// set the item tax line_total
-				this.set('taxes.item_total', item_total );
-				this.set('taxes.line_total', total );
-
+				this.calcTax( display_price, qty, this.get('taxes').itemized );
 			}
 
 			discount = original_price - display_price;
-			item_price = this.calcPrice( display_price, taxable );
+			item_price = ( this.params.wc.prices_include_tax === 'yes' ) ? display_price - this.get('item_tax') : display_price;
 			display_total = this.displayTotal( original_price, taxable );
 			this.set({
 				'item_price'	: item_price,
@@ -89,46 +57,34 @@ define(['backbone', 'backbone-deepmodel', 'accounting'],
 			});
 		},
 
-		calcPrice: function(price, taxable) {
-			var tax = 0;
-
-			if( taxable && this.params.wc.calc_taxes === 'yes' ) {
-				tax = this.get('taxes.item_total');
-				if(this.params.wc.prices_include_tax === 'yes') {
-					price = price - tax;
-				}
-			}
-
-			return price;
-		},
-
 		/**
 		 * Calculate the line item tax total
 		 * based on the calc_tax function in woocommerce/includes/class-wc-tax.php
 		 */
-		calcTaxTotal: function( price, rates ) {
-			var taxes = [];
+		calcTax: function( price, qty, rates ) {
+			var line_total = 0;
 
 			if( this.params.wc.prices_include_tax === 'yes' ) {
-				taxes = this.calcInclusiveTax( price, rates );
+				line_total = this.calcInclusiveTax( price, qty, rates );
 			}
 			else {
-				taxes = this.calcExclusiveTax( price, rates );
+				line_total = this.calcExclusiveTax( price, qty, rates );
 			}
 
-			return taxes;
+			return line_total;
 		},
 
 		/**
 		 * Calculate the line item tax total
 		 * based on the calc_inclusive_tax function in woocommerce/includes/class-wc-tax.php
 		 */
-		calcInclusiveTax: function( price, rates ) {
-			var taxes = [],
-				regular_tax_rates = 0,
+		calcInclusiveTax: function( price, qty, rates ) {
+			var regular_tax_rates = 0,
 				compound_tax_rates = 0,
 				non_compound_price = 0,
-				tax_amount = 0;
+				tax_amount = 0,
+				item_tax = 0,
+				line_tax = 0;
 
 			_.each(rates, function(rate) {
 				if ( rate.compound === 1 ) {
@@ -159,20 +115,38 @@ define(['backbone', 'backbone-deepmodel', 'accounting'],
 				var net_price = price - ( the_rate * the_price );
 				tax_amount = price - net_price;
 
-				taxes[ rate.rate_id ] = tax_amount;
+				// do the rounding now if required
+				var item_tax_ = this.roundNum( tax_amount );
+				var line_tax_ = this.roundNum( tax_amount * qty );
+
+				// set the itemized taxes
+				this.set( 'item_tax_' + rate.rate_id, item_tax_ );
+				this.set( 'line_tax_' + rate.rate_id, line_tax_ );
+
+				// combine taxes
+				item_tax += item_tax_;
+				line_tax += line_tax_;
+
 			}, this);
 
-			return taxes;
+			// set the combined taxes now
+			this.set( 'item_tax' , this.roundNum( item_tax ) );
+			this.set( 'line_tax' , this.roundNum( line_tax ) );
+			
+			// return the line tax
+			// return this.roundNum( item_tax * qty );
 		},
 
 		/**
 		 * Calculate the line item tax total
 		 * based on the calc_exclusive_tax function in woocommerce/includes/class-wc-tax.php
 		 */
-		calcExclusiveTax: function( price, rates ) {
+		calcExclusiveTax: function( price, qty, rates ) {
 			var taxes = [],
+				pre_compound_total = 0,
 				tax_amount = 0,
-				pre_compound_total = 0;
+				item_tax = 0,
+				line_tax =0;
 
 			// multiple taxes
 			_.each(rates, function(rate) {
@@ -190,17 +164,36 @@ define(['backbone', 'backbone-deepmodel', 'accounting'],
 					tax_amount = the_price_inc_tax * ( parseFloat(rate.rate) / 100 );
 				}
 
-				taxes[ rate.rate_id ] = tax_amount;
+				// do the rounding now if required
+				var item_tax_ = this.roundNum( tax_amount );
+				var line_tax_ = this.roundNum( tax_amount * qty );
+
+				// set the itemized taxes
+				this.set( 'item_tax_' + rate.rate_id, item_tax_ );
+				this.set( 'line_tax_' + rate.rate_id, line_tax_ );
+
+				// combine taxes
+				item_tax += item_tax_;
+				line_tax += line_tax_;
+
 			}, this);
 
-			return taxes;
+			// set the combined taxes now
+			this.set( 'item_tax' , this.roundNum( item_tax ) );
+			this.set( 'line_tax' , this.roundNum( line_tax ) );
+			
+			// return the line tax
+			// return this.roundNum( item_tax * qty );
 		},
 
+		/**
+		 * Handle special cases of display
+		 */
 		displayTotal: function(price, taxable) {
 			var tax = 0;
 
 			if( taxable && this.params.wc.calc_taxes === 'yes' ) {
-				tax = this.get('taxes.item_total');
+				tax = this.get('line_tax');
 				if( this.params.wc.prices_include_tax === 'no' && this.params.wc.tax_display_cart === 'incl' ) {
 					price = price + tax;
 				}
@@ -212,8 +205,13 @@ define(['backbone', 'backbone-deepmodel', 'accounting'],
 			return price;
 		},
 
+		// Convenience method for rounding to 4 decimal places
+		// TODO: mirror the functionality of WC_ROUNDING_PRECISION
 		roundNum: function(num) {
-			return parseFloat( accounting.formatNumber(num, 4) );
+			if( this.params.wc.tax_round_at_subtotal === 'no' ) {
+				return parseFloat( accounting.formatNumber(num, 4) );
+			}
+			return num;
 		},
 
 		// Convenience method to increase or decrease qty

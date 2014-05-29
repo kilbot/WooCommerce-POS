@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput', 'collections/CartItems'], 
-	function($, _, Backbone, accounting, autoGrowInput, CartItems) {
+define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput'], 
+	function($, _, Backbone, accounting, autoGrowInput) {
 
 	accounting.settings = pos_params.accounting.settings;
 	var wc = pos_params.wc;
@@ -16,7 +16,10 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput', 'coll
       		"blur input"      	: "close"
 		},
 
-		initialize: function() {
+		initialize: function(options) {
+
+			// use the cart already initialized
+			this.cart = options.cart;
 
 			// listen for changes to CartItem model
 			this.listenTo( this.model, 'change', this.render );
@@ -58,7 +61,8 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput', 'coll
 			this.$el.fadeOut(200, function(){
 				$(this).remove();
 			});
-			CartItems.remove( this.model );
+			this.model.destroy();
+			// this.cart.remove( this.model );
 		},
 
 		change: function(e) {
@@ -99,87 +103,6 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput', 'coll
 
 			// enter key triggers blur as well?
 			if (e.keyCode === 13) { this.close(e); }
-		},
-
-		displayLinePrice: function() {
-			var price = parseFloat( this.model.get('price') ),
-				tax = 0;
-
-			// if cart item is taxable, get tax
-			if( this.model.get('taxable') ) { tax = parseFloat( this.model.get('taxes.total') ); } 
-
-			if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'no' && wc.tax_display_cart === 'incl' ) {
-				price = price + tax;
-			}
-
-			else if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl' ) {
-				price = price - tax;
-			}
-
-			return price;
-		},
-
-		/**
-		 * Display the line total
-		 * @param  {object} collection 	the cart items
-		 * @return {float} subtotal
-		 */
-		displayLineTotal: function() {
-			var price = parseFloat( this.model.get('price') ),
-				qty = parseFloat( this.model.get('qty') ),
-				total = 0,
-				tax = 0;
-
-			if( this.model.get('taxable') ) { tax = parseFloat( this.model.get('taxes.total') ); } 
-
-			if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'no' && wc.tax_display_cart === 'incl'  ) {
-				total = ( price + tax ) * qty;
-			}
-
-			else if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl'  ) {
-				total = ( price - tax ) * qty;
-			}
-
-			else {
-				total = price * qty;
-			}
-
-			return total;
-
-		},
-
-				/**
-		 * Calculate discount (original price - new price)
-		 * @param  {float} price 	the original price
-		 * @param  {object}	model	the product 
-		 * @return {float} discount 
-		 */
-		calcLineDiscount: function(newprice, model) {
-			var original = parseFloat( model.get('price') ),
-				tax = 0,
-				discount = 0;
-
-			// if cart item is taxable, get tax
-			if( model.get('taxable') ) { tax = parseFloat( model.get('taxes.total') ); } 
-
-			if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'no' && wc.tax_display_cart === 'incl' ) {
-				discount = original + tax - newprice;
-			}
-
-			else if( wc.calc_taxes === 'yes' && wc.prices_include_tax === 'yes' && wc.tax_display_cart === 'excl' ) {
-				discount = original - tax - newprice;
-			}
-
-			else {
-				discount = original - newprice;
-			}
-
-			// round discount if required
-			if( wc.round_at_subtotal === 'no' ) {
-				discount = accounting.formatNumber(discount);
-			}
-
-			return discount;
 		},
 
 	});

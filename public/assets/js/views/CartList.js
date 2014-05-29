@@ -1,5 +1,5 @@
-define(['jquery', 'backbone', 'collections/CartItems', 'views/CartItem', 'views/CartTotals'], 
-	function($, Backbone, CartItems, CartItemView, CartTotalsView) {
+define(['jquery', 'backbone', 'collections/CartItems', 'views/CartItem'], 
+	function($, Backbone, CartItems, CartItemView) {
 
 	// view for the full cart
 	var CartList = Backbone.View.extend({
@@ -9,10 +9,7 @@ define(['jquery', 'backbone', 'collections/CartItems', 'views/CartItem', 'views/
 		initialize: function() {
 
 			// init the CartItem collection 
-			this.collection = CartItems;
-
-			// init the Cart Totals
-			var cartTotalsView = new CartTotalsView();
+			this.collection = new CartItems();
 
 			// listen for changes
 			this.listenTo(this.collection, 'add', this.addOne);
@@ -37,15 +34,17 @@ define(['jquery', 'backbone', 'collections/CartItems', 'views/CartItem', 'views/
 			}
 
 			// create a new CartItemView
-			var newItem = new CartItemView({ model: item });
+			var newItem = new CartItemView({ model: item, cart: this.collection });
 
 			// add the new CartItemView
 			this.$el.append( newItem.render().el );
+
+			// bit of a hack, need to trigger autoGrowInput after the first render
+			this.$('input[type=number]').trigger('change');
 		},
 
 		addAll: function() {
 
-			// this will come into play with parked carts
 			this.collection.each(this.addOne, this);
     	},
 

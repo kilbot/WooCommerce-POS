@@ -23,7 +23,6 @@ require.config({
 		'bootstrap-modal': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal',
 		'bootstrap-dropdown': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown',
 		'backbone-modal': '../../../bower_components/backbone.bootstrap-modal/src/backbone.bootstrap-modal',
-		'backbone-deepmodel': '../../../bower_components/backbone-deep-model/distribution/deep-model',
 		'backbone-indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
 		'backbone-paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
 		'pushy': '../../../public/assets/js/plugins/pushy',
@@ -45,6 +44,10 @@ require.config({
 		'pushy': {
 			deps: ['jquery'],
 		},
+		'backbone-nested': {
+			deps: ['underscore', 'backbone'],
+			exports: 'NestedModel'
+		}
     }
 
 });

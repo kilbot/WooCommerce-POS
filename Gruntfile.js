@@ -80,6 +80,9 @@ module.exports = function(grunt) {
 				'!public/assets/js/scripts.min.js',
 				'!public/assets/js/require.js',
 				'!public/assets/js/vendor/**/*.js',
+				'tests/data/**/*.json',
+				'tests/specs/**/*.js',
+				'tests/main.js',
 			]
 		},
 

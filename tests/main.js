@@ -3,36 +3,39 @@
 require.config({
 
 	// Sets the js folder as the base directory for all future relative paths
-	baseUrl: '/wp-content/plugins/woocommerce-pos',
+	baseUrl: '/wp-content/plugins/woocommerce-pos/public/assets/js',
 
 	paths: {
 
         // jasmine
-        'jasmine': 'tests/lib/jasmine-2.0.0/jasmine',
-        'jasmine-html': 'tests/lib/jasmine-2.0.0/jasmine-html',
-        'boot': 'tests/lib/jasmine-2.0.0/boot',
+        'jasmine': '../../../tests/lib/jasmine-2.0.0/jasmine',
+        'jasmine-html': '../../../tests/lib/jasmine-2.0.0/jasmine-html',
+        'boot': '../../../tests/lib/jasmine-2.0.0/boot',
 
 		// Core Libraries
 		// 'jquery': '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
-		'jquery': 'bower_components/jquery/dist/jquery.min',
-		'underscore': 'bower_components/lodash/dist/lodash.min',
+		'jquery': '../../../bower_components/jquery/dist/jquery.min',
+		'underscore': '../../../bower_components/lodash/dist/lodash.min',
 		// 'underscore': 'bower_components/underscore/underscore',
-		'backbone': 'bower_components/backbone/backbone',
-		'accounting': 'bower_components/accounting/accounting.min',
+		'backbone': '../../../bower_components/backbone/backbone',
+		'accounting': '../../../bower_components/accounting/accounting.min',
 		
 		// Convenience methods for getting and setting User settings
-		'settings': 'public/assets/js/plugins/Settings',
+		'settings': '../../../public/assets/js/plugins/Settings',
 
 		// Plugins
-		'bootstrap-modal': 'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal',
-		'bootstrap-dropdown': 'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown',
-		'backbone-modal': 'bower_components/backbone.bootstrap-modal/src/backbone.bootstrap-modal',
-		'backbone-deepmodel': 'bower_components/backbone-deep-model/distribution/deep-model',
-		'backbone-indexeddb': 'bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
-		'backbone-paginator': 'bower_components/backbone.paginator/lib/backbone.paginator.min',
+		'bootstrap-modal': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal',
+		'bootstrap-dropdown': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown',
+		'backbone-modal': '../../../bower_components/backbone.bootstrap-modal/src/backbone.bootstrap-modal',
+		'backbone-deepmodel': '../../../bower_components/backbone-deep-model/distribution/deep-model',
+		'backbone-indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
+		'backbone-paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
         
-        'text': 'tests/lib/text',
-		'json': 'tests/lib/json',
+        'text': '../../../tests/lib/text',
+		'json': '../../../tests/lib/json',
+
+        // Dummy Data
+        'dummy-products': '../../../tests/data/dummy-products.json'
 
 	},
 
@@ -53,7 +56,8 @@ require.config({
 });
 
 var specs = [
-	'tests/spec/cartItemSpec',
+    '../../../tests/spec/cartItemSpec',
+    '../../../tests/spec/cartTotalsSpec',
 ];
 
 var pos_params = {
@@ -87,7 +91,7 @@ var pos_params = {
         "tax_display_cart": "excl",
         "tax_total_display": "single"
     }
-}
+};
 
 require(['boot'], function () {
 

@@ -3,13 +3,11 @@ define(['backbone'],
 
 	var CartTotal = Backbone.Model.extend({
 		defaults: {
-			label: '',
-			total: 0.00
+			title : 'Cart Totals'
 		},
-		idAttribute: 'label',
 
 		initialize: function() { 
-			// this.on('all', function(e) { console.log(this.get('label') + " event: " + e); }); // debug
+			this.on('all', function(e) { console.log("Cart Totals Model event: " + e); }); // debug
 		},
 	});
   

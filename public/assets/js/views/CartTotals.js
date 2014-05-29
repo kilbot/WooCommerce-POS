@@ -1,39 +1,32 @@
-define(['jquery', 'underscore', 'backbone', 'collections/CartTotals', 'views/CartTotal', 'views/Checkout'], 
-	function($, _, Backbone, CartTotals, CartTotalView, Checkout) {
+define(['jquery', 'underscore', 'backbone', 'views/Checkout'], 
+	function($, _, Backbone, Checkout) {
 
 	// the view containing all the totals, and the action buttons
 	var CartTotalsView = Backbone.View.extend({
 		el: $('#cart-totals'),
+		template: _.template($('#tmpl-cart-total').html()),
 		events: {
 			"click #pos_checkout"	: "checkout",
 		},
 
 		initialize: function() {
 
-			// init the CartTotals collection 
-			this.collection = new CartTotals();
-
-			this.listenTo( this.collection, 'reset', this.render );
+			// re-render on all changes to the totals model
+			this.listenTo( this.model, 'change', this.render );
 		},
 
 		render: function() {
 
+			// clear #cart-totals to start
 			this.$el.removeClass('empty').html('');
 
-			// Loop through the collection
-			this.collection.each(function( item ){
+			// grab the model
+			var totals = this.model.toJSON();
 
-				// Render each item model into this List view
-				var newTotal = new CartTotalView({ model : item });
-				this.$el.append( newTotal.render().el );
+			// render the totals
+			this.$el.html( ( this.template( totals ) ) );
 
-			// Pass this list views context
-			}, this);
-
-			// add the action buttons
-			if (this.collection.length > 0) {
-				this.$el.append( _.template($('#tmpl-cart-action').html()) );
-			}
+			return this;
 		},
 
 		checkout: function() {
@@ -44,5 +37,5 @@ define(['jquery', 'underscore', 'backbone', 'collections/CartTotals', 'views/Car
 
 	});
 
-  return CartTotalsView;
+	return CartTotalsView;
 });
