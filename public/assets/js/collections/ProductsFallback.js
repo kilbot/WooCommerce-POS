@@ -1,9 +1,11 @@
-define(['backbone', 'backbone-paginator'], 
-	function(Backbone, PageableCollection){
+define(['backbone', 'backbone-paginator', 'models/Product'], 
+	function(Backbone, PageableCollection, Product){
 
 	// the pageable product list
 	var Products = Backbone.PageableCollection.extend({
 		url: '/wc-api/v1/products',
+		model: Product,
+
 		mode: "server",
 
 		// Initial pagination states

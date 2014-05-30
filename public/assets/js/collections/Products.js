@@ -20,8 +20,13 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 		},
 
 		clear: function() {
-			this.reset(); // empty products list
-			this.deleteDB(); // delete the database
+
+			// Danger! This call should never go out to the server. It's not a problem at
+			// the moment but checks and balances should be added if WC REST API allows delete
+			if( typeof this.database.id !== 'undefined' ) {
+				$.when(this.removeProducts( this.fullCollection.pluck('id') ))
+				.done( this.reset() );
+			}
 		},
 
 		/*============================================================================
@@ -290,34 +295,6 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 				return null;
 			}
 		},
-
-		/*============================================================================
-		Delete the database
-		===========================================================================*/ 
-		deleteDB: function() {
-			try {
-				// close any open connections
-				this.sync( 'closeall' );
-
-			    var indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB ;
-
-				// clobber the database 
-				var dbreq = indexedDB.deleteDatabase(Database.id);
-				dbreq.onsuccess = function (event) {
-					var db = event.result;
-					console.log("indexedDB: " + Database.id + " deleted");
-				};
-				dbreq.onerror = function (event) {
-					console.error("indexedDB.delete Error: " + event.message);
-				};
-				dbreq.onblocked = function (event) {
-					console.error("indexedDB.delete Error: " + event.message);
-				};
-			}
-			catch (e) {
-				console.error("Error: " + e.message);
-			}
-		}
 
 	});
 

@@ -24,12 +24,12 @@ require.config({
 		'settings': '../../../public/assets/js/plugins/Settings',
 
 		// Plugins
-		'bootstrap-modal': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal',
-		'bootstrap-dropdown': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown',
-		'backbone-modal': '../../../bower_components/backbone.bootstrap-modal/src/backbone.bootstrap-modal',
-		'backbone-deepmodel': '../../../bower_components/backbone-deep-model/distribution/deep-model',
-		'backbone-indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
-		'backbone-paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
+        'bootstrap-modal': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal',
+        'bootstrap-dropdown': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown',
+        'backbone-modal': '../../../bower_components/backbone.bootstrap-modal/src/backbone.bootstrap-modal',
+        'backbone-indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
+        'backbone-localstorage': '../../../bower_components/backbone.localStorage/backbone.localStorage',
+        'backbone-paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
         
         'text': '../../../tests/lib/text',
 		'json': '../../../tests/lib/json',
@@ -60,6 +60,7 @@ var specs = [
     '../../../tests/spec/cartTotalsSpec',
 ];
 
+// default params
 var pos_params = {
     "ajax_url": "\/wp-admin\/admin-ajax.php",
     "loading_icon": "http:\/\/woopos.com.au\/wp-content\/plugins\/woocommerce-pos\/\/assets\/ajax-loader.gif",

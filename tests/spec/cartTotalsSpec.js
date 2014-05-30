@@ -1,6 +1,23 @@
 /**
  * Test the cart totals calculates correct values based on pos_params.
  * 
+ * Params:
+ * calc_taxes
+ * prices_include_tax
+ * tax_display_cart
+ * tax_round_at_subtotal
+ * tax_total_display
+ *
+ * Properties:
+ * {string} subtotal
+ * {string} cart_discount
+ * {string} tax
+ * {string} total
+ * {bool} show_discount
+ * {bool} show_tax
+ * {object} tax_labels
+ * {object} itemized_tax
+ * 
  */
 
 define(['jquery', 'underscore', 'backbone', 'accounting', 'collections/CartItems', 'models/CartTotals', 'json!dummy-products' ], 
@@ -10,7 +27,17 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'collections/CartItems
 
 		it("should contain the correct number of items", function() {
 
+			// reset pos_params
+			pos_params.wc.calc_taxes = 'no';
+			pos_params.wc.prices_include_tax = 'no';
+			pos_params.wc.tax_display_cart = 'excl';
+			pos_params.wc.tax_round_at_subtotal = 'no';
+			pos_params.wc.tax_total_display = 'single';
+
+			// init the collection of cart items
 			c = new CartItems();
+
+			// add the products
 			c.add(dummy_products.products);
 			expect(c.length).toEqual(3);
 		});
@@ -20,79 +47,69 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'collections/CartItems
 
 		beforeEach(function() {
 
+			// reset pos_params
+			pos_params.wc.calc_taxes = 'no';
+			pos_params.wc.prices_include_tax = 'no';
+			pos_params.wc.tax_display_cart = 'excl';
+			pos_params.wc.tax_round_at_subtotal = 'no';
+			pos_params.wc.tax_total_display = 'single';
+
+			// init the collection of cart items
 			c = new CartItems();
 
+			// add the products
+			c.add(dummy_products.products);
 		});
 
 		it("should be in a valid state", function() {
 
-			c.add(dummy_products.products);
 			expect( c.totals.model.isValid() ).toBe(true);
 			
 		});
 
 		it("should calculate the subtotal", function() {
 
-			// add the products
-			c.add(dummy_products.products);
 			expect( c.totals.model.get('subtotal') ).toEqual('&#36;43.00');
-			console.log(c.totals.model);
 		});
 
 		it("should calculate the total", function() {
 
-			// add the products
-			c.add(dummy_products.products);
 			expect( c.totals.model.get('total') ).toEqual('&#36;43.00');
-			console.log(c.totals.model);
 		});
 
 		it("should calculate the cart discount", function() {
 
-			// add the products
-			c.add(dummy_products.products);
-
 			// change the price
-			var woo_single = c.get(99);
-			woo_single.set( {'qty': 3, 'display_price': '1.50'} );
+			c.get(99).set({ 'qty': 3, 'display_price': '1.50'});
 
+			expect( c.totals.model.get('show_discount') ).toEqual(true);
 			expect( c.totals.model.get('cart_discount') ).toEqual('- &#36;1.50');
-			console.log(c.totals.model);
 		});
 
-		// it("should add another row for Tax", function() {
+		it("should calculate the cart tax", function() {
 
-		// 	// mock user settings
-		// 	pos_params.wc.calc_taxes = 'yes';
-		// 	// pos_params.wc.prices_include_tax = 'no';
-		// 	// pos_params.wc.tax_display_cart = 'excl';
+			// change the pos_params
+			pos_params.wc.calc_taxes = 'yes';
+			c.each( function(product) { product.trigger('change:qty') });
 
-		// 	// add the products
-		// 	CartItems.add(dummy_products.products);
+			expect( c.totals.model.get('show_tax') ).toEqual(true);
+			expect( c.totals.model.get('tax') ).toEqual('&#36;0.96');
+		});
 
-		// 	// change the price
-		// 	var woo_single = CartItems.get(99);
-		// 	woo_single.set( {'display_price': '1.50'} );
+		it("should calculate the itemized taxes", function() {
 
-		// 	expect(c.length).toEqual(4);
-		// });
+			// change the pos_params
+			pos_params.wc.calc_taxes = 'yes';
+			pos_params.wc.tax_total_display = 'itemized';
+			c.get(99).set({ 'taxable': true });
+			c.each( function(product) { product.trigger('change:qty') });
 
-		// it("should also add rows for Itemized Tax", function() {
+			var itemized_tax = c.totals.model.get('itemized_tax');
 
-		// 	// mock user settings
-		// 	pos_params.wc.calc_taxes = 'yes';
-		// 	pos_params.wc.tax_total_display = 'itemized';
-
-		// 	// add the products
-		// 	CartItems.add(dummy_products.products);
-
-		// 	// change the price
-		// 	var woo_single = CartItems.get(99);
-		// 	woo_single.set( {'display_price': '1.50'} );
-
-		// 	expect(c.length).toEqual(4);
-		// });
-
+			expect( c.totals.model.get('show_itemized') ).toEqual(true);
+			expect( _.isPlainObject(itemized_tax) ).toBe(true);
+			expect( _.isEmpty(itemized_tax) ).toBe(false);
+		});
 
 
 	});

@@ -1,15 +1,16 @@
-define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views/CartTotals', 'accounting'], 
-	function(_, Backbone, CartItem, CartTotals, CartTotalsView, accounting){
+define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views/CartTotals', 'accounting', 'backbone-localstorage'], 
+	function(_, Backbone, CartItem, CartTotals, CartTotalsView, accounting, LocalStorage){
 
 	// the collection of cart items
 	var CartItems = Backbone.Collection.extend({
-		url: pos_params.ajax_url,
+		// url: pos_params.ajax_url,
+		localStorage: new Backbone.LocalStorage("cart"),
 		model: CartItem,
 		params: pos_params,
 
   		// debug
 		initialize: function() { 
-			this.on('all', function(e) { console.log("Cart Collection event: " + e); }); // debug
+			// this.on('all', function(e) { console.log("Cart Collection event: " + e); }); // debug
 
 			// set the accounting settings
 			accounting.settings = this.params.accounting.settings;
@@ -21,7 +22,7 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 			this.totals = new CartTotalsView({ model: cartTotals });
 			
 			// update totals on change to the cart items
-			this.listenTo( this, 'add change remove', this.updateTotals );
+			this.listenTo( this, 'add change remove reset', this.updateTotals );
 		},
 
 		updateTotals: function() {
@@ -30,8 +31,8 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 				cart_discount 	= 0,
 				tax 			= 0,
 				total 			= 0,
-				itemized_tax 	= [],
-				tax_labels 		= [];
+				itemized_tax 	= {},
+				tax_rates 		= {};
 
 			// if cart is empty
 			if( this.length === 0 ) {
@@ -62,24 +63,21 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 			}
 
 			// special case: itemized taxes
-			if( tax !== 0 && this.params.wc.tax_display === 'itemized') {
-				// tax_labels = this.tax_labels();
-				// if ( this.params.wc.tax_display === 'itemized' ) {
-				// 	var i = 3;
-				// 	_.each(tax_labels, function(tax) {
-				// 		tax_sum = 0;
-				// 		tax_sum = _.reduce( _.compact( this.pluck('taxes.itemized.' + tax.id + '.line_total' ) ), function(memo, num){ return memo + num; }, 0 );
-				// 		if( tax_sum !== 0 ) {
-				// 			totals.push( { tax : tax_sum } );
-				// 		}
-				// 		i++;
-				// 	}, this);
-				// }
+			if( tax !== 0 && this.params.wc.tax_total_display === 'itemized') {
+				tax_rates = this.tax_rates();
+				_.each(tax_rates, function(tax, key) {
+					var tax_sum = 0;
+					tax_sum = _.reduce( _.compact( this.pluck( 'line_tax_' + key ) ), function(memo, num){ return memo + num; }, 0 );
+					if( tax_sum !== 0 ) {
+						itemized_tax[tax.label] = accounting.formatMoney(tax_sum);
+					}
+				}, this);
 			}
 
 			// set some flags
 			var show_discount 	= cart_discount !== 0 ? true : false ;
 			var show_tax 		= tax !== 0 ? true : false ;
+			var show_itemized 	= !_.isEmpty(itemized_tax);
 
 			// create totals object
 			var totals = {
@@ -89,6 +87,8 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 				'total'			: accounting.formatMoney(total),
 				'show_discount' : show_discount,
 				'show_tax' 		: show_tax,
+				'show_itemized'	: show_itemized,
+				'itemized_tax'	: itemized_tax
 			};
 
 			// now, update the totals
@@ -97,30 +97,18 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 		},
  
  		/**
- 		 * checks all the cart item taxes and merges them into an array of rate ids and labels  
+ 		 * grabs all the itemized taxes and merges them into one array
  		 * @return {array}
  		 */
-		tax_labels: function() {
-			var itemized  = [],
-				labels = [],
-				prefix = '';
+		tax_rates: function() {
+			var tax_rates = [],
+				all_rates = {};
 
-			if( this.params.wc.tax_display_cart === 'incl' ) {
-				prefix = 'includes ';
+			tax_rates = _.compact( this.pluck('tax_rates') );
+			if( tax_rates.length > 0 ) {
+				all_rates = _.reduce( tax_rates, function(a, b) { return _.merge(a, b); }, {});
 			}
-
-			itemized = _.compact( this.pluck('taxes.itemized') );
-			if( itemized.length > 0 && this.params.wc.tax_display === 'itemized' ) {
-				_.each( _.reduce( itemized, function(a, b) { return _.merge(a, b); } ), function(tax) {
-					labels.push( { id: tax.rate_id, label: prefix + this.params.wc.tax_label + ' (' + tax.label + '):' });
-				}, this);
-			}
-			else {
-				labels.push({ id: 0, label: prefix + this.params.wc.tax_label + ':' });
-			}
-
-			return labels;
-			
+			return all_rates;
 		},
 
 	});

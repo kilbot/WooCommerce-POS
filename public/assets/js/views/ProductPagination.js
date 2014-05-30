@@ -74,7 +74,6 @@ define(['jquery', 'underscore', 'backbone', 'settings'],
 		destroy: function() {
 			this.collection.clear(); // clear the collection
 			Settings.set( 'last_update', null ); // clear the last update time
-			this.collection.fetch(); // re-init the database with 0 records
 			return false;
 		},
 	});

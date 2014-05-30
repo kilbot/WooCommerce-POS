@@ -44,23 +44,30 @@
 
 <script type="text/template" id="tmpl-cart-total">
 	<tr>
-		<th colspan="3"><?php _e( 'Subtotal:', 'woocommerce-pos' ); ?></th>
+		<th colspan="3"><?php _e( 'Subtotal', 'woocommerce-pos' ); ?>:</th>
 		<td colspan="2"><%= subtotal %></td>
 	</tr>
 	<% if( show_discount ) { %>
 	<tr>
-		<th colspan="3"><?php _e( 'Cart Discount:', 'woocommerce-pos' ); ?></th>
+		<th colspan="3"><?php _e( 'Cart Discount', 'woocommerce-pos' ); ?>:</th>
 		<td colspan="2"><%= cart_discount %></td>
 	</tr>
 	<% } %>
 	<% if( show_tax ) { %>
-	<tr>
-		<th colspan="3"><?php _e( 'Tax:', 'woocommerce-pos' ); ?></th>
-		<td colspan="2"><%= tax %></td>
-	</tr>
+		<% if( show_itemized) { _.each(itemized_tax, function(tax, label) { %>
+			<tr>
+				<th colspan="3"><%= label %>:</th>
+				<td colspan="2"><%= tax %></td>
+			</tr>
+		<% }); } else { %>
+			<tr>
+				<th colspan="3"><?php echo esc_html( WC()->countries->tax_or_vat() ); ?>:</th>
+				<td colspan="2"><%= tax %></td>
+			</tr>
+		<% } %>
 	<% } %>
 	<tr>
-		<th colspan="3"><?php _e( 'Total:', 'woocommerce-pos' ); ?></th>
+		<th colspan="3"><?php _e( 'Total', 'woocommerce-pos' ); ?>:</th>
 		<td colspan="2"><%= total %></td>
 	</tr>
 	<tr class="actions">

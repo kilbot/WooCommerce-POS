@@ -7,7 +7,7 @@ define(['backbone'],
 		},
 
 		initialize: function() { 
-			this.on('all', function(e) { console.log("Cart Totals Model event: " + e); }); // debug
+			// this.on('all', function(e) { console.log("Cart Totals Model event: " + e); }); // debug
 		},
 	});
   

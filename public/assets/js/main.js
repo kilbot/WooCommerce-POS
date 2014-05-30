@@ -24,12 +24,9 @@ require.config({
 		'bootstrap-dropdown': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown',
 		'backbone-modal': '../../../bower_components/backbone.bootstrap-modal/src/backbone.bootstrap-modal',
 		'backbone-indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
+		'backbone-localstorage': '../../../bower_components/backbone.localStorage/backbone.localStorage',
 		'backbone-paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
 		'pushy': '../../../public/assets/js/plugins/pushy',
-
-		// 'bootstrap': '../libs/plugins/bootstrap',
-		// 'text': '../libs/plugins/text',
-		// 'jasminejquery': '../libs/plugins/jasmine-jquery'
 
 		// Custom Plugins
 		'autoGrowInput': '../../../public/assets/js/plugins/jquery.autoGrowInput',
@@ -44,21 +41,17 @@ require.config({
 		'pushy': {
 			deps: ['jquery'],
 		},
-		'backbone-nested': {
-			deps: ['underscore', 'backbone'],
-			exports: 'NestedModel'
-		}
     }
 
 });
 
-require(['views/ProductList', 'views/CartList', 'pushy', 'bootstrap-dropdown'], function( ProductList, CartList ){
+require(['views/ProductList', 'pushy', 'bootstrap-dropdown'], function( ProductList ){
 
-	if ( typeof pos_params !== undefined ) {
+	if ( typeof pos_params !== 'undefined' ) {
 
 		//boot the POS
 		var productList = new ProductList();
-		var cartList = new CartList();
+		
 	} else {
 		console.log('No pos_params, no start the app!');
 	}

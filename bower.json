@@ -16,7 +16,8 @@
     "lodash": "~2.4.1",
     "jasmine": "~2.0.0",
     "fontawesome": "~4.1.0",
-    "requirejs-plugins": "~1.0.2"
+    "requirejs-plugins": "~1.0.2",
+    "backbone.localStorage": "~1.1.7"
   },
   "devDependencies": {}
 }

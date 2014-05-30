@@ -24,31 +24,31 @@
 define(['jquery', 'underscore', 'backbone', 'accounting', 'models/CartItem', 'json!dummy-products' ], 
 	function($, _, Backbone, accounting, CartItem, dummy_products) {
 
-	// default params
-	// "tax_label": "Tax",
-	// "calc_taxes": "no",
-	// "prices_include_tax": "no",
-	// "tax_round_at_subtotal": "no",
-	// "tax_display_cart": "excl",
-	// "tax_total_display": "single"
-
 	// get the dummy product
 	var dummy_product = dummy_products.products[0];
-	
+
 	describe("A cart item", function() {
+
+		beforeEach(function() {
+
+			// reset pos_params
+			pos_params.wc.calc_taxes = 'no';
+			pos_params.wc.prices_include_tax = 'no';
+			pos_params.wc.tax_display_cart = 'excl';
+			pos_params.wc.tax_round_at_subtotal = 'no';
+			pos_params.wc.tax_total_display = 'single';
+
+			// Instantiate a new CartItem instance
+			this.model = new CartItem(dummy_product);
+		});
 
 		it("should be in a valid state", function() {
 			
-			// Instantiate a new CartItem instance
-			this.model = new CartItem(dummy_product);
 			expect(this.model.isValid()).toBe(true);
 		});
 
 		it("should initiate with the correct values", function() {
-
-			// Instantiate a new CartItem instance
-			this.model = new CartItem(dummy_product);
-
+			
 			expect(this.model.get('display_price')).toBe( '2.00' );
 			expect(this.model.get('display_total')).toBe( '2.00' );
 			expect(this.model.get('item_discount')).toBe(0);
@@ -59,10 +59,7 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'models/CartItem', 'js
 		});
 
 		it("should re-calculate on quantity change to any floating point number", function() {
-
-			// Instantiate a new CartItem instance
-			this.model = new CartItem(dummy_product);
-
+			
 			var qty = _.random(10, true);
 			this.model.set( { 'qty': qty } );
 
@@ -81,11 +78,8 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'models/CartItem', 'js
 			pos_params.wc.calc_taxes = 'yes';
 			pos_params.wc.prices_include_tax = 'no';
 			pos_params.wc.tax_display_cart = 'excl';
-			dummy_product.taxable = true;
-			dummy_product.taxes.unit_tax_pre_discount = 0.28;
 
-			// Instantiate a new CartItem instance
-			this.model = new CartItem(dummy_product);
+			this.model.set( { 'taxable': true } ).trigger('change:qty');
 
 			expect(this.model.get('display_price')).toBe( accounting.formatNumber( 2 ) );
 			expect(this.model.get('display_total')).toBe( accounting.formatNumber( 2 ) );
@@ -106,11 +100,8 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'models/CartItem', 'js
 			pos_params.wc.calc_taxes = 'yes';
 			pos_params.wc.prices_include_tax = 'no';
 			pos_params.wc.tax_display_cart = 'incl';
-			dummy_product.taxable = true;
-			dummy_product.taxes.unit_tax_pre_discount = 0.28;
 
-			// Instantiate a new CartItem instance
-			this.model = new CartItem(dummy_product);
+			this.model.set( { 'taxable': true } ).trigger('change:qty');
 
 			expect(this.model.get('display_price')).toBe( accounting.formatNumber( 2 ) );
 			expect(this.model.get('display_total')).toBe( accounting.formatNumber( 2.28 ) );
@@ -131,11 +122,8 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'models/CartItem', 'js
 			pos_params.wc.calc_taxes = 'yes';
 			pos_params.wc.prices_include_tax = 'yes';
 			pos_params.wc.tax_display_cart = 'incl';
-			dummy_product.taxable = true;
-			dummy_product.taxes.unit_tax_pre_discount = 0.2456;
 
-			// Instantiate a new CartItem instance
-			this.model = new CartItem(dummy_product);
+			this.model.set( { 'taxable': true } ).trigger('change:qty');
 
 			expect(this.model.get('display_price')).toBe( accounting.formatNumber( 2 ) );
 			expect(this.model.get('display_total')).toBe( accounting.formatNumber( 2 ) );
@@ -156,11 +144,8 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'models/CartItem', 'js
 			pos_params.wc.calc_taxes = 'yes';
 			pos_params.wc.prices_include_tax = 'yes';
 			pos_params.wc.tax_display_cart = 'excl';
-			dummy_product.taxable = true;
-			dummy_product.taxes.unit_tax_pre_discount = 0.2456;
 
-			// Instantiate a new CartItem instance
-			this.model = new CartItem(dummy_product);
+			this.model.set( { 'taxable': true } ).trigger('change:qty');
 
 			expect(this.model.get('display_price')).toBe( accounting.formatNumber( 2 ) );
 			expect(this.model.get('display_total')).toBe( accounting.formatNumber( 1.7544 ) );
@@ -181,11 +166,6 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'models/CartItem', 'js
 			pos_params.wc.calc_taxes = 'yes';
 			pos_params.wc.prices_include_tax = 'no';
 			pos_params.wc.tax_display_cart = 'excl';
-			dummy_product.taxable = true;
-			dummy_product.taxes.unit_tax_pre_discount = 0.28;
-
-			// Instantiate a new CartItem instance
-			this.model = new CartItem(dummy_product);
 
 			this.model.set( { 'qty': 3, 'taxable': true } );
 
@@ -208,11 +188,6 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'models/CartItem', 'js
 			pos_params.wc.calc_taxes = 'yes';
 			pos_params.wc.prices_include_tax = 'yes';
 			pos_params.wc.tax_display_cart = 'incl';
-			dummy_product.taxable = true;
-			dummy_product.taxes.unit_tax_pre_discount = 0.2456;
-
-			// Instantiate a new CartItem instance
-			this.model = new CartItem(dummy_product);
 
 			this.model.set( { 'qty': 3, 'taxable': true } );
 
@@ -233,13 +208,9 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'models/CartItem', 'js
 
 			// set up data based on user settings
 			pos_params.wc.calc_taxes = 'no';
-			dummy_product.taxable = true;
-
-			// Instantiate a new CartItem instance
-			this.model = new CartItem(dummy_product);
 
 			// set new price to $1.50 = 50 cent discount per item, $1.00 total discount
-			this.model.set( { 'qty': 2, 'display_price': '1.50' } );
+			this.model.set( { 'taxable': true, 'qty': 2, 'display_price': '1.50' } );
 
 			expect(this.model.get('display_price')).toBe( accounting.formatNumber( 1.5 ) );
 			expect(this.model.get('display_total')).toBe( accounting.formatNumber( 4 ) );
@@ -256,13 +227,9 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'models/CartItem', 'js
 			pos_params.wc.calc_taxes = 'yes';
 			pos_params.wc.prices_include_tax = 'no';
 			pos_params.wc.tax_display_cart = 'excl';
-			dummy_product.taxable = true;
-
-			// Instantiate a new CartItem instance
-			this.model = new CartItem(dummy_product);
 
 			// set new price to $1.50 = 50 cent discount per item, $1.00 total discount
-			this.model.set( { 'qty': 2, 'display_price': '1.50' } );
+			this.model.set( { 'taxable': true, 'qty': 2, 'display_price': '1.50' } );
 
 			expect(this.model.get('display_price')).toBe( '1.50' );
 			expect(this.model.get('display_total')).toBe( '4.00' );
@@ -283,13 +250,9 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'models/CartItem', 'js
 			pos_params.wc.calc_taxes = 'yes';
 			pos_params.wc.prices_include_tax = 'yes';
 			pos_params.wc.tax_display_cart = 'incl';
-			dummy_product.taxable = true;
-
-			// Instantiate a new CartItem instance
-			this.model = new CartItem(dummy_product);
 
 			// set new price to $1.50 = 50 cent discount per item, $1.00 total discount
-			this.model.set( { 'qty': 2, 'display_price': '1.50' } );
+			this.model.set( { 'taxable': true, 'qty': 2, 'display_price': '1.50' } );
 
 			expect(this.model.get('display_price')).toBe( '1.50' );
 			expect(this.model.get('display_total')).toBe( '4.00' );

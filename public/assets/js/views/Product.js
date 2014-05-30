@@ -35,7 +35,7 @@ define(['jquery', 'underscore', 'backbone'],
 
 			// else, add the product
 			else { 
-				this.cart.collection.add(this.model.attributes);
+				this.cart.collection.create(this.model.attributes);
 			}
 		},
 

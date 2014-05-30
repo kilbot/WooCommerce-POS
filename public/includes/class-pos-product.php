@@ -130,11 +130,19 @@ class WooCommerce_POS_Product {
 			$product_data['featured_src'] = WC_POS()->plugin_url . '/assets/placeholder.png';
 		}
 		
-		// if taxable, calculate taxes and add them to the product array
+		// if taxable, get the tax_rates array
 		if( $product_data['taxable'] ) {
-			$taxes = $this->calc_line_taxes( $product_data['price'], $product_data['tax_class'] );
-			$product_data['taxes'] = $taxes;
-			// error_log( print_R( $taxes, TRUE ) ); //debug
+			$tax = new WC_Tax();
+			$base = get_option( 'woocommerce_default_country' );
+			if ( strstr( $base, ':' ) ) {
+				list( $country, $state ) = explode( ':', $base );
+			} else {
+				$country = $base;
+				$state = '';
+			}
+			$tax_rates = $tax->find_rates( array( 'country' => $country, 'state' => $state, 'tax_class' => $product_data['tax_class'] ) );
+			$product_data['tax_rates'] = $tax_rates;
+			// error_log( print_R( $tax_rates, TRUE ) ); //debug
 		}
 
 		// remove some unnecessary keys
@@ -172,65 +180,4 @@ class WooCommerce_POS_Product {
 		return $product_data;
 	}
 
-
-	/**
-	 * Calc line tax
-	 * based on the same function in woocommerce/includes/class-wc-ajax.php
-	 * TODO: remove this function?
-	 * can we just add tax rates to pos_params and do calcs client side?
-	 */
-	public function calc_line_taxes( $price, $tax_class ) {
-		global $wpdb;
-
-		$tax      = new WC_Tax();
-		$taxes    = array();
-		$itemized = array();
-
-		// calculate tax rates at store base
-		// this could be conditional on get_option for stores with more than one location
-		$base = get_option( 'woocommerce_default_country' );
-		if ( strstr( $base, ':' ) ) {
-			list( $country, $state ) = explode( ':', $base );
-		} else {
-			$country = $base;
-			$state = '';
-		}
-		$tax_rates = $tax->find_rates( array( 'country' => $country, 'state' => $state, 'tax_class' => $tax_class ) );
-
-		// get user settings
-		$price_includes_tax = get_option( 'woocommerce_prices_include_tax' ) == 'yes' ? true : false ;
-		$suppress_rounding = get_option( 'woocommerce_tax_round_at_subtotal' ) == 'yes' ? true : false ;
-
-		// calculate sales tax
-		$tax_itemized 	= $tax->calc_tax( $price, $tax_rates, $price_includes_tax, $suppress_rounding );
-		$tax_total 		= array_sum( $tax_itemized );
-
-		// create an array of itemized tax info
-		foreach ( array_keys( $tax_itemized ) as $key ) {
-
-			$item                          = array();
-			$item['rate_id']               = $key;
-			$item['rate']             	   = $tax_rates[ $key ]['rate'];
-			$item['name']                  = $tax->get_rate_code( $key );
-			$item['label']                 = $tax_rates[ $key ]['label'];
-			$item['compound']              = $tax->is_compound( $key ) ? 1 : 0;
-			$item['unit_tax_pre_discount'] = wc_format_decimal( isset( $tax_itemized[ $key ] ) ? $tax_itemized[ $key ] : 0 );
-
-			if ( ! $item['label'] ) {
-				$item['label'] = WC()->countries->tax_or_vat();
-			}
-
-			$itemized[$key] = $item;
-
-		}
-
-		// set up taxes array
-		$taxes['itemized'] = $itemized;
-		$taxes['unit_tax_pre_discount'] = $tax_total;
-
-		return $taxes;
-	}
-
 }
-
-

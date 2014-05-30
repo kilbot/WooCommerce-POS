@@ -13,8 +13,12 @@ define(['jquery', 'backbone', 'collections/CartItems', 'views/CartItem'],
 
 			// listen for changes
 			this.listenTo(this.collection, 'add', this.addOne);
-			this.listenTo(this.collection, 'reset', this.addAll);
-			this.listenTo(this.collection, 'remove', this.render);			
+			this.listenTo(this.collection, 'reset', this.addAll);	
+			this.listenTo(this.collection, 'reset remove', this.render);
+
+			// init cart with localStorage
+			this.collection.fetch( {reset: true} );
+		
 		},
 
 		render: function() {
@@ -22,7 +26,7 @@ define(['jquery', 'backbone', 'collections/CartItems', 'views/CartItem'],
 			// if empty, add empty message
 			if( this.collection.length === 0 ) {
 				this.emptyMessage();
-			}
+			} 
 			
 		},
 
@@ -45,7 +49,12 @@ define(['jquery', 'backbone', 'collections/CartItems', 'views/CartItem'],
 
 		addAll: function() {
 
+			// empty 
+			this.$el.removeClass('empty').html('');
+
+			// then fill
 			this.collection.each(this.addOne, this);
+
     	},
 
 		emptyMessage: function() {

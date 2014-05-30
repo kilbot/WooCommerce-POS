@@ -1,8 +1,9 @@
-define(['backbone', 'accounting'], 
-	function(Backbone, accounting){
+define(['backbone', 'accounting', 'backbone-localstorage'], 
+	function(Backbone, accounting, LocalStorage){
 
   	// store the product data, add qty, total & discount by default
 	var CartItem = Backbone.Model.extend({
+		localStorage: new Backbone.LocalStorage("cart"),
 		defaults : {
 			'display_price'		: 0,
 			'display_total' 	: 0,
@@ -17,7 +18,7 @@ define(['backbone', 'accounting'],
 		params: pos_params,
 
 		initialize: function() { 
-			this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
+			// this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
 
 			// set the accounting settings
 			accounting.settings = this.params.accounting.settings;
@@ -42,13 +43,13 @@ define(['backbone', 'accounting'],
 
 			// set taxes first
 			if( taxable && this.params.wc.calc_taxes === 'yes' ) {
-				this.calcTax( display_price, qty, this.get('taxes').itemized );
+				this.calcTax( display_price, qty, this.get('tax_rates') );
 			}
 
 			discount = original_price - display_price;
 			item_price = ( this.params.wc.prices_include_tax === 'yes' ) ? display_price - this.get('item_tax') : display_price;
 			display_total = this.displayTotal( original_price, taxable );
-			this.set({
+			this.save({
 				'item_price'	: item_price,
 				'item_discount'	: discount,
 				'total_discount': this.roundNum( discount * qty ),
@@ -86,7 +87,7 @@ define(['backbone', 'accounting'],
 				item_tax = 0,
 				line_tax = 0;
 
-			_.each(rates, function(rate) {
+			_(rates).each( function(rate) {
 				if ( rate.compound === 1 ) {
 					compound_tax_rates = compound_tax_rates + parseFloat(rate.rate);
 				}
@@ -99,7 +100,7 @@ define(['backbone', 'accounting'],
 			var compound_tax_rate 	= 1 + ( compound_tax_rates / 100 );
 			non_compound_price = price / compound_tax_rate;
 
-			_.each(rates, function(rate) {
+			_(rates).each( function(rate, key) {
 				var the_rate = parseFloat(rate.rate) / 100;
 				var the_price = 0;
 
@@ -120,8 +121,8 @@ define(['backbone', 'accounting'],
 				var line_tax_ = this.roundNum( tax_amount * qty );
 
 				// set the itemized taxes
-				this.set( 'item_tax_' + rate.rate_id, item_tax_ );
-				this.set( 'line_tax_' + rate.rate_id, line_tax_ );
+				this.set( 'item_tax_' + key, item_tax_ );
+				this.set( 'line_tax_' + key, line_tax_ );
 
 				// combine taxes
 				item_tax += item_tax_;
@@ -149,17 +150,17 @@ define(['backbone', 'accounting'],
 				line_tax =0;
 
 			// multiple taxes
-			_.each(rates, function(rate) {
-				if ( rate.compound !== 1 ) {
+			_(rates).each( function(rate, key) {
+				if ( rate.compound !== 'yes' ) {
 					tax_amount = price * ( parseFloat(rate.rate) / 100 );
 				}
 				pre_compound_total += tax_amount;
-				taxes[ rate.rate_id ] = tax_amount;
+				taxes[ key ] = tax_amount;
 			});
 
 			// compound taxes
-			_.each(rates, function(rate) {
-				if ( rate.compound === 1 ) {
+			_(rates).each( function(rate, key) {
+				if ( rate.compound === 'yes' ) {
 					var the_price_inc_tax = price + pre_compound_total;
 					tax_amount = the_price_inc_tax * ( parseFloat(rate.rate) / 100 );
 				}
@@ -169,8 +170,8 @@ define(['backbone', 'accounting'],
 				var line_tax_ = this.roundNum( tax_amount * qty );
 
 				// set the itemized taxes
-				this.set( 'item_tax_' + rate.rate_id, item_tax_ );
-				this.set( 'line_tax_' + rate.rate_id, line_tax_ );
+				this.set( 'item_tax_' + key, item_tax_ );
+				this.set( 'line_tax_' + key, line_tax_ );
 
 				// combine taxes
 				item_tax += item_tax_;

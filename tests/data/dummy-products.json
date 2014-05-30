@@ -40,22 +40,18 @@
 
 		"_added" : "The following have been added by POS - parent_id & variation_html also added for variations",
 		"featured_src" : "http:\/\/woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_6_angle-90x90.jpg",
-		"taxes": {
-			"itemized": {
-				"2": {
-					"rate_id": 2,
-					"rate": "9.0000",
-					"name": "Tax-1",
-					"label": "Tax 1",
-					"compound": 1
-				},
-				"3": {
-					"rate_id": 3,
-					"rate": "5.0000",
-					"name": "TAX-2",
-					"label": "Tax 2",
-					"compound": 1
-				}
+		"tax_rates": {
+			"2": {
+				"rate": "9.0000",
+				"label": "Tax 1",
+				"shipping": "yes",
+				"compound": "yes"
+			},
+			"3": {
+				"rate": "5.0000",
+				"label": "Tax 2",
+				"shipping": "yes",
+				"compound": "yes"
 			}
 		}
 	},
@@ -100,16 +96,13 @@
 
 		"_added" : "The following have been added by POS - parent_id & variation_html also added for variations",
 		"featured_src" : "http:\/\/woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_5_front-90x90.jpg",
-		"taxes": {
-			"itemized": {
-                "6": {
-                    "rate_id": 6,
-                    "rate": "3.0000",
-                    "name": "US-CA-LOW TAX-1",
-                    "label": "Low Tax",
-                    "compound": 0
-                }
-			}
+		"tax_rates": {
+            "6": {
+                "rate": "3.0000",
+                "label": "Low Tax",
+                "shipping": "yes",
+				"compound": "yes"
+            }
 		}
 	},
 	{
@@ -153,16 +146,13 @@
 
 		"_added" : "The following have been added by POS - parent_id & variation_html also added for variations",
 		"featured_src" : "http:\/\/woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_5_angle-90x90.jpg",
-		"taxes": {
-			"itemized": {
-                "5": {
-                    "rate_id": 5,
-                    "rate": "0.0000",
-                    "name": "US-CA-TAX FREE-1",
-                    "label": "Tax Free",
-                    "compound": 0
-                }
-			}
+		"tax_rates": {
+            "5": {
+                "rate": "0.0000",
+                "label": "Tax Free",
+                "shipping": "yes",
+				"compound": "yes"
+            }
 		}
 	}]
 }
