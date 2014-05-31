@@ -72,7 +72,6 @@
 	</tr>
 	<tr class="actions">
 		<td colspan="5">
-			<span></span>
 			<button type="submit" class="btn btn-success btn-checkout" name="pos_checkout" id="pos_checkout" value="checkout">
 				<?php _e( 'Checkout', 'woocommerce-pos' ); ?> 
 			</button>

@@ -26,7 +26,7 @@
 		</tbody>
 	</table>
 </div>
-<div id="pagination"><span></span></div>
+<div id="pagination"></div>
 
 <script type="text/template" id="tmpl-product">
 	<td class="img"><img src="<%= featured_src %>"></td>
@@ -40,23 +40,19 @@
 </script>
 
 <script type="text/template" id="tmpl-pagination">
-	<div>
-		<a href="#" class="prev btn btn-default alignleft"><i class="fa fa-chevron-left"></i></a> 
-		<a href="#" class="next btn btn-default alignright"><i class="fa fa-chevron-right"></i></a>
-		<small>
-			Page <%= currentPage %> of <%= totalPages ? totalPages : 1 %>. Showing <%= currentRecords %> of <%= totalRecords ? totalRecords : 0  %> products. <br>
-			Last updated <%= last_update %>. <a href="#" class="sync"><i class="fa fa-refresh"></i> sync</a> | <a href="#" class="destroy"><i class="fa fa-times-circle"></i> clear</a>
-		</small>
-	</div>
+	<a href="#" class="prev btn btn-default alignleft"><i class="fa fa-chevron-left"></i></a> 
+	<a href="#" class="next btn btn-default alignright"><i class="fa fa-chevron-right"></i></a>
+	<small>
+		Page <%= currentPage %> of <%= totalPages ? totalPages : 1 %>. Showing <%= currentRecords %> of <%= totalRecords ? totalRecords : 0  %> products. <br>
+		Last updated <%= last_update %>. <a href="#" class="sync"><i class="fa fa-refresh"></i> sync</a> | <a href="#" class="destroy"><i class="fa fa-times-circle"></i> clear</a>
+	</small>
 </script>
 
 <script type="text/template" id="tmpl-fallback-pagination">
-	<div>
-		<a href="#" class="prev btn btn-default alignleft"><i class="fa fa-chevron-left"></i></a> 
-		<a href="#" class="next btn btn-default alignright"><i class="fa fa-chevron-right"></i></a>
-		<small>
-			Page <%= currentPage %> of <%= totalPages ? totalPages : 1 %>. Showing <%= currentRecords %> of <%= totalRecords ? totalRecords : 0  %> products. <br>
-			<?php _e( 'Your browser does not support indexeddb', 'woocommerce-pos' ); ?>
-		</small>
-	</div>
+	<a href="#" class="prev btn btn-default alignleft"><i class="fa fa-chevron-left"></i></a> 
+	<a href="#" class="next btn btn-default alignright"><i class="fa fa-chevron-right"></i></a>
+	<small>
+		Page <%= currentPage %> of <%= totalPages ? totalPages : 1 %>. Showing <%= currentRecords %> of <%= totalRecords ? totalRecords : 0  %> products. <br>
+		<?php _e( 'Your browser does not support indexeddb', 'woocommerce-pos' ); ?>
+	</small>
 </script>

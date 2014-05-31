@@ -39,7 +39,7 @@ define(['jquery', 'underscore', 'backbone', 'views/Checkout'],
 
 			// pick the data from the cart items we are going to send
 			var items = this.cart.map( function( model ) {
-	    		return _.pick( model.toJSON(), ['id', 'qty', 'line_total'] );  
+				return _.pick( model.toJSON(), ['id', 'qty', 'line_total'] );  
 			});
 
 			var checkout = new Checkout({ cart: this.cart, totals: this.model });

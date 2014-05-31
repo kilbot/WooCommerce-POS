@@ -1479,42 +1479,21 @@ table tfoot div.alert {
 /* line 121, sass/partials/_tables.scss */
 #pagination {
   padding: 0.75em;
-  position: relative;
 }
-/* line 125, sass/partials/_tables.scss */
+/* line 124, sass/partials/_tables.scss */
 #pagination small {
   text-align: center;
   display: block;
   margin: 0 60px;
   line-height: 1.3;
 }
-/* line 131, sass/partials/_tables.scss */
-#pagination div {
-  position: relative;
-  z-index: 99;
-}
-/* line 135, sass/partials/_tables.scss */
-#pagination span {
-  display: block;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-}
-/* line 144, sass/partials/_tables.scss */
+/* line 130, sass/partials/_tables.scss */
 #pagination.working {
   background-color: rgba(125, 181, 0, 0.3);
-}
-/* line 146, sass/partials/_tables.scss */
-#pagination.working span {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
-  opacity: 0.3;
   background-image: url(../../../assets/bg-working.gif);
 }
 
-/* line 156, sass/partials/_tables.scss */
+/* line 139, sass/partials/_tables.scss */
 #cart table tbody input[type=number] {
   text-align: center;
   max-width: 6em;
@@ -1525,53 +1504,32 @@ table tfoot div.alert {
   -webkit-border-radius: 16px;
   border-radius: 16px;
 }
-/* line 164, sass/partials/_tables.scss */
+/* line 147, sass/partials/_tables.scss */
 #cart table tbody input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-/* line 168, sass/partials/_tables.scss */
+/* line 151, sass/partials/_tables.scss */
 #cart table tbody input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-/* line 172, sass/partials/_tables.scss */
+/* line 155, sass/partials/_tables.scss */
 #cart table tbody input[type=number]:hover {
   cursor: pointer;
 }
-/* line 179, sass/partials/_tables.scss */
+/* line 162, sass/partials/_tables.scss */
 #cart table tfoot tr.actions th, #cart table tfoot tr.actions td {
-  position: relative;
   text-align: right;
   border-top: 1px solid #d4d4d4;
 }
-/* line 183, sass/partials/_tables.scss */
-#cart table tfoot tr.actions th a, #cart table tfoot tr.actions th input, #cart table tfoot tr.actions th button, #cart table tfoot tr.actions td a, #cart table tfoot tr.actions td input, #cart table tfoot tr.actions td button {
-  position: relative;
-  z-index: 99;
-}
-/* line 188, sass/partials/_tables.scss */
-#cart table tfoot tr.actions td span {
-  display: block;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-}
-/* line 197, sass/partials/_tables.scss */
+/* line 166, sass/partials/_tables.scss */
 #cart table tfoot tr.actions.working td {
   background-color: rgba(125, 181, 0, 0.3);
-}
-/* line 199, sass/partials/_tables.scss */
-#cart table tfoot tr.actions.working td span {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
-  opacity: 0.3;
   background-image: url(../../../assets/bg-working.gif);
 }
 
-/* line 210, sass/partials/_tables.scss */
+/* line 176, sass/partials/_tables.scss */
 .modal table tfoot tr:last-of-type th, .modal table tfoot tr:last-of-type td {
   border-bottom: 0;
 }
