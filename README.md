@@ -68,6 +68,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Improved: Cart logic now handled client-side, no more waiting for the server to respond
 * New: Pagination info and last update time added to the product list
 * New: Cart item price can now be changed
+* New: Print receipt
 * New: Added text domain, readying the plugin for translation
 
 ### 0.2.11 ###
