@@ -3,7 +3,7 @@ Contributors: kilbot
 Tags: woocommerce, pos, point-of-sale, vend, e-commerce
 Requires at least: 3.8
 Tested up to: 3.9
-Stable tag: 0.2.11
+Stable tag: 0.2.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,7 +62,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.2.12 =
-* Improved: Product list now uses local IndexedDB for fast searching and filtering. Fallback to server-side filtering
+* Improved: Product list now uses local IndexedDB for fast searching and filtering. Fallback to server-side filtering for browsers which do not support [IndexedDB](http://caniuse.com/indexeddb)
 * Improved: Cart logic now handled client-side, no more waiting for the server to respond
 * New: Pagination info and last update time added to the product list
 * New: Cart item price can now be changed

@@ -19,7 +19,7 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 			var cartTotals = new CartTotals();
 
 			// ... and pass it to the Cart Totals view
-			this.totals = new CartTotalsView({ model: cartTotals });
+			this.totals = new CartTotalsView({ model: cartTotals, cart: this });
 			
 			// update totals on change to the cart items
 			this.listenTo( this, 'add change remove reset', this.updateTotals );
@@ -88,7 +88,8 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 				'show_discount' : show_discount,
 				'show_tax' 		: show_tax,
 				'show_itemized'	: show_itemized,
-				'itemized_tax'	: itemized_tax
+				'itemized_tax'	: itemized_tax,
+				'total_check' 	: accounting.formatNumber(total)
 			};
 
 			// now, update the totals

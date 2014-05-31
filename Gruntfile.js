@@ -98,6 +98,7 @@ module.exports = function(grunt) {
 						almondLib: '../../../bower_components/almond/almond'
 					},
 					include: 'almondLib',
+					// optimize: 'none'
 				}
 			}
 		},

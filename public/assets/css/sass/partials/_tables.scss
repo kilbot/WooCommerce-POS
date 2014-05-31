@@ -40,6 +40,7 @@ table {
             border-bottom: 1px solid $border-dark;
         }
     }
+
     tfoot {
         th {
             text-align: right;
@@ -176,10 +177,37 @@ table {
         tfoot {
             tr.actions {
                 th, td {
+                	position: relative;
                     text-align: right;
                     border-top: 1px solid $border-dark;
+                    a, input, button {
+                    	position: relative;
+                    	z-index: 99;
+                    }
+                }
+                td span {
+                    display: block;
+                    height: 100%;
+                    width: 100%;
+                    position: absolute;
+                    z-index: 1;
+                    top: 0;
+                    left: 0;
+                }
+                &.working td {
+				    background-color: rgba(#7db500, 0.3);
+				    span {
+				        @include opacity(0.3);
+				        background-image: url(../../../assets/bg-working.gif);
+				    }
                 }
             }
         }
     }
 } 
+
+.modal table tfoot tr {
+     &:last-of-type th, &:last-of-type td {
+        border-bottom: 0;
+    }
+}

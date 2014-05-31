@@ -9,7 +9,10 @@ define(['jquery', 'underscore', 'backbone', 'views/Checkout'],
 			"click #pos_checkout"	: "checkout",
 		},
 
-		initialize: function() {
+		initialize: function(options) {
+
+			// use the cart already initialized
+			this.cart = options.cart;
 
 			// re-render on all changes to the totals model
 			this.listenTo( this.model, 'change', this.render );
@@ -29,10 +32,19 @@ define(['jquery', 'underscore', 'backbone', 'views/Checkout'],
 			return this;
 		},
 
-		checkout: function() {
-			// send the cart data to checkout
-			var checkout = new Checkout();
-			checkout.process(this.collection);
+		checkout: function(e) {
+
+			this.$(e.target).attr('disabled','disabled');
+			$('#cart .actions').addClass('working');
+
+			// pick the data from the cart items we are going to send
+			var items = this.cart.map( function( model ) {
+	    		return _.pick( model.toJSON(), ['id', 'qty', 'line_total'] );  
+			});
+
+			var checkout = new Checkout({ cart: this.cart, totals: this.model });
+			checkout.process(items);
+
 		},
 
 	});

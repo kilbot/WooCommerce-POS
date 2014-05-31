@@ -4,7 +4,7 @@
  * The main POS Class
  * 
  * @class 	  WooCommerce_POS
- * @version   0.2.10
+ * @version   0.2.12
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
  * @link      http://www.woopos.com.au
@@ -15,8 +15,7 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION 	= '0.2.11';
-	const JQUERY 	= '2.1.0';
+	const VERSION 	= '0.2.12';
 
 	/**
 	 * Unique identifier
@@ -287,8 +286,8 @@ class WooCommerce_POS {
 		if($section == 'footer') {
 			do_action( 'pos_add_to_footer' );
 			$this->pos_localize_script();
-	$html = '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
-	// $html = '<script src="'. $this->plugin_url .'public/assets/js/scripts.min.js"></script>';
+	// $html = '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
+	$html = '<script src="'. $this->plugin_url .'public/assets/js/scripts.min.js"></script>';
 			echo $html;
 		}
 	}

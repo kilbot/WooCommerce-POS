@@ -30,7 +30,6 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput'],
 			// grab the model
 			var item = this.model.toJSON();
 
-
 			// format display price, just in case
 			item.display_price = accounting.formatNumber( item.display_price );
 

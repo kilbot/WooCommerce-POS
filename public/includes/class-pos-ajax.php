@@ -44,11 +44,10 @@ class WooCommerce_POS_AJAX {
 
 		// create order 
 		$checkout = new WooCommerce_POS_Checkout();
-		$order_id = $checkout->create_order();
+		$order = $checkout->create_order();
 
 		$this->json_headers();
-		
-		echo file_get_contents( WC_POS()->wc_api_url . 'orders/' . $order_id );
+		echo json_encode( $order );
 		
 		die();
 	}

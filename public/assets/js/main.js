@@ -22,7 +22,6 @@ require.config({
 		// Plugins
 		'bootstrap-modal': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal',
 		'bootstrap-dropdown': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown',
-		'backbone-modal': '../../../bower_components/backbone.bootstrap-modal/src/backbone.bootstrap-modal',
 		'backbone-indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
 		'backbone-localstorage': '../../../bower_components/backbone.localStorage/backbone.localStorage',
 		'backbone-paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
@@ -45,7 +44,8 @@ require.config({
 
 });
 
-require(['views/ProductList', 'pushy', 'bootstrap-dropdown'], function( ProductList ){
+require(['views/ProductList', 'pushy', 'bootstrap-dropdown'], 
+	function( ProductList ){
 
 	if ( typeof pos_params !== 'undefined' ) {
 
