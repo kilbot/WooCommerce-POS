@@ -1358,59 +1358,60 @@ table tr th, table tr td {
   padding: 0.75em !important;
   vertical-align: middle;
 }
-/* line 15, sass/partials/_tables.scss */
-table tr th img, table tr td img {
-  vertical-align: bottom;
-}
-/* line 21, sass/partials/_tables.scss */
+/* line 16, sass/partials/_tables.scss */
 table tr td {
   border-bottom: 1px solid #eeeeee;
 }
-/* line 23, sass/partials/_tables.scss */
+/* line 18, sass/partials/_tables.scss */
 table tr td dl {
   width: 100%;
   font-size: 0.8em;
 }
-/* line 27, sass/partials/_tables.scss */
+/* line 22, sass/partials/_tables.scss */
 table tr td dl dt {
   font-weight: normal;
   float: left;
   padding-right: 5px;
   clear: left;
 }
-/* line 33, sass/partials/_tables.scss */
+/* line 28, sass/partials/_tables.scss */
 table tr td dl dd {
   float: left;
   margin: 0;
 }
-/* line 39, sass/partials/_tables.scss */
+/* line 33, sass/partials/_tables.scss */
+table tr td.img {
+  max-width: 90px;
+  vertical-align: bottom;
+}
+/* line 38, sass/partials/_tables.scss */
 table tr:last-of-type th, table tr:last-of-type td {
   border-bottom: 1px solid #d4d4d4;
 }
-/* line 45, sass/partials/_tables.scss */
+/* line 44, sass/partials/_tables.scss */
 table tfoot th {
   text-align: right;
 }
-/* line 48, sass/partials/_tables.scss */
+/* line 47, sass/partials/_tables.scss */
 table tfoot div.alert {
   margin-bottom: 0;
   font-size: 12px;
 }
 
-/* line 55, sass/partials/_tables.scss */
+/* line 54, sass/partials/_tables.scss */
 #products .loading {
   display: block;
   margin: 0 auto;
   padding: 50px 0;
 }
 
-/* line 61, sass/partials/_tables.scss */
+/* line 60, sass/partials/_tables.scss */
 #filter {
   padding: 0.75em;
   border-bottom: 1px solid #d4d4d4;
   position: relative;
 }
-/* line 65, sass/partials/_tables.scss */
+/* line 64, sass/partials/_tables.scss */
 #filter input[type=search] {
   width: 100%;
   height: 2.25em;
@@ -1421,19 +1422,19 @@ table tfoot div.alert {
   padding-right: 35px;
   -webkit-appearance: textfield;
 }
-/* line 72, sass/partials/_tables.scss */
+/* line 71, sass/partials/_tables.scss */
 #filter input[type=search]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
-/* line 75, sass/partials/_tables.scss */
+/* line 74, sass/partials/_tables.scss */
 #filter input[type=search]::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
-/* line 78, sass/partials/_tables.scss */
+/* line 77, sass/partials/_tables.scss */
 #filter input[type=search]::-ms-clear {
   display: none;
 }
-/* line 82, sass/partials/_tables.scss */
+/* line 81, sass/partials/_tables.scss */
 #filter i.fa-search {
   position: absolute;
   top: 0;
@@ -1443,7 +1444,7 @@ table tfoot div.alert {
   pointer-events: none;
   line-height: 2.25em;
 }
-/* line 91, sass/partials/_tables.scss */
+/* line 90, sass/partials/_tables.scss */
 #filter a.clear {
   display: none;
   color: #444444;
@@ -1455,45 +1456,45 @@ table tfoot div.alert {
   line-height: 2.25em;
 }
 
-/* line 104, sass/partials/_tables.scss */
+/* line 103, sass/partials/_tables.scss */
 #products table thead {
   display: none;
 }
-/* line 106, sass/partials/_tables.scss */
+/* line 105, sass/partials/_tables.scss */
 #products table tbody strong {
   display: block;
 }
-/* line 108, sass/partials/_tables.scss */
+/* line 107, sass/partials/_tables.scss */
 #products table tbody tr:nth-of-type(even) {
   background-color: white;
 }
-/* line 111, sass/partials/_tables.scss */
+/* line 110, sass/partials/_tables.scss */
 #products table tbody tr:nth-of-type(odd) {
   background-color: #f9f9f9;
 }
-/* line 115, sass/partials/_tables.scss */
+/* line 114, sass/partials/_tables.scss */
 #products table tbody tr:last-of-type td {
   border-bottom: 1px solid #d4d4d4;
 }
 
-/* line 121, sass/partials/_tables.scss */
+/* line 120, sass/partials/_tables.scss */
 #pagination {
   padding: 0.75em;
 }
-/* line 124, sass/partials/_tables.scss */
+/* line 123, sass/partials/_tables.scss */
 #pagination small {
   text-align: center;
   display: block;
   margin: 0 60px;
   line-height: 1.3;
 }
-/* line 130, sass/partials/_tables.scss */
+/* line 129, sass/partials/_tables.scss */
 #pagination.working {
   background-color: rgba(125, 181, 0, 0.3);
   background-image: url(../../../assets/bg-working.gif);
 }
 
-/* line 139, sass/partials/_tables.scss */
+/* line 138, sass/partials/_tables.scss */
 #cart table tbody input[type=number] {
   text-align: center;
   max-width: 6em;
@@ -1504,32 +1505,32 @@ table tfoot div.alert {
   -webkit-border-radius: 16px;
   border-radius: 16px;
 }
-/* line 147, sass/partials/_tables.scss */
+/* line 146, sass/partials/_tables.scss */
 #cart table tbody input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-/* line 151, sass/partials/_tables.scss */
+/* line 150, sass/partials/_tables.scss */
 #cart table tbody input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-/* line 155, sass/partials/_tables.scss */
+/* line 154, sass/partials/_tables.scss */
 #cart table tbody input[type=number]:hover {
   cursor: pointer;
 }
-/* line 162, sass/partials/_tables.scss */
+/* line 161, sass/partials/_tables.scss */
 #cart table tfoot tr.actions th, #cart table tfoot tr.actions td {
   text-align: right;
   border-top: 1px solid #d4d4d4;
 }
-/* line 166, sass/partials/_tables.scss */
+/* line 165, sass/partials/_tables.scss */
 #cart table tfoot tr.actions.working td {
   background-color: rgba(125, 181, 0, 0.3);
   background-image: url(../../../assets/bg-working.gif);
 }
 
-/* line 176, sass/partials/_tables.scss */
+/* line 175, sass/partials/_tables.scss */
 .modal table tfoot tr:last-of-type th, .modal table tfoot tr:last-of-type td {
   border-bottom: 0;
 }

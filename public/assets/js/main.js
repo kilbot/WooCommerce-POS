@@ -17,7 +17,7 @@ require.config({
 		'accounting': '../../../bower_components/accounting/accounting.min',
 		
 		// Convenience methods for getting and setting User settings
-		'settings': '../../../public/assets/js/plugins/Settings',
+		'settings': '../../../public/assets/js/src/Settings',
 
 		// Plugins
 		'bootstrap-modal': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal',
@@ -25,10 +25,10 @@ require.config({
 		'backbone-indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
 		'backbone-localstorage': '../../../bower_components/backbone.localStorage/backbone.localStorage',
 		'backbone-paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
-		'pushy': '../../../public/assets/js/plugins/pushy',
+		'pushy': '../../../public/assets/js/src/pushy',
 
 		// Custom Plugins
-		'autoGrowInput': '../../../public/assets/js/plugins/jquery.autoGrowInput',
+		'autoGrowInput': '../../../public/assets/js/src/jquery.autoGrowInput',
 
 	},
 

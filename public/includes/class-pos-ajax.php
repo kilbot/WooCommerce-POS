@@ -55,7 +55,8 @@ class WooCommerce_POS_AJAX {
 	public function get_product_ids() {
 
 		// get an array of product ids
-		$ids = WC_POS()->product->get_all_ids();
+		$products = new WooCommerce_POS_Product();
+		$ids = $products->get_all_ids();
 
 		$this->json_headers();
 		echo json_encode( $ids );

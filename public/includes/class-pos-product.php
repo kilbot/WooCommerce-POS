@@ -17,7 +17,7 @@ class WooCommerce_POS_Product {
 	public function __construct() {
 
 		// we're going to manipulate the wp_query to display products
-		add_action( 'pre_get_posts', array( $this, 'get_all_products' ) );
+		add_action( 'pre_get_posts', array( $this, 'get_product_variations' ) );
 
 		// and we're going to filter on the way out
 		add_filter( 'woocommerce_api_product_response', array( $this, 'filter_product_response' ) );
@@ -56,13 +56,7 @@ class WooCommerce_POS_Product {
 	 * Get all the things
 	 * @param  $query 		the wordpress query
 	 */
-	public function get_all_products( $query ) {
-
-		// effects only requests from POS
-		// TODO: this needs to be less clumsy
-		// it effects going from pos to admin & shop
-		if( !WC_POS()->is_pos_referer() )
-			return;
+	public function get_product_variations( $query ) {
 
 		// show all products
 		// $query->set( 'posts_per_page', -1 ); 
@@ -93,10 +87,6 @@ class WooCommerce_POS_Product {
 	 * @return array modified data array $product_data
 	 */
 	public function filter_product_response( $product_data ) {
-
-		// effects only requests from POS
-		if( !WC_POS()->is_pos_referer() )
-			return $product_data ;		
 
 		// flatten variable data
 		if( $product_data['type'] == 'variation' ) {

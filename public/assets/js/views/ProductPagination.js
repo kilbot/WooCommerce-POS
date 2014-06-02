@@ -17,7 +17,7 @@ define(['jquery', 'underscore', 'backbone', 'settings'],
 			'click a.prev'		: 'previous',
 			'click a.next'		: 'next',
 			'click a.sync'		: 'sync',
-			'click a.destroy'	: 'destroy',
+			'click a.destroy'	: 'clear',
 		},
 		
 		render: function() {
@@ -71,9 +71,8 @@ define(['jquery', 'underscore', 'backbone', 'settings'],
 			return false;
 		},
 
-		destroy: function() {
+		clear: function() {
 			this.collection.clear(); // clear the collection
-			Settings.set( 'last_update', null ); // clear the last update time
 			return false;
 		},
 	});

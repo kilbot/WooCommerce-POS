@@ -61,6 +61,10 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.2.13 =
+* Fix: Access to WC REST API now validates against the wordpress cookie, only logged in users with manage_woocommerce_pos capability can access the api
+* Fix: Added flag for WC REST API request and response filters
+
 = 0.2.12 =
 * Improved: Product list now uses local IndexedDB for fast searching and filtering. Fallback to server-side filtering for browsers which do not support [IndexedDB](http://caniuse.com/indexeddb)
 * Improved: Cart logic now handled client-side, no more waiting for the server to respond

@@ -12,7 +12,7 @@ define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/Pr
 			if(Modernizr.indexeddb) {
 				this.collection = new ProductsCollection();
 				// sync products with server on init
-				this.collection.serverSync();
+				// this.collection.serverSync();
 			} else {
 				this.collection = new ProductsFallbackCollection();
 			}

@@ -71,8 +71,9 @@ class WooCommerce_POS {
 		add_filter('query_vars', array( $this, 'add_query_vars') );
 		add_action('template_redirect', array( $this, 'login') );
 
-		// allow access to the WC REST API 
+		// allow access to the WC REST API, init product class before serving response
 		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 1 );
+		add_action( 'woocommerce_api_server_before_serve', array( $this, 'wc_api_init') );
 				
 	}
 
@@ -141,7 +142,6 @@ class WooCommerce_POS {
 		$shop_manager->remove_cap( 'manage_woocommerce_pos' );
 	}
 
-
 	private function includes() {
 		include_once( 'includes/class-pos-product.php' );
 		include_once( 'includes/class-pos-checkout.php' );
@@ -151,7 +151,7 @@ class WooCommerce_POS {
 	}
 
 	public function init() {
-		$this->product  = new WooCommerce_POS_Product();
+		// $this->product  = new WooCommerce_POS_Product();
 	}
 
 	/**
@@ -190,6 +190,7 @@ class WooCommerce_POS {
 			if( $template != '' && file_exists( $this->plugin_path . 'public/views/' . $template . '.php' ) ) {
 				include_once( 'views/' . $template . '.php' );
 			}
+
 			// else: default to main page
 			else {
 				include_once( 'views/pos.php' );
@@ -211,52 +212,37 @@ class WooCommerce_POS {
 		global $wp_query;
 		$is_pos = isset($wp_query->query_vars['pos']) && $wp_query->query_vars['pos'] == 1 ? true : false ;
 
-		// // // DEBUG
-		// if($is_pos) {
-		// 	error_log('you are in POS');
-		// } else {
-		// 	error_log('you are not in POS');
-		// }
-
 		return $is_pos;
-	}
-
-	/**
-	 * Did the request come from the POS?
-	 * @return boolean
-	 */
-	public function is_pos_referer() {
-		$referer = wp_get_referer();
-		$parsed_referrer = parse_url( $referer );
-		$is_pos_referer = ( $parsed_referrer['path'] == '/pos/' ) ? true : false ;
-
-		// // DEBUG
-		// if($is_pos_referer) {
-		// 	error_log('request came from POS');
-		// } else {
-		// 	error_log('request did not come from POS');
-		// }
-		
-		return $is_pos_referer;
 	}
 
 	/**
 	 * Bypass authenication for WC REST API
 	 * @return WP_User object
 	 */
-	public function wc_api_authentication( $user ) {
+	public function wc_api_authentication( $user) {
 
-		// make everyone admin :(
-		$admins = get_users( 'role=administrator&number=1' );
-		return $admins[0];
+		// get user_id from the wp logged in cookie
+		$user_id = apply_filters( 'determine_current_user', false );
 
-		// this doesn't work!! WC API has set current_user to 0?! 
-		// if( current_user_can( 'manage_woocommerce_pos' ) ) {
-		// 	return new WP_User( get_current_user_id() );
-		// } else {
-		// 	return $user;
-		// }
+		// if user can manage_woocommerce_pos, open the api
+		if( is_numeric($user_id) && user_can( $user_id, 'manage_woocommerce_pos' ) ) {
+			return new WP_User( $user_id );
+		} else {
+			return $user;
+		}
+	}
 
+	/**
+	 * Instantiate the Product Class when making api requests
+	 * @param  object $api_server  WC_API_Server Object      
+	 */
+	public function wc_api_init( $api_server ) {
+
+		// check both GET & POST requests
+		$params = array_merge($api_server->params['GET'], $api_server->params['POST']);
+		if( isset($params['pos']) && $params['pos'] == 1 ) {
+			$this->product = new WooCommerce_POS_Product();
+		}
 	}
 	
 	/**
@@ -286,8 +272,8 @@ class WooCommerce_POS {
 		if($section == 'footer') {
 			do_action( 'pos_add_to_footer' );
 			$this->pos_localize_script();
-	// $html = '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
-	$html = '<script src="'. $this->plugin_url .'public/assets/js/scripts.min.js"></script>';
+	$html = '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
+	// $html = '<script src="'. $this->plugin_url .'public/assets/js/scripts.min.js"></script>';
 			echo $html;
 		}
 	}
@@ -315,7 +301,7 @@ class WooCommerce_POS {
 
 		$js_vars = array(
 			'ajax_url' => admin_url( 'admin-ajax.php', 'relative' ),
-			'loading_icon' => $this->plugin_url . '/assets/ajax-loader.gif',
+			'worker' => $this->plugin_url .'public/assets/js/worker.min.js',
 			'accounting' => array(
 				'settings' => array(
 					'currency' => array(
@@ -327,7 +313,7 @@ class WooCommerce_POS {
 					),
 					'number' => array(
 						'precision' => get_option( 'woocommerce_price_num_decimals' ),  
-						'thousand'	=> '',
+						'thousand'	=> get_option( 'woocommerce_price_thousand_sep' ),
 						'decimal' 	=> get_option( 'woocommerce_price_decimal_sep' ),
 					)
 				)

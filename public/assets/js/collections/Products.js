@@ -7,6 +7,7 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 		storeName: 'products',
 		model: Product,
 		mode: 'client',
+		params: pos_params,
 
 		state: {
 			pageSize: 5,
@@ -19,189 +20,82 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 			// this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
 		},
 
-		clear: function() {
-
-			// Danger! This call should never go out to the server. It's not a problem at
-			// the moment but checks and balances should be added if WC REST API allows delete
-			if( typeof this.database.id !== 'undefined' ) {
-				$.when(this.removeProducts( this.fullCollection.pluck('id') ))
-				.done( this.reset() );
-			}
-		},
-
-		/*============================================================================
-		Server Sync
-		1. get a list of all product ids from server
-		2. check against ids in local db
-		3. remove any products not on the server
-		4. check for updates since last_update
-		5. download products
-		6. set updated products in local db
-
-		TODO: chain an id audit on the end of the server sync to catch any problems
-		closeSync() should fire always but errors need to display somewhere
-		===========================================================================*/ 
-
+		/**
+		 * Sync the local database with the server
+		 * TODO: improve product audit, maybe move to worker?
+		 */
 		serverSync: function() {
-			
+			var self = this;
+
 			$('#pagination').addClass('working');
 
-			var deleteComplete = false, 
-				saveComplete = false,
-				that = this;
-
-			// audit products, returns an array of products to be deleted
-			// then: remove the products (if any)
-			// then: we're done
+			// first audit the products, delete any that have been removed from the server
 			this.auditProducts()
 			.then( function( productArray ) {
 				if( productArray.length > 0 ) { 
-					return that.removeProducts( productArray ); 
+					return self.removeProducts( productArray ); 
 				}
 			})
+
+			// then: start the web worker sync
 			.then( function(){
-				deleteComplete = true;
-				that.closeSync( deleteComplete, saveComplete );
+				self.startWorker();
 			});
+		},
 
+		/**
+		 * Clear the database
+		 */
+		clear: function() {
+			var self = this;
 
-			// get the number of products changed since last update
-			// then: queue the ajax calls to get updated products
-			// then: we're done
-			
+			// Danger! This call should never go out to the server. It's not a problem at
+			// the moment but checks and balances should be added if WC REST API allows delete
+			Backbone.sync('delete', this, {
+				success: function() {
+					self.fullCollection.reset();
+					Settings.set( 'last_update', null );
+				},
+				error: function() {
+					alert('There was a problem clearing the database');
+				}
+			});
+		},
+
+		/**
+		 * Start the product sync in the background
+		 */
+		startWorker: function() {
+			var self = this;
+
+			// start a web worker
+			var worker = new Worker( this.params.worker );
+
+			worker.addEventListener('message', function(e) {
+				var status = e.data.status;
+
+				switch (status) {
+					case 'success':
+						console.log(e.data.msg);
+						self.fetch();
+					break;
+					case 'error':
+						alert(e.data.msg);
+					break;
+					case 'complete':
+						console.log(e.data.msg);
+						Settings.set( 'last_update', Date.now() );
+						$('#pagination').removeClass('working');
+					break;
+					default:
+						// ?
+				}
+
+			}, false);
+
+			// format the last-update and send to worker
 			var updated_at_min = this.formatLastUpdateFilter( Settings.get('last_update') );
-
-			this.getUpdatedCount( updated_at_min )
-			.then( function( count ) {
-				if ( count > 0 ) { 
-
-					// if we need less than 10, get less than 10
-					// if we need more than 10, get limit of 10 at a time
-					var limit = ( count < 100 ) ? count : 100 ;
-
-					// queue the products to update
-					// calls to server will be asynchronous
-					// saving happens synchronous to each call
-					return that.queueProducts( count, limit, updated_at_min );
-
-				}
-			})
-			.then( function(){
-				saveComplete = true;
-				that.closeSync( deleteComplete, saveComplete );
-			});
-
-		},
-
-		/**
-		 * Get a number of products about to be returned
-		 * @param  int updated_at_min
-		 * @return promise, then int count
-		 */
-		getUpdatedCount: function(updated_at_min) {
-
-			// updated at min should be value like 2014-05-14 or null
-			updated_at_min = typeof updated_at_min !== 'undefined' ? updated_at_min : null;
-
-			// get count of products updated from the server
-			return $.getJSON( '/wc-api/v1/products/count', { 'filter[updated_at_min]': updated_at_min } )
-			.then( function( response ) {
-				console.log(response.count + ' products need to be updated');
-				return response.count;
-			}, function (jqXHR, textStatus, errorThrown) {
-				console.log('error ' + textStatus);
-				console.log('incoming Text ' + jqXHR.responseText);
-				alert(errorThrown);
-			});
-		},
-
-
-		/**
-		 * This breaks the product requests into manageable chunks for
-		 * the server. If a store has 1,000's of products the REST API 
-		 * will timeout. This is a bit of a work around.
-		 *
-		 * Returns a promise which resolves when all products are 
-		 * downloaded and saved.
-		 * 
-		 * @param  int count, limit, updated_at_min
-		 * @return promise
-		 */
-		queueProducts: function(count, limit, updated_at_min) {
-
-			// default values
-			count = typeof count !== 'undefined' ? count : 10; // default count is 10
-			limit = typeof limit !== 'undefined' ? limit : 10; // default limit is 10
-			updated_at_min = typeof updated_at_min !== 'undefined' ? updated_at_min : null;		
-			
-			var requests = [];
-			for (var offset = 0; offset < count; offset += limit) {
-				requests.push(
-					this.getProducts( limit, offset, updated_at_min )
-				);
-			}
-			console.log(requests.length + ' ajax calls queued');
-			
-			return $.when.apply($, requests).always(function ( data ) {
-	    		console.log('All products retrieved and saved');
-			});
-			
-		},
-
-		/**
-		 * Get the products from the server, 
-		 * then: save the returned products (synchronous)
-		 * @param  int limit, offset, updated_at_min	filters provided by WC REST API
-		 * @return promise
-		 */
-		getProducts: function(limit, offset, updated_at_min) {
-			var that = this;
-
-			console.log('getting ' + limit + ' products, offset by ' + offset );
-
-			// default values
-			limit = typeof limit !== 'undefined' ? limit : 10; // default limit is 10
-			offset = typeof offset !== 'undefined' ? offset : 0; // default offset is 0
-			updated_at_min = typeof updated_at_min !== 'undefined' ? updated_at_min : null;
-
-			// make the call, save the data
-			return $.getJSON( '/wc-api/v1/products/', { 'filter[limit]': limit, 'filter[offset]': offset, 'filter[updated_at_min]': updated_at_min } )
-			.then( function( data ) { 
-				that.saveProducts( data ); 
-			}, function( jqXHR, textStatus, errorThrown ) {
-				alert( errorThrown );
-			});
-
-		},
-
-		/**
-		 * Save products to the local database
-		 * @param  JSON expects json object containing products
-		 * @return null
-		 */
-		saveProducts: function( ajaxResponse ) {
-			var that = this; 
-
-			console.log('saving ' + ajaxResponse.products.length + ' products' );
-
-			// for each product in the WC API response
-			_.each(ajaxResponse.products, function( product ) {
-
-				// use collection create convenience method
-				// equivalent to:
-				// newProduct = new Product(product);
-				// newProduct.save();
-				// products.add(newProduct, {merge: true});
-				that.fullCollection.create( product, {
-					merge: true,
-					success: function(model, response) {
-						console.log('saved: ' + response.title);
-					},
-					error: function(model, response) {
-						console.log('error saving model: ' + response.title);
-					}
-				});
-			});
+			worker.postMessage({ 'cmd': 'sync', 'last_update': updated_at_min, 'ajax_url': this.params.ajax_url });
 		},
 
 		/**
@@ -212,7 +106,7 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 			var that = this;
 
 			// get list of product ids from the server
-			return $.getJSON( pos_params.ajax_url , { 'action' : 'pos_get_product_ids' } )
+			return $.getJSON( this.params.ajax_url , { 'action' : 'pos_get_product_ids' } )
 			.then( function( sids ) {
 				if (sids instanceof Array) {  
 					// build an array of ids stored locally
@@ -252,18 +146,6 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 					this.remove(model);
 				}
 				console.log(i + ' products removed');
-			}
-		},
-
-		/**
-		 * Product Sync clean up
-		 */
-		closeSync: function( deleteComplete, saveComplete ) {
-			if(deleteComplete && saveComplete) {
-				console.log( 'sync is done! ' );
-				Settings.set( 'last_update', Date.now() );
-				this.trigger('sync');
-				$('#pagination').removeClass('working');
 			}
 		},
 

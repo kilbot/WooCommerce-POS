@@ -78,6 +78,7 @@ module.exports = function(grunt) {
 				'public/assets/js/**/*.js',
 				'admin/assets/js/admin.js',
 				'!public/assets/js/scripts.min.js',
+				'!public/assets/js/worker.min.js',
 				'!public/assets/js/require.js',
 				'!public/assets/js/vendor/**/*.js',
 				'tests/data/**/*.json',
@@ -99,6 +100,16 @@ module.exports = function(grunt) {
 					},
 					include: 'almondLib',
 					// optimize: 'none'
+				}
+			}
+		},
+
+		uglify: {
+			worker: {
+				files: {
+					'public/assets/js/worker.min.js' : [
+						'public/assets/js/src/worker.js'
+					]
 				}
 			}
 		},
@@ -151,6 +162,6 @@ module.exports = function(grunt) {
 
 
 	// register task
-	grunt.registerTask('default', ['makepot', 'wp_readme_to_markdown', 'compass', 'cssmin', 'jshint', 'requirejs', 'watch']);
+	grunt.registerTask('default', ['makepot', 'wp_readme_to_markdown', 'compass', 'cssmin', 'jshint', 'uglify', 'requirejs', 'watch']);
 
 };
