@@ -22,7 +22,7 @@ define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/Pr
   			new ProductPagination( { collection: this.collection } );
 
 			// listen to the product collection and render on all events
-			this.listenTo(this.collection, 'all', this.render);	
+			this.listenTo(this.collection, 'reset', this.render);
 
 			// get products from indexedDB or fallback 
 			this.collection.fetch();

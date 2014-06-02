@@ -272,8 +272,8 @@ class WooCommerce_POS {
 		if($section == 'footer') {
 			do_action( 'pos_add_to_footer' );
 			$this->pos_localize_script();
-	$html = '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
-	// $html = '<script src="'. $this->plugin_url .'public/assets/js/scripts.min.js"></script>';
+	// $html = '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
+	$html = '<script src="'. $this->plugin_url .'public/assets/js/scripts.min.js"></script>';
 			echo $html;
 		}
 	}
@@ -301,7 +301,7 @@ class WooCommerce_POS {
 
 		$js_vars = array(
 			'ajax_url' => admin_url( 'admin-ajax.php', 'relative' ),
-			'worker' => $this->plugin_url .'public/assets/js/worker.min.js',
+			'worker' => $this->plugin_url .'public/assets/js/src/worker.min.js',
 			'accounting' => array(
 				'settings' => array(
 					'currency' => array(

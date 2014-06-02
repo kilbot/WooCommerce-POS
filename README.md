@@ -64,6 +64,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 ## Changelog ##
 
 ### 0.2.13 ###
+* Improved: Product Sync now handled by web worker, improves sync performance for large stores (1000+ products)
 * Fix: Access to WC REST API now validates against the wordpress cookie, only logged in users with manage_woocommerce_pos capability can access the api
 * Fix: Added flag for WC REST API request and response filters
 

@@ -15,7 +15,9 @@ addEventListener('message', function(e) {
 
 	switch (data.cmd) {
 		case 'sync':
-			openDB();
+			if( typeof indexedDB !== 'undefined' ) {
+				openDB();
+			} 
 			getUpdateCount(data.last_update);
 		break;
 		case 'clear':
@@ -132,6 +134,16 @@ var storeProducts = function(count, limit, offset, updated_at_min) {
 
 	// get the products
 	getJSON('/wc-api/v1/products?' + query.join('&'), function(data) {
+
+		if( typeof db.transaction !== 'function' ) {
+			var is_last = false;
+			storeCount += data.products.length;
+			if( storeCount === count ) {
+				is_last = true;
+			}
+			self.postMessage({ 'status': 'noIndexedDB', 'products': data, 'last': is_last });
+			return;
+		}
 
 		// prepare for database transaction
 		var transaction = db.transaction( ['products'], 'readwrite' );

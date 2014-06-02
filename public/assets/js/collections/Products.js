@@ -17,7 +17,10 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
   		},
 
 		initialize: function() {
-			// this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
+			this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
+			
+			// sync on init
+			this.serverSync();
 		},
 
 		/**
@@ -87,6 +90,11 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 						Settings.set( 'last_update', Date.now() );
 						$('#pagination').removeClass('working');
 					break;
+
+					// special case for Firefox, no access to IndexedDB from Web Worker :(
+					case 'noIndexedDB':
+						self.saveProducts(e.data.products, e.data.last);
+					break;
 					default:
 						// ?
 				}
@@ -146,6 +154,42 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 					this.remove(model);
 				}
 				console.log(i + ' products removed');
+			}
+		},
+
+		/**
+		 * Fallback function for Firefox
+		 */
+		saveProducts: function( data, last ) {
+			var self = this,
+				i = 0;
+
+			console.log('saving ' + data.products.length + ' products' );
+			putNext();
+
+			function putNext() {
+				if( i < data.products.length ) {
+					self.fullCollection.create( data.products[i], {
+						merge: true,
+						silent: true,
+						success: putNext,
+						error: function(model, response) {
+							console.log('error saving model: ' + response.title);
+						}
+					});
+					i++;
+				}
+
+				else {
+					console.log('Saved ' + i + ' products' );
+					self.fetch({ reset: true });
+					if(last) {
+						console.log('Sync complete!');
+						Settings.set( 'last_update', Date.now() );
+						$('#pagination').removeClass('working');
+					}
+					return;
+				}
 			}
 		},
 
