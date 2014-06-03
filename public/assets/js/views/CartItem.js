@@ -1,13 +1,11 @@
 define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput'], 
 	function($, _, Backbone, accounting, autoGrowInput) {
 
-	accounting.settings = pos_params.accounting.settings;
-	var wc = pos_params.wc;
-
 	// view holds individual cart items
 	var CartItem = Backbone.View.extend({
 		tagName : 'tr',
 		template: _.template($('#tmpl-cart-item').html()),
+		params: pos_params,
 
 		events: {
 			"click .remove a"	: "removeFromCart",
@@ -17,6 +15,9 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput'],
 		},
 
 		initialize: function(options) {
+
+			// set the accounting settings
+			accounting.settings = this.params.accounting;
 
 			// use the cart already initialized
 			this.cart = options.cart;
@@ -29,17 +30,14 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput'],
 
 			// grab the model
 			var item = this.model.toJSON();
-
-			// format display price, just in case
-			item.display_price = accounting.formatNumber( item.display_price );
+			var total = accounting.unformat( item.display_total, accounting.settings.number.decimal );
 
 			// add discounted if required
 			if( item.total_discount !== 0 ) {
-				item.discounted = accounting.formatMoney( parseFloat(item.display_total) - item.total_discount );
+				item.discounted = accounting.formatMoney( total - item.total_discount );
 			}
-			
-			// format display total
-			item.display_total = accounting.formatMoney( item.display_total );
+
+			item.display_total = accounting.formatMoney( total );
 
 			// add 'ex. tax' if necessary
 			// if( wc.tax_display_cart === 'excl') {
@@ -50,7 +48,7 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput'],
 			this.$el.html( ( this.template( item ) ) );
 
 			// add a function to autosize the Qty & Price inputs
-			this.$('input[type=number]').autoGrowInput();
+			this.$('input').autoGrowInput();
 
 			return this;
 		},
@@ -69,9 +67,10 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput'],
 		},
 
 		close: function(e) {
-			var input 	= $(e.target);
-			var key 	= input.data('id');
-			var value 	= parseFloat(input.val()); // sanitise input
+			var input 	= $(e.target),
+				key 	= input.data('id'),
+				value 	= input.val(),
+				decimal = accounting.unformat( value, accounting.settings.number.decimal );
 
 			switch( key ) {
 				case 'qty':
@@ -89,7 +88,8 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput'],
 					break;
 
 				case 'price':
-					if( value ) {
+					if( !isNaN( decimal ) ) {
+						value = accounting.formatNumber( decimal );
 						this.model.set( { display_price: value } );
 					} else {
 						input.focus();

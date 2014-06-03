@@ -135,9 +135,9 @@ table {
 #cart {
     table {
         tbody {
-            input[type=number] {
+            input {
                 text-align: center;
-                max-width: 6em;
+                max-width: 7em;
                 background-color: $odd-background;
                 border: 1px solid $border-dark;
                 -moz-appearance: textfield;

@@ -11,8 +11,6 @@ define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/Pr
 
 			if(Modernizr.indexeddb) {
 				this.collection = new ProductsCollection();
-				// sync products with server on init
-				// this.collection.serverSync();
 			} else {
 				this.collection = new ProductsFallbackCollection();
 			}
@@ -22,7 +20,8 @@ define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/Pr
   			new ProductPagination( { collection: this.collection } );
 
 			// listen to the product collection and render on all events
-			this.listenTo(this.collection, 'reset', this.render);
+			// 'reset' ok for Products.js, 'sync' needed for ProductsFallback.js
+			this.listenTo(this.collection, 'reset sync', this.render);
 
 			// get products from indexedDB or fallback 
 			this.collection.fetch();

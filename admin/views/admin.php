@@ -66,19 +66,7 @@
 						</div> <!-- .inside -->
 					</div> <!-- .postbox -->
 				</div> <!-- .meta-box-sortables -->	
-
-				<div class="meta-box-sortables">
-					<div class="postbox">
-						<h3 style="cursor:auto">Donate</h3>
-						<div class="inside">
-							<p>A small donation will also go a long way to keeping development moving.</p>
-							<ul>
-								<li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paul%40kilbot%2ecom%2eau">Donate Now</a></li>
-							</ul>
-							Thanks to <a href="http://www.speldorado.com/">Egbert</a> for donating!
-						</div> <!-- .inside -->
-					</div> <!-- .postbox -->
-				</div> <!-- .meta-box-sortables -->					
+				
 			</div> <!-- #postbox-container-1 .postbox-container -->		
 		
 		</div> <!-- #post-body .metabox-holder .columns-2 -->

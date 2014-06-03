@@ -27,7 +27,7 @@ WooCommerce POS uses IndexedDB to persist the product database on your computer 
 
 If your browser does not support IndexedDB, WooCommerce POS will degrade to using the product database on your server via the WooCommerce REST API. The Point of Sale system will still function but searching and filtering will be slower. Some planned features for WooCommerce POS will also only be available for browsers that support IndexdedDB.
 
-** For the best experience please use a modern browser such as [Chrome](http://www.google.com/chrome) or [Firefox](http://getfirefox.com) **
+** For the best experience please use a modern browser such as [Chrome](http://www.google.com/chrome) **
 
 == Installation ==
 
@@ -65,6 +65,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Improved: Product Sync now handled by web worker, improves sync performance for large stores (1000+ products)
 * Fix: Access to WC REST API now validates against the wordpress cookie, only logged in users with manage_woocommerce_pos capability can access the api
 * Fix: Added flag for WC REST API request and response filters
+* Fix: Cart now handles comma decimals correctly
 
 = 0.2.12 =
 * Improved: Product list now uses local IndexedDB for fast searching and filtering. Fallback to server-side filtering for browsers which do not support [IndexedDB](http://caniuse.com/indexeddb)

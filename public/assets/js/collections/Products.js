@@ -17,7 +17,7 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
   		},
 
 		initialize: function() {
-			this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
+			// this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
 			
 			// sync on init
 			this.serverSync();
@@ -88,6 +88,7 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 					case 'complete':
 						console.log(e.data.msg);
 						Settings.set( 'last_update', Date.now() );
+						self.trigger('sync'); // trigger sync to update last_update display
 						$('#pagination').removeClass('working');
 					break;
 

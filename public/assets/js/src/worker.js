@@ -3,12 +3,12 @@
  * Performs server sync in the background.
  */
 
-var db = {},
+var db,
 	storeCount = 0;
 
 // number of products to get in a single ajax call
 // adjust to prevent server timeouts
-var ajaxLimit = 100; 
+var ajaxLimit = 1000; 
 
 addEventListener('message', function(e) {
 	var data = e.data;
@@ -135,7 +135,7 @@ var storeProducts = function(count, limit, offset, updated_at_min) {
 	// get the products
 	getJSON('/wc-api/v1/products?' + query.join('&'), function(data) {
 
-		if( typeof db.transaction !== 'function' ) {
+		if( typeof db !== 'object' ) {
 			var is_last = false;
 			storeCount += data.products.length;
 			if( storeCount === count ) {

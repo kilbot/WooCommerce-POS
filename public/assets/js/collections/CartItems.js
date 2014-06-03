@@ -13,7 +13,7 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 			// this.on('all', function(e) { console.log("Cart Collection event: " + e); }); // debug
 
 			// set the accounting settings
-			accounting.settings = this.params.accounting.settings;
+			accounting.settings = this.params.accounting;
 
 			// init the Cart Totals model ...
 			var cartTotals = new CartTotals();

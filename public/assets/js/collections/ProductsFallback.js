@@ -20,6 +20,7 @@ define(['backbone', 'backbone-paginator', 'models/Product'],
 		// You can remap the query parameters from `state` keys from
 		// the default to those your server supports
 		queryParams: {
+			pos: 1,
 			filter: {limit: 5},
 			totalPages: null,
 		},

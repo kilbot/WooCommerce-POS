@@ -20,6 +20,11 @@ class WooCommerce_POS {
 	/**
 	 * Unique identifier
 	 */
+	public $development = false;
+
+	/**
+	 * Unique identifier
+	 */
 	protected $plugin_slug = 'woocommerce-pos';
 
 	/**
@@ -64,7 +69,6 @@ class WooCommerce_POS {
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
-		add_action( 'init', array( $this, 'init' ), 0 );
 
 		// Set up templates
 		add_filter('generate_rewrite_rules', array( $this, 'generate_rewrite_rules') );
@@ -150,10 +154,6 @@ class WooCommerce_POS {
 		}
 	}
 
-	public function init() {
-		// $this->product  = new WooCommerce_POS_Product();
-	}
-
 	/**
 	 * Add rewrite rules for pos
 	 * @param  object $wp_rewrite
@@ -230,6 +230,8 @@ class WooCommerce_POS {
 		} else {
 			return $user;
 		}
+
+		// error_log( print_R( $user, TRUE ) ); //debug
 	}
 
 	/**
@@ -243,46 +245,57 @@ class WooCommerce_POS {
 		if( isset($params['pos']) && $params['pos'] == 1 ) {
 			$this->product = new WooCommerce_POS_Product();
 		}
-	}
-	
-	/**
-	 * Print the CSS for public facing templates
-	 * @return [type] [description]
-	 */
-	public function pos_print_css() {
-		$html = '
-	<link rel="stylesheet" href="'. $this->plugin_url .'public/assets/css/pos.min.css?ver='. self::VERSION .'" type="text/css" media="all" />
-	<link rel="stylesheet" href="'. $this->plugin_url .'assets/css/font-awesome.min.css" type="text/css" media="all" />
-		';
-		echo $html;
+
+		// error_log( print_R( $api_server, TRUE ) ); //debug
 	}
 
 	/**
-	 * Print the head JS for public facing templates
-	 * @return [type] [description]
+	 * Get the woocommerce shop settings
+	 * @return array $settings
 	 */
-	public function pos_print_js ($section = '') {
-		if($section == 'head') {
-			$html = '
-	<!-- Modernizr: checks: indexeddb, websql, localstrorage and CSS 3D transforms -->
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'public/assets/js/vendor/modernizr.custom.min.js"></script>
-			';
-			echo $html;
-		}
-		if($section == 'footer') {
-			do_action( 'pos_add_to_footer' );
-			$this->pos_localize_script();
-	// $html = '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
-	$html = '<script src="'. $this->plugin_url .'public/assets/js/scripts.min.js"></script>';
-			echo $html;
-		}
+	public function wc_settings() {
+		$settings = array(
+			'tax_label' 			=> WC()->countries->tax_or_vat(), 
+			'calc_taxes' 			=> get_option( 'woocommerce_calc_taxes' ),
+			'prices_include_tax' 	=> get_option( 'woocommerce_prices_include_tax' ),
+			'tax_round_at_subtotal' => get_option( 'woocommerce_tax_round_at_subtotal' ),
+			'tax_display_cart' 		=> get_option( 'woocommerce_tax_display_cart' ),
+			'tax_total_display' 	=> get_option( 'woocommerce_tax_total_display' ),
+		);
+		return $settings;
 	}
 
 	/**
-	 * Add variables for use by js scripts
-	 * @return [type] [description]
+	 * Get the accounting format from user settings
+	 * POS uses a plugin to format currency: http://josscrowcroft.github.io/accounting.js/
+	 * @return array $settings
 	 */
-	public function pos_localize_script() {
+	public function accounting_settings() {
+		$decimal = get_option( 'woocommerce_price_decimal_sep' );
+		$thousand = get_option( 'woocommerce_price_thousand_sep' );
+		$precision = get_option( 'woocommerce_price_num_decimals' );
+		$settings = array(
+			'currency' => array(
+				'decimal' 	=> $decimal,  
+				'format' 	=> $this->currency_format(),
+				'precision' => $precision,
+				'symbol' 	=> get_woocommerce_currency_symbol( get_woocommerce_currency() ),   
+				'thousand'	=> $thousand,  
+			),
+			'number' => array(
+				'decimal' 	=> $decimal,
+				'precision' => $precision,  
+				'thousand'	=> $thousand,
+			)
+		);
+		return $settings;
+	}
+
+	/**
+	 * Get the currency format from user settings
+	 * @return array $format
+	 */
+	public function currency_format() {
 		$currency_pos = get_option( 'woocommerce_currency_pos' );
 		switch ( $currency_pos ) {
 			case 'left' :
@@ -297,41 +310,70 @@ class WooCommerce_POS {
 			case 'right_space' :
 				$format = array('pos' => '%v&nbsp;%s', 'neg' => '- %v&nbsp;%s', 'zero' => '%v&nbsp;%s');
 			break;
+			default:
+				$format = array('pos' => '%s%v', 'neg' => '- %s%v', 'zero' => '%s%v');
+		}
+		return $format;
+	}
+
+	/**
+	 * Add variables for use by js scripts
+	 * @return [type] [description]
+	 */
+	public function pos_localize_script() {
+		$js_vars['ajax_url'] 	= admin_url( 'admin-ajax.php', 'relative' );
+		$js_vars['accounting'] 	= $this->accounting_settings();
+		$js_vars['wc'] 			= $this->wc_settings();
+
+		// switch for development
+		if( $this->development ) {
+			$js_vars['worker'] 	= $this->plugin_url .'public/assets/js/src/worker.js';
+		} else {
+			$js_vars['worker'] 	= $this->plugin_url .'public/assets/js/worker.min.js';
 		}
 
-		$js_vars = array(
-			'ajax_url' => admin_url( 'admin-ajax.php', 'relative' ),
-			'worker' => $this->plugin_url .'public/assets/js/src/worker.min.js',
-			'accounting' => array(
-				'settings' => array(
-					'currency' => array(
-						'symbol' => get_woocommerce_currency_symbol( get_woocommerce_currency() ),   
-						'format' => $format,
-						'decimal' => get_option( 'woocommerce_price_decimal_sep' ),  
-						'thousand'=> get_option( 'woocommerce_price_thousand_sep' ),  
-						'precision' => get_option( 'woocommerce_price_num_decimals' ),
-					),
-					'number' => array(
-						'precision' => get_option( 'woocommerce_price_num_decimals' ),  
-						'thousand'	=> get_option( 'woocommerce_price_thousand_sep' ),
-						'decimal' 	=> get_option( 'woocommerce_price_decimal_sep' ),
-					)
-				)
-			),
-			'wc' => array(
-				'tax_label' => WC()->countries->tax_or_vat(), 
-				'calc_taxes' => get_option( 'woocommerce_calc_taxes' ),
-				'prices_include_tax' => get_option( 'woocommerce_prices_include_tax' ),
-				'tax_round_at_subtotal' => get_option( 'woocommerce_tax_round_at_subtotal' ),
-				'tax_display_cart' => get_option( 'woocommerce_tax_display_cart' ),
-				'tax_total_display' => get_option( 'woocommerce_tax_total_display' ),
-			),
-		);
-	$html = '
-	<script type="text/javascript">
-	var pos_params = ' . json_encode($js_vars) . '
-	</script>
-	';
+	$pos_params = '
+		<script type="text/javascript">
+		var pos_params = ' . json_encode($js_vars) . '
+		</script>
+		';
+		return $pos_params;
+	}
+	
+	/**
+	 * Print the CSS for public facing templates
+	 */
+	public function pos_print_css() {
+		$html = '
+	<link rel="stylesheet" href="'. $this->plugin_url .'public/assets/css/pos.min.css?ver='. self::VERSION .'" type="text/css" media="all" />
+	<link rel="stylesheet" href="'. $this->plugin_url .'assets/css/font-awesome.min.css" type="text/css" media="all" />
+		';
 		echo $html;
 	}
+
+	/**
+	 * Print the head JS for public facing templates
+	 */
+	public function pos_print_js ($section = '') {
+		if($section == 'head') {
+			$html = '
+	<!-- Modernizr: checks: indexeddb, websql, localstrorage and CSS 3D transforms -->
+	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'public/assets/js/vendor/modernizr.custom.min.js"></script>
+			';
+			echo $html;
+		}
+		if($section == 'footer') {
+			do_action( 'pos_add_to_footer' );
+			echo $this->pos_localize_script();
+
+			// switch for development
+			if( $this->development ) {
+				echo '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
+			} else {
+				echo '<script src="'. $this->plugin_url .'public/assets/js/scripts.min.js"></script>';
+			}
+
+		}
+	}
+
 }

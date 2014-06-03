@@ -18,29 +18,29 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 		params: pos_params,
 
 		initialize: function() { 
-			// this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
+			this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
 
 			// set the accounting settings
-			accounting.settings = this.params.accounting.settings;
+			accounting.settings = this.params.accounting;
 
 			// update on change to qty or line discount
 			this.listenTo( this, 'change:qty change:display_price', this.updateLineTotals );
 
 			// set item price on init, this will trigger updateLineTotals()
-			this.set( { 'display_price': this.get('price') } );
+			this.set( { 'display_price': accounting.formatNumber( this.get('price') ) } );
 
 		},
 
 		updateLineTotals: function() {
 			var qty 		   = this.get('qty'),
-				display_price  = parseFloat( this.get('display_price') ),
+				display_price  = parseFloat( accounting.unformat( this.get('display_price'), accounting.settings.number.decimal ) ),
 				original_price = parseFloat( this.get('price') ),
 				line_tax 	   = 0,
 				discount 	   = 0,
 				item_price 	   = 0,
 				display_total  = 0,
 				taxable 	   = this.get('taxable');
-
+				
 			// set taxes first
 			if( taxable && this.params.wc.calc_taxes === 'yes' ) {
 				this.calcTax( display_price, qty, this.get('tax_rates') );
@@ -50,8 +50,8 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 			item_price = ( this.params.wc.prices_include_tax === 'yes' ) ? display_price - this.get('item_tax') : display_price;
 			display_total = this.displayTotal( original_price, taxable );
 			this.save({
-				'item_price'	: item_price,
-				'item_discount'	: discount,
+				'item_price'	: this.roundNum( item_price ),
+				'item_discount'	: this.roundNum( discount ),
 				'total_discount': this.roundNum( discount * qty ),
 				'line_total'	: this.roundNum( item_price * qty ),
 				'display_total'	: accounting.formatNumber( display_total * qty )
@@ -210,7 +210,7 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 		// TODO: mirror the functionality of WC_ROUNDING_PRECISION
 		roundNum: function(num) {
 			if( this.params.wc.tax_round_at_subtotal === 'no' ) {
-				return parseFloat( accounting.formatNumber(num, 4) );
+				return parseFloat( num.toFixed(4) );
 			}
 			return num;
 		},

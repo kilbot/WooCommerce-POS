@@ -1495,9 +1495,9 @@ table tfoot div.alert {
 }
 
 /* line 138, sass/partials/_tables.scss */
-#cart table tbody input[type=number] {
+#cart table tbody input {
   text-align: center;
-  max-width: 6em;
+  max-width: 7em;
   background-color: #f9f9f9;
   border: 1px solid #d4d4d4;
   -moz-appearance: textfield;
@@ -1506,17 +1506,17 @@ table tfoot div.alert {
   border-radius: 16px;
 }
 /* line 146, sass/partials/_tables.scss */
-#cart table tbody input[type=number]::-webkit-inner-spin-button {
+#cart table tbody input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 /* line 150, sass/partials/_tables.scss */
-#cart table tbody input[type=number]::-webkit-outer-spin-button {
+#cart table tbody input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 /* line 154, sass/partials/_tables.scss */
-#cart table tbody input[type=number]:hover {
+#cart table tbody input:hover {
   cursor: pointer;
 }
 /* line 161, sass/partials/_tables.scss */

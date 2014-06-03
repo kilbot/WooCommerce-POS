@@ -11,16 +11,15 @@ function check_api_access() {
 
 function check_api_authentication() {
 	$api_auth = false;
-	$file_headers = @get_headers( WC_POS()->wc_api_url.'products' );
+	$file_headers = @get_headers( WC_POS()->wc_api_url );
 	if($file_headers[0] != 'HTTP/1.1 404 Not Found') {
-		$json 		= file_get_contents( WC_POS()->wc_api_url.'products' );
+		$json 		= file_get_contents( WC_POS()->wc_api_url );
 		$api_auth 	= substr( $json, 0, 100);
 	}
 	return $api_auth;
 }
 
 function find_orphans_variations() {
-
 	global $wpdb;
 	$posts = $wpdb->get_results("SELECT o.ID FROM `".$wpdb->posts."` o
 		LEFT OUTER JOIN `".$wpdb->posts."` r

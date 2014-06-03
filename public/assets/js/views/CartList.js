@@ -44,7 +44,7 @@ define(['jquery', 'backbone', 'collections/CartItems', 'views/CartItem'],
 			this.$el.append( newItem.render().el );
 
 			// bit of a hack, need to trigger autoGrowInput after the first render
-			this.$('input[type=number]').trigger('change');
+			this.$('input').trigger('change');
 		},
 
 		addAll: function() {

@@ -100,12 +100,22 @@ module.exports = function(grunt) {
 					},
 					include: 'almondLib',
 					// optimize: 'none'
+					uglify2: {
+						compress: {
+                        	drop_console: true
+                    	}
+					}
 				}
 			}
 		},
 
 		uglify: {
 			worker: {
+				options: {
+                    compress: {
+                        drop_console: true
+                    }
+                },
 				files: {
 					'public/assets/js/worker.min.js' : [
 						'public/assets/js/src/worker.js'

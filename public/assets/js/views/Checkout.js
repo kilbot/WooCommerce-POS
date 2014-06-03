@@ -1,9 +1,12 @@
 define(['underscore', 'backbone', 'accounting', 'bootstrap-modal'], 
 	function(_, Backbone, accounting) {
-	var BaseModalView = Backbone.View.extend({		
+
+	// View for checkout modal
+	var Checkout = Backbone.View.extend({		
 		className: 'modal fade',
 		template: _.template( $('#tmpl-order').html() ),
 		totalsTemplate: _.template($('#tmpl-order-total').html()),
+		params: pos_params,
 
 		events: {
 			'hidden.bs.modal'	: 'teardown',
@@ -12,6 +15,9 @@ define(['underscore', 'backbone', 'accounting', 'bootstrap-modal'],
 		},
 		
 		initialize: function(options) {
+
+			// set the accounting settings
+			accounting.settings = this.params.accounting;
 
 			// listen
 			_(this).bindAll();
@@ -76,10 +82,11 @@ define(['underscore', 'backbone', 'accounting', 'bootstrap-modal'],
 
 			// append totals
 			var totals = this.totals.toJSON();
+			var total_check = accounting.unformat( this.totals.get('total_check'), accounting.settings.number.decimal );
 			
 			// totals check
-			console.log( 'wc: ' + this.order.total + ', pos: ' + this.totals.get('total_check') ); //debug
-			if( parseFloat( this.order.total ) !== parseFloat( this.totals.get('total_check') ) ) {
+			console.log( 'wc: ' + this.order.total + ', pos: ' + total_check ); //debug
+			if( parseFloat( this.order.total ) !== parseFloat( total_check ) ) {
 				totals.total_mismatch = true;
 			}
 
@@ -93,5 +100,5 @@ define(['underscore', 'backbone', 'accounting', 'bootstrap-modal'],
 		
 	});
 		 
-	return BaseModalView;
+	return Checkout;
 });

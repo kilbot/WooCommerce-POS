@@ -13,8 +13,17 @@
 
 class WooCommerce_POS_Product {
 
-	
+	/** @var string Contains the thumbnail size. */
+	public $thumb_size;
+
+	/** @var array Contains an array of tax rates, by tax class. */
+	public $tax_rates = array();
+
+
 	public function __construct() {
+
+		// init variables
+		$this->thumb_size = get_option( 'shop_thumbnail_image_size', array( 'width'=>90, 'height'=> 90 ) );
 
 		// we're going to manipulate the wp_query to display products
 		add_action( 'pre_get_posts', array( $this, 'get_product_variations' ) );
@@ -112,8 +121,7 @@ class WooCommerce_POS_Product {
 
 		// use thumbnails for images or placeholder
 		if( $product_data['featured_src'] ) {
-			$thumb_size = get_option( 'shop_thumbnail_image_size', array( 'width'=>90, 'height'=> 90 ) );
-			$thumb_suffix = '-'.$thumb_size['width'].'x'.$thumb_size['height'];
+			$thumb_suffix = '-'.$this->thumb_size['width'].'x'.$this->thumb_size['height'];
 			$product_data['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $thumb_suffix.'$1', $product_data['featured_src']);
 
 		} else {
@@ -122,15 +130,24 @@ class WooCommerce_POS_Product {
 		
 		// if taxable, get the tax_rates array
 		if( $product_data['taxable'] ) {
-			$tax = new WC_Tax();
-			$base = get_option( 'woocommerce_default_country' );
-			if ( strstr( $base, ':' ) ) {
-				list( $country, $state ) = explode( ':', $base );
-			} else {
-				$country = $base;
-				$state = '';
+
+			if( isset($this->tax_rates[$product_data['tax_class']]) ) {
+				$tax_rates = $this->tax_rates[$product_data['tax_class']];
 			}
-			$tax_rates = $tax->find_rates( array( 'country' => $country, 'state' => $state, 'tax_class' => $product_data['tax_class'] ) );
+
+			else {
+				$tax = new WC_Tax();
+				$base = get_option( 'woocommerce_default_country' );
+				if ( strstr( $base, ':' ) ) {
+					list( $country, $state ) = explode( ':', $base );
+				} else {
+					$country = $base;
+					$state = '';
+				}
+				$tax_rates = $tax->find_rates( array( 'country' => $country, 'state' => $state, 'tax_class' => $product_data['tax_class'] ) );
+				$this->tax_rates[$product_data['tax_class']] = $tax_rates;
+			}
+
 			$product_data['tax_rates'] = $tax_rates;
 			// error_log( print_R( $tax_rates, TRUE ) ); //debug
 		}

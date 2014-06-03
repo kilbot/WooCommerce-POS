@@ -30,7 +30,7 @@
 		<%= title %>
 		<%= typeof(variation_html) !== 'undefined' ? variation_html : '' %>
 	</td>
-	<td class="price"><input type="number" value="<%= display_price %>" size="10" step="any" data-id="price" data-precise="<%= item_price %>"></td>
+	<td class="price"><input type="type" value="<%= display_price %>" size="10" data-id="price" data-precise="<%= item_price %>"></td>
 	<td class="total">
 		<% if( total_discount !== 0 ) { %>
 			<del><%= display_total %></del>

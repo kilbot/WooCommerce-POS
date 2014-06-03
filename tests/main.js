@@ -65,23 +65,21 @@ var pos_params = {
     "ajax_url": "\/wp-admin\/admin-ajax.php",
     "loading_icon": "http:\/\/woopos.com.au\/wp-content\/plugins\/woocommerce-pos\/\/assets\/ajax-loader.gif",
     "accounting": {
-        "settings": {
-            "currency": {
-                "symbol": "&#36;",
-                "format": {
-                    "pos": "%s%v",
-                    "neg": "- %s%v",
-                    "zero": "%s%v"
-                },
-                "decimal": ".",
-                "thousand": ",",
-                "precision": "2"
+        "currency": {
+            "symbol": "&#36;",
+            "format": {
+                "pos": "%s%v",
+                "neg": "- %s%v",
+                "zero": "%s%v"
             },
-            "number": {
-                "precision": "2",
-                "thousand": "",
-                "decimal": "."
-            }
+            "decimal": ".",
+            "thousand": ",",
+            "precision": "2"
+        },
+        "number": {
+            "precision": "2",
+            "thousand": "",
+            "decimal": "."
         }
     },
     "wc": {
