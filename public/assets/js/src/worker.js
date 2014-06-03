@@ -8,7 +8,7 @@ var db,
 
 // number of products to get in a single ajax call
 // adjust to prevent server timeouts
-var ajaxLimit = 1000; 
+var ajaxLimit = 100; 
 
 addEventListener('message', function(e) {
 	var data = e.data;

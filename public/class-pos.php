@@ -4,7 +4,6 @@
  * The main POS Class
  * 
  * @class 	  WooCommerce_POS
- * @version   0.2.12
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
  * @link      http://www.woopos.com.au
@@ -15,7 +14,7 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION 	= '0.2.12';
+	const VERSION 	= '0.2.13';
 
 	/**
 	 * Unique identifier

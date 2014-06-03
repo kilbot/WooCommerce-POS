@@ -4,7 +4,6 @@
  * WP Admin Class
  * 
  * @class 	  WooCommerce_POS_Admin
- * @version   0.2.3
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
  * @link      http://www.woopos.com.au

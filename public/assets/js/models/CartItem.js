@@ -18,7 +18,7 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 		params: pos_params,
 
 		initialize: function() { 
-			this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
+			// this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
 
 			// set the accounting settings
 			accounting.settings = this.params.accounting;
