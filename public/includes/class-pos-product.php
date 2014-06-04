@@ -84,6 +84,9 @@ class WooCommerce_POS_Product {
 		);
 		$query->set( 'tax_query', $tax_query );
 
+		// fix for earlier versions of WC REST API
+		$query->set( 'post_parent', '' );
+
         // error_log( print_R( $query, TRUE ) ); //debug
         
 	}
