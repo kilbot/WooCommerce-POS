@@ -5,99 +5,102 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS (beta) 0.2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
 "POT-Creation-Date: 2014-06-04 11:40:11+00:00\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2014-06-03 23:14+0800\n"
+"Last-Translator: \n"
 "Language-Team: Team Name <team@example.com>\n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/class-pos-admin.php:184 admin/class-pos-admin.php:185
 msgid "WooCommerce POS"
-msgstr ""
+msgstr "WooCommerce POS"
 
 #: admin/class-pos-admin.php:211
 msgid "Settings"
-msgstr ""
+msgstr "Instellingen"
 
 #: admin/class-pos-admin.php:212
 msgid "View POS"
-msgstr ""
+msgstr "Bekijk POS"
 
 #: public/includes/class-pos-checkout.php:44
 msgid "Order &ndash; %s"
-msgstr ""
+msgstr "Bestelling &ndash; %s"
 
 #: public/views/cart.php:11 public/views/checkout.php:11
 msgid "Qty"
-msgstr ""
+msgstr "Aantal"
 
 #: public/views/cart.php:12 public/views/checkout.php:10
 #: public/views/products.php:17 public/views/receipt.php:4
 msgid "Product"
-msgstr ""
+msgstr "Product"
 
 #: public/views/cart.php:13 public/views/checkout.php:12
 #: public/views/products.php:18
 msgid "Price"
-msgstr ""
+msgstr "Prijs"
 
 #: public/views/cart.php:14 public/views/checkout.php:65
 #: public/views/receipt.php:5
 msgid "Total"
-msgstr ""
+msgstr "Totaal"
 
 #: public/views/cart.php:20
 msgid "Cart is empty"
-msgstr ""
+msgstr "Winkelwagen is momenteel leeg"
 
 #: public/views/cart.php:47
 msgid "Cart Subtotal"
-msgstr ""
+msgstr "Winkelwagen Subtotaal"
 
 #: public/views/cart.php:52 public/views/checkout.php:47
 msgid "Cart Discount"
-msgstr ""
+msgstr "Winkelwagen Korting"
 
 #: public/views/cart.php:70
 msgid "Order Total"
-msgstr ""
+msgstr "Bestelling Totaal"
 
 #: public/views/cart.php:76
 msgid "Void"
-msgstr ""
+msgstr "Verwijder"
 
 #: public/views/cart.php:79
 msgid "Note"
-msgstr ""
+msgstr "Opmerking"
 
 #: public/views/cart.php:82
 msgid "Discount"
-msgstr ""
+msgstr "Korting"
 
 #: public/views/cart.php:85
 msgid "Checkout"
-msgstr ""
+msgstr "Afrekenen"
 
 #: public/views/checkout.php:5
 msgid "Order"
-msgstr ""
+msgstr "Bestelling"
 
 #: public/views/checkout.php:32
 msgid "Export to PDF"
-msgstr ""
+msgstr "Exporteer PDF"
 
 #: public/views/checkout.php:33
 msgid "Print"
-msgstr ""
+msgstr "Afdrukken"
 
 #: public/views/checkout.php:34
 msgid "New Order"
-msgstr ""
+msgstr "Nieuwe Bestelling"
 
 #: public/views/checkout.php:42
 msgid "Subtotal"
-msgstr ""
+msgstr "Subtotaal"
 
 #: public/views/checkout.php:73
 msgid "Total mismatch!"
@@ -108,13 +111,15 @@ msgid ""
 "The total calculated at the POS is different to the total calculated by "
 "WooCommerce."
 msgstr ""
+"De totale berekend op het POS verschilt van de totale berekendWooCommerce."
 
 #: public/views/checkout.php:75
 msgid ""
-"Please report this problem to <a "
-"href=\"mailto:support@woopos.com.au?subject=Total mismatch\">support</a> so "
-"we can look into it."
+"Please report this problem to <a href=\"mailto:support@woopos.com.au?"
+"subject=Total mismatch\">support</a> so we can look into it."
 msgstr ""
+"Meldt dit probleem <a href=\"mailto:support@woopos.com.au?subject=Total "
+"mismatch\">ondersteuning</a> zodat we er naar kijken."
 
 #: public/views/footer.php:5
 msgid "WP Dashboard"
@@ -122,19 +127,19 @@ msgstr ""
 
 #: public/views/footer.php:6
 msgid "View Products"
-msgstr ""
+msgstr "Bekijk Producten"
 
 #: public/views/footer.php:7
 msgid "Add Product"
-msgstr ""
+msgstr "Product toevoegen"
 
 #: public/views/footer.php:8
 msgid "View Orders"
-msgstr ""
+msgstr "Bekijk Bestellingen"
 
 #: public/views/footer.php:9
 msgid "View Customers"
-msgstr ""
+msgstr "Bekijk Klant"
 
 #: public/views/header.php:16
 msgid "Menu"
@@ -142,24 +147,25 @@ msgstr ""
 
 #: public/views/header.php:19 public/views/support.php:23
 msgid "Howdy"
-msgstr ""
+msgstr "Hallo"
 
 #: public/views/header.php:22
 msgid "Logout"
-msgstr ""
+msgstr "Uitloggen"
 
 #: public/views/modal/browser-support.php:3
 msgid "Your browser is not supported!"
 msgstr ""
 
 #: public/views/modal/browser-support.php:7
-msgid "Sorry, it seems your browser is not currently supported by WooCommerce POS. "
+msgid ""
+"Sorry, it seems your browser is not currently supported by WooCommerce POS. "
 msgstr ""
 
 #: public/views/modal/browser-support.php:8
 msgid ""
-"If possible, please <a href=\"http://browsehappy.com/\">update your "
-"browser</a>, we recommend either Chrome or Firefox."
+"If possible, please <a href=\"http://browsehappy.com/\">update your browser</"
+"a>, we recommend either Chrome or Firefox."
 msgstr ""
 
 #: public/views/modal/browser-support.php:11
@@ -174,23 +180,23 @@ msgstr ""
 
 #: public/views/products.php:9
 msgid "Search for products"
-msgstr ""
+msgstr "Zoek naar een product"
 
 #: public/views/products.php:24
 msgid "No products"
-msgstr ""
+msgstr "Geen producten gevonden"
 
 #: public/views/products.php:46
 msgid "Page %s of %s"
-msgstr ""
+msgstr "Pagina %s van %s"
 
 #: public/views/products.php:47
 msgid "Showing %s of %s products"
-msgstr ""
+msgstr "Toont %s van %s producten"
 
 #: public/views/products.php:49
 msgid "Last updated %s"
-msgstr ""
+msgstr "Laatst bijgewerkt %s"
 
 #: public/views/products.php:50
 msgid "sync"
@@ -198,11 +204,11 @@ msgstr ""
 
 #: public/views/products.php:50
 msgid "clear"
-msgstr ""
+msgstr "uitwissen"
 
 #: public/views/products.php:52
 msgid "Your browser does not support indexeddb"
-msgstr ""
+msgstr "Uw browser ondersteunt geen IndexedDB"
 
 #: public/views/receipt.php:35
 msgid "Download file%s"
@@ -236,4 +242,4 @@ msgstr ""
 #: public/views/products.php:36
 msgctxt "%d in stock"
 msgid "in stock"
-msgstr ""
+msgstr "op voorraad"

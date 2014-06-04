@@ -1,8 +1,7 @@
 {
   "name": "woocommerce-pos",
   "version": "0.2.12",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.4",
     "grunt-contrib-compass": "^0.7.2",
@@ -15,6 +14,8 @@
     "grunt-wp-readme-to-markdown": "^0.7.0",
     "grunt-wp-i18n": "^0.4.4",
     "grunt-contrib-requirejs": "^0.4.4",
-    "grunt-modernizr": "^0.5.2"
+    "grunt-modernizr": "^0.5.2",
+    "grunt-shell": "^0.7.0",
+    "grunt-po2mo": "^0.1.0"
   }
 }

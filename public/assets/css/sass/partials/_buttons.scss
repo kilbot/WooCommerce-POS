@@ -82,6 +82,7 @@
 // Circle buttons
 // --------------------------------------------------
 .btn-circle {
+  font-size: $font-size-large;
   @include border-radius($vspacing * 1.5);
   padding: 0px;
   width: $vspacing * 1.5;

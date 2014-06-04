@@ -23,6 +23,7 @@ define(['jquery', 'underscore', 'backbone', 'settings'],
 		render: function() {
 			var state;
 
+			// if indexeddb
 			if(Modernizr.indexeddb) {
 				state = this.collection.state;
 				state.currentRecords = this.collection.length;
@@ -30,12 +31,9 @@ define(['jquery', 'underscore', 'backbone', 'settings'],
 				// add the last updated time from localstorage
 				var last_update = new Date( parseInt( Settings.get('last_update') ) );
 				state.last_update = last_update.getTime() > 0 ? last_update.toLocaleTimeString() : 'never' ;
-				
-				// now render
-				this.$el.html( ( this.template( state ) ) );
-				this.$el.prepend( '<span></span> ' ); // add a span for 'working' animation
 			}
 
+			// else product fallback
 			else {
 				state = this.collection.state;
 				if(state.currentPage === state.lastPage) {
@@ -44,10 +42,10 @@ define(['jquery', 'underscore', 'backbone', 'settings'],
 				else {
 					state.currentRecords = state.pageSize;
 				}
-
-				// now render
-				this.$el.html( ( this.fallbackTemplate( state ) ) );
 			}
+
+			// now render
+			this.$el.html( ( this.template( state ) ) );
 
 			return this;
 		},

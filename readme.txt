@@ -53,13 +53,17 @@ To install a WordPress Plugin manually:
 There is more information on our website at [woopos.com.au](http://woopos.com.au)
 
 = Where can I report bugs? =
-Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.com/kilbot/WooCommerce-POS).
+Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.com/kilbot/WooCommerce-POS/issues).
 
 == Screenshots ==
 
 1. WooCommerce POS main screen
 
 == Changelog ==
+
+= 0.2.14 =
+* New: Basic translations for nl_NL, fr_FR, es_ES and pt_BR. Corrections can be submitted to [GitHub](https://github.com/kilbot/WooCommerce-POS/issues) or via email [support@woopos.com.au](mailto:support@woopos.com.au)
+* Fix: fixed bug for product_variations which effects WooCommerce < 2.1.7
 
 = 0.2.13 =
 * Improved: Product Sync now handled by web worker, improves sync performance for large stores (1000+ products)
@@ -74,33 +78,3 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: Cart item price can now be changed
 * New: Print receipt
 * New: Added text domain, readying the plugin for translation
-
-= 0.2.11 =
-* Fix: Bug caused WC REST API authentication problems
-* Fix: Bug caused no shipping fees for all users
-* Tweak: Back to server side filtering until localstorage is complete
-
-= 0.2.10 =
-* New: Update cart quantity
-* Tweak: Improvement to cart load time
-* Tweak: Prevent New Order emails to admin
-* Fix: No shipping fees on cart items
-
-= 0.2.9 =
-* Tweak: Improvement to cart add/remove products.
-* New: Added some sanity check on the settings page.
-
-= 0.2.6 =
-* Tweak: Products now uses WC REST API for better performance. Tested on 300+ products. 
-
-= 0.2.4 =
-* Fix: Cart totals
-* Fix: Notice about updating via github
-* Fix: pagination weirdness
-
-= 0.2 =
-* Proof of concept
-
-== Upgrade Notice ==
-
-* Upgrade for the latest fixes

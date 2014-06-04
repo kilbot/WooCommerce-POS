@@ -27,8 +27,9 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 			this.listenTo( this, 'change:qty change:display_price', this.updateLineTotals );
 
 			// set item price on init, this will trigger updateLineTotals()
-			this.set( { 'display_price': accounting.formatNumber( this.get('price') ) } );
-
+			if( this.get('display_price') === 0 ) {
+				this.set( { 'display_price': accounting.formatNumber( this.get('price') ) } );
+			}
 		},
 
 		updateLineTotals: function() {

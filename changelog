@@ -1,0 +1,39 @@
+= 0.2.13 =
+* Improved: Product Sync now handled by web worker, improves sync performance for large stores (1000+ products)
+* Fix: Access to WC REST API now validates against the wordpress cookie, only logged in users with manage_woocommerce_pos capability can access the api
+* Fix: Added flag for WC REST API request and response filters
+* Fix: Cart now handles comma decimals correctly
+
+= 0.2.12 =
+* Improved: Product list now uses local IndexedDB for fast searching and filtering. Fallback to server-side filtering for browsers which do not support [IndexedDB](http://caniuse.com/indexeddb)
+* Improved: Cart logic now handled client-side, no more waiting for the server to respond
+* New: Pagination info and last update time added to the product list
+* New: Cart item price can now be changed
+* New: Print receipt
+* New: Added text domain, readying the plugin for translation
+
+= 0.2.11 =
+* Fix: Bug caused WC REST API authentication problems
+* Fix: Bug caused no shipping fees for all users
+* Tweak: Back to server side filtering until localstorage is complete
+
+= 0.2.10 =
+* New: Update cart quantity
+* Tweak: Improvement to cart load time
+* Tweak: Prevent New Order emails to admin
+* Fix: No shipping fees on cart items
+
+= 0.2.9 =
+* Tweak: Improvement to cart add/remove products.
+* New: Added some sanity check on the settings page.
+
+= 0.2.6 =
+* Tweak: Products now uses WC REST API for better performance. Tested on 300+ products. 
+
+= 0.2.4 =
+* Fix: Cart totals
+* Fix: Notice about updating via github
+* Fix: pagination weirdness
+
+= 0.2 =
+* Proof of concept

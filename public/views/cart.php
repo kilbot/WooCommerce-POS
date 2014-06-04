@@ -44,7 +44,7 @@
 
 <script type="text/template" id="tmpl-cart-total">
 	<tr>
-		<th colspan="3"><?php _e( 'Subtotal', 'woocommerce-pos' ); ?>:</th>
+		<th colspan="3"><?php _e( 'Cart Subtotal', 'woocommerce-pos' ); ?>:</th>
 		<td colspan="2"><%= subtotal %></td>
 	</tr>
 	<% if( show_discount ) { %>
@@ -67,11 +67,20 @@
 		<% } %>
 	<% } %>
 	<tr>
-		<th colspan="3"><?php _e( 'Total', 'woocommerce-pos' ); ?>:</th>
+		<th colspan="3"><?php _e( 'Order Total', 'woocommerce-pos' ); ?>:</th>
 		<td colspan="2"><%= total %></td>
 	</tr>
 	<tr class="actions">
 		<td colspan="5">
+			<button class="btn btn-void alignleft">
+				<?php _e( 'Void', 'woocommerce-pos' ); ?> 
+			</button>
+			<button class="btn btn-order-note">
+				<?php _e( 'Note', 'woocommerce-pos' ); ?> 
+			</button>
+			<button class="btn btn-order-discount">
+				<?php _e( 'Discount', 'woocommerce-pos' ); ?> 
+			</button>
 			<button type="submit" class="btn btn-success btn-checkout" name="pos_checkout" id="pos_checkout" value="checkout">
 				<?php _e( 'Checkout', 'woocommerce-pos' ); ?> 
 			</button>

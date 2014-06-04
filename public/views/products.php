@@ -6,7 +6,7 @@
 
 <div id="filter">
 	<i class="fa fa-search"></i>
-	<input type="search" placeholder="Search for products" tabindex="1">
+	<input type="search" placeholder="<?php _e( 'Search for products', 'woocommerce-pos' ); ?>" tabindex="1">
 	<a class="clear" href="#"><i class="fa fa-times-circle fa-lg"></i></a>
 </div>
 <div id="products">
@@ -14,8 +14,8 @@
 		<thead>
 			<tr>
 				<th>&nbsp;</th>
-				<th>Product</th>
-				<th>Price</th>
+				<th><?php _e( 'Product', 'woocommerce-pos' ); ?></th>
+				<th><?php _e( 'Price', 'woocommerce-pos' ); ?></th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
@@ -33,7 +33,7 @@
 	<td class="name">
 		<strong><%= title %></strong>
 		<%= typeof(variation_html) !== 'undefined' ? variation_html : '' %>
-		<small><%= managing_stock ? stock_quantity + ' in stock' : '' %></small>
+		<small><%= managing_stock ? stock_quantity + " <?php _ex( 'in stock', '%d in stock', 'woocommerce-pos' ) ?>" : '' %></small>
 	</td>
 	<td class="price"><%= price_html %></td>
 	<td class="add"><a class="add-to-cart btn btn-success btn-circle" href="#"><i class="fa fa-plus"></i></a></td>
@@ -43,16 +43,13 @@
 	<a href="#" class="prev btn btn-default alignleft"><i class="fa fa-chevron-left"></i></a> 
 	<a href="#" class="next btn btn-default alignright"><i class="fa fa-chevron-right"></i></a>
 	<small>
-		Page <%= currentPage %> of <%= totalPages ? totalPages : 1 %>. Showing <%= currentRecords %> of <%= totalRecords ? totalRecords : 0  %> products. <br>
-		Last updated <%= last_update %>. <a href="#" class="sync"><i class="fa fa-refresh"></i> sync</a> | <a href="#" class="destroy"><i class="fa fa-times-circle"></i> clear</a>
-	</small>
-</script>
-
-<script type="text/template" id="tmpl-fallback-pagination">
-	<a href="#" class="prev btn btn-default alignleft"><i class="fa fa-chevron-left"></i></a> 
-	<a href="#" class="next btn btn-default alignright"><i class="fa fa-chevron-right"></i></a>
-	<small>
-		Page <%= currentPage %> of <%= totalPages ? totalPages : 1 %>. Showing <%= currentRecords %> of <%= totalRecords ? totalRecords : 0  %> products. <br>
-		<?php _e( 'Your browser does not support indexeddb', 'woocommerce-pos' ); ?>
+		<?= sprintf( __( 'Page %s of %s', 'woocommerce-pos' ), '<%= currentPage %>', '<%= totalPages ? totalPages : 1 %>' ); ?>. 
+		<?= sprintf( __( 'Showing %s of %s products', 'woocommerce-pos' ), '<%= currentRecords %>', '<%= totalRecords ? totalRecords : 0  %>' ); ?>.<br>
+		<% if( typeof last_update !== 'undefined' ) { %>
+			<?= sprintf( __( 'Last updated %s', 'woocommerce-pos' ), '<%= last_update %>' ); ?>.
+			<a href="#" class="sync"><i class="fa fa-refresh"></i> <?php _e( 'sync', 'woocommerce-pos' ); ?></a> | <a href="#" class="destroy"><i class="fa fa-times-circle"></i> <?php _e( 'clear', 'woocommerce-pos' ); ?></a>
+		<% } else { %>
+			<?php _e( 'Your browser does not support indexeddb', 'woocommerce-pos' ); ?>
+		<% } %>
 	</small>
 </script>

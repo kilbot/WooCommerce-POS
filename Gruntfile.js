@@ -3,6 +3,10 @@ module.exports = function(grunt) {
 	// load all grunt tasks matching the `grunt-*` pattern
 	require('load-grunt-tasks')(grunt);
 
+	var _ = grunt.util._;
+
+	var locales = ['nl_NL', 'fr_FR', 'es_ES', 'pt_BR'];
+
 	grunt.initConfig({
 
 		// watch for changes and trigger sass, jshint, uglify and livereload
@@ -166,12 +170,42 @@ module.exports = function(grunt) {
 					type: 'wp-plugin'
 				}
 			}
-		}
+		},
+
+		shell: {
+			options: {
+				failOnError: true
+			},
+			msgmerge: {
+				command: _.map(locales, function(locale) {
+					var po = 'languages/woocommerce-pos-' + locale + '.po';
+					return 'if [ -f "' + po + '" ]; then\n' + 
+					'echo "Updating "' + po + '\n' + 
+					'msgmerge ' + po + ' languages/woocommerce-pos.pot > .new.po.tmp\n' +
+					'exitCode=$?\n' +
+					'if [ $exitCode -ne 0 ]; then\n' +
+					'echo "Msgmerge failed with exit code $?"\n' +
+					'exit $exitCode\n' +
+					'fi\n' +
+					'mv .new.po.tmp ' + po + '\n' +
+					'else\n' + 
+					'echo ' + po + '" not found"\n' +
+					'fi\n';
+				}).join('')
+			}
+		},
+
+		po2mo: {
+    		files: {
+      			src: 'languages/*.po',
+      			expand: true,
+    		},
+  		},
 
 	});
 
 
 	// register task
-	grunt.registerTask('default', ['makepot', 'wp_readme_to_markdown', 'compass', 'cssmin', 'jshint', 'uglify', 'requirejs', 'watch']);
+	grunt.registerTask('default', ['makepot', 'shell', 'po2mo', 'wp_readme_to_markdown', 'compass', 'cssmin', 'jshint', 'uglify', 'requirejs', 'watch']);
 
 };

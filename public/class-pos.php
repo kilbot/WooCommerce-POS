@@ -17,9 +17,9 @@ class WooCommerce_POS {
 	const VERSION 	= '0.2.13';
 
 	/**
-	 * Unique identifier
+	 * Development flag
 	 */
-	public $development = false;
+	public $development = true;
 
 	/**
 	 * Unique identifier
@@ -254,12 +254,12 @@ class WooCommerce_POS {
 	 */
 	public function wc_settings() {
 		$settings = array(
-			'tax_label' 			=> WC()->countries->tax_or_vat(), 
-			'calc_taxes' 			=> get_option( 'woocommerce_calc_taxes' ),
-			'prices_include_tax' 	=> get_option( 'woocommerce_prices_include_tax' ),
-			'tax_round_at_subtotal' => get_option( 'woocommerce_tax_round_at_subtotal' ),
-			'tax_display_cart' 		=> get_option( 'woocommerce_tax_display_cart' ),
-			'tax_total_display' 	=> get_option( 'woocommerce_tax_total_display' ),
+			'tax_label'				=> WC()->countries->tax_or_vat(), 
+			'calc_taxes'			=> get_option( 'woocommerce_calc_taxes' ),
+			'prices_include_tax'	=> get_option( 'woocommerce_prices_include_tax' ),
+			'tax_round_at_subtotal'	=> get_option( 'woocommerce_tax_round_at_subtotal' ),
+			'tax_display_cart'		=> get_option( 'woocommerce_tax_display_cart' ),
+			'tax_total_display'		=> get_option( 'woocommerce_tax_total_display' ),
 		);
 		return $settings;
 	}
@@ -275,15 +275,15 @@ class WooCommerce_POS {
 		$precision = get_option( 'woocommerce_price_num_decimals' );
 		$settings = array(
 			'currency' => array(
-				'decimal' 	=> $decimal,  
-				'format' 	=> $this->currency_format(),
-				'precision' => $precision,
-				'symbol' 	=> get_woocommerce_currency_symbol( get_woocommerce_currency() ),   
+				'decimal'	=> $decimal,  
+				'format'	=> $this->currency_format(),
+				'precision'	=> $precision,
+				'symbol'	=> get_woocommerce_currency_symbol( get_woocommerce_currency() ),   
 				'thousand'	=> $thousand,  
 			),
 			'number' => array(
-				'decimal' 	=> $decimal,
-				'precision' => $precision,  
+				'decimal'	=> $decimal,
+				'precision'	=> $precision,  
 				'thousand'	=> $thousand,
 			)
 		);

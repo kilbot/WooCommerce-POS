@@ -834,6 +834,7 @@ a:hover, a:active, a:focus {
 
 /* line 84, sass/partials/_buttons.scss */
 .btn-circle {
+  font-size: 18px;
   -moz-border-radius: 2.25em;
   -webkit-border-radius: 2.25em;
   border-radius: 2.25em;
@@ -844,7 +845,7 @@ a:hover, a:active, a:focus {
   font-weight: bold;
 }
 
-/* line 97, sass/partials/_buttons.scss */
+/* line 98, sass/partials/_buttons.scss */
 .btn-lg {
   padding: 10px 16px;
   font-size: 18px;
@@ -852,7 +853,7 @@ a:hover, a:active, a:focus {
   border-radius: 6px;
 }
 
-/* line 101, sass/partials/_buttons.scss */
+/* line 102, sass/partials/_buttons.scss */
 .btn-sm {
   padding: 5px 10px;
   font-size: 12px;
@@ -860,7 +861,7 @@ a:hover, a:active, a:focus {
   border-radius: 3px;
 }
 
-/* line 105, sass/partials/_buttons.scss */
+/* line 106, sass/partials/_buttons.scss */
 .btn-xs {
   padding: 1px 5px;
   font-size: 12px;
@@ -868,7 +869,7 @@ a:hover, a:active, a:focus {
   border-radius: 3px;
 }
 
-/* line 113, sass/partials/_buttons.scss */
+/* line 114, sass/partials/_buttons.scss */
 .btn-block {
   display: block;
   width: 100%;
@@ -876,12 +877,12 @@ a:hover, a:active, a:focus {
   padding-right: 0;
 }
 
-/* line 121, sass/partials/_buttons.scss */
+/* line 122, sass/partials/_buttons.scss */
 .btn-block + .btn-block {
   margin-top: 5px;
 }
 
-/* line 129, sass/partials/_buttons.scss */
+/* line 130, sass/partials/_buttons.scss */
 input[type="submit"].btn-block,
 input[type="reset"].btn-block,
 input[type="button"].btn-block {

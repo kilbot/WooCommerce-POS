@@ -78,6 +78,8 @@ define(['underscore', 'backbone', 'accounting', 'bootstrap-modal'],
 				item.display_price = accounting.formatMoney( item.display_price );
 			});
 
+			console.log(cart);
+
 			this.$el.html( this.template({ 'order_id': order_id, 'cart': cart }) );
 
 			// append totals

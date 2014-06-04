@@ -90,7 +90,7 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput'],
 				case 'price':
 					if( !isNaN( decimal ) ) {
 						value = accounting.formatNumber( decimal );
-						this.model.set( { display_price: value } );
+						this.model.save( { display_price: value } );
 					} else {
 						input.focus();
 					}

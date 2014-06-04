@@ -15,9 +15,12 @@
 				<tbody>
 				<% _(cart).each(function(item) { %>
 					<tr>
-						<td><%= item.title %></td>
-						<td><%= item.qty %></td>
-						<td><%= item.display_total %></td>
+						<td class="name">
+							<%= item.title %>
+							<%= typeof(variation_html) !== 'undefined' ? variation_html : '' %>
+						</td>
+						<td class="qty"><%= item.qty %></td>
+						<td class="total"><%= item.display_total %></td>
 					</tr>
 				<% }); %>
 				</tbody>
@@ -26,8 +29,9 @@
 				</tfoot>
 			</table>
 			<div class="modal-footer">
-				<button id="print" type="button" class="btn">Print</button>
-				<button id="close" type="button" class="btn btn-primary">New Order</button>
+				<button id="export" type="button" class="btn"><?php _e( 'Export to PDF', 'woocommerce-pos' ); ?></button>
+				<button id="print" type="button" class="btn"><?php _e( 'Print', 'woocommerce-pos' ); ?></button>
+				<button id="close" type="button" class="btn btn-primary"><?php _e( 'New Order', 'woocommerce-pos' ); ?></button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
