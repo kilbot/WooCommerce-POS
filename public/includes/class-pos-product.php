@@ -23,7 +23,7 @@ class WooCommerce_POS_Product {
 	public function __construct() {
 
 		// init variables
-		$this->thumb_size = get_option( 'shop_thumbnail_image_size', array( 'width'=>90, 'height'=> 90 ) );
+		$this->thumb_size = get_option( 'shop_thumbnail_image_size', array( 'width' => 90, 'height' => 90 ) );
 
 		// we're going to manipulate the wp_query to display products
 		add_action( 'pre_get_posts', array( $this, 'get_product_variations' ) );
@@ -154,6 +154,10 @@ class WooCommerce_POS_Product {
 			$product_data['tax_rates'] = $tax_rates;
 			// error_log( print_R( $tax_rates, TRUE ) ); //debug
 		}
+
+		// add special key for barcode, defaults to sku
+		// TODO: add an option for any meta field
+		$product_data['barcode'] = $product_data['sku'];
 
 		// remove some unnecessary keys
 		// - saves storage space in IndexedDB

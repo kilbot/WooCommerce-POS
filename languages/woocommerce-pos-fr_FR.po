@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS (beta) 0.2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-06-04 11:40:11+00:00\n"
+"POT-Creation-Date: 2014-06-06 09:45:12+00:00\n"
 "PO-Revision-Date: 2014-06-03 23:19+0800\n"
 "Last-Translator: \n"
 "Language-Team: Team Name <team@example.com>\n"
@@ -15,17 +15,79 @@ msgstr ""
 "X-Generator: Poedit 1.6.5\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: admin/class-pos-admin.php:184 admin/class-pos-admin.php:185
+#: admin/class-pos-admin.php:195 admin/class-pos-admin.php:196
 msgid "WooCommerce POS"
 msgstr "WooCommerce POS"
 
-#: admin/class-pos-admin.php:211
+#: admin/class-pos-admin.php:222
 msgid "Settings"
 msgstr "Paramètres"
 
-#: admin/class-pos-admin.php:212
+#: admin/class-pos-admin.php:223
 msgid "View POS"
 msgstr "Voir POS"
+
+#: includes/class-pos-support.php:39
+msgid "Please enter your name"
+msgstr ""
+
+#: includes/class-pos-support.php:42
+msgid "Please enter a valid email address"
+msgstr ""
+
+#: includes/class-pos-support.php:45
+msgid "Please enter your message"
+msgstr ""
+
+#: includes/class-pos-support.php:54
+msgid "There was a problem sending your email."
+msgstr ""
+
+#: includes/class-pos-support.php:75
+#, fuzzy
+msgid "WooCommerce Version"
+msgstr "WooCommerce POS"
+
+#: includes/class-pos-support.php:78
+msgid "WooCommerce >= 2.1 required"
+msgstr ""
+
+#: includes/class-pos-support.php:80
+msgid "Update"
+msgstr ""
+
+#: includes/class-pos-support.php:83
+msgid "WC REST API"
+msgstr ""
+
+#: includes/class-pos-support.php:85
+msgid "API is active"
+msgstr ""
+
+#: includes/class-pos-support.php:86
+msgid "Access to the REST API is required"
+msgstr ""
+
+#: includes/class-pos-support.php:88
+msgid "Enable REST API"
+msgstr ""
+
+#: includes/class-pos-support.php:91
+msgid "Orphaned Variations"
+msgstr ""
+
+#: includes/class-pos-support.php:93
+msgid "No orphans."
+msgstr ""
+
+#: includes/class-pos-support.php:94
+msgid ""
+"Some of your variations have no parent. The post ids of the orphans are: %s"
+msgstr ""
+
+#: includes/class-pos-support.php:96
+msgid "Delete orphans"
+msgstr ""
 
 #: public/includes/class-pos-checkout.php:44
 msgid "Order &ndash; %s"
@@ -123,30 +185,38 @@ msgstr ""
 "au?subject=Total mismatch\">soutien</a> afin que nous puissions l'examiner."
 
 #: public/views/footer.php:5
-msgid "WP Dashboard"
-msgstr "WP Tableau de bord"
+msgid "Need help? Visit the <a href=\"%s\">support</a> page"
+msgstr ""
 
-#: public/views/footer.php:6
+#: public/views/footer.php:11
+msgid "POS"
+msgstr ""
+
+#: public/views/footer.php:12
 msgid "View Products"
 msgstr "Voir Produits"
 
-#: public/views/footer.php:7
+#: public/views/footer.php:13
 msgid "Add Product"
 msgstr "Ajouter Produit"
 
-#: public/views/footer.php:8
+#: public/views/footer.php:14
 msgid "View Orders"
 msgstr "Voir la Commandes"
 
-#: public/views/footer.php:9
+#: public/views/footer.php:15
 msgid "View Customers"
 msgstr "Voir Clients"
+
+#: public/views/footer.php:16
+msgid "Support"
+msgstr ""
 
 #: public/views/header.php:16
 msgid "Menu"
 msgstr ""
 
-#: public/views/header.php:19 public/views/support.php:23
+#: public/views/header.php:19
 msgid "Howdy"
 msgstr "Bonjour"
 
@@ -215,6 +285,54 @@ msgstr "Votre navigateur ne supporte pas IndexedDB"
 msgid "Download file%s"
 msgstr ""
 
+#: public/views/support.php:6
+msgid "POS Support Form"
+msgstr ""
+
+#: public/views/support.php:10
+msgid "Name"
+msgstr ""
+
+#: public/views/support.php:11
+msgid "Your name"
+msgstr ""
+
+#: public/views/support.php:14
+msgid "Email"
+msgstr ""
+
+#: public/views/support.php:15
+msgid "Your email"
+msgstr ""
+
+#: public/views/support.php:18
+msgid "Message"
+msgstr ""
+
+#: public/views/support.php:19
+msgid "Describe your problem here ..."
+msgstr ""
+
+#: public/views/support.php:22
+msgid "Append POS system report"
+msgstr ""
+
+#: public/views/support.php:32
+msgid "Thank you!"
+msgstr ""
+
+#: public/views/support.php:33
+msgid "Your form has been sent"
+msgstr ""
+
+#: public/views/support.php:34
+msgid "We will get back to you as soon as possible"
+msgstr ""
+
+#: public/views/support.php:40
+msgid "POS System Status"
+msgstr ""
+
 #. Plugin Name of the plugin/theme
 msgid "WooCommerce POS (beta)"
 msgstr ""
@@ -244,3 +362,6 @@ msgstr ""
 msgctxt "%d in stock"
 msgid "in stock"
 msgstr "en stock"
+
+#~ msgid "WP Dashboard"
+#~ msgstr "WP Tableau de bord"

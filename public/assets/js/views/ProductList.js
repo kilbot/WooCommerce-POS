@@ -1,13 +1,16 @@
-define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/ProductFilter', 'views/ProductPagination', 'collections/ProductsFallback', 'views/CartList'], 
-	function($, Backbone, ProductsCollection, Product, ProductFilter, ProductPagination, ProductsFallbackCollection, CartList) {
+define(['backbone', 'collections/Products', 'views/Product', 'views/ProductFilter', 'views/ProductPagination', 'collections/ProductsFallback', 'views/CartList'], 
+	function(Backbone, ProductsCollection, Product, ProductFilter, ProductPagination, ProductsFallbackCollection, CartList) {
 
 	// paginated view for the entire list
 	var ProductList = Backbone.View.extend({
 		el: $('#product-list'),
 		elEmpty: $('#product-list').contents().clone(),
-		cart: new CartList(), // there can be only one cart
 
-		initialize: function() {
+		initialize: function(options) {
+
+			// pubsub
+			this.pubSub = options.pubSub;
+			this.cart = new CartList({ pubSub: this.pubSub });
 
 			if(Modernizr.indexeddb) {
 				this.collection = new ProductsCollection();
@@ -16,8 +19,8 @@ define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/Pr
 			}
 	
 			// init product filter & pagination
-  			new ProductFilter( { collection: this.collection } );
-  			new ProductPagination( { collection: this.collection } );
+  			new ProductFilter( { pubSub: this.pubSub, collection: this.collection } );
+  			new ProductPagination( { pubSub: this.pubSub, collection: this.collection } );
 
 			// listen to the product collection and render on all events
 			// 'reset' ok for Products.js, 'sync' needed for ProductsFallback.js
@@ -44,7 +47,7 @@ define(['jquery', 'backbone', 'collections/Products', 'views/Product', 'views/Pr
 			this.collection.each(function( item ){
 
 				// Render each item model into this List view
-				var newProduct = new Product({ model : item, cart: this.cart });
+				var newProduct = new Product({ pubSub: this.pubSub, model : item, cart: this.cart });
 				this.$el.append( newProduct.render().el );
 
 			// Pass this list views context

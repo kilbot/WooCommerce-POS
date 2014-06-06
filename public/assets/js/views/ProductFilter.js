@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone'], 
-	function($, _, Backbone) {
+define(['underscore', 'backbone'], 
+	function(_, Backbone) {
 
 	/*============================================================================
 	 Product Filter
@@ -20,6 +20,9 @@ define(['jquery', 'underscore', 'backbone'],
 			var collection;
 			var self = this;
 
+			// pubsub
+			this.pubSub = options.pubSub;
+
 			// focus on the search field when page loads
 			this.searchBox().focus();
 
@@ -38,7 +41,7 @@ define(['jquery', 'underscore', 'backbone'],
 
 			// client side
 			else {
-				this.fields = ['title'];
+				this.fields = ['title', 'barcode'];
 
 				this._debounceMethods(["search", "clear"]);
 
@@ -83,10 +86,20 @@ define(['jquery', 'underscore', 'backbone'],
 
     	makeMatcher: function (query) {
 			var regexp = this.makeRegExp(query);
+			var self = this;
 			return function (model) {
 				var keys = this.fields || model.keys();
 				for (var i = 0, l = keys.length; i < l; i++) {
-					if (regexp.test(model.get(keys[i]) + "")) { return true; }
+					if (regexp.test(model.get(keys[i]) + "")) { 
+
+						// if query matches exactly with the barcode
+						if( keys[i] === 'barcode' && query === model.get(keys[i]) ) {
+
+							// send product to cart
+							self.pubSub.trigger( 'addToCart', model );
+						}
+						return true; 
+					}
 				}
 				return false;
 			};

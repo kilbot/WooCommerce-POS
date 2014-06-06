@@ -21,14 +21,40 @@ function check_api_authentication() {
 
 function find_orphans_variations() {
 	global $wpdb;
+	$orphans = false;
+
 	$posts = $wpdb->get_results("SELECT o.ID FROM `".$wpdb->posts."` o
 		LEFT OUTER JOIN `".$wpdb->posts."` r
 		ON o.post_parent = r.ID
 		WHERE r.id IS null AND o.post_type = 'product_variation';
 	");
 
-	return $posts ? implode( ', ', $posts ) : false ;
+	foreach( $posts as $post ) {
+		$orphans[] = $post->ID; 
+	}
+	if($orphans) $orphans = implode( ', ', $orphans );
+	return $orphans;
 }
+
+if( isset( $_GET['action'] ) ) {
+	global $wpdb;
+
+	switch ( $_GET['action'] ) {
+		case 'remove_orphans' :
+			$rows = $wpdb->query( 
+				"
+				DELETE o FROM $wpdb->posts o
+				LEFT OUTER JOIN $wpdb->posts r
+				ON o.post_parent = r.ID
+				WHERE r.id IS null AND o.post_type = 'product_variation'
+				"
+			);
+
+			// error_log( print_R( $rows, TRUE ) ); //debug
+		break;
+	}
+}
+
 
 // function find_shortcodes() { 
 	

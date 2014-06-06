@@ -50,16 +50,14 @@ function getJSON(url, successHandler, errorHandler) {
 }
 
 var openDB = function() {
-	var openRequest = indexedDB.open( 'productsDB', 1 );
+	var openRequest = indexedDB.open( 'productsDB', 2 );
 
 	openRequest.onupgradeneeded = function(e) {
 
 		// this should produce an error
 		// let the main app create the database
-		console.log('Error: The database does not exist');
 
-
-        // console.log('Upgrading products database');
+        console.log('Upgrading products database');
         // var thisDB = e.target.result;
 
         // if(!thisDB.objectStoreNames.contains( 'products' )) {
@@ -74,6 +72,7 @@ var openDB = function() {
     };
 
     openRequest.onerror = function(e) {
+    	self.postMessage({ 'status': 'error', 'msg': 'Error: Couls not open local database.' });
         console.log('Error');
         console.dir(e);
     };
@@ -98,7 +97,7 @@ var getUpdateCount = function(updated_at_min){
 			self.postMessage({ 'status': 'complete', 'msg': '0 products need to be updated' });
 		}
 	}, function(status) {
-		self.postMessage({ 'status': 'error', 'msg': 'Error getting update count from the server' });
+		self.postMessage({ 'status': 'error', 'msg': 'Error connecting to the server. Please check the POS support page.' });
 	});
 };
 
@@ -135,6 +134,11 @@ var storeProducts = function(count, limit, offset, updated_at_min) {
 	// get the products
 	getJSON('/wc-api/v1/products?' + query.join('&'), function(data) {
 
+		if( data === null ) {
+			self.postMessage({ 'status': 'error', 'msg': 'Error getting products from the server. Please check the POS support page.' });
+			return;
+		}
+
 		if( typeof db !== 'object' ) {
 			var is_last = false;
 			storeCount += data.products.length;
@@ -149,7 +153,6 @@ var storeProducts = function(count, limit, offset, updated_at_min) {
 		var transaction = db.transaction( ['products'], 'readwrite' );
 		var store = transaction.objectStore('products');
 		var i = 0;
-		putNext();
 
 		function putNext() {
 			if( i < data.products.length ) {
@@ -170,10 +173,12 @@ var storeProducts = function(count, limit, offset, updated_at_min) {
 				}
 			}
 		}
+		putNext();
+		
 	}, function(status) {
 
 		// error getting the products from the server
-		self.postMessage({ 'status': 'error', 'msg': 'Error getting products from the server' });
+		self.postMessage({ 'status': 'error', 'msg': 'Error getting products from the server. Please check the POS support page.' });
 	});
 
 };

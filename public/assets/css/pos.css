@@ -400,7 +400,37 @@ h1, h2, h3, h4, h5, h6 {
   clear: both;
 }
 
-/* line 18, sass/partials/_typography.scss */
+/* line 19, sass/partials/_typography.scss */
+h1, .h1 {
+  font-size: 41px;
+}
+
+/* line 20, sass/partials/_typography.scss */
+h2, .h2 {
+  font-size: 34px;
+}
+
+/* line 21, sass/partials/_typography.scss */
+h3, .h3 {
+  font-size: 28px;
+}
+
+/* line 22, sass/partials/_typography.scss */
+h4, .h4 {
+  font-size: 20px;
+}
+
+/* line 23, sass/partials/_typography.scss */
+h5, .h5 {
+  font-size: 16px;
+}
+
+/* line 24, sass/partials/_typography.scss */
+h6, .h6 {
+  font-size: 14px;
+}
+
+/* line 26, sass/partials/_typography.scss */
 hr {
   background-color: #ccc;
   border: 0;
@@ -409,64 +439,64 @@ hr {
 }
 
 /* Text elements */
-/* line 26, sass/partials/_typography.scss */
+/* line 34, sass/partials/_typography.scss */
 p {
   margin-bottom: 1.5em;
 }
 
-/* line 29, sass/partials/_typography.scss */
+/* line 37, sass/partials/_typography.scss */
 ul, ol {
   margin: 0 0 1.5em 3em;
 }
 
-/* line 32, sass/partials/_typography.scss */
+/* line 40, sass/partials/_typography.scss */
 ul {
   list-style: disc;
 }
 
-/* line 35, sass/partials/_typography.scss */
+/* line 43, sass/partials/_typography.scss */
 ol {
   list-style: decimal;
 }
 
-/* line 38, sass/partials/_typography.scss */
+/* line 46, sass/partials/_typography.scss */
 li > ul,
 li > ol {
   margin-bottom: 0;
   margin-left: 1.5em;
 }
 
-/* line 43, sass/partials/_typography.scss */
+/* line 51, sass/partials/_typography.scss */
 dt {
   font-weight: bold;
 }
 
-/* line 46, sass/partials/_typography.scss */
+/* line 54, sass/partials/_typography.scss */
 dd {
   margin: 0 1.5em 1.5em;
 }
 
-/* line 49, sass/partials/_typography.scss */
+/* line 57, sass/partials/_typography.scss */
 b, strong {
   font-weight: bold;
 }
 
-/* line 52, sass/partials/_typography.scss */
+/* line 60, sass/partials/_typography.scss */
 dfn, cite, em, i {
   font-style: italic;
 }
 
-/* line 55, sass/partials/_typography.scss */
+/* line 63, sass/partials/_typography.scss */
 blockquote {
   margin: 0 1.5em;
 }
 
-/* line 58, sass/partials/_typography.scss */
+/* line 66, sass/partials/_typography.scss */
 address {
   margin: 0 0 1.5em;
 }
 
-/* line 61, sass/partials/_typography.scss */
+/* line 69, sass/partials/_typography.scss */
 pre {
   background: #eee;
   font-family: "Courier 10 Pitch", Courier, monospace;
@@ -479,24 +509,32 @@ pre {
   max-width: 100%;
 }
 
-/* line 72, sass/partials/_typography.scss */
+/* line 80, sass/partials/_typography.scss */
 code, kbd, tt, var {
   font: 15px Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
 }
 
-/* line 75, sass/partials/_typography.scss */
+/* line 83, sass/partials/_typography.scss */
+code, kbd {
+  padding: 3px 5px 2px;
+  margin: 0 1px;
+  background: #eaeaea;
+  background: rgba(0, 0, 0, 0.07);
+}
+
+/* line 89, sass/partials/_typography.scss */
 abbr, acronym {
   border-bottom: 1px dotted #666;
   cursor: help;
 }
 
-/* line 79, sass/partials/_typography.scss */
+/* line 93, sass/partials/_typography.scss */
 mark, ins {
   background: #fff9c0;
   text-decoration: none;
 }
 
-/* line 83, sass/partials/_typography.scss */
+/* line 97, sass/partials/_typography.scss */
 sup,
 sub {
   font-size: 75%;
@@ -506,43 +544,44 @@ sub {
   vertical-align: baseline;
 }
 
-/* line 91, sass/partials/_typography.scss */
+/* line 105, sass/partials/_typography.scss */
 sup {
   bottom: 1ex;
 }
 
-/* line 94, sass/partials/_typography.scss */
+/* line 108, sass/partials/_typography.scss */
 sub {
   top: .5ex;
 }
 
-/* line 97, sass/partials/_typography.scss */
-small {
+/* line 111, sass/partials/_typography.scss */
+small, .small {
   font-size: 75%;
+  vertical-align: middle;
 }
 
-/* line 100, sass/partials/_typography.scss */
+/* line 115, sass/partials/_typography.scss */
 big {
   font-size: 125%;
 }
 
-/* line 103, sass/partials/_typography.scss */
+/* line 118, sass/partials/_typography.scss */
 figure {
   margin: 0;
 }
 
-/* line 106, sass/partials/_typography.scss */
+/* line 121, sass/partials/_typography.scss */
 table {
   margin: 0 0 1.5em;
   width: 100%;
 }
 
-/* line 110, sass/partials/_typography.scss */
+/* line 125, sass/partials/_typography.scss */
 th {
   font-weight: bold;
 }
 
-/* line 113, sass/partials/_typography.scss */
+/* line 128, sass/partials/_typography.scss */
 img {
   height: auto;
   /* Make sure images are scaled correctly. */
@@ -551,13 +590,29 @@ img {
 }
 
 /* Links */
-/* line 119, sass/partials/_typography.scss */
+/* line 134, sass/partials/_typography.scss */
 a {
   color: #0074a2;
 }
 /* line 23, sass/partials/_mixins.scss */
 a:hover, a:active, a:focus {
   color: #000609;
+}
+
+/* line 144, sass/partials/_typography.scss */
+.pass .fa-check {
+  color: #7db500;
+}
+
+/* line 145, sass/partials/_typography.scss */
+.fail .fa-times {
+  color: #e54028;
+}
+
+/* line 146, sass/partials/_typography.scss */
+textarea[readonly="readonly"] {
+  background: #eaeaea;
+  background: rgba(0, 0, 0, 0.07);
 }
 
 /* line 9, sass/partials/_buttons.scss */
@@ -834,7 +889,7 @@ a:hover, a:active, a:focus {
 
 /* line 84, sass/partials/_buttons.scss */
 .btn-circle {
-  font-size: 18px;
+  font-size: 16px;
   -moz-border-radius: 2.25em;
   -webkit-border-radius: 2.25em;
   border-radius: 2.25em;
@@ -848,7 +903,7 @@ a:hover, a:active, a:focus {
 /* line 98, sass/partials/_buttons.scss */
 .btn-lg {
   padding: 10px 16px;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1.33;
   border-radius: 6px;
 }
@@ -856,7 +911,7 @@ a:hover, a:active, a:focus {
 /* line 102, sass/partials/_buttons.scss */
 .btn-sm {
   padding: 5px 10px;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -864,7 +919,7 @@ a:hover, a:active, a:focus {
 /* line 106, sass/partials/_buttons.scss */
 .btn-xs {
   padding: 1px 5px;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -892,7 +947,7 @@ input[type="button"].btn-block {
 /* line 6, sass/partials/_close.scss */
 .close {
   float: right;
-  font-size: 21px;
+  font-size: 24px;
   line-height: 1;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
   opacity: 0.2;
@@ -936,7 +991,7 @@ button.close {
   padding: 5px 0;
   margin: 0;
   list-style: none;
-  font-size: 14px;
+  font-size: 16px;
   background-color: #000;
   -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
@@ -1114,9 +1169,28 @@ textarea {
   width: 98%;
 }
 
+/* line 92, sass/partials/_forms.scss */
+fieldset {
+  padding: 0.75em;
+}
+
+/* line 98, sass/partials/_forms.scss */
+#support-form input[type="text"], #support-form input[type="email"], #support-form textarea {
+  width: 100%;
+}
+/* line 101, sass/partials/_forms.scss */
+#support-form textarea {
+  height: 100px;
+}
+
 /* Susy Settings =================================================== */
 /* Layout =================================================== */
 /* line 17, sass/partials/_layout.scss */
+#page {
+  padding-bottom: 2.25em;
+}
+
+/* line 21, sass/partials/_layout.scss */
 #main {
   max-width: 100%;
   margin-left: auto;
@@ -1130,7 +1204,7 @@ textarea {
   clear: both;
 }
 
-/* line 21, sass/partials/_layout.scss */
+/* line 25, sass/partials/_layout.scss */
 .col {
   background: white;
   border: 1px solid #e5e5e5;
@@ -1138,60 +1212,86 @@ textarea {
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
-/* line 26, sass/partials/_layout.scss */
+/* line 30, sass/partials/_layout.scss */
 .col.leftcol {
   margin-bottom: 0.93458%;
 }
+/* line 33, sass/partials/_layout.scss */
+.col h4 {
+  line-height: 1;
+  padding: 0.75em;
+  border-bottom: 1px solid #d4d4d4;
+}
+/* line 38, sass/partials/_layout.scss */
+.col .panel-body {
+  padding: 0.75em;
+}
 
 @media (min-width: 768px) {
-  /* line 32, sass/partials/_layout.scss */
+  /* line 44, sass/partials/_layout.scss */
   header .btn-header span {
     display: inline !important;
   }
 
-  /* line 35, sass/partials/_layout.scss */
+  /* line 47, sass/partials/_layout.scss */
   .leftcol {
     width: 49.53271%;
     float: left;
     margin-right: 0.93458%;
   }
 
-  /* line 39, sass/partials/_layout.scss */
+  /* line 51, sass/partials/_layout.scss */
   .rightcol {
     width: 49.53271%;
     float: right;
   }
 }
-/* line 44, sass/partials/_layout.scss */
-#page {
+/* line 56, sass/partials/_layout.scss */
+#page, #menu, #footer {
   font-size: 0.8em;
 }
 
 @media (min-width: 320px) {
-  /* line 48, sass/partials/_layout.scss */
-  #page {
+  /* line 60, sass/partials/_layout.scss */
+  #page, #menu, #footer {
     font-size: 0.9em;
   }
 }
 @media (min-width: 480px) {
-  /* line 53, sass/partials/_layout.scss */
-  #page {
+  /* line 65, sass/partials/_layout.scss */
+  #page, #menu, #footer {
     font-size: 1em;
   }
 }
+/* line 70, sass/partials/_layout.scss */
+#footer {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  line-height: 2.25em;
+  background: white;
+  border-top: 1px solid #d4d4d4;
+}
+/* line 78, sass/partials/_layout.scss */
+#footer a, #footer .fa-support {
+  color: #e54028;
+}
+
 /* Header =================================================== */
-/* line 59, sass/partials/_layout.scss */
+/* line 84, sass/partials/_layout.scss */
 header {
   color: #eeeeee;
   background-color: #222222;
 }
-/* line 63, sass/partials/_layout.scss */
+/* line 88, sass/partials/_layout.scss */
 header h1 {
+  font-size: 1em;
   text-align: center;
   clear: none;
   line-height: 2.25em;
 }
-/* line 69, sass/partials/_layout.scss */
+/* line 95, sass/partials/_layout.scss */
 header a {
   color: #eeeeee;
   text-decoration: none;
@@ -1200,7 +1300,7 @@ header a {
 header a:hover, header a:active, header a:focus {
   color: #0099d5;
 }
-/* line 76, sass/partials/_layout.scss */
+/* line 102, sass/partials/_layout.scss */
 header a.btn-header {
   color: #eeeeee;
   background-color: #222222;
@@ -1214,12 +1314,12 @@ header a.btn-header:hover, header a.btn-header:active, header a.btn-header:focus
   background-color: #0074a2;
   text-decoration: none;
 }
-/* line 87, sass/partials/_layout.scss */
+/* line 113, sass/partials/_layout.scss */
 header a.btn-header span {
   display: none;
 }
 
-/* line 95, sass/partials/_layout.scss */
+/* line 121, sass/partials/_layout.scss */
 .pushy-active #menu-btn {
   background-color: #0074a2;
 }
@@ -1247,9 +1347,18 @@ html, body {
   margin: 0;
   padding: 0;
 }
+/* line 18, sass/partials/_menu.scss */
+#menu ul li.support a {
+  color: #e54028;
+}
+/* line 20, sass/partials/_menu.scss */
+#menu ul li.support a:hover {
+  color: #eeeeee;
+  background-color: #e54028;
+}
 
 /* Pushy =================================================== */
-/* line 22, sass/partials/_menu.scss */
+/* line 29, sass/partials/_menu.scss */
 .pushy {
   position: fixed;
   width: 200px;
@@ -1264,7 +1373,7 @@ html, body {
   -webkit-overflow-scrolling: touch;
   /* enables momentum scrolling in iOS overflow elements */
 }
-/* line 33, sass/partials/_menu.scss */
+/* line 40, sass/partials/_menu.scss */
 .pushy a {
   display: block;
   color: #eeeeee;
@@ -1278,27 +1387,27 @@ html, body {
   background: #0074a2;
   color: #eeeeee;
 }
-/* line 48, sass/partials/_menu.scss */
+/* line 55, sass/partials/_menu.scss */
 .pushy li:first-child a {
   border-top: 0;
 }
 
 /* Menu Movement */
-/* line 55, sass/partials/_menu.scss */
+/* line 62, sass/partials/_menu.scss */
 .pushy-left {
   -moz-transform: translate3d(-200px, 0, 0);
   -webkit-transform: translate3d(-200px, 0, 0);
   transform: translate3d(-200px, 0, 0);
 }
 
-/* line 59, sass/partials/_menu.scss */
+/* line 66, sass/partials/_menu.scss */
 .pushy-open {
   -moz-transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
 
-/* line 63, sass/partials/_menu.scss */
+/* line 70, sass/partials/_menu.scss */
 .page-push, .push-push {
   -moz-transform: translate3d(200px, 0, 0);
   -webkit-transform: translate3d(200px, 0, 0);
@@ -1306,7 +1415,7 @@ html, body {
 }
 
 /* Menu Transitions */
-/* line 69, sass/partials/_menu.scss */
+/* line 76, sass/partials/_menu.scss */
 .pushy, #page, .push {
   -moz-transition: 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
@@ -1318,12 +1427,12 @@ html, body {
 }
 
 /* Site Overlay */
-/* line 78, sass/partials/_menu.scss */
+/* line 85, sass/partials/_menu.scss */
 .site-overlay {
   display: none;
 }
 
-/* line 82, sass/partials/_menu.scss */
+/* line 89, sass/partials/_menu.scss */
 .pushy-active .site-overlay {
   display: block;
   position: fixed;
@@ -1396,7 +1505,7 @@ table tfoot th {
 /* line 47, sass/partials/_tables.scss */
 table tfoot div.alert {
   margin-bottom: 0;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /* line 54, sass/partials/_tables.scss */
@@ -1539,7 +1648,7 @@ table tfoot div.alert {
 /* line 9, sass/partials/_alerts.scss */
 .alert {
   padding: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   border: 1px solid transparent;
   border-radius: 4px;
 }
@@ -1840,7 +1949,7 @@ table tfoot div.alert {
 .popover-title {
   margin: 0;
   padding: 8px 14px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: normal;
   line-height: 18px;
   background-color: #f7f7f7;
@@ -1949,7 +2058,7 @@ table tfoot div.alert {
   z-index: 1030;
   display: block;
   visibility: visible;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.4;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;

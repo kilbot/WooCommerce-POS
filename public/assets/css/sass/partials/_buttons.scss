@@ -17,7 +17,7 @@
   text-decoration: none;
   // border: 1px solid transparent;
   white-space: nowrap;
-  @include button-size($padding-base-vertical, $padding-base-horizontal, $font-size-base, $line-height-base, $border-radius-base);
+  @include button-size($padding-base-vertical, $padding-base-horizontal, $btn-font-size, $line-height-base, $border-radius-base);
   @include user-select(none);
 
   &,
@@ -82,7 +82,7 @@
 // Circle buttons
 // --------------------------------------------------
 .btn-circle {
-  font-size: $font-size-large;
+  font-size: $font-size-base;
   @include border-radius($vspacing * 1.5);
   padding: 0px;
   width: $vspacing * 1.5;

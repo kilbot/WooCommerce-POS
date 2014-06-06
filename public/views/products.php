@@ -6,7 +6,7 @@
 
 <div id="filter">
 	<i class="fa fa-search"></i>
-	<input type="search" placeholder="<?php _e( 'Search for products', 'woocommerce-pos' ); ?>" tabindex="1">
+	<input type="search" placeholder="<?php _e( 'Search for products', 'woocommerce-pos' ); ?>" tabindex="1"  autofocus="autofocus">
 	<a class="clear" href="#"><i class="fa fa-times-circle fa-lg"></i></a>
 </div>
 <div id="products">

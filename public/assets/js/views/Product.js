@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone'], 
-	function($, _, Backbone) {
+define(['underscore', 'backbone'], 
+	function(_, Backbone) {
 
 	// view for individual products
 	var Product = Backbone.View.extend({
@@ -11,12 +11,12 @@ define(['jquery', 'underscore', 'backbone'],
 		},
 
 		initialize: function(options) {
-
 			// use the cart already initialized
 			this.cart = options.cart;
 
 			// listen for changes to Product model
 			this.listenTo( this.model, 'change', this.render );
+
 		},
 
 		render: function() {
@@ -26,7 +26,7 @@ define(['jquery', 'underscore', 'backbone'],
 		},
 
 		addToCart: function(e) {
-			e.preventDefault();
+			if( typeof e.target !== 'undefined' ) { e.preventDefault(); }
 
 			// if product already exists in cart, increase qty
 			if( _( this.cart.collection.pluck('id') ).contains( this.model.attributes.id ) ) {

@@ -88,3 +88,17 @@ textarea {
 	vertical-align: top; /* Improves readability and alignment in all browsers */
 	width: 98%;
 }
+
+fieldset {
+	padding: $vspacing/2;
+}
+
+// support form
+#support-form {
+	input[type="text"], input[type="email"], textarea {
+		width: 100%;
+	}
+	textarea {
+		height: 100px;
+	}
+}

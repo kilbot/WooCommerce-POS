@@ -14,6 +14,10 @@ $desktop-wide 		: 1500px;
 
 
 /* Layout =================================================== */
+#page {
+	padding-bottom: $vspacing*1.5;
+}
+
 #main {
 	@include container();
 	padding: gutter();
@@ -25,6 +29,14 @@ $desktop-wide 		: 1500px;
 	@include box-shadow(0 1px 1px rgba(black, 0.04));
 	&.leftcol {
 		margin-bottom: gutter();
+	}
+	h4 {
+		line-height: 1;
+		padding: $vspacing/2;
+		border-bottom: 1px solid $border-dark;
+	}
+	.panel-body {
+		padding: $vspacing/2;
 	}
 }
 
@@ -41,17 +53,30 @@ $desktop-wide 		: 1500px;
 	}
 }
 
-#page {
+#page, #menu, #footer {
 	font-size: 0.8em;
 }
 @include breakpoint($mobile) {
-	#page {
+	#page, #menu, #footer {
 		font-size: 0.9em;
 	}
 }
 @include breakpoint($mobile-horizontal) {
-	#page {
+	#page, #menu, #footer {
 		font-size: 1em;
+	}
+}
+
+#footer {
+	position:fixed;
+	left: 0px;
+	bottom: 0px;
+	width: 100%;
+	line-height: $vspacing*1.5;
+	background: $panel-background;
+	border-top: 1px solid $border-dark;
+	a, .fa-support {
+		color: $brand-danger;
 	}
 }
 
@@ -61,6 +86,7 @@ header {
 	background-color: $menu-background;
 	// the page title
 	h1 {
+		font-size: 1em;
 		text-align: center;
 		clear: none;
 		line-height: $vspacing*1.5;

@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Product', 'settings', 'db/ProductsDB'], 
-	function($, _, Backbone, PageableCollection, Product, Settings, Database){
+define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'settings', 'db/ProductsDB'], 
+	function(_, Backbone, PageableCollection, Product, Settings, Database){
 	
 	// the pageable product list
 	var Products = Backbone.PageableCollection.extend({
@@ -166,7 +166,6 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 				i = 0;
 
 			console.log('saving ' + data.products.length + ' products' );
-			putNext();
 
 			function putNext() {
 				if( i < data.products.length ) {
@@ -192,6 +191,8 @@ define(['jquery', 'underscore', 'backbone', 'backbone-paginator', 'models/Produc
 					return;
 				}
 			}
+			putNext();
+			
 		},
 
 		/*

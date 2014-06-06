@@ -1,12 +1,13 @@
-define(['jquery', 'backbone', 'collections/CartItems', 'views/CartItem'], 
-	function($, Backbone, CartItems, CartItemView) {
+define(['backbone', 'collections/CartItems', 'views/CartItem'], 
+	function(Backbone, CartItems, CartItemView) {
 
 	// view for the full cart
 	var CartList = Backbone.View.extend({
 		el: $('#cart-items'),
 		elEmpty: $('#cart-items').contents().clone(),
 
-		initialize: function() {
+		initialize: function(options) {
+			console.log(options);
 
 			// init the CartItem collection 
 			this.collection = new CartItems();
@@ -18,6 +19,9 @@ define(['jquery', 'backbone', 'collections/CartItems', 'views/CartItem'],
 
 			// init cart with localStorage
 			this.collection.fetch( {reset: true} );
+
+			// listen for addToCart events
+			this.listenTo( options.pubSub, "addToCart", this.addToCart, this );
 		
 		},
 
@@ -28,6 +32,19 @@ define(['jquery', 'backbone', 'collections/CartItems', 'views/CartItem'],
 				this.emptyMessage();
 			} 
 			
+		},
+
+		addToCart: function( model ) {
+
+			// if product already exists in cart, increase qty
+			if( _( this.collection.pluck('id') ).contains( model.attributes.id ) ) {
+				this.collection.get( model.attributes.id ).quantity('increase');
+			}
+
+			// else, add the product
+			else { 
+				this.collection.create(model.attributes);
+			}
 		},
 
 		addOne: function( item ) {

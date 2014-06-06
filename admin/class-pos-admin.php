@@ -56,15 +56,19 @@ class WooCommerce_POS_Admin {
 		/*
 		 * Call $plugin_slug from public plugin class.
 		 */
-		$plugin = WooCommerce_POS::get_instance();
-		$this->plugin_slug = $plugin->get_plugin_slug();
+		$this->plugin_slug = WC_POS()->get_plugin_slug();
 
 		// Load admin style sheet and JavaScript.
 		// add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		// add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
+		// check version
+		add_action('admin_init', array( $this, 'check_version_number') );
+
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
+
+
 
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
@@ -109,6 +113,27 @@ class WooCommerce_POS_Admin {
 
 	private function includes() {
 		include_once( 'includes/sanity-checks.php' );
+	}
+
+	/**
+	 * Check version number, runs every time
+	 */
+	function check_version_number(){
+		$old = get_option( 'woocommerce_pos_db_version' );
+		if( !$old || $old != WooCommerce_POS::VERSION ) {
+			$this->upgrade( $old );
+			update_option( 'woocommerce_pos_db_version', WooCommerce_POS::VERSION );
+		}
+	}
+
+	/**
+	 * Upgrade from previous versions
+	 */
+	function upgrade( $old ) {
+
+		// flush rewrite rules on upgrade
+		flush_rewrite_rules( false ); 
+
 	}
 
 	/**
@@ -166,20 +191,6 @@ class WooCommerce_POS_Admin {
 	 */
 	public function add_plugin_admin_menu() {
 
-		/*
-		 * Add a settings page for this plugin to the Settings menu.
-		 *
-		 * NOTE:  Alternative menu locations are available via WordPress administration menu functions.
-		 *
-		 *        Administration Menus: http://codex.wordpress.org/Administration_Menus
-		 *
-		 * @TODO:
-		 *
-		 * - Change 'Page Title' to the title of your plugin admin page
-		 * - Change 'Menu Text' to the text for menu item for the plugin settings page
-		 * - Change 'manage_options' to the capability you see fit
-		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
-		 */
 		$this->plugin_screen_hook_suffix = add_options_page(
 			__( 'WooCommerce POS', $this->plugin_slug ),
 			__( 'WooCommerce POS', $this->plugin_slug ),

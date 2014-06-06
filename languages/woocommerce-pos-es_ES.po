@@ -1,111 +1,206 @@
-# Copyright (C) 2014 kilbot
-# This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce POS (beta) 0.2.13\n"
+"Project-Id-Version: WooCommerce POS (beta) v0.2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-06-04 11:40:11+00:00\n"
-"PO-Revision-Date: 2014-06-03 23:15+0800\n"
+"POT-Creation-Date: 2014-06-06 09:45:12+00:00\n"
+"PO-Revision-Date: 2014-06-05 01:02:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: Team Name <team@example.com>\n"
-"Language: es_ES\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 1.6.5\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: \n"
+"X-Poedit-Country: \n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes\n"
 
-#: admin/class-pos-admin.php:184 admin/class-pos-admin.php:185
+# @ woocommerce-pos
+#: admin/class-pos-admin.php:195 admin/class-pos-admin.php:196
 msgid "WooCommerce POS"
 msgstr "WooCommerce POS"
 
-#: admin/class-pos-admin.php:211
+# @ woocommerce-pos
+#: admin/class-pos-admin.php:222
 msgid "Settings"
 msgstr "Configuración"
 
-#: admin/class-pos-admin.php:212
+# @ woocommerce-pos
+#: admin/class-pos-admin.php:223
 msgid "View POS"
 msgstr "Ver POS"
 
+#: includes/class-pos-support.php:39
+msgid "Please enter your name"
+msgstr ""
+
+#: includes/class-pos-support.php:42
+msgid "Please enter a valid email address"
+msgstr ""
+
+#: includes/class-pos-support.php:45
+msgid "Please enter your message"
+msgstr ""
+
+#: includes/class-pos-support.php:54
+msgid "There was a problem sending your email."
+msgstr ""
+
+# @ woocommerce-pos
+#: includes/class-pos-support.php:75
+#, fuzzy
+msgid "WooCommerce Version"
+msgstr "WooCommerce POS"
+
+#: includes/class-pos-support.php:78
+msgid "WooCommerce >= 2.1 required"
+msgstr ""
+
+#: includes/class-pos-support.php:80
+msgid "Update"
+msgstr ""
+
+#: includes/class-pos-support.php:83
+msgid "WC REST API"
+msgstr ""
+
+#: includes/class-pos-support.php:85
+msgid "API is active"
+msgstr ""
+
+#: includes/class-pos-support.php:86
+msgid "Access to the REST API is required"
+msgstr ""
+
+#: includes/class-pos-support.php:88
+msgid "Enable REST API"
+msgstr ""
+
+#: includes/class-pos-support.php:91
+msgid "Orphaned Variations"
+msgstr ""
+
+#: includes/class-pos-support.php:93
+msgid "No orphans."
+msgstr ""
+
+#: includes/class-pos-support.php:94
+msgid ""
+"Some of your variations have no parent. The post ids of the orphans are: %s"
+msgstr ""
+
+#: includes/class-pos-support.php:96
+msgid "Delete orphans"
+msgstr ""
+
+# @ woocommerce
 #: public/includes/class-pos-checkout.php:44
 msgid "Order &ndash; %s"
 msgstr "Pedido &ndash; %s"
 
+# @ woocommerce-pos
 #: public/views/cart.php:11 public/views/checkout.php:11
 msgid "Qty"
 msgstr "Cantidad"
 
+# @ woocommerce-pos
+# @ woocommerce
 #: public/views/cart.php:12 public/views/checkout.php:10
 #: public/views/products.php:17 public/views/receipt.php:4
 msgid "Product"
 msgstr "Producto"
 
+# @ woocommerce-pos
 #: public/views/cart.php:13 public/views/checkout.php:12
 #: public/views/products.php:18
 msgid "Price"
 msgstr "Precio"
 
+# @ woocommerce-pos
+# @ woocommerce
 #: public/views/cart.php:14 public/views/checkout.php:65
 #: public/views/receipt.php:5
 msgid "Total"
 msgstr "Total"
 
+# @ woocommerce-pos
 #: public/views/cart.php:20
 msgid "Cart is empty"
 msgstr "Tu carrito esta vacío"
 
+# @ woocommerce-pos
 #: public/views/cart.php:47
 msgid "Cart Subtotal"
 msgstr "Subtotal del carrito"
 
+# @ woocommerce-pos
 #: public/views/cart.php:52 public/views/checkout.php:47
 msgid "Cart Discount"
 msgstr "Descuento en el carrito"
 
+# @ woocommerce-pos
 #: public/views/cart.php:70
 msgid "Order Total"
 msgstr "Total del Pedido"
 
+# @ woocommerce-pos
 #: public/views/cart.php:76
 msgid "Void"
 msgstr "Anular"
 
+# @ woocommerce-pos
 #: public/views/cart.php:79
 msgid "Note"
 msgstr "Notas"
 
+# @ woocommerce-pos
 #: public/views/cart.php:82
 msgid "Discount"
 msgstr "Descuento"
 
+# @ woocommerce-pos
 #: public/views/cart.php:85
 msgid "Checkout"
 msgstr "Finalizar compra"
 
+# @ woocommerce-pos
 #: public/views/checkout.php:5
 msgid "Order"
 msgstr "Pedido"
 
+# @ woocommerce-pos
 #: public/views/checkout.php:32
 msgid "Export to PDF"
 msgstr "Exportación a PDF"
 
+# @ woocommerce-pos
 #: public/views/checkout.php:33
 msgid "Print"
 msgstr "Imprimir"
 
+# @ woocommerce-pos
 #: public/views/checkout.php:34
 msgid "New Order"
 msgstr "Nuevo Pedido"
 
+# @ woocommerce-pos
 #: public/views/checkout.php:42
 msgid "Subtotal"
 msgstr "Subtotal del carrito"
 
+# @ woocommerce-pos
 #: public/views/checkout.php:73
 msgid "Total mismatch!"
 msgstr "Error!"
 
+# @ woocommerce-pos
 #: public/views/checkout.php:74
 msgid ""
 "The total calculated at the POS is different to the total calculated by "
@@ -114,6 +209,7 @@ msgstr ""
 "El total calculado en el punto de venta es diferente al total calculado por "
 "WooCommerce."
 
+# @ woocommerce-pos
 #: public/views/checkout.php:75
 msgid ""
 "Please report this problem to <a href=\"mailto:support@woopos.com.au?"
@@ -123,125 +219,213 @@ msgstr ""
 "subject=Total mismatch\">ayuda</a> para que podamos examinarlo."
 
 #: public/views/footer.php:5
-msgid "WP Dashboard"
-msgstr "WP Escritorio"
+msgid "Need help? Visit the <a href=\"%s\">support</a> page"
+msgstr ""
 
-#: public/views/footer.php:6
+#: public/views/footer.php:11
+msgid "POS"
+msgstr ""
+
+# @ woocommerce-pos
+#: public/views/footer.php:12
 msgid "View Products"
 msgstr "Ver Productos"
 
-#: public/views/footer.php:7
+# @ woocommerce-pos
+#: public/views/footer.php:13
 msgid "Add Product"
 msgstr "Añadir Producto"
 
-#: public/views/footer.php:8
+# @ woocommerce-pos
+#: public/views/footer.php:14
 msgid "View Orders"
 msgstr "Ver Pedidos"
 
-#: public/views/footer.php:9
+# @ woocommerce-pos
+#: public/views/footer.php:15
 msgid "View Customers"
 msgstr "Ver Clientes"
 
+#: public/views/footer.php:16
+msgid "Support"
+msgstr ""
+
+# @ woocommerce-pos
 #: public/views/header.php:16
 msgid "Menu"
 msgstr "Menú"
 
-#: public/views/header.php:19 public/views/support.php:23
+# @ woocommerce-pos
+#: public/views/header.php:19
 msgid "Howdy"
 msgstr "Hola"
 
+# @ woocommerce-pos
 #: public/views/header.php:22
 msgid "Logout"
 msgstr "Cerrar sesión"
 
+# @ woocommerce-pos
 #: public/views/modal/browser-support.php:3
 msgid "Your browser is not supported!"
 msgstr ""
 
+# @ default
 #: public/views/modal/browser-support.php:7
 msgid ""
 "Sorry, it seems your browser is not currently supported by WooCommerce POS. "
 msgstr ""
 
+# @ default
 #: public/views/modal/browser-support.php:8
 msgid ""
 "If possible, please <a href=\"http://browsehappy.com/\">update your browser</"
 "a>, we recommend either Chrome or Firefox."
 msgstr ""
 
+# @ default
 #: public/views/modal/browser-support.php:11
 msgid ""
 "If you believe you have received this message in error please contact "
 "support at <a href=\"http://woopos.com.au\">woopos.com.au</a>"
 msgstr ""
 
+# @ woocommerce-pos
 #: public/views/modal/browser-support.php:15
 msgid "Okay"
 msgstr "Bueno"
 
+# @ woocommerce-pos
 #: public/views/products.php:9
 msgid "Search for products"
 msgstr "Búsqueda de productos"
 
+# @ woocommerce-pos
 #: public/views/products.php:24
 msgid "No products"
 msgstr "No se han encontrado Productos"
 
+# @ woocommerce-pos
 #: public/views/products.php:46
 msgid "Page %s of %s"
 msgstr "Página %s de %s"
 
+# @ woocommerce-pos
 #: public/views/products.php:47
 msgid "Showing %s of %s products"
 msgstr "Mostrando %s de %s productos"
 
+# @ woocommerce-pos
 #: public/views/products.php:49
 msgid "Last updated %s"
 msgstr "Última actualización %s"
 
+# @ woocommerce-pos
 #: public/views/products.php:50
 msgid "sync"
 msgstr ""
 
+# @ woocommerce-pos
 #: public/views/products.php:50
 msgid "clear"
 msgstr "limpiar"
 
+# @ woocommerce-pos
 #: public/views/products.php:52
 msgid "Your browser does not support indexeddb"
 msgstr "Su navegador no soporta IndexedDB"
 
+# @ woocommerce
 #: public/views/receipt.php:35
 msgid "Download file%s"
 msgstr ""
 
+#: public/views/support.php:6
+msgid "POS Support Form"
+msgstr ""
+
+#: public/views/support.php:10
+msgid "Name"
+msgstr ""
+
+#: public/views/support.php:11
+msgid "Your name"
+msgstr ""
+
+#: public/views/support.php:14
+msgid "Email"
+msgstr ""
+
+#: public/views/support.php:15
+msgid "Your email"
+msgstr ""
+
+#: public/views/support.php:18
+msgid "Message"
+msgstr ""
+
+#: public/views/support.php:19
+msgid "Describe your problem here ..."
+msgstr ""
+
+#: public/views/support.php:22
+msgid "Append POS system report"
+msgstr ""
+
+#: public/views/support.php:32
+msgid "Thank you!"
+msgstr ""
+
+#: public/views/support.php:33
+msgid "Your form has been sent"
+msgstr ""
+
+#: public/views/support.php:34
+msgid "We will get back to you as soon as possible"
+msgstr ""
+
+#: public/views/support.php:40
+msgid "POS System Status"
+msgstr ""
+
+# @ woocommerce-pos
 #. Plugin Name of the plugin/theme
 msgid "WooCommerce POS (beta)"
 msgstr ""
 
+# @ woocommerce-pos
 #. Plugin URI of the plugin/theme
 msgid "https://woopos.com.au"
 msgstr ""
 
+# @ woocommerce-pos
 #. Description of the plugin/theme
 msgid "A simple front-end for taking WooCommerce orders at the Point of Sale."
 msgstr ""
 "Una simple interfaz para tomar pedidos WooCommerce en el Punto de Venta."
 
+# @ woocommerce-pos
 #. Author of the plugin/theme
 msgid "kilbot"
 msgstr ""
 
+# @ woocommerce-pos
 #. Author URI of the plugin/theme
 msgid "http://www.kilbot.com.au"
 msgstr ""
 
+# @ woocommerce
 #: public/includes/class-pos-checkout.php:44
 msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
 
+# @ woocommerce-pos
 #: public/views/products.php:36
 msgctxt "%d in stock"
 msgid "in stock"
 msgstr "en stock"
+
+# @ woocommerce-pos
+#~ msgid "WP Dashboard"
+#~ msgstr "WP Escritorio"

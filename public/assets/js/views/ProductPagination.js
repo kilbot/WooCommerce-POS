@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'settings'], 
-	function($, _, Backbone, Settings) {
+define(['underscore', 'backbone', 'settings'], 
+	function(_, Backbone, Settings) {
 
 	// view handles the pagination and page info
 	var ProductPagination = Backbone.View.extend({

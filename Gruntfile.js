@@ -17,7 +17,7 @@ module.exports = function(grunt) {
 			},
 			js: {
 				files: '<%= jshint.all %>',
-				tasks: ['jshint']
+				tasks: ['jshint', 'uglify']
 			},
 		},
 
@@ -81,8 +81,11 @@ module.exports = function(grunt) {
 				'Gruntfile.js',
 				'public/assets/js/**/*.js',
 				'admin/assets/js/admin.js',
+				'!public/assets/js/pos.min.js',
 				'!public/assets/js/scripts.min.js',
+				'!public/assets/js/plugins.min.js',
 				'!public/assets/js/worker.min.js',
+				'!public/assets/js/support.min.js',
 				'!public/assets/js/require.js',
 				'!public/assets/js/vendor/**/*.js',
 				'tests/data/**/*.json',
@@ -97,7 +100,7 @@ module.exports = function(grunt) {
 					baseUrl: 'public/assets/js',
 					mainConfigFile: 'public/assets/js/main.js',
 					name: 'main',
-					out: 'public/assets/js/scripts.min.js',
+					out: 'public/assets/js/pos.min.js',
 					preserveLicenseComments: false,
 					paths: {
 						almondLib: '../../../bower_components/almond/almond'
@@ -125,7 +128,25 @@ module.exports = function(grunt) {
 						'public/assets/js/src/worker.js'
 					]
 				}
-			}
+			},
+			plugins: {
+				files: {
+					'public/assets/js/plugins.min.js' : [
+						'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown.js',
+						'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal.js',
+						// 'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/popover.js',
+						// 'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tooltip.js',
+						'public/assets/js/src/pushy.js',
+					]
+				}
+			},
+			support: {
+				files: {
+					'public/assets/js/support.min.js' : [
+						'public/assets/js/src/support.js',
+					]
+				}
+			},
 		},
 
 		// // image optimization

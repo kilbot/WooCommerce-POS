@@ -64,6 +64,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 ## Changelog ##
 
 ### 0.2.14 ###
+* New: Support page: contact support directly from the POS
 * New: Basic translations for nl_NL, fr_FR, es_ES and pt_BR. Corrections can be submitted to [GitHub](https://github.com/kilbot/WooCommerce-POS/issues) or via email [support@woopos.com.au](mailto:support@woopos.com.au)
 * Fix: fixed bug for product_variations which effects WooCommerce < 2.1.7
 

@@ -1,52 +1,50 @@
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8" />
-	<title>Point of Sale - <?php bloginfo('name') ?></title>
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
+<?php include_once( 'header.php' ); ?>
 
-	<?php WooCommerce_POS::pos_print_css(); ?>
-	<?php WooCommerce_POS::pos_print_js('head'); ?>
+<main id="main" class="site-main" role="main">
+	
+	<section id="support-form" class="col leftcol">
+		<h4><?php _e( 'POS Support Form', 'woocommerce-pos' ); ?></h4>
+		<?php if( WC_POS()->support->support_form() ): ?>
+		<form method="post" action="./">
+			<fieldset class="name">
+				<label for="name"><?php _e( 'Name', 'woocommerce-pos' ); ?>:</label>
+				<input type="text" id="name" name="name" value="<?= $current_user->display_name ?>" placeholder="<?php _e( 'Your name', 'woocommerce-pos') ?>" required="required" />
+			</fieldset>
+			<fieldset class="name">
+				<label for="email"><?php _e( 'Email', 'woocommerce-pos' ); ?>:</label>
+				<input type="email" id="email" name="email" value="<?= $current_user->user_email ?>" placeholder="<?php _e( 'Your email', 'woocommerce-pos') ?>" required="required" />
+			</fieldset>
+			<fieldset class="message">
+				<label for="message"><?php _e( 'Message', 'woocommerce-pos' ); ?>:</label>
+				<textarea id="message" name="message" placeholder="<?php _e('Describe your problem here ...', 'woocommerce-pos') ?>" required="required"></textarea>
+			</fieldset>
+			<fieldset>
+				<small><label><input type="checkbox" name="reports[]" value="pos" checked="checked"> <?php _e( 'Append POS system report', 'woocommerce-pos' ); ?></label></small> <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a>
+				<textarea id="pos_status" name="pos_status" readonly="readonly" class="small" style="display:none">Shop URL: <?= get_bloginfo('url')."\n"; ?></textarea>
+			</fieldset>
+			<fieldset>
+				<?php wp_nonce_field('email_support', 'email_support_nonce'); ?>
+				<button type="submit" name="email-support" id="email-support" class="btn btn-primary alignright">Send</button>
+			</fieldset>
+		</form>
+		<?php else: ?>
+			<p class="panel-body">
+				<strong><?php _e( 'Thank you!', 'woocommerce-pos' ); ?></strong> 
+				<?php _e( 'Your form has been sent', 'woocommerce-pos' ); ?>. 
+				<?php _e( 'We will get back to you as soon as possible', 'woocommerce-pos' ); ?>.
+			</p>
+		<?php endif; ?>
+	</section><!-- /left col --> 
 
-	<link rel="stylesheet" href="<?= WC_POS()->plugin_url; ?>/includes/tests/jasmine.css" type="text/css" media="all" />
-		
-	<script data-main="<?= WC_POS()->plugin_url; ?>includes/tests/main" src="<?= WC_POS()->plugin_url; ?>public/assets/js/require.js"></script>
+	<section id="system-status" class="col rightcol"> 
+		<h4><?php _e( 'POS System Status', 'woocommerce-pos' ); ?></h4>
+		<table>
+			<tbody>
+				<?php WC_POS()->support->pos_status(); ?>
+			</tbody>
+		</table>
+	</section><!-- /right col -->
 
-</head>
-<body>
-<div id="page" class="site">
-	<header id="masthead" role="banner" class="site-header">
-		<a href="#menu" id="menu-btn" class="btn-header alignleft"><i class="fa fa-bars"></i> <span>Menu</span></a>
-		<div class="dropdown alignright">
-			<a href="#" class="btn-header" data-toggle="dropdown">
-				<i class="fa fa-cog"></i> <span><?php _e( 'Howdy', 'woocommerce-pos' ); ?>, <?php global $current_user; get_currentuserinfo(); echo $current_user->display_name ?></span>
-			</a>
-			<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-				<li><a href="<?php echo wp_logout_url( home_url() ); ?>" title="Logout">Logout</a></li>
-			</ul>
-		</div>
-		<h1><?php bloginfo( 'name' ); ?></h1>
-	</header><!-- /header -->
+</main><!-- /main -->
 
-
-	<main id="main" class="site-main" role="main">
-		<h1>Support</h1>
-		<h2>Tests</h2>
-
-	</main><!-- /main -->
-
-</div><!-- /page -->
-
-<div id="menu" class="pushy pushy-left">
-	<ul>
-		<li><a href="<?= admin_url(); ?>">WP Dashboard</a></li>
-		<li><a href="<?= admin_url('edit.php?post_type=product'); ?>">View Products</a></li>
-		<li><a href="<?= admin_url('post-new.php?post_type=product'); ?>">Add Product</a></li>
-		<li><a href="<?= admin_url('edit.php?post_type=shop_order'); ?>">View Orders</a></li>
-		<li><a href="<?= admin_url('users.php'); ?>">View Customers</a></li>
-	</ul>
-</div><!-- /menu -->
-
-</body>
-</html>
+<?php include_once( 'footer.php' ); ?>

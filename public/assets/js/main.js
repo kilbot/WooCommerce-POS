@@ -1,5 +1,9 @@
 // Require.js Configurations
 // -------------------------
+
+// load jQuery using CDN, keep jQuery separate for other pages
+define('jquery', [], function() { return jQuery; });
+
 require.config({
 
 	// Sets the js folder as the base directory for all future relative paths
@@ -10,7 +14,7 @@ require.config({
 
 		// Core Libraries
 		// 'jquery': '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
-		'jquery': '../../../bower_components/jquery/dist/jquery.min',
+		// 'jquery': '../../../bower_components/jquery/dist/jquery.min',
 		'underscore': '../../../bower_components/lodash/dist/lodash.min',
 		// 'underscore': '../../../bower_components/underscore/underscore',
 		'backbone': '../../../bower_components/backbone/backbone',
@@ -34,26 +38,18 @@ require.config({
 
 	// Sets the configuration for third party scripts that are not AMD compatible
 	shim: {
-		'bootstrap-dropdown': {
-			deps: ['jquery'],
-		},
-		'pushy': {
-			deps: ['jquery'],
-		},
+
     }
 
 });
 
-require(['views/ProductList', 'pushy', 'bootstrap-dropdown'], 
-	function( ProductList ){
+require(['underscore', 'backbone', 'views/ProductList'], 
+	function(_, Backbone, ProductList ){
 
-	if ( typeof pos_params !== 'undefined' ) {
+	// create pubsub object
+	var pubSub = _.extend({},Backbone.Events);
 
-		//boot the POS
-		var productList = new ProductList();
-		
-	} else {
-		console.log('No pos_params, no start the app!');
-	}
+	// load the products
+	var productList = new ProductList({ pubSub: pubSub });
 
 });

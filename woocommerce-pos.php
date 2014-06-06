@@ -24,10 +24,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// If WooCommerce not installed, abort. Can't use is_plugin_active before admin_init.
-if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) )
-	return;
-
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
@@ -50,7 +46,7 @@ function WC_POS() {
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
 
-if ( is_admin() ) {
+if  ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-pos-admin.php' );
 	add_action( 'plugins_loaded', array( 'WooCommerce_POS_Admin', 'get_instance' ) );

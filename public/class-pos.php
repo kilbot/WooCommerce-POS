@@ -14,7 +14,8 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION 	= '0.2.13';
+	const VERSION = '0.2.13';
+	const JQUERY_VERSION = '2.1.1';
 
 	/**
 	 * Development flag
@@ -52,6 +53,11 @@ class WooCommerce_POS {
 	public $product = null;
 
 	/**
+	 * @var WooCommerce_POS_Product $product
+	 */
+	public $support = null;
+
+	/**
 	 * Initialize WooCommerce_POS
 	 */
 	private function __construct() {
@@ -59,9 +65,9 @@ class WooCommerce_POS {
 		// settings
 		$this->wc_api_url = get_home_url().$this->wc_api_endpoint;
 
-		$this->plugin_path = trailingslashit( dirname( dirname(__FILE__) ) );
-		$this->plugin_dir = trailingslashit( basename( $this->plugin_path ) );
-		$this->plugin_url = plugins_url().'/'.$this->plugin_dir;
+		$this->plugin_path 	= trailingslashit( dirname( dirname(__FILE__) ) );
+		$this->plugin_dir 	= trailingslashit( basename( $this->plugin_path ) );
+		$this->plugin_url 	= plugins_url().'/'.$this->plugin_dir;
 
 		// include required files
 		$this->includes();
@@ -72,7 +78,7 @@ class WooCommerce_POS {
 		// Set up templates
 		add_filter('generate_rewrite_rules', array( $this, 'generate_rewrite_rules') );
 		add_filter('query_vars', array( $this, 'add_query_vars') );
-		add_action('template_redirect', array( $this, 'login') );
+		add_action('template_redirect', array( $this, 'show_pos') );
 
 		// allow access to the WC REST API, init product class before serving response
 		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 1 );
@@ -119,11 +125,12 @@ class WooCommerce_POS {
 	 * Fired when the plugin is activated.
 	 */
 	public static function activate( ) {
-		// Refresh the rewrite rule cache
+
+		// Add rewrite rules, $this->generate_rewrite_rules not called on activation
 		global $wp_rewrite;
 		add_rewrite_rule('^pos/?$','index.php?pos=1','top');
-		add_rewrite_rule('^pos/([^/]+)/?$','index.php?pos=1&pos-template=$matches[1]','top');
-		$wp_rewrite->flush_rules( false ); // false will not overwrite .htaccess
+		add_rewrite_rule('^pos/([^/]+)/?$','index.php?pos=1&pos_template=$matches[1]','top');
+		flush_rewrite_rules( false ); // false will not overwrite .htaccess
 
 		// add the manage_woocommerce_pos capability to administrator and shop_manager
 		$administrator = get_role( 'administrator' );
@@ -143,11 +150,18 @@ class WooCommerce_POS {
 		$administrator->remove_cap( 'manage_woocommerce_pos' );
 		$shop_manager = get_role( 'shop_manager' );
 		$shop_manager->remove_cap( 'manage_woocommerce_pos' );
+
+		// flush on activation and deactivation
+		flush_rewrite_rules( false ); // false will not overwrite .htaccess
 	}
 
+	/**
+	 * File includes
+	 */
 	private function includes() {
 		include_once( 'includes/class-pos-product.php' );
 		include_once( 'includes/class-pos-checkout.php' );
+		include_once( $this->plugin_path . 'includes/class-pos-support.php' );
 		if ( defined( 'DOING_AJAX' ) ) {
 			include_once( 'includes/class-pos-ajax.php' );
 		}
@@ -160,9 +174,18 @@ class WooCommerce_POS {
 	public function generate_rewrite_rules( $wp_rewrite ) {
 		$custom_page_rules = array(
 			'^pos/?$' => 'index.php?pos=1',
-			'^pos/([^/]+)/?$' => 'index.php?pos=1&pos-template='.$wp_rewrite->preg_index(1)
+			'^pos/([^/]+)/?$' => 'index.php?pos=1&pos_template='.$wp_rewrite->preg_index(1)
 		);
 		$wp_rewrite->rules = $custom_page_rules + $wp_rewrite->rules;
+	}
+
+	/**
+	 * Construct the public pos urls
+	 * @param  string $page the pos_template
+	 * @return string       url
+	 */
+	public function pos_url( $page = '' ) {
+		return '/pos/'.$page;
 	}
 	
 	/**
@@ -172,21 +195,26 @@ class WooCommerce_POS {
 	 */
 	public function add_query_vars( $public_query_vars ) {
 		$public_query_vars[] = 'pos';
-		$public_query_vars[] = 'pos-template';
+		$public_query_vars[] = 'pos_template';
 		return $public_query_vars;
 	}
 
 	/**
 	 * Display POS page or login screen
 	 */
-	public function login() {
+	public function show_pos() {
+
+		// set up $current_user for use in includes
+		global $current_user;
+		get_currentuserinfo();
+		$template = $this->is_pos();
 
 		// check page and credentials
-		if ($this->is_pos() && current_user_can('manage_woocommerce_pos')) {
+		if ($template && current_user_can('manage_woocommerce_pos')) {
 
-			// check for template request
-			$template = get_query_var( 'pos-template' );
-			if( $template != '' && file_exists( $this->plugin_path . 'public/views/' . $template . '.php' ) ) {
+			// check if template exists
+			if( $template !== 'main' && file_exists( $this->plugin_path . 'public/views/' . $template . '.php' ) ) {
+				if( $template === 'support') $this->support = new WooCommerce_POS_Support();
 				include_once( 'views/' . $template . '.php' );
 			}
 
@@ -204,12 +232,16 @@ class WooCommerce_POS {
 
 	/**
 	 * Are we using point of sale front-end?
-	 * @return boolean
+	 * @return string or false
 	 */
 	public function is_pos() {
 		// $pagename = $this->options['pagename']; TODO: set custom url as an option
 		global $wp_query;
-		$is_pos = isset($wp_query->query_vars['pos']) && $wp_query->query_vars['pos'] == 1 ? true : false ;
+		$is_pos = false;
+
+		if( get_query_var( 'pos' ) == 1 ) {
+			$is_pos = ( get_query_var( 'pos_template' ) ) ? get_query_var( 'pos_template' ) : 'main';
+		}
 
 		return $is_pos;
 	}
@@ -230,7 +262,7 @@ class WooCommerce_POS {
 			return $user;
 		}
 
-		// error_log( print_R( $user, TRUE ) ); //debug
+		error_log( print_R( $user, TRUE ) ); //debug
 	}
 
 	/**
@@ -320,6 +352,8 @@ class WooCommerce_POS {
 	 * @return [type] [description]
 	 */
 	public function pos_localize_script() {
+
+		$js_vars['page']		= $this->is_pos();
 		$js_vars['ajax_url'] 	= admin_url( 'admin-ajax.php', 'relative' );
 		$js_vars['accounting'] 	= $this->accounting_settings();
 		$js_vars['wc'] 			= $this->wc_settings();
@@ -331,7 +365,7 @@ class WooCommerce_POS {
 			$js_vars['worker'] 	= $this->plugin_url .'public/assets/js/worker.min.js';
 		}
 
-	$pos_params = '
+		$pos_params = '
 		<script type="text/javascript">
 		var pos_params = ' . json_encode($js_vars) . '
 		</script>
@@ -344,8 +378,8 @@ class WooCommerce_POS {
 	 */
 	public function pos_print_css() {
 		$html = '
-	<link rel="stylesheet" href="'. $this->plugin_url .'public/assets/css/pos.min.css?ver='. self::VERSION .'" type="text/css" media="all" />
-	<link rel="stylesheet" href="'. $this->plugin_url .'assets/css/font-awesome.min.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="'. $this->plugin_url .'public/assets/css/pos.min.css?ver='. self::VERSION .'" type="text/css" />
+	<link rel="stylesheet" href="'. $this->plugin_url .'assets/css/font-awesome.min.css" type="text/css" />
 		';
 		echo $html;
 	}
@@ -357,7 +391,7 @@ class WooCommerce_POS {
 		if($section == 'head') {
 			$html = '
 	<!-- Modernizr: checks: indexeddb, websql, localstrorage and CSS 3D transforms -->
-	<script type="text/javascript" charset="utf8" src="'. $this->plugin_url .'public/assets/js/vendor/modernizr.custom.min.js"></script>
+	<script src="'. $this->plugin_url .'public/assets/js/vendor/modernizr.custom.min.js"></script>
 			';
 			echo $html;
 		}
@@ -365,13 +399,27 @@ class WooCommerce_POS {
 			do_action( 'pos_add_to_footer' );
 			echo $this->pos_localize_script();
 
-			// switch for development
-			if( $this->development ) {
-				echo '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
-			} else {
-				echo '<script src="'. $this->plugin_url .'public/assets/js/scripts.min.js"></script>';
+			$html = '
+	<script src="//code.jquery.com/jquery-'. self::JQUERY_VERSION .'.min.js"></script>		
+	<script src="'. $this->plugin_url .'public/assets/js/plugins.min.js?ver='. self::VERSION .'"></script>
+			';
+			echo $html;
+
+			// only include the app js on main page
+			if( $this->is_pos() == 'main' ) {
+
+				// switch for development
+				if( $this->development ) {
+					echo '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
+				} else {
+					echo '<script src="'. $this->plugin_url .'public/assets/js/pos.min.js"></script>';
+				}
 			}
 
+			// include support.js on support page
+			elseif ( $this->is_pos() == 'support' ) {
+				echo '<script src="'. $this->plugin_url .'public/assets/js/support.min.js"></script>';
+			}
 		}
 	}
 

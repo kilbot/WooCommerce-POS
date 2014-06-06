@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput'], 
-	function($, _, Backbone, accounting, autoGrowInput) {
+define(['underscore', 'backbone', 'accounting', 'autoGrowInput'], 
+	function(_, Backbone, accounting, autoGrowInput) {
 
 	// view holds individual cart items
 	var CartItem = Backbone.View.extend({
@@ -54,7 +54,7 @@ define(['jquery', 'underscore', 'backbone', 'accounting', 'autoGrowInput'],
 		},
 
 		removeFromCart: function(e) {
-			if( typeof e !== 'undefined' ) { e.preventDefault(); }
+			if( typeof e.target !== 'undefined' ) { e.preventDefault(); }
 			this.$el.fadeOut(200, function(){
 				$(this).remove();
 			});

@@ -18,7 +18,7 @@ $btn-height:			32px; // needs to be in px to work across a, input, button etc
 $menu-panel-width:		200px;
 $small-font:			0.8em;
 
-$font-size-base:		14px !default;
+$font-size-base:		16px !default;
 $font-size-large:		ceil(($font-size-base * 1.25)) !default; // ~18px
 $font-size-small:		ceil(($font-size-base * 0.85)) !default; // ~12px
 
@@ -271,6 +271,7 @@ $btn-height:			32px;
 $btn-glow-color:		#2c9adb;
 $btn-actions:			('primary' #00A1CB #FFFFFF) ('action' #7db500 #FFFFFF) ('highlight' #F18D05 #FFFFFF) ('caution' #E54028 #FFFFFF) ('royal' #87318C #FFFFFF) ;
 
+$btn-font-size:                  14px !default;
 $btn-font-weight:                normal !default;
 
 $btn-default-color:              #333 !default;

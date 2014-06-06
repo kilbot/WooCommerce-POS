@@ -78,45 +78,16 @@
 			<table class="widefat wc_status_table" cellspacing="0">
 				<thead>
 					<tr>
+						<th></th>
 						<th>Check</th>
-						<th>Result</th>
+						<th colspan="2">Result</th>
 					</tr>
 				</thead>
 				<tbody>
-<?php // check woocommerce 
-if( version_compare( WC()->version, '2.1.0' ) >= 0 ) : ?>
-					<tr><td class="row-title">WooCommerce Version</td><td><?php echo esc_html( WC()->version ); ?></td></tr>
-<?php else: ?>
-					<tr class="form-invalid"><td class="row-title">WooCommerce Version</td><td><strong><?php echo esc_html( WC()->version ); ?></td></tr>
-<?php endif; 
-// end check woocommerce ?>
-
-<?php // check woocommerce api
-$api_on = check_api_access();
-$auth = check_api_authentication();
-if( $api_on ): ?>
-					<tr class="alternate"><td class="row-title">WooCommerce API</td><td>Enabled, says: <code style="font-size:0.8em"><?= $auth ? $auth : 'authentication error' ; ?> ...</code></td></tr>			
-<?php else: ?>
-					<tr class="alternate form-invalid"><td class="row-title">WooCommerce API</td><td>You need to enable the <a href="<?= admin_url('?page=wc-settings') ?>">WooCommerce REST API</a>.</td></tr>		
-<?php endif;
-// end check woocommerce api ?>
-
-<?php // check permalinks 
-global $wp_rewrite; if($wp_rewrite->permalink_structure != ''): ?>
-					<tr><td class="row-title">Permalinks</td><td>Permalinks are enabled, nice!</td></tr>
-<?php else: ?>
-					<tr class="form-invalid"><td class="row-title">Permalinks</td><td><strong>WooCommerce POS</strong> requires <em>pretty</em> permalinks to work correctly. Please enable <a href="<?= admin_url('options-permalink.php') ?>">permalinks</a>.</td></tr>
-<?php endif; 
-// end check permalinks ?>
-
-<?php // check variation orphans 
-if( $orphans = find_orphans_variations() ): ?>
-					<tr class="alternate form-invalid"><td class="row-title">Orphaned Variations</td><td>Some of your variations are orphaned :( ... the post ids of the orphans are: <code style="font-size:0.8em"><?= $orphans ?></code></td></tr>
-<?php else: ?>
-					<tr><td class="alternate row-title">Orphaned Variations</td><td>No orphans. That's a good thing.</td></tr>
-<?php endif; 
-// end check variation orphans  ?>
-
+					<?php 
+						$support = new WooCommerce_POS_Support();
+						$support->pos_status();
+					?>
 				</tbody>
 			</table>
 		</div>
