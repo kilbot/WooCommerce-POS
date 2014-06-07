@@ -25,7 +25,7 @@ You can see a demo of the WooCommerce POS plugin in action by going to [http://w
 = REQUIREMENTS =
 WooCommerce POS uses IndexedDB to persist the product database on your computer or device. [IndexedDB](http://www.w3.org/TR/IndexedDB/) is currently a 'Candidate Recommendation' specification by the W3C and is not implemented by all browsers. To see if your browser is compatible please check [caniuse.com](http://caniuse.com/indexeddb).
 
-If your browser does not support IndexedDB, WooCommerce POS will degrade to using the product database on your server via the WooCommerce REST API. The Point of Sale system will still function but searching and filtering will be slower. Some planned features for WooCommerce POS will also only be available for browsers that support IndexdedDB.
+If your browser does not support IndexedDB, WooCommerce POS will fallback to using the product database on your server via the WooCommerce REST API. The Point of Sale system will still function but searching and filtering will be slower. Some planned features for WooCommerce POS will also only be available for browsers that support IndexdedDB.
 
 ** For the best experience please use a modern browser such as [Chrome](http://www.google.com/chrome) **
 
@@ -62,9 +62,14 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.2.14 =
+* New: Search by 'barcode'. Defaults to SKU for the moment. Instant add to cart for barcode matches, ie: barcode scanning!
 * New: Support page: contact support directly from the POS
+* New: Add order discount
+* New: Add order note
+* New: Void order
 * New: Basic translations for nl_NL, fr_FR, es_ES and pt_BR. Corrections can be submitted to [GitHub](https://github.com/kilbot/WooCommerce-POS/issues) or via email [support@woopos.com.au](mailto:support@woopos.com.au)
 * Fix: fixed bug for product_variations which effects WooCommerce < 2.1.7
+* Fix: https://github.com/kilbot/WooCommerce-POS/issues/7
 
 = 0.2.13 =
 * Improved: Product Sync now handled by web worker, improves sync performance for large stores (1000+ products)

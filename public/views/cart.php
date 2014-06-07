@@ -66,24 +66,31 @@
 			</tr>
 		<% } %>
 	<% } %>
+	<tr class="order-discount">
+		<th colspan="3"><?php _e( 'Order Discount', 'woocommerce-pos' ); ?>:</th>
+		<td colspan="2"><%= order_discount %></td>
+	</tr>
 	<tr>
 		<th colspan="3"><?php _e( 'Order Total', 'woocommerce-pos' ); ?>:</th>
 		<td colspan="2"><%= total %></td>
 	</tr>
 	<tr class="actions">
 		<td colspan="5">
-			<button class="btn btn-void alignleft">
+			<button class="btn btn-danger action-void alignleft">
 				<?php _e( 'Void', 'woocommerce-pos' ); ?> 
 			</button>
-			<button class="btn btn-order-note">
+			<button class="btn btn-primary action-note action-hi">
 				<?php _e( 'Note', 'woocommerce-pos' ); ?> 
 			</button>
-			<button class="btn btn-order-discount">
+			<button class="btn btn-primary action-discount">
 				<?php _e( 'Discount', 'woocommerce-pos' ); ?> 
 			</button>
-			<button type="submit" class="btn btn-success btn-checkout" name="pos_checkout" id="pos_checkout" value="checkout">
+			<button type="submit" class="btn btn-success action-checkout">
 				<?php _e( 'Checkout', 'woocommerce-pos' ); ?> 
 			</button>
 		</td>
+	</tr>
+	<tr class="note">
+		<td colspan="5"><%= note %></td>
 	</tr>
 </script>

@@ -6,11 +6,10 @@ define(['backbone', 'collections/CartItems', 'views/CartItem'],
 		el: $('#cart-items'),
 		elEmpty: $('#cart-items').contents().clone(),
 
-		initialize: function(options) {
-			console.log(options);
+		initialize: function( options ) {
 
 			// init the CartItem collection 
-			this.collection = new CartItems();
+			this.collection = new CartItems( [], { cartId: 1 } );
 
 			// listen for changes
 			this.listenTo(this.collection, 'add', this.addOne);

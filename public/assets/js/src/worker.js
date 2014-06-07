@@ -34,20 +34,27 @@ addEventListener('message', function(e) {
 }, false);
 
 // getJSON helper function
-function getJSON(url, successHandler, errorHandler) {
-	var xhr = new XMLHttpRequest();
+var getJSON = function(url, successHandler, errorHandler) {
+	var xhr = typeof XMLHttpRequest != 'undefined'
+		? new XMLHttpRequest()
+		: new ActiveXObject('Microsoft.XMLHTTP');
 	xhr.open('get', url, true);
-	xhr.responseType = 'json';
-	xhr.onload = function() {
-		var status = xhr.status;
-		if (status === 200) {
-			successHandler && successHandler(xhr.response);
-		} else {
-			errorHandler && errorHandler(status);
+	xhr.onreadystatechange = function() {
+		var status;
+		var data;
+		// http://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
+		if (xhr.readyState == 4) { // `DONE`
+			status = xhr.status;
+			if (status == 200) {
+				data = JSON.parse(xhr.responseText);
+				successHandler && successHandler(data);
+			} else {
+				errorHandler && errorHandler(status);
+			}
 		}
 	};
 	xhr.send();
-}
+};
 
 var openDB = function() {
 	var openRequest = indexedDB.open( 'productsDB', 2 );
@@ -57,25 +64,26 @@ var openDB = function() {
 		// this should produce an error
 		// let the main app create the database
 
-        console.log('Upgrading products database');
-        // var thisDB = e.target.result;
+		console.log('Upgrading products database');
 
-        // if(!thisDB.objectStoreNames.contains( 'products' )) {
-        //     var objectStore = thisDB.createObjectStore( 'products', { keyPath: 'id' } );
-        //     objectStore.createIndex( 'titleIndex', 'title', { unique: false} );
-        // }	
-    };
+		// var thisDB = e.target.result;
 
-    openRequest.onsuccess = function(e) {
-        console.log('Opened products database');
-        db = e.target.result;
-    };
+		// if(!thisDB.objectStoreNames.contains( 'products' )) {
+		//		 var objectStore = thisDB.createObjectStore( 'products', { keyPath: 'id' } );
+		//		 objectStore.createIndex( 'titleIndex', 'title', { unique: false} );
+		// }	
+	};
 
-    openRequest.onerror = function(e) {
-    	self.postMessage({ 'status': 'error', 'msg': 'Error: Couls not open local database.' });
-        console.log('Error');
-        console.dir(e);
-    };
+	openRequest.onsuccess = function(e) {
+		console.log('Opened products database');
+		db = e.target.result;
+	};
+
+	openRequest.onerror = function(e) {
+		self.postMessage({ 'status': 'error', 'msg': 'Error: Couls not open local database.' });
+		console.log('Error');
+		console.dir(e);
+	};
 };
 
 var getUpdateCount = function(updated_at_min){

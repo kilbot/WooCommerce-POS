@@ -17,7 +17,7 @@ define(['backbone', 'backbone-indexeddb'],
 		}, {
 			version: 2,
 			migrate: function(transaction, next) {
-				var store = undefined;
+				var store;
 				if( !transaction.db.objectStoreNames.contains( 'products' ) ) {
 					store = transaction.db.createObjectStore( 'products', { keyPath: 'id' } );
 				}

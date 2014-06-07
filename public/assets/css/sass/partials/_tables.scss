@@ -161,10 +161,16 @@ table {
                 th, td {
                     text-align: right;
                     border-top: 1px solid $border-dark;
+                    border-bottom: 0;
                 }
                 &.working td {
                     background-color: rgba(#7db500, 0.3);
                     background-image: url(../../../assets/bg-working.gif);
+                }
+            }
+            tr.note {
+                th, td {
+                    border-top: 1px solid $border-dark;
                 }
             }
         }

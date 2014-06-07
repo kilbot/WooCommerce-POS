@@ -1,34 +1,33 @@
-define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views/CartTotals', 'accounting', 'backbone-localstorage'], 
-	function(_, Backbone, CartItem, CartTotals, CartTotalsView, accounting, LocalStorage){
+define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views/CartTotals', 'backbone-localstorage'], 
+	function(_, Backbone, CartItem, CartTotals, CartTotalsView, LocalStorage){
 
 	// the collection of cart items
 	var CartItems = Backbone.Collection.extend({
-		// url: pos_params.ajax_url,
-		localStorage: new Backbone.LocalStorage("cart"),
 		model: CartItem,
 		params: pos_params,
 
   		// debug
-		initialize: function() { 
+		initialize: function(models, options) { 
 			// this.on('all', function(e) { console.log("Cart Collection event: " + e); }); // debug
+	
+			// set up a new localstore
+			this.localStorage = new Backbone.LocalStorage( 'cart-' + options.cartId );
 
-			// set the accounting settings
-			accounting.settings = this.params.accounting;
-
-			// init the Cart Totals model ...
-			var cartTotals = new CartTotals();
-
-			// ... and pass it to the Cart Totals view
-			this.totals = new CartTotalsView({ model: cartTotals, cart: this });
+			// init the Cart Totals
+			this.cartTotals = new CartTotals({ id: options.cartId });
+			this.cartTotalsView = new CartTotalsView({ model: this.cartTotals, cart: this });
+			this.cartTotals.fetch();
 			
 			// update totals on change to the cart items
 			this.listenTo( this, 'add change remove reset', this.updateTotals );
+			this.listenTo( this.cartTotals, 'change:order_discount', this.updateTotals );
 		},
 
 		updateTotals: function() {
 			var line_totals 	= 0,
 				subtotal 		= 0,
 				cart_discount 	= 0,
+				order_discount 	= 0,
 				tax 			= 0,
 				total 			= 0,
 				itemized_tax 	= {},
@@ -38,8 +37,8 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 			if( this.length === 0 ) {
 
 				// clear the cart totals
-				this.totals.model.clear({ silent: true });
-				this.totals.$el.html('').addClass('empty');
+				this.cartTotals.set({ note: '', order_discount: 0 }, { silent: true });
+				this.cartTotalsView.$el.html('').addClass('empty');
 
 				// and bail
 				return;
@@ -53,9 +52,12 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 				tax = _( this.pluck('line_tax') ).reduce( function(memo, num){ return memo + num; }, 0 );			
 			}
 
+			// get order discount
+			order_discount = this.cartTotals.get('order_discount');
+
 			// totals calc
 			subtotal = line_totals + cart_discount;
-			total = line_totals + tax;
+			total = line_totals + tax -order_discount;
 
 			// special case: display cart with tax
 			if ( this.params.wc.tax_display_cart === 'incl' ) {
@@ -69,7 +71,7 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 					var tax_sum = 0;
 					tax_sum = _.reduce( _.compact( this.pluck( 'line_tax_' + key ) ), function(memo, num){ return memo + num; }, 0 );
 					if( tax_sum !== 0 ) {
-						itemized_tax[tax.label] = accounting.formatMoney(tax_sum);
+						itemized_tax[tax.label] = tax_sum;
 					}
 				}, this);
 			}
@@ -81,19 +83,18 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 
 			// create totals object
 			var totals = {
-				'subtotal'		: accounting.formatMoney(subtotal),
-				'cart_discount'	: accounting.formatMoney(cart_discount * -1),
-				'tax'			: accounting.formatMoney(tax),
-				'total'			: accounting.formatMoney(total),
+				'subtotal'		: subtotal,
+				'cart_discount'	: cart_discount,
+				'tax'			: tax,
+				'total'			: total,
 				'show_discount' : show_discount,
 				'show_tax' 		: show_tax,
 				'show_itemized'	: show_itemized,
-				'itemized_tax'	: itemized_tax,
-				'total_check' 	: accounting.formatNumber(total)
+				'itemized_tax'	: itemized_tax
 			};
 
 			// now, update the totals
-			this.totals.model.set( totals );
+			this.cartTotals.save( totals );
 
 		},
  

@@ -14,13 +14,10 @@ define(['underscore', 'backbone', 'accounting', 'autoGrowInput'],
       		"blur input"      	: "close"
 		},
 
-		initialize: function(options) {
+		initialize: function( options ) {
 
 			// set the accounting settings
 			accounting.settings = this.params.accounting;
-
-			// use the cart already initialized
-			this.cart = options.cart;
 
 			// listen for changes to CartItem model
 			this.listenTo( this.model, 'change', this.render );
@@ -59,7 +56,6 @@ define(['underscore', 'backbone', 'accounting', 'autoGrowInput'],
 				$(this).remove();
 			});
 			this.model.destroy();
-			// this.cart.remove( this.model );
 		},
 
 		change: function(e) {
@@ -80,7 +76,7 @@ define(['underscore', 'backbone', 'accounting', 'autoGrowInput'],
 						break;
 					}
 					if ( value ) {
-						this.model.set( { qty: value } );
+						this.model.save( { qty: value } );
 						input.removeClass('editing');
 					} else {
 						input.focus();

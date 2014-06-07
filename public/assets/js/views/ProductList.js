@@ -1,5 +1,5 @@
-define(['backbone', 'collections/Products', 'views/Product', 'views/ProductFilter', 'views/ProductPagination', 'collections/ProductsFallback', 'views/CartList'], 
-	function(Backbone, ProductsCollection, Product, ProductFilter, ProductPagination, ProductsFallbackCollection, CartList) {
+define(['backbone', 'collections/Products', 'views/Product', 'views/ProductFilter', 'views/ProductPagination', 'collections/ProductsFallback'], 
+	function(Backbone, ProductsCollection, Product, ProductFilter, ProductPagination, ProductsFallbackCollection) {
 
 	// paginated view for the entire list
 	var ProductList = Backbone.View.extend({
@@ -8,10 +8,10 @@ define(['backbone', 'collections/Products', 'views/Product', 'views/ProductFilte
 
 		initialize: function(options) {
 
-			// pubsub
+			// pass pubsub to subviews
 			this.pubSub = options.pubSub;
-			this.cart = new CartList({ pubSub: this.pubSub });
 
+			// init product collection, with fallback
 			if(Modernizr.indexeddb) {
 				this.collection = new ProductsCollection();
 			} else {
@@ -47,7 +47,7 @@ define(['backbone', 'collections/Products', 'views/Product', 'views/ProductFilte
 			this.collection.each(function( item ){
 
 				// Render each item model into this List view
-				var newProduct = new Product({ pubSub: this.pubSub, model : item, cart: this.cart });
+				var newProduct = new Product({ pubSub: this.pubSub, model: item });
 				this.$el.append( newProduct.render().el );
 
 			// Pass this list views context

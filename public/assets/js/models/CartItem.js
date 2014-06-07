@@ -3,7 +3,6 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 
   	// store the product data, add qty, total & discount by default
 	var CartItem = Backbone.Model.extend({
-		localStorage: new Backbone.LocalStorage("cart"),
 		defaults : {
 			'display_price'		: 0,
 			'display_total' 	: 0,

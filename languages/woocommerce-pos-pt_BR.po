@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS (beta) 0.2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-06-06 09:45:12+00:00\n"
+"POT-Creation-Date: 2014-06-07 16:58:38+00:00\n"
 "PO-Revision-Date: 2014-06-04 12:54+0800\n"
 "Last-Translator: \n"
 "Language-Team: Team Name <team@example.com>\n"
@@ -124,22 +124,27 @@ msgid "Cart Discount"
 msgstr "Desconto do carrinho"
 
 #: public/views/cart.php:70
+#, fuzzy
+msgid "Order Discount"
+msgstr "Desconto do carrinho"
+
+#: public/views/cart.php:74
 msgid "Order Total"
 msgstr "Total"
 
-#: public/views/cart.php:76
+#: public/views/cart.php:80
 msgid "Void"
 msgstr "Cancelar"
 
-#: public/views/cart.php:79
+#: public/views/cart.php:83
 msgid "Note"
 msgstr "Nota"
 
-#: public/views/cart.php:82
+#: public/views/cart.php:86
 msgid "Discount"
 msgstr "Desconto"
 
-#: public/views/cart.php:85
+#: public/views/cart.php:89
 msgid "Checkout"
 msgstr "Finalizar compra"
 

@@ -43,13 +43,16 @@ require.config({
 
 });
 
-require(['underscore', 'backbone', 'views/ProductList'], 
-	function(_, Backbone, ProductList ){
+require(['underscore', 'backbone', 'views/ProductList', 'views/CartList'], 
+	function(_, Backbone, ProductList, CartList ){
 
 	// create pubsub object
 	var pubSub = _.extend({},Backbone.Events);
 
 	// load the products
-	var productList = new ProductList({ pubSub: pubSub });
+	new ProductList({ pubSub: pubSub });
+
+	// init the cart
+	new CartList({ pubSub: pubSub });
 
 });

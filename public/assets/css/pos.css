@@ -1633,14 +1633,19 @@ table tfoot div.alert {
 #cart table tfoot tr.actions th, #cart table tfoot tr.actions td {
   text-align: right;
   border-top: 1px solid #d4d4d4;
+  border-bottom: 0;
 }
-/* line 165, sass/partials/_tables.scss */
+/* line 166, sass/partials/_tables.scss */
 #cart table tfoot tr.actions.working td {
   background-color: rgba(125, 181, 0, 0.3);
   background-image: url(../../../assets/bg-working.gif);
 }
+/* line 172, sass/partials/_tables.scss */
+#cart table tfoot tr.note th, #cart table tfoot tr.note td {
+  border-top: 1px solid #d4d4d4;
+}
 
-/* line 175, sass/partials/_tables.scss */
+/* line 181, sass/partials/_tables.scss */
 .modal table tfoot tr:last-of-type th, .modal table tfoot tr:last-of-type td {
   border-bottom: 0;
 }
