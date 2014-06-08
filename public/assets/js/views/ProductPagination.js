@@ -1,11 +1,10 @@
-define(['underscore', 'backbone', 'settings'], 
-	function(_, Backbone, Settings) {
+define(['underscore', 'backbone', 'settings', 'handlebars'], 
+	function(_, Backbone, Settings, Handlebars) {
 
 	// view handles the pagination and page info
 	var ProductPagination = Backbone.View.extend({
 		el: $('#pagination'),
-		template: _.template($('#tmpl-pagination').html()),
-		fallbackTemplate: _.template($('#tmpl-fallback-pagination').html()),
+		template: Handlebars.compile( $('#tmpl-pagination').html() ),
 
 		initialize: function() {
 
@@ -43,6 +42,9 @@ define(['underscore', 'backbone', 'settings'],
 					state.currentRecords = state.pageSize;
 				}
 			}
+
+			state.totalPages 	= state.totalPages ? state.totalPages : 1 ; 
+			state.totalRecords 	= state.totalRecords ? state.totalRecords : 0 ; 
 
 			// now render
 			this.$el.html( ( this.template( state ) ) );

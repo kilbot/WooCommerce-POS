@@ -24,55 +24,65 @@
 	</table>
 </div>
 
-<script type="text/template" id="tmpl-cart-item">
-	<td class="qty"><input type="number" value="<%= qty %>" size="10" step="any" data-id="qty"></td>
+<script type="text/x-handlebars-template" id="tmpl-cart-item">
+	<td class="qty"><input type="number" value="{{qty}}" size="10" step="any" data-id="qty"></td>
 	<td class="name">
-		<%= title %>
-		<%= typeof(variation_html) !== 'undefined' ? variation_html : '' %>
+		{{title}}
+		{{#with attributes}}
+			<dl>
+			{{#each this}}
+				<dt>{{name}}:</dt>
+				<dd>{{option}}</dd>
+			{{/each}}
+			</dl>
+		{{/with}}
 	</td>
-	<td class="price"><input type="type" value="<%= display_price %>" size="10" data-id="price" data-precise="<%= item_price %>"></td>
+	<td class="price"><input type="type" value="{{{number display_price}}}" size="10" data-id="price" data-precise="{{item_price}}"></td>
 	<td class="total">
-		<% if( total_discount !== 0 ) { %>
-			<del><%= display_total %></del>
-			<ins><%= discounted %></ins>
-		<% } else { %>
-			<%= display_total %>
-		<% } %>
+		{{#if discounted}}
+			<del>{{{money display_total}}}</del>
+			<ins>{{{money discounted}}}</ins>
+		{{else}}
+			{{{money display_total}}}
+		{{/if}}
 	</td>
 	<td class="remove"><a class="btn btn-circle btn-danger" href="#"><i class="fa fa-times"></i></a></td>
 </script>
 
-<script type="text/template" id="tmpl-cart-total">
+<script type="text/x-handlebars-template" id="tmpl-cart-total">
 	<tr>
 		<th colspan="3"><?php _e( 'Cart Subtotal', 'woocommerce-pos' ); ?>:</th>
-		<td colspan="2"><%= subtotal %></td>
+		<td colspan="2">{{{money subtotal}}}</td>
 	</tr>
-	<% if( show_discount ) { %>
+	{{#if show_cart_discount}}
 	<tr>
 		<th colspan="3"><?php _e( 'Cart Discount', 'woocommerce-pos' ); ?>:</th>
-		<td colspan="2"><%= cart_discount %></td>
+		<td colspan="2">{{{money cart_discount negative=true}}}</td>
 	</tr>
-	<% } %>
-	<% if( show_tax ) { %>
-		<% if( show_itemized) { _.each(itemized_tax, function(tax, label) { %>
-			<tr>
-				<th colspan="3"><%= label %>:</th>
-				<td colspan="2"><%= tax %></td>
-			</tr>
-		<% }); } else { %>
+	{{/if}}
+	{{#if show_tax}}
+		{{#if show_itemized}}
+			{{#each itemized_tax}}
+				<tr>
+					<th colspan="3">{{@key}}:</th>
+					<td colspan="2">{{{money this}}}</td>
+				</tr>
+			{{/each}}
+		{{else}}
 			<tr>
 				<th colspan="3"><?php echo esc_html( WC()->countries->tax_or_vat() ); ?>:</th>
-				<td colspan="2"><%= tax %></td>
+				<td colspan="2">{{{money tax}}}</td>
 			</tr>
-		<% } %>
-	<% } %>
-	<tr class="order-discount">
+		{{/if}}
+	{{/if}}
+	
+	<tr class="order-discount" {{#unless show_order_discount}}style="display:none"{{/unless}}>
 		<th colspan="3"><?php _e( 'Order Discount', 'woocommerce-pos' ); ?>:</th>
-		<td colspan="2"><%= order_discount %></td>
+		<td colspan="2" data-value="{{number order_discount}}">{{{money order_discount negative=true}}}</td>
 	</tr>
 	<tr>
 		<th colspan="3"><?php _e( 'Order Total', 'woocommerce-pos' ); ?>:</th>
-		<td colspan="2"><%= total %></td>
+		<td colspan="2">{{{money total}}}</td>
 	</tr>
 	<tr class="actions">
 		<td colspan="5">
@@ -90,7 +100,7 @@
 			</button>
 		</td>
 	</tr>
-	<tr class="note">
-		<td colspan="5"><%= note %></td>
+	<tr class="note" {{#unless note}}style="display:none"{{/unless}}>
+		<td colspan="5">{{note}}</td>
 	</tr>
 </script>

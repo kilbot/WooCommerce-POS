@@ -1,10 +1,10 @@
-define(['underscore', 'backbone', 'views/Checkout', 'accounting'], 
-	function(_, Backbone, Checkout, accounting) {
+define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 'selectText', 'views/Helpers'], 
+	function(_, Backbone, accounting, Checkout, Handlebars, selectText) {
 
 	// the view containing all the totals, and the action buttons
 	var CartTotalsView = Backbone.View.extend({
 		el: $('#cart-totals'),
-		template: _.template($('#tmpl-cart-total').html()),
+		template: Handlebars.compile( $('#tmpl-cart-total').html() ),
 		events: {
 			'click .actions'			: 'cartActions',
 			'click .note' 				: 'edit',
@@ -33,17 +33,8 @@ define(['underscore', 'backbone', 'views/Checkout', 'accounting'],
 			// clear #cart-totals to start
 			this.$el.removeClass('empty').html('');
 
-			// grab the model
-			var totals = this.model.toJSON();
-
-			totals.subtotal 		= accounting.formatMoney( totals.subtotal );
-			totals.cart_discount 	= accounting.formatMoney( totals.cart_discount * -1 );
-			totals.tax 				= accounting.formatMoney( totals.tax );
-			totals.total 			= accounting.formatMoney( totals.total );
-			totals.order_discount 	= accounting.formatMoney( totals.order_discount * -1 );
-
 			// render the totals
-			this.$el.html( ( this.template( totals ) ) );
+			this.$el.html( ( this.template( this.model.toJSON() ) ) );
 
 			return this;
 		},
@@ -53,8 +44,8 @@ define(['underscore', 'backbone', 'views/Checkout', 'accounting'],
 			// only interested in button clicks
 			// if( !$(e.target).is('button') ) { return; }
 
-   			var action = e.target.className.match(/\saction-([a-z]+)/);
-   			if( !action ) { return; }
+			var action = e.target.className.match(/\saction-([a-z]+)/);
+			if( !action ) { return; }
 
 			switch( action[1] ) {
 				case 'void':
@@ -63,21 +54,13 @@ define(['underscore', 'backbone', 'views/Checkout', 'accounting'],
 				break;
 				case 'note':
 					// toggle note row
-					var visible = this.$('.note').toggle().is(':visible');
-					if( visible ) {
-						this.$('.note').children('td').attr('contenteditable','true').focus();
-					} else {
-						this.$('.note').children('td').blur();
-					}
+					var td = this.$('.note').show().children('td');
+					td.attr('contenteditable','true').focus();
 				break;
 				case 'discount':
 					// toggle discount row
-					var visible = this.$('.order-discount').toggle().is(':visible');
-					if( visible ) {
-						this.$('.order-discount').children('td').attr('contenteditable','true').focus();
-					} else {
-						this.$('.order-discount').children('td').blur();
-					}
+					var td = this.$('.order-discount').show().children('td');
+					td.attr('contenteditable','true').text( td.data('value') ).selectText();
 				break;
 				case 'checkout':
 					// disable the checkout button while processing
@@ -97,7 +80,52 @@ define(['underscore', 'backbone', 'views/Checkout', 'accounting'],
 		},
 
 		edit: function(e) {
-			$(e.currentTarget).children('td').attr('contenteditable','true').focus();
+
+			var className = e.currentTarget.className;
+			if( !className ) { return; }
+
+			switch( className ) {
+				case 'note':
+					$(e.currentTarget).children('td').attr('contenteditable','true').focus();
+				break;
+				case 'order-discount':
+					var td = $(e.currentTarget).children('td');
+					td.attr('contenteditable','true').text( td.data('value') ).selectText();
+				break;
+			}
+		},
+
+		save: function(e) {
+			var className 	= e.currentTarget.className,
+				value 		= $(e.target).text();
+
+			// bail if no className
+			if( !className ) { return; }
+
+			switch( className ) {
+				case 'note':
+					
+					// validate and save
+					this.model.save({ note: value });
+				break;
+				case 'order-discount':
+
+					// if empty, go back to zero
+					if( value === '' ) { value = 0; } 
+
+					// unformat number
+					var decimal = accounting.unformat( value, accounting.settings.number.decimal );
+
+					// validate
+					if( isNaN( parseFloat( decimal ) ) ) {
+						$(e.target).focus(); 
+						return;
+					}
+
+					// save
+					this.model.save({ order_discount: decimal });
+				break;
+			}
 		},
 
 		saveOnEnter: function(e) {
@@ -107,34 +135,6 @@ define(['underscore', 'backbone', 'views/Checkout', 'accounting'],
 				e.preventDefault();
 				$(e.currentTarget).children('td').blur();
 			}
-		},
-
-		save: function(e) {
-
-			var className = e.currentTarget.className;
-   			if( !className ) { return; }
-
-   			var value = $(e.target).text();
-
-   			switch( className ) {
-   				case 'note':
-   					
-   					// validate and save
-					this.model.save({ note: value });
-   				break;
-   				case 'order-discount':
-
-   					value = parseFloat(value);
-   					if( isNaN( value ) ) { $(e.target).focus(); return; }
-
-   					// validate and save
-   					if(value === '') {
-   						$(e.currentTarget).hide();
-   					} else {
-   						this.model.save({ order_discount: value });
-   					}
-   				break;
-   			}
 		},
 
 	});

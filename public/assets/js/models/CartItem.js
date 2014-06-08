@@ -27,13 +27,13 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 
 			// set item price on init, this will trigger updateLineTotals()
 			if( this.get('display_price') === 0 ) {
-				this.set( { 'display_price': accounting.formatNumber( this.get('price') ) } );
+				this.set( { 'display_price': parseFloat( this.get('price') ) } );
 			}
 		},
 
 		updateLineTotals: function() {
 			var qty 		   = this.get('qty'),
-				display_price  = parseFloat( accounting.unformat( this.get('display_price'), accounting.settings.number.decimal ) ),
+				display_price  = this.get('display_price'),
 				original_price = parseFloat( this.get('price') ),
 				line_tax 	   = 0,
 				discount 	   = 0,
@@ -54,7 +54,7 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 				'item_discount'	: this.roundNum( discount ),
 				'total_discount': this.roundNum( discount * qty ),
 				'line_total'	: this.roundNum( item_price * qty ),
-				'display_total'	: accounting.formatNumber( display_total * qty )
+				'display_total'	: this.roundNum( display_total * qty ),
 			});
 		},
 

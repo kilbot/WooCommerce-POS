@@ -57,7 +57,7 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 
 			// totals calc
 			subtotal = line_totals + cart_discount;
-			total = line_totals + tax -order_discount;
+			total = line_totals + tax - order_discount;
 
 			// special case: display cart with tax
 			if ( this.params.wc.tax_display_cart === 'incl' ) {
@@ -77,20 +77,22 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 			}
 
 			// set some flags
-			var show_discount 	= cart_discount !== 0 ? true : false ;
-			var show_tax 		= tax !== 0 ? true : false ;
-			var show_itemized 	= !_.isEmpty(itemized_tax);
+			var show_cart_discount 	= cart_discount !== 0 ? true : false ;
+			var show_order_discount = order_discount !== 0 ? true : false ;
+			var show_tax 			= tax !== 0 ? true : false ;
+			var show_itemized 		= !_.isEmpty(itemized_tax);
 
 			// create totals object
 			var totals = {
-				'subtotal'		: subtotal,
-				'cart_discount'	: cart_discount,
-				'tax'			: tax,
-				'total'			: total,
-				'show_discount' : show_discount,
-				'show_tax' 		: show_tax,
-				'show_itemized'	: show_itemized,
-				'itemized_tax'	: itemized_tax
+				'subtotal'				: subtotal,
+				'cart_discount'			: cart_discount,
+				'tax'					: tax,
+				'total'					: total,
+				'show_cart_discount' 	: show_cart_discount,
+				'show_order_discount' 	: show_order_discount,
+				'show_tax' 				: show_tax,
+				'show_itemized'			: show_itemized,
+				'itemized_tax'			: itemized_tax
 			};
 
 			// now, update the totals

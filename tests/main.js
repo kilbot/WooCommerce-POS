@@ -12,24 +12,27 @@ require.config({
         'jasmine-html': '../../../tests/lib/jasmine-2.0.0/jasmine-html',
         'boot': '../../../tests/lib/jasmine-2.0.0/boot',
 
-		// Core Libraries
-		// 'jquery': '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
-		'jquery': '../../../bower_components/jquery/dist/jquery.min',
-		'underscore': '../../../bower_components/lodash/dist/lodash.min',
-		// 'underscore': 'bower_components/underscore/underscore',
-		'backbone': '../../../bower_components/backbone/backbone',
-		'accounting': '../../../bower_components/accounting/accounting.min',
-		
-		// Convenience methods for getting and setting User settings
-		'settings': '../../../public/assets/js/plugins/Settings',
+        // Core Libraries
+        'jquery': '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
+        // 'jquery': '../../../bower_components/jquery/dist/jquery.min',
+        'underscore': '../../../bower_components/lodash/dist/lodash.min',
+        // 'underscore': '../../../bower_components/underscore/underscore',
+        'backbone': '../../../bower_components/backbone/backbone',
+        'handlebars': '../../../bower_components/handlebars/handlebars.min',
+        'accounting': '../../../bower_components/accounting/accounting.min',
+        
+        // Convenience methods for getting and setting User settings
+        'settings': '../../../public/assets/js/src/Settings',
 
-		// Plugins
+        // Plugins
         'bootstrap-modal': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal',
-        'bootstrap-dropdown': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown',
-        'backbone-modal': '../../../bower_components/backbone.bootstrap-modal/src/backbone.bootstrap-modal',
         'backbone-indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
         'backbone-localstorage': '../../../bower_components/backbone.localStorage/backbone.localStorage',
         'backbone-paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
+
+        // Custom Plugins
+        'autoGrowInput': '../../../public/assets/js/src/jquery.autoGrowInput',
+        'selectText': '../../../public/assets/js/src/jquery.selectText',
         
         'text': '../../../tests/lib/text',
 		'json': '../../../tests/lib/json',
@@ -51,6 +54,13 @@ require.config({
         'boot': {
             deps: ['jasmine', 'jasmine-html'],
             exports: 'window.jasmineRequire'
+        },
+        handlebars: {
+            exports: 'Handlebars',
+            init: function() {
+                this.Handlebars = Handlebars;
+                return this.Handlebars;
+            }
         }
     }
 });

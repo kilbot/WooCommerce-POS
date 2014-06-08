@@ -362,7 +362,7 @@ class WooCommerce_POS {
 		if( $this->development ) {
 			$js_vars['worker'] 	= $this->plugin_url .'public/assets/js/src/worker.js';
 		} else {
-			$js_vars['worker'] 	= $this->plugin_url .'public/assets/js/worker.min.js';
+			$js_vars['worker'] 	= $this->plugin_url .'public/assets/js/worker.min.js?ver='. self::VERSION;
 		}
 
 		$pos_params = '
@@ -412,13 +412,13 @@ class WooCommerce_POS {
 				if( $this->development ) {
 					echo '<script data-main="'. $this->plugin_url .'public/assets/js/main" src="'. $this->plugin_url .'public/assets/js/require.js"></script>';
 				} else {
-					echo '<script src="'. $this->plugin_url .'public/assets/js/pos.min.js"></script>';
+					echo '<script src="'. $this->plugin_url .'public/assets/js/pos.min.js?ver='. self::VERSION .'"></script>';
 				}
 			}
 
 			// include support.js on support page
 			elseif ( $this->is_pos() == 'support' ) {
-				echo '<script src="'. $this->plugin_url .'public/assets/js/support.min.js"></script>';
+				echo '<script src="'. $this->plugin_url .'public/assets/js/support.min.js?ver='. self::VERSION .'"></script>';
 			}
 		}
 	}

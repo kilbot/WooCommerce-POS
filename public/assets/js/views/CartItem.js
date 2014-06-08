@@ -1,17 +1,17 @@
-define(['underscore', 'backbone', 'accounting', 'autoGrowInput'], 
-	function(_, Backbone, accounting, autoGrowInput) {
+define(['underscore', 'backbone', 'accounting', 'autoGrowInput', 'handlebars', 'views/Helpers'], 
+	function(_, Backbone, accounting, autoGrowInput, Handlebars) {
 
 	// view holds individual cart items
 	var CartItem = Backbone.View.extend({
 		tagName : 'tr',
-		template: _.template($('#tmpl-cart-item').html()),
+		template: Handlebars.compile( $('#tmpl-cart-item').html() ),
 		params: pos_params,
 
 		events: {
 			"click .remove a"	: "removeFromCart",
 			"click input"  		: "change",
 			"keypress input"  	: "updateOnEnter",
-      		"blur input"      	: "close"
+      		"blur input"      	: "save"
 		},
 
 		initialize: function( options ) {
@@ -27,19 +27,11 @@ define(['underscore', 'backbone', 'accounting', 'autoGrowInput'],
 
 			// grab the model
 			var item = this.model.toJSON();
-			var total = accounting.unformat( item.display_total, accounting.settings.number.decimal );
 
-			// add discounted if required
-			if( item.total_discount !== 0 ) {
-				item.discounted = accounting.formatMoney( total - item.total_discount );
+			// discounted
+			if( item.total_discount !== 0 ) { 
+				item.discounted = item.display_total - item.total_discount;
 			}
-
-			item.display_total = accounting.formatMoney( total );
-
-			// add 'ex. tax' if necessary
-			// if( wc.tax_display_cart === 'excl') {
-			// 	item.total = item.total + ' <small>(ex. tax)</small>';
-			// }
 
 			// render the single cart item
 			this.$el.html( ( this.template( item ) ) );
@@ -62,7 +54,7 @@ define(['underscore', 'backbone', 'accounting', 'autoGrowInput'],
 			 this.$(e.target).addClass('editing').focus().select();
 		},
 
-		close: function(e) {
+		save: function(e) {
 			var input 	= $(e.target),
 				key 	= input.data('id'),
 				value 	= input.val(),
@@ -85,8 +77,7 @@ define(['underscore', 'backbone', 'accounting', 'autoGrowInput'],
 
 				case 'price':
 					if( !isNaN( decimal ) ) {
-						value = accounting.formatNumber( decimal );
-						this.model.save( { display_price: value } );
+						this.model.save( { display_price: decimal } );
 					} else {
 						input.focus();
 					}
@@ -97,7 +88,7 @@ define(['underscore', 'backbone', 'accounting', 'autoGrowInput'],
 		updateOnEnter: function(e) {
 
 			// enter key triggers blur as well?
-			if (e.keyCode === 13) { this.close(e); }
+			if (e.keyCode === 13) { this.save(e); }
 		},
 
 	});

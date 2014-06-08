@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS (beta) v0.2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-06-07 16:58:38+00:00\n"
-"PO-Revision-Date: 2014-06-05 01:02:31+0000\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2014-06-08 17:13:45+00:00\n"
+"PO-Revision-Date: 2014-06-08 16:23:42+0000\n"
+"Last-Translator: javier <gestion@sugo.es>\n"
 "Language-Team: Team Name <team@example.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -12,8 +12,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 1.6.5\n"
-"X-Poedit-Language: \n"
-"X-Poedit-Country: \n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-Country: SPAIN\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
@@ -55,9 +55,8 @@ msgstr ""
 
 # @ woocommerce-pos
 #: includes/class-pos-support.php:75
-#, fuzzy
 msgid "WooCommerce Version"
-msgstr "WooCommerce POS"
+msgstr ""
 
 #: includes/class-pos-support.php:78
 msgid "WooCommerce >= 2.1 required"
@@ -108,7 +107,7 @@ msgstr "Pedido &ndash; %s"
 # @ woocommerce-pos
 #: public/views/cart.php:11 public/views/checkout.php:11
 msgid "Qty"
-msgstr "Cantidad"
+msgstr "Cant"
 
 # @ woocommerce-pos
 # @ woocommerce
@@ -125,7 +124,7 @@ msgstr "Precio"
 
 # @ woocommerce-pos
 # @ woocommerce
-#: public/views/cart.php:14 public/views/checkout.php:65
+#: public/views/cart.php:14 public/views/checkout.php:64
 #: public/views/receipt.php:5
 msgid "Total"
 msgstr "Total"
@@ -133,48 +132,47 @@ msgstr "Total"
 # @ woocommerce-pos
 #: public/views/cart.php:20
 msgid "Cart is empty"
-msgstr "Tu carrito esta vacío"
+msgstr "La cesta está vacía"
 
 # @ woocommerce-pos
-#: public/views/cart.php:47
+#: public/views/cart.php:54
 msgid "Cart Subtotal"
 msgstr "Subtotal del carrito"
 
 # @ woocommerce-pos
-#: public/views/cart.php:52 public/views/checkout.php:47
+#: public/views/cart.php:59 public/views/checkout.php:46
 msgid "Cart Discount"
-msgstr "Descuento en el carrito"
+msgstr "Descuento cesta"
 
 # @ woocommerce-pos
-#: public/views/cart.php:70
-#, fuzzy
+#: public/views/cart.php:80
 msgid "Order Discount"
-msgstr "Descuento en el carrito"
+msgstr "Descuento"
 
 # @ woocommerce-pos
-#: public/views/cart.php:74
+#: public/views/cart.php:84
 msgid "Order Total"
 msgstr "Total del Pedido"
 
 # @ woocommerce-pos
-#: public/views/cart.php:80
+#: public/views/cart.php:90
 msgid "Void"
 msgstr "Anular"
 
 # @ woocommerce-pos
-#: public/views/cart.php:83
+#: public/views/cart.php:93
 msgid "Note"
 msgstr "Notas"
 
 # @ woocommerce-pos
-#: public/views/cart.php:86
+#: public/views/cart.php:96
 msgid "Discount"
 msgstr "Descuento"
 
 # @ woocommerce-pos
-#: public/views/cart.php:89
+#: public/views/cart.php:99
 msgid "Checkout"
-msgstr "Finalizar compra"
+msgstr "Cobrar"
 
 # @ woocommerce-pos
 #: public/views/checkout.php:5
@@ -183,46 +181,41 @@ msgstr "Pedido"
 
 # @ woocommerce-pos
 #: public/views/checkout.php:32
-msgid "Export to PDF"
-msgstr "Exportación a PDF"
-
-# @ woocommerce-pos
-#: public/views/checkout.php:33
 msgid "Print"
 msgstr "Imprimir"
 
 # @ woocommerce-pos
-#: public/views/checkout.php:34
+#: public/views/checkout.php:33
 msgid "New Order"
 msgstr "Nuevo Pedido"
 
 # @ woocommerce-pos
-#: public/views/checkout.php:42
+#: public/views/checkout.php:41
 msgid "Subtotal"
 msgstr "Subtotal del carrito"
 
 # @ woocommerce-pos
-#: public/views/checkout.php:73
+#: public/views/checkout.php:72
 msgid "Total mismatch!"
-msgstr "Error!"
+msgstr "¡Desajuste en el Total!"
 
 # @ woocommerce-pos
-#: public/views/checkout.php:74
+#: public/views/checkout.php:73
 msgid ""
 "The total calculated at the POS is different to the total calculated by "
 "WooCommerce."
 msgstr ""
-"El total calculado en el punto de venta es diferente al total calculado por "
+"El total calculado por el Punto de Venta es diferente al total calculado por "
 "WooCommerce."
 
 # @ woocommerce-pos
-#: public/views/checkout.php:75
+#: public/views/checkout.php:74
 msgid ""
 "Please report this problem to <a href=\"mailto:support@woopos.com.au?"
 "subject=Total mismatch\">support</a> so we can look into it."
 msgstr ""
-"Por favor, informa de este problema a <a href=\"mailto:support@woopos.com.au?"
-"subject=Total mismatch\">ayuda</a> para que podamos examinarlo."
+"Por favor, informa de este problema al <a href=\"mailto:support@woopos.com."
+"au?subject=Total mismatch\">soporte</a> para que podamos examinarlo."
 
 #: public/views/footer.php:5
 msgid "Need help? Visit the <a href=\"%s\">support</a> page"
@@ -274,13 +267,15 @@ msgstr "Cerrar sesión"
 # @ woocommerce-pos
 #: public/views/modal/browser-support.php:3
 msgid "Your browser is not supported!"
-msgstr ""
+msgstr "¡Su navegador no está soportado!"
 
 # @ default
 #: public/views/modal/browser-support.php:7
 msgid ""
 "Sorry, it seems your browser is not currently supported by WooCommerce POS. "
 msgstr ""
+"Lo sentimos, parece que su navegador no es compatible actualmente con "
+"WooCommerce POS."
 
 # @ default
 #: public/views/modal/browser-support.php:8
@@ -288,6 +283,8 @@ msgid ""
 "If possible, please <a href=\"http://browsehappy.com/\">update your browser</"
 "a>, we recommend either Chrome or Firefox."
 msgstr ""
+"Si es posible, por favor, <a href=\"http://browsehappy.com/\"> actualize su "
+"navegador </a>, se recomienda ya sea Chrome o Firefox."
 
 # @ default
 #: public/views/modal/browser-support.php:11
@@ -295,11 +292,13 @@ msgid ""
 "If you believe you have received this message in error please contact "
 "support at <a href=\"http://woopos.com.au\">woopos.com.au</a>"
 msgstr ""
+"Si usted cree que ha recibido este mensaje por error, por favor póngase en "
+"contacto con soporte en <a href=\"http://woopos.com.au\"> woopos.com.au </ a>"
 
 # @ woocommerce-pos
 #: public/views/modal/browser-support.php:15
 msgid "Okay"
-msgstr "Bueno"
+msgstr "Ok"
 
 # @ woocommerce-pos
 #: public/views/products.php:9
@@ -309,39 +308,38 @@ msgstr "Búsqueda de productos"
 # @ woocommerce-pos
 #: public/views/products.php:24
 msgid "No products"
-msgstr "No se han encontrado Productos"
+msgstr "Sin productos"
 
 # @ woocommerce-pos
-#: public/views/products.php:46
+#: public/views/products.php:55
 msgid "Page %s of %s"
 msgstr "Página %s de %s"
 
 # @ woocommerce-pos
-#: public/views/products.php:47
+#: public/views/products.php:56
 msgid "Showing %s of %s products"
 msgstr "Mostrando %s de %s productos"
 
 # @ woocommerce-pos
-#: public/views/products.php:49
+#: public/views/products.php:58
 msgid "Last updated %s"
 msgstr "Última actualización %s"
 
 # @ woocommerce-pos
-#: public/views/products.php:50
+#: public/views/products.php:59
 msgid "sync"
 msgstr ""
 
 # @ woocommerce-pos
-#: public/views/products.php:50
+#: public/views/products.php:59
 msgid "clear"
 msgstr "limpiar"
 
 # @ woocommerce-pos
-#: public/views/products.php:52
+#: public/views/products.php:61
 msgid "Your browser does not support indexeddb"
 msgstr "Su navegador no soporta IndexedDB"
 
-# @ woocommerce
 #: public/views/receipt.php:35
 msgid "Download file%s"
 msgstr ""
@@ -408,7 +406,7 @@ msgstr ""
 #. Description of the plugin/theme
 msgid "A simple front-end for taking WooCommerce orders at the Point of Sale."
 msgstr ""
-"Una simple interfaz para tomar pedidos WooCommerce en el Punto de Venta."
+"Una interface sencilla para hacer pedidos WooCommerce en el Punto de Venta"
 
 # @ woocommerce-pos
 #. Author of the plugin/theme
@@ -427,10 +425,14 @@ msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
 
 # @ woocommerce-pos
-#: public/views/products.php:36
+#: public/views/products.php:44
 msgctxt "%d in stock"
 msgid "in stock"
 msgstr "en stock"
+
+# @ woocommerce-pos
+#~ msgid "Export to PDF"
+#~ msgstr "Exportación a PDF"
 
 # @ woocommerce-pos
 #~ msgid "WP Dashboard"

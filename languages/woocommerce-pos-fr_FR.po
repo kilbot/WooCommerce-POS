@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS (beta) 0.2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-06-07 16:58:38+00:00\n"
+"POT-Creation-Date: 2014-06-08 17:13:45+00:00\n"
 "PO-Revision-Date: 2014-06-03 23:19+0800\n"
 "Last-Translator: \n"
 "Language-Team: Team Name <team@example.com>\n"
@@ -44,9 +44,8 @@ msgid "There was a problem sending your email."
 msgstr ""
 
 #: includes/class-pos-support.php:75
-#, fuzzy
 msgid "WooCommerce Version"
-msgstr "WooCommerce POS"
+msgstr ""
 
 #: includes/class-pos-support.php:78
 msgid "WooCommerce >= 2.1 required"
@@ -107,7 +106,7 @@ msgstr "Produit"
 msgid "Price"
 msgstr "Prix"
 
-#: public/views/cart.php:14 public/views/checkout.php:65
+#: public/views/cart.php:14 public/views/checkout.php:64
 #: public/views/receipt.php:5
 msgid "Total"
 msgstr "Total"
@@ -116,36 +115,35 @@ msgstr "Total"
 msgid "Cart is empty"
 msgstr "Panier est vide"
 
-#: public/views/cart.php:47
+#: public/views/cart.php:54
 msgid "Cart Subtotal"
 msgstr "Sous-total"
 
-#: public/views/cart.php:52 public/views/checkout.php:47
+#: public/views/cart.php:59 public/views/checkout.php:46
 msgid "Cart Discount"
 msgstr "Remise Panier"
 
-#: public/views/cart.php:70
-#, fuzzy
+#: public/views/cart.php:80
 msgid "Order Discount"
-msgstr "Remise Panier"
+msgstr "Remise"
 
-#: public/views/cart.php:74
+#: public/views/cart.php:84
 msgid "Order Total"
 msgstr "Total"
 
-#: public/views/cart.php:80
+#: public/views/cart.php:90
 msgid "Void"
 msgstr "Annuler"
 
-#: public/views/cart.php:83
+#: public/views/cart.php:93
 msgid "Note"
 msgstr "Note"
 
-#: public/views/cart.php:86
+#: public/views/cart.php:96
 msgid "Discount"
 msgstr "Remise"
 
-#: public/views/cart.php:89
+#: public/views/cart.php:99
 msgid "Checkout"
 msgstr "Commande"
 
@@ -154,26 +152,22 @@ msgid "Order"
 msgstr "Commande"
 
 #: public/views/checkout.php:32
-msgid "Export to PDF"
-msgstr "Exporter au format PDF"
-
-#: public/views/checkout.php:33
 msgid "Print"
 msgstr "Imprimer"
 
-#: public/views/checkout.php:34
+#: public/views/checkout.php:33
 msgid "New Order"
 msgstr "Nouveau Commande"
 
-#: public/views/checkout.php:42
+#: public/views/checkout.php:41
 msgid "Subtotal"
 msgstr "Sous-total"
 
-#: public/views/checkout.php:73
+#: public/views/checkout.php:72
 msgid "Total mismatch!"
 msgstr "Error!"
 
-#: public/views/checkout.php:74
+#: public/views/checkout.php:73
 msgid ""
 "The total calculated at the POS is different to the total calculated by "
 "WooCommerce."
@@ -181,7 +175,7 @@ msgstr ""
 "Le total calculé au point de vente est différent du total calculé par "
 "WooCommerce."
 
-#: public/views/checkout.php:75
+#: public/views/checkout.php:74
 msgid ""
 "Please report this problem to <a href=\"mailto:support@woopos.com.au?"
 "subject=Total mismatch\">support</a> so we can look into it."
@@ -262,27 +256,27 @@ msgstr "Recherche de produits"
 msgid "No products"
 msgstr "Aucun produit trouvé"
 
-#: public/views/products.php:46
+#: public/views/products.php:55
 msgid "Page %s of %s"
 msgstr "Page %s sur %s"
 
-#: public/views/products.php:47
+#: public/views/products.php:56
 msgid "Showing %s of %s products"
 msgstr "Affichage de %s sur %s produits"
 
-#: public/views/products.php:49
+#: public/views/products.php:58
 msgid "Last updated %s"
 msgstr "Dernière mise à jour %s"
 
-#: public/views/products.php:50
+#: public/views/products.php:59
 msgid "sync"
 msgstr ""
 
-#: public/views/products.php:50
+#: public/views/products.php:59
 msgid "clear"
 msgstr "effacer"
 
-#: public/views/products.php:52
+#: public/views/products.php:61
 msgid "Your browser does not support indexeddb"
 msgstr "Votre navigateur ne supporte pas IndexedDB"
 
@@ -363,10 +357,13 @@ msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
 
-#: public/views/products.php:36
+#: public/views/products.php:44
 msgctxt "%d in stock"
 msgid "in stock"
 msgstr "en stock"
+
+#~ msgid "Export to PDF"
+#~ msgstr "Exporter au format PDF"
 
 #~ msgid "WP Dashboard"
 #~ msgstr "WP Tableau de bord"

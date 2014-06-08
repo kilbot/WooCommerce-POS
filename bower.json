@@ -16,7 +16,8 @@
     "jasmine": "~2.0.0",
     "fontawesome": "~4.1.0",
     "requirejs-plugins": "~1.0.2",
-    "backbone.localStorage": "~1.1.7"
+    "backbone.localStorage": "~1.1.7",
+    "handlebars": "~2.0.*"
   },
   "devDependencies": {}
 }

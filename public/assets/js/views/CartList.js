@@ -35,6 +35,8 @@ define(['backbone', 'collections/CartItems', 'views/CartItem'],
 
 		addToCart: function( model ) {
 
+			// TODO: check is cart is active or parked
+
 			// if product already exists in cart, increase qty
 			if( _( this.collection.pluck('id') ).contains( model.attributes.id ) ) {
 				this.collection.get( model.attributes.id ).quantity('increase');

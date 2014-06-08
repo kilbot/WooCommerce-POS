@@ -29,7 +29,6 @@
 				</tfoot>
 			</table>
 			<div class="modal-footer">
-				<button id="export" type="button" class="btn"><?php _e( 'Export to PDF', 'woocommerce-pos' ); ?></button>
 				<button id="print" type="button" class="btn"><?php _e( 'Print', 'woocommerce-pos' ); ?></button>
 				<button id="close" type="button" class="btn btn-primary"><?php _e( 'New Order', 'woocommerce-pos' ); ?></button>
 			</div>

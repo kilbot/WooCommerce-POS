@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS (beta) 0.2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-06-07 16:58:38+00:00\n"
+"POT-Creation-Date: 2014-06-08 17:13:45+00:00\n"
 "PO-Revision-Date: 2014-06-04 12:54+0800\n"
 "Last-Translator: \n"
 "Language-Team: Team Name <team@example.com>\n"
@@ -106,7 +106,7 @@ msgstr "Producto"
 msgid "Price"
 msgstr "Preço"
 
-#: public/views/cart.php:14 public/views/checkout.php:65
+#: public/views/cart.php:14 public/views/checkout.php:64
 #: public/views/receipt.php:5
 msgid "Total"
 msgstr "Total"
@@ -115,36 +115,35 @@ msgstr "Total"
 msgid "Cart is empty"
 msgstr "O carrinho está vazio"
 
-#: public/views/cart.php:47
+#: public/views/cart.php:54
 msgid "Cart Subtotal"
 msgstr "Subtotal"
 
-#: public/views/cart.php:52 public/views/checkout.php:47
+#: public/views/cart.php:59 public/views/checkout.php:46
 msgid "Cart Discount"
 msgstr "Desconto do carrinho"
 
-#: public/views/cart.php:70
-#, fuzzy
+#: public/views/cart.php:80
 msgid "Order Discount"
-msgstr "Desconto do carrinho"
+msgstr "Desconto"
 
-#: public/views/cart.php:74
+#: public/views/cart.php:84
 msgid "Order Total"
 msgstr "Total"
 
-#: public/views/cart.php:80
+#: public/views/cart.php:90
 msgid "Void"
 msgstr "Cancelar"
 
-#: public/views/cart.php:83
+#: public/views/cart.php:93
 msgid "Note"
 msgstr "Nota"
 
-#: public/views/cart.php:86
+#: public/views/cart.php:96
 msgid "Discount"
 msgstr "Desconto"
 
-#: public/views/cart.php:89
+#: public/views/cart.php:99
 msgid "Checkout"
 msgstr "Finalizar compra"
 
@@ -153,26 +152,22 @@ msgid "Order"
 msgstr "Pedido"
 
 #: public/views/checkout.php:32
-msgid "Export to PDF"
-msgstr "Exportar para PDF"
-
-#: public/views/checkout.php:33
 msgid "Print"
 msgstr "Impressão"
 
-#: public/views/checkout.php:34
+#: public/views/checkout.php:33
 msgid "New Order"
 msgstr "Novo Pedido"
 
-#: public/views/checkout.php:42
+#: public/views/checkout.php:41
 msgid "Subtotal"
 msgstr "Subtotal"
 
-#: public/views/checkout.php:73
+#: public/views/checkout.php:72
 msgid "Total mismatch!"
 msgstr "Erro!"
 
-#: public/views/checkout.php:74
+#: public/views/checkout.php:73
 msgid ""
 "The total calculated at the POS is different to the total calculated by "
 "WooCommerce."
@@ -180,7 +175,7 @@ msgstr ""
 "O total calculado no ponto de venda é diferente do total calculado pelo "
 "WooCommerce."
 
-#: public/views/checkout.php:75
+#: public/views/checkout.php:74
 msgid ""
 "Please report this problem to <a href=\"mailto:support@woopos.com.au?"
 "subject=Total mismatch\">support</a> so we can look into it."
@@ -261,27 +256,27 @@ msgstr "Procure por produtos"
 msgid "No products"
 msgstr "Sem produtos encontrados"
 
-#: public/views/products.php:46
+#: public/views/products.php:55
 msgid "Page %s of %s"
 msgstr "Página %s de %s"
 
-#: public/views/products.php:47
+#: public/views/products.php:56
 msgid "Showing %s of %s products"
 msgstr "Mostrando %s de %s produtos"
 
-#: public/views/products.php:49
+#: public/views/products.php:58
 msgid "Last updated %s"
 msgstr "Atualizado %s"
 
-#: public/views/products.php:50
+#: public/views/products.php:59
 msgid "sync"
 msgstr ""
 
-#: public/views/products.php:50
+#: public/views/products.php:59
 msgid "clear"
 msgstr "excluir"
 
-#: public/views/products.php:52
+#: public/views/products.php:61
 msgid "Your browser does not support indexeddb"
 msgstr "Seu navegador não suporta IndexedDB"
 
@@ -362,7 +357,10 @@ msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
 
-#: public/views/products.php:36
+#: public/views/products.php:44
 msgctxt "%d in stock"
 msgid "in stock"
 msgstr "em estoque"
+
+#~ msgid "Export to PDF"
+#~ msgstr "Exportar para PDF"

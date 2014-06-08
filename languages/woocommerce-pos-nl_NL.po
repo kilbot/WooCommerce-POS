@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS (beta) 0.2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-06-07 16:58:38+00:00\n"
+"POT-Creation-Date: 2014-06-08 17:13:45+00:00\n"
 "PO-Revision-Date: 2014-06-03 23:14+0800\n"
 "Last-Translator: \n"
 "Language-Team: Team Name <team@example.com>\n"
@@ -44,9 +44,8 @@ msgid "There was a problem sending your email."
 msgstr ""
 
 #: includes/class-pos-support.php:75
-#, fuzzy
 msgid "WooCommerce Version"
-msgstr "WooCommerce POS"
+msgstr ""
 
 #: includes/class-pos-support.php:78
 msgid "WooCommerce >= 2.1 required"
@@ -107,7 +106,7 @@ msgstr "Product"
 msgid "Price"
 msgstr "Prijs"
 
-#: public/views/cart.php:14 public/views/checkout.php:65
+#: public/views/cart.php:14 public/views/checkout.php:64
 #: public/views/receipt.php:5
 msgid "Total"
 msgstr "Totaal"
@@ -116,36 +115,35 @@ msgstr "Totaal"
 msgid "Cart is empty"
 msgstr "Winkelwagen is momenteel leeg"
 
-#: public/views/cart.php:47
+#: public/views/cart.php:54
 msgid "Cart Subtotal"
 msgstr "Winkelwagen Subtotaal"
 
-#: public/views/cart.php:52 public/views/checkout.php:47
+#: public/views/cart.php:59 public/views/checkout.php:46
 msgid "Cart Discount"
 msgstr "Winkelwagen Korting"
 
-#: public/views/cart.php:70
-#, fuzzy
+#: public/views/cart.php:80
 msgid "Order Discount"
-msgstr "Winkelwagen Korting"
+msgstr "Korting"
 
-#: public/views/cart.php:74
+#: public/views/cart.php:84
 msgid "Order Total"
 msgstr "Bestelling Totaal"
 
-#: public/views/cart.php:80
+#: public/views/cart.php:90
 msgid "Void"
 msgstr "Verwijder"
 
-#: public/views/cart.php:83
+#: public/views/cart.php:93
 msgid "Note"
 msgstr "Opmerking"
 
-#: public/views/cart.php:86
+#: public/views/cart.php:96
 msgid "Discount"
 msgstr "Korting"
 
-#: public/views/cart.php:89
+#: public/views/cart.php:99
 msgid "Checkout"
 msgstr "Afrekenen"
 
@@ -154,33 +152,29 @@ msgid "Order"
 msgstr "Bestelling"
 
 #: public/views/checkout.php:32
-msgid "Export to PDF"
-msgstr "Exporteer PDF"
-
-#: public/views/checkout.php:33
 msgid "Print"
 msgstr "Afdrukken"
 
-#: public/views/checkout.php:34
+#: public/views/checkout.php:33
 msgid "New Order"
 msgstr "Nieuwe Bestelling"
 
-#: public/views/checkout.php:42
+#: public/views/checkout.php:41
 msgid "Subtotal"
 msgstr "Subtotaal"
 
-#: public/views/checkout.php:73
+#: public/views/checkout.php:72
 msgid "Total mismatch!"
 msgstr ""
 
-#: public/views/checkout.php:74
+#: public/views/checkout.php:73
 msgid ""
 "The total calculated at the POS is different to the total calculated by "
 "WooCommerce."
 msgstr ""
 "De totale berekend op het POS verschilt van de totale berekendWooCommerce."
 
-#: public/views/checkout.php:75
+#: public/views/checkout.php:74
 msgid ""
 "Please report this problem to <a href=\"mailto:support@woopos.com.au?"
 "subject=Total mismatch\">support</a> so we can look into it."
@@ -261,27 +255,27 @@ msgstr "Zoek naar een product"
 msgid "No products"
 msgstr "Geen producten gevonden"
 
-#: public/views/products.php:46
+#: public/views/products.php:55
 msgid "Page %s of %s"
 msgstr "Pagina %s van %s"
 
-#: public/views/products.php:47
+#: public/views/products.php:56
 msgid "Showing %s of %s products"
 msgstr "Toont %s van %s producten"
 
-#: public/views/products.php:49
+#: public/views/products.php:58
 msgid "Last updated %s"
 msgstr "Laatst bijgewerkt %s"
 
-#: public/views/products.php:50
+#: public/views/products.php:59
 msgid "sync"
 msgstr ""
 
-#: public/views/products.php:50
+#: public/views/products.php:59
 msgid "clear"
 msgstr "uitwissen"
 
-#: public/views/products.php:52
+#: public/views/products.php:61
 msgid "Your browser does not support indexeddb"
 msgstr "Uw browser ondersteunt geen IndexedDB"
 
@@ -362,7 +356,10 @@ msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
 
-#: public/views/products.php:36
+#: public/views/products.php:44
 msgctxt "%d in stock"
 msgid "in stock"
 msgstr "op voorraad"
+
+#~ msgid "Export to PDF"
+#~ msgstr "Exporteer PDF"

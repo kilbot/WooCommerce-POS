@@ -1,10 +1,10 @@
-define(['underscore', 'backbone'], 
-	function(_, Backbone) {
+define(['underscore', 'backbone', 'handlebars'], 
+	function(_, Backbone, Handlebars) {
 
 	// view for individual products
 	var Product = Backbone.View.extend({
 		tagName : 'tr',
-		template: _.template($('#tmpl-product').html()),
+		template: Handlebars.compile( $('#tmpl-product').html() ),
 
 		events: {
 			'click a.add-to-cart'	: 'add',
