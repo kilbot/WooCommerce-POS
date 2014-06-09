@@ -69,6 +69,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: Void order
 * New: Basic translations for nl_NL, fr_FR, es_ES and pt_BR. Corrections can be submitted to [GitHub](https://github.com/kilbot/WooCommerce-POS/issues) or via email [support@woopos.com.au](mailto:support@woopos.com.au). Thanks Javier Gómez for the Spanish translation!
 * Fix: fixed bug for product_variations which effects WooCommerce < 2.1.7
+* Fix: fixed rounding bug for comma decimals
 * Fix: https://github.com/kilbot/WooCommerce-POS/issues/7
 
 = 0.2.13 =

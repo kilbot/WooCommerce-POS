@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS (beta) v0.2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-06-08 17:13:45+00:00\n"
+"POT-Creation-Date: 2014-06-09 07:48:09+00:00\n"
 "PO-Revision-Date: 2014-06-08 16:23:42+0000\n"
 "Last-Translator: javier <gestion@sugo.es>\n"
 "Language-Team: Team Name <team@example.com>\n"
@@ -105,27 +105,26 @@ msgid "Order &ndash; %s"
 msgstr "Pedido &ndash; %s"
 
 # @ woocommerce-pos
-#: public/views/cart.php:11 public/views/checkout.php:11
+#: public/views/cart.php:11 public/views/checkout.php:13
 msgid "Qty"
 msgstr "Cant"
 
 # @ woocommerce-pos
 # @ woocommerce
-#: public/views/cart.php:12 public/views/checkout.php:10
+#: public/views/cart.php:12 public/views/checkout.php:12
 #: public/views/products.php:17 public/views/receipt.php:4
 msgid "Product"
 msgstr "Producto"
 
 # @ woocommerce-pos
-#: public/views/cart.php:13 public/views/checkout.php:12
+#: public/views/cart.php:13 public/views/checkout.php:14
 #: public/views/products.php:18
 msgid "Price"
 msgstr "Precio"
 
 # @ woocommerce-pos
 # @ woocommerce
-#: public/views/cart.php:14 public/views/checkout.php:64
-#: public/views/receipt.php:5
+#: public/views/cart.php:14 public/views/receipt.php:5
 msgid "Total"
 msgstr "Total"
 
@@ -135,22 +134,22 @@ msgid "Cart is empty"
 msgstr "La cesta está vacía"
 
 # @ woocommerce-pos
-#: public/views/cart.php:54
+#: public/views/cart.php:54 public/views/checkout.php:45
 msgid "Cart Subtotal"
 msgstr "Subtotal del carrito"
 
 # @ woocommerce-pos
-#: public/views/cart.php:59 public/views/checkout.php:46
+#: public/views/cart.php:59 public/views/checkout.php:50
 msgid "Cart Discount"
 msgstr "Descuento cesta"
 
 # @ woocommerce-pos
-#: public/views/cart.php:80
+#: public/views/cart.php:80 public/views/checkout.php:71
 msgid "Order Discount"
 msgstr "Descuento"
 
 # @ woocommerce-pos
-#: public/views/cart.php:84
+#: public/views/cart.php:84 public/views/checkout.php:75
 msgid "Order Total"
 msgstr "Total del Pedido"
 
@@ -175,32 +174,17 @@ msgid "Checkout"
 msgstr "Cobrar"
 
 # @ woocommerce-pos
-#: public/views/checkout.php:5
+#: public/views/checkout.php:6
 msgid "Order"
 msgstr "Pedido"
 
 # @ woocommerce-pos
-#: public/views/checkout.php:32
-msgid "Print"
-msgstr "Imprimir"
-
-# @ woocommerce-pos
-#: public/views/checkout.php:33
-msgid "New Order"
-msgstr "Nuevo Pedido"
-
-# @ woocommerce-pos
-#: public/views/checkout.php:41
-msgid "Subtotal"
-msgstr "Subtotal del carrito"
-
-# @ woocommerce-pos
-#: public/views/checkout.php:72
+#: public/views/checkout.php:86
 msgid "Total mismatch!"
 msgstr "¡Desajuste en el Total!"
 
 # @ woocommerce-pos
-#: public/views/checkout.php:73
+#: public/views/checkout.php:87
 msgid ""
 "The total calculated at the POS is different to the total calculated by "
 "WooCommerce."
@@ -209,13 +193,39 @@ msgstr ""
 "WooCommerce."
 
 # @ woocommerce-pos
-#: public/views/checkout.php:74
+#: public/views/checkout.php:88
 msgid ""
 "Please report this problem to <a href=\"mailto:support@woopos.com.au?"
 "subject=Total mismatch\">support</a> so we can look into it."
 msgstr ""
 "Por favor, informa de este problema al <a href=\"mailto:support@woopos.com."
 "au?subject=Total mismatch\">soporte</a> para que podamos examinarlo."
+
+# @ woocommerce-pos
+#: public/views/checkout.php:97
+msgid "Print"
+msgstr "Imprimir"
+
+# @ woocommerce-pos
+#: public/views/checkout.php:98
+msgid "New Order"
+msgstr "Nuevo Pedido"
+
+#: public/views/checkout.php:102
+msgid "Payment"
+msgstr ""
+
+#: public/views/checkout.php:106
+msgid "To Pay"
+msgstr ""
+
+#: public/views/checkout.php:127
+msgid "Return to Sale"
+msgstr ""
+
+#: public/views/checkout.php:128
+msgid "Mark as Paid"
+msgstr ""
 
 #: public/views/footer.php:5
 msgid "Need help? Visit the <a href=\"%s\">support</a> page"
@@ -307,7 +317,8 @@ msgstr "Búsqueda de productos"
 
 # @ woocommerce-pos
 #: public/views/products.php:24
-msgid "No products"
+#, fuzzy
+msgid "No products found"
 msgstr "Sin productos"
 
 # @ woocommerce-pos
@@ -429,6 +440,10 @@ msgstr ""
 msgctxt "%d in stock"
 msgid "in stock"
 msgstr "en stock"
+
+# @ woocommerce-pos
+#~ msgid "Subtotal"
+#~ msgstr "Subtotal del carrito"
 
 # @ woocommerce-pos
 #~ msgid "Export to PDF"

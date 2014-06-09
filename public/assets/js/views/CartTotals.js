@@ -6,7 +6,7 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 		el: $('#cart-totals'),
 		template: Handlebars.compile( $('#tmpl-cart-total').html() ),
 		events: {
-			'click .actions'			: 'cartActions',
+			'click .actions'			: 'actions',
 			'click .note' 				: 'edit',
 			'click .order-discount' 	: 'edit',
 			'keypress .note'			: 'saveOnEnter',
@@ -39,7 +39,7 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 			return this;
 		},
 
-		cartActions: function(e) {
+		actions: function(e) {
 
 			// only interested in button clicks
 			// if( !$(e.target).is('button') ) { return; }
@@ -67,14 +67,8 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 					$(e.target).attr('disabled','disabled');
 					$('#cart .actions').addClass('working');
 
-					// pick the data from the cart items we are going to send
-					var items = this.cart.map( function( model ) {
-						return _.pick( model.toJSON(), ['id', 'qty', 'line_total'] );  
-					});
-
 					// init new checkout
 					var checkout = new Checkout({ cart: this.cart, totals: this.model });
-					checkout.process(items);
 				break;
 			}
 		},

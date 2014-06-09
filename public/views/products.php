@@ -21,7 +21,7 @@
 		</thead>
 		<tbody id="product-list" class="empty">
 			<tr>
-				<td colspan="4"><?php _e( 'No products', 'woocommerce-pos' ); ?></td>
+				<td colspan="4"><?php _e( 'No products found', 'woocommerce-pos' ); ?></td>
 			</tr>
 		</tbody>
 	</table>

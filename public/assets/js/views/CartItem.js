@@ -28,11 +28,6 @@ define(['underscore', 'backbone', 'accounting', 'autoGrowInput', 'handlebars', '
 			// grab the model
 			var item = this.model.toJSON();
 
-			// discounted
-			if( item.total_discount !== 0 ) { 
-				item.discounted = item.display_total - item.total_discount;
-			}
-
 			// render the single cart item
 			this.$el.html( ( this.template( item ) ) );
 

@@ -54,9 +54,17 @@ class WooCommerce_POS_Checkout {
 		// add items to order
 		$total = 0;
 		$cart_discount = 0;
+		$order_discount = 0;
+		$note = false;
 		foreach ($_REQUEST['cart'] as $key => $item) {
 			$this->add_order_item( $order_id, $item['id'], $item['qty'], $item['line_total'] );
 		}
+
+		if( isset( $_REQUEST['order_discount'] ) && $_REQUEST['order_discount'] !== '' )
+			$order_discount = $_REQUEST['order_discount'];
+
+		if( isset( $_REQUEST['note'] ) && $_REQUEST['note'] !== '' )
+			$note = wp_kses_post( trim( stripslashes( $_REQUEST['note'] ) ) );
 
 		// now calculate the taxes
 		$this->calc_line_taxes( $order_id );
@@ -64,10 +72,10 @@ class WooCommerce_POS_Checkout {
 
 		// now calculate the final totals & update the post_meta
 		$cart_discount = ( $this->subtotal_ex_tax + $this->subtotal_tax ) - ( $this->total_ex_tax + $this->total_tax );
-		$order_total = $this->total_ex_tax + $this->total_tax;
+		$order_total = $this->total_ex_tax + $this->total_tax - $order_discount;
 
 		update_post_meta( $order_id, '_order_shipping', 		wc_format_decimal( 0 ) );
-		update_post_meta( $order_id, '_order_discount', 		wc_format_decimal( 0 ) );
+		update_post_meta( $order_id, '_order_discount', 		wc_format_decimal( $order_discount ) );
 		update_post_meta( $order_id, '_cart_discount', 			wc_format_decimal( $cart_discount ) );
 		update_post_meta( $order_id, '_order_tax', 				wc_format_decimal( $tax_total ) );
 		update_post_meta( $order_id, '_order_shipping_tax', 	wc_format_decimal( 0 ) );
@@ -79,8 +87,12 @@ class WooCommerce_POS_Checkout {
 		update_post_meta( $order_id, '_prices_include_tax', 	get_option( 'woocommerce_prices_include_tax' ) );
 
 		// now final clean up before we hand off the order_id
-		$order = new WC_Order( $order_id );                     
+		$order = new WC_Order( $order_id );
+		$order->payment_complete();                 
 		$order->update_status( 'completed', 'POS Transaction completed.' );
+		if($note) {
+			$order->add_order_note( $note, false );
+		}
 
 		$result = array(
 			'order' => array(

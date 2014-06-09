@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS (beta) 0.2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-06-08 17:13:45+00:00\n"
+"POT-Creation-Date: 2014-06-09 07:48:09+00:00\n"
 "PO-Revision-Date: 2014-06-03 23:19+0800\n"
 "Last-Translator: \n"
 "Language-Team: Team Name <team@example.com>\n"
@@ -92,22 +92,21 @@ msgstr ""
 msgid "Order &ndash; %s"
 msgstr "Commande &ndash; %s"
 
-#: public/views/cart.php:11 public/views/checkout.php:11
+#: public/views/cart.php:11 public/views/checkout.php:13
 msgid "Qty"
 msgstr "Qté"
 
-#: public/views/cart.php:12 public/views/checkout.php:10
+#: public/views/cart.php:12 public/views/checkout.php:12
 #: public/views/products.php:17 public/views/receipt.php:4
 msgid "Product"
 msgstr "Produit"
 
-#: public/views/cart.php:13 public/views/checkout.php:12
+#: public/views/cart.php:13 public/views/checkout.php:14
 #: public/views/products.php:18
 msgid "Price"
 msgstr "Prix"
 
-#: public/views/cart.php:14 public/views/checkout.php:64
-#: public/views/receipt.php:5
+#: public/views/cart.php:14 public/views/receipt.php:5
 msgid "Total"
 msgstr "Total"
 
@@ -115,19 +114,19 @@ msgstr "Total"
 msgid "Cart is empty"
 msgstr "Panier est vide"
 
-#: public/views/cart.php:54
+#: public/views/cart.php:54 public/views/checkout.php:45
 msgid "Cart Subtotal"
 msgstr "Sous-total"
 
-#: public/views/cart.php:59 public/views/checkout.php:46
+#: public/views/cart.php:59 public/views/checkout.php:50
 msgid "Cart Discount"
 msgstr "Remise Panier"
 
-#: public/views/cart.php:80
+#: public/views/cart.php:80 public/views/checkout.php:71
 msgid "Order Discount"
 msgstr "Remise"
 
-#: public/views/cart.php:84
+#: public/views/cart.php:84 public/views/checkout.php:75
 msgid "Order Total"
 msgstr "Total"
 
@@ -147,27 +146,15 @@ msgstr "Remise"
 msgid "Checkout"
 msgstr "Commande"
 
-#: public/views/checkout.php:5
+#: public/views/checkout.php:6
 msgid "Order"
 msgstr "Commande"
 
-#: public/views/checkout.php:32
-msgid "Print"
-msgstr "Imprimer"
-
-#: public/views/checkout.php:33
-msgid "New Order"
-msgstr "Nouveau Commande"
-
-#: public/views/checkout.php:41
-msgid "Subtotal"
-msgstr "Sous-total"
-
-#: public/views/checkout.php:72
+#: public/views/checkout.php:86
 msgid "Total mismatch!"
 msgstr "Error!"
 
-#: public/views/checkout.php:73
+#: public/views/checkout.php:87
 msgid ""
 "The total calculated at the POS is different to the total calculated by "
 "WooCommerce."
@@ -175,13 +162,37 @@ msgstr ""
 "Le total calculé au point de vente est différent du total calculé par "
 "WooCommerce."
 
-#: public/views/checkout.php:74
+#: public/views/checkout.php:88
 msgid ""
 "Please report this problem to <a href=\"mailto:support@woopos.com.au?"
 "subject=Total mismatch\">support</a> so we can look into it."
 msgstr ""
 "S'il vous plaît signaler ce problème à <a href=\"mailto:support@woopos.com."
 "au?subject=Total mismatch\">soutien</a> afin que nous puissions l'examiner."
+
+#: public/views/checkout.php:97
+msgid "Print"
+msgstr "Imprimer"
+
+#: public/views/checkout.php:98
+msgid "New Order"
+msgstr "Nouveau Commande"
+
+#: public/views/checkout.php:102
+msgid "Payment"
+msgstr ""
+
+#: public/views/checkout.php:106
+msgid "To Pay"
+msgstr ""
+
+#: public/views/checkout.php:127
+msgid "Return to Sale"
+msgstr ""
+
+#: public/views/checkout.php:128
+msgid "Mark as Paid"
+msgstr ""
 
 #: public/views/footer.php:5
 msgid "Need help? Visit the <a href=\"%s\">support</a> page"
@@ -253,7 +264,8 @@ msgid "Search for products"
 msgstr "Recherche de produits"
 
 #: public/views/products.php:24
-msgid "No products"
+#, fuzzy
+msgid "No products found"
 msgstr "Aucun produit trouvé"
 
 #: public/views/products.php:55
@@ -361,6 +373,9 @@ msgstr ""
 msgctxt "%d in stock"
 msgid "in stock"
 msgstr "en stock"
+
+#~ msgid "Subtotal"
+#~ msgstr "Sous-total"
 
 #~ msgid "Export to PDF"
 #~ msgstr "Exporter au format PDF"

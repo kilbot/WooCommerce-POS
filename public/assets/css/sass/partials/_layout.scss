@@ -23,9 +23,9 @@ $desktop-wide 		: 1500px;
 	padding: gutter();
 }
 .col {
-	background: $panel-background;
+	background: $content-background;
 	// display: flex;
-	border: 1px solid $panel-border;
+	border: 1px solid $border-light;
 	@include box-shadow(0 1px 1px rgba(black, 0.04));
 	&.leftcol {
 		margin-bottom: gutter();
@@ -34,9 +34,7 @@ $desktop-wide 		: 1500px;
 		line-height: 1;
 		padding: $vspacing/2;
 		border-bottom: 1px solid $border-dark;
-	}
-	.panel-body {
-		padding: $vspacing/2;
+		margin: 0;
 	}
 }
 
@@ -73,7 +71,7 @@ $desktop-wide 		: 1500px;
 	bottom: 0px;
 	width: 100%;
 	line-height: $vspacing*1.5;
-	background: $panel-background;
+	background: $content-background;
 	border-top: 1px solid $border-dark;
 	a, .fa-support {
 		color: $brand-danger;
@@ -90,6 +88,7 @@ header {
 		text-align: center;
 		clear: none;
 		line-height: $vspacing*1.5;
+		margin: 0;
 	}
 	// all header links
 	a {

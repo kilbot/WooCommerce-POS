@@ -50,12 +50,12 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-total">
-	<tr>
+	<tr class="subtotal">
 		<th colspan="3"><?php _e( 'Cart Subtotal', 'woocommerce-pos' ); ?>:</th>
 		<td colspan="2">{{{money subtotal}}}</td>
 	</tr>
 	{{#if show_cart_discount}}
-	<tr>
+	<tr class="cart-discount">
 		<th colspan="3"><?php _e( 'Cart Discount', 'woocommerce-pos' ); ?>:</th>
 		<td colspan="2">{{{money cart_discount negative=true}}}</td>
 	</tr>
@@ -63,13 +63,13 @@
 	{{#if show_tax}}
 		{{#if show_itemized}}
 			{{#each itemized_tax}}
-				<tr>
+				<tr class="tax">
 					<th colspan="3">{{@key}}:</th>
 					<td colspan="2">{{{money this}}}</td>
 				</tr>
 			{{/each}}
 		{{else}}
-			<tr>
+			<tr class="tax">
 				<th colspan="3"><?php echo esc_html( WC()->countries->tax_or_vat() ); ?>:</th>
 				<td colspan="2">{{{money tax}}}</td>
 			</tr>
@@ -80,7 +80,7 @@
 		<th colspan="3"><?php _e( 'Order Discount', 'woocommerce-pos' ); ?>:</th>
 		<td colspan="2" data-value="{{number order_discount}}">{{{money order_discount negative=true}}}</td>
 	</tr>
-	<tr>
+	<tr class="order-total">
 		<th colspan="3"><?php _e( 'Order Total', 'woocommerce-pos' ); ?>:</th>
 		<td colspan="2">{{{money total}}}</td>
 	</tr>

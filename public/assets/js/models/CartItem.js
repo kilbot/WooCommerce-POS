@@ -39,6 +39,7 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 				discount 	   = 0,
 				item_price 	   = 0,
 				display_total  = 0,
+				discounted 	   = false,
 				taxable 	   = this.get('taxable');
 				
 			// set taxes first
@@ -49,12 +50,14 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 			discount = original_price - display_price;
 			item_price = ( this.params.wc.prices_include_tax === 'yes' ) ? display_price - this.get('item_tax') : display_price;
 			display_total = this.displayTotal( original_price, taxable );
+			discounted = discount !== 0 ? this.roundNum( display_total * qty ) - this.roundNum( discount * qty ) : false;
 			this.save({
-				'item_price'	: this.roundNum( item_price ),
-				'item_discount'	: this.roundNum( discount ),
-				'total_discount': this.roundNum( discount * qty ),
-				'line_total'	: this.roundNum( item_price * qty ),
-				'display_total'	: this.roundNum( display_total * qty ),
+				'item_price'		: this.roundNum( item_price ),
+				'item_discount'		: this.roundNum( discount ),
+				'total_discount'	: this.roundNum( discount * qty ),
+				'line_total'		: this.roundNum( item_price * qty ),
+				'display_total'		: this.roundNum( display_total * qty ),
+				'discounted'		: discounted,
 			});
 		},
 
