@@ -2,9 +2,9 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce POS (beta) 0.2.13\n"
+"Project-Id-Version: WooCommerce POS (beta) 0.2.14\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-06-09 07:48:09+00:00\n"
+"POT-Creation-Date: 2014-06-09 08:06:21+00:00\n"
 "PO-Revision-Date: 2014-06-03 23:19+0800\n"
 "Last-Translator: \n"
 "Language-Team: Team Name <team@example.com>\n"
