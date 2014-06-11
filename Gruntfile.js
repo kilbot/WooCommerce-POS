@@ -227,6 +227,6 @@ module.exports = function(grunt) {
 
 
 	// register task
-	grunt.registerTask('default', ['makepot', 'shell', 'po2mo', 'wp_readme_to_markdown', 'compass', 'cssmin', 'jshint', 'uglify', 'requirejs', 'watch']);
+	grunt.registerTask('default', ['makepot', 'wp_readme_to_markdown', 'compass', 'cssmin', 'jshint', 'uglify', 'requirejs', 'watch']);
 
 };

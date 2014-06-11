@@ -24,7 +24,7 @@
 			</fieldset>
 			<fieldset>
 				<?php wp_nonce_field('email_support', 'email_support_nonce'); ?>
-				<button type="submit" name="email-support" id="email-support" class="btn btn-primary alignright">Send</button>
+				<button type="submit" name="email-support" id="email-support" class="btn btn-primary alignright"><?php _e( 'Send', 'woocommerce-pos' ); ?></button>
 			</fieldset>
 		</form>
 		<?php else: ?>

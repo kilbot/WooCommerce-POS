@@ -122,40 +122,6 @@ class WooCommerce_POS {
 	}
 
 	/**
-	 * Fired when the plugin is activated.
-	 */
-	public static function activate( ) {
-
-		// Add rewrite rules, $this->generate_rewrite_rules not called on activation
-		global $wp_rewrite;
-		add_rewrite_rule('^pos/?$','index.php?pos=1','top');
-		add_rewrite_rule('^pos/([^/]+)/?$','index.php?pos=1&pos_template=$matches[1]','top');
-		flush_rewrite_rules( false ); // false will not overwrite .htaccess
-
-		// add the manage_woocommerce_pos capability to administrator and shop_manager
-		$administrator = get_role( 'administrator' );
-		$administrator->add_cap( 'manage_woocommerce_pos' );
-		$shop_manager = get_role( 'shop_manager' );
-		$shop_manager->add_cap( 'manage_woocommerce_pos' );
-	}
-
-	/**
-	 * Fired when the plugin is deactivated.
-	 */
-	public static function deactivate( ) {
-		// can not remove rewrite rule on deactivation AFAIK
-
-		// remove the manage_woocommerce_pos capability to administrator and shop_manager
-		$administrator = get_role( 'administrator' );
-		$administrator->remove_cap( 'manage_woocommerce_pos' );
-		$shop_manager = get_role( 'shop_manager' );
-		$shop_manager->remove_cap( 'manage_woocommerce_pos' );
-
-		// flush on activation and deactivation
-		flush_rewrite_rules( false ); // false will not overwrite .htaccess
-	}
-
-	/**
 	 * File includes
 	 */
 	private function includes() {

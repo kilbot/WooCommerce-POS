@@ -53,6 +53,9 @@ class WooCommerce_POS_Admin {
 			return;
 		} */
 
+		// Activate plugin when new blog is added
+		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
+
 		/*
 		 * Call $plugin_slug from public plugin class.
 		 */
@@ -74,23 +77,10 @@ class WooCommerce_POS_Admin {
 		$plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
 
-		/*
-		 * Define custom functionality.
-		 */
-		// add_filter( '@TODO', array( $this, 'filter_method_name' ) );
-		
-
-		// include required files
-		$this->includes();
-
 	}
 
 	/**
 	 * Return an instance of this class.
-	 *
-	 * @since     0.0.1
-	 *
-	 * @return    object    A single instance of this class.
 	 */
 	public static function get_instance() {
 
@@ -111,8 +101,133 @@ class WooCommerce_POS_Admin {
 		return self::$instance;
 	}
 
-	private function includes() {
-		include_once( 'includes/sanity-checks.php' );
+	/**
+	 * Fired when the plugin is activated.
+	 */
+	public static function activate( $network_wide ) {
+
+		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
+
+			if ( $network_wide  ) {
+
+				// Get all blog ids
+				$blog_ids = self::get_blog_ids();
+
+				foreach ( $blog_ids as $blog_id ) {
+
+					switch_to_blog( $blog_id );
+					self::single_activate();
+
+					restore_current_blog();
+				}
+
+			} else {
+				self::single_activate();
+			}
+
+		} else {
+			self::single_activate();
+		}
+
+	}
+
+	/**
+	 * Fired when the plugin is deactivated.
+	 */
+	public static function deactivate( $network_wide ) {
+
+		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
+
+			if ( $network_wide ) {
+
+				// Get all blog ids
+				$blog_ids = self::get_blog_ids();
+
+				foreach ( $blog_ids as $blog_id ) {
+
+					switch_to_blog( $blog_id );
+					self::single_deactivate();
+
+					restore_current_blog();
+
+				}
+
+			} else {
+				self::single_deactivate();
+			}
+
+		} else {
+			self::single_deactivate();
+		}
+
+	}
+
+	/**
+	 * Fired when a new site is activated with a WPMU environment.
+	 */
+	public function activate_new_site( $blog_id ) {
+
+		if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
+			return;
+		}
+
+		switch_to_blog( $blog_id );
+		self::single_activate();
+		restore_current_blog();
+
+	}
+
+	/**
+	 * Get all blog ids of blogs in the current network that are:
+	 * - not archived
+	 * - not spam
+	 * - not deleted
+	 */
+	private static function get_blog_ids() {
+
+		global $wpdb;
+
+		// get an array of blog ids
+		$sql = "SELECT blog_id FROM $wpdb->blogs
+			WHERE archived = '0' AND spam = '0'
+			AND deleted = '0'";
+
+		return $wpdb->get_col( $sql );
+
+	}
+
+	/**
+	 * Fired when the plugin is activated.
+	 */
+	public static function single_activate() {
+
+		// Add rewrite rules, $this->generate_rewrite_rules not called on activation
+		global $wp_rewrite;
+		add_rewrite_rule('^pos/?$','index.php?pos=1','top');
+		add_rewrite_rule('^pos/([^/]+)/?$','index.php?pos=1&pos_template=$matches[1]','top');
+		flush_rewrite_rules( false ); // false will not overwrite .htaccess
+
+		// add the manage_woocommerce_pos capability to administrator and shop_manager
+		$administrator = get_role( 'administrator' );
+		$administrator->add_cap( 'manage_woocommerce_pos' );
+		$shop_manager = get_role( 'shop_manager' );
+		$shop_manager->add_cap( 'manage_woocommerce_pos' );
+	}
+
+	/**
+	 * Fired when the plugin is deactivated.
+	 */
+	public static function single_deactivate() {
+		// can not remove rewrite rule on deactivation AFAIK
+
+		// remove the manage_woocommerce_pos capability to administrator and shop_manager
+		$administrator = get_role( 'administrator' );
+		$administrator->remove_cap( 'manage_woocommerce_pos' );
+		$shop_manager = get_role( 'shop_manager' );
+		$shop_manager->remove_cap( 'manage_woocommerce_pos' );
+
+		// flush on activation and deactivation
+		flush_rewrite_rules( false ); // false will not overwrite .htaccess
 	}
 
 	/**
@@ -138,14 +253,6 @@ class WooCommerce_POS_Admin {
 
 	/**
 	 * Register and enqueue admin-specific style sheet.
-	 *
-	 * @TODO:
-	 *
-	 * - Rename "Plugin_Name" to the name your plugin
-	 *
-	 * @since     0.0.1
-	 *
-	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_styles() {
 
@@ -162,14 +269,6 @@ class WooCommerce_POS_Admin {
 
 	/**
 	 * Register and enqueue admin-specific JavaScript.
-	 *
-	 * @TODO:
-	 *
-	 * - Rename "Plugin_Name" to the name your plugin
-	 *
-	 * @since     0.0.1
-	 *
-	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_scripts() {
 
@@ -186,8 +285,6 @@ class WooCommerce_POS_Admin {
 
 	/**
 	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
-	 *
-	 * @since    0.0.1
 	 */
 	public function add_plugin_admin_menu() {
 
@@ -203,8 +300,6 @@ class WooCommerce_POS_Admin {
 
 	/**
 	 * Render the settings page for this plugin.
-	 *
-	 * @since    0.0.1
 	 */
 	public function display_plugin_admin_page() {
 		include_once( 'views/admin.php' );
@@ -225,19 +320,6 @@ class WooCommerce_POS_Admin {
 			$links
 		);
 
-	}
-
-	/**
-	 * NOTE:     Filters are points of execution in which WordPress modifies data
-	 *           before saving it or sending it to the browser.
-	 *
-	 *           Filters: http://codex.wordpress.org/Plugin_API#Filters
-	 *           Reference:  http://codex.wordpress.org/Plugin_API/Filter_Reference
-	 *
-	 * @since    0.0.1
-	 */
-	public function filter_method_name() {
-		// @TODO: Define your filter hook callback here
 	}
 
 }

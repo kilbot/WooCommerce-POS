@@ -20,7 +20,7 @@ This plugin has only just been released and should **not** be used on a producti
 * GitHub: https://github.com/kilbot/WooCommerce-POS/
 
 = DEMO = 
-You can see a demo of the WooCommerce POS plugin in action by going to [http://woopos.com.au/pos](http://woopos.com.au/pos) with `login/pass` : `demo/demo`
+You can see a demo of the WooCommerce POS plugin in action by going to [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos) with `login/pass` : `demo/demo`
 
 = REQUIREMENTS =
 WooCommerce POS uses IndexedDB to persist the product database on your computer or device. [IndexedDB](http://www.w3.org/TR/IndexedDB/) is currently a 'Candidate Recommendation' specification by the W3C and is not implemented by all browsers. To see if your browser is compatible please check [caniuse.com](http://caniuse.com/indexeddb).
@@ -61,6 +61,10 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.2.15 =
+* New: Multisite support: visit [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos) to see WooCommerce POS in different languages using multisite.
+* Improved: nl_NL translation thanks to Egbert Jan! Visit [http://translate.woopos.com.au](http://translate.woopos.com.au) if you would liek to help with translating WooCommerce POS into your language.
+
 = 0.2.14 =
 * New: Search by 'barcode'. Defaults to SKU for the moment. Instant add to cart for barcode matches, ie: barcode scanning!
 * New: Support page: contact support directly from the POS
@@ -77,11 +81,3 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: Access to WC REST API now validates against the wordpress cookie, only logged in users with manage_woocommerce_pos capability can access the api
 * Fix: Added flag for WC REST API request and response filters
 * Fix: Cart now handles comma decimals correctly
-
-= 0.2.12 =
-* Improved: Product list now uses local IndexedDB for fast searching and filtering. Fallback to server-side filtering for browsers which do not support [IndexedDB](http://caniuse.com/indexeddb)
-* Improved: Cart logic now handled client-side, no more waiting for the server to respond
-* New: Pagination info and last update time added to the product list
-* New: Cart item price can now be changed
-* New: Print receipt
-* New: Added text domain, readying the plugin for translation
