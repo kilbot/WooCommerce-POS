@@ -4,7 +4,8 @@
  */
 
 var db,
-	storeCount = 0;
+	storeCount = 0,
+	wc_api_url = '/wc-api/v1/';
 
 // number of products to get in a single ajax call
 // adjust to prevent server timeouts
@@ -17,18 +18,21 @@ addEventListener('message', function(e) {
 		case 'sync':
 			if( typeof indexedDB !== 'undefined' ) {
 				openDB();
-			} 
+			}
+			if( typeof data.wc_api_url !== 'undefined' && data.wc_api_url !== '') {
+				wc_api_url = data.wc_api_url;
+			}
 			getUpdateCount(data.last_update);
 		break;
 		case 'clear':
 			deleteDB();
 		break;
 		case 'stop':
-			self.postMessage('Worker stopped: ' + data.msg);
+			self.postMessage({ 'status': 'complete', 'msg': 'Worker stopped: ' + data.msg });
 			close(); // Terminates the worker.
 		break;
 		default:
-			self.postMessage('Unknown command: ' + data.cmd);
+			self.postMessage({ 'status': 'complete', 'msg': 'Unknown command: ' + data.cmd });
 	}
 
 }, false);
@@ -57,7 +61,7 @@ var getJSON = function(url, successHandler, errorHandler) {
 };
 
 var openDB = function() {
-	var openRequest = indexedDB.open( 'productsDB', 2 );
+	var openRequest = indexedDB.open( 'productsDB' );
 
 	openRequest.onupgradeneeded = function(e) {
 
@@ -96,7 +100,7 @@ var getUpdateCount = function(updated_at_min){
 	];	
 
 	// get the update count
-	getJSON('/wc-api/v1/products/count?' + query.join('&'), function(data) {
+	getJSON( wc_api_url + 'products/count?' + query.join('&'), function(data) {
 		if( data.count > 0 ) {
 			self.postMessage({ 'status': 'success', 'msg': data.count + ' products need to be updated' });
 			queueProducts( data.count, ajaxLimit, updated_at_min );
@@ -140,7 +144,7 @@ var storeProducts = function(count, limit, offset, updated_at_min) {
 	];
 
 	// get the products
-	getJSON('/wc-api/v1/products?' + query.join('&'), function(data) {
+	getJSON( wc_api_url + 'products?' + query.join('&'), function(data) {
 
 		if( data === null ) {
 			self.postMessage({ 'status': 'error', 'msg': 'Error getting products from the server. Please check the POS support page.' });

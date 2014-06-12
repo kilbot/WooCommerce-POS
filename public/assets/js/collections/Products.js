@@ -104,7 +104,7 @@ define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'setti
 
 			// format the last-update and send to worker
 			var updated_at_min = this.formatLastUpdateFilter( Settings.get('last_update') );
-			worker.postMessage({ 'cmd': 'sync', 'last_update': updated_at_min, 'ajax_url': this.params.ajax_url });
+			worker.postMessage({ 'cmd': 'sync', 'last_update': updated_at_min, 'wc_api_url': this.params.wc_api_url });
 		},
 
 		/**

@@ -14,7 +14,7 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION = '0.2.14';
+	const VERSION = '0.2.15-beta';
 	const JQUERY_VERSION = '2.1.1';
 
 	/**
@@ -36,7 +36,6 @@ class WooCommerce_POS {
 	/**
 	 * WooCommerce API endpoint
 	 */
-	public $wc_api_endpoint = '/wc-api/v1/';
 	public $wc_api_url;
 
 	/**
@@ -63,7 +62,7 @@ class WooCommerce_POS {
 	private function __construct() {
 		
 		// settings
-		$this->wc_api_url = get_home_url().$this->wc_api_endpoint;
+		$this->wc_api_url = site_url('/wc-api/v1/', 'relative');
 
 		$this->plugin_path 	= trailingslashit( dirname( dirname(__FILE__) ) );
 		$this->plugin_dir 	= trailingslashit( basename( $this->plugin_path ) );
@@ -223,12 +222,11 @@ class WooCommerce_POS {
 
 		// if user can manage_woocommerce_pos, open the api
 		if( is_numeric($user_id) && user_can( $user_id, 'manage_woocommerce_pos' ) ) {
+			// error_log( print_R( $user, TRUE ) ); //debug
 			return new WP_User( $user_id );
 		} else {
 			return $user;
 		}
-
-		error_log( print_R( $user, TRUE ) ); //debug
 	}
 
 	/**
@@ -321,6 +319,7 @@ class WooCommerce_POS {
 
 		$js_vars['page']		= $this->is_pos();
 		$js_vars['ajax_url'] 	= admin_url( 'admin-ajax.php', 'relative' );
+		$js_vars['wc_api_url']	= $this->wc_api_url;
 		$js_vars['accounting'] 	= $this->accounting_settings();
 		$js_vars['wc'] 			= $this->wc_settings();
 

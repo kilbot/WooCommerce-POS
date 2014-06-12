@@ -22,6 +22,9 @@ class WooCommerce_POS_Product {
 
 	public function __construct() {
 
+		// try and increase server timeout
+		$this->increase_timeout();
+
 		// init variables
 		$this->thumb_size = get_option( 'shop_thumbnail_image_size', array( 'width' => 90, 'height' => 90 ) );
 
@@ -31,6 +34,20 @@ class WooCommerce_POS_Product {
 		// and we're going to filter on the way out
 		add_filter( 'woocommerce_api_product_response', array( $this, 'filter_product_response' ) );
 
+	}
+
+	/**
+	 * WC REST API can timeout on some servers
+	 * This is an attempt t o increase the timeout limit
+	 * TODO: is there a better way?
+	 */
+	public function increase_timeout() { 
+		$timeout = 600;
+		if( !ini_get( 'safe_mode' ) )
+			@set_time_limit( $timeout );
+
+		@ini_set( 'memory_limit', WP_MAX_MEMORY_LIMIT );
+		@ini_set( 'max_execution_time', (int)$timeout );
 	}
 
 	/**
