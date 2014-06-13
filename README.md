@@ -1,11 +1,11 @@
 # WooCommerce POS #
 
-Development Repository for WooCommerce POS - the Point of Sale Plugin for [WooCommerce](woothemes.com/woocommerce/).
+Development repository for WooCommerce POS - the Point of Sale plugin for [WooCommerce](woothemes.com/woocommerce/).
 
-* **Readme:** [readme.txt](https://github.com/kilbot/WooCommerce-POS/blob/master/readme.txt)
-* **Download:** [wordpress.org](wordpress.org/plugins/woocommerce-pos/)
-* **Demo:** [demo.woopos.com.au/pos](http://demo.woopos.com.au/pos)
-* **Website:** [woopos.com.au](http://demo.woopos.com.au/pos)
+* **Readme:** [https://github.com/kilbot/WooCommerce-POS/blob/master/readme.txt](https://github.com/kilbot/WooCommerce-POS/blob/master/readme.txt)
+* **Download:** [http://wordpress.org/plugins/woocommerce-pos/](http://wordpress.org/plugins/woocommerce-pos/)
+* **Demo:** [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos)
+* **Website:** [http://woopos.com.au](http://demo.woopos.com.au/pos)
 
 ## Report a bug ##
 
