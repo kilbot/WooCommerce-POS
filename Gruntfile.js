@@ -166,6 +166,7 @@ module.exports = function(grunt) {
 		//	 }
 		// },
 
+		// unused
 		// convert readme.txt to readme.md
 		wp_readme_to_markdown: {
 			woopos: {
@@ -193,6 +194,7 @@ module.exports = function(grunt) {
 			}
 		},
 
+		// unused
 		shell: {
 			options: {
 				failOnError: true
@@ -216,6 +218,7 @@ module.exports = function(grunt) {
 			}
 		},
 
+		// unused
 		po2mo: {
     		files: {
       			src: 'languages/*.po',
@@ -227,6 +230,6 @@ module.exports = function(grunt) {
 
 
 	// register task
-	grunt.registerTask('default', ['makepot', 'wp_readme_to_markdown', 'compass', 'cssmin', 'jshint', 'uglify', 'requirejs', 'watch']);
+	grunt.registerTask('default', ['makepot', 'compass', 'cssmin', 'jshint', 'uglify', 'requirejs', 'watch']);
 
 };

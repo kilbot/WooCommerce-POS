@@ -63,7 +63,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 = 0.2.15 =
 * New: Multisite support: visit [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos) to see WooCommerce POS in different languages using multisite
-* Improved: nl_NL translation thanks to Egbert Jan! Visit [http://translate.woopos.com.au](http://translate.woopos.com.au) if you would liek to help with translating WooCommerce POS into your language
+* Improved: nl_NL translation thanks to Egbert Jan! Visit [http://translate.woopos.com.au](http://translate.woopos.com.au) if you would like to translate WooCommerce POS into your language
 * Fix: fixed bug for subfolder wordpress install
 
 = 0.2.14 =
