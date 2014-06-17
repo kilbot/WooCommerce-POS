@@ -66,7 +66,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Visit: [http://translate.woopos.com.au](http://translate.woopos.com.au) if you would like to translate WooCommerce POS into your language
 * Improved: Search field now reset after successful barcode search
 * Fix: Bug with multiple tax rates and compound tax rates
-* Fix: WooCommerce will deactivate if WooCommerce not active (fixes https://github.com/kilbot/WooCommerce-POS/issues/9)
+* Fix: WooCommerce POS will deactivate if WooCommerce not active, fixes https://github.com/kilbot/WooCommerce-POS/issues/9
 * Fix: Added admin message if permalinks not active
 * Fix: proper fix for rounding error for comma decimals
 * Fix: fixed bug for subfolder wordpress install
