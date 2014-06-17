@@ -31,10 +31,8 @@ class WooCommerce_POS_Admin {
 
 	/**
 	 * Plugin variables
-	 * @var string
 	 */
-	public $msg_type = ''; 	// type of admin message
-	public $msg = ''; 		// admin message
+	public $notices = array(); 	// stores any admin messages
 
 	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
@@ -66,12 +64,13 @@ class WooCommerce_POS_Admin {
 		// add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
 		// check version
-		add_action('admin_init', array( $this, 'check_version_number') );
+		add_action('admin_init', array( $this, 'run_checks') );
 
-		// Add the options page and menu item.
+		// add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 
-
+		// add any admin notices
+		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
@@ -230,10 +229,18 @@ class WooCommerce_POS_Admin {
 		flush_rewrite_rules( false ); // false will not overwrite .htaccess
 	}
 
+	function run_checks() {
+		$this->woocommerce_check();
+		$this->permalink_check();
+		$this->version_check();
+	}
+
 	/**
 	 * Check version number, runs every time
+	 * Also cehcks to make sure WooCommerce is active
 	 */
-	function check_version_number(){
+	public function version_check(){
+		// next check the POS version number
 		$old = get_option( 'woocommerce_pos_db_version' );
 		if( !$old || $old != WooCommerce_POS::VERSION ) {
 			$this->upgrade( $old );
@@ -242,9 +249,43 @@ class WooCommerce_POS_Admin {
 	}
 
 	/**
+	 * Check if WooCommerce is active, deactivate POS if no woo
+	 */
+	public function woocommerce_check() {
+		if ( ! class_exists( 'WooCommerce' ) ) {
+
+			// deactivate plugin
+			deactivate_plugins(WC_POS()->plugin_path. 'woocommerce-pos.php');
+
+			// alert the user
+			$error = array (
+				'msg_type' 	=> 'error',
+				'msg' 		=> __('<strong>WooCommerce POS</strong> requires <a href="http://wordpress.org/plugins/woocommerce/">WooCommerce</a>. Please install and activate WooCommerce before activating WooCommerce POS.', 'woocommerce-pos')
+			);
+			array_push( $this->notices, $error );
+		}
+	}
+
+	/**
+	 * Check if permalinks enabled, WC API needs permalinks
+	 */
+	public function permalink_check() {
+		global $wp_rewrite; 
+		if( $wp_rewrite->permalink_structure == '' ) {
+
+			// alert the user
+			$error = array (
+				'msg_type' 	=> 'error',
+				'msg' 		=> sprintf( __('<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks to work correctly. Please enable <a href="%s">permalinks</a>.', 'woocommerce-pos'), admin_url('options-permalink.php') )
+			);
+			array_push( $this->notices, $error );
+		}
+	}
+
+	/**
 	 * Upgrade from previous versions
 	 */
-	function upgrade( $old ) {
+	public function upgrade( $old ) {
 
 		// flush rewrite rules on upgrade
 		flush_rewrite_rules( false ); 
@@ -307,19 +348,30 @@ class WooCommerce_POS_Admin {
 
 	/**
 	 * Add settings action link to the plugins page.
-	 *
-	 * @since    0.0.1
 	 */
 	public function add_action_links( $links ) {
 
 		return array_merge(
 			array(
 				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>',
-				'view-pos' => '<a href="' . home_url('pos/') . '">' . __( 'View POS', $this->plugin_slug ) . '</a>'
+				'view-pos' => '<a href="' . WC_POS()->pos_url() . '">' . __( 'View POS', $this->plugin_slug ) . '</a>'
 			),
 			$links
 		);
 
+	}
+
+	/**
+	 * Display the admin notices
+	 */
+	public function admin_notices() {
+		if( !empty($this->notices ) ) {
+			foreach( $this->notices as $notice ) {
+				echo '<div class="' . $notice['msg_type'] . '">
+					<p>' . $notice['msg'] . '</p>
+				</div>';
+			} 
+		} 
 	}
 
 }

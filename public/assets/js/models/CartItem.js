@@ -75,6 +75,7 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 				line_total = this.calcExclusiveTax( price, qty, rates );
 			}
 
+			// not using at present
 			return line_total;
 		},
 
@@ -91,11 +92,11 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 				line_tax = 0;
 
 			_(rates).each( function(rate) {
-				if ( rate.compound === 1 ) {
+				if ( rate.compound === 'yes' ) {
 					compound_tax_rates = compound_tax_rates + parseFloat(rate.rate);
 				}
 				else {
-					regular_tax_rates  = regular_tax_rates + parseFloat(rate.rate);
+					regular_tax_rates = regular_tax_rates + parseFloat(rate.rate);
 				}
 			});
 
@@ -107,7 +108,7 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 				var the_rate = parseFloat(rate.rate) / 100;
 				var the_price = 0;
 
-				if ( rate.compound === 1 ) {
+				if ( rate.compound === 'yes' ) {
 					the_price = price;
 					the_rate  = the_rate / compound_tax_rate;
 				}
@@ -154,23 +155,25 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 
 			// multiple taxes
 			_(rates).each( function(rate, key) {
+				tax_amount = 0;
 				if ( rate.compound !== 'yes' ) {
 					tax_amount = price * ( parseFloat(rate.rate) / 100 );
 				}
-				pre_compound_total += tax_amount;
 				taxes[ key ] = tax_amount;
 			});
+
+			pre_compound_total = taxes.reduce( function(sum, num) { return sum + num; } );
 
 			// compound taxes
 			_(rates).each( function(rate, key) {
 				if ( rate.compound === 'yes' ) {
 					var the_price_inc_tax = price + pre_compound_total;
-					tax_amount = the_price_inc_tax * ( parseFloat(rate.rate) / 100 );
+					taxes[ key ] = the_price_inc_tax * ( parseFloat(rate.rate) / 100 );
 				}
 
 				// do the rounding now if required
-				var item_tax_ = this.roundNum( tax_amount );
-				var line_tax_ = this.roundNum( tax_amount * qty );
+				var item_tax_ = this.roundNum( taxes[ key ] );
+				var line_tax_ = this.roundNum( taxes[ key ] * qty );
 
 				// set the itemized taxes
 				this.set( 'item_tax_' + key, item_tax_ );

@@ -32,8 +32,6 @@ class WooCommerce_POS_Support {
 				$message .= $_POST['pos_status'];
 			}
 
-			error_log($message);
-
 			// validation
 			if ( $name == '' ) 
 				$errors[] = __( 'Please enter your name', 'woocommerce-pos' );

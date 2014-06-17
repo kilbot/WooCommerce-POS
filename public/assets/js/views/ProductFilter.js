@@ -97,6 +97,9 @@ define(['underscore', 'backbone'],
 
 							// send product to cart
 							self.pubSub.trigger( 'addToCart', model );
+
+							// clear the search field
+							self.searchBox().val('');
 						}
 						return true; 
 					}

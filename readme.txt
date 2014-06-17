@@ -1,26 +1,24 @@
-=== WooCommerce POS (beta) ===
+=== WooCommerce POS ===
 Contributors: kilbot
-Tags: woocommerce, pos, point-of-sale, vend, e-commerce
+Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
 Requires at least: 3.8
 Tested up to: 3.9
-Stable tag: 0.2.14
+Stable tag: 0.2.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A simple front-end for taking WooCommerce orders at the Point of Sale.
+Finally, a Point of Sale plugin for WooCommerce! Sell online and in your physical retail store - no monthly fees, no need to sync inventory.
 
 == Description ==
 
-Imagine [WooCommerce](http://www.woothemes.com/woocommerce/) and [Vend](http://www.vendhq.com/) had a baby. WooCommerce POS is a simple interface for taking orders using your WooCommerce store. No need to sync inventory between your online and bricks&mortar store, no need for monthly subscription fees.
-
-= BETA =
-This plugin has only just been released and should **not** be used on a production site. A [roadmap for development](http://woopos.com.au/roadmap) is available on our website, please feel free to request features or ask questions in the comments. Bug reports can be made through the website or via the [GitHub repository](https://github.com/kilbot/WooCommerce-POS/issues).
-
-* Roadmap: http://woopos.com.au/roadmap
-* GitHub: https://github.com/kilbot/WooCommerce-POS/
+WooCommerce POS is a simple interface for taking orders at the Point of Sale using your [WooCommerce](http://www.woothemes.com/woocommerce/) store. WooCommerce POS provides an alternative to Vend or Shopify POS - no need to sync inventory and no monthly subscription fees.
 
 = DEMO = 
 You can see a demo of the WooCommerce POS plugin in action by going to [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos) with `login/pass` : `demo/demo`
+
+= MORE INFO = 
+* Website: http://woopos.com.au
+* GitHub: https://github.com/kilbot/WooCommerce-POS/
 
 = REQUIREMENTS =
 WooCommerce POS uses IndexedDB to persist the product database on your computer or device. [IndexedDB](http://www.w3.org/TR/IndexedDB/) is currently a 'Candidate Recommendation' specification by the W3C and is not implemented by all browsers. To see if your browser is compatible please check [caniuse.com](http://caniuse.com/indexeddb).
@@ -46,7 +44,6 @@ To install a WordPress Plugin manually:
 4. Go to Plugins screen and find the newly uploaded Plugin in the list.
 5. Click Activate Plugin to activate it.
 
-
 == Frequently Asked Questions ==
 
 = Where can I find more information on WooCommerce POS? =
@@ -62,9 +59,18 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.2.15 =
+* New: [website](http://woopos.com.au)!
 * New: Multisite support: visit [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos) to see WooCommerce POS in different languages using multisite
-* Improved: nl_NL translation thanks to Egbert Jan! Visit [http://translate.woopos.com.au](http://translate.woopos.com.au) if you would like to translate WooCommerce POS into your language
+* New: nl_NL translation thanks to Egbert Jan! [http://nl.woopos.com.au/pos](http://nl.woopos.com.au/pos)
+* New: nn_NO translation thanks to Olav Solvang! [http://no.woopos.com.au/pos](http://no.woopos.com.au/pos)
+* Visit: [http://translate.woopos.com.au](http://translate.woopos.com.au) if you would like to translate WooCommerce POS into your language
+* Improved: Search field now reset after successful barcode search
+* Fix: Bug with multiple tax rates and compound tax rates
+* Fix: WooCommerce will deactivate if WooCommerce not active (fixes https://github.com/kilbot/WooCommerce-POS/issues/9)
+* Fix: Added admin message if permalinks not active
+* Fix: proper fix for rounding error for comma decimals
 * Fix: fixed bug for subfolder wordpress install
+* Removed: Beta tag!
 
 = 0.2.14 =
 * New: Search by 'barcode'. Defaults to SKU for the moment. Instant add to cart for barcode matches, ie: barcode scanning!

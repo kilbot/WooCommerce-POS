@@ -109,14 +109,14 @@
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<h5 data-toggle="collapse" data-target="cash" data-parent="payment-options" class="panel-title">
-								<i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> Cash
+								<i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> <?php _e( 'Cash', 'woocommerce-pos' ); ?>
 							</h5>
 						</div>
 					</div>
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h5 data-toggle="collapse" data-target="card" data-parent="payment-options" class="panel-title">
-								<i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> Card
+								<i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> <?php _e( 'Card', 'woocommerce-pos' ); ?>
 							</h5>
 						</div>
 					</div>	

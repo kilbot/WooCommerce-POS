@@ -246,8 +246,8 @@ class WooCommerce_POS_Checkout {
 					}
 
 					// Add line item meta now
-					wc_update_order_item_meta( $item_id, '_line_subtotal_tax', wc_format_localized_price( $line_subtotal_tax ) );
-					wc_update_order_item_meta( $item_id, '_line_tax', wc_format_localized_price( $line_tax ) );
+					wc_update_order_item_meta( $item_id, '_line_subtotal_tax', $line_subtotal_tax );
+					wc_update_order_item_meta( $item_id, '_line_tax', $line_tax );
 
 					$this->subtotal_tax += $line_subtotal_tax;
 					$this->total_tax += $line_tax;

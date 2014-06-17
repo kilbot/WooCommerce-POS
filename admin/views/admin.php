@@ -30,7 +30,7 @@
 					<div class="postbox">
 						<h3 style="cursor:auto;">Thanks for installing WooCommerce POS!</h3>
 						<div class="inside">
-							<p><a href="<?= home_url('pos/'); ?>">Click here</a> to see start taking orders.</p>
+							<p><a href="<?= WC_POS()->pos_url(); ?>">Click here</a> to see start taking orders.</p>
 							<p>
 								<u>The plugin is currently in it's first public beta</u> - it is not meant for production use. 
 								Updates will be frequent over the next few weeks so please <a href="http://woopos.com.au/wp-admin/update-core.php?force-check=1">check</a> back often.

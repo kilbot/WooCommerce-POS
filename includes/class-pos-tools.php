@@ -72,7 +72,7 @@ class WooCommerce_POS_Tools {
 			"
 		);
 
-		error_log( print_R( $posts, TRUE ) ); //debug
+		// error_log( print_R( $posts, TRUE ) ); //debug
 
 		foreach( $posts as $post ) {
 			$orphans[] = $post->ID; 

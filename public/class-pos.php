@@ -14,7 +14,7 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION = '0.2.15-beta';
+	const VERSION = '0.2.15';
 	const JQUERY_VERSION = '2.1.1';
 
 	/**
@@ -150,7 +150,10 @@ class WooCommerce_POS {
 	 * @return string       url
 	 */
 	public function pos_url( $page = '' ) {
-		return '/pos/'.$page;
+
+		// WC REST API requires pretty permalinks
+		// so POS only supports pretty permalinks ... for the moment
+		return home_url('pos/'.$page);
 	}
 	
 	/**
@@ -365,7 +368,8 @@ class WooCommerce_POS {
 			echo $this->pos_localize_script();
 
 			$html = '
-	<script src="//code.jquery.com/jquery-'. self::JQUERY_VERSION .'.min.js"></script>		
+	<script src="//code.jquery.com/jquery-'. self::JQUERY_VERSION .'.min.js"></script>
+	<script>window.jQuery || document.write(\'<script src="'. $this->plugin_url .'public/assets/js/vendor/jquery-2.1.1.min.js">\x3C/script>\')</script>	
 	<script src="'. $this->plugin_url .'public/assets/js/plugins.min.js?ver='. self::VERSION .'"></script>
 			';
 			echo $html;

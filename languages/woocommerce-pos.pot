@@ -2,9 +2,9 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce POS (beta) 0.2.15-beta\n"
+"Project-Id-Version: WooCommerce POS (beta) 0.2.15\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-06-12 04:38:12+00:00\n"
+"POT-Creation-Date: 2014-06-17 09:19:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,75 +12,88 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Team Name <team@example.com>\n"
 
-#: admin/class-pos-admin.php:292 admin/class-pos-admin.php:293
+#: admin/class-pos-admin.php:263
+msgid ""
+"<strong>WooCommerce POS</strong> requires <a "
+"href=\"http://wordpress.org/plugins/woocommerce/\">WooCommerce</a>. Please "
+"install and activate WooCommerce before activating WooCommerce POS."
+msgstr ""
+
+#: admin/class-pos-admin.php:279
+msgid ""
+"<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks "
+"to work correctly. Please enable <a href=\"%s\">permalinks</a>."
+msgstr ""
+
+#: admin/class-pos-admin.php:333 admin/class-pos-admin.php:334
 msgid "WooCommerce POS"
 msgstr ""
 
-#: admin/class-pos-admin.php:317
+#: admin/class-pos-admin.php:356
 msgid "Settings"
 msgstr ""
 
-#: admin/class-pos-admin.php:318
+#: admin/class-pos-admin.php:357
 msgid "View POS"
 msgstr ""
 
-#: includes/class-pos-support.php:39
+#: includes/class-pos-support.php:37
 msgid "Please enter your name"
 msgstr ""
 
-#: includes/class-pos-support.php:42
+#: includes/class-pos-support.php:40
 msgid "Please enter a valid email address"
 msgstr ""
 
-#: includes/class-pos-support.php:45
+#: includes/class-pos-support.php:43
 msgid "Please enter your message"
 msgstr ""
 
-#: includes/class-pos-support.php:54
+#: includes/class-pos-support.php:52
 msgid "There was a problem sending your email."
 msgstr ""
 
-#: includes/class-pos-support.php:75
+#: includes/class-pos-support.php:73
 msgid "WooCommerce Version"
 msgstr ""
 
-#: includes/class-pos-support.php:78
+#: includes/class-pos-support.php:76
 msgid "WooCommerce >= 2.1 required"
 msgstr ""
 
-#: includes/class-pos-support.php:80
+#: includes/class-pos-support.php:78
 msgid "Update"
 msgstr ""
 
-#: includes/class-pos-support.php:83
+#: includes/class-pos-support.php:81
 msgid "WC REST API"
 msgstr ""
 
-#: includes/class-pos-support.php:85
+#: includes/class-pos-support.php:83
 msgid "API is active"
 msgstr ""
 
-#: includes/class-pos-support.php:86
+#: includes/class-pos-support.php:84
 msgid "Access to the REST API is required"
 msgstr ""
 
-#: includes/class-pos-support.php:88
+#: includes/class-pos-support.php:86
 msgid "Enable REST API"
 msgstr ""
 
-#: includes/class-pos-support.php:91
+#: includes/class-pos-support.php:89
 msgid "Orphaned Variations"
 msgstr ""
 
-#: includes/class-pos-support.php:93
+#: includes/class-pos-support.php:91
 msgid "No orphans."
 msgstr ""
 
-#: includes/class-pos-support.php:94
+#: includes/class-pos-support.php:92
 msgid "Some of your variations have no parent. The post ids of the orphans are: %s"
 msgstr ""
 
-#: includes/class-pos-support.php:96
+#: includes/class-pos-support.php:94
 msgid "Delete orphans"
 msgstr ""
 
@@ -93,7 +106,7 @@ msgid "Qty"
 msgstr ""
 
 #: public/views/cart.php:12 public/views/checkout.php:12
-#: public/views/products.php:17 public/views/receipt.php:4
+#: public/views/products.php:17
 msgid "Product"
 msgstr ""
 
@@ -102,7 +115,7 @@ msgstr ""
 msgid "Price"
 msgstr ""
 
-#: public/views/cart.php:14 public/views/receipt.php:5
+#: public/views/cart.php:14
 msgid "Total"
 msgstr ""
 
@@ -177,6 +190,14 @@ msgstr ""
 
 #: public/views/checkout.php:106
 msgid "To Pay"
+msgstr ""
+
+#: public/views/checkout.php:112
+msgid "Cash"
+msgstr ""
+
+#: public/views/checkout.php:119
+msgid "Card"
 msgstr ""
 
 #: public/views/checkout.php:127
@@ -281,10 +302,6 @@ msgstr ""
 
 #: public/views/products.php:61
 msgid "Your browser does not support indexeddb"
-msgstr ""
-
-#: public/views/receipt.php:35
-msgid "Download file%s"
 msgstr ""
 
 #: public/views/support.php:6
