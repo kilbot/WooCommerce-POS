@@ -14,7 +14,7 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION = '0.2.15';
+	const VERSION = '0.2.16';
 	const JQUERY_VERSION = '2.1.1';
 
 	/**
