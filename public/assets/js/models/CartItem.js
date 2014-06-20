@@ -162,7 +162,9 @@ define(['backbone', 'accounting', 'backbone-localstorage'],
 				taxes[ key ] = tax_amount;
 			});
 
-			pre_compound_total = taxes.reduce( function(sum, num) { return sum + num; } );
+			if( taxes.length > 0 ) {
+				pre_compound_total = taxes.reduce( function(sum, num) { return sum + num; } );
+			}
 
 			// compound taxes
 			_(rates).each( function(rate, key) {

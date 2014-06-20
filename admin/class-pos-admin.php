@@ -208,9 +208,11 @@ class WooCommerce_POS_Admin {
 
 		// add the manage_woocommerce_pos capability to administrator and shop_manager
 		$administrator = get_role( 'administrator' );
-		$administrator->add_cap( 'manage_woocommerce_pos' );
+		if( $administrator ) 
+			$administrator->add_cap( 'manage_woocommerce_pos' );
 		$shop_manager = get_role( 'shop_manager' );
-		$shop_manager->add_cap( 'manage_woocommerce_pos' );
+		if( $shop_manager ) 
+			$shop_manager->add_cap( 'manage_woocommerce_pos' );
 	}
 
 	/**
@@ -221,9 +223,11 @@ class WooCommerce_POS_Admin {
 
 		// remove the manage_woocommerce_pos capability to administrator and shop_manager
 		$administrator = get_role( 'administrator' );
-		$administrator->remove_cap( 'manage_woocommerce_pos' );
+		if( $administrator ) 
+			$administrator->remove_cap( 'manage_woocommerce_pos' );
 		$shop_manager = get_role( 'shop_manager' );
-		$shop_manager->remove_cap( 'manage_woocommerce_pos' );
+		if( $shop_manager ) 
+			$shop_manager->remove_cap( 'manage_woocommerce_pos' );
 
 		// flush on activation and deactivation
 		flush_rewrite_rules( false ); // false will not overwrite .htaccess
