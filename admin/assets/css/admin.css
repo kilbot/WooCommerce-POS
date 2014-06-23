@@ -1,1 +1,33 @@
-/* This stylesheet is used to style the admin option form of the plugin. */
+@font-face {
+	font-family: 'WooCommerce-POS';
+	src:url('../../../assets/fonts/woocommerce-pos.eot?ye6tud');
+	src:url('../../../assets/fonts/woocommerce-pos.eot?#iefixye6tud') format('embedded-opentype'),
+		url('../../../assets/fonts/woocommerce-pos.woff?ye6tud') format('woff'),
+		url('../../../assets/fonts/woocommerce-pos.ttf?ye6tud') format('truetype'),
+		url('../../../assets/fonts/woocommerce-pos.svg?ye6tud#woocommerce-pos') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'WooCommerce-POS';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-woocommerce-pos:before {
+	content: "\e600";
+}
+
+#toplevel_page_woocommerce-pos-pro .wp-menu-image:before {
+	font-family: 'WooCommerce-POS' !important;
+	content: '\e600';
+}

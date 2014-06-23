@@ -60,14 +60,14 @@ class WooCommerce_POS_Admin {
 		$this->plugin_slug = WC_POS()->get_plugin_slug();
 
 		// Load admin style sheet and JavaScript.
-		// add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		// add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
 		// check version
 		add_action('admin_init', array( $this, 'run_checks') );
 
 		// add the options page and menu item.
-		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
 		// add any admin notices
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
@@ -301,14 +301,14 @@ class WooCommerce_POS_Admin {
 	 */
 	public function enqueue_admin_styles() {
 
-		if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
-			return;
-		}
+		// if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
+		// 	return;
+		// }
 
-		$screen = get_current_screen();
-		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
-			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), WooCommerce_POS::VERSION );
-		}
+		// $screen = get_current_screen();
+		// if ( $this->plugin_screen_hook_suffix == $screen->id ) {
+			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.min.css', __FILE__ ), array(), WooCommerce_POS::VERSION );
+		// }
 
 	}
 
@@ -323,7 +323,7 @@ class WooCommerce_POS_Admin {
 
 		$screen = get_current_screen();
 		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
-			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery' ), WooCommerce_POS::VERSION );
+			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.min.js', __FILE__ ), array( 'jquery' ), WooCommerce_POS::VERSION );
 		}
 
 	}
@@ -331,23 +331,46 @@ class WooCommerce_POS_Admin {
 	/**
 	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
 	 */
-	public function add_plugin_admin_menu() {
+	public function admin_menu() {
+		global $menu;
+		global $submenu;
 
-		$this->plugin_screen_hook_suffix = add_options_page(
-			__( 'WooCommerce POS', $this->plugin_slug ),
-			__( 'WooCommerce POS', $this->plugin_slug ),
-			'manage_options',
-			$this->plugin_slug,
-			array( $this, 'display_plugin_admin_page' )
+		$this->plugin_screen_hook_suffix = add_menu_page( 
+			__( 'POS', 'woocommerce-pos' ),
+			__( 'POS', 'woocommerce-pos' ), 
+			'manage_woocommerce_pos', 
+			$this->plugin_slug, 
+			array( $this, 'display_upgrade_page' ), 
+			null, 
+			56 
 		);
 
+		add_submenu_page(
+			$this->plugin_slug,
+			__( 'Settings', 'woocommerce-pos' ),
+			__( 'Settings', 'woocommerce-pos' ),
+			'manage_woocommerce_pos',
+			'wc-pos-settings',
+			array( $this, 'display_settings_page' )
+		);
+
+		$submenu[$this->plugin_slug][0][0] = 'Upgrade to Pro';
+
+	}
+
+	/**
+	 * Render the upgrade page.
+	 */
+	public function display_upgrade_page() {
+		include_once( 'views/upgrade.php' );
 	}
 
 	/**
 	 * Render the settings page for this plugin.
 	 */
-	public function display_plugin_admin_page() {
-		include_once( 'views/admin.php' );
+	public function display_settings_page() {
+		include_once( 'includes/class-pos-settings.php' );
+		WC_POS_Admin_Settings::output();
 	}
 
 	/**
@@ -357,7 +380,7 @@ class WooCommerce_POS_Admin {
 
 		return array_merge(
 			array(
-				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>',
+				'settings' => '<a href="' . admin_url( 'admin.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>',
 				'view-pos' => '<a href="' . WC_POS()->pos_url() . '">' . __( 'View POS', $this->plugin_slug ) . '</a>'
 			),
 			$links
