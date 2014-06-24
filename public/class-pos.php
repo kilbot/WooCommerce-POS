@@ -62,7 +62,7 @@ class WooCommerce_POS {
 	private function __construct() {
 		
 		// settings
-		$this->wc_api_url = site_url('/wc-api/v1/', 'relative');
+		$this->wc_api_url = home_url('/wc-api/v1/', 'relative');
 
 		$this->plugin_path 	= trailingslashit( dirname( dirname(__FILE__) ) );
 		$this->plugin_dir 	= trailingslashit( basename( $this->plugin_path ) );

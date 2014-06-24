@@ -1,4 +1,4 @@
-=== WooCommerce POS ===
+=== WooCommerce Point of Sale (POS) ===
 Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
 Requires at least: 3.8
