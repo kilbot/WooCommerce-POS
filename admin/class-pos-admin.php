@@ -213,6 +213,9 @@ class WooCommerce_POS_Admin {
 		$shop_manager = get_role( 'shop_manager' );
 		if( $shop_manager ) 
 			$shop_manager->add_cap( 'manage_woocommerce_pos' );
+
+		// set the auto redirection on next page load
+		set_transient( 'woocommere_pos_welcome', 1, 30 );
 	}
 
 	/**
@@ -237,6 +240,7 @@ class WooCommerce_POS_Admin {
 		$this->woocommerce_check();
 		$this->permalink_check();
 		$this->version_check();
+		$this->welcome_screen();
 	}
 
 	/**
@@ -297,18 +301,37 @@ class WooCommerce_POS_Admin {
 	}
 
 	/**
+	 * Show welcome screen after activation
+	 */
+	public function welcome_screen() {
+		// only do this if the user can activate plugins
+        if ( ! current_user_can( 'manage_options' ) )
+            return;
+ 
+        // don't do anything if the transient isn't set
+        if ( ! get_transient( 'woocommere_pos_welcome' ) )
+            return;
+ 
+        delete_transient( 'woocommere_pos_welcome' );
+        wp_safe_redirect( admin_url( 'admin.php?page=woocommerce-pos') );
+        exit;
+	}
+
+	/**
 	 * Register and enqueue admin-specific style sheet.
 	 */
 	public function enqueue_admin_styles() {
 
-		// if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
-		// 	return;
-		// }
+		if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
+			return;
+		}
 
-		// $screen = get_current_screen();
-		// if ( $this->plugin_screen_hook_suffix == $screen->id ) {
-			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.min.css', __FILE__ ), array(), WooCommerce_POS::VERSION );
-		// }
+		$screen = get_current_screen();
+		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
+			wp_enqueue_style( $this->plugin_slug .'-admin', plugins_url( 'assets/css/admin.min.css', __FILE__ ), array(), WooCommerce_POS::VERSION );
+		}
+
+		wp_enqueue_style( $this->plugin_slug .'-dashicons', plugins_url( 'assets/css/dashicons.min.css', __FILE__ ), array(), WooCommerce_POS::VERSION );
 
 	}
 
@@ -362,6 +385,24 @@ class WooCommerce_POS_Admin {
 	 * Render the upgrade page.
 	 */
 	public function display_upgrade_page() {
+
+		// Check for transient, if none, grab remote HTML file
+		if ( false === ( $upgrade = get_transient( 'remote_pro_page' ) ) ) {
+			// Get remote HTML file
+			$response = wp_remote_get( 'http://woopos.com.au/pro/?wp-admin=woocommerce-pos' );
+				// Check for error
+				if ( is_wp_error( $response ) ) {
+					return;
+				}
+			// Parse remote HTML file
+			$upgrade = wp_remote_retrieve_body( $response );
+				// Check for error
+				if ( is_wp_error( $upgrade ) ) {
+					return;
+				}
+			// Store remote HTML file in transient, expire after 24 hours
+			set_transient( 'remote_pro_page', $upgrade, 24 * HOUR_IN_SECONDS );
+		}
 		include_once( 'views/upgrade.php' );
 	}
 

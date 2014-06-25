@@ -33,14 +33,13 @@ class WC_POS_Settings_General extends WC_POS_Settings_Page {
 		$settings = array(
 			array( 'title' => __( 'General Options', 'woocommerce-pos' ), 'type' => 'title', 'desc' => '', 'id' => 'general_options' ),
 			array(
-				'title' => __( 'Example', 'woocommerce-pos' ),
-				'desc' 		=> 'This is a tooltip',
-				'id' 		=> 'woocommerce_example_field',
-				'default'	=> __( 'This is a test', 'woocommerce-pos' ),
+				'title' 	=> __( 'Default POS Customer', 'woocommerce-pos' ),
+				'desc' 		=> __( 'The default customer for POS orders, eg: <em>Guest</em> or create a new user called <em>Walk-in Customer</em>', 'woocommerce-pos' ),
+				'id' 		=> 'woocommerce_pos_default_customer',
+				'default'	=> __( 'Guest', 'woocommerce-pos' ),
 				'type' 		=> 'text',
 				'css' 		=> 'min-width:300px;',
-				'desc_tip'	=> true,
-				'autoload'  => false
+				'desc_tip'	=> false,
 			),
 			array( 'type' => 'sectionend', 'id' => 'general_options'),
 		);
