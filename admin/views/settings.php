@@ -10,7 +10,7 @@
  */
 ?>
 
-<div class="wrap clear woocommerce-pos settings">
+<div class="wrap clear woocommerce woocommerce-pos">
 	<form method="post" id="mainform" action="" enctype="multipart/form-data">
 		<h2 class="nav-tab-wrapper woo-nav-tab-wrapper">
 		<?php 
