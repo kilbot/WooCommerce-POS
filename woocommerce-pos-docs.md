@@ -34,7 +34,7 @@ class Your_New_Settings_Tab extends WC_POS_Settings_Page {
 ```
 
 Contact
-----------------
+=======
 
  * [Github @kilbot](http://github.com/kilbot)
  * [Twitter @kilbot](http://twitter.com/kilbot)
