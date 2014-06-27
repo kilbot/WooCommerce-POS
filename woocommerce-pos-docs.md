@@ -11,7 +11,9 @@ Good luck!
 
 # Hooks
 
-### Example Hook
+If you are familiar with the use of hooks in WordPress and WooCommerce you should have no problem understanding this document. If you don't know what a hook is you should [read this](http://codex.wordpress.org/Plugin_API) and get comfortable with hooks before you continue.
+
+## Add a settings tab
 
 An explanation about the hook
 
