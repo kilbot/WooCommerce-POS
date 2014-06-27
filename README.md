@@ -14,7 +14,7 @@ If you are familiar with the use of hooks in WordPress and WooCommerce you shoul
 
 # Admin Settings
 
-### woocommerce_pos_settings_tabs_array
+### settings_tabs_array
 
 You can add a tab to the admin settings page by using the `woocommerce_pos_settings_tabs_array` filter. Also, by extending the [`WC_POS_Settings_Page`](https://github.com/kilbot/WooCommerce-POS/blob/master/admin/includes/class-pos-settings.php) class you can make use of the default methods such as `output` and `save`.
 
