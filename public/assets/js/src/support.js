@@ -20,7 +20,7 @@ jQuery( document ).ready(function( $ ) {
 	// check api auth and add it to the system report
 	checkApiAuth();
 	function checkApiAuth() {
-		$.getJSON( '/wc-api/v1/products', { 'pos': 1, 'filter[limit]': 1 } )
+		$.getJSON( pos_params.wc_api_url, { 'pos': 1, 'filter[limit]': 1 } )
 		.done( function( data ) {
 			$('#system-status tbody')
 			.append('<tr class="pass"><td><i class="fa fa-check"></i></td><td>API Authentication</td>' + 

@@ -17,7 +17,9 @@
     "fontawesome": "~4.1.0",
     "requirejs-plugins": "~1.0.2",
     "backbone.localStorage": "~1.1.7",
-    "handlebars": "~2.0.*"
+    "handlebars": "~2.0.*",
+    "chosen": "https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip",
+    "select2": "~3.5.0"
   },
   "devDependencies": {}
 }

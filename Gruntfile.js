@@ -137,7 +137,7 @@ module.exports = function(grunt) {
 						'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal.js',
 						// 'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/popover.js',
 						// 'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tooltip.js',
-						'public/assets/js/src/pushy.js',
+						'public/assets/js/src/pushy.js'
 					]
 				}
 			},

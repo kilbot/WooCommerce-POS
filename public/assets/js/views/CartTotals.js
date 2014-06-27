@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 'selectText', 'views/Helpers'], 
-	function(_, Backbone, accounting, Checkout, Handlebars, selectText) {
+define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 'selectText', 'select2', 'views/Helpers'], 
+	function(_, Backbone, accounting, Checkout, Handlebars, selectText, select2) {
 
 	// the view containing all the totals, and the action buttons
 	var CartTotalsView = Backbone.View.extend({
@@ -35,6 +35,43 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 
 			// render the totals
 			this.$el.html( ( this.template( this.model.toJSON() ) ) );
+
+			// add select2 to select_customer
+			this.$('#select_customer').select2({
+    			minimumInputLength: 2,
+    			ajax: {
+    				url: pos_params.ajax_url,
+    				dataType: 'json',
+    				data: function( term, page ) {
+    					return {
+    						term: term,
+    						action: 'pos_json_search_customers',
+							security: this.data('nonce')
+    					};
+    				},
+    				results: function( data, page, query ) {
+    					var customers = [];
+    					_( data ).each( function( obj, id ) {
+    						customers.push( obj );
+    					})
+    					return { results: customers };
+    				}
+    			},
+    			formatResult: function( customer, container, query ) {
+    				var output = customer.first_name + ' ';
+    				if( customer.last_name ) output += customer.last_name + ' ';
+    				if( output === ' ' ) output = customer.display_name + ' ';
+    				if( customer.user_email ) output += '(' + customer.user_email + ')';
+    				return output;
+    			},
+    			formatSelection: function( customer, container ) {
+    				var output = customer.first_name + ' ';
+    				if( customer.last_name ) output += customer.last_name + ' ';
+    				if( output === ' ' ) output = customer.display_name + ' ';
+    				return output;
+    			},
+    			escapeMarkup: function(m) { return m; }
+			});
 
 			return this;
 		},

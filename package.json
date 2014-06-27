@@ -1,6 +1,6 @@
 {
   "name": "woocommerce-pos",
-  "version": "0.2.14",
+  "version": "0.3.0",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.4",

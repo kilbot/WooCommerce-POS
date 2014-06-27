@@ -29,6 +29,7 @@ require.config({
 		'backbone-indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
 		'backbone-localstorage': '../../../bower_components/backbone.localStorage/backbone.localStorage',
 		'backbone-paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
+		'select2': '../../../bower_components/select2/select2.min',
 
 		// Custom Plugins
 		'autoGrowInput': '../../../public/assets/js/src/jquery.autoGrowInput',

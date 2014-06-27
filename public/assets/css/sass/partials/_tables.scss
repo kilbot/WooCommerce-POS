@@ -157,15 +157,14 @@ table {
             }
         }
         tfoot {
-            tr.order-total {
-                td {
-                    border-bottom: 0;
+            tr.order-total, tr.customer {
+                th, td {
+                    border-bottom: 1px solid $border-dark;
                 }
             }
             tr.actions {
                 th, td {
                     text-align: right;
-                    border-top: 1px solid $border-dark;
                     border-bottom: 0;
                 }
                 &.working td {

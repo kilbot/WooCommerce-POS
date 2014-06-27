@@ -14,13 +14,13 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION = '0.2.16';
+	const VERSION = '0.3';
 	const JQUERY_VERSION = '2.1.1';
 
 	/**
 	 * Development flag
 	 */
-	public $development = false;
+	public $development = true;
 
 	/**
 	 * Unique identifier
@@ -261,6 +261,25 @@ class WooCommerce_POS {
 			'tax_total_display'		=> get_option( 'woocommerce_tax_total_display' ),
 		);
 		return $settings;
+	}
+
+	/**
+	 * Get the default customer
+	 * @return object $customer
+	 */
+	public function get_default_customer() {
+		$customer_id 	= get_option( 'woocommerce_pos_default_customer', 0 );
+		$customer 		= get_userdata( $customer_id );
+		if( $customer ) {
+			$first_name 	= esc_html( $customer->first_name );
+			$last_name 		= esc_html( $customer->last_name );
+			$customer->name	= $first_name .' '. $last_name;
+			if ( trim($customer->name) == '' ) $customer->name = esc_html( $customer->display_name );
+		} else {
+			$customer->ID 	= 0;
+			$customer->name = __( 'Guest', 'woocommerce-pos' );
+		}
+		return $customer;
 	}
 
 	/**
