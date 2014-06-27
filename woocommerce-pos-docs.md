@@ -16,16 +16,16 @@ If you are familiar with the use of hooks in WordPress and WooCommerce you shoul
 
 ### woocommerce_pos_settings_tabs_array
 
-You can add a tab to the admin settings page by using the `woocommerce_pos_settings_tabs_array` filter. Also, by extending the [`WC_POS_Settings_Page`](https://github.com/kilbot/WooCommerce-POS/blob/master/admin/includes/class-pos-settings.php) class you can make use of the default methods such as `add_settings_page`, `output` and `save`.
+You can add a tab to the admin settings page by using the `woocommerce_pos_settings_tabs_array` filter. Also, by extending the [`WC_POS_Settings_Page`](https://github.com/kilbot/WooCommerce-POS/blob/master/admin/includes/class-pos-settings.php) class you can make use of the default methods such as `output` and `save`.
 
 ``` php
 class Your_New_Settings_Tab extends WC_POS_Settings_Page {
 
 	public function __construct() {
-    $this->id     = 'new-tab';
-    $this->label  = 'New Tab';
+		$this->id     = 'new-tab';
+		$this->label  = 'New Tab';
     
-    add_filter( 'woocommerce_pos_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
+		add_filter( 'woocommerce_pos_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 		add_action( 'woocommerce_pos_settings_' . $this->id, array( $this, 'output' ) );
 		add_action( 'woocommerce_pos_settings_save_' . $this->id, array( $this, 'save' ) );
 	}
