@@ -6,11 +6,13 @@ define(['backbone', 'backbone-localstorage'],
 		defaults: {
 			title 			: 'Cart Totals',
 			note			: '',
-			order_discount 	: 0
+			order_discount 	: 0,
+			customer_id 	: pos_params.customer.default_id,
+			customer_name	: pos_params.customer.default_name
 		},
 
 		initialize: function() { 
-			// this.on('all', function(e) { console.log("Cart Totals Model event: " + e); }); // debug
+			this.on('all', function(e) { console.log("Cart Totals Model event: " + e); }); // debug
 		},
 	});
   

@@ -10,12 +10,15 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 		initialize: function(models, options) { 
 			// this.on('all', function(e) { console.log("Cart Collection event: " + e); }); // debug
 	
+			// pass pubsub to subviews
+			this.pubSub = options.pubSub;
+
 			// set up a new localstore
 			this.localStorage = new Backbone.LocalStorage( 'cart-' + options.cartId );
 
 			// init the Cart Totals
 			this.cartTotals = new CartTotals({ id: options.cartId });
-			this.cartTotalsView = new CartTotalsView({ model: this.cartTotals, cart: this });
+			this.cartTotalsView = new CartTotalsView({ model: this.cartTotals, cart: this, pubSub: this.pubSub });
 			this.cartTotals.fetch();
 			
 			// update totals on change to the cart items
@@ -37,7 +40,7 @@ define(['underscore', 'backbone', 'models/CartItem', 'models/CartTotals', 'views
 			if( this.length === 0 ) {
 
 				// clear the cart totals
-				this.cartTotals.set({ note: '', order_discount: 0 }, { silent: true });
+				this.cartTotals.set( this.cartTotals.defaults, { silent: true });
 				this.cartTotalsView.$el.html('').addClass('empty');
 
 				// and bail

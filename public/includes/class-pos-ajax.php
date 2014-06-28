@@ -102,7 +102,6 @@ class WooCommerce_POS_AJAX {
 			);
 			$default->init( (object)$data );
 		}
-		error_log( print_R( $default, TRUE ) ); //debug
 
 		add_action( 'pre_user_query', array( __CLASS__, 'json_search_customer_name' ) );
 
@@ -118,7 +117,7 @@ class WooCommerce_POS_AJAX {
 		$customers = $customers_query->get_results();
 		
 		// add the default customer to the results
-		array_push( $customers, $default );
+		array_unshift( $customers, $default );
 
 		foreach ( $customers as $customer ) {
 

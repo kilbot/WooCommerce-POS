@@ -61,14 +61,14 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.3 =
-TODO: everytime there is a change of stock the update time needs a bump
 TODO: everytime a parent is updated, the variatants need a update bump
 TODO: sync products after each sale
-TODO: add customer to order
+TODO: new apple touch icons
 * New: Set default POS customer on new settings page
 * New: Add customer to order
 * New: Documentation for third party developers [http://kilbot.github.io/WooCommerce-POS/](http://kilbot.github.io/WooCommerce-POS/)
 * New: pt_BR translation thanks to Hermes Alves Dias Souza! [http://pt.woopos.com.au/pos](http://pt.woopos.com.au/pos)
+* Fix: stock is now synced after each order
 * Fix: Add-to-cart bug for particular tax settings (tax enabled + prices exclusive from tax + no tax rates set)
 * Fix: product display for sites where home_url != site_url
 * Fix: authentication test for subfolder wordpress installs

@@ -12,11 +12,15 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 			'keypress .note'			: 'saveOnEnter',
 			'keypress .order-discount'	: 'saveOnEnter',
 			'blur .note'				: 'save',
-			'blur .order-discount'		: 'save'
+			'blur .order-discount'		: 'save',
+			'change #select-customer'	: 'save'
 		},
 		params: pos_params,
 
-		initialize: function(options) {
+		initialize: function( options ) {
+
+			// pass pubsub to subviews
+			this.pubSub = options.pubSub;
 
 			// set the accounting settings
 			accounting.settings = this.params.accounting;
@@ -37,7 +41,8 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 			this.$el.html( ( this.template( this.model.toJSON() ) ) );
 
 			// add select2 to select_customer
-			this.$('#select_customer').select2({
+			var self = this;
+			this.$('#select-customer').select2({
     			minimumInputLength: 2,
     			ajax: {
     				url: pos_params.ajax_url,
@@ -57,23 +62,61 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
     					return { results: customers };
     				}
     			},
-    			formatResult: function( customer, container, query ) {
-    				var output = customer.first_name + ' ';
-    				if( customer.last_name ) output += customer.last_name + ' ';
-    				if( output === ' ' ) output = customer.display_name + ' ';
-    				if( customer.user_email ) output += '(' + customer.user_email + ')';
-    				return output;
+    			formatResult: self.formatResult,
+    			formatSelection: self.formatSelection,
+    			formatNoMatches: function( term ) { return self.params.select.no_matches; },
+    			formatSearching: function() { return self.params.select.searching; },
+    			formatInputTooShort: function( input, min ) { 
+    				var n = min - input.length; 
+    				if( n > 1 ) {
+    					var str = self.params.select.too_shorts;
+    					return str.replace( "%d", n );
+    				} else {
+    					return self.params.select.too_short;
+    				}
     			},
-    			formatSelection: function( customer, container ) {
-    				var output = customer.first_name + ' ';
-    				if( customer.last_name ) output += customer.last_name + ' ';
-    				if( output === ' ' ) output = customer.display_name + ' ';
-    				return output;
+    			formatInputTooLong: function( input, max ) { 
+    				var n = n = input.length - max; 
+    				if( n > 1 ) {
+    					var str = self.params.select.too_longs;
+    					return str.replace( "%d", n );
+    				} else {
+    					return self.params.select.too_long;
+    				}
     			},
-    			escapeMarkup: function(m) { return m; }
+    			formatSelectionTooBig: function( limit ) {
+    				if( limit > 1 ) {
+    					var str = self.params.select.too_bigs;
+    					return str.replace( "%d", n );
+    				} else {
+    					return self.params.select.too_big;
+    				}
+    			},
+    			formatLoadMore: function() { return self.params.select.load_more; },
+    			initSelection: function( element, callback ) {
+    				var data = { id: element.val(), display_name: element.data('customer') };
+					callback( data );
+    			},
 			});
 
 			return this;
+		},
+
+		formatResult: function( customer, container, query ) {
+			var output = '';
+			if( ! _.isEmpty( customer.first_name ) ) output = customer.first_name + ' ';
+			if( ! _.isEmpty( customer.last_name ) ) output += customer.last_name + ' ';
+			if( output === '' ) output = customer.display_name + ' ';
+			if( ! _.isEmpty( customer.user_email ) ) output += '(' + customer.user_email + ')';
+			return output;
+		},
+
+		formatSelection: function( customer, container ) {
+			var output = '';
+			if( ! _.isEmpty( customer.first_name ) ) output = customer.first_name + ' ';
+			if( ! _.isEmpty( customer.last_name ) ) output += customer.last_name + ' ';
+			if( output === '' ) output = customer.display_name;
+			return output;
 		},
 
 		actions: function(e) {
@@ -105,7 +148,7 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 					$('#cart .actions').addClass('working');
 
 					// init new checkout
-					var checkout = new Checkout({ cart: this.cart, totals: this.model });
+					var checkout = new Checkout({ cart: this.cart, totals: this.model, pubSub: this.pubSub  });
 				break;
 			}
 		},
@@ -127,19 +170,22 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 		},
 
 		save: function(e) {
-			var className 	= e.currentTarget.className,
-				value 		= $(e.target).text();
+			var el 		= $(e.target);
+			var action 	= el.closest('tr').attr('class');
 
 			// bail if no className
-			if( !className ) { return; }
+			if( !action ) { return; }
 
-			switch( className ) {
+			switch( action ) {
 				case 'note':
-					
+					var value 	= el.text();
+
 					// validate and save
 					this.model.save({ note: value });
+
 				break;
 				case 'order-discount':
+					var value 	= el.text();
 
 					// if empty, go back to zero
 					if( value === '' ) { value = 0; } 
@@ -155,6 +201,13 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 
 					// save
 					this.model.save({ order_discount: decimal });
+				break;
+				case 'customer':
+					var id 		= e.added.id,
+						name 	= this.formatSelection( e.added );
+
+					// save
+					this.model.save({ customer_id: id, customer_name: name });
 				break;
 			}
 		},

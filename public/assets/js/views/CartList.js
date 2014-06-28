@@ -8,8 +8,11 @@ define(['backbone', 'collections/CartItems', 'views/CartItem'],
 
 		initialize: function( options ) {
 
+			// pass pubsub to subviews
+			this.pubSub = options.pubSub;
+
 			// init the CartItem collection 
-			this.collection = new CartItems( [], { cartId: 1 } );
+			this.collection = new CartItems( [], { cartId: 1, pubSub: this.pubSub } );
 
 			// listen for changes
 			this.listenTo(this.collection, 'add', this.addOne);
@@ -56,7 +59,7 @@ define(['backbone', 'collections/CartItems', 'views/CartItem'],
 			}
 
 			// create a new CartItemView
-			var newItem = new CartItemView({ model: item, cart: this.collection });
+			var newItem = new CartItemView({ model: item, cart: this.collection, pubSub: this.pubSub });
 
 			// add the new CartItemView
 			this.$el.append( newItem.render().el );

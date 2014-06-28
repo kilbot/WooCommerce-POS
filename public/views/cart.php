@@ -86,9 +86,8 @@
 	</tr>
 	<tr class="customer">
 		<td colspan="5">
-			<?php _e( 'Customer', 'woocommerce-pos' ); ?>: 
-			<?php $customer = WC_POS()->get_default_customer() ?>
-			<input type="hidden" id="select_customer" style="width:200px" value="<?= $customer->ID ?>" data-customer="<?= $customer->name ?>" data-nonce="<?= wp_create_nonce( 'search-customers' ) ?>">
+			<?php _e( 'Customer', 'woocommerce-pos' ); ?>:
+			<input type="hidden" id="select-customer" style="width:200px" value="{{ customer_id }}" data-customer="{{ customer_name }}" data-nonce="<?= wp_create_nonce( 'search-customers' ) ?>">
 		</td>
 	</tr>
 	<tr class="actions">

@@ -25,6 +25,10 @@ class WooCommerce_POS_Checkout {
 
 		// remove the New Order admin emails
 		add_filter( 'woocommerce_email', array( $this, 'remove_new_order_emails' ), 99 );
+
+		// bump date after stock change
+		add_action( 'woocommerce_reduce_order_stock', array( $this, 'stock_modified' ), 10, 1 );
+
 	}
 
 	/**
@@ -55,6 +59,7 @@ class WooCommerce_POS_Checkout {
 		$total = 0;
 		$cart_discount = 0;
 		$order_discount = 0;
+		$customer_id = 0;
 		$note = false;
 		foreach ($_REQUEST['cart'] as $key => $item) {
 			$this->add_order_item( $order_id, $item['id'], $item['qty'], $item['line_total'] );
@@ -65,6 +70,9 @@ class WooCommerce_POS_Checkout {
 
 		if( isset( $_REQUEST['note'] ) && $_REQUEST['note'] !== '' )
 			$note = wp_kses_post( trim( stripslashes( $_REQUEST['note'] ) ) );
+
+		if( isset( $_REQUEST['customer_id'] ) && is_numeric( $_REQUEST['customer_id'] ) )
+			$customer_id = $_REQUEST['customer_id'];
 
 		// now calculate the taxes
 		$this->calc_line_taxes( $order_id );
@@ -82,7 +90,7 @@ class WooCommerce_POS_Checkout {
 		update_post_meta( $order_id, '_order_total', 			wc_format_decimal( $order_total, get_option( 'woocommerce_price_num_decimals' ) ) );
 
 		update_post_meta( $order_id, '_order_key', 				'wc_' . apply_filters('woocommerce_generate_order_key', uniqid('order_') ) );
-		update_post_meta( $order_id, '_customer_user', 			absint( 0 ) );
+		update_post_meta( $order_id, '_customer_user', 			absint( $customer_id ) );
 		update_post_meta( $order_id, '_order_currency', 		get_woocommerce_currency() );
 		update_post_meta( $order_id, '_prices_include_tax', 	get_option( 'woocommerce_prices_include_tax' ) );
 
@@ -316,7 +324,6 @@ class WooCommerce_POS_Checkout {
 
 	}
 
-
 	/**
 	 * Stop WC sending email notifications
 	 */
@@ -337,6 +344,26 @@ class WooCommerce_POS_Checkout {
 		remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
 		remove_action('woocommerce_order_status_completed_notification', array($wc_emails->emails['WC_Email_Customer_Completed_Order'], 'trigger'));
 
+	}
+
+	/**
+	 * Bump post_modified & post_modified_gmt
+	 * @return [type] [description]
+	 */
+	public function stock_modified( $order ) {
+		
+		$post_modified     = current_time( 'mysql' );
+		$post_modified_gmt = current_time( 'mysql', 1 );
+
+		foreach ( $order->get_items() as $item ) {
+			$id = isset( $item['variation_id'] ) && is_numeric( $item['variation_id'] ) ? $item['variation_id'] : $item['product_id'] ;
+
+			wp_update_post( array(
+				'ID' 				=> $id,
+				'post_modified' 	=> $post_modified,
+				'post_modified_gmt' => $post_modified_gmt
+			));
+		}
 	}
 
 }

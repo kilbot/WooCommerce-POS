@@ -19,7 +19,10 @@ define(['underscore', 'backbone', 'handlebars', 'accounting', 'views/Helpers'],
 			'click #print'		: 'print',
 		},
 		
-		initialize: function(options) {
+		initialize: function( options ) {
+
+			// pass pubsub to subviews
+			this.pubSub = options.pubSub;
 
 			// set the accounting settings
 			accounting.settings = this.params.accounting;
@@ -73,7 +76,7 @@ define(['underscore', 'backbone', 'handlebars', 'accounting', 'views/Helpers'],
 		},
 
 		process: function() {
-			var that = this;
+			var self = this;
 
 			// pick the data from the cart items we are going to send
 			var items = this.cart.map( function( model ) {
@@ -81,11 +84,18 @@ define(['underscore', 'backbone', 'handlebars', 'accounting', 'views/Helpers'],
 			});
 
 			// send the cart data to the server
-			$.post( pos_params.ajax_url , { action: 'pos_process_order', cart: items, order_discount: this.totals.get('order_discount'), note: this.totals.get('note') } )
+			$.post( pos_params.ajax_url , { 
+				action 			: 'pos_process_order', 
+				cart 			: items, 
+				order_discount 	: this.totals.get('order_discount'), 
+				note 			: this.totals.get('note'), 
+				customer_id 	: this.totals.get('customer_id'), 
+			} )
 			.done(function( data ) {
-				that.order = data.order;
-				that.order.is_paid = true;
-				that.render();
+				self.order = data.order;
+				self.order.is_paid = true;
+				self.pubSub.trigger( 'serverSync' );
+				self.render();
 			})
 			.fail(function( jqXHR, textStatus, errorThrown ) {
 				console.log(jqXHR);

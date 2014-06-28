@@ -16,9 +16,14 @@ define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'setti
     		order: 1
   		},
 
-		initialize: function() {
+		initialize: function( models, options ) {
 			// this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
-			
+
+			// pubsub
+			this.pubSub = options.pubSub;
+
+			this.listenTo( options.pubSub, 'serverSync', this.serverSync );
+
 			// sync on init
 			this.serverSync();
 		},
@@ -28,6 +33,7 @@ define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'setti
 		 * TODO: improve product audit, maybe move to worker?
 		 */
 		serverSync: function() {
+			console.log(this);
 			var self = this;
 
 			$('#pagination').addClass('working');

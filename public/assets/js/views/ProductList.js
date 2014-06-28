@@ -13,7 +13,7 @@ define(['backbone', 'collections/Products', 'views/Product', 'views/ProductFilte
 
 			// init product collection, with fallback
 			if(Modernizr.indexeddb) {
-				this.collection = new ProductsCollection();
+				this.collection = new ProductsCollection( [], { pubSub: this.pubSub }  );
 			} else {
 				this.collection = new ProductsFallbackCollection();
 			}
