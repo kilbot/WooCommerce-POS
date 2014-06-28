@@ -20,7 +20,7 @@ class WooCommerce_POS {
 	/**
 	 * Development flag
 	 */
-	public $development = true;
+	public $development = false;
 
 	/**
 	 * Unique identifier

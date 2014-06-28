@@ -150,23 +150,6 @@ module.exports = function(grunt) {
 			},
 		},
 
-		// // image optimization
-		// imagemin: {
-		//	 dist: {
-		//		 options: {
-		//			 optimizationLevel: 7,
-		//			 progressive: true,
-		//			 interlaced: true
-		//		 },
-		//		 files: [{
-		//			 expand: true,
-		//			 cwd: 'assets/',
-		//			 src: ['**/*.{png,jpg,gif}'],
-		//			 dest: 'assets/'
-		//		 }]
-		//	 }
-		// },
-
 		// unused
 		// convert readme.txt to readme.md
 		wp_readme_to_markdown: {

@@ -58,7 +58,7 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
     					var customers = [];
     					_( data ).each( function( obj, id ) {
     						customers.push( obj );
-    					})
+    					});
     					return { results: customers };
     				}
     			},
@@ -76,7 +76,7 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
     				}
     			},
     			formatInputTooLong: function( input, max ) { 
-    				var n = n = input.length - max; 
+    				var n = input.length - max; 
     				if( n > 1 ) {
     					var str = self.params.select.too_longs;
     					return str.replace( "%d", n );
@@ -87,7 +87,7 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
     			formatSelectionTooBig: function( limit ) {
     				if( limit > 1 ) {
     					var str = self.params.select.too_bigs;
-    					return str.replace( "%d", n );
+    					return str.replace( "%d", limit );
     				} else {
     					return self.params.select.too_big;
     				}
@@ -104,18 +104,18 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 
 		formatResult: function( customer, container, query ) {
 			var output = '';
-			if( ! _.isEmpty( customer.first_name ) ) output = customer.first_name + ' ';
-			if( ! _.isEmpty( customer.last_name ) ) output += customer.last_name + ' ';
-			if( output === '' ) output = customer.display_name + ' ';
-			if( ! _.isEmpty( customer.user_email ) ) output += '(' + customer.user_email + ')';
+			if( ! _.isEmpty( customer.first_name ) ) { output = customer.first_name + ' '; }
+			if( ! _.isEmpty( customer.last_name ) ) { output += customer.last_name + ' '; }
+			if( output === '' ) { output = customer.display_name + ' '; }
+			if( ! _.isEmpty( customer.user_email ) ) { output += '(' + customer.user_email + ')'; }
 			return output;
 		},
 
 		formatSelection: function( customer, container ) {
 			var output = '';
-			if( ! _.isEmpty( customer.first_name ) ) output = customer.first_name + ' ';
-			if( ! _.isEmpty( customer.last_name ) ) output += customer.last_name + ' ';
-			if( output === '' ) output = customer.display_name;
+			if( ! _.isEmpty( customer.first_name ) ) { output = customer.first_name + ' '; }
+			if( ! _.isEmpty( customer.last_name ) ) { output += customer.last_name + ' '; }
+			if( output === '' ) { output = customer.display_name; }
 			return output;
 		},
 
@@ -125,6 +125,8 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 			// if( !$(e.target).is('button') ) { return; }
 
 			var action = e.target.className.match(/\saction-([a-z]+)/);
+			var td;
+
 			if( !action ) { return; }
 
 			switch( action[1] ) {
@@ -134,12 +136,12 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 				break;
 				case 'note':
 					// toggle note row
-					var td = this.$('.note').show().children('td');
+					td = this.$('.note').show().children('td');
 					td.attr('contenteditable','true').focus();
 				break;
 				case 'discount':
 					// toggle discount row
-					var td = this.$('.order-discount').show().children('td');
+					td = this.$('.order-discount').show().children('td');
 					td.attr('contenteditable','true').text( td.data('value') ).selectText();
 				break;
 				case 'checkout':
@@ -170,22 +172,23 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 		},
 
 		save: function(e) {
-			var el 		= $(e.target);
-			var action 	= el.closest('tr').attr('class');
+			var el 		= $(e.target), 
+				action 	= el.closest('tr').attr('class'), 
+				value;
 
 			// bail if no className
 			if( !action ) { return; }
 
 			switch( action ) {
 				case 'note':
-					var value 	= el.text();
+					value 	= el.text();
 
 					// validate and save
 					this.model.save({ note: value });
 
 				break;
 				case 'order-discount':
-					var value 	= el.text();
+					value 	= el.text();
 
 					// if empty, go back to zero
 					if( value === '' ) { value = 0; } 

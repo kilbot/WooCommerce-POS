@@ -6,6 +6,29 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 
+	<!-- For iPad with high-resolution Retina display running iOS ≥ 7: -->
+	<link rel="apple-touch-icon-precomposed" href="<?= WC_POS()->plugin_url ?>assets/favicon-152.png">
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="<?= WC_POS()->plugin_url ?>assets/favicon-152.png">
+
+	<!-- For iPad with high-resolution Retina display running iOS ≤ 6: -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?= WC_POS()->plugin_url ?>assets/favicon-144.png">
+
+	<!-- For iPhone with high-resolution Retina display running iOS ≥ 7: -->
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="<?= WC_POS()->plugin_url ?>assets/favicon-120.png">
+
+	<!-- For iPhone with high-resolution Retina display running iOS ≤ 6: -->
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?= WC_POS()->plugin_url ?>assets/favicon-114.png">
+
+	<!-- For first- and second-generation iPad: -->
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?= WC_POS()->plugin_url ?>assets/favicon-72.png">
+
+	<!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+	<link rel="apple-touch-icon-precomposed" href="<?= WC_POS()->plugin_url ?>assets/favicon-57.png">
+
+	<!-- IE 10 Metro tile icon -->
+	<meta name="msapplication-TileColor" content="#323A46">
+	<meta name="msapplication-TileImage" content="<?= WC_POS()->plugin_url ?>assets/favicon-144.png">
+
 	<?php WooCommerce_POS::pos_print_css(); ?>
 	<?php WooCommerce_POS::pos_print_js('head'); ?>
 	
