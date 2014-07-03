@@ -17,7 +17,7 @@ Thanks to [Wordpress](http://wordpress.org) and [WooCommerce](http://woothemes.c
 
 ## Changelog ##
 
-= 0.3 =
+### 0.3 ###
 * New: Set default POS customer on new settings page
 * New: Add customer to order
 * New: Documentation for third party developers [http://kilbot.github.io/WooCommerce-POS/](http://kilbot.github.io/WooCommerce-POS/)
