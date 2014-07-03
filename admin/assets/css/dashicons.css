@@ -24,10 +24,10 @@
 }
 
 .icon-woocommerce-pos:before {
-	content: "\e600";
+	content: "\e600" !important;
 }
 
 #toplevel_page_woocommerce-pos .wp-menu-image:before {
 	font-family: 'WooCommerce-POS' !important;
-	content: '\e600';
+	content: '\e600' !important;
 }

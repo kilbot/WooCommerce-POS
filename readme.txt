@@ -18,7 +18,10 @@ You can see a demo of the WooCommerce POS plugin in action by going to [http://d
 
 = MORE INFO = 
 * Website: http://woopos.com.au
-* GitHub: https://github.com/kilbot/WooCommerce-POS/
+* Roadmap: http://woopos.com.au/roadmap
+* GitHub: https://github.com/kilbot/WooCommerce-POS
+* Translate: http://translate.woopos.com.au
+* Upgrade to Pro: http://woopos.com.au/pro
 
 = REQUIREMENTS =
 * WooCommerce >= 2.1.0
@@ -60,6 +63,19 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.3.1 =
+* TODO: settings: choose which users have access
+* TODO: settings: choose which field is used for barcode (PRO USERS)
+* TODO: settings: choose which product statuses to show, eg: POS only products (PRO?)
+* TODO: settings: payment tab, select which payment gateways to use
+* TODO: ui: payment options during checkout
+* TODO: ui: change calculator
+* TODO: ui: numpad module
+* TODO: send order meta: user_id, payment_type
+* TODO: look at this authentication issue with network installs, Scotts issue.
+* New: Greek translation thanks to Marios Polycarpou! [http://el.woopos.com.au/pos](http://el.woopos.com.au/pos)
+* New: German translation thanks to Simon Potye! [http://de.woopos.com.au/pos](http://de.woopos.com.au/pos)
+
 = 0.3 =
 * New: Set default POS customer on new settings page
 * New: Add customer to order
@@ -84,20 +100,3 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: proper fix for rounding error for comma decimals
 * Fix: fixed bug for subfolder wordpress install
 * Removed: Beta tag!
-
-= 0.2.14 =
-* New: Search by 'barcode'. Defaults to SKU for the moment. Instant add to cart for barcode matches, ie: barcode scanning!
-* New: Support page: contact support directly from the POS
-* New: Add order discount
-* New: Add order note
-* New: Void order
-* New: Basic translations for nl_NL, fr_FR, es_ES and pt_BR. Corrections can be submitted to [GitHub](https://github.com/kilbot/WooCommerce-POS/issues) or via email [support@woopos.com.au](mailto:support@woopos.com.au). Thanks Javier Gómez for the Spanish translation!
-* Fix: fixed bug for product_variations which effects WooCommerce < 2.1.7
-* Fix: fixed rounding bug for comma decimals
-* Fix: https://github.com/kilbot/WooCommerce-POS/issues/7
-
-= 0.2.13 =
-* Improved: Product Sync now handled by web worker, improves sync performance for large stores (1000+ products)
-* Fix: Access to WC REST API now validates against the wordpress cookie, only logged in users with manage_woocommerce_pos capability can access the api
-* Fix: Added flag for WC REST API request and response filters
-* Fix: Cart now handles comma decimals correctly

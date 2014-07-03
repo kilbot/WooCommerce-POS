@@ -2,7 +2,7 @@
 <html class="no-js" <?php language_attributes(); ?>>
 <head>
 	<meta charset="UTF-8" />
-	<title>Point of Sale - <?php bloginfo('name') ?></title>
+	<title><?php _e('Point of Sale', 'woocommerce-pos') ?> - <?php bloginfo('name') ?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 

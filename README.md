@@ -17,6 +17,17 @@ Thanks to [Wordpress](http://wordpress.org) and [WooCommerce](http://woothemes.c
 
 ## Changelog ##
 
+= 0.3 =
+* New: Set default POS customer on new settings page
+* New: Add customer to order
+* New: Documentation for third party developers [http://kilbot.github.io/WooCommerce-POS/](http://kilbot.github.io/WooCommerce-POS/)
+* New: pt_BR translation thanks to Hermes Alves Dias Souza! [http://pt.woopos.com.au/pos](http://pt.woopos.com.au/pos)
+* New: Icons for mobile devices. Thanks [@sixthcore](https://github.com/kilbot/WooCommerce-POS/issues/11)!
+* Fix: stock is now synced after each order
+* Fix: Add-to-cart bug for particular tax settings (tax enabled + prices exclusive from tax + no tax rates set)
+* Fix: product display for sites where home_url != site_url
+* Fix: authentication test for subfolder wordpress installs
+
 ### 0.2.15 ###
 * New: [website](http://woopos.com.au)!
 * New: Multisite support: visit [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos) to see WooCommerce POS in different languages using multisite
@@ -41,9 +52,3 @@ Thanks to [Wordpress](http://wordpress.org) and [WooCommerce](http://woothemes.c
 * Fix: fixed bug for product_variations which effects WooCommerce < 2.1.7
 * Fix: fixed rounding bug for comma decimals
 * Fix: https://github.com/kilbot/WooCommerce-POS/issues/7
-
-### 0.2.13 ###
-* Improved: Product Sync now handled by web worker, improves sync performance for large stores (1000+ products)
-* Fix: Access to WC REST API now validates against the wordpress cookie, only logged in users with manage_woocommerce_pos capability can access the api
-* Fix: Added flag for WC REST API request and response filters
-* Fix: Cart now handles comma decimals correctly

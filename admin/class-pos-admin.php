@@ -377,7 +377,7 @@ class WooCommerce_POS_Admin {
 			array( $this, 'display_settings_page' )
 		);
 
-		$submenu[$this->plugin_slug][0][0] = 'Upgrade to Pro';
+		$submenu[$this->plugin_slug][0][0] = __( 'Upgrade to Pro', 'woocommerce-pos' );
 
 	}
 

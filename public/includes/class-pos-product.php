@@ -80,12 +80,10 @@ class WooCommerce_POS_Product {
 
 	/**
 	 * Get all the things
+	 * TODO: pre_get_posts action vs filter
 	 * @param  $query 		the wordpress query
 	 */
 	public function get_product_variations( $query ) {
-
-		// show all products
-		// $query->set( 'posts_per_page', -1 ); 
 
 		// plus variations
 		$query->set( 'post_type', array( 'product', 'product_variation' ) );
@@ -128,14 +126,6 @@ class WooCommerce_POS_Product {
 				if ( $product_data['parent']['featured_src'] ) 
 					$product_data['featured_src'] = $product_data['parent']['featured_src'];
 			}
-
-			// turn variations into a html string
-			$product_data['variation_html'] = '<dl>';
-			foreach ( $product_data['attributes'] as $variation ) {
-				$product_data['variation_html'] .= '<dt>'.$variation['name'] .':</dt>';
-				$product_data['variation_html'] .= '<dd>'.$variation['option'] .'</dd>';
-			}
-			$product_data['variation_html'] .= '</dl>';
 
 		}
 
