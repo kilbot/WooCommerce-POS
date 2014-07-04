@@ -23,6 +23,7 @@ class WooCommerce_POS_AJAX {
 		$ajax_events = array(
 			'process_order'             => true,
 			'get_product_ids'			=> true,
+			'get_products'				=> true,
 			'get_modal'					=> true,
 			'json_search_customers'		=> true,
 		);
@@ -39,7 +40,7 @@ class WooCommerce_POS_AJAX {
 	/**
 	 * Process the order
 	 * TODO: validation
-	 * @return 
+	 * @return json
 	 */
 	public function process_order() {
 
@@ -53,6 +54,10 @@ class WooCommerce_POS_AJAX {
 		die();
 	}
 
+	/**
+	 * Get all the product ids
+	 * @return json
+	 */
 	public function get_product_ids() {
 
 		// get an array of product ids
@@ -61,9 +66,24 @@ class WooCommerce_POS_AJAX {
 
 		$this->json_headers();
 		echo json_encode( $ids );
-
 		die();
 	}
+
+	/**
+	 * Get all the products
+	 * @return json
+	 */
+	public function get_products() {
+
+		// get an array of product ids
+		$products = new WooCommerce_POS_Product();
+		$products = $products->get_products();
+
+		$this->json_headers();
+		echo json_encode( $products );
+		die();
+	}
+	
 
 	public function get_modal() {
 

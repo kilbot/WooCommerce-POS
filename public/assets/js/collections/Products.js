@@ -33,7 +33,6 @@ define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'setti
 		 * TODO: improve product audit, maybe move to worker?
 		 */
 		serverSync: function() {
-			console.log(this);
 			var self = this;
 
 			$('#pagination').addClass('working');
