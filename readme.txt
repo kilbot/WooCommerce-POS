@@ -66,7 +66,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 = 0.3.1 =
 * TODO: settings: choose which users have access
 * TODO: settings: choose which field is used for barcode (PRO USERS)
-* TODO: settings: choose which product statuses to show, eg: POS only products (PRO?)
+* New: POS only products
 * TODO: settings: payment tab, select which payment gateways to use
 * TODO: ui: payment options during checkout
 * TODO: ui: change calculator
@@ -75,6 +75,8 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * TODO: look at this authentication issue with network installs, Scotts issue.
 * New: Greek translation thanks to Marios Polycarpou! [http://el.woopos.com.au/pos](http://el.woopos.com.au/pos)
 * New: German translation thanks to Simon Potye! [http://de.woopos.com.au/pos](http://de.woopos.com.au/pos)
+
+* Pro Only:  
 
 = 0.3 =
 * New: Set default POS customer on new settings page

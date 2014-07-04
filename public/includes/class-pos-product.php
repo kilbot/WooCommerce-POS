@@ -42,23 +42,15 @@ class WooCommerce_POS_Product {
 	 */
 	public function get_all_ids() {
 
-		// set up the args
+		// get all the ids
 		$args = array(
-			'posts_per_page' =>  -1,
-			'post_type' => array( 'product', 'product_variation' ),
-			'tax_query' => array(
-				array(
-					'taxonomy' 	=> 'product_type',
-					'field' 	=> 'slug',
-					'terms' 	=> array( 'variable' ),
-					'operator'	=> 'NOT IN'
-				)
-			),
-			'fields'        => 'ids', // only get post IDs.
+			'posts_per_page'=>  -1,
+			'fields'		=> 'ids',
 		);
 
-		return(get_posts( $args ));
-
+		// init WP_QUERY: uses pre_get_posts
+		$query = new WP_Query( $args );
+		return array_map( 'intval', $query->posts );
 	}
 
 	/**
@@ -89,8 +81,6 @@ class WooCommerce_POS_Product {
 
 		// remove product_variations where post_status != publish
 		add_filter( 'posts_where', array( $this, 'posts_where' ) );
-
-        error_log( print_R( $query, TRUE ) ); //debug
         
 	}
 
