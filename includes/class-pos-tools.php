@@ -33,7 +33,7 @@ class WooCommerce_POS_Tools {
 	 */
 	public function check_api_active() {
 		$api_access = false;
-		$file_headers = @get_headers( WC_POS()->wc_api_url );
+		$file_headers = @get_headers( home_url(WC_POS()->wc_api_url) );
 		if( strpos( $file_headers[0], '404 Not Found' ) === false ) {
 			$api_access = true;
 		}

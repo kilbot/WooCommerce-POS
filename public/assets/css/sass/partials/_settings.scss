@@ -194,7 +194,7 @@ $zindex-modal:             1050 !default;
 /*============================================================================
  Compass defaults
  ===========================================================================*/ 
-$default-border-radius:	10px;
+$default-border-radius:	5px;
 
 
 /*============================================================================
@@ -233,6 +233,30 @@ $panel-warning-heading-bg:    $state-warning-bg !default;
 $panel-danger-text:           $state-danger-text !default;
 $panel-danger-border:         $state-danger-border !default;
 $panel-danger-heading-bg:     $state-danger-bg !default;
+
+
+ /*============================================================================
+ Alerts
+ ===========================================================================*/ 
+$alert-padding:               15px !default;
+$alert-border-radius:         $default-border-radius !default;
+$alert-link-font-weight:      bold !default;
+
+$alert-success-bg:            $state-success-bg !default;
+$alert-success-text:          $state-success-text !default;
+$alert-success-border:        $state-success-border !default;
+
+$alert-info-bg:               $state-info-bg !default;
+$alert-info-text:             $state-info-text !default;
+$alert-info-border:           $state-info-border !default;
+
+$alert-warning-bg:            $state-warning-bg !default;
+$alert-warning-text:          $state-warning-text !default;
+$alert-warning-border:        $state-warning-border !default;
+
+$alert-danger-bg:             $state-danger-bg !default;
+$alert-danger-text:           $state-danger-text !default;
+$alert-danger-border:         $state-danger-border !default;
  
 
  /*============================================================================

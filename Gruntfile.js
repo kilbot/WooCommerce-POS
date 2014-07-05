@@ -9,6 +9,13 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 
+		paths: {
+			php: {
+            	files_std : ['*.php', '**/*.php', '!node_modules/**/*.php'], // Standard file match
+            	files : '<%= paths.php.files_std %>' // Dynamic file match
+            },
+		},
+
 		// watch for changes and trigger sass, jshint, uglify and livereload
 		watch: {
 			compass: {
@@ -19,6 +26,10 @@ module.exports = function(grunt) {
 				files: '<%= jshint.all %>',
 				tasks: ['jshint', 'uglify']
 			},
+			php: {
+				files: '<%= paths.php.files_std %>',
+				tasks: ['phplint']
+			}
 		},
 
 		// compass
@@ -53,30 +64,32 @@ module.exports = function(grunt) {
 		// javascript linting with jshint
 		jshint: {
 			options: {
-				"bitwise": true,
-				"browser": true,
-				"curly": true,
-				"eqeqeq": true,
-				"eqnull": true,
-				// "es5": true,
-				"esnext": true,
-				"immed": true,
-				"jquery": true,
-				"latedef": true,
-				"newcap": true,
-				"noarg": true,
-				"node": true,
-				"strict": false,
-				"trailing": true,
-				"undef": true,
-				"globals": {
-					"define": true,
-					"alert": true,
-					"pos_params": true,
-					"Modernizr": true,
-					"_": true,
+				'reporter': require('jshint-stylish'),
+				'bitwise': true,
+		        'boss' : true,
+		        'browser' : true,
+		        'curly' : true,
+		        'eqeqeq' : true,
+		        'eqnull' : true,
+		        'immed' : true,
+		        'jquery' : true,
+		        'latedef' : true,
+		        'newcap' : false,
+		        'noarg' : true,
+		        'node': true,
+		        'sub' : true,
+		        'trailing': true,
+		        'undef' : true,
+		        'unused' : true,
+				'globals': {
+					'define': true,
+					'alert': true,
+					'pos_params': true,
+					'Modernizr': true,
+					'_': true,
 				},
-				"force": true
+				'strict': false,
+				'force': true
 			},
 			all: [
 				'Gruntfile.js',
@@ -94,6 +107,17 @@ module.exports = function(grunt) {
 				'tests/main.js',
 			]
 		},
+
+		phplint: {
+			options : {
+        		phpArgs : {
+            		'-lf': null
+        		}
+    		},
+        	all : {
+        		src : '<%= paths.php.files %>'
+    		}
+    	},
 
 		requirejs: {
 			compile: {
@@ -214,6 +238,6 @@ module.exports = function(grunt) {
 
 
 	// register task
-	grunt.registerTask('default', ['makepot', 'compass', 'cssmin', 'jshint', 'uglify', 'requirejs', 'watch']);
+	grunt.registerTask('default', ['makepot', 'compass', 'cssmin', 'jshint', 'uglify', 'phplint', 'requirejs', 'watch']);
 
 };

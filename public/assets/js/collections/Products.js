@@ -47,8 +47,34 @@ define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'setti
 
 			// then: start the web worker sync
 			.then( function(){
+
 				self.startWorker();
 			});
+		},
+
+		/**
+		 * Opens a modal window with progress bar for serverSync
+		 */
+		showModal: function( modal, msg ) {
+			if( typeof msg === 'undefined' ) msg = '';
+
+			switch ( modal ) {
+				case 'downloadProgress':
+					$.get( pos_params.ajax_url , { action: 'pos_get_modal', template: 'download-progress', data: { total: msg } } )
+					.done(function( data ) {
+						$(data).modal();
+					});
+				break;
+				case 'error':
+					$.get( pos_params.ajax_url , { action: 'pos_get_modal', template: 'error' } )
+					.done(function( data ) {
+						$(data).modal().find('.modal-body').html(error[msg]);
+					});
+				break;
+				default:
+			}
+			// ajax call to get the modal template
+			
 		},
 
 		/**
@@ -88,13 +114,23 @@ define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'setti
 						self.fetch();
 					break;
 					case 'error':
-						alert(e.data.msg);
+						self.showModal('error', e.data.msg);
 					break;
 					case 'complete':
 						console.log(e.data.msg);
 						Settings.set( 'last_update', Date.now() );
 						self.trigger('sync'); // trigger sync to update last_update display
 						$('#pagination').removeClass('working');
+					break;
+					case 'showModal': 
+						self.showModal(e.data.type, e.data.total);
+					break;
+					case 'progress':
+						// if modal is open, update the progress bar
+						if( $('#download-progress').hasClass('in') ) {
+							$('#download-progress').find('.progress-bar').data('count', e.data.count).trigger('changeData');
+						}
+						self.fetch();
 					break;
 
 					// special case for Firefox, no access to IndexedDB from Web Worker :(

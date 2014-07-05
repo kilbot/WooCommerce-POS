@@ -1,5 +1,5 @@
 define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 'selectText', 'select2', 'views/Helpers'], 
-	function(_, Backbone, accounting, Checkout, Handlebars, selectText, select2) {
+	function(_, Backbone, accounting, Checkout, Handlebars) {
 
 	// the view containing all the totals, and the action buttons
 	var CartTotalsView = Backbone.View.extend({
@@ -47,16 +47,16 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
     			ajax: {
     				url: pos_params.ajax_url,
     				dataType: 'json',
-    				data: function( term, page ) {
+    				data: function( term ) {
     					return {
     						term: term,
     						action: 'pos_json_search_customers',
 							security: this.data('nonce')
     					};
     				},
-    				results: function( data, page, query ) {
+    				results: function( data ) {
     					var customers = [];
-    					_( data ).each( function( obj, id ) {
+    					_( data ).each( function( obj ) {
     						customers.push( obj );
     					});
     					return { results: customers };
@@ -64,7 +64,7 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
     			},
     			formatResult: self.formatResult,
     			formatSelection: self.formatSelection,
-    			formatNoMatches: function( term ) { return self.params.select.no_matches; },
+    			formatNoMatches: function() { return self.params.select.no_matches; },
     			formatSearching: function() { return self.params.select.searching; },
     			formatInputTooShort: function( input, min ) { 
     				var n = min - input.length; 
@@ -102,7 +102,7 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 			return this;
 		},
 
-		formatResult: function( customer, container, query ) {
+		formatResult: function( customer ) {
 			var output = '';
 			if( ! _.isEmpty( customer.first_name ) ) { output = customer.first_name + ' '; }
 			if( ! _.isEmpty( customer.last_name ) ) { output += customer.last_name + ' '; }
@@ -111,7 +111,7 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 			return output;
 		},
 
-		formatSelection: function( customer, container ) {
+		formatSelection: function( customer ) {
 			var output = '';
 			if( ! _.isEmpty( customer.first_name ) ) { output = customer.first_name + ' '; }
 			if( ! _.isEmpty( customer.last_name ) ) { output += customer.last_name + ' '; }
@@ -150,7 +150,7 @@ define(['underscore', 'backbone', 'accounting', 'views/Checkout', 'handlebars', 
 					$('#cart .actions').addClass('working');
 
 					// init new checkout
-					var checkout = new Checkout({ cart: this.cart, totals: this.model, pubSub: this.pubSub  });
+					new Checkout({ cart: this.cart, totals: this.model, pubSub: this.pubSub  });
 				break;
 			}
 		},

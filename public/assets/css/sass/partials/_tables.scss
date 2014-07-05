@@ -32,7 +32,9 @@ table {
             }
             &.img {
                 max-width: 90px;
-                vertical-align: bottom;
+                img {
+                    vertical-align: middle;
+                }
             }
         }
         &:last-of-type th, &:last-of-type td {

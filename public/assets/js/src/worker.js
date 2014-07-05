@@ -9,7 +9,7 @@ var db,
 
 // number of products to get in a single ajax call
 // adjust to prevent server timeouts
-var ajaxLimit = 100; 
+var ajaxLimit = 1; 
 
 addEventListener('message', function(e) {
 	var data = e.data;
@@ -39,7 +39,7 @@ addEventListener('message', function(e) {
 
 // getJSON helper function
 var getJSON = function(url, successHandler, errorHandler) {
-	var xhr = typeof XMLHttpRequest != 'undefined'
+	var xhr = typeof XMLHttpRequest !== 'undefined'
 		? new XMLHttpRequest()
 		: new ActiveXObject('Microsoft.XMLHTTP');
 	xhr.open('get', url, true);
@@ -47,9 +47,9 @@ var getJSON = function(url, successHandler, errorHandler) {
 		var status;
 		var data;
 		// http://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
-		if (xhr.readyState == 4) { // `DONE`
+		if (xhr.readyState === 4) { // `DONE`
 			status = xhr.status;
-			if (status == 200) {
+			if (status === 200) {
 				data = JSON.parse(xhr.responseText);
 				successHandler && successHandler(data);
 			} else {
@@ -103,13 +103,16 @@ var getUpdateCount = function(updated_at_min){
 	getJSON( wc_api_url + 'products/count?' + query.join('&'), function(data) {
 		if( data.count > 0 ) {
 			self.postMessage({ 'status': 'success', 'msg': data.count + ' products need to be updated' });
+			if( data.count > 1 ) {
+				self.postMessage({ 'status': 'showModal', 'type': 'downloadProgress', 'total': data.count });
+			}
 			queueProducts( data.count, ajaxLimit, updated_at_min );
 		}
 		else {
 			self.postMessage({ 'status': 'complete', 'msg': '0 products need to be updated' });
 		}
 	}, function(status) {
-		self.postMessage({ 'status': 'error', 'msg': 'Error connecting to the server. Please check the POS support page.' });
+		self.postMessage({ 'status': 'error', 'msg': status });
 	});
 };
 
@@ -147,7 +150,7 @@ var storeProducts = function(count, limit, offset, updated_at_min) {
 	getJSON( wc_api_url + 'products?' + query.join('&'), function(data) {
 
 		if( data === null ) {
-			self.postMessage({ 'status': 'error', 'msg': 'Error getting products from the server. Please check the POS support page.' });
+			self.postMessage({ 'status': 'error', 'msg': status });
 			return;
 		}
 
@@ -179,7 +182,7 @@ var storeProducts = function(count, limit, offset, updated_at_min) {
 			// complete
 			else {
 				storeCount += i;
-				self.postMessage({ 'status': 'success', 'msg': 'Saved ' + storeCount + ' of ' + count + ' products' });
+				self.postMessage({ 'status': 'progress', 'count': storeCount });
 				if( storeCount === count ) {
 					self.postMessage({ 'status': 'complete', 'msg': 'Sync complete!' });
 				}
@@ -190,7 +193,7 @@ var storeProducts = function(count, limit, offset, updated_at_min) {
 	}, function(status) {
 
 		// error getting the products from the server
-		self.postMessage({ 'status': 'error', 'msg': 'Error getting products from the server. Please check the POS support page.' });
+		self.postMessage({ 'status': 'error', 'msg': status });
 	});
 
 };
