@@ -9,7 +9,7 @@ var db,
 
 // number of products to get in a single ajax call
 // adjust to prevent server timeouts
-var ajaxLimit = 50;
+var ajaxLimit = 5;
 
 addEventListener('message', function(e) {
 	var data = e.data;
@@ -181,12 +181,8 @@ var storeProducts = function( products, count ) {
 
 	// if Indexeddb not available from worker
 	if( typeof db !== 'object' ) {
-		var is_last = false;
+		self.postMessage({ 'status': 'noIndexedDB', 'products': products, 'progress': storeCount, 'count': count });
 		storeCount += products.length;
-		if( storeCount === count ) {
-			is_last = true;
-		}
-		self.postMessage({ 'status': 'noIndexedDB', 'products': products, 'last': is_last });
 		return;
 	}
 

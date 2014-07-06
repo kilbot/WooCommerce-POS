@@ -106,45 +106,51 @@ define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'setti
 			var worker = new Worker( this.params.worker );
 
 			worker.addEventListener('message', function(e) {
-				var status = e.data.status;
-
-				switch (status) {
-					case 'progress':
-						// if modal is open, update the progress bar
-						if( $('#download-progress').hasClass('in') ) {
-							$('#download-progress').find('.progress-bar').data('count', e.data.count).trigger('changeData');
-						}
-						self.fetch();
-					break;
-					case 'error':
-						self.showModal('error', e.data.msg);
-						Settings.set( 'last_update', Date.now() );
-						self.trigger('sync'); // trigger sync to update last_update display
-						$('#pagination').removeClass('working');
-					break;
-					case 'complete':
-						console.log(e.data.msg);
-						Settings.set( 'last_update', Date.now() );
-						self.trigger('sync'); // trigger sync to update last_update display
-						$('#pagination').removeClass('working');
-					break;
-					case 'showModal': 
-						self.showModal(e.data.type, e.data.total);
-					break;
-
-					// special case for Firefox, no access to IndexedDB from Web Worker :(
-					case 'noIndexedDB':
-						self.saveProducts(e.data.products, e.data.last);
-					break;
-					default:
-						// ?
-				}
-
+				self.workerEvents( e.data );
 			}, false);
 
 			// format the last-update and send to worker
 			var updated_at_min = this.formatLastUpdateFilter( Settings.get('last_update') );
 			worker.postMessage({ 'cmd': 'sync', 'last_update': updated_at_min, 'wc_api_url': this.params.wc_api_url });
+		},
+
+		/**
+		 * Worker events handler
+		 */
+		workerEvents: function( data ) {
+			var status = data.status;
+
+			switch (status) {
+				case 'progress':
+					// if modal is open, update the progress bar
+					if( $('#download-progress').hasClass('in') ) {
+						$('#download-progress').find('.progress-bar').data('count', data.count).trigger('changeData');
+					}
+					this.fetch();
+				break;
+				case 'error':
+					this.showModal('error', data.msg);
+					Settings.set( 'last_update', Date.now() );
+					this.trigger('sync'); // trigger sync to update last_update display
+					$('#pagination').removeClass('working');
+				break;
+				case 'complete':
+					console.log(data.msg);
+					Settings.set( 'last_update', Date.now() );
+					this.trigger('sync'); // trigger sync to update last_update display
+					$('#pagination').removeClass('working');
+				break;
+				case 'showModal': 
+					this.showModal(data.type, data.total);
+				break;
+
+				// special case for Firefox, no access to IndexedDB from Web Worker :(
+				case 'noIndexedDB':
+					this.saveProducts(data.products, data.progress, data.count);
+				break;
+				default:
+					// ?
+			}
 		},
 
 		/**
@@ -201,13 +207,13 @@ define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'setti
 		/**
 		 * Fallback function for Firefox
 		 */
-		saveProducts: function( products, last ) {
+		saveProducts: function( products, progress, count ) {
 			var self = this,
 				i = 0;
 
-			console.log('saving ' + products.length + ' products' );
+			(function putNext(){
 
-			function putNext() {
+				// save each product
 				if( i < products.length ) {
 					self.fullCollection.create( products[i], {
 						merge: true,
@@ -220,18 +226,16 @@ define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'setti
 					i++;
 				}
 
+				// then update progress
 				else {
-					console.log('Saved ' + i + ' products' );
-					self.fetch({ reset: true });
-					if(last) {
-						console.log('Sync complete!');
-						Settings.set( 'last_update', Date.now() );
-						$('#pagination').removeClass('working');
+					var storeCount = progress + i;
+					self.workerEvents({ status: 'progress', count: storeCount });
+					if( storeCount === count ) {
+						self.workerEvents({ status: 'complete', msg: 'Sync complete!' });
 					}
 					return;
 				}
-			}
-			putNext();
+			})();
 			
 		},
 
