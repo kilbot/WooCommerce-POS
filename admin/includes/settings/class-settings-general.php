@@ -17,13 +17,15 @@ class WC_POS_Settings_General extends WC_POS_Settings_Page {
 	/**
 	 * @var mixed
 	 */
+	public $grant_access;
 	public $default_customer;
-
+	
 	public function __construct() {
 		$this->id    = 'general';
 		$this->label = __( 'General', 'woocommerce-pos' );
 
 		// set option keys
+		$this->grant_access 	= 'woocommerce_pos_grant_access';
 		$this->default_customer = 'woocommerce_pos_default_customer';
 
 		// add General tab
@@ -44,8 +46,22 @@ class WC_POS_Settings_General extends WC_POS_Settings_Page {
 		$settings = array(
 			array( 'title' => __( 'General Options', 'woocommerce-pos' ), 'type' => 'title', 'desc' => '', 'id' => 'general_options' ),
 			array(
+				'title' 	=> __( 'Grant POS Access', 'woocommerce-pos' ),
+				'desc' 		=> __( 'Select which user roles have access to the POS.', 'woocommerce-pos' ),
+				'id' 		=> $this->grant_access,
+				'desc_tip'	=> true,
+				'type' 		=> 'multiselect',
+				'css' 		=> 'width:400px;',
+				'default'   => array_keys( $this->get_roles('manage_woocommerce_pos') ),
+				'class'		=> 'chosen_select',
+				'options' 	=> $this->get_roles(),
+				'custom_attributes' => array(
+					'data-placeholder' => __( 'Select user roles', 'woocommerce-pos' )
+				)
+			),
+			array(
 				'title' 	=> __( 'Default POS Customer', 'woocommerce-pos' ),
-				'desc' 		=> __( 'The default customer for POS orders, eg: Guest or create a new customer', 'woocommerce-pos' ),
+				'desc' 		=> __( 'The default customer for POS orders, eg: Guest or create a new customer.', 'woocommerce-pos' ),
 				'id' 		=> $this->default_customer,
 				'default'	=> $customer_id,
 				'type' 		=> 'select',
@@ -73,6 +89,22 @@ class WC_POS_Settings_General extends WC_POS_Settings_Page {
 			$options[ $customer_id ] = esc_html( $user->display_name ) . ' (#' . absint( $user->ID ) . ' &ndash; ' . esc_html( $user->user_email );
 		}
 
+		return $options;
+	}
+
+	public function get_roles( $cap = false ) {
+		global $wp_roles;
+		
+		if( $wp_roles->roles ) {
+			foreach( $wp_roles->roles as $slug => $role ) {
+				if( $cap ) {
+					if( isset( $role['capabilities'][$cap] ) &&  $role['capabilities'][$cap] == 1 ) 
+						$options[$slug] = $role['name'];
+				} else {
+					$options[$slug] = $role['name'];
+				}
+			}
+		}
 		return $options;
 	}
 
@@ -110,8 +142,45 @@ class WC_POS_Settings_General extends WC_POS_Settings_Page {
 	 * Save settings
 	 */
 	public function save() {
+
+		// process grant access
+		if( isset($_POST['woocommerce_pos_grant_access']) ) {
+			$this->grant_access( $_POST['woocommerce_pos_grant_access'] );
+			unset( $_POST['woocommerce_pos_grant_access'] ); 
+		}
+
+		// process the rest
 		$settings = $this->get_settings();
 		WC_POS_Admin_Settings::save_fields( $settings );
+	}
+
+	/**
+	 * Grant/Revoke access to WooCommerce POS
+	 * @param array $roles
+	 */
+	public function grant_access( $roles = '' ) {
+
+		$current_roles = array_keys( $this->get_roles('manage_woocommerce_pos') );
+
+		if( !is_array( $roles ) || $current_roles === $roles )
+			return;
+
+		// grant access
+		foreach ($roles as $slug) {
+			$role = get_role( $slug );
+			if( $role ) 
+				$role->add_cap( 'manage_woocommerce_pos' );
+		}
+
+		// revoke access
+		$revoke = array_diff($current_roles, $roles);
+		if( !empty($revoke) ) {
+			foreach ($revoke as $slug) {
+				$role = get_role( $slug );
+				if( $role ) 
+					$role->remove_cap( 'manage_woocommerce_pos' );
+			}	
+		}
 	}
 
 }

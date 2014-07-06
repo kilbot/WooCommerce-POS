@@ -172,6 +172,13 @@ module.exports = function(grunt) {
 					]
 				}
 			},
+			admin: {
+				files: {
+					'admin/assets/js/admin.min.js' : [
+						'admin/assets/js/admin.js',
+					]
+				}
+			}
 		},
 
 		// unused

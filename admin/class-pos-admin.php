@@ -338,7 +338,7 @@ class WooCommerce_POS_Admin {
 		$screen = get_current_screen();
 
 		if ( in_array( $screen->id, $this->screen_ids() ) ) {
-			// wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.min.js', __FILE__ ), array( 'jquery' ), WooCommerce_POS::VERSION );
+			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.min.js', __FILE__ ), array( 'jquery' ), WooCommerce_POS::VERSION );
 		
 			// register WC scripts
 			wp_register_script( 'woocommerce_admin', WC()->plugin_url() . '/assets/js/admin/woocommerce_admin.min.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-tiptip' ), WC_VERSION );
@@ -362,6 +362,9 @@ class WooCommerce_POS_Admin {
 	public function admin_menu() {
 		global $menu;
 		global $submenu;
+
+		if( !current_user_can( 'manage_woocommerce_pos' ) )
+			return;
 
 		add_menu_page( 
 			__( 'POS', 'woocommerce-pos' ),

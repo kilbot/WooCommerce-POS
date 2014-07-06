@@ -26,6 +26,7 @@ class WC_POS_Admin_Settings {
 			include_once( 'settings/class-settings-page.php' );
 
 			$settings[] = include( 'settings/class-settings-general.php' );
+			$settings[] = include( 'settings/class-settings-checkout.php' );
 
 			self::$settings = apply_filters( 'woocommerce_pos_get_settings_pages', $settings );
 		}

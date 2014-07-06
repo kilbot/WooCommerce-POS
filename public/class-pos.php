@@ -172,13 +172,16 @@ class WooCommerce_POS {
 	 */
 	public function show_pos() {
 
+		$template = $this->is_pos();
+		if( !$template )
+			return;
+
 		// set up $current_user for use in includes
 		global $current_user;
 		get_currentuserinfo();
-		$template = $this->is_pos();
 
 		// check page and credentials
-		if ($template && current_user_can('manage_woocommerce_pos')) {
+		if ( is_user_logged_in() && current_user_can('manage_woocommerce_pos') ) {
 
 			// check if template exists
 			if( $template !== 'main' && file_exists( $this->plugin_path . 'public/views/' . $template . '.php' ) ) {
@@ -192,8 +195,12 @@ class WooCommerce_POS {
 			}			
 			exit;
 
-		// else: redirect to login page
-		} elseif ($this->is_pos() && !current_user_can('manage_woocommerce_pos')) {
+		// insufficient privileges 
+		} elseif ( is_user_logged_in() && !current_user_can('manage_woocommerce_pos') ) {
+			wp_die( __('You do not have sufficient permissions to access this page.') );
+
+		// else login
+		} else {
 			auth_redirect();
 		}
 	}
