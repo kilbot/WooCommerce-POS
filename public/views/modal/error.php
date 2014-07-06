@@ -13,8 +13,12 @@
 	</div>
 	<script type="text/javascript">
 	var error = {
-		'404': '<?= sprintf( __( 'Error connecting to the REST API. Please check the <a href="%s">POS System Status</a>.', 'woocommerce-pos' ), WC_POS()->pos_url('support') ); ?>',
-		'': '<?= __( 'Oh no ... there has been an error :(', 'woocommerce-pos' ) ?><br><?= sprintf( __( 'Please report the problem via the <a href="%s">Support</a> page.', 'woocommerce-pos' ), WC_POS()->pos_url('support') ); ?>',
+		'404'		: '<?= __( 'Error connecting to the WooCommerce REST API.', 'woocommerce-pos' ) ?> <?= sprintf( __( 'Please check the <a href="%s">POS System Status</a>.', 'woocommerce-pos' ), WC_POS()->pos_url('support') ); ?>',
+		'503'		: '<?= __( 'Error connecting to the server. Either your server is down or it is overloaded.', 'woocommerce-pos' ) ?> <?= sprintf( __( 'Please report the problem via the <a href="%s">Support</a> page.', 'woocommerce-pos' ), WC_POS()->pos_url('support') ); ?>',
+		'idberror'	: '<?= __( 'There was a problem connecting to the local database.', 'woocommerce-pos' ) ?> <?= sprintf( __( 'Please report the problem via the <a href="%s">Support</a> page.', 'woocommerce-pos' ), WC_POS()->pos_url('support') ); ?>',
+		'dlerror'	: '<?= __( 'There was a problem downloading the products.', 'woocommerce-pos' ) ?> <?= sprintf( __( 'Please check the <a href="%s">POS System Status</a>.', 'woocommerce-pos' ), WC_POS()->pos_url('support') ); ?>',
+		''			: '<?= __( 'There has been an error.', 'woocommerce-pos' ) ?> <?= sprintf( __( 'Please report the problem via the <a href="%s">Support</a> page.', 'woocommerce-pos' ), WC_POS()->pos_url('support') ); ?>',
 	}
 	</script>
 </div>
+ 

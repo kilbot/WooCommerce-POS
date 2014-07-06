@@ -12,7 +12,7 @@
 				<p class="small alert alert-info">
 				<?= __('WooCommerce POS is storing your products locally.', 'woocommerce-pos'); ?>
 				<?= __('This could take some time depending on the number of products you have, the speed of your connection and the speed of your server.', 'woocommerce-pos'); ?>
-				<?= __('While your waiting ... why not read over the <a href="http://woopos.com.au/docs" target="_blank">WooCommerce POS documentation</a>.', 'woocommerce-pos'); ?>
+				<?= __('While you\'re waiting ... why not read over the <a href="http://woopos.com.au/docs" target="_blank">WooCommerce POS documentation</a>.', 'woocommerce-pos'); ?>
 				</p>
 
 			</div>

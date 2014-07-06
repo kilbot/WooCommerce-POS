@@ -64,7 +64,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.3.1 =
-* TODO: settings: choose which users have access
+* New: choose which user roles have access to POS
 * TODO: settings: choose which field is used for barcode (PRO USERS)
 * New: POS only products
 * TODO: settings: payment tab, select which payment gateways to use
@@ -73,6 +73,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * TODO: ui: numpad module
 * TODO: send order meta: user_id, payment_type
 * TODO: look at this authentication issue with network installs, Scotts issue.
+* Improved: Initial download of products, improved performance for large stores and slow servers
 * New: Greek translation thanks to Marios Polycarpou! [http://el.woopos.com.au/pos](http://el.woopos.com.au/pos)
 * New: German translation thanks to Simon Potye! [http://de.woopos.com.au/pos](http://de.woopos.com.au/pos)
 

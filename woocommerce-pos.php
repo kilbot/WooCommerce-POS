@@ -3,7 +3,7 @@
  * Plugin Name:       WooCommerce POS
  * Plugin URI:        https://woopos.com.au
  * Description:       A simple front-end for taking WooCommerce orders at the Point of Sale.
- * Version:           0.3
+ * Version:           0.3.1-beta
  * Author:            kilbot
  * Author URI:        http://www.kilbot.com.au
  * Text Domain:       woocommerce-pos-locale

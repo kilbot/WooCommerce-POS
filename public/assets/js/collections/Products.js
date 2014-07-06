@@ -109,12 +109,18 @@ define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'setti
 				var status = e.data.status;
 
 				switch (status) {
-					case 'success':
-						console.log(e.data.msg);
+					case 'progress':
+						// if modal is open, update the progress bar
+						if( $('#download-progress').hasClass('in') ) {
+							$('#download-progress').find('.progress-bar').data('count', e.data.count).trigger('changeData');
+						}
 						self.fetch();
 					break;
 					case 'error':
 						self.showModal('error', e.data.msg);
+						Settings.set( 'last_update', Date.now() );
+						self.trigger('sync'); // trigger sync to update last_update display
+						$('#pagination').removeClass('working');
 					break;
 					case 'complete':
 						console.log(e.data.msg);
@@ -124,13 +130,6 @@ define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'setti
 					break;
 					case 'showModal': 
 						self.showModal(e.data.type, e.data.total);
-					break;
-					case 'progress':
-						// if modal is open, update the progress bar
-						if( $('#download-progress').hasClass('in') ) {
-							$('#download-progress').find('.progress-bar').data('count', e.data.count).trigger('changeData');
-						}
-						self.fetch();
 					break;
 
 					// special case for Firefox, no access to IndexedDB from Web Worker :(
@@ -202,15 +201,15 @@ define(['underscore', 'backbone', 'backbone-paginator', 'models/Product', 'setti
 		/**
 		 * Fallback function for Firefox
 		 */
-		saveProducts: function( data, last ) {
+		saveProducts: function( products, last ) {
 			var self = this,
 				i = 0;
 
-			console.log('saving ' + data.products.length + ' products' );
+			console.log('saving ' + products.length + ' products' );
 
 			function putNext() {
-				if( i < data.products.length ) {
-					self.fullCollection.create( data.products[i], {
+				if( i < products.length ) {
+					self.fullCollection.create( products[i], {
 						merge: true,
 						silent: true,
 						success: putNext,

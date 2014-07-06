@@ -14,13 +14,13 @@ class WooCommerce_POS {
 	/**
 	 * Version numbers
 	 */
-	const VERSION = '0.3';
+	const VERSION = '0.3.1';
 	const JQUERY_VERSION = '2.1.1';
 
 	/**
 	 * Development flag
 	 */
-	public $development = true;
+	public $development = false;
 
 	/**
 	 * Unique identifier

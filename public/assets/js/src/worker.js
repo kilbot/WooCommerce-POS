@@ -9,7 +9,7 @@ var db,
 
 // number of products to get in a single ajax call
 // adjust to prevent server timeouts
-var ajaxLimit = 1; 
+var ajaxLimit = 50;
 
 addEventListener('message', function(e) {
 	var data = e.data;
@@ -50,8 +50,12 @@ var getJSON = function(url, successHandler, errorHandler) {
 		if (xhr.readyState === 4) { // `DONE`
 			status = xhr.status;
 			if (status === 200) {
-				data = JSON.parse(xhr.responseText);
-				successHandler && successHandler(data);
+				try {
+					data = JSON.parse(xhr.responseText);
+					successHandler && successHandler(data);
+				} catch(e) {
+					errorHandler && errorHandler(e);
+				}
 			} else {
 				errorHandler && errorHandler(status);
 			}
@@ -84,9 +88,7 @@ var openDB = function() {
 	};
 
 	openRequest.onerror = function(e) {
-		self.postMessage({ 'status': 'error', 'msg': 'Error: Couls not open local database.' });
-		console.log('Error');
-		console.dir(e);
+		self.postMessage({ 'status': 'error', 'msg': 'idberror' });
 	};
 };
 
@@ -102,11 +104,11 @@ var getUpdateCount = function(updated_at_min){
 	// get the update count
 	getJSON( wc_api_url + 'products/count?' + query.join('&'), function(data) {
 		if( data.count > 0 ) {
-			self.postMessage({ 'status': 'success', 'msg': data.count + ' products need to be updated' });
-			if( data.count > 1 ) {
+			console.log( data.count + ' products need to be updated' );
+			if( data.count > ajaxLimit ) {
 				self.postMessage({ 'status': 'showModal', 'type': 'downloadProgress', 'total': data.count });
 			}
-			queueProducts( data.count, ajaxLimit, updated_at_min );
+			getProducts( data.count, ajaxLimit, updated_at_min );
 		}
 		else {
 			self.postMessage({ 'status': 'complete', 'msg': '0 products need to be updated' });
@@ -116,84 +118,100 @@ var getUpdateCount = function(updated_at_min){
 	});
 };
 
-var queueProducts = function(count, limit, updated_at_min) {
+var getProducts = function(count, limit, updated_at_min) {
 	// default values
 	count = typeof count !== 'undefined' ? count : 10; // default count is 10
 	limit = typeof limit !== 'undefined' ? limit : 10; // default limit is 10
-	updated_at_min = typeof updated_at_min !== 'undefined' ? updated_at_min : null;		
-	
-	var requests = [];
-	for (var offset = 0; offset < count; offset += limit) {
-		requests.push(
-			storeProducts(count, limit, offset, updated_at_min )
-		);
-	}
-	console.log(requests.length + ' ajax calls queued');
-};
+	updated_at_min = typeof updated_at_min !== 'undefined' ? updated_at_min : null;	
 
-
-var storeProducts = function(count, limit, offset, updated_at_min) {
-
-	// default values
-	limit = typeof limit !== 'undefined' ? limit : 100; // default limit is 100
-	offset = typeof offset !== 'undefined' ? offset : 0; // default offset is 0
-	updated_at_min = typeof updated_at_min !== 'undefined' ? updated_at_min : null;
-
-	var query = [
-		'filter[limit]=' + limit,
-		'filter[offset]=' + offset,
-		'filter[updated_at_min]=' + updated_at_min,
-		'pos=1' 
-	];
+	var offset = 0;
+	var failed = 0;
+	var interval = 1000;
 
 	// get the products
-	getJSON( wc_api_url + 'products?' + query.join('&'), function(data) {
+	(function getNext( offset, interval ){
+		setTimeout(function(){
+			var query = [
+				'filter[limit]=' + limit,
+				'filter[offset]=' + offset,
+				'filter[updated_at_min]=' + updated_at_min,
+				'pos=1' 
+			];
 
-		if( data === null ) {
-			self.postMessage({ 'status': 'error', 'msg': status });
-			return;
-		}
+			getJSON( wc_api_url + 'products?' + query.join('&'), function(data) {
 
-		if( typeof db !== 'object' ) {
-			var is_last = false;
-			storeCount += data.products.length;
-			if( storeCount === count ) {
-				is_last = true;
-			}
-			self.postMessage({ 'status': 'noIndexedDB', 'products': data, 'last': is_last });
-			return;
-		}
-
-		// prepare for database transaction
-		var transaction = db.transaction( ['products'], 'readwrite' );
-		var store = transaction.objectStore('products');
-		var i = 0;
-
-		function putNext() {
-			if( i < data.products.length ) {
-				var request = store.put( data.products[i] );
-				request.onsuccess = putNext;
-				request.onerror = function(e) {
-					self.postMessage({ 'status': 'error', 'msg': 'Problem saving ' + e.target.result });
-				};
-				i++;
-			}
-
-			// complete
-			else {
-				storeCount += i;
-				self.postMessage({ 'status': 'progress', 'count': storeCount });
-				if( storeCount === count ) {
-					self.postMessage({ 'status': 'complete', 'msg': 'Sync complete!' });
+				// get the next limit of products
+				next = offset + limit;
+				if( next < count ) {
+					getNext( next );
 				}
+
+				// store the products
+				storeProducts( data.products, count );
+
+			}, function(status) {
+
+				// handle the errors
+				if ( 503 === status ) { // server timeout
+
+					// recurse on 503 up to 10 times
+					if( ++failed < 10 ) {
+						// give the server some breathing room
+						interval = interval + 1000;
+						getNext( offset, interval );
+					}
+
+					// server could be down or overloaded
+					else {
+						self.postMessage({ 'status': 'error', 'msg': status });
+					}
+				}
+				else if ( 401 === status ) { // 
+					self.postMessage({ 'status': 'error', 'msg': status });
+				}
+				else {
+					self.postMessage({ 'status': 'error', 'msg': 'dlerror' });
+				}
+			});
+		}, interval);
+	})( offset, interval );
+};
+
+var storeProducts = function( products, count ) {
+
+	// if Indexeddb not available from worker
+	if( typeof db !== 'object' ) {
+		var is_last = false;
+		storeCount += products.length;
+		if( storeCount === count ) {
+			is_last = true;
+		}
+		self.postMessage({ 'status': 'noIndexedDB', 'products': products, 'last': is_last });
+		return;
+	}
+
+	// prepare for database transaction
+	var transaction = db.transaction( ['products'], 'readwrite' );
+	var store = transaction.objectStore('products');
+	var i = 0;
+
+	(function putNext(){
+		if( i < products.length ) {
+			var request = store.put( products[i] );
+			request.onsuccess = putNext;
+			request.onerror = function(e) {
+				self.postMessage({ 'status': 'error', 'msg': 'idberror' });
+			};
+			i++;
+		}
+
+		// complete
+		else {
+			storeCount += i;
+			self.postMessage({ 'status': 'progress', 'count': storeCount });
+			if( storeCount === count ) {
+				self.postMessage({ 'status': 'complete', 'msg': 'Sync complete!' });
 			}
 		}
-		putNext();
-		
-	}, function(status) {
-
-		// error getting the products from the server
-		self.postMessage({ 'status': 'error', 'msg': status });
-	});
-
+	})();
 };

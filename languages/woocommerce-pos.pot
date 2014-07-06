@@ -2,9 +2,9 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce POS 0.3\n"
+"Project-Id-Version: WooCommerce POS 0.3.1-beta\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-07-04 17:19:52+00:00\n"
+"POT-Creation-Date: 2014-07-06 11:09:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,21 +26,22 @@ msgid ""
 "to work correctly. Please enable <a href=\"%s\">permalinks</a>."
 msgstr ""
 
-#: admin/class-pos-admin.php:367 admin/class-pos-admin.php:368
+#: admin/class-pos-admin.php:370 admin/class-pos-admin.php:371
 #: public/views/footer.php:11
 msgid "POS"
 msgstr ""
 
-#: admin/class-pos-admin.php:378 admin/class-pos-admin.php:379
-#: admin/class-pos-admin.php:439
+#: admin/class-pos-admin.php:381 admin/class-pos-admin.php:382
+#: admin/class-pos-admin.php:442
+#: admin/includes/settings/class-settings-checkout.php:121
 msgid "Settings"
 msgstr ""
 
-#: admin/class-pos-admin.php:385
+#: admin/class-pos-admin.php:388
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: admin/class-pos-admin.php:440
+#: admin/class-pos-admin.php:443
 msgid "View POS"
 msgstr ""
 
@@ -48,36 +49,87 @@ msgstr ""
 msgid "POS Only"
 msgstr ""
 
-#: admin/includes/class-pos-settings.php:42
+#: admin/includes/class-pos-settings.php:43
 msgid "Action failed. Please refresh the page and retry."
 msgstr ""
 
-#: admin/includes/class-pos-settings.php:49
+#: admin/includes/class-pos-settings.php:50
 msgid "Your settings have been saved."
 msgstr ""
 
-#: admin/includes/class-pos-settings.php:462
+#: admin/includes/class-pos-settings.php:463
 msgid "Select a page&hellip;"
 msgstr ""
 
-#: admin/includes/settings/class-settings-general.php:24
+#: admin/includes/settings/class-settings-checkout.php:24
+#: public/views/cart.php:105
+msgid "Checkout"
+msgstr ""
+
+#: admin/includes/settings/class-settings-checkout.php:43
+msgid "Payment Gateways"
+msgstr ""
+
+#: admin/includes/settings/class-settings-checkout.php:43
+msgid ""
+"Installed gateways are listed below. Drag and drop gateways to control "
+"their display order on the frontend."
+msgstr ""
+
+#: admin/includes/settings/class-settings-checkout.php:63
+msgid "Gateway Display"
+msgstr ""
+
+#: admin/includes/settings/class-settings-checkout.php:70
+msgid "Default"
+msgstr ""
+
+#: admin/includes/settings/class-settings-checkout.php:71
+msgid "Gateway"
+msgstr ""
+
+#: admin/includes/settings/class-settings-checkout.php:72
+msgid "Gateway ID"
+msgstr ""
+
+#: admin/includes/settings/class-settings-checkout.php:73
+msgid "Status"
+msgstr ""
+
+#: admin/includes/settings/class-settings-checkout.php:113
+msgid "Enabled"
+msgstr ""
+
+#: admin/includes/settings/class-settings-general.php:25
 msgid "General"
 msgstr ""
 
-#: admin/includes/settings/class-settings-general.php:45
+#: admin/includes/settings/class-settings-general.php:47
 msgid "General Options"
 msgstr ""
 
-#: admin/includes/settings/class-settings-general.php:47
+#: admin/includes/settings/class-settings-general.php:49
+msgid "Grant POS Access"
+msgstr ""
+
+#: admin/includes/settings/class-settings-general.php:50
+msgid "Select which user roles have access to the POS."
+msgstr ""
+
+#: admin/includes/settings/class-settings-general.php:59
+msgid "Select user roles"
+msgstr ""
+
+#: admin/includes/settings/class-settings-general.php:63
 msgid "Default POS Customer"
 msgstr ""
 
-#: admin/includes/settings/class-settings-general.php:48
-msgid "The default customer for POS orders, eg: Guest or create a new customer"
+#: admin/includes/settings/class-settings-general.php:64
+msgid "The default customer for POS orders, eg: Guest or create a new customer."
 msgstr ""
 
-#: admin/includes/settings/class-settings-general.php:69
-#: public/class-pos.php:279 public/includes/class-pos-ajax.php:104
+#: admin/includes/settings/class-settings-general.php:85
+#: public/class-pos.php:286 public/includes/class-pos-ajax.php:107
 msgid "Guest"
 msgstr ""
 
@@ -145,39 +197,43 @@ msgstr ""
 msgid "Delete orphans"
 msgstr ""
 
-#: public/class-pos.php:342
-msgid "No matches found"
-msgstr ""
-
-#: public/class-pos.php:343
-msgid "Please enter 1 more character"
-msgstr ""
-
-#: public/class-pos.php:344
-msgid "Please enter %d more characters"
-msgstr ""
-
-#: public/class-pos.php:345
-msgid "Please delete 1 character"
-msgstr ""
-
-#: public/class-pos.php:346
-msgid "Please delete %d characters"
-msgstr ""
-
-#: public/class-pos.php:347
-msgid "You can only select 1 item"
-msgstr ""
-
-#: public/class-pos.php:348
-msgid "You can only select %d items"
+#: public/class-pos.php:200
+msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
 #: public/class-pos.php:349
-msgid "Loading more results"
+msgid "No matches found"
 msgstr ""
 
 #: public/class-pos.php:350
+msgid "Please enter 1 more character"
+msgstr ""
+
+#: public/class-pos.php:351
+msgid "Please enter %d more characters"
+msgstr ""
+
+#: public/class-pos.php:352
+msgid "Please delete 1 character"
+msgstr ""
+
+#: public/class-pos.php:353
+msgid "Please delete %d characters"
+msgstr ""
+
+#: public/class-pos.php:354
+msgid "You can only select 1 item"
+msgstr ""
+
+#: public/class-pos.php:355
+msgid "You can only select %d items"
+msgstr ""
+
+#: public/class-pos.php:356
+msgid "Loading more results"
+msgstr ""
+
+#: public/class-pos.php:357
 msgid "Searching"
 msgstr ""
 
@@ -237,10 +293,6 @@ msgstr ""
 
 #: public/views/cart.php:102
 msgid "Discount"
-msgstr ""
-
-#: public/views/cart.php:105
-msgid "Checkout"
 msgstr ""
 
 #: public/views/checkout.php:6
@@ -357,7 +409,68 @@ msgid ""
 msgstr ""
 
 #: public/views/modal/browser-support.php:15
+#: public/views/modal/download-progress.php:21 public/views/modal/error.php:10
 msgid "Okay"
+msgstr ""
+
+#: public/views/modal/download-progress.php:6
+msgid "Downloading products ..."
+msgstr ""
+
+#: public/views/modal/download-progress.php:13
+msgid "WooCommerce POS is storing your products locally."
+msgstr ""
+
+#: public/views/modal/download-progress.php:14
+msgid ""
+"This could take some time depending on the number of products you have, the "
+"speed of your connection and the speed of your server."
+msgstr ""
+
+#: public/views/modal/download-progress.php:15
+msgid ""
+"While your waiting ... why not read over the <a "
+"href=\"http://woopos.com.au/docs\" target=\"_blank\">WooCommerce POS "
+"documentation</a>."
+msgstr ""
+
+#: public/views/modal/download-progress.php:20
+msgid "Download complete!"
+msgstr ""
+
+#: public/views/modal/error.php:6
+msgid "Error"
+msgstr ""
+
+#: public/views/modal/error.php:16
+msgid "Error connecting to the WooCommerce REST API."
+msgstr ""
+
+#: public/views/modal/error.php:16 public/views/modal/error.php:19
+msgid "Please check the <a href=\"%s\">POS System Status</a>."
+msgstr ""
+
+#: public/views/modal/error.php:17
+msgid ""
+"Error connecting to the server. Either your server is down or it is "
+"overloaded."
+msgstr ""
+
+#: public/views/modal/error.php:17 public/views/modal/error.php:18
+#: public/views/modal/error.php:20
+msgid "Please report the problem via the <a href=\"%s\">Support</a> page."
+msgstr ""
+
+#: public/views/modal/error.php:18
+msgid "There was a problem connecting to the local database."
+msgstr ""
+
+#: public/views/modal/error.php:19
+msgid "There was a problem downloading the products."
+msgstr ""
+
+#: public/views/modal/error.php:20
+msgid "There has been an error."
 msgstr ""
 
 #: public/views/products.php:9
