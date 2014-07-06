@@ -93,6 +93,7 @@ class WooCommerce_POS_Admin {
 	 */
 	public function includes() {
 
+		include_once( 'includes/class-pos-admin-hooks.php' );
 		include_once( 'includes/class-pos-product-admin.php' );
 	}
 
@@ -323,11 +324,22 @@ class WooCommerce_POS_Admin {
 		if ( in_array( $screen->id, $this->screen_ids() ) ) {
 			wp_enqueue_style( $this->plugin_slug .'-admin', plugins_url( 'assets/css/admin.min.css', __FILE__ ), array(), WooCommerce_POS::VERSION );
 			wp_enqueue_style( 'woocommerce_admin_styles', WC()->plugin_url() . '/assets/css/admin.css', array(), WC_VERSION );
+		}
 
+		if( in_array( $screen->id, array( 'pos_page_wc-pos-settings', 'woocommerce_page_wc-settings' ) )  ) {
+			$css = '
+				table.wc_gateways th.pos_status, table.wc_gateways td.pos_status {
+					text-align: center;
+				}
+				table.wc_gateways td.pos_status .tips {
+					margin: 0 auto;
+				}
+			';
+			wp_add_inline_style( 'wp-admin', $css );
 		}
 
 		wp_enqueue_style( $this->plugin_slug .'-dashicons', plugins_url( 'assets/css/dashicons.min.css', __FILE__ ), array(), WooCommerce_POS::VERSION );
-
+		
 	}
 
 	/**

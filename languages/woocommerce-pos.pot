@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.3.1-beta\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-07-06 12:59:38+00:00\n"
+"POT-Creation-Date: 2014-07-06 17:00:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,36 +13,42 @@ msgstr ""
 "Language-Team: Team Name <team@example.com>\n"
 "X-Generator: grunt-wp-i18n 0.4.5\n"
 
-#: admin/class-pos-admin.php:267
+#: admin/class-pos-admin.php:268
 msgid ""
 "<strong>WooCommerce POS</strong> requires <a "
 "href=\"http://wordpress.org/plugins/woocommerce/\">WooCommerce</a>. Please "
 "install and activate WooCommerce before activating WooCommerce POS."
 msgstr ""
 
-#: admin/class-pos-admin.php:283
+#: admin/class-pos-admin.php:284
 msgid ""
 "<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks "
 "to work correctly. Please enable <a href=\"%s\">permalinks</a>."
 msgstr ""
 
-#: admin/class-pos-admin.php:370 admin/class-pos-admin.php:371
+#: admin/class-pos-admin.php:382 admin/class-pos-admin.php:383
 #: public/views/footer.php:11
 msgid "POS"
 msgstr ""
 
-#: admin/class-pos-admin.php:381 admin/class-pos-admin.php:382
-#: admin/class-pos-admin.php:442
-#: admin/includes/settings/class-settings-checkout.php:121
+#: admin/class-pos-admin.php:393 admin/class-pos-admin.php:394
+#: admin/class-pos-admin.php:454
+#: admin/includes/settings/class-settings-checkout.php:129
 msgid "Settings"
 msgstr ""
 
-#: admin/class-pos-admin.php:388
+#: admin/class-pos-admin.php:400
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: admin/class-pos-admin.php:443
+#: admin/class-pos-admin.php:455
 msgid "View POS"
+msgstr ""
+
+#: admin/includes/class-pos-admin-hooks.php:81
+#: admin/includes/settings/class-settings-checkout.php:121
+#: admin/includes/settings/class-settings-checkout.php:174
+msgid "Enabled"
 msgstr ""
 
 #: admin/includes/class-pos-product-admin.php:38
@@ -61,43 +67,34 @@ msgstr ""
 msgid "Select a page&hellip;"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:24
-#: public/views/cart.php:105
-msgid "Checkout"
-msgstr ""
-
-#: admin/includes/settings/class-settings-checkout.php:43
+#: admin/includes/settings/class-settings-checkout.php:52
 msgid "Payment Gateways"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:43
+#: admin/includes/settings/class-settings-checkout.php:52
 msgid ""
 "Installed gateways are listed below. Drag and drop gateways to control "
 "their display order on the frontend."
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:63
+#: admin/includes/settings/class-settings-checkout.php:70
 msgid "Gateway Display"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:70
+#: admin/includes/settings/class-settings-checkout.php:77
 msgid "Default"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:71
+#: admin/includes/settings/class-settings-checkout.php:78
 msgid "Gateway"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:72
+#: admin/includes/settings/class-settings-checkout.php:79
 msgid "Gateway ID"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:73
+#: admin/includes/settings/class-settings-checkout.php:80
 msgid "Status"
-msgstr ""
-
-#: admin/includes/settings/class-settings-checkout.php:113
-msgid "Enabled"
 msgstr ""
 
 #: admin/includes/settings/class-settings-general.php:25
@@ -293,6 +290,10 @@ msgstr ""
 
 #: public/views/cart.php:102
 msgid "Discount"
+msgstr ""
+
+#: public/views/cart.php:105
+msgid "Checkout"
 msgstr ""
 
 #: public/views/checkout.php:6
@@ -575,6 +576,21 @@ msgstr ""
 
 #. Author URI of the plugin/theme
 msgid "http://www.kilbot.com.au"
+msgstr ""
+
+#: admin/includes/class-pos-admin-hooks.php:67
+msgctxt "Payment gateway status"
+msgid "POS"
+msgstr ""
+
+#: admin/includes/settings/class-settings-checkout.php:162
+msgctxt "Payment gateway status"
+msgid "Online Store"
+msgstr ""
+
+#: admin/includes/settings/class-settings-checkout.php:24
+msgctxt "Settings tab label"
+msgid "Checkout"
 msgstr ""
 
 #: public/includes/class-pos-checkout.php:48

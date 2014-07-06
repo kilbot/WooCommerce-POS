@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WP Products Admin Class
+ * WC Products Admin Class
  *
  * Handles any changes to the WC Product Admin screens
  * 
