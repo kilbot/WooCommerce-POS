@@ -106,20 +106,42 @@
 				<h4 class="textcenter"><?php _e( 'To Pay', 'woocommerce-pos' ); ?>: {{{money totals.total}}}</h4>
 
 				<div class="panel-group" id="payment-options">
-					<div class="panel panel-success">
+
+					<?php  
+						if ( $available_gateways = WC()->payment_gateways->get_available_payment_gateways() ) :
+							// Chosen Method
+							if ( sizeof( $available_gateways ) )
+								current( $available_gateways )->set_current();
+
+							foreach ( $available_gateways as $gateway ) :
+					?>
+
+					<div class="panel panel-<?= $gateway->chosen == 1 ? 'success' : 'default' ; ?> payment_method_<?= $gateway->id; ?>">
 						<div class="panel-heading">
-							<h5 data-toggle="collapse" data-target="cash" data-parent="payment-options" class="panel-title">
-								<i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> <?php _e( 'Cash', 'woocommerce-pos' ); ?>
+							<h5 data-toggle="collapse" data-target="#payment_box_<?= $gateway->id; ?>" data-parent="#payment-options" class="panel-title">
+								<i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> <?php echo $gateway->get_title(); ?> <?php echo $gateway->get_icon(); ?>
 							</h5>
+						</div>
+						<div id="payment_box_<?= $gateway->id; ?>" class="panel-collapse collapse <?= $gateway->chosen == 1 ? 'in' : '' ; ?>">
+							<div class="panel-body">
+								<?php
+								if ( $gateway->has_fields() || $gateway->get_description() ) {
+									echo '<div class="payment_box payment_method_' . $gateway->id . '">';
+									$gateway->payment_fields();
+									echo '</div>';
+								}
+								?>
+							</div>
 						</div>
 					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h5 data-toggle="collapse" data-target="card" data-parent="payment-options" class="panel-title">
-								<i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> <?php _e( 'Card', 'woocommerce-pos' ); ?>
-							</h5>
-						</div>
-					</div>	
+
+					<?php 
+							endforeach;
+						else :
+							// no payment gateways enabled
+							echo '<p>' . __( 'No payment gateways enabled.', 'woocommerce-pos' ) . '</p>';
+						endif;
+					?>
 				</div>
 
 			</div>

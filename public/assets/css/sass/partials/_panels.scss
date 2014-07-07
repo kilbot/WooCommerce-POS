@@ -27,6 +27,10 @@
   > .dropdown .dropdown-toggle {
     color: inherit;
   }
+
+  #payment-options & {
+    cursor: pointer;
+  }
 }
 
 // Within heading, strip any `h*` tag of its default margins for spacing.
@@ -38,6 +42,11 @@
 
   > a {
     color: inherit;
+  }
+
+  img {
+    vertical-align: middle;
+    max-height: 26px;
   }
 }
 
@@ -239,32 +248,6 @@
   @include panel-variant($panel-danger-border, $panel-danger-text, $panel-danger-heading-bg, $panel-danger-border);
 }
 
-.fade {
-  opacity: 0;
-  @include transition(opacity .15s linear);
-  &.in {
-    opacity: 1;
-  }
-}
-
-.collapse {
-  display: none;
-
-  &.in      { display: block; }
-  // [converter] extracted tr&.in to tr.collapse.in
-  // [converter] extracted tbody&.in to tbody.collapse.in
-}
-
-tr.collapse.in    { display: table-row; }
-
-tbody.collapse.in { display: table-row-group; }
-
-.collapsing {
-  position: relative;
-  height: 0;
-  overflow: hidden;
-  @include transition(height .35s ease);
-}
 
 .panel-success {
   .fa-circle-o {display:none;}

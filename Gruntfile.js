@@ -159,7 +159,7 @@ module.exports = function(grunt) {
 					'public/assets/js/plugins.min.js' : [
 						'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown.js',
 						'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal.js',
-						// 'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/popover.js',
+						'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/collapse.js',
 						// 'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tooltip.js',
 						'public/assets/js/src/pushy.js'
 					]

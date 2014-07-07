@@ -141,6 +141,8 @@ define(['underscore', 'backbone', 'handlebars', 'accounting', 'views/Helpers'],
 			// show the modal
 			this.$el.modal({ 'show': true, backdrop: 'static' });
 
+			this.$('#payment-options').collapse();
+
 			return this;
 		},
 		

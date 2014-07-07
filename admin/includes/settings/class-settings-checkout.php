@@ -23,9 +23,6 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 		$this->id    = 'checkout';
 		$this->label = _x( 'Checkout', 'Settings tab label', 'woocommerce-pos' );
 
-		// 
-		add_action( 'plugins_loaded', 'plugins_loaded' );
-
 		// add Checkout tab
 		add_filter( 'woocommerce_pos_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 		add_action( 'woocommerce_pos_settings_' . $this->id, array( $this, 'output' ) );
@@ -33,12 +30,8 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 		add_action( 'woocommerce_pos_settings_save_' . $this->id, array( $this, 'save' ) );
 
 		// add column to WooCommerce Gateway display
-		add_filter( 'woocommerce_payment_gateways_setting_columns', array( $this, 'woocommerce_payment_gateways_setting_columns' ), 99, 1 );
-		add_action( 'woocommerce_payment_gateways_setting_column_pos_status', array( $this, 'pos_status' ), 100, 1 );
-	}
-
-	function plugins_loaded() {
-		remove_action( 'woocommerce_payment_gateways_setting_column_pos_status', array( WooCommerce_POS_Admin_Hooks::get_instance(), 'pos_status' ), 99, 1 );
+		add_filter( 'woocommerce_payment_gateways_setting_columns', array( $this, 'woocommerce_payment_gateways_setting_columns' ), 20, 1 );
+		add_action( 'woocommerce_payment_gateways_setting_column_pos_enabled', array( $this, 'pos_enabled' ), 20, 1 );
 	}
 
 	/**
@@ -49,7 +42,17 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 	public function get_settings() {
 
 		$settings = array(
-			array( 'title' => __( 'Payment Gateways', 'woocommerce-pos' ),  'desc' => __( 'Installed gateways are listed below. Drag and drop gateways to control their display order on the frontend.', 'woocommerce-pos' ), 'type' => 'title', 'id' => 'payment_gateways_options' ),
+			array( 
+				'title' => __( 'Payment Gateways', 'woocommerce-pos' ),  
+				'desc' => 
+					__( 'Installed gateways are listed below. Drag and drop gateways to control their display order at the Point of Sale. ', 'woocommerce-pos' )
+					.'<br>'
+					.__( 'Payment Gateways enabled here will be available at the Point of Sale. Payment Gateways enabled on the settings page will be available in your Online Store. ', 'woocommerce-pos' )
+					// .__( 'WooCommerce POS uses the . ', 'woocommerce-pos' )
+				, 
+				'type' => 'title', 
+				'id' => 'payment_gateways_options' 
+			),
 			array( 'type' => 'payment_gateways' ),
 			array( 'type' => 'sectionend', 'id' => 'payment_gateways_options' ),
 		);
@@ -92,7 +95,6 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 			        	$default_gateway = get_option( 'woocommerce_pos_default_gateway' );
 
 			        	foreach ( WC()->payment_gateways->payment_gateways() as $gateway ) {
-			        		// print_r($gateway);
 
 			        		echo '<tr>';
 
@@ -151,6 +153,34 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 	public function save() {
 		$settings = $this->get_settings();
 		WC_POS_Admin_Settings::save_fields( $settings );
+		$this->process_admin_options();
+	}
+
+	/**
+	 * Save options
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function process_admin_options() {
+
+		$default_gateway 	= ( isset( $_POST['default_gateway'] ) ) ? esc_attr( $_POST['default_gateway'] ) : '';
+		$gateway_order 		= ( isset( $_POST['gateway_order'] ) ) ? $_POST['gateway_order'] : '';
+		$gateway_enabled 	= ( isset( $_POST['gateway_enabled'] ) ) ? $_POST['gateway_enabled'] : '';
+
+		$order = array();
+
+		if ( is_array( $gateway_order ) && sizeof( $gateway_order ) > 0 ) {
+			$loop = 0;
+			foreach ( $gateway_order as $gateway_id ) {
+				$order[ esc_attr( $gateway_id ) ] = $loop;
+				$loop++;
+			}
+		}
+
+		update_option( 'woocommerce_pos_default_gateway', $default_gateway );
+		update_option( 'woocommerce_pos_gateway_order', $order );
+		update_option( 'woocommerce_pos_gateway_enabled', $gateway_enabled );
 	}
 
 	/**
@@ -159,21 +189,31 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 	 * @return array $new_columns
 	 */
 	public function woocommerce_payment_gateways_setting_columns( $columns ) {
-		$columns['status'] = _x( 'Online Store', 'Payment gateway status', 'woocommerce-pos' );
-		return $columns;
+		unset( $columns['pos_status'] );
+		$new_columns = array();
+		foreach ( $columns as $key => $column ) {
+			$new_columns[$key] = $column;
+			if( $key == 'status' ) {
+				$new_columns['pos_enabled'] = _x( 'POS', 'Payment gateway status', 'woocommerce-pos' );
+			}
+		}
+		return $new_columns;
 	}
 
 	/**
 	 * POS Status for each gateway
 	 * @param  object $gateway
 	 */
-	public function pos_status( $gateway ) {
-		echo '<td class="pos_status">';
-		// if ( $gateway->enabled == 'yes' )
-		if ( true )
-		echo '<span class="status-enabled tips" data-tip="' . __ ( 'Enabled', 'woocommerce-pos' ) . '">' . __ ( 'Enabled', 'woocommerce-pos' ) . '</span>';
-		else
-		echo '-';
+	public function pos_enabled( $gateway ) {
+
+		$gateway_enabled = get_option( 'woocommerce_pos_gateway_enabled' );
+		$checked = '';
+
+		echo '<td class="pos_enabled">';
+		if ( in_array( $gateway->id, $gateway_enabled ) ) 
+			$checked = 'checked';
+
+		echo '<input type="checkbox" name="gateway_enabled[]" value="' . esc_attr( $gateway->id ) . '"' . $checked .' >';
 		echo '</td>';
 	}
 

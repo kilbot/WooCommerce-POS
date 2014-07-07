@@ -328,10 +328,10 @@ class WooCommerce_POS_Admin {
 
 		if( in_array( $screen->id, array( 'pos_page_wc-pos-settings', 'woocommerce_page_wc-settings' ) )  ) {
 			$css = '
-				table.wc_gateways th.pos_status, table.wc_gateways td.pos_status {
+				table.wc_gateways .pos_status, table.wc_gateways .pos_enabled {
 					text-align: center;
 				}
-				table.wc_gateways td.pos_status .tips {
+				table.wc_gateways .pos_status .tips, table.wc_gateways .pos_enabled .tips {
 					margin: 0 auto;
 				}
 			';
@@ -364,6 +364,7 @@ class WooCommerce_POS_Admin {
 			wp_enqueue_script( 'jquery-tiptip' );
 			wp_enqueue_script( 'ajax-chosen' );
 	    	wp_enqueue_script( 'chosen' );
+	    	wp_enqueue_script( 'jquery-ui-sortable' );
 		}
 
 	}

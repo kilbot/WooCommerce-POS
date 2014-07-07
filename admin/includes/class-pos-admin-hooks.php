@@ -18,40 +18,13 @@ if ( ! class_exists( 'WooCommerce_POS_Admin_Hooks' ) ) :
 class WooCommerce_POS_Admin_Hooks {
 
 	/**
-	 * Instance of this class.
-	 *
-	 * @var      object
-	 */
-	protected static $instance = null;
-
-	/**
 	 * Constructor
 	 */
-	// public function __construct() {
-	// 	// place hooks into init function so they can be unhooked later if necessary
-	// }
-
-	/**
-	 * Return an instance of this class.
-	 */
-	public static function get_instance() {
-
-		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
-			self::$instance = new self;
-		}
-
-		return self::$instance;
-	}
-
-	/**
-	 * [init description]
-	 * @return [type] [description]
-	 */
-	public static function init() {
-    	// add column to WooCommerce Gateway display
-		add_filter( 'woocommerce_payment_gateways_setting_columns', array( WooCommerce_POS_Admin_Hooks::get_instance(), 'woocommerce_payment_gateways_setting_columns' ) );
-		add_action( 'woocommerce_payment_gateways_setting_column_pos_status', array( WooCommerce_POS_Admin_Hooks::get_instance(), 'pos_status' ) );
+	public function __construct() {
+		
+		// add column to WooCommerce Gateway display
+		add_filter( 'woocommerce_payment_gateways_setting_columns', array( $this, 'woocommerce_payment_gateways_setting_columns' ) );
+		add_action( 'woocommerce_payment_gateways_setting_column_pos_status', array( $this, 'pos_status' ) );
 	}
 
 	/**
@@ -63,8 +36,10 @@ class WooCommerce_POS_Admin_Hooks {
 		$new_columns = array();
 		foreach ( $columns as $key => $column ) {
 			$new_columns[$key] = $column;
-			if( $key == 'status' ) 
+			if( $key == 'status' ) {
+				$new_columns['status'] = _x( 'Online Store', 'Payment gateway status', 'woocommerce-pos' );
 				$new_columns['pos_status'] = _x( 'POS', 'Payment gateway status', 'woocommerce-pos' );
+			}
 		}
 		return $new_columns;
 	}
@@ -74,10 +49,11 @@ class WooCommerce_POS_Admin_Hooks {
 	 * @param  object $gateway
 	 */
 	public function pos_status( $gateway ) {
+
+		$gateway_enabled = get_option( 'woocommerce_pos_gateway_enabled' );
+
 		echo '<td class="pos_status">';
-		echo $gateway->enabled;
-		// if ( $gateway->enabled == 'yes' )
-		if ( true )
+		if ( in_array( $gateway->id, $gateway_enabled ) ) 
 		echo '<span class="status-enabled tips" data-tip="' . __ ( 'Enabled', 'woocommerce-pos' ) . '">' . __ ( 'Enabled', 'woocommerce-pos' ) . '</span>';
 		else
 		echo '-';
@@ -88,4 +64,4 @@ class WooCommerce_POS_Admin_Hooks {
 
 endif;
 
-WooCommerce_POS_Admin_Hooks::init();
+new WooCommerce_POS_Admin_Hooks();
