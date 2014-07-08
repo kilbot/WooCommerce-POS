@@ -14,6 +14,9 @@ class WooCommerce_POS_Tools {
 	/** @var string Contains orphan ids, if any */
 	public $orphans;
 
+	/** @var string Contains user */
+	public $auth_response;
+
 	public function __construct() {
 
 	}
@@ -47,10 +50,26 @@ class WooCommerce_POS_Tools {
 	 */
 	public function check_api_auth() {
 		$api_auth = false;
-		$file_headers = @get_headers( WC_POS()->wc_api_url. 'products?pos=1' );
-		if( strpos( $file_headers[0], '404 Not Found' ) === false ) {
-			$api_auth = true;
+
+		$user = apply_filters( 'woocommerce_api_check_authentication', null, $this );
+
+		if( get_class( $user ) == 'WP_User' ) {
+			$user_info = array(
+				'user_login' => $user->user_login,
+				'roles'		 => $user->roles,
+				'read_private_products' => isset( $user->allcaps['read_private_products'] ) ? $user->allcaps['read_private_products'] : '' ,
+				'manage_woocommerce_pos' => isset( $user->allcaps['manage_woocommerce_pos'] ) ? $user->allcaps['manage_woocommerce_pos'] : '' ,
+			);
+			if( $user_info['read_private_products'] && $user_info['manage_woocommerce_pos'] )
+				$api_auth = true;
+
+			$this->auth_response = print_r( $user_info, true );
+
+		} else {
+
+			$this->auth_response = 'WP_Error';
 		}
+
 		return $api_auth;
 	}
 

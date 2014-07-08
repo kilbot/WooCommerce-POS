@@ -168,8 +168,10 @@ class WC_POS_Settings_General extends WC_POS_Settings_Page {
 		// grant access
 		foreach ($roles as $slug) {
 			$role = get_role( $slug );
-			if( $role ) 
-				$role->add_cap( 'manage_woocommerce_pos' );
+			if( $role ) {
+				$role->add_cap( 'manage_woocommerce_pos' ); // pos access
+				$role->add_cap( 'read_private_products' ); // api access
+			}
 		}
 
 		// revoke access
@@ -177,8 +179,10 @@ class WC_POS_Settings_General extends WC_POS_Settings_Page {
 		if( !empty($revoke) ) {
 			foreach ($revoke as $slug) {
 				$role = get_role( $slug );
-				if( $role ) 
-					$role->remove_cap( 'manage_woocommerce_pos' );
+				if( $role ) {
+					$role->remove_cap( 'manage_woocommerce_pos' ); // pos access 
+					$role->add_cap( 'read_private_products' ); // api access
+				}
 			}	
 		}
 	}

@@ -108,27 +108,22 @@
 				<div class="panel-group" id="payment-options">
 
 					<?php  
-						if ( $available_gateways = WC()->payment_gateways->get_available_payment_gateways() ) :
-							// Chosen Method
-							if ( sizeof( $available_gateways ) )
-								current( $available_gateways )->set_current();
-
-							foreach ( $available_gateways as $gateway ) :
+						if ( $enabled_gateways = WC_POS()->payment_gateways()->get_enabled_payment_gateways() ) :
+							$default_gateway = get_option( 'woocommerce_pos_default_gateway' );
+							foreach ( $enabled_gateways as $gateway ) :
 					?>
 
-					<div class="panel panel-<?= $gateway->chosen == 1 ? 'success' : 'default' ; ?> payment_method_<?= $gateway->id; ?>">
+					<div class="panel panel-<?= $gateway->id == $default_gateway ? 'success' : 'default' ; ?> payment_method_<?= $gateway->id; ?>">
 						<div class="panel-heading">
 							<h5 data-toggle="collapse" data-target="#payment_box_<?= $gateway->id; ?>" data-parent="#payment-options" class="panel-title">
 								<i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> <?php echo $gateway->get_title(); ?> <?php echo $gateway->get_icon(); ?>
 							</h5>
 						</div>
-						<div id="payment_box_<?= $gateway->id; ?>" class="panel-collapse collapse <?= $gateway->chosen == 1 ? 'in' : '' ; ?>">
+						<div id="payment_box_<?= $gateway->id; ?>" class="panel-collapse collapse <?= $gateway->id == $default_gateway ? 'in' : '' ; ?>">
 							<div class="panel-body">
 								<?php
 								if ( $gateway->has_fields() || $gateway->get_description() ) {
-									echo '<div class="payment_box payment_method_' . $gateway->id . '">';
 									$gateway->payment_fields();
-									echo '</div>';
 								}
 								?>
 							</div>

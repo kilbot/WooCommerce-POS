@@ -94,7 +94,7 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 			        	<?php
 			        	$default_gateway = get_option( 'woocommerce_pos_default_gateway' );
 
-			        	foreach ( WC()->payment_gateways->payment_gateways() as $gateway ) {
+			        	foreach ( WC_POS()->payment_gateways()->payment_gateways as $gateway ) {
 
 			        		echo '<tr>';
 

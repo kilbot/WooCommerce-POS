@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.3.1-beta\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-07-06 17:00:51+00:00\n"
+"POT-Creation-Date: 2014-07-08 04:21:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,28 +26,27 @@ msgid ""
 "to work correctly. Please enable <a href=\"%s\">permalinks</a>."
 msgstr ""
 
-#: admin/class-pos-admin.php:382 admin/class-pos-admin.php:383
+#: admin/class-pos-admin.php:383 admin/class-pos-admin.php:384
 #: public/views/footer.php:11
 msgid "POS"
 msgstr ""
 
-#: admin/class-pos-admin.php:393 admin/class-pos-admin.php:394
-#: admin/class-pos-admin.php:454
-#: admin/includes/settings/class-settings-checkout.php:129
+#: admin/class-pos-admin.php:394 admin/class-pos-admin.php:395
+#: admin/class-pos-admin.php:455
+#: admin/includes/settings/class-settings-checkout.php:131
 msgid "Settings"
 msgstr ""
 
-#: admin/class-pos-admin.php:400
+#: admin/class-pos-admin.php:401
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: admin/class-pos-admin.php:455
+#: admin/class-pos-admin.php:456
 msgid "View POS"
 msgstr ""
 
-#: admin/includes/class-pos-admin-hooks.php:81
-#: admin/includes/settings/class-settings-checkout.php:121
-#: admin/includes/settings/class-settings-checkout.php:174
+#: admin/includes/class-pos-admin-hooks.php:57
+#: admin/includes/settings/class-settings-checkout.php:123
 msgid "Enabled"
 msgstr ""
 
@@ -67,33 +66,40 @@ msgstr ""
 msgid "Select a page&hellip;"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:52
+#: admin/includes/settings/class-settings-checkout.php:46
 msgid "Payment Gateways"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:52
+#: admin/includes/settings/class-settings-checkout.php:48
 msgid ""
 "Installed gateways are listed below. Drag and drop gateways to control "
-"their display order on the frontend."
+"their display order at the Point of Sale. "
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:70
+#: admin/includes/settings/class-settings-checkout.php:50
+msgid ""
+"Payment Gateways enabled here will be available at the Point of Sale. "
+"Payment Gateways enabled on the settings page will be available in your "
+"Online Store. "
+msgstr ""
+
+#: admin/includes/settings/class-settings-checkout.php:73
 msgid "Gateway Display"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:77
+#: admin/includes/settings/class-settings-checkout.php:80
 msgid "Default"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:78
+#: admin/includes/settings/class-settings-checkout.php:81
 msgid "Gateway"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:79
+#: admin/includes/settings/class-settings-checkout.php:82
 msgid "Gateway ID"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:80
+#: admin/includes/settings/class-settings-checkout.php:83
 msgid "Status"
 msgstr ""
 
@@ -126,12 +132,17 @@ msgid "The default customer for POS orders, eg: Guest or create a new customer."
 msgstr ""
 
 #: admin/includes/settings/class-settings-general.php:85
-#: public/class-pos.php:286 public/includes/class-pos-ajax.php:107
+#: public/class-pos.php:277 public/includes/class-pos-ajax.php:107
 msgid "Guest"
 msgstr ""
 
 #: admin/views/settings.php:30
 msgid "Save changes"
+msgstr ""
+
+#: includes/class-pos-payment-gateways.php:42
+#: includes/class-pos-payment-gateways.php:51
+msgid "Action not permitted"
 msgstr ""
 
 #: includes/class-pos-support.php:37
@@ -194,43 +205,83 @@ msgstr ""
 msgid "Delete orphans"
 msgstr ""
 
-#: public/class-pos.php:200
+#: includes/class-pos-support.php:97
+msgid "API Authentication"
+msgstr ""
+
+#: includes/class-pos-support.php:99
+msgid "Authentication Passed"
+msgstr ""
+
+#: includes/class-pos-support.php:100
+msgid "Authentication Failed"
+msgstr ""
+
+#: includes/gateways/card/class-pos-gateway-card.php:24
+#: includes/gateways/card/class-pos-gateway-card.php:40
+msgid "Card"
+msgstr ""
+
+#: includes/gateways/card/class-pos-gateway-card.php:25
+msgid "Debit & Credit Card sales."
+msgstr ""
+
+#: includes/gateways/card/class-pos-gateway-card.php:37
+#: includes/gateways/cash/class-pos-gateway-cash.php:37
+msgid "Title"
+msgstr ""
+
+#: includes/gateways/card/class-pos-gateway-card.php:39
+#: includes/gateways/cash/class-pos-gateway-cash.php:39
+msgid "Payment method title."
+msgstr ""
+
+#: includes/gateways/cash/class-pos-gateway-cash.php:24
+#: includes/gateways/cash/class-pos-gateway-cash.php:40
+msgid "Cash"
+msgstr ""
+
+#: includes/gateways/cash/class-pos-gateway-cash.php:25
+msgid "Cash sales."
+msgstr ""
+
+#: public/class-pos.php:191
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: public/class-pos.php:349
+#: public/class-pos.php:340
 msgid "No matches found"
 msgstr ""
 
-#: public/class-pos.php:350
+#: public/class-pos.php:341
 msgid "Please enter 1 more character"
 msgstr ""
 
-#: public/class-pos.php:351
+#: public/class-pos.php:342
 msgid "Please enter %d more characters"
 msgstr ""
 
-#: public/class-pos.php:352
+#: public/class-pos.php:343
 msgid "Please delete 1 character"
 msgstr ""
 
-#: public/class-pos.php:353
+#: public/class-pos.php:344
 msgid "Please delete %d characters"
 msgstr ""
 
-#: public/class-pos.php:354
+#: public/class-pos.php:345
 msgid "You can only select 1 item"
 msgstr ""
 
-#: public/class-pos.php:355
+#: public/class-pos.php:346
 msgid "You can only select %d items"
 msgstr ""
 
-#: public/class-pos.php:356
+#: public/class-pos.php:347
 msgid "Loading more results"
 msgstr ""
 
-#: public/class-pos.php:357
+#: public/class-pos.php:348
 msgid "Searching"
 msgstr ""
 
@@ -333,19 +384,15 @@ msgstr ""
 msgid "To Pay"
 msgstr ""
 
-#: public/views/checkout.php:112
-msgid "Cash"
+#: public/views/checkout.php:137
+msgid "No payment gateways enabled."
 msgstr ""
 
-#: public/views/checkout.php:119
-msgid "Card"
-msgstr ""
-
-#: public/views/checkout.php:127
+#: public/views/checkout.php:144
 msgid "Return to Sale"
 msgstr ""
 
-#: public/views/checkout.php:128
+#: public/views/checkout.php:145
 msgid "Mark as Paid"
 msgstr ""
 
@@ -578,14 +625,15 @@ msgstr ""
 msgid "http://www.kilbot.com.au"
 msgstr ""
 
-#: admin/includes/class-pos-admin-hooks.php:67
-msgctxt "Payment gateway status"
-msgid "POS"
-msgstr ""
-
-#: admin/includes/settings/class-settings-checkout.php:162
+#: admin/includes/class-pos-admin-hooks.php:40
 msgctxt "Payment gateway status"
 msgid "Online Store"
+msgstr ""
+
+#: admin/includes/class-pos-admin-hooks.php:41
+#: admin/includes/settings/class-settings-checkout.php:197
+msgctxt "Payment gateway status"
+msgid "POS"
 msgstr ""
 
 #: admin/includes/settings/class-settings-checkout.php:24

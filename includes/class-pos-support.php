@@ -93,12 +93,12 @@ class WooCommerce_POS_Support {
 				'action'=> wp_nonce_url( WC_POS()->pos_url('support?action=delete_orphans'), 'debug_action' ),
 				'prompt'=> __( 'Delete orphans', 'woocommerce-pos' ),
 			),
-			// array(
-			// 	'title' => __( 'API Authentication', 'woocommerce-pos' ),
-			// 	'test' 	=> $this->tools->check_api_auth(),
-			// 	'pass' 	=> __( 'Authentication Passed', 'woocommerce-pos' ). ' <a href="#"><i class="fa fa-info-circle"></i></a> <pre class="small" id="api_response"></pre>',
-			// 	'fail' 	=> __( 'Authentication Failed', 'woocommerce-pos' ). ' <a href="#"><i class="fa fa-info-circle"></i></a> <pre class="small" id="api_response"></pre>',
-			// ),
+			array(
+				'title' => __( 'API Authentication', 'woocommerce-pos' ),
+				'test' 	=> $this->tools->check_api_auth(),
+				'pass' 	=> __( 'Authentication Passed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a><textarea readonly="readonly" class="small" style="display:none">' . $this->tools->auth_response . '</textarea>',
+				'fail' 	=> __( 'Authentication Failed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a><textarea readonly="readonly" class="small" style="display:none">' . $this->tools->auth_response . '</textarea>',
+			),
 		);
 
 		foreach ( $checks as $check ) {

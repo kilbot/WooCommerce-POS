@@ -23,19 +23,19 @@ jQuery( document ).ready(function( $ ) {
 		$.getJSON( pos_params.wc_api_url + 'products', { 'pos': 1, 'filter[limit]': 1 } )
 		.done( function( data ) {
 			$('#system-status tbody')
-			.append('<tr class="pass"><td><i class="fa fa-check"></i></td><td>API Authentication</td>' + 
-				'<td colspan="2">Authentication Passed <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a> ' + 
+			.append('<tr class="pass"><td><i class="fa fa-check"></i></td><td>Product Download</td>' + 
+				'<td colspan="2">Product Retrieved OK <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a> ' + 
 				'<textarea class="small" readonly="readonly" style="display:none">' + JSON.stringify( data ) + '</textarea></td></tr>');
-			$('#pos_status').append('\n*** Authentication ***\n\n' + JSON.stringify( data ) + '\n\n');
+			$('#pos_status').append('\n*** Product Download ***\n\n' + JSON.stringify( data ) + '\n\n');
 		}) 
 		.fail( function( jqxhr, textStatus, error ) {
 			var response = jqxhr.responseText.replace(/(<([^>]+)>)/ig,"");
 
 			$('#system-status tbody')
-			.append('<tr class="fail"><td><i class="fa fa-times"></i></td><td>API Authentication</td>' + 
-				'<td colspan="2">Authentication Failed <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a> ' + 
+			.append('<tr class="fail"><td><i class="fa fa-times"></i></td><td>Product Download</td>' + 
+				'<td colspan="2">Product Download Failed <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a> ' + 
 				'<textarea class="small" readonly="readonly" style="display:none">' + response + '</textarea></td></tr>');
-			$('#pos_status').append('\n*** Authentication ***\n\n' + response.trim() + '\n\n');
+			$('#pos_status').append('\n*** Product Download ***\n\n' + response.trim() + '\n\n');
 		});
 	}	
 

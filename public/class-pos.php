@@ -47,16 +47,6 @@ class WooCommerce_POS {
 	public $plugin_url;
 
 	/**
-	 * @var WooCommerce_POS_Product $product
-	 */
-	public $product = null;
-
-	/**
-	 * @var WooCommerce_POS_Product $product
-	 */
-	public $support = null;
-
-	/**
 	 * Initialize WooCommerce_POS
 	 */
 	private function __construct() {
@@ -126,6 +116,7 @@ class WooCommerce_POS {
 	private function includes() {
 		include_once( 'includes/class-pos-product.php' );
 		include_once( 'includes/class-pos-checkout.php' );
+		include_once( $this->plugin_path . 'includes/class-pos-payment-gateways.php' );
 		include_once( $this->plugin_path . 'includes/class-pos-support.php' );
 		if ( defined( 'DOING_AJAX' ) ) {
 			include_once( 'includes/class-pos-ajax.php' );
@@ -437,6 +428,17 @@ class WooCommerce_POS {
 				echo '<script src="'. $this->plugin_url .'public/assets/js/support.min.js?ver='. self::VERSION .'"></script>';
 			}
 		}
+	}
+
+	/** Load Instances on demand **********************************************/
+
+	/**
+	 * Get gateways class
+	 *
+	 * @return WC_Payment_Gateways
+	 */
+	public function payment_gateways() {
+		return WooCommerce_POS_Payment_Gateways::get_instance();
 	}
 
 }
