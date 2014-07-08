@@ -67,7 +67,8 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: choose which user roles have access to POS
 * TODO: settings: choose which field is used for barcode (PRO USERS)
 * New: POS only products
-* TODO: settings: payment tab, select which payment gateways to use
+* New: Payment Gateway settings, enable POS only gateways and reorder through new settings tab
+* TODO: Payment Gateway processing, experimental
 * TODO: ui: payment options during checkout
 * TODO: ui: change calculator
 * TODO: ui: numpad module
@@ -77,7 +78,8 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: Greek translation thanks to Marios Polycarpou! [http://el.woopos.com.au/pos](http://el.woopos.com.au/pos)
 * New: German translation thanks to Simon Potye! [http://de.woopos.com.au/pos](http://de.woopos.com.au/pos)
 
-* Pro Only:  
+* Pro Only:
+* TODO: all Payment Gateways 
 
 = 0.3 =
 * New: Set default POS customer on new settings page

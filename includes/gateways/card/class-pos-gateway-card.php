@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @class 		WooCommerce_POS_Gateway_Card
  * @extends		WC_Payment_Gateway
  */
-class WooCommerce_POS_Gateway_Card extends WC_Payment_Gateway {
+class POS_Gateway_Card extends WC_Payment_Gateway {
 
 	/** @var string 'no' never enabled in Online Store. */
 	public $enabled = 'no';
@@ -22,8 +22,19 @@ class WooCommerce_POS_Gateway_Card extends WC_Payment_Gateway {
 		$this->id                 = 'pos_card';
 		$this->icon               = apply_filters( 'woocommerce_pos_card_icon', '' );
 		$this->method_title       = __( 'Card', 'woocommerce-pos' );
-		$this->method_description = __( 'Debit & Credit Card sales.', 'woocommerce-pos' );
+		$this->method_description = __( 'Debit & Credit Card sales using an external EFTPOS machine.', 'woocommerce-pos' );
 		$this->has_fields         = false;
+
+		// Load the settings.
+		$this->init_form_fields();
+		$this->init_settings();
+
+        // Define user set variables
+		$this->title        = $this->get_option( 'title' );
+		$this->description  = $this->get_option( 'description' );
+
+		// Actions
+		add_action( 'woocommerce_pos_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 
 	}
 
@@ -40,6 +51,13 @@ class WooCommerce_POS_Gateway_Card extends WC_Payment_Gateway {
 				'default'     => __( 'Card', 'woocommerce-pos' ),
 				'desc_tip'    => true,
 			),
+			'description' => array(
+				'title'       => __( 'Description', 'woocommerce-pos' ),
+				'type'        => 'textarea',
+				'description' => __( 'Payment method description that will be shown in the POS.', 'woocommerce-pos' ),
+				'default'     => __( '', 'woocommerce-pos' ),
+				'desc_tip'    => true,
+			),
  	   );
     }
 
@@ -50,16 +68,5 @@ class WooCommerce_POS_Gateway_Card extends WC_Payment_Gateway {
 	 */
 	public function is_available() {
 		return true;
-	}
-
-
-	/**
-	 * Return the gateways title
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function get_title() {
-		return 'Card';
 	}
 }

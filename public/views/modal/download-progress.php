@@ -3,7 +3,7 @@
 	    <div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title"><?php _e( 'Downloading products ...', 'woocommerce-pos' ); ?></h4>
+				<h4 class="modal-title"><?php _e( 'Downloading products', 'woocommerce-pos' ); ?>&hellip;</h4>
 			</div>
 			<div class="modal-body">
 				<div class="progress-bar" data-total="<?= isset( $total ) ? $total : 1 ; ?>">
@@ -12,7 +12,7 @@
 				<p class="small alert alert-info">
 				<?= __('WooCommerce POS is storing your products locally.', 'woocommerce-pos'); ?>
 				<?= __('This could take some time depending on the number of products you have, the speed of your connection and the speed of your server.', 'woocommerce-pos'); ?>
-				<?= __('While you\'re waiting ... why not read over the <a href="http://woopos.com.au/docs" target="_blank">WooCommerce POS documentation</a>.', 'woocommerce-pos'); ?>
+				<?= __('While you\'re waiting&hellip; why not read over the <a href="http://woopos.com.au/docs" target="_blank">WooCommerce POS documentation</a>.', 'woocommerce-pos'); ?>
 				</p>
 
 			</div>

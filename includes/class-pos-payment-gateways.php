@@ -72,15 +72,20 @@ class WooCommerce_POS_Payment_Gateways {
     	include_once( WC_POS()->plugin_path . 'includes/gateways/cash/class-pos-gateway-cash.php' );
     	include_once( WC_POS()->plugin_path . 'includes/gateways/card/class-pos-gateway-card.php' );
 
-    	$load_gateways = apply_filters( 'woocommerce_payment_gateways', array(
+    	$global_gateways = apply_filters( 'woocommerce_payment_gateways', array(
     		'WC_Gateway_BACS',
 			'WC_Gateway_Cheque',
 			'WC_Gateway_COD',
 			'WC_Gateway_Mijireh',
-			'WC_Gateway_Paypal',
-			'WooCommerce_POS_Gateway_Cash',
-			'WooCommerce_POS_Gateway_Card'
+			'WC_Gateway_Paypal'
     	) );
+
+    	$pos_only_gateways = apply_filters( 'woocommerce_pos_payment_gateways', array(
+			'POS_Gateway_Cash',
+			'POS_Gateway_Card'
+		) );
+
+		$load_gateways = array_merge( $global_gateways, $pos_only_gateways );
 
 		// Get order option
 		$ordering 	= (array) get_option('woocommerce_pos_gateway_order');

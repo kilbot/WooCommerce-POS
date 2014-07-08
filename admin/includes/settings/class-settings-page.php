@@ -41,7 +41,7 @@ class WC_POS_Settings_Page {
 	 * @return array
 	 */
 	public function get_sections() {
-		return apply_filters( 'woocommerce_get_sections_' . $this->id, array() );
+		return apply_filters( 'woocommerce_pos_get_sections_' . $this->id, array() );
 	}
 
 	/**
@@ -79,11 +79,11 @@ class WC_POS_Settings_Page {
 	public function save() {
 		global $current_section;
 
-		// $settings = $this->get_settings();
-		// WC_Admin_Settings::save_fields( $settings );
+		$settings = $this->get_settings();
+		WC_Admin_Settings::save_fields( $settings );
 
-		//  if ( $current_section )
-	 //    	do_action( 'woocommerce_update_options_' . $this->id . '_' . $current_section );
+		if ( $current_section )
+	    	do_action( 'woocommerce_pos_update_options_' . $this->id . '_' . $current_section );
 	}
 
 }
