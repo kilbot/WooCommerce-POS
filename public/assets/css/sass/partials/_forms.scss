@@ -102,3 +102,11 @@ fieldset {
 		height: 100px;
 	}
 }
+
+.form-row {
+	label {
+		margin-right: $vspacing;
+		display: inline-block;
+		min-width: 35%;
+	}
+}

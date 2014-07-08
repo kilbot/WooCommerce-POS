@@ -11,6 +11,7 @@ class WooCommerce_POS_Payment_Gateways {
 
 	/** @var array Array of payment gateway classes. */
 	var $payment_gateways;
+	var $available_gateways;
 
 	/**
 	 * @var WC_Payment_Gateways The single instance of the class
@@ -72,20 +73,20 @@ class WooCommerce_POS_Payment_Gateways {
     	include_once( WC_POS()->plugin_path . 'includes/gateways/cash/class-pos-gateway-cash.php' );
     	include_once( WC_POS()->plugin_path . 'includes/gateways/card/class-pos-gateway-card.php' );
 
-    	$global_gateways = apply_filters( 'woocommerce_payment_gateways', array(
-    		'WC_Gateway_BACS',
-			'WC_Gateway_Cheque',
-			'WC_Gateway_COD',
-			'WC_Gateway_Mijireh',
-			'WC_Gateway_Paypal'
-    	) );
-
     	$pos_only_gateways = apply_filters( 'woocommerce_pos_payment_gateways', array(
 			'POS_Gateway_Cash',
 			'POS_Gateway_Card'
 		) );
 
-		$load_gateways = array_merge( $global_gateways, $pos_only_gateways );
+    	$global_gateways = apply_filters( 'woocommerce_payment_gateways', array(
+    		'WC_Gateway_Paypal',
+    		'WC_Gateway_BACS',
+			'WC_Gateway_Cheque',
+			'WC_Gateway_COD',
+			'WC_Gateway_Mijireh'
+    	) );
+
+		$load_gateways = array_merge( $pos_only_gateways, $global_gateways );
 
 		// Get order option
 		$ordering 	= (array) get_option('woocommerce_pos_gateway_order');
@@ -108,6 +109,9 @@ class WooCommerce_POS_Payment_Gateways {
 		endforeach;
 
 		ksort( $this->payment_gateways );
+
+		$pos_only_gateways[] = 	$global_gateways[0];
+		$this->available_gateways = $pos_only_gateways;
     }
 
     public function get_enabled_payment_gateways() {

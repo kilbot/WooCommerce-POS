@@ -65,21 +65,19 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 = 0.3.1 =
 * New: choose which user roles have access to POS
-* TODO: settings: choose which field is used for barcode (PRO USERS)
 * New: POS only products
 * New: Payment Gateway settings, enable POS only gateways and reorder through new settings tab
 * TODO: Payment Gateway processing, experimental
-* TODO: ui: payment options during checkout
 * TODO: ui: change calculator
 * TODO: ui: numpad module
 * TODO: send order meta: user_id, payment_type
 * TODO: look at this authentication issue with network installs, Scotts issue.
-* Improved: Initial download of products, improved performance for large stores and slow servers
+* Improved: Initial download of products, improved performance for large stores and/or slow servers
 * New: Greek translation thanks to Marios Polycarpou! [http://el.woopos.com.au/pos](http://el.woopos.com.au/pos)
 * New: German translation thanks to Simon Potye! [http://de.woopos.com.au/pos](http://de.woopos.com.au/pos)
+* Fix: Bug preventing product display on Safari for subfolder installs of WordPress
 
-* Pro Only:
-* TODO: all Payment Gateways 
+* Pro Feature: Pro users can enable any Payment Gateway. (Upgrade to Pro)[http://woopos.com.au/pro].
 
 = 0.3 =
 * New: Set default POS customer on new settings page

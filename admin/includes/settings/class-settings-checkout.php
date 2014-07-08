@@ -14,11 +14,6 @@ if ( ! class_exists( 'WC_POS_Settings_Checkout' ) ) :
 
 class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 
-	/**
-	 * @var mixed
-	 */
-	public $pos_payment_gateways;
-
 	public function __construct() {
 		$this->id    = 'checkout';
 		$this->label = _x( 'Checkout', 'Settings tab label', 'woocommerce-pos' );
@@ -32,10 +27,8 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 
 		// add column to WooCommerce Gateway display
 		add_filter( 'woocommerce_payment_gateways_setting_columns', array( $this, 'woocommerce_payment_gateways_setting_columns' ), 20, 1 );
-		add_action( 'woocommerce_payment_gateways_setting_column_pos_enabled', array( $this, 'pos_enabled' ), 20, 1 );
+		add_action( 'woocommerce_payment_gateways_setting_column_pos_enabled', array( $this, 'enabled_gateways' ), 20, 1 );
 
-		// get the main instance of WooCommerce_POS_Payment_Gateways
-		$this->pos_payment_gateways = WC_POS()->payment_gateways();
 	}
 
 	/**
@@ -48,6 +41,7 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 			''         => __( 'Checkout Options', 'woocommerce-pos' )
 		);
 
+		WC_POS()->payment_gateways();
 		$pos_only_gateways = apply_filters( 'woocommerce_pos_payment_gateways', array(
 			'POS_Gateway_Cash',
 			'POS_Gateway_Card'
@@ -124,7 +118,7 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 			        	<?php
 			        	$default_gateway = get_option( 'woocommerce_pos_default_gateway' );
 
-			        	foreach ( $this->pos_payment_gateways->payment_gateways as $gateway ) {
+			        	foreach ( WC_POS()->payment_gateways()->payment_gateways as $gateway ) {
 
 			        		echo '<tr>';
 
@@ -158,7 +152,9 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 									break;
 									case 'settings' :
 										if( $gateway->id == 'pos_cash' || $gateway->id == 'pos_card' ) {
-
+											echo '<td class="settings">
+					        					<a class="button" href="' . admin_url( 'admin.php?page=wc-pos-settings&tab=checkout&section=' . strtolower( get_class( $gateway ) ) ) . '">' . __( 'Settings', 'woocommerce-pos' ) . '</a>
+					        				</td>';
 										} else {
 											echo '<td class="settings">
 					        					<a class="button" href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . strtolower( get_class( $gateway ) ) ) . '">' . __( 'Settings', 'woocommerce-pos' ) . '</a>
@@ -266,16 +262,19 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 	 * POS Status for each gateway
 	 * @param  object $gateway
 	 */
-	public function pos_enabled( $gateway ) {
-
-		$gateway_enabled = get_option( 'woocommerce_pos_gateway_enabled' );
+	public function enabled_gateways( $gateway ) {
 		$checked = '';
+		$gateway_enabled = (array) get_option( 'woocommerce_pos_gateway_enabled' );
 
-		echo '<td class="pos_enabled">';
 		if ( in_array( $gateway->id, $gateway_enabled ) ) 
 			$checked = 'checked';
 
-		echo '<input type="checkbox" name="gateway_enabled[]" value="' . esc_attr( $gateway->id ) . '"' . $checked .' >';
+		echo '<td class="pos_enabled">';
+		if( in_array( get_class( $gateway ), WC_POS()->payment_gateways()->available_gateways ) ) {
+			echo '<input type="checkbox" name="gateway_enabled[]" value="' . esc_attr( $gateway->id ) . '"' . $checked .' >';
+		} else {
+			echo '<small><a href="http://woopos.com.au/pro">' . __( 'Upgrade to Pro', 'woocommerce-pos' ) . '</a></small>';
+		}
 		echo '</td>';
 	}
 

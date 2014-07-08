@@ -23,7 +23,7 @@ class POS_Gateway_Cash extends WC_Payment_Gateway {
 		$this->icon               = apply_filters( 'woocommerce_pos_cash_icon', '' );
 		$this->method_title       = __( 'Cash', 'woocommerce-pos' );
 		$this->method_description = __( 'Cash sales at the Point of Sale.', 'woocommerce-pos' );
-		$this->has_fields         = false;
+		$this->has_fields         = true;
 
 		// Load the settings.
 		$this->init_form_fields();
@@ -60,6 +60,26 @@ class POS_Gateway_Cash extends WC_Payment_Gateway {
 			),
  	   );
     }
+
+   	/**
+	 * Display the payment fields on the checkout modal
+	 */
+	public function payment_fields() {
+
+		if ( $this->description ) {
+			echo '<p>' . wp_kses_post( $this->description ) . '</p>';
+		}
+
+		woocommerce_form_field(
+			'pos-cash-tendered',
+			array(
+				'type' 		=> 'text',
+				'label' 	=> __( 'Amount Tendered', 'woocommerce-pos' ),
+				'maxlength' => 20
+			)
+		);
+
+	}
 
 	/**
 	 * Check If The Gateway Is Available For Use

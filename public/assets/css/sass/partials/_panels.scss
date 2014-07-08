@@ -16,6 +16,12 @@
 .panel-body {
   padding: $panel-body-padding;
   @include clearfix();
+  p {
+    margin-bottom: 5px;
+  }
+  fieldset {
+    padding: 0;
+  }
 }
 
 // Optional heading

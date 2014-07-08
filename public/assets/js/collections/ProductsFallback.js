@@ -3,7 +3,7 @@ define(['backbone', 'backbone-paginator', 'models/Product'],
 
 	// the pageable product list
 	var Products = Backbone.PageableCollection.extend({
-		url: '/wc-api/v1/products',
+		url: pos_params.wc_api_url + 'products',
 		model: Product,
 
 		mode: "server",
