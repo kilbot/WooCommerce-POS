@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.3.1-beta\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-07-08 05:17:14+00:00\n"
+"POT-Creation-Date: 2014-07-09 07:53:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,41 +13,43 @@ msgstr ""
 "Language-Team: Team Name <team@example.com>\n"
 "X-Generator: grunt-wp-i18n 0.4.5\n"
 
-#: admin/class-pos-admin.php:268
+#: admin/class-pos-admin.php:269
 msgid ""
 "<strong>WooCommerce POS</strong> requires <a "
 "href=\"http://wordpress.org/plugins/woocommerce/\">WooCommerce</a>. Please "
 "install and activate WooCommerce before activating WooCommerce POS."
 msgstr ""
 
-#: admin/class-pos-admin.php:284
+#: admin/class-pos-admin.php:285
 msgid ""
 "<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks "
 "to work correctly. Please enable <a href=\"%s\">permalinks</a>."
 msgstr ""
 
-#: admin/class-pos-admin.php:383 admin/class-pos-admin.php:384
-#: admin/includes/settings/class-settings-checkout.php:200
+#: admin/class-pos-admin.php:395 admin/class-pos-admin.php:396
+#: admin/includes/settings/class-settings-checkout.php:257
 #: public/views/footer.php:11
 msgid "POS"
 msgstr ""
 
-#: admin/class-pos-admin.php:394 admin/class-pos-admin.php:395
-#: admin/class-pos-admin.php:455
-#: admin/includes/settings/class-settings-checkout.php:133
+#: admin/class-pos-admin.php:406 admin/class-pos-admin.php:407
+#: admin/class-pos-admin.php:467
+#: admin/includes/settings/class-settings-checkout.php:157
+#: admin/includes/settings/class-settings-checkout.php:161
 msgid "Settings"
 msgstr ""
 
-#: admin/class-pos-admin.php:401
+#: admin/class-pos-admin.php:413
+#: admin/includes/settings/class-settings-checkout.php:278
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: admin/class-pos-admin.php:456
+#: admin/class-pos-admin.php:468
 msgid "View POS"
 msgstr ""
 
 #: admin/includes/class-pos-admin-hooks.php:57
-#: admin/includes/settings/class-settings-checkout.php:122
+#: admin/includes/settings/class-settings-checkout.php:148
 msgid "Enabled"
 msgstr ""
 
@@ -67,40 +69,44 @@ msgstr ""
 msgid "Select a page&hellip;"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:46
+#: admin/includes/settings/class-settings-checkout.php:43
+msgid "Checkout Options"
+msgstr ""
+
+#: admin/includes/settings/class-settings-checkout.php:72
 msgid "Payment Gateways"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:48
+#: admin/includes/settings/class-settings-checkout.php:74
 msgid ""
 "Installed gateways are listed below. Drag and drop gateways to control "
 "their display order at the Point of Sale. "
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:50
+#: admin/includes/settings/class-settings-checkout.php:76
 msgid ""
 "Payment Gateways enabled here will be available at the Point of Sale. "
 "Payment Gateways enabled on the settings page will be available in your "
 "Online Store. "
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:72
+#: admin/includes/settings/class-settings-checkout.php:98
 msgid "Gateway Display"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:79
+#: admin/includes/settings/class-settings-checkout.php:105
 msgid "Default"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:80
+#: admin/includes/settings/class-settings-checkout.php:106
 msgid "Gateway"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:81
+#: admin/includes/settings/class-settings-checkout.php:107
 msgid "Gateway ID"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:82
+#: admin/includes/settings/class-settings-checkout.php:108
 msgid "Status"
 msgstr ""
 
@@ -141,8 +147,8 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: includes/class-pos-payment-gateways.php:42
-#: includes/class-pos-payment-gateways.php:51
+#: includes/class-pos-payment-gateways.php:43
+#: includes/class-pos-payment-gateways.php:52
 msgid "Action not permitted"
 msgstr ""
 
@@ -219,31 +225,45 @@ msgid "Authentication Failed"
 msgstr ""
 
 #: includes/gateways/card/class-pos-gateway-card.php:24
-#: includes/gateways/card/class-pos-gateway-card.php:40
+#: includes/gateways/card/class-pos-gateway-card.php:51
 msgid "Card"
 msgstr ""
 
 #: includes/gateways/card/class-pos-gateway-card.php:25
-msgid "Debit & Credit Card sales."
+msgid "Debit & Credit Card sales using an external EFTPOS machine."
 msgstr ""
 
-#: includes/gateways/card/class-pos-gateway-card.php:37
-#: includes/gateways/cash/class-pos-gateway-cash.php:37
+#: includes/gateways/card/class-pos-gateway-card.php:48
+#: includes/gateways/cash/class-pos-gateway-cash.php:48
 msgid "Title"
 msgstr ""
 
-#: includes/gateways/card/class-pos-gateway-card.php:39
-#: includes/gateways/cash/class-pos-gateway-cash.php:39
+#: includes/gateways/card/class-pos-gateway-card.php:50
+#: includes/gateways/cash/class-pos-gateway-cash.php:50
 msgid "Payment method title."
 msgstr ""
 
+#: includes/gateways/card/class-pos-gateway-card.php:55
+#: includes/gateways/cash/class-pos-gateway-cash.php:55
+msgid "Description"
+msgstr ""
+
+#: includes/gateways/card/class-pos-gateway-card.php:57
+#: includes/gateways/cash/class-pos-gateway-cash.php:57
+msgid "Payment method description that will be shown in the POS."
+msgstr ""
+
 #: includes/gateways/cash/class-pos-gateway-cash.php:24
-#: includes/gateways/cash/class-pos-gateway-cash.php:40
+#: includes/gateways/cash/class-pos-gateway-cash.php:51
 msgid "Cash"
 msgstr ""
 
 #: includes/gateways/cash/class-pos-gateway-cash.php:25
-msgid "Cash sales."
+msgid "Cash sales at the Point of Sale."
+msgstr ""
+
+#: includes/gateways/cash/class-pos-gateway-cash.php:77
+msgid "Amount Tendered"
 msgstr ""
 
 #: public/class-pos.php:191
@@ -385,16 +405,16 @@ msgstr ""
 msgid "To Pay"
 msgstr ""
 
-#: public/views/checkout.php:137
+#: public/views/checkout.php:135
 msgid "No payment gateways enabled."
 msgstr ""
 
-#: public/views/checkout.php:144
+#: public/views/checkout.php:142
 msgid "Return to Sale"
 msgstr ""
 
-#: public/views/checkout.php:145
-msgid "Mark as Paid"
+#: public/views/checkout.php:143
+msgid "Process Payment"
 msgstr ""
 
 #: public/views/footer.php:5
@@ -636,7 +656,7 @@ msgctxt "Payment gateway status"
 msgid "POS"
 msgstr ""
 
-#: admin/includes/settings/class-settings-checkout.php:24
+#: admin/includes/settings/class-settings-checkout.php:19
 msgctxt "Settings tab label"
 msgid "Checkout"
 msgstr ""

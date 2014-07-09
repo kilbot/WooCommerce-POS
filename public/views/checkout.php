@@ -119,15 +119,13 @@
 								<i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> <?php echo $gateway->get_title(); ?> <?php echo $gateway->get_icon(); ?>
 							</h5>
 						</div>
+						<?php if ( $gateway->has_fields() || $gateway->get_description() ): ?>
 						<div id="payment_box_<?= $gateway->id; ?>" class="panel-collapse collapse <?= $gateway->id == $default_gateway ? 'in' : '' ; ?>">
 							<div class="panel-body">
-								<?php
-								if ( $gateway->has_fields() || $gateway->get_description() ) {
-									$gateway->payment_fields();
-								}
-								?>
+								<?php $gateway->payment_fields(); ?>
 							</div>
 						</div>
+						<?php endif; ?>
 					</div>
 
 					<?php 
@@ -142,7 +140,7 @@
 			</div>
 			<div class="modal-footer">
 				<button class="btn action-close alignleft"><?php _e( 'Return to Sale', 'woocommerce-pos' ); ?></button>
-				<button class="btn btn-success action-paid"><?php _e( 'Mark as Paid', 'woocommerce-pos' ); ?></button>
+				<button class="btn btn-success action-paid"><?php _e( 'Process Payment', 'woocommerce-pos' ); ?></button>
 			</div>
 		{{/if}}
 		</div><!-- /.modal-content -->

@@ -10,7 +10,7 @@
 class WooCommerce_POS_Payment_Gateways {
 
 	/** @var array Array of payment gateway classes. */
-	var $payment_gateways;
+	var $gateways;
 	var $available_gateways;
 
 	/**
@@ -59,21 +59,9 @@ class WooCommerce_POS_Payment_Gateways {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->init();
-	}
+		$this->includes();
 
-    /**
-     * Load gateways and hook in functions.
-     *
-     * @access public
-     * @return void
-     */
-    function init() {
-
-    	include_once( WC_POS()->plugin_path . 'includes/gateways/cash/class-pos-gateway-cash.php' );
-    	include_once( WC_POS()->plugin_path . 'includes/gateways/card/class-pos-gateway-card.php' );
-
-    	$pos_only_gateways = apply_filters( 'woocommerce_pos_payment_gateways', array(
+		$pos_only_gateways = apply_filters( 'woocommerce_pos_payment_gateways', array(
 			'POS_Gateway_Cash',
 			'POS_Gateway_Card'
 		) );
@@ -86,33 +74,54 @@ class WooCommerce_POS_Payment_Gateways {
 			'WC_Gateway_Mijireh'
     	) );
 
-		$load_gateways = array_merge( $pos_only_gateways, $global_gateways );
+    	$this->gateways = array_merge( $pos_only_gateways, $global_gateways );
+		$pos_only_gateways[] = $global_gateways[0];
+		$this->available_gateways = $pos_only_gateways;
+	}
+
+    /**
+     * Load gateways and hook in functions.
+     *
+     * @access public
+     * @return void
+     */
+    function includes() {
+    	include_once( WC_POS()->plugin_path . 'includes/gateways/cash/class-pos-gateway-cash.php' );
+    	include_once( WC_POS()->plugin_path . 'includes/gateways/card/class-pos-gateway-card.php' );
+    }
+
+    /**
+     * Return all gateways in order
+     * @return array gateway objects
+     */
+    public function get_payment_gateways() {
+    	$payment_gateways = array();
 
 		// Get order option
 		$ordering 	= (array) get_option('woocommerce_pos_gateway_order');
 		$order_end 	= 999;
 
 		// Load gateways in order
-		foreach ($load_gateways as $gateway) :
+		foreach ($this->gateways as $gateway) :
 
 			$load_gateway = new $gateway();
 
 			if (isset($ordering[$load_gateway->id]) && is_numeric($ordering[$load_gateway->id])) :
 				// Add in position
-				$this->payment_gateways[$ordering[$load_gateway->id]] = $load_gateway;
+				$payment_gateways[$ordering[$load_gateway->id]] = $load_gateway;
 			else :
 				// Add to end of the array
-				$this->payment_gateways[$order_end] = $load_gateway;
+				$payment_gateways[$order_end] = $load_gateway;
 				$order_end++;
 			endif;
 
 		endforeach;
 
-		ksort( $this->payment_gateways );
+		ksort( $payment_gateways );
 
-		$pos_only_gateways[] = $global_gateways[0];
-		$this->available_gateways = $pos_only_gateways;
+		return $payment_gateways;
     }
+
 
     /**
      * Return enabled gateways
@@ -123,7 +132,7 @@ class WooCommerce_POS_Payment_Gateways {
 
     	$enabled_gateways = (array) get_option( 'woocommerce_pos_pro_enabled_gateways', get_option( 'woocommerce_pos_enabled_gateways' ) );
 
-    	foreach( $this->payment_gateways as $gateway ) {
+    	foreach( $this->get_payment_gateways() as $gateway ) {
     		if( in_array( $gateway->id, $enabled_gateways )) {
     			$pos_gateways[] = $gateway;
     		}

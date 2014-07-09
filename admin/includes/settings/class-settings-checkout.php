@@ -29,6 +29,8 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 		add_filter( 'woocommerce_payment_gateways_setting_columns', array( $this, 'woocommerce_payment_gateways_setting_columns' ), 20, 1 );
 		add_action( 'woocommerce_payment_gateways_setting_column_pos_enabled', array( $this, 'enabled_gateways' ), 20, 1 );
 
+		// need to init Payment Gateways for section tabs, settings table etc
+		WC_POS()->payment_gateways();
 	}
 
 	/**
@@ -41,7 +43,6 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 			''         => __( 'Checkout Options', 'woocommerce-pos' )
 		);
 
-		WC_POS()->payment_gateways();
 		$pos_only_gateways = apply_filters( 'woocommerce_pos_payment_gateways', array(
 			'POS_Gateway_Cash',
 			'POS_Gateway_Card'
@@ -118,7 +119,7 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 			        	<?php
 			        	$default_gateway = get_option( 'woocommerce_pos_default_gateway' );
 
-			        	foreach ( WC_POS()->payment_gateways()->payment_gateways as $gateway ) {
+			        	foreach ( WC_POS()->payment_gateways()->get_payment_gateways() as $gateway ) {
 
 			        		echo '<tr>';
 
@@ -184,7 +185,7 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 		global $current_section;
 
 		if ( $current_section ) {
- 			foreach ( $this->pos_payment_gateways->payment_gateways as $gateway ) {
+ 			foreach ( WC_POS()->payment_gateways()->get_payment_gateways() as $gateway ) {
 				if ( strtolower( get_class( $gateway ) ) == strtolower( $current_section ) ) {
 					$gateway->admin_options();
 					break;
@@ -209,6 +210,7 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 			$this->process_admin_options();
 
 		} elseif ( class_exists( $current_section ) ) {
+
 			$current_section_class = new $current_section();
 			do_action( 'woocommerce_pos_update_options_payment_gateways_' . $current_section_class->id );
 		}
