@@ -50,10 +50,10 @@ class WooCommerce_POS_Admin_Hooks {
 	 */
 	public function pos_status( $gateway ) {
 
-		$gateway_enabled = get_option( 'woocommerce_pos_gateway_enabled' );
+		$enabled_gateways = (array) get_option( 'woocommerce_pos_enabled_gateways' );
 
 		echo '<td class="pos_status">';
-		if ( in_array( $gateway->id, $gateway_enabled ) ) 
+		if ( in_array( $gateway->id, $enabled_gateways ) ) 
 		echo '<span class="status-enabled tips" data-tip="' . __ ( 'Enabled', 'woocommerce-pos' ) . '">' . __ ( 'Enabled', 'woocommerce-pos' ) . '</span>';
 		else
 		echo '-';

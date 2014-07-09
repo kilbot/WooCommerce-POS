@@ -238,6 +238,7 @@ class WooCommerce_POS_Admin {
 		$this->permalink_check();
 		$this->version_check();
 		$this->welcome_screen();
+		$this->gateway_check();
 	}
 
 	/**
@@ -315,6 +316,20 @@ class WooCommerce_POS_Admin {
 	}
 
 	/**
+	 * Set default Payment Gateways if not set already
+	 */
+	public function gateway_check() {
+		$defaults = array( 'pos_cash', 'pos_card', 'paypal' );
+		if( !get_option('woocommerce_pos_default_gateway') ) 
+			update_option( 'woocommerce_pos_default_gateway', 'pos_cash' );
+		if( $enabled = get_option('woocommerce_pos_enabled_gateways' ) ) {
+			update_option( 'woocommerce_pos_enabled_gateways', array_intersect( $enabled, $defaults ) );
+		} elseif( false === $enabled ) {
+			update_option( 'woocommerce_pos_enabled_gateways', array_slice( $defaults, 0, -1 ) );
+		}
+	}
+
+	/**
 	 * Register and enqueue admin-specific style sheet.
 	 */
 	public function enqueue_admin_styles() {
@@ -328,12 +343,9 @@ class WooCommerce_POS_Admin {
 
 		if( in_array( $screen->id, array( 'pos_page_wc-pos-settings', 'woocommerce_page_wc-settings' ) )  ) {
 			$css = '
-				table.wc_gateways .pos_status, table.wc_gateways .pos_enabled {
-					text-align: center;
-				}
-				table.wc_gateways .pos_status .tips, table.wc_gateways .pos_enabled .tips {
-					margin: 0 auto;
-				}
+				table.wc_gateways .pos_status, table.wc_gateways .pos_enabled { text-align: center; }
+				table.wc_gateways .pos_status .tips, table.wc_gateways .pos_enabled .tips { margin: 0 auto; }
+				.status-disabled:before { font-family:WooCommerce; speak:none; font-weight:400; font-variant:normal; text-transform:none; line-height:1; -webkit-font-smoothing:antialiased; margin:0; text-indent:0; position:absolute; top:0;left:0; width:100%; height:100%; text-align:center; content: "\e602"; color:#E0E0E0; }
 			';
 			wp_add_inline_style( 'wp-admin', $css );
 		}

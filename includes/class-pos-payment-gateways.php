@@ -110,14 +110,19 @@ class WooCommerce_POS_Payment_Gateways {
 
 		ksort( $this->payment_gateways );
 
-		$pos_only_gateways[] = 	$global_gateways[0];
+		$pos_only_gateways[] = $global_gateways[0];
 		$this->available_gateways = $pos_only_gateways;
     }
 
+    /**
+     * Return enabled gateways
+     * @return array gateway ids
+     */
     public function get_enabled_payment_gateways() {
     	$pos_gateways = array();
 
-    	$enabled_gateways = (array) get_option('woocommerce_pos_gateway_enabled');
+    	$enabled_gateways = (array) get_option( 'woocommerce_pos_pro_enabled_gateways', get_option( 'woocommerce_pos_enabled_gateways' ) );
+
     	foreach( $this->payment_gateways as $gateway ) {
     		if( in_array( $gateway->id, $enabled_gateways )) {
     			$pos_gateways[] = $gateway;

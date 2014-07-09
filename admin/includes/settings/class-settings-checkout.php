@@ -224,7 +224,7 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 
 		$default_gateway 	= ( isset( $_POST['default_gateway'] ) ) ? esc_attr( $_POST['default_gateway'] ) : '';
 		$gateway_order 		= ( isset( $_POST['gateway_order'] ) ) ? $_POST['gateway_order'] : '';
-		$gateway_enabled 	= ( isset( $_POST['gateway_enabled'] ) ) ? $_POST['gateway_enabled'] : '';
+		$enabled_gateways 	= ( isset( $_POST['enabled_gateways'] ) ) ? $_POST['enabled_gateways'] : '';
 
 		$order = array();
 
@@ -238,7 +238,7 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 
 		update_option( 'woocommerce_pos_default_gateway', $default_gateway );
 		update_option( 'woocommerce_pos_gateway_order', $order );
-		update_option( 'woocommerce_pos_gateway_enabled', $gateway_enabled );
+		update_option( 'woocommerce_pos_enabled_gateways', $enabled_gateways );
 	}
 
 	/**
@@ -264,16 +264,16 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 	 */
 	public function enabled_gateways( $gateway ) {
 		$checked = '';
-		$gateway_enabled = (array) get_option( 'woocommerce_pos_gateway_enabled' );
+		$enabled_gateways = (array) get_option( 'woocommerce_pos_enabled_gateways' );
 
-		if ( in_array( $gateway->id, $gateway_enabled ) ) 
+		if ( in_array( $gateway->id, $enabled_gateways ) ) 
 			$checked = 'checked';
 
 		echo '<td class="pos_enabled">';
 		if( in_array( get_class( $gateway ), WC_POS()->payment_gateways()->available_gateways ) ) {
-			echo '<input type="checkbox" name="gateway_enabled[]" value="' . esc_attr( $gateway->id ) . '"' . $checked .' >';
+			echo '<input type="checkbox" name="enabled_gateways[]" value="' . esc_attr( $gateway->id ) . '"' . $checked .' >';
 		} else {
-			echo '<small><a href="http://woopos.com.au/pro">' . __( 'Upgrade to Pro', 'woocommerce-pos' ) . '</a></small>';
+			echo '<span class="status-disabled tips" data-tip="' . __ ( 'Upgrade to Pro', 'woocommerce-pos' ) . '">' . __ ( 'Upgrade to Pro', 'woocommerce-pos' ) . '</span>';
 		}
 		echo '</td>';
 	}
