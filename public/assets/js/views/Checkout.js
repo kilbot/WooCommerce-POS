@@ -52,7 +52,7 @@ define(['underscore', 'backbone', 'handlebars', 'accounting', 'views/Helpers'],
 					// close the cart, will invoke teardown
 					this.$el.modal('hide');
 				break;
-				case 'paid':
+				case 'process':
 					// disable the button and process the order
 					$(e.target).attr('disabled','disabled');
 					this.process();
@@ -83,16 +83,33 @@ define(['underscore', 'backbone', 'handlebars', 'accounting', 'views/Helpers'],
 				return _.pick( model.toJSON(), ['id', 'qty', 'line_total'] );  
 			});
 
-			// send the cart data to the server
-			$.post( pos_params.ajax_url , { 
+			var data = {
 				action 			: 'pos_process_order', 
 				cart 			: items, 
 				order_discount 	: this.totals.get('order_discount'), 
 				note 			: this.totals.get('note'), 
-				customer_id 	: this.totals.get('customer_id'), 
-			} )
-			.done(function( data ) {
-				self.order = data.order;
+				customer_id 	: this.totals.get('customer_id'),
+				payment_method  : this.$('.panel-success .panel-heading h5 input').attr('name')
+			};
+
+			// get any payment form inputs
+			var fields = {};
+			_( this.$('.panel-success .panel-body form').serializeArray() ).each( function(o){
+				var n = o.name,
+        			v = o.value;
+        
+        		fields[n] = fields[n] === undefined ? v
+          			: _.isArray( fields[n] ) ? fields[n].concat( v )
+          			: [ fields[n], v ];
+			}, this);
+			
+			// combine the two objects, data wins on conflict
+			_.defaults( data, fields );
+
+			// send the cart data to the server
+			$.post( pos_params.ajax_url, data )
+			.done(function( response ) {
+				self.order = response.order;
 				self.order.is_paid = true;
 				self.pubSub.trigger( 'serverSync' );
 				self.render();

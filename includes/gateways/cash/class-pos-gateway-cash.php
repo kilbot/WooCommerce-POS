@@ -81,6 +81,20 @@ class POS_Gateway_Cash extends WC_Payment_Gateway {
 
 	}
 
+	function process_payment( $order_id ) {
+
+		$order = new WC_Order( $order_id );
+
+		// payment complete
+		$order->payment_complete();
+
+		// Return thankyou redirect
+		return array(
+			'result' => 'success',
+			'redirect' => $this->get_return_url( $order )
+		);
+	}
+
 	/**
 	 * Check If The Gateway Is Available For Use
 	 *

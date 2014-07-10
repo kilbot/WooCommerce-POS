@@ -134,7 +134,7 @@ class WooCommerce_POS_Payment_Gateways {
 
     	foreach( $this->get_payment_gateways() as $gateway ) {
     		if( in_array( $gateway->id, $enabled_gateways )) {
-    			$pos_gateways[] = $gateway;
+    			$pos_gateways[ $gateway->id ] = $gateway;
     		}
     	}
 

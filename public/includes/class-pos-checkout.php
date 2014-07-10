@@ -4,6 +4,7 @@
  * Checkout Class
  *
  * Handles the checkout
+ * TODO: hash cart and allow payment retries
  * 
  * @class 	  WooCommerce_POS_Checkout
  * @package   WooCommerce POS
@@ -13,15 +14,42 @@
 
 class WooCommerce_POS_Checkout {
 
-	public $subtotal_ex_tax;
-	public $total_ex_tax;
-	public $subtotal_tax;
-	public $total_tax;
+	/**
+	 * Checkout data
+	 * @var mixed
+	 */
+	public $cart_items;
+	public $customer_id; 		// the customer ID
+	public $posted;
+	public $user_id; 			// the cashier ID
+
+	/**
+	 * Results of calculations by wc
+	 * @var float
+	 */
+	public $subtotal_ex_tax = 0;
+	public $total_ex_tax 	= 0;
+	public $subtotal_tax 	= 0;
+	public $total_tax 		= 0;
+	public $wc_total 		= 0;
+	public $cart_discount 	= 0;
+
+	/**
+	 * Order data
+	 * @var [type]
+	 */
+	public $order_id;
 
 	/**
 	 * init
 	 */
 	public function __construct() {
+
+		// if there is no cart, there is nothing to process!
+		if( empty( $_REQUEST['cart'] ) ) 
+			return;
+	
+		$this->process_checkout_data();
 
 		// remove the New Order admin emails
 		add_filter( 'woocommerce_email', array( $this, 'remove_new_order_emails' ), 99 );
@@ -32,15 +60,32 @@ class WooCommerce_POS_Checkout {
 	}
 
 	/**
+	 * Process any data that is sent from POS
+	 */
+	public function process_checkout_data() {
+
+		// process checkout data
+		$this->cart_items = $_REQUEST['cart'];
+
+		// default to Guest
+		$this->customer_id = isset( $_REQUEST['customer_id'] ) ? absint( $_REQUEST['customer_id'] ) : 0 ;
+
+		// the id of the logged in user
+		$this->user_id = get_current_user_id();
+
+		// all other data
+		$this->posted['payment_method'] = isset( $_REQUEST['payment_method'] ) ? $_REQUEST['payment_method'] : '' ;
+		$this->posted['order_discount'] = isset( $_REQUEST['order_discount'] ) ? $_REQUEST['order_discount'] : 0 ;
+		$this->posted['note'] 			= isset( $_REQUEST['note'] ) ? wp_kses_post( trim( stripslashes( $_REQUEST['note'] ) ) ) : '' ;
+
+	}
+
+	/**
 	 * Create the new order
 	 * based on same function in woocommerce/includes/class-wc-checkout.php
 	 * @return {int} $order_id
 	 */
 	public function create_order() {
-
-		// error_log( print_R( $_REQUEST, TRUE ) ); //debug
-		if( !isset( $_REQUEST['cart'] ) ) 
-			return;
 
 		// create empty order
 		$order_data = apply_filters( 'woocommerce_new_order_data', array(
@@ -53,77 +98,151 @@ class WooCommerce_POS_Checkout {
 			'post_password'	=> uniqid( 'order_' )	// Protects the post just in case
 		) );
 
-		$order_id = wp_insert_post( $order_data, true );
+		$this->order_id = wp_insert_post( $order_data, true );
 
 		// add items to order
-		$total = 0;
-		$cart_discount = 0;
-		$order_discount = 0;
-		$customer_id = 0;
-		$note = false;
-		foreach ($_REQUEST['cart'] as $key => $item) {
-			$this->add_order_item( $order_id, $item['id'], $item['qty'], $item['line_total'] );
+		foreach ( $this->cart_items as $item ) {
+			$this->add_order_item( $item['id'], $item['qty'], $item['line_total'] );
 		}
-
-		if( isset( $_REQUEST['order_discount'] ) && $_REQUEST['order_discount'] !== '' )
-			$order_discount = $_REQUEST['order_discount'];
-
-		if( isset( $_REQUEST['note'] ) && $_REQUEST['note'] !== '' )
-			$note = wp_kses_post( trim( stripslashes( $_REQUEST['note'] ) ) );
-
-		if( isset( $_REQUEST['customer_id'] ) && is_numeric( $_REQUEST['customer_id'] ) )
-			$customer_id = $_REQUEST['customer_id'];
 
 		// now calculate the taxes
-		$this->calc_line_taxes( $order_id );
-		$tax_total = get_option( 'woocommerce_calc_taxes' ) == 'yes' ? $this->total_tax : 0 ;
-
-		// now calculate the final totals & update the post_meta
-		$cart_discount = ( $this->subtotal_ex_tax + $this->subtotal_tax ) - ( $this->total_ex_tax + $this->total_tax );
-		$order_total = $this->total_ex_tax + $this->total_tax - $order_discount;
-
-		update_post_meta( $order_id, '_order_shipping', 		wc_format_decimal( 0 ) );
-		update_post_meta( $order_id, '_order_discount', 		wc_format_decimal( $order_discount ) );
-		update_post_meta( $order_id, '_cart_discount', 			wc_format_decimal( $cart_discount ) );
-		update_post_meta( $order_id, '_order_tax', 				wc_format_decimal( $tax_total ) );
-		update_post_meta( $order_id, '_order_shipping_tax', 	wc_format_decimal( 0 ) );
-		update_post_meta( $order_id, '_order_total', 			wc_format_decimal( $order_total, get_option( 'woocommerce_price_num_decimals' ) ) );
-
-		update_post_meta( $order_id, '_order_key', 				'wc_' . apply_filters('woocommerce_generate_order_key', uniqid('order_') ) );
-		update_post_meta( $order_id, '_customer_user', 			absint( $customer_id ) );
-		update_post_meta( $order_id, '_order_currency', 		get_woocommerce_currency() );
-		update_post_meta( $order_id, '_prices_include_tax', 	get_option( 'woocommerce_prices_include_tax' ) );
-
-		// now final clean up before we hand off the order_id
-		$order = new WC_Order( $order_id );
-		$order->payment_complete();                 
-		$order->update_status( 'completed', 'POS Transaction completed.' );
-		if($note) {
-			$order->add_order_note( $note, false );
+		if( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) {
+			$this->calc_line_taxes();
 		}
 
-		$result = array(
-			'order' => array(
-				'id' => $order_id,
-				'total' => wc_format_decimal( $order_total, get_option( 'woocommerce_price_num_decimals' ) )
-			)
-		);
+		// calculations are done, add order meta
+		$this->add_order_meta();
+
+		// add any order notes
+		if( $this->posted['note'] ) {
+			$order->add_order_note( $this->posted['note'], false );
+		}
+
+		// now process the payment
+		$response = $this->process_payment();
+
+		$response['order_id'] = $this->order_id;
+		$response['wc_total'] = wc_format_decimal( $this->wc_total, get_option( 'woocommerce_price_num_decimals' ) );
+
+		return $response;
+	}
+
+	public function process_payment() {
+
+		// process the payment
+		$order_id = $this->order_id;
+		$order = new WC_Order( $order_id );
+
+		// some gateways check if a user is signed in, so let's switch to customer
+		wp_set_current_user( $this->customer_id );
+
+		// get the enabled payment gateways
+		$enabled_gateways = WC_POS()->payment_gateways()->get_payment_gateways();
+
+		// load the gateway
+		foreach( $enabled_gateways as $gateway ) {
+			if( $this->posted['payment_method'] == $gateway->id ) 
+				$payment_gateway = $gateway;
+		}
+
+		update_post_meta( $order_id, '_payment_method', $payment_gateway->id );
+		update_post_meta( $order_id, '_payment_method_title', $payment_gateway->get_title() );
+
+		// $payment_gateway->validate_fields(); // what is returned?
+
+		// Abort if errors are present
+		if ( wc_notice_count( 'error' ) > 0 ) {
+			$result = array(
+				'result'	=> 'failure',
+				'messages' 	=> wc_get_notices( 'error' ),
+				'refresh' 	=> false,
+				'reload'    => false
+			);
+
+			// delete 
+			wp_delete_post( $order_id, true );
+		} else {
+			$result = $payment_gateway->process_payment( $order_id );
+
+			// capture any instructions
+			ob_start();
+			do_action( 'woocommerce_thankyou_' . $payment_gateway->id, $order_id );
+			$result['messages'] = ob_get_contents();
+			ob_end_clean();
+		}
+
 		return $result;
 	}
 
+	/**
+	 * [get_customer_details description]
+	 * @param  [type] $customer_id  [description]
+	 * @param  string $type_to_load [description]
+	 * @return [type]               [description]
+	 */
+	public function get_customer_details( $type_to_load = 'billing' ) {
+
+		$customer_id = $this->customer_id;
+
+		$customer_data = array(
+			$type_to_load . '_first_name' => get_user_meta( $customer_id, $type_to_load . '_first_name', true ),
+			$type_to_load . '_last_name'  => get_user_meta( $customer_id, $type_to_load . '_last_name', true ),
+			$type_to_load . '_company'    => get_user_meta( $customer_id, $type_to_load . '_company', true ),
+			$type_to_load . '_address_1'  => get_user_meta( $customer_id, $type_to_load . '_address_1', true ),
+			$type_to_load . '_address_2'  => get_user_meta( $customer_id, $type_to_load . '_address_2', true ),
+			$type_to_load . '_city'       => get_user_meta( $customer_id, $type_to_load . '_city', true ),
+			$type_to_load . '_postcode'   => get_user_meta( $customer_id, $type_to_load . '_postcode', true ),
+			$type_to_load . '_country'    => get_user_meta( $customer_id, $type_to_load . '_country', true ),
+			$type_to_load . '_state'      => get_user_meta( $customer_id, $type_to_load . '_state', true ),
+			$type_to_load . '_email'      => get_user_meta( $customer_id, $type_to_load . '_email', true ),
+			$type_to_load . '_phone'      => get_user_meta( $customer_id, $type_to_load . '_phone', true ),
+		);
+
+		return array_filter( $customer_data );
+	}
+
+	public function add_order_meta() {
+
+		$order_id = $this->order_id;
+
+		// now calculate the final totals & update the post_meta
+		$this->total_tax = get_option( 'woocommerce_calc_taxes' ) == 'yes' ? $this->total_tax : 0 ;
+		$this->cart_discount = ( $this->subtotal_ex_tax + $this->subtotal_tax ) - ( $this->total_ex_tax + $this->total_tax );
+		$this->wc_total = $this->total_ex_tax + $this->total_tax - $this->posted['order_discount'];
+
+		// add standard order meta
+		update_post_meta( $order_id, '_order_shipping', 	wc_format_decimal( 0 ) );
+		update_post_meta( $order_id, '_order_discount', 	wc_format_decimal( $this->posted['order_discount'] ) );
+		update_post_meta( $order_id, '_cart_discount', 		wc_format_decimal( $this->cart_discount ) );
+		update_post_meta( $order_id, '_order_tax', 			wc_format_decimal( $this->total_tax ) );
+		update_post_meta( $order_id, '_order_shipping_tax', wc_format_decimal( 0 ) );
+		update_post_meta( $order_id, '_order_total', 		wc_format_decimal( $this->wc_total, get_option( 'woocommerce_price_num_decimals' ) ) );
+		update_post_meta( $order_id, '_order_key', 			'wc_' . apply_filters('woocommerce_generate_order_key', uniqid('order_') ) );
+		update_post_meta( $order_id, '_order_currency', 	get_woocommerce_currency() );
+		update_post_meta( $order_id, '_prices_include_tax', get_option( 'woocommerce_prices_include_tax' ) );
+
+		// customer details
+		update_post_meta( $order_id, '_customer_user', $this->customer_id );
+		foreach( $this->get_customer_details() as $key => $value ) {
+			update_post_meta( $order_id, '_'.$key, $value );
+		}
+
+		// pos meta 
+		update_post_meta( $order_id, '_pos', 1 );
+		update_post_meta( $order_id, '_pos_user', $this->user_id );
+	}
 
 	/**
 	 * Add order item
 	 * based on same function in woocommerce/includes/class-wc-ajax.php
-	 * @param {int} $order_id, $item_to_add, $qty, $line_total
+	 * @param mixed $item_to_add, $qty, $line_total
 	 */
-	public function add_order_item( $order_id, $item_to_add, $qty, $line_total ) {
+	public function add_order_item( $item_to_add, $qty, $line_total ) {
 		global $wpdb;
 
 		// Find the item
-		if ( !is_numeric( $order_id ) || !is_numeric( $item_to_add ) || !is_numeric( $qty ) || !is_numeric( $line_total ) ) {
+		if ( ! is_numeric( $item_to_add ) )
 			die();
-		}
 
 		$post = get_post( $item_to_add );
 
@@ -148,7 +267,7 @@ class WooCommerce_POS_Checkout {
 		$item['line_tax']          = ''; 
 
 		// Add line item
-		$item_id = wc_add_order_item( $order_id, array(
+		$item_id = wc_add_order_item( $this->order_id, array(
 			'order_item_name' 		=> $item['name'],
 			'order_item_type' 		=> 'line_item'
 		) );
@@ -188,13 +307,13 @@ class WooCommerce_POS_Checkout {
 	 * @param {float} total
 	 * 
 	 */
-	public function calc_line_taxes( $order_id ) {
+	public function calc_line_taxes() {
 		global $wpdb;
 
 		// init the tax class and get our order
 		$tax 		= new WC_Tax();
 		$taxes 		= $tax_rows = $item_taxes = array();
-		$order 		= new WC_Order( $order_id );
+		$order 		= new WC_Order( $this->order_id );
 		$items    	= $order->get_items();
 		$item_tax 	= 0;
 

@@ -116,13 +116,19 @@
 					<div class="panel panel-<?= $gateway->id == $default_gateway ? 'success' : 'default' ; ?> payment_method_<?= $gateway->id; ?>">
 						<div class="panel-heading">
 							<h5 data-toggle="collapse" data-target="#payment_box_<?= $gateway->id; ?>" data-parent="#payment-options" class="panel-title">
-								<i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> <?php echo $gateway->get_title(); ?> <?php echo $gateway->get_icon(); ?>
+								<input type="hidden" name="<?= $gateway->id; ?>">
+								<i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> 
+								<?php echo $gateway->get_title(); ?> 
+								<?php echo $gateway->get_icon(); ?>
 							</h5>
+
 						</div>
 						<?php if ( $gateway->has_fields() || $gateway->get_description() ): ?>
 						<div id="payment_box_<?= $gateway->id; ?>" class="panel-collapse collapse <?= $gateway->id == $default_gateway ? 'in' : '' ; ?>">
 							<div class="panel-body">
-								<?php $gateway->payment_fields(); ?>
+								<form>
+									<?php $gateway->payment_fields(); ?>
+								</form>
 							</div>
 						</div>
 						<?php endif; ?>
@@ -140,7 +146,7 @@
 			</div>
 			<div class="modal-footer">
 				<button class="btn action-close alignleft"><?php _e( 'Return to Sale', 'woocommerce-pos' ); ?></button>
-				<button class="btn btn-success action-paid"><?php _e( 'Process Payment', 'woocommerce-pos' ); ?></button>
+				<button class="btn btn-success action-process"><?php _e( 'Process Payment', 'woocommerce-pos' ); ?></button>
 			</div>
 		{{/if}}
 		</div><!-- /.modal-content -->
