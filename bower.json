@@ -2,24 +2,28 @@
   "name": "woocommerce-pos",
   "private": true,
   "dependencies": {
-    "bootstrap-sass-official": "~3.1.0",
-    "modernizr": "~2.6.2",
+    "bootstrap-sass-official": "~3.2.0",
+    "modernizr": "~2.8.3",
     "jquery": "~2.1.1",
     "accounting": "~0.3.2",
     "pushy": "~0.9.1",
     "backbone.paginator": "~2.0.0",
     "indexeddb-backbonejs-adapter": "*",
     "backbone": "~1.1.2",
-    "requirejs": "~2.1.11",
+    "requirejs": "~2.1.14",
     "almond": "~0.2.9",
     "lodash": "~2.4.1",
     "jasmine": "~2.0.0",
     "fontawesome": "~4.1.0",
     "requirejs-plugins": "~1.0.2",
-    "backbone.localStorage": "~1.1.7",
+    "backbone.localStorage": "~1.1.9",
     "handlebars": "~2.0.*",
-    "chosen": "https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip",
-    "select2": "~3.5.0"
+    "select2": "~3.5.0",
+    "marionette": "~2.0.2",
+    "spinjs": "~2.0.1"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "resolutions": {
+    "jquery": "~2.1.1"
+  }
 }
