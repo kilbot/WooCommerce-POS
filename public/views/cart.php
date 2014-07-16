@@ -52,7 +52,7 @@
 			{{{money display_total}}}
 		{{/if}}
 	</td>
-	<td class="remove"><a class="btn btn-circle btn-danger" href="#"><i class="fa fa-times"></i></a></td>
+	<td><a class="btn btn-circle btn-danger action-remove" href="#"><i class="fa fa-times"></i></a></td>
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-totals">

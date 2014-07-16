@@ -1,0 +1,146 @@
+//
+// Styling the product display
+// --------------------------------------------------
+#products {
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		&.list {
+			display: table;
+			li {
+				@extend %clearfix;
+				display: table-row;
+				div {
+					padding: $vspacing/2;
+					display: table-cell;
+					vertical-align: middle !important;
+					border-top: 1px solid $border-light;
+					&.img {
+						width: 20%;
+						img {
+							min-width: 30px;
+							vertical-align: middle;
+						}
+					}
+					&.name {
+						width: 50%;
+						dl {
+			                @extend %clearfix;
+			                width: 100%;
+			                font-size: $small-font;
+			                dt {
+			                    font-weight: normal;
+			                    float: left;
+			                    padding-right: 5px;
+			                    clear: left;
+			                }
+			                dd {
+			                    float: left;
+			                    margin: 0;
+			                }
+			            }
+			            &.img {
+			                max-width: 90px;
+			                img {
+			                    vertical-align: middle;
+			                }
+			            }
+					}
+					&.price {
+						width: 15%;
+						text-align: center;
+					}
+					&.add {
+						width: 15%;
+						text-align: center;
+					}
+					span {
+						&:before, &:after {
+        					content: " "; // wrap variable pricing
+        				}
+					}
+				}
+				&:nth-of-type(even) { background-color: $odd-background; }
+        		&:nth-of-type(odd) { background-color: $even-background; }
+        		&:first-of-type {
+	        		div {
+	        			border: 0;
+	        		}
+	        	}
+	        	&:last-of-type {
+	        		div {
+	        			border-bottom: 1px solid $border-dark;
+	        		}
+	        	}
+			}
+
+		}
+		&.tiles {
+
+		}
+	}
+}
+
+// #products .loading {
+//     display: block;
+//     margin: 0 auto;
+//     padding: 50px 0;
+// }
+
+#filter {
+    padding: $vspacing/2 ;
+    border-bottom: 1px solid $border-dark;
+    position: relative;
+    input[type=search] {
+        width: 100%;
+        height: $vspacing*1.5;
+        @include box-sizing(border-box);
+        padding-left: 35px;
+        padding-right: 35px;
+        -webkit-appearance: textfield;
+        &::-webkit-search-decoration {
+            -webkit-appearance: none;
+        }
+        &::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+        }
+        &::-ms-clear {
+            display: none;
+        }
+    }
+    i.fa-search {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 0 10px;
+        margin: $vspacing/2 $vspacing/2;
+        pointer-events: none;
+        line-height: $vspacing*1.5;
+    }
+    a.clear {
+        display: none;
+        color: $text-color;
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0 10px;
+        margin: $vspacing/2 $vspacing/2;
+        line-height: $vspacing*1.5;
+    }
+}
+
+#pagination {
+    @extend %clearfix;
+    padding: $vspacing/2;
+    small {
+        text-align: center;
+        display: block;
+        margin: 0 60px;
+        line-height: 1.3;
+    }
+    &.working {
+        background-color: rgba(#7db500, 0.3);
+        background-image: url(../../../assets/bg-working.gif);
+    }
+}

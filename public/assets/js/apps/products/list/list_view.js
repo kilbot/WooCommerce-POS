@@ -7,7 +7,8 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 
 			regions: {
 				filterRegion: '#filter',
-				productsRegion: '#products'
+				productsRegion: '#products',
+				paginationRegion: '#pagination'
 			}
 		});
 
@@ -49,7 +50,8 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 				'click .action-add' : 'addToCart'
 			},
 
-			addToCart: function() {
+			addToCart: function(e) {
+				e.preventDefault();
 				this.trigger('product:add', this.model);
 			}
 		});
@@ -61,8 +63,45 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 
 		View.Products = Marionette.CollectionView.extend({
 			tagName: 'ul',
+			className: 'list',
 			childView: View.Product,
 			emptyView: NoProductsView
+		});
+
+		View.Pagination = Marionette.ItemView.extend({
+			template: Handlebars.compile( $('#tmpl-pagination').html() ),
+
+			events: {
+				'click a.prev'		: 'previous',
+				'click a.next'		: 'next',
+				'click a.sync'		: 'sync',
+				'click a.destroy'	: 'clear',
+			},
+
+			previous: function() {
+				if(this.collection.hasPreviousPage()) {
+					this.collection.getPreviousPage();
+				}
+				return false;
+			},
+
+			next: function() {
+				if(this.collection.hasNextPage()) {
+					this.collection.getNextPage();
+				}
+				return false;
+			},
+
+			sync: function() {
+				this.collection.serverSync();
+				return false;
+			},
+
+			clear: function() {
+				this.collection.clear(); // clear the collection
+				return false;
+			},
+
 		});
 
 	});

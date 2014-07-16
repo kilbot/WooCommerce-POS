@@ -4,7 +4,7 @@ define(['app', 'apps/cart/list/list_view'], function(POS, View){
 
 		List.Controller = {
 			listCartItems: function(){
-				require(['common/views', 'entities/cart'], function(){
+				require(['common/views', 'common/helpers', 'entities/cart'], function(){
 
 					// loading view
 					var loadingView = new POS.Common.Views.Loading();

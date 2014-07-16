@@ -54,6 +54,9 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 							productListLayout.on('show', function() {
 								productListLayout.filterRegion.show(productListFilter);
 								productListLayout.productsRegion.show(productListView);
+								productListLayout.paginationRegion.show(
+									new View.Pagination({ collection: filteredProducts })
+								);
 							});
 
 							/**

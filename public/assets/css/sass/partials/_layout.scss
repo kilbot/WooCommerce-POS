@@ -24,7 +24,6 @@ $desktop-wide 		: 1500px;
 }
 .col {
 	background: $content-background;
-	// display: flex;
 	border: 1px solid $border-light;
 	@include box-shadow(0 1px 1px rgba(black, 0.04));
 	&.leftcol {

@@ -7,6 +7,7 @@
 <script type="text/template" id="tmpl-products-layout">
 	<div id="filter"></div>
 	<div id="products"></div>
+	<div id="pagination"></div>
 </script>
 
 <script type="text/template" id="tmpl-products-filter">
@@ -16,8 +17,8 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-product">
-	<span class="img"><img src="{{featured_src}}"></span>
-	<span class="name">
+	<div class="img"><img src="{{featured_src}}"></div>
+	<div class="name">
 		<strong>{{title}}</strong>
 		{{#with attributes}}
 			<dl>
@@ -30,9 +31,9 @@
 		{{#if managing_stock}}
 			<small>{{stock_quantity}} <?php _ex( 'in stock', '%d in stock', 'woocommerce-pos' ) ?></small>
 		{{/if}}
-	</span>
-	<span class="price">{{{price_html}}}</span>
-	<span class="add"><a class="add-to-cart btn btn-success btn-circle" href="#"><i class="fa fa-plus"></i></a></span>
+	</div>
+	<div class="price">{{{price_html}}}</div>
+	<div class="add"><a class="btn btn-success btn-circle action-add" href="#"><i class="fa fa-plus"></i></a></div>
 </script>
 
 <script type="text/template" id="tmpl-products-empty">
