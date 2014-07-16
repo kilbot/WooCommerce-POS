@@ -90,7 +90,8 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * TODO: ui: change calculator
 * TODO: ui: numpad module
 * TODO: send order meta: user_id, payment_type
-* TODO: look at this authentication issue with network installs, Scotts issue.
+* TODO: look at this authentication issue with Super Cache
+* TODO: test access to POS, multisite
 * Improved: Initial download of products, improved performance for large stores and/or slow servers
 * New: Greek translation thanks to Marios Polycarpou! [http://el.woopos.com.au/pos](http://el.woopos.com.au/pos)
 * New: German translation thanks to Simon Potye! [http://de.woopos.com.au/pos](http://de.woopos.com.au/pos)

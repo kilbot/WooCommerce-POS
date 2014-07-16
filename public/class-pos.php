@@ -70,7 +70,7 @@ class WooCommerce_POS {
 		add_action('template_redirect', array( $this, 'show_pos') );
 
 		// allow access to the WC REST API, init product class before serving response
-		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 1 );
+		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 99, 1 );
 		add_action( 'woocommerce_api_server_before_serve', array( $this, 'wc_api_init') );
 				
 	}

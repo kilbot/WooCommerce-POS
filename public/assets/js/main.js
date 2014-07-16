@@ -56,10 +56,28 @@ require(['underscore', 'backbone', 'views/ProductList', 'views/CartList'],
 	// create pubsub object
 	var pubSub = _.extend({},Backbone.Events);
 
+	// init the cart
+	new CartList({ pubSub: pubSub });
+
 	// load the products
 	new ProductList({ pubSub: pubSub });
 
-	// init the cart
-	new CartList({ pubSub: pubSub });
+	MyRouter = Backbone.Router.extend({
+		routes : {
+			'' 			: 'showCart',
+			'checkout' 	: 'showCheckout'
+		},
+
+		showCart: function() {
+			console.log('cart');
+		},
+
+		showCheckout: function() {
+			console.log('checkout');
+		},
+	});
+
+	var router = new MyRouter();
+	Backbone.history.start();
 
 });

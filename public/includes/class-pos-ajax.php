@@ -108,32 +108,24 @@ class WooCommerce_POS_AJAX {
 			);
 			$default->init( (object)$data );
 		}
-
-		// we need to do three queries due to performance issues with WP
-		// see: https://core.trac.wordpress.org/ticket/24093
 		
 		// query the users table
 		$users_query = new WP_User_Query( apply_filters( 'woocommerce_pos_json_search_customers_query', array(
 			'fields'         => 'all',
 			'orderby'        => 'display_name',
 			'search'         => '*' . $term . '*',
-			'search_columns' => array( 'ID', 'user_login', 'user_email', 'user_nicename' )
+			'search_columns' => array( 'ID', 'user_login', 'user_email', 'user_nicename' ),
 		) ) );
 
 		// query the usermeta table
-		$first_name_query = new WP_User_Query( apply_filters( 'woocommerce_pos_json_search_customers_query', array(
+		$usermeta_query = new WP_User_Query( apply_filters( 'woocommerce_pos_json_search_customers_query', array(
 			'meta_query' => array(
+				'relation' 	  => 'OR',
 				array(
 					'key'     => 'first_name',
 					'value'   => $term,
 					'compare' => 'LIKE'
 				),
-			)
-		) ) );
-
-		// query the usermeta table
-		$last_name_query = new WP_User_Query( apply_filters( 'woocommerce_pos_json_search_customers_query', array(
-			'meta_query' => array(
 				array(
 					'key'     => 'last_name',
 					'value'   => $term,
@@ -143,7 +135,7 @@ class WooCommerce_POS_AJAX {
 		) ) );
 
 		// merge the two results
-		$customers = array_merge( $users_query->get_results(), $first_name_query->get_results(), $last_name_query->get_results() );
+		$customers = array_merge( $users_query->get_results(), $usermeta_query->get_results() );
 		
 		// add the default customer to the results
 		array_unshift( $customers, $default );
