@@ -20,7 +20,8 @@
     "handlebars": "~2.0.*",
     "select2": "~3.5.0",
     "marionette": "~2.0.2",
-    "spinjs": "~2.0.1"
+    "spinjs": "~2.0.1",
+    "marionette.transition-region": "https://github.com/jmeas/marionette.transition-region/archive/master.zip"
   },
   "devDependencies": {},
   "resolutions": {

@@ -2007,108 +2007,115 @@ table tfoot div.alert {
   min-height: 80px;
 }
 
-/* line 5, sass/partials/_products.scss */
+/* line 4, sass/partials/_products.scss */
+#products {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+/* line 8, sass/partials/_products.scss */
 #products ul {
+  position: relative;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-/* line 9, sass/partials/_products.scss */
+/* line 13, sass/partials/_products.scss */
 #products ul.list {
   display: table;
 }
-/* line 11, sass/partials/_products.scss */
+/* line 15, sass/partials/_products.scss */
 #products ul.list li {
   display: table-row;
 }
-/* line 14, sass/partials/_products.scss */
+/* line 18, sass/partials/_products.scss */
 #products ul.list li div {
   padding: 0.75em;
   display: table-cell;
   vertical-align: middle !important;
   border-top: 1px solid #eeeeee;
 }
-/* line 19, sass/partials/_products.scss */
+/* line 23, sass/partials/_products.scss */
 #products ul.list li div.img {
   width: 20%;
 }
-/* line 21, sass/partials/_products.scss */
+/* line 25, sass/partials/_products.scss */
 #products ul.list li div.img img {
   min-width: 30px;
   vertical-align: middle;
 }
-/* line 26, sass/partials/_products.scss */
+/* line 30, sass/partials/_products.scss */
 #products ul.list li div.name {
   width: 50%;
 }
-/* line 28, sass/partials/_products.scss */
+/* line 32, sass/partials/_products.scss */
 #products ul.list li div.name dl {
   width: 100%;
   font-size: 0.8em;
 }
-/* line 32, sass/partials/_products.scss */
+/* line 36, sass/partials/_products.scss */
 #products ul.list li div.name dl dt {
   font-weight: normal;
   float: left;
   padding-right: 5px;
   clear: left;
 }
-/* line 38, sass/partials/_products.scss */
+/* line 42, sass/partials/_products.scss */
 #products ul.list li div.name dl dd {
   float: left;
   margin: 0;
 }
-/* line 43, sass/partials/_products.scss */
+/* line 47, sass/partials/_products.scss */
 #products ul.list li div.name.img {
   max-width: 90px;
 }
-/* line 45, sass/partials/_products.scss */
+/* line 49, sass/partials/_products.scss */
 #products ul.list li div.name.img img {
   vertical-align: middle;
 }
-/* line 50, sass/partials/_products.scss */
+/* line 54, sass/partials/_products.scss */
 #products ul.list li div.price {
   width: 15%;
   text-align: center;
 }
-/* line 54, sass/partials/_products.scss */
-#products ul.list li div.add {
+/* line 58, sass/partials/_products.scss */
+#products ul.list li div.action {
   width: 15%;
   text-align: center;
 }
-/* line 58, sass/partials/_products.scss */
+/* line 62, sass/partials/_products.scss */
 #products ul.list li div.empty {
   width: 100%;
   text-align: center;
 }
-/* line 63, sass/partials/_products.scss */
+/* line 67, sass/partials/_products.scss */
 #products ul.list li div span:before, #products ul.list li div span:after {
   content: " ";
 }
-/* line 68, sass/partials/_products.scss */
+/* line 72, sass/partials/_products.scss */
 #products ul.list li:nth-of-type(even) {
   background-color: #f9f9f9;
 }
-/* line 69, sass/partials/_products.scss */
+/* line 73, sass/partials/_products.scss */
 #products ul.list li:nth-of-type(odd) {
   background-color: white;
 }
-/* line 71, sass/partials/_products.scss */
+/* line 75, sass/partials/_products.scss */
 #products ul.list li:first-of-type div {
   border: 0;
 }
-/* line 76, sass/partials/_products.scss */
+/* line 80, sass/partials/_products.scss */
 #products ul.list li:last-of-type div {
   border-bottom: 1px solid #d4d4d4;
 }
 
-/* line 95, sass/partials/_products.scss */
+/* line 99, sass/partials/_products.scss */
 #filter {
   padding: 0.75em;
   border-bottom: 1px solid #d4d4d4;
   position: relative;
 }
-/* line 99, sass/partials/_products.scss */
+/* line 103, sass/partials/_products.scss */
 #filter input[type=search] {
   width: 100%;
   height: 2.25em;
@@ -2119,19 +2126,19 @@ table tfoot div.alert {
   padding-right: 35px;
   -webkit-appearance: textfield;
 }
-/* line 106, sass/partials/_products.scss */
+/* line 110, sass/partials/_products.scss */
 #filter input[type=search]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
-/* line 109, sass/partials/_products.scss */
+/* line 113, sass/partials/_products.scss */
 #filter input[type=search]::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
-/* line 112, sass/partials/_products.scss */
+/* line 116, sass/partials/_products.scss */
 #filter input[type=search]::-ms-clear {
   display: none;
 }
-/* line 116, sass/partials/_products.scss */
+/* line 120, sass/partials/_products.scss */
 #filter i.fa-search {
   position: absolute;
   top: 0;
@@ -2141,7 +2148,7 @@ table tfoot div.alert {
   pointer-events: none;
   line-height: 2.25em;
 }
-/* line 125, sass/partials/_products.scss */
+/* line 129, sass/partials/_products.scss */
 #filter a.clear {
   display: none;
   color: #444444;
@@ -2153,18 +2160,18 @@ table tfoot div.alert {
   line-height: 2.25em;
 }
 
-/* line 137, sass/partials/_products.scss */
+/* line 141, sass/partials/_products.scss */
 #pagination {
   padding: 0.75em;
 }
-/* line 140, sass/partials/_products.scss */
+/* line 144, sass/partials/_products.scss */
 #pagination small {
   text-align: center;
   display: block;
   margin: 0 60px;
   line-height: 1.3;
 }
-/* line 146, sass/partials/_products.scss */
+/* line 150, sass/partials/_products.scss */
 #pagination.working {
   background-color: rgba(125, 181, 0, 0.3);
   background-image: url(../../../assets/bg-working.gif);

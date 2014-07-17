@@ -24,7 +24,7 @@
 			<dl>
 			{{#each this}}
 				<dt>{{name}}:</dt>
-				<dd>{{option}}</dd>
+				<dd>{{#if option}}{{option}}{{/if}}{{#if options}}{{options}}{{/if}}</dd>
 			{{/each}}
 			</dl>
 		{{/with}}
@@ -33,7 +33,11 @@
 		{{/if}}
 	</div>
 	<div class="price">{{{price_html}}}</div>
-	<div class="add"><a class="btn btn-success btn-circle action-add" href="#"><i class="fa fa-plus"></i></a></div>
+	{{#if isVariable}}
+	<div class="action"><a class="btn btn-success btn-circle action-variations" href="#products/parent/{{id}}"><i class="fa fa-chevron-right"></i></a></div>
+	{{else}}
+	<div class="action"><a class="btn btn-success btn-circle action-add" href="#cart/add/{{id}}"><i class="fa fa-plus"></i></a></div>
+	{{/if}}
 </script>
 
 <script type="text/template" id="tmpl-products-empty">

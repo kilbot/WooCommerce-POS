@@ -2,7 +2,11 @@
 // Styling the product display
 // --------------------------------------------------
 #products {
+	position: relative;
+	overflow: hidden;
+	width: 100%;
 	ul {
+		position: relative;
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -51,7 +55,7 @@
 						width: 15%;
 						text-align: center;
 					}
-					&.add {
+					&.action {
 						width: 15%;
 						text-align: center;
 					}

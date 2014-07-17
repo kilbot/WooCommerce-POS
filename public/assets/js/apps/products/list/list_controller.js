@@ -27,6 +27,7 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 
 							var filteredProducts = POS.Entities.FilteredCollection({
 								collection: products,
+
 								filterFunction: function(filterCriterion) {
 									var criterion = filterCriterion.toLowerCase();
 
@@ -76,7 +77,7 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 								productListLayout.filterRegion.show(productListFilter);
 								productListLayout.productsRegion.show(productListView);
 								productListLayout.paginationRegion.show(
-									new View.Pagination({ collection: filteredProducts })
+									// new View.Pagination({ collection: filteredProducts })
 								);
 							});
 
@@ -85,6 +86,18 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 							 */
 							productListView.on('childview:product:add', function(childview, model) {
 								POS.trigger('cart:add', model);
+							});
+
+							/**
+							 * Slide in Variations
+							 */
+							productListView.on('childview:product:variations', function(childview, model) {
+								// create new collection based on parent id
+								console.log(model.attributes.variations);
+								var productVariations = new View.Products({
+									collection: products 
+								});
+								productListLayout.productsRegion.show(productVariations);
 							});
 
 							// show the leftRegion

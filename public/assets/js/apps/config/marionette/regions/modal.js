@@ -1,5 +1,10 @@
 define(['marionette', 'modal'], function(Marionette){
+
 	Marionette.Region.Modal = Marionette.Region.extend({
+
+		onShow: function(view) {
+			console.log(this);
+		}
 		// onShow: function(view){
 		// 	this.listenTo(view, "dialog:close", this.closeDialog);
 

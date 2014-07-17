@@ -1,4 +1,4 @@
-define(['app', 'handlebars'], function(POS, Handlebars){
+define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], function(POS, Handlebars){
 
 	POS.module('ProductsApp.List.View', function(View, POS, Backbone, Marionette, $, _){
 
@@ -7,7 +7,9 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 
 			regions: {
 				filterRegion: '#filter',
-				productsRegion: '#products',
+				productsRegion: Marionette.Region.Transition.extend({
+					el: '#products'
+				}),
 				paginationRegion: '#pagination'
 			}
 		});
@@ -45,14 +47,29 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 		View.Product = Marionette.ItemView.extend({
 			tagName: 'li',
 			template: Handlebars.compile( $('#tmpl-product').html() ),
+			className: function(){ if( this.isVariable() ) return 'variable' },
 
 			events: {
-				'click .action-add' : 'addToCart'
+				'click .action-add' 	: 'addToCart',
+				'click .action-variations' 	: 'showVariations'
+			},
+
+			onBeforeRender: function(){
+				if( this.isVariable() ) { this.model.set('isVariable', true); }
+			},
+
+			isVariable: function() {
+				if( this.model.get('type') === 'variable' ) { return true; }
 			},
 
 			addToCart: function(e) {
 				e.preventDefault();
 				this.trigger('product:add', this.model);
+			},
+
+			showVariations: function(e) {
+				e.preventDefault();
+				this.trigger('product:variations', this.model);
 			}
 		});
 
@@ -65,7 +82,25 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 			tagName: 'ul',
 			className: 'list',
 			childView: View.Product,
-			emptyView: NoProductsView
+			emptyView: NoProductsView,
+
+			animateIn: function() {
+				this.$el.animate(
+					{ opacity: 1 },
+					1000,
+					_.bind(this.trigger, this, 'animateIn')
+				);
+			},
+
+			animateOut: function() {
+				this.$el.animate(
+					{ 
+						right: '100%'
+					},
+					1000,
+					_.bind(this.trigger, this, 'animateOut')
+				);
+			}
 		});
 
 		View.Pagination = Marionette.ItemView.extend({

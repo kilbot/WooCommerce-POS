@@ -88,27 +88,13 @@ class WooCommerce_POS_Product {
 	 */
 	public function filter_product_response( $product_data, $product, $fields, $server ) {
 
-		// flatten variable data
-		if( $product_data['type'] == 'variation' ) {
-
-			// set new key parent id
-			$product_data['parent_id'] = $product_data['parent']['id'];
-
-			// if featured image = false, use the parent
-			if( !$product_data['featured_src'] ) {
-				if ( $product_data['parent']['featured_src'] ) 
-					$product_data['featured_src'] = $product_data['parent']['featured_src'];
-			}
-
-		}
-
 		// use thumbnails for images or placeholder
 		if( $product_data['featured_src'] ) {
 			$thumb_suffix = '-'.$this->thumb_size['width'].'x'.$this->thumb_size['height'];
 			$product_data['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $thumb_suffix.'$1', $product_data['featured_src']);
 
 		} else {
-			$product_data['featured_src'] = WC_POS()->plugin_url . '/assets/placeholder.png';
+			$product_data['featured_src'] = wc_placeholder_img_src();
 		}
 		
 		// if taxable, get the tax_rates array
@@ -165,7 +151,6 @@ class WooCommerce_POS_Product {
 			'tags',
 			'upsell_ids',
 			'weight',
-			'variations'
 		);
 		foreach($removeKeys as $key) {
 			unset($product_data[$key]);
