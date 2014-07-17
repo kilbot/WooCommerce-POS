@@ -2076,34 +2076,39 @@ table tfoot div.alert {
   width: 15%;
   text-align: center;
 }
-/* line 59, sass/partials/_products.scss */
+/* line 58, sass/partials/_products.scss */
+#products ul.list li div.empty {
+  width: 100%;
+  text-align: center;
+}
+/* line 63, sass/partials/_products.scss */
 #products ul.list li div span:before, #products ul.list li div span:after {
   content: " ";
 }
-/* line 64, sass/partials/_products.scss */
+/* line 68, sass/partials/_products.scss */
 #products ul.list li:nth-of-type(even) {
   background-color: #f9f9f9;
 }
-/* line 65, sass/partials/_products.scss */
+/* line 69, sass/partials/_products.scss */
 #products ul.list li:nth-of-type(odd) {
   background-color: white;
 }
-/* line 67, sass/partials/_products.scss */
+/* line 71, sass/partials/_products.scss */
 #products ul.list li:first-of-type div {
   border: 0;
 }
-/* line 72, sass/partials/_products.scss */
+/* line 76, sass/partials/_products.scss */
 #products ul.list li:last-of-type div {
   border-bottom: 1px solid #d4d4d4;
 }
 
-/* line 91, sass/partials/_products.scss */
+/* line 95, sass/partials/_products.scss */
 #filter {
   padding: 0.75em;
   border-bottom: 1px solid #d4d4d4;
   position: relative;
 }
-/* line 95, sass/partials/_products.scss */
+/* line 99, sass/partials/_products.scss */
 #filter input[type=search] {
   width: 100%;
   height: 2.25em;
@@ -2114,19 +2119,19 @@ table tfoot div.alert {
   padding-right: 35px;
   -webkit-appearance: textfield;
 }
-/* line 102, sass/partials/_products.scss */
+/* line 106, sass/partials/_products.scss */
 #filter input[type=search]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
-/* line 105, sass/partials/_products.scss */
+/* line 109, sass/partials/_products.scss */
 #filter input[type=search]::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
-/* line 108, sass/partials/_products.scss */
+/* line 112, sass/partials/_products.scss */
 #filter input[type=search]::-ms-clear {
   display: none;
 }
-/* line 112, sass/partials/_products.scss */
+/* line 116, sass/partials/_products.scss */
 #filter i.fa-search {
   position: absolute;
   top: 0;
@@ -2136,7 +2141,7 @@ table tfoot div.alert {
   pointer-events: none;
   line-height: 2.25em;
 }
-/* line 121, sass/partials/_products.scss */
+/* line 125, sass/partials/_products.scss */
 #filter a.clear {
   display: none;
   color: #444444;
@@ -2148,18 +2153,18 @@ table tfoot div.alert {
   line-height: 2.25em;
 }
 
-/* line 133, sass/partials/_products.scss */
+/* line 137, sass/partials/_products.scss */
 #pagination {
   padding: 0.75em;
 }
-/* line 136, sass/partials/_products.scss */
+/* line 140, sass/partials/_products.scss */
 #pagination small {
   text-align: center;
   display: block;
   margin: 0 60px;
   line-height: 1.3;
 }
-/* line 142, sass/partials/_products.scss */
+/* line 146, sass/partials/_products.scss */
 #pagination.working {
   background-color: rgba(125, 181, 0, 0.3);
   background-image: url(../../../assets/bg-working.gif);

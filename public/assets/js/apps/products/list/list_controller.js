@@ -18,7 +18,10 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 					var productListFilter = new View.Filter();
 
 					// when fetch complete, display the products
-					require(['entities/common'], function(FilteredCollection){
+					require(['entities/common', 'entities/search_parser'], function(FilteredCollection, SearchParser){
+
+						// init the search query collection
+						var searchParser = new POS.Entities.SearchQuery();
 
 						$.when(fetchingProducts).done( function(products){
 
@@ -26,8 +29,26 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 								collection: products,
 								filterFunction: function(filterCriterion) {
 									var criterion = filterCriterion.toLowerCase();
+
+									// parse filterCriterion
+									var parsedQuery = POS.Entities.SearchParser.parse(filterCriterion);
+									searchParser.reset(parsedQuery);
+									
 									return function(product){
-										if(product.get('title').toLowerCase().indexOf(criterion) !== -1) {
+
+										var categories = _.map( product.get('categories'), function(cat) { return cat.toLowerCase(); });
+
+										if(
+											// filter titles
+											product.get('title').toLowerCase().indexOf(searchParser.find('freetext')) !== -1 ||
+
+											// filter by id:
+											product.get('id') === parseInt( searchParser.find('id') ) ||
+
+											// filter by cat:
+											_.contains( categories, searchParser.find('cat') )
+
+										) {
 											return product;
 										}
 									}

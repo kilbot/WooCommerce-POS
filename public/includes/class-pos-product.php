@@ -44,6 +44,7 @@ class WooCommerce_POS_Product {
 
 		// get all the ids
 		$args = array(
+			'post_type' 	=> array('product'),
 			'posts_per_page'=>  -1,
 			'fields'		=> 'ids',
 		);
@@ -55,39 +56,26 @@ class WooCommerce_POS_Product {
 
 	/**
 	 * Make changes to the product query for POS
-	 * TODO: pre_get_posts action vs filter?
 	 * @param  $query 		the wordpress query
 	 */
 	public function pre_get_posts( $query ) {
 
-		// get array of 
-
-		// add variations
-		$query->set( 'post_type', array( 'product', 'product_variation' ) );
-
 		// remove variable products
-		$tax_query =  array(
+		$meta_query =  array(
+			'relation' => 'OR',
 			array(
-				'taxonomy' 	=> 'product_type',
-				'field' 	=> 'slug',
-				'terms' 	=> array( 'variable' ),
-				'operator'	=> 'NOT IN'
+				'key' 		=> '_pos_visibility',
+				'value' 	=> 'pos_hidden',
+				'compare'	=> '!='
 			),
+			array(
+				'key' 		=> '_pos_visibility',
+				'value' 	=> 'pos_hidden',
+				'compare'	=> 'NOT EXISTS'
+			)
 		);
-		$query->set( 'tax_query', $tax_query );
-
-		// fix for earlier versions of WC REST API
-		$query->set( 'post_parent', '' );
-
-		// remove product_variations where post_status != publish
-		add_filter( 'posts_where', array( $this, 'posts_where' ) );
+		$query->set( 'meta_query', $meta_query );
         
-	}
-
-	public function posts_where( $where = '' ) {
-		global $wpdb;
-		$where .= " AND ( post_parent NOT IN ( SELECT id FROM $wpdb->posts WHERE post_status != 'publish' ) )";
-		return $where;
 	}
 
 	/**

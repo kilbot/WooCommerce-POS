@@ -38,6 +38,6 @@ define(['app', 'handlebars', 'accounting'], function (POS, Handlebars, accountin
 
 	});
 
-	return POS.Common.Helpers;
+	return;
 
 });

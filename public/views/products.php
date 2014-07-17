@@ -37,7 +37,7 @@
 </script>
 
 <script type="text/template" id="tmpl-products-empty">
-	<?php _e( 'No products found', 'woocommerce-pos' ); ?>
+	<div class="empty"><?php _e( 'No products found', 'woocommerce-pos' ); ?></div>
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-pagination">

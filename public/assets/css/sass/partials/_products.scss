@@ -55,6 +55,10 @@
 						width: 15%;
 						text-align: center;
 					}
+					&.empty {
+						width: 100%;
+						text-align: center;
+					}
 					span {
 						&:before, &:after {
         					content: " "; // wrap variable pricing
