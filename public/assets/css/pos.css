@@ -1963,52 +1963,7 @@ table tfoot div.alert {
   font-size: 14px;
 }
 
-/* line 59, sass/partials/_tables.scss */
-#cart table tbody input {
-  text-align: center;
-  max-width: 7em;
-  background-color: #f9f9f9;
-  border: 1px solid #d4d4d4;
-  -moz-appearance: textfield;
-  -moz-border-radius: 16px;
-  -webkit-border-radius: 16px;
-  border-radius: 16px;
-}
-/* line 67, sass/partials/_tables.scss */
-#cart table tbody input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* line 71, sass/partials/_tables.scss */
-#cart table tbody input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* line 75, sass/partials/_tables.scss */
-#cart table tbody input:hover {
-  cursor: pointer;
-}
-/* line 82, sass/partials/_tables.scss */
-#cart table tfoot tr.order-total th, #cart table tfoot tr.order-total td, #cart table tfoot tr.customer th, #cart table tfoot tr.customer td {
-  border-bottom: 1px solid #d4d4d4;
-}
-/* line 87, sass/partials/_tables.scss */
-#cart table tfoot tr.actions th, #cart table tfoot tr.actions td {
-  text-align: right;
-  border-bottom: 0;
-}
-/* line 91, sass/partials/_tables.scss */
-#cart table tfoot tr.actions.working td {
-  background-color: rgba(125, 181, 0, 0.3);
-  background-image: url(../../../assets/bg-working.gif);
-}
-/* line 97, sass/partials/_tables.scss */
-#cart table tfoot tr.note th, #cart table tfoot tr.note td {
-  border-top: 1px solid #d4d4d4;
-  border-bottom: 0;
-}
-
-/* line 107, sass/partials/_tables.scss */
+/* line 57, sass/partials/_tables.scss */
 .modal table tfoot tr:last-of-type th, .modal table tfoot tr:last-of-type td {
   border-bottom: 0;
 }
@@ -2208,6 +2163,48 @@ table tfoot div.alert {
 #pagination.working {
   background-color: rgba(125, 181, 0, 0.3);
   background-image: url(../../../assets/bg-working.gif);
+}
+
+/* line 4, sass/partials/_cart.scss */
+#cart table tbody input {
+  text-align: center;
+  max-width: 7em;
+  background-color: #f9f9f9;
+  border: 1px solid #d4d4d4;
+  -moz-appearance: textfield;
+  -moz-border-radius: 16px;
+  -webkit-border-radius: 16px;
+  border-radius: 16px;
+}
+/* line 12, sass/partials/_cart.scss */
+#cart table tbody input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* line 16, sass/partials/_cart.scss */
+#cart table tbody input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* line 20, sass/partials/_cart.scss */
+#cart table tbody input:hover {
+  cursor: pointer;
+}
+
+/* line 28, sass/partials/_cart.scss */
+#cart-account, #cart-actions, #cart-notes {
+  padding: 0.75em;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+/* line 33, sass/partials/_cart.scss */
+#cart-actions {
+  text-align: right;
+}
+
+/* line 37, sass/partials/_cart.scss */
+#cart-notes {
+  border: 0;
 }
 
 /* line 10, sass/partials/_component-animations.scss */

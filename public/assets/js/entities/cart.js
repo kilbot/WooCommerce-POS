@@ -1,31 +1,13 @@
-define(['app', 'apps/config/storage/localstorage'], function(POS){
+define(['app', 
+	'entities/cart/item', 
+	'entities/cart/items', 
+	'entities/cart/totals'
+], function(POS){
 
 	POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
-		/**
-		 * Cart Items
-		 */
-		Entities.CartItem = Backbone.Model.extend({
-			urlRoot: 'cart'
-		});
-		Entities.configureStorage(Entities.CartItem);
-
-		Entities.CartItemCollection = Backbone.Collection.extend({
-			url: 'cart',
-			model: Entities.CartItem
-		});
-		Entities.configureStorage(Entities.CartItemCollection);
-
-		/**
-		 * Cart Totals
-		 */
-		Entities.Totals = Backbone.Model.extend({
-			urlRoot: 'cart_totals'
-		});
-		Entities.configureStorage(Entities.Totals);
-
 		var API = {
-			getCartItemEntities: function() {
+			getCartItems: function() {
 				var items = new Entities.CartItemCollection();
 				items.fetch();
 				return items;
@@ -36,8 +18,8 @@ define(['app', 'apps/config/storage/localstorage'], function(POS){
 			}
 		};
 
-		POS.reqres.setHandler('cart:entities', function() {
-			return API.getCartItemEntities();
+		POS.reqres.setHandler('cart:items', function() {
+			return API.getCartItems();
 		});
 
 		POS.reqres.setHandler('cart:totals', function() {

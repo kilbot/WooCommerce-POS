@@ -14,7 +14,7 @@ define(['app', 'apps/cart/list/list_view'], function(POS, View){
 					var cartLayout = new View.Layout();
 
 					// get cart items
-					var cartItems = POS.request('cart:entities');
+					var cartItems = POS.request('cart:items');
 					var cartItemsList = new View.CartItems({
 						collection: cartItems
 					});
@@ -25,6 +25,7 @@ define(['app', 'apps/cart/list/list_view'], function(POS, View){
 						
 						// if the cart has items, show totals & actions
 						if( cartItems.length > 0 ) {
+							cartLayout.cartAccountRegion.show( new View.CartAccount() );
 							cartLayout.cartActionsRegion.show( new View.CartActions() );
 						}
 					});

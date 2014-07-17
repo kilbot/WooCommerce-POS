@@ -6,6 +6,7 @@
 
 <script type="text/template" id="tmpl-cart-layout">
 	<div id="cart"></div>
+	<div id="cart-account"></div>
 	<div id="cart-actions"></div>
 	<div id="cart-notes"></div>
 </script>
@@ -89,13 +90,9 @@
 		<th colspan="3"><?php _e( 'Order Total', 'woocommerce-pos' ); ?>:</th>
 		<td colspan="2">{{{money total}}}</td>
 	</tr>
-	<tr class="customer">
-		<td colspan="5">
-		</td>
-	</tr>
 </script>
 
-<script type="text/x-handlebars-template" id="tmpl-cart-customer">
+<script type="text/x-handlebars-template" id="tmpl-cart-account">
 	<?php _e( 'Customer', 'woocommerce-pos' ); ?>:
 	<input type="hidden" id="select-customer" style="width:200px" value="{{ customer_id }}" data-customer="{{ customer_name }}" data-nonce="<?= wp_create_nonce( 'search-customers' ) ?>">
 </script>

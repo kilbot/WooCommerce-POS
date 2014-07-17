@@ -53,56 +53,6 @@ table {
     }
 }
 
-#cart {
-    table {
-        tbody {
-            input {
-                text-align: center;
-                max-width: 7em;
-                background-color: $odd-background;
-                border: 1px solid $border-dark;
-                -moz-appearance: textfield;
-                // outline: none;
-                @include border-radius(16px);
-                &::-webkit-inner-spin-button {
-                    -webkit-appearance: none;
-                    margin: 0;
-                }
-                &::-webkit-outer-spin-button {
-                    -webkit-appearance: none;
-                    margin: 0;
-                }
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-        }
-        tfoot {
-            tr.order-total, tr.customer {
-                th, td {
-                    border-bottom: 1px solid $border-dark;
-                }
-            }
-            tr.actions {
-                th, td {
-                    text-align: right;
-                    border-bottom: 0;
-                }
-                &.working td {
-                    background-color: rgba(#7db500, 0.3);
-                    background-image: url(../../../assets/bg-working.gif);
-                }
-            }
-            tr.note {
-                th, td {
-                    border-top: 1px solid $border-dark;
-                    border-bottom: 0;
-                }
-            }
-        }
-    }
-} 
-
 .modal table tfoot tr {
      &:last-of-type th, &:last-of-type td {
         border-bottom: 0;

@@ -20,6 +20,9 @@ requirejs.config({
 		tooltip 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip',
 		popover 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover',
 		spin 		: '../../../bower_components/spinjs/spin',
+
+		// Custom Plugins
+		autoGrowInput	: '../../../public/assets/js/src/jquery.autoGrowInput',
 	},
 
 	shim: {
