@@ -94,11 +94,13 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 							productListView.on('childview:product:variations', function(childview, model) {
 								// create new collection based on parent id
 								console.log(model.attributes.variations);
-								var productVariations = new View.Products({
+								var productVariations = new View.Variations({
 									collection: products 
 								});
 								productListLayout.productsRegion.show(productVariations);
 							});
+
+							
 
 							// show the leftRegion
 							POS.leftRegion.show(productListLayout);

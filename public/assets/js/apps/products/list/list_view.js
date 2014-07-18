@@ -8,12 +8,16 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			regions: {
 				filterRegion: '#filter',
 				productsRegion: Marionette.Region.Transition.extend({
-					el: '#products'
+					el: '#products',
+					concurrentTransition: true
 				}),
 				paginationRegion: '#pagination'
 			}
 		});
 
+		/**
+		 * Filter
+		 */
 		View.Filter = Marionette.ItemView.extend({
 			template: '#tmpl-products-filter',
 
@@ -44,6 +48,9 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			},
 		});
 		
+		/**
+		 * Single Product
+		 */
 		View.Product = Marionette.ItemView.extend({
 			tagName: 'li',
 			template: Handlebars.compile( $('#tmpl-product').html() ),
@@ -73,6 +80,9 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			}
 		});
 
+		/**
+		 * Product Collection
+		 */
 		var NoProductsView = Marionette.ItemView.extend({
 			tagName: 'li',
 			template: '#tmpl-products-empty',
@@ -84,25 +94,122 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			childView: View.Product,
 			emptyView: NoProductsView,
 
+			transitionInCss: {
+				'right': '100%'
+			},
+
+			initialize: function() {
+				this.listenToOnce( this, 'animateIn', this.cssTearDown );
+				this.listenToOnce( this, 'animateOut', this.cssTearDown );
+			},
+
+			// Do some jQuery stuff, then, once you're done, trigger 'animateIn' to let the region
+			// know that you're done
 			animateIn: function() {
+				this.cssSetUp();
 				this.$el.animate(
-					{ opacity: 1 },
-					1000,
+					{ 'right': 0 },
+					400,
 					_.bind(this.trigger, this, 'animateIn')
 				);
 			},
 
+			// Same as above, except this time we trigger 'animateOut'
 			animateOut: function() {
+				this.cssSetUp();
 				this.$el.animate(
-					{ 
-						right: '100%'
-					},
-					1000,
+					{ 'right': '100%' },
+					400,
 					_.bind(this.trigger, this, 'animateOut')
 				);
-			}
+			},
+
+			// add some css relevant to animation
+			cssSetUp: function() {
+				var height = this.$el.height();
+				this.$el.css({
+					'position': 'absolute',
+					'top': 0 
+				})
+				.parent().css({ 
+					'position': 'relative', 
+					'overflow': 'hidden',
+					'width': '100%',
+					'min-height': height
+				});
+			},
+
+			// remove the animation css
+			cssTearDown: function() {
+				this.$el.removeAttr('style').parent().removeAttr('style');
+			},
+
 		});
 
+		/**
+		 * Product Variations
+		 */
+		View.Variations = Marionette.CollectionView.extend({
+			tagName: 'ul',
+			className: 'variations list',
+			childView: View.Product,
+			emptyView: NoProductsView,
+
+			transitionInCss: {
+				'left': '100%',
+			},
+
+			initialize: function() {
+				this.listenToOnce( this, 'animateIn', this.cssTearDown );
+				this.listenToOnce( this, 'animateOut', this.cssTearDown );
+			},
+
+			// Do some jQuery stuff, then, once you're done, trigger 'animateIn' to let the region
+			// know that you're done
+			animateIn: function() {
+				this.cssSetUp();
+				this.$el.animate(
+					{ 'left': 0 },
+					400,
+					_.bind(this.trigger, this, 'animateIn')
+				);
+			},
+
+			// Same as above, except this time we trigger 'animateOut'
+			animateOut: function() {
+				this.cssSetUp();
+				this.$el.animate(
+					{ 'left': '100%' },
+					400,
+					_.bind(this.trigger, this, 'animateOut')
+				);
+			},
+
+			// add some css relevant to animation
+			cssSetUp: function() {
+				var height = this.$el.height();
+				this.$el.css({
+					'position': 'absolute',
+					'top': 0 
+				})
+				.parent().css({ 
+					'position': 'relative', 
+					'overflow': 'hidden',
+					'width': '100%',
+					'min-height': height
+				});
+			},
+
+			// remove the animation css
+			cssTearDown: function() {
+				this.$el.removeAttr('style').parent().removeAttr('style');
+			},
+
+		});
+
+		/**
+		 * Pagination
+		 */
 		View.Pagination = Marionette.ItemView.extend({
 			template: Handlebars.compile( $('#tmpl-pagination').html() ),
 

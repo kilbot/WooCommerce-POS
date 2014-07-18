@@ -2,16 +2,13 @@
 // Styling the product display
 // --------------------------------------------------
 #products {
-	position: relative;
-	overflow: hidden;
-	width: 100%;
 	ul {
-		position: relative;
+		width: 100%;
 		margin: 0;
 		padding: 0;
 		list-style: none;
 		&.list {
-			display: table;
+			// display: table;
 			li {
 				@extend %clearfix;
 				display: table-row;
@@ -23,7 +20,8 @@
 					&.img {
 						width: 20%;
 						img {
-							min-width: 30px;
+							width: 100%;
+							max-width: 90px;
 							vertical-align: middle;
 						}
 					}
@@ -42,12 +40,6 @@
 			                dd {
 			                    float: left;
 			                    margin: 0;
-			                }
-			            }
-			            &.img {
-			                max-width: 90px;
-			                img {
-			                    vertical-align: middle;
 			                }
 			            }
 					}
