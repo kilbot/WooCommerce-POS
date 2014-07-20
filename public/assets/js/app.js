@@ -38,14 +38,15 @@
 	POS.on('start', function(){
 		if(Backbone.history){
 			require([
-				'apps/products/list/list_controller', 	// product list
+				'apps/products/products_app', 			// products
 				'apps/cart/cart_app',					// cart
 				'apps/checkout/checkout_app'			// checkout
 			], function () {
 				Backbone.history.start();
 
-				// always show products 
-				POS.ProductsApp.List.Controller.listProducts();
+				// show products 
+				POS.trigger('products:list');
+
 				if(POS.getCurrentRoute() === ''){
 
 					// default to cart

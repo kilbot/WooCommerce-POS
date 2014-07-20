@@ -5,11 +5,11 @@ define(['app'], function(POS){
 		ProductsApp.startWithParent = false;
 
 		ProductsApp.onStart = function(){
-      		console.log('starting ProductsApp');
+      		console.log('starting Products Module');
     	};
 
     	ProductsApp.onStop = function(){
-			console.log('stopping ProductsApp');
+			console.log('stopping Products Module');
 		};
 
 	});
@@ -23,9 +23,8 @@ define(['app'], function(POS){
 		// });
 
 		var executeAction = function(action, arg){
-			POS.startSubApp('ProductsApp');
-			// action(arg);
-			POS.execute( 'set:active:header', 'products' );
+			POS.ProductsApp.start();
+			action(arg);
 		};
 
 		var API = {

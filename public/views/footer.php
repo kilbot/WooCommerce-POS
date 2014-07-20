@@ -18,7 +18,7 @@
 </div><!-- /menu -->
 
 <div id="modal"></div>
-<div id="numpad"></div>
+<?php include_once( 'numpad.php' ); ?>
 
 <?php WooCommerce_POS::pos_print_js('footer'); ?>
 

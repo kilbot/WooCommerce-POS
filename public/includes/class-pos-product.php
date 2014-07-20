@@ -14,7 +14,8 @@
 class WooCommerce_POS_Product {
 
 	/** @var string Contains the thumbnail size. */
-	public $thumb_size;
+	public $thumb_suffix;
+	public $placeholder_img;
 
 	/** @var array Contains an array of tax rates, by tax class. */
 	public $tax_rates = array();
@@ -22,8 +23,10 @@ class WooCommerce_POS_Product {
 
 	public function __construct() {
 
-		// init variables
-		$this->thumb_size = get_option( 'shop_thumbnail_image_size', array( 'width' => 90, 'height' => 90 ) );
+		// init some variables 
+		$thumb_size = get_option( 'shop_thumbnail_image_size', array( 'width' => 90, 'height' => 90 ) );
+		$this->thumb_suffix = '-'.$thumb_size['width'].'x'.$thumb_size['height'];
+		$this->placeholder_img = wc_placeholder_img_src();
 
 		// we're going to manipulate the wp_query to display POS products
 		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
@@ -80,8 +83,8 @@ class WooCommerce_POS_Product {
 
 	/**
 	 * Filter product response from WC REST API for easier handling by the POS
-	 * - separate variations from variable products
-	 * - remove variable products
+	 * - use the thumbnails rather than fullsize
+	 * - add tax rates & barcode field
 	 * - unset unnecessary data
 	 * @param  array $product_data
 	 * @return array modified data array $product_data
@@ -90,20 +93,35 @@ class WooCommerce_POS_Product {
 
 		// use thumbnails for images or placeholder
 		if( $product_data['featured_src'] ) {
-			$thumb_suffix = '-'.$this->thumb_size['width'].'x'.$this->thumb_size['height'];
-			$product_data['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $thumb_suffix.'$1', $product_data['featured_src']);
-
+			$product_data['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $this->thumb_suffix.'$1', $product_data['featured_src']);
 		} else {
-			$product_data['featured_src'] = wc_placeholder_img_src();
+			$product_data['featured_src'] = $this->placeholder_img;
+		}
+
+		// use thumbnails for variations as well
+		if( $product_data['type'] == 'variable' ) {
+
+			// have to dive into the nested array .. nasty :(
+			foreach( $product_data['variations'] as &$variation ) {
+				// echo $variation['image'][0]['src'];
+				if( isset( $variation['image'][0]['src'] ) && $variation['image'][0]['src'] != $this->placeholder_img ) {
+					$variation['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $this->thumb_suffix.'$1', $variation['image'][0]['src']);
+				}
+				else {
+					$variation['featured_src'] = $this->placeholder_img;
+				}
+			}
 		}
 		
 		// if taxable, get the tax_rates array
 		if( $product_data['taxable'] ) {
 
+			// if we have rates already 
 			if( isset($this->tax_rates[$product_data['tax_class']]) ) {
 				$tax_rates = $this->tax_rates[$product_data['tax_class']];
 			}
 
+			// else, get the rates and store them
 			else {
 				$tax = new WC_Tax();
 				$base = get_option( 'woocommerce_default_country' );
@@ -138,7 +156,7 @@ class WooCommerce_POS_Product {
 			'download_limit',
 			'download_type',
 			'downloads',
-			'images',
+			// 'images',
 			'parent',
 			'rating_count',
 			'related_ids',

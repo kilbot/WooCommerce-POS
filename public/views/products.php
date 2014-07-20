@@ -6,6 +6,7 @@
 
 <script type="text/template" id="tmpl-products-layout">
 	<div id="filter"></div>
+	<div id="filter-tabs"></div>
 	<div id="products"></div>
 	<div id="pagination"></div>
 </script>
@@ -32,12 +33,22 @@
 			<small>{{stock_quantity}} <?php _ex( 'in stock', '%d in stock', 'woocommerce-pos' ) ?></small>
 		{{/if}}
 	</div>
-	<div class="price">{{{price_html}}}</div>
-	{{#if isVariable}}
-	<div class="action"><a class="btn btn-success btn-circle action-variations" href="#products/parent/{{id}}"><i class="fa fa-chevron-right"></i></a></div>
+	<div class="price">
+		{{#is type 'variation'}}
+			{{#if on_sale}}
+				<del>{{{money regular_price}}}</del> <ins>{{{money sale_price}}}</ins>
+			{{else}}
+				{{{money price}}}
+			{{/if}}
+		{{else}}
+			{{{price_html}}}
+		{{/is}}
+	</div>
+	{{#is type 'variable'}}
+		<div class="action"><a class="btn btn-success btn-circle action-variations" href="#products/parent/{{id}}"><i class="fa fa-chevron-right"></i></a></div>
 	{{else}}
-	<div class="action"><a class="btn btn-success btn-circle action-add" href="#cart/add/{{id}}"><i class="fa fa-plus"></i></a></div>
-	{{/if}}
+		<div class="action"><a class="btn btn-success btn-circle action-add" href="#cart/add/{{id}}"><i class="fa fa-plus"></i></a></div>
+	{{/is}}
 </script>
 
 <script type="text/template" id="tmpl-products-empty">

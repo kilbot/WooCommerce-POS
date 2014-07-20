@@ -10,6 +10,7 @@ define(['app'], function(POS) {
 		var QUOTES_RE   = "('[^']+'|\"[^\"]+\")";
 		var FREETEXT_RE = "('[^']+'|\"[^\"]+\"|[^'\"\\s]\\S*)";
 		var CATEGORY_RE = FREETEXT_RE +                     ':\\s*';
+		var FREETEXT_CAT = 'text';
 	
 		Entities.SearchParser = {
 
@@ -30,7 +31,7 @@ define(['app'], function(POS) {
 					originalQuery = query;
 					var field = this._extractNextField(query);
 					if (!field) {
-						category = 'freetext';
+						category = this.FREETEXT_CAT;
 						value    = this._extractSearchText(query);
 						query    = this.trim(query.replace(value, ''));
 					} else if (field.indexOf(':') != -1) {
@@ -38,7 +39,7 @@ define(['app'], function(POS) {
 						value    = field.replace(this.CATEGORY, '').replace(/(^['"]|['"]$)/g, '');
 						query    = this.trim(query.replace(field, ''));
 					} else if (field.indexOf(':') == -1) {
-						category = 'freetext';
+						category = this.FREETEXT_CAT;
 						value    = field;
 						query    = this.trim(query.replace(value, ''));
 					}
@@ -174,8 +175,8 @@ define(['app'], function(POS) {
 			// to the server for parsing and searching.
 			serialize : function() {
 				var category = this.quoteCategory(this.get('category'));
-				var value    = VS.utils.inflector.trim(this.get('value'));
-				var remainder = this.get("app").options.remainder;
+				var value    = Entities.SearchParser.trim(this.get('value'));
+				var remainder = this.FREETEXT_CAT;
 
 				if (!value) return '';
 

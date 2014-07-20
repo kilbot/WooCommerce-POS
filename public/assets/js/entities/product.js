@@ -38,6 +38,25 @@ define(['app', 'paginator'], function(POS, PageableCollection){
 
 		});
 
+		Entities.VariationsCollection = Backbone.PageableCollection.extend({
+			model: Entities.Product,
+			mode: 'client',
+
+			state: {
+				pageSize: 5,
+			},
+
+			initialize: function( variations, parent ) {
+
+				// set some attributes from the parent
+				_(variations).forEach( function(variation) {
+					variation['type'] = 'variation';
+					variation['title'] = parent.get('title');
+					variation['categories'] = parent.get('categories');				
+				});
+			}
+		});
+
 		var API = {
 			getProductEntities: function() {
 				var products = new Entities.ProductCollection();

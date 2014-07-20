@@ -5,11 +5,11 @@ define(['app'], function(POS){
 		CartApp.startWithParent = false;
 
 		CartApp.onStart = function(){
-      		console.log('starting Cart');
+      		console.log('starting Cart Module');
     	};
 
     	CartApp.onStop = function(){
-			console.log('stopping Cart');
+			console.log('stopping Cart Module');
 		};
 
 	});
@@ -25,7 +25,7 @@ define(['app'], function(POS){
 		var executeAction = function(action, arg){
 			POS.startSubApp('CartApp');
 			action(arg);
-			POS.execute( 'set:active:header', 'cart' );
+			// POS.execute( 'set:active:header', 'cart' );
 		};
 
 		var API = {

@@ -2160,6 +2160,36 @@ table tfoot div.alert {
   background-image: url(../../../assets/bg-working.gif);
 }
 
+/* line 1, sass/partials/_filter_tabs.scss */
+#filter-tabs {
+  background-color: #d4d4d4;
+}
+/* line 3, sass/partials/_filter_tabs.scss */
+#filter-tabs ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* line 7, sass/partials/_filter_tabs.scss */
+#filter-tabs ul li {
+  display: inline-block;
+  background-color: white;
+  padding: 0.375em 0.75em;
+  margin: 0 1px 0 0;
+}
+/* line 12, sass/partials/_filter_tabs.scss */
+#filter-tabs ul li a {
+  color: #444444;
+}
+/* line 14, sass/partials/_filter_tabs.scss */
+#filter-tabs ul li a:hover {
+  color: #e54028;
+}
+/* line 18, sass/partials/_filter_tabs.scss */
+#filter-tabs ul li:active {
+  background-color: white;
+}
+
 /* line 4, sass/partials/_cart.scss */
 #cart table tbody input {
   text-align: center;
@@ -2200,6 +2230,29 @@ table tfoot div.alert {
 /* line 37, sass/partials/_cart.scss */
 #cart-notes {
   border: 0;
+}
+
+/* line 2, sass/partials/_numpad.scss */
+#numpad table {
+  margin: 0 -10px -10px 0;
+}
+/* line 4, sass/partials/_numpad.scss */
+#numpad table td {
+  border: 0;
+  padding: 0 10px 10px 0 !important;
+}
+/* line 7, sass/partials/_numpad.scss */
+#numpad table td button {
+  font-size: 24px;
+  line-height: 60px;
+  width: 60px;
+  padding: 0;
+  outline: 0;
+}
+/* line 13, sass/partials/_numpad.scss */
+#numpad table td button.return {
+  height: 100%;
+  font-size: 14px;
 }
 
 /* line 10, sass/partials/_component-animations.scss */
@@ -2519,7 +2572,6 @@ tbody.collapse.in {
   left: 0;
   z-index: 1010;
   display: none;
-  max-width: 276px;
   padding: 1px;
   text-align: left;
   background-color: white;

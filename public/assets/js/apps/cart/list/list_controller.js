@@ -40,8 +40,18 @@ define(['app', 'apps/cart/list/list_view'], function(POS, View){
 					/**
 					 * Listen for add events
 					 */
-					POS.on('cart:add', function(model) {
-						cartItems.create(model.attributes);
+					POS.commands.setHandler('cart:add', function(model) {
+
+						// if product already exists in cart, increase qty
+						if( _( cartItems.pluck('id') ).contains( model.attributes.id ) ) {
+							cartItems.get( model.attributes.id ).quantity('increase');
+						}
+
+						// else, add the product
+						else { 
+							cartItems.create(model.attributes);
+						}
+						
 					});
 
 					// display cartLayout

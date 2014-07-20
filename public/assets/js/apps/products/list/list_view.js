@@ -7,6 +7,7 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 
 			regions: {
 				filterRegion: '#filter',
+				tabsRegion: '#filter-tabs',
 				productsRegion: Marionette.Region.Transition.extend({
 					el: '#products',
 					concurrentTransition: true
@@ -47,7 +48,28 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 				_.isEmpty(query) ? this.ui.clearBtn.hide() : this.ui.clearBtn.show() ;
 			},
 		});
-		
+
+		/**
+		 * Filter Tabs
+		 */
+		View.FilterTab = Marionette.ItemView.extend({
+			tagName: 'li',
+			template: _.template('<a href="#"><i class="fa fa-times-circle action-remove"></i></a> <%= category %>: <%= value %>'),
+
+			events: {
+				'click .action-remove' : 'removeFilter'
+			},
+
+			removeFilter: function(e) {
+				this.trigger('filter:remove', this.model);
+			}
+		});
+
+		View.FilterTabs = Marionette.CollectionView.extend({
+			tagName: 'ul',
+			childView: View.FilterTab,
+		});
+
 		/**
 		 * Single Product
 		 */
@@ -71,7 +93,7 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 
 			addToCart: function(e) {
 				e.preventDefault();
-				this.trigger('product:add', this.model);
+				POS.execute( 'cart:add', this.model );
 			},
 
 			showVariations: function(e) {

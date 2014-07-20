@@ -14,8 +14,8 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 					var fetchingProducts = POS.request('product:entities');
 
 					// init Views
-					var productListLayout = new View.Layout();
-					var productListFilter = new View.Filter();
+					var productListLayout 	= new View.Layout();
+					var productListFilter 	= new View.Filter();
 
 					// when fetch complete, display the products
 					require(['entities/common', 'entities/search_parser'], function(FilteredCollection, SearchParser){
@@ -72,12 +72,17 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 								POS.trigger('products:filter', filterCriterion);
 							});
 
+							var productListTabs = new View.FilterTabs({
+								collection: searchParser
+							});
+
 							// show the productsRegion
 							productListLayout.on('show', function() {
 								productListLayout.filterRegion.show(productListFilter);
+								productListLayout.tabsRegion.show(productListTabs);
 								productListLayout.productsRegion.show(productListView);
 								productListLayout.paginationRegion.show(
-									// new View.Pagination({ collection: filteredProducts })
+									new View.Pagination({ collection: filteredProducts })
 								);
 							});
 
@@ -92,15 +97,21 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 							 * Slide in Variations
 							 */
 							productListView.on('childview:product:variations', function(childview, model) {
-								// create new collection based on parent id
-								console.log(model.attributes.variations);
-								var productVariations = new View.Variations({
-									collection: products 
+								// reset collection based on parent id
+								var productVariations = new POS.Entities.VariationsCollection( model.get('variations'), model );
+
+								var variationsView = new View.Variations({
+									collection: productVariations
 								});
-								productListLayout.productsRegion.show(productVariations);
+								productListLayout.productsRegion.show(variationsView);
 							});
 
-							
+							/**
+							 * Remove Filter
+							 */
+							productListTabs.on('childview:filter:remove', function(childview, model) {
+								model.destroy();
+							});
 
 							// show the leftRegion
 							POS.leftRegion.show(productListLayout);

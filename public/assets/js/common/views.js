@@ -30,20 +30,8 @@ define(['app', 'spin'], function(POS, Spinner){
 			}
 		});
 
-
 		Views.Numpad = Marionette.ItemView.extend({
-			template : _.template('<% _.each(keys, function(key){ %><button><%= key %></button><% }); %>'),
-
-			serializeData: function(){
-				return { keys: this.standardKeys };
-			},
-
-			standardKeys: [
-				'1', '2', '3', 'del',
-				'4', '5', '6', '+/-',
-				'7', '8', '9', '%',
-				'0', '00', '.', 'ret'
-			],
+			template : '#tmpl-numpad',
 
 			events: {
 				'click button' 	: 'btnPress',

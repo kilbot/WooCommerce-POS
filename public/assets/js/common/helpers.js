@@ -4,6 +4,14 @@ define(['app', 'handlebars', 'accounting'], function (POS, Handlebars, accountin
 	
 		accounting.settings = pos_params.accounting;
 
+		Handlebars.registerHelper('is', function (value, test, options) {
+			if (value === test) {
+				return options.fn(this);
+			} else {
+				return options.inverse(this);
+			}
+		});
+
 		Handlebars.registerHelper('money', function(num, options){
 
 			// round the number to even
