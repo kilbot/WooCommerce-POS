@@ -4,7 +4,7 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 
 		List.Controller = {
 			listProducts: function(criterion){
-				require(['common/views', 'entities/product'], function(){
+				require(['common/views', 'entities/product', 'entities/search_parser'], function(){
 
 					// loading view
 					var loadingView = new POS.Common.Views.Loading();
@@ -16,74 +16,45 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 					// init Views
 					var productListLayout 	= new View.Layout();
 					var productListFilter 	= new View.Filter();
+					var productListTabs 	= new View.FilterTabs();
+
+					// init the search query collection
+					var searchParser 		= new POS.Entities.SearchQuery();
 
 					// when fetch complete, display the products
-					require(['entities/common', 'entities/search_parser'], function(FilteredCollection, SearchParser){
-
-						// init the search query collection
-						var searchParser = new POS.Entities.SearchQuery();
+					require(['entities/common'], function(FilteredCollection){
 
 						$.when(fetchingProducts).done( function(products){
 
-							var filteredProducts = POS.Entities.FilteredCollection({
-								collection: products,
-
-								filterFunction: function(filterCriterion) {
-									var criterion = filterCriterion.toLowerCase();
-
-									// parse filterCriterion
-									var parsedQuery = POS.Entities.SearchParser.parse(filterCriterion);
-									searchParser.reset(parsedQuery);
-									
-									return function(product){
-
-										var categories = _.map( product.get('categories'), function(cat) { return cat.toLowerCase(); });
-
-										if(
-											// filter titles
-											product.get('title').toLowerCase().indexOf(searchParser.find('freetext')) !== -1 ||
-
-											// filter by id:
-											product.get('id') === parseInt( searchParser.find('id') ) ||
-
-											// filter by cat:
-											_.contains( categories, searchParser.find('cat') )
-
-										) {
-											return product;
-										}
-									}
-								}
-							});
-
 							if(criterion){
-								filteredProducts.filter(criterion);
+								products.parameters.set({ criterion: criterion });
 								productListFilter.once('show', function(){
 									productListFilter.triggerMethod('set:filter:criterion', criterion);
 								});
 							}
 
+							products.getPage(1);
 							var productListView = new View.Products({
-								collection: filteredProducts
+								collection: products
 							});
+							var productPaginationView = new View.Pagination({ 
+								collection: products 
+							})
 
 							productListFilter.on('products:filter', function(filterCriterion){
-								filteredProducts.filter(filterCriterion);
+								products.parameters.set({
+									page: 1,
+									criterion: filterCriterion
+								})
 								POS.trigger('products:filter', filterCriterion);
-							});
-
-							var productListTabs = new View.FilterTabs({
-								collection: searchParser
 							});
 
 							// show the productsRegion
 							productListLayout.on('show', function() {
-								productListLayout.filterRegion.show(productListFilter);
-								productListLayout.tabsRegion.show(productListTabs);
-								productListLayout.productsRegion.show(productListView);
-								productListLayout.paginationRegion.show(
-									new View.Pagination({ collection: filteredProducts })
-								);
+								productListLayout.filterRegion.show( productListFilter );
+								productListLayout.tabsRegion.show( productListTabs );
+								productListLayout.productsRegion.show( productListView );
+								productListLayout.paginationRegion.show( productPaginationView );
 							});
 
 							/**
@@ -104,6 +75,12 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 									collection: productVariations
 								});
 								productListLayout.productsRegion.show(variationsView);
+
+								// init a new pagination view with the variations
+								productPaginationView = new View.Pagination({ 
+									collection: productVariations 
+								})
+								productListLayout.paginationRegion.show( productPaginationView );
 							});
 
 							/**

@@ -11,6 +11,7 @@ define(['marionette'], function(Marionette){
     },
 
     concurrentTransition: false,
+    animateFirst: true,
 
     // This is queue manager code that doesn't belong in regions.
     // maybe when this transition region is in Marionette,

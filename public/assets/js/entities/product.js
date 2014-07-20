@@ -3,12 +3,27 @@ define(['app', 'paginator'], function(POS, PageableCollection){
 	POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
 		Entities.Product = Backbone.Model.extend({
-			urlRoot: pos_params.wc_api_url + 'products',
+			// urlRoot: pos_params.wc_api_url + 'products',
 		});
 
 		Entities.ProductCollection = Backbone.PageableCollection.extend({
 			url: pos_params.wc_api_url + 'products',
 			model: Entities.Product,
+
+			initialize: function(options) {
+				// this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
+				
+				options || (options = {});
+				this.parameters = options.parameters || new Backbone.Model({ page: 1 });
+
+				var self = this;
+				this.listenTo( this.parameters, 'change', function(model) {
+					if( _.has( model.changed, 'criterion' )) {
+						self.queryParams.filter['q'] = self.parameters.get('criterion');
+					}
+					self.getPage( parseInt( self.parameters.get('page') , 10 ) );
+				});
+			},
 
 			state: {
 				pageSize: 5,
@@ -17,7 +32,6 @@ define(['app', 'paginator'], function(POS, PageableCollection){
 			queryParams: {
 				pos: 1,
 				filter: {limit: 5},
-				totalPages: null,
 			},
 
 			parseState: function (resp, queryParams, state, options) {
@@ -47,6 +61,7 @@ define(['app', 'paginator'], function(POS, PageableCollection){
 			},
 
 			initialize: function( variations, parent ) {
+				this.on('all', function(e) { console.log("Variation Collection event: " + e); }); // debug
 
 				// set some attributes from the parent
 				_(variations).forEach( function(variation) {

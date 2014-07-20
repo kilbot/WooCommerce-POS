@@ -231,6 +231,6 @@ define(['app'], function(POS) {
 
 	});
 
-	return POS.Common.Entities;
+	return POS.Entities;
 
 });

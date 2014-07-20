@@ -10,10 +10,12 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 				tabsRegion: '#filter-tabs',
 				productsRegion: Marionette.Region.Transition.extend({
 					el: '#products',
-					concurrentTransition: true
+					concurrentTransition: true,
+					animateFirst: false
 				}),
 				paginationRegion: '#pagination'
-			}
+			},
+
 		});
 
 		/**
@@ -21,9 +23,10 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 		 */
 		View.Filter = Marionette.ItemView.extend({
 			template: '#tmpl-products-filter',
+			db: 'server', // local or server swicth
 
 			events: {
-				'keyup input[type=search]': 'search',
+				'keyup input[type=search]': 'searchTrigger',
 				'click a.clear'	: 'clear',
 			},
 
@@ -32,20 +35,28 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 				clearBtn 	: 'a.clear'
 			},
 
-			search: _.debounce( function(e) {
-				var query = this.ui.searchField.val();
-				this.showClearButtonMaybe( query );
-				this.trigger('products:filter', query);
+			// if idb make the query instantly
+			// else 
+			searchTrigger: function(e){
+				this.showClearButtonMaybe();
+				if(this.db === 'server' && e.keyCode !== 13) { return; }
+				this.search();
+			},
+
+			// actually make the query
+			search: _.debounce( function() {
+				this.trigger('products:filter', this.ui.searchField.val());
 			}, 149),
 
+			// clear the filter
 			clear: function(e) {
 				this.ui.searchField.val('');
 				this.trigger('products:filter', '');
-				this.showClearButtonMaybe('');
+				this.showClearButtonMaybe();
 			},
 
-			showClearButtonMaybe: function ( query ) {
-				_.isEmpty(query) ? this.ui.clearBtn.hide() : this.ui.clearBtn.show() ;
+			showClearButtonMaybe: function() {
+				_.isEmpty( this.ui.searchField.val() ) ? this.ui.clearBtn.hide() : this.ui.clearBtn.show() ;
 			},
 		});
 
@@ -123,11 +134,13 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			initialize: function() {
 				this.listenToOnce( this, 'animateIn', this.cssTearDown );
 				this.listenToOnce( this, 'animateOut', this.cssTearDown );
+
+				// this.on('all', function(e) { console.log("Product Collection View event: " + e); }); // debug
 			},
 
 			// Do some jQuery stuff, then, once you're done, trigger 'animateIn' to let the region
 			// know that you're done
-			animateIn: function() {
+			_animateIn: function() {
 				this.cssSetUp();
 				this.$el.animate(
 					{ 'right': 0 },
@@ -235,6 +248,29 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 		View.Pagination = Marionette.ItemView.extend({
 			template: Handlebars.compile( $('#tmpl-pagination').html() ),
 
+			initialize: function() {
+				this.on('all', function(e) { console.log("Pagination View event: " + e); }); // debug
+				this.listenTo( this.collection, 'sync reset', this.render );
+			},
+
+			serializeData: function(){
+				var state = _.clone(this.collection.state);
+
+				// calculate number of items on a page
+				if(state.currentPage === state.lastPage) {
+					state.currentRecords = state.totalRecords - (state.pageSize * (state.currentPage - 1));
+				}
+				else {
+					state.currentRecords = state.pageSize;
+				}
+
+				// no results
+				state.totalPages 	= state.totalPages ? state.totalPages : 1 ; 
+				state.totalRecords 	= state.totalRecords ? state.totalRecords : 0 ; 
+
+				return state;
+			},
+
 			events: {
 				'click a.prev'		: 'previous',
 				'click a.next'		: 'next',
@@ -242,28 +278,28 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 				'click a.destroy'	: 'clear',
 			},
 
-			previous: function() {
+			previous: function(e) {
+				e.preventDefault();
 				if(this.collection.hasPreviousPage()) {
 					this.collection.getPreviousPage();
 				}
-				return false;
 			},
 
-			next: function() {
+			next: function(e) {
+				e.preventDefault();
 				if(this.collection.hasNextPage()) {
 					this.collection.getNextPage();
 				}
-				return false;
 			},
 
-			sync: function() {
-				this.collection.serverSync();
-				return false;
+			sync: function(e) {
+				e.preventDefault();
+				console.log('execute server sync');
 			},
 
-			clear: function() {
-				this.collection.clear(); // clear the collection
-				return false;
+			clear: function(e) {
+				e.preventDefault();
+				console.log('execute database clear');
 			},
 
 		});

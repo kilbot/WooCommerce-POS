@@ -56,8 +56,8 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-pagination">
-	<a href="#" class="prev btn btn-default alignleft"><i class="fa fa-chevron-left"></i></a> 
-	<a href="#" class="next btn btn-default alignright"><i class="fa fa-chevron-right"></i></a>
+	<a href="#" class="prev btn btn-default alignleft {{#is currentPage 1}}disabled{{/is}}"><i class="fa fa-chevron-left"></i></a> 
+	<a href="#" class="next btn btn-default alignright {{#is currentPage lastPage}}disabled{{/is}}"><i class="fa fa-chevron-right"></i></a>
 	<small>
 		<?= sprintf( __( 'Page %s of %s', 'woocommerce-pos' ), '{{currentPage}}', '{{totalPages}}' ); ?>. 
 		<?= sprintf( __( 'Showing %s of %s products', 'woocommerce-pos' ), '{{currentRecords}}', '{{totalRecords}}' ); ?>.<br>
