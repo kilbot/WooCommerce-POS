@@ -13,13 +13,15 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 					// fetch products
 					var fetchingProducts = POS.request('product:entities');
 
+					// init the search query collection
+					var filterCollection = POS.request('filter:entities');
+
 					// init Views
 					var productListLayout 	= new View.Layout();
 					var productListFilter 	= new View.Filter();
-					var productListTabs 	= new View.FilterTabs();
-
-					// init the search query collection
-					var searchParser 		= new POS.Entities.SearchQuery();
+					var productListTabs 	= new View.FilterTabs({
+						collection: filterCollection
+					});
 
 					// when fetch complete, display the products
 					require(['entities/common'], function(FilteredCollection){
@@ -37,9 +39,6 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 							var productListView = new View.Products({
 								collection: products
 							});
-							var productPaginationView = new View.Pagination({ 
-								collection: products 
-							})
 
 							productListFilter.on('products:filter', function(filterCriterion){
 								products.parameters.set({
@@ -54,7 +53,6 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 								productListLayout.filterRegion.show( productListFilter );
 								productListLayout.tabsRegion.show( productListTabs );
 								productListLayout.productsRegion.show( productListView );
-								productListLayout.paginationRegion.show( productPaginationView );
 							});
 
 							/**
@@ -71,22 +69,28 @@ define(['app', 'apps/products/list/list_view'], function(POS, View){
 								// reset collection based on parent id
 								var productVariations = new POS.Entities.VariationsCollection( model.get('variations'), model );
 
-								var variationsView = new View.Variations({
-									collection: productVariations
+								var variationsView = new View.Products({
+									collection: productVariations,
+									slideIn: 'left',
 								});
-								productListLayout.productsRegion.show(variationsView);
+								productListLayout.productsRegion.show( variationsView );
 
-								// init a new pagination view with the variations
-								productPaginationView = new View.Pagination({ 
-									collection: productVariations 
-								})
-								productListLayout.paginationRegion.show( productPaginationView );
+								// add tab to the filter tabs
+								var parsedQuery = POS.Entities.SearchParser.parse('parent:' + model.get('id') );
+								filterCollection.reset(parsedQuery);
+
 							});
 
 							/**
 							 * Remove Filter
 							 */
 							productListTabs.on('childview:filter:remove', function(childview, model) {
+								if( model.get('category') === 'parent' ) {
+									var productListView = new View.Products({
+										collection: products
+									});
+									productListLayout.productsRegion.show( productListView );
+								}
 								model.destroy();
 							});
 

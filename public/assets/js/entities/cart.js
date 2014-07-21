@@ -12,8 +12,10 @@ define(['app',
 				items.fetch();
 				return items;
 			},
-			getCartTotals: function() {
-				var totals = new Entities.Totals({ id: 1 });
+			getCartTotals: function(cart) {
+				var cartId = 1;
+				var totals = new Entities.Totals({ id: cartId, cart: cart });
+				totals.fetch();
 				return totals;
 			}
 		};
@@ -22,8 +24,8 @@ define(['app',
 			return API.getCartItems();
 		});
 
-		POS.reqres.setHandler('cart:totals', function() {
-			return API.getCartTotals();
+		POS.reqres.setHandler('cart:totals', function(cart) {
+			return API.getCartTotals(cart);
 		});
 
 	});

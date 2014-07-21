@@ -11,7 +11,7 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 				productsRegion: Marionette.Region.Transition.extend({
 					el: '#products',
 					concurrentTransition: true,
-					animateFirst: false
+					animateOnPageLoad: false
 				}),
 				paginationRegion: '#pagination'
 			},
@@ -79,6 +79,11 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 		View.FilterTabs = Marionette.CollectionView.extend({
 			tagName: 'ul',
 			childView: View.FilterTab,
+
+			initialize: function() {
+				// this.on('all', function(e) { console.log("Tabs View event: " + e); }); // debug
+				this.listenTo( this.collection, 'add remove', this.render );
+			},
 		});
 
 		/**
@@ -127,76 +132,30 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			childView: View.Product,
 			emptyView: NoProductsView,
 
-			transitionInCss: {
-				'right': '100%'
-			},
-
-			initialize: function() {
-				this.listenToOnce( this, 'animateIn', this.cssTearDown );
-				this.listenToOnce( this, 'animateOut', this.cssTearDown );
-
+			initialize: function(options) {
 				// this.on('all', function(e) { console.log("Product Collection View event: " + e); }); // debug
-			},
+				
+				if( options.slideIn === 'left' ) {
+					this.transitionInCss = {'left': '100%'};
+					this.transitionToCss = {'left': 0};
+				}
+				else {
+					this.transitionInCss = {'right': '100%'};
+					this.transitionToCss = {'right': 0};
+				}
 
-			// Do some jQuery stuff, then, once you're done, trigger 'animateIn' to let the region
-			// know that you're done
-			_animateIn: function() {
-				this.cssSetUp();
-				this.$el.animate(
-					{ 'right': 0 },
-					400,
-					_.bind(this.trigger, this, 'animateIn')
-				);
-			},
-
-			// Same as above, except this time we trigger 'animateOut'
-			animateOut: function() {
-				this.cssSetUp();
-				this.$el.animate(
-					{ 'right': '100%' },
-					400,
-					_.bind(this.trigger, this, 'animateOut')
-				);
-			},
-
-			// add some css relevant to animation
-			cssSetUp: function() {
-				var height = this.$el.height();
-				this.$el.css({
-					'position': 'absolute',
-					'top': 0 
-				})
-				.parent().css({ 
-					'position': 'relative', 
-					'overflow': 'hidden',
-					'width': '100%',
-					'min-height': height
-				});
-			},
-
-			// remove the animation css
-			cssTearDown: function() {
-				this.$el.removeAttr('style').parent().removeAttr('style');
-			},
-
-		});
-
-		/**
-		 * Product Variations
-		 */
-		View.Variations = Marionette.CollectionView.extend({
-			tagName: 'ul',
-			className: 'variations list',
-			childView: View.Product,
-			emptyView: NoProductsView,
-
-			transitionInCss: {
-				'left': '100%',
-			},
-
-			initialize: function() {
 				this.listenToOnce( this, 'animateIn', this.cssTearDown );
 				this.listenToOnce( this, 'animateOut', this.cssTearDown );
+			},
+
+			onShow: function() {
+				// add pagination
+				var pagination = new View.Pagination({
+					collection: this.collection
+				});
+				
+				// hmm .. perhaps just append?
+				POS.leftRegion.currentView.paginationRegion.show(pagination);
 			},
 
 			// Do some jQuery stuff, then, once you're done, trigger 'animateIn' to let the region
@@ -204,7 +163,7 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			animateIn: function() {
 				this.cssSetUp();
 				this.$el.animate(
-					{ 'left': 0 },
+					this.transitionToCss,
 					400,
 					_.bind(this.trigger, this, 'animateIn')
 				);
@@ -214,7 +173,7 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			animateOut: function() {
 				this.cssSetUp();
 				this.$el.animate(
-					{ 'left': '100%' },
+					this.transitionInCss,
 					400,
 					_.bind(this.trigger, this, 'animateOut')
 				);
@@ -249,8 +208,12 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			template: Handlebars.compile( $('#tmpl-pagination').html() ),
 
 			initialize: function() {
-				this.on('all', function(e) { console.log("Pagination View event: " + e); }); // debug
-				this.listenTo( this.collection, 'sync reset', this.render );
+				// this.on('all', function(e) { console.log("Pagination View event: " + e); }); // debug
+				// this.listenTo( this.collection, 'sync reset', this.render );
+			},
+
+			collectionEvents: {
+				'sync reset': 'render'
 			},
 
 			serializeData: function(){

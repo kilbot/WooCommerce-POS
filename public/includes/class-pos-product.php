@@ -103,7 +103,6 @@ class WooCommerce_POS_Product {
 
 			// have to dive into the nested array .. nasty :(
 			foreach( $product_data['variations'] as &$variation ) {
-				// echo $variation['image'][0]['src'];
 				if( isset( $variation['image'][0]['src'] ) && $variation['image'][0]['src'] != $this->placeholder_img ) {
 					$variation['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $this->thumb_suffix.'$1', $variation['image'][0]['src']);
 				}

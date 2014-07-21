@@ -31,7 +31,7 @@ define(['app'], function(POS) {
 					originalQuery = query;
 					var field = this._extractNextField(query);
 					if (!field) {
-						category = this.FREETEXT_CAT;
+						category = FREETEXT_CAT;
 						value    = this._extractSearchText(query);
 						query    = this.trim(query.replace(value, ''));
 					} else if (field.indexOf(':') != -1) {
@@ -39,7 +39,7 @@ define(['app'], function(POS) {
 						value    = field.replace(this.CATEGORY, '').replace(/(^['"]|['"]$)/g, '');
 						query    = this.trim(query.replace(field, ''));
 					} else if (field.indexOf(':') == -1) {
-						category = this.FREETEXT_CAT;
+						category = FREETEXT_CAT;
 						value    = field;
 						query    = this.trim(query.replace(value, ''));
 					}
@@ -157,7 +157,7 @@ define(['app'], function(POS) {
 					return this.map(function(facet) {
 					if (!_.include(categories, facet.get('category').toLowerCase())) { 
 						return facet.serialize();
-					};
+					}
 				}).join(' ');
 			}
 
@@ -176,7 +176,7 @@ define(['app'], function(POS) {
 			serialize : function() {
 				var category = this.quoteCategory(this.get('category'));
 				var value    = Entities.SearchParser.trim(this.get('value'));
-				var remainder = this.FREETEXT_CAT;
+				var remainder = FREETEXT_CAT;
 
 				if (!value) return '';
 
@@ -228,6 +228,16 @@ define(['app'], function(POS) {
 
 		});
 
+		var API = {
+			getFilterEntities: function() {
+				var tabs = new Entities.SearchQuery();
+				return tabs;
+			}
+		};
+
+		POS.reqres.setHandler('filter:entities', function() {
+			return API.getFilterEntities();
+		});
 
 	});
 

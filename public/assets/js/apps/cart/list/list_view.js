@@ -21,9 +21,10 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput'], function
 			initialize: function( options ) {
 				// set the accounting settings
 				accounting.settings = this.params.accounting;
+			},
 
-				// listen for changes to CartItem model
-				this.listenTo( this.model, 'change', this.render );
+			modelEvents: {
+				'change': 'render'
 			},
 
 			events: {
@@ -118,12 +119,13 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput'], function
 			childViewContainer: 'tbody',
 			emptyView: NoCartItemsView,
 
-			// on any change, recalculate the totals
-			onRender: function() {
-				if( this.collection.length > 0 ) {
-					var cartTotals = new View.CartTotals({ el: this.$('tfoot') });
-					cartTotals.render();
-				} 
+			onShow: function() {
+				var cartTotals = POS.request('cart:totals', this.collection);
+				var cartTotalsView = new View.CartTotals({ 
+					model: cartTotals,
+					el: this.$('tfoot') 
+				});
+				cartTotalsView.render();
 			}
 
 			// onChildviewCartitemDelete: function() {
@@ -133,6 +135,10 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput'], function
 
 		View.CartTotals = Marionette.ItemView.extend({
 			template: Handlebars.compile( $('#tmpl-cart-totals').html() ),
+
+			modelEvents: {
+				'change': 'render'
+			},
 
 			events: {
 				'click' 	: 'addDiscount',
