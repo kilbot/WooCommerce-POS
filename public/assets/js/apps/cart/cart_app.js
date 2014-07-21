@@ -29,15 +29,25 @@ define(['app'], function(POS){
 		};
 
 		var API = {
-			listCartItems: function() {
+			listCartItems: function(options) {
+				options || ( options = { cartId: 1 } );
 				require(['apps/cart/list/list_controller'], function(ListController){
-					executeAction(ListController.listCartItems);
+					executeAction(ListController.listCartItems, options);
+				});
+			},
+			cartTotals: function(options) {
+				require(['apps/cart/totals/totals_controller'], function(TotalsController){
+					executeAction(TotalsController.showTotals, options);
 				});
 			}
 		};
 
-		POS.on( 'cart:list', function(){
+		this.listenTo( POS, 'cart:list', function(){
 			API.listCartItems();
+		});
+
+		this.listenTo( POS, 'cart:totals', function(options){
+			API.showTotals(options);
 		});
 
 		POS.addInitializer( function(){
