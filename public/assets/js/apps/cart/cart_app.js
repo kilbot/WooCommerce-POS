@@ -1,12 +1,10 @@
 define([
 	'app',
 	'apps/cart/list/list_controller',
-	'apps/cart/totals/totals_controller',
 	'apps/cart/customer/customer_controller'
 ], function(
 	POS, 
 	ListController,
-	TotalsController,
 	CustomerController
 ){
 	
@@ -32,21 +30,24 @@ define([
 			}
 		});
 
-		var startController = function(Controller, options){
+		var _getController = function(Controller, options){
 			POS.startSubApp('CartApp');
 			var controller = new Controller(options);
 			controller.listenTo(POS.CartApp, 'stop', function(){
 				controller.destroy();
 			});
+			return controller;
 		};
 
 		var API = {
 			listCartItems: function(options) {
 				options || ( options = { cartId: 1 } );
-				startController(ListController, options);
+				var controller = _getController(ListController, options);
+				controller.show();
 			},
 			showCustomer: function(region) {
-				startController(CustomerController, region);
+				var controller = _getController(CustomerController, region);
+				controller.show();
 			}
 		};
 

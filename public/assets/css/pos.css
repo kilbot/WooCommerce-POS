@@ -2235,6 +2235,10 @@ table tfoot div.alert {
 #cart-notes {
   border: 0;
 }
+/* line 39, sass/partials/_cart.scss */
+#cart-notes div::after {
+  content: ' ';
+}
 
 /* line 2, sass/partials/_numpad.scss */
 #numpad table {

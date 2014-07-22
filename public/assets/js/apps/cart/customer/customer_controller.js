@@ -8,11 +8,9 @@ define(['app', 'apps/cart/customer/customer_view'], function(POS, View){
 
 				this.region = options;
 
-				// 
-				this.customerRegion();
 			},
 
-			customerRegion: function() {
+			show: function() {
 
 				var view = new View.Customer();
 				this.region.show(view);

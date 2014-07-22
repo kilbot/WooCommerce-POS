@@ -1,4 +1,4 @@
-define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput'], function(POS, Handlebars, accounting){
+define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectText'], function(POS, Handlebars, accounting){
 
 	POS.module('CartApp.List.View', function(View, POS, Backbone, Marionette, $, _){
 
@@ -119,15 +119,6 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput'], function
 			childViewContainer: 'tbody',
 			emptyView: NoCartItemsView,
 
-			onShow: function() {
-				var cartTotals = POS.request('cart:totals', this.collection);
-				var cartTotalsView = new View.CartTotals({ 
-					model: cartTotals,
-					el: this.$('tfoot') 
-				});
-				cartTotalsView.render();
-			}
-
 			// onChildviewCartitemDelete: function() {
 			// 	console.log('test');
 			// }
@@ -137,15 +128,58 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput'], function
 			template: Handlebars.compile( $('#tmpl-cart-totals').html() ),
 
 			modelEvents: {
-				'change': 'render'
+				'sync': 'render'
 			},
 
 			events: {
-				'click' 	: 'addDiscount',
+				'click .order-discount' 	: 'edit',
+				'keypress .order-discount'	: 'saveOnEnter',
+				'blur .order-discount'		: 'save',
+			},
+
+			edit: function(e) {
+				var td = $(e.currentTarget).children('td');
+				td.attr('contenteditable','true').text( td.data('value') ).selectText();
+			},
+
+			save: function(e) {
+				var value = $(e.target).text();
+
+				// if empty, go back to zero
+				if( value === '' ) { value = 0; } 
+
+				// validate
+				if( isNaN( parseFloat( value ) ) ) {
+					$(e.target).selectText(); 
+					return;
+				}
+
+				// unformat number
+				var decimal = accounting.unformat( value, accounting.settings.number.decimal );				
+
+				// save
+				this.model.save({ order_discount: decimal });
+				// this.model.trigger('change:order_discount');
+			},
+
+			saveOnEnter: function(e) {
+
+				// save note on enter
+				if (e.which === 13) { 
+					e.preventDefault();
+					this.save(e);
+					// $(e.currentTarget).children('td').blur();
+				}
 			},
 
 			addDiscount: function() {
 				console.log('discount!');
+			},
+
+			showDiscountRow: function() {
+				// toggle discount row
+				td = this.$('.order-discount').show().children('td');
+				td.attr('contenteditable','true').text( td.data('value') ).selectText();
 			}
 		});
 
@@ -153,12 +187,44 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput'], function
 			template: _.template( $('#tmpl-cart-actions').html() ),
 
 			triggers: {
-				'click .action-void' 	: 'cart:void',
-				'click .action-note' 	: 'cart:note',
-				'click .action-discount': 'cart:discount',
-				'click .action-checkout': 'checkout:cart'
+				'click .action-void' 	: 'cart:void:clicked',
+				'click .action-note' 	: 'cart:note:clicked',
+				'click .action-discount': 'cart:discount:clicked',
+				'click .action-checkout': 'cart:checkout:clicked'
 			}
 
+		});
+
+		View.Notes = Marionette.ItemView.extend({
+			template: _.template( '<%= note %>' ),
+
+			events: {
+				'click' 	: 'edit',
+				'keypress'	: 'saveOnEnter',
+				'blur'		: 'save',
+			},
+
+			edit: function(e) {
+				this.$el.attr('contenteditable','true').focus();
+			},
+
+			save: function(e) {
+				var value = $(e.target).text();
+
+				// validate and save
+				this.model.save({ note: value });
+			},
+
+			saveOnEnter: function(e) {
+				// save note on enter
+				if (e.which === 13) { 
+					this.save(e);
+				}
+			},
+
+			showNoteField: function() {
+				this.$el.show().attr('contenteditable','true').focus();
+			}
 		});
 
 	});

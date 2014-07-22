@@ -13,30 +13,35 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 				// init layout
 				this.layout = new View.Layout();
 
-				// get cart items
+				// get cart items & totals
 				this.items = POS.request('cart:items');
+				this.totals = POS.request('cart:totals', this.items);
 
-				// show cart
-				this.showCart();
 			},
 			
-			showCart: function(){
+			show: function(){
 				
 				this.listenTo( this.layout, 'show', function() {
-					this.itemsRegion();
-					this.customerRegion();
-					this.actionsRegion();			
+					this._showItemsRegion();
+					this._showCustomerRegion();
+					this._showActionsRegion();
+					this._showNotesRegion();		
 				});
 
 				POS.rightRegion.show(this.layout);
 
 			},
 
-			itemsRegion: function(){
+			_showItemsRegion: function(){
 
 				// get cart view
 				var view = new View.CartItems({
 					collection: this.items
+				});
+
+				// on show, display totals
+				this.listenTo( view, 'render', function(itemsRegion) {
+					this._showTotalsRegion(itemsRegion);
 				});
 
 				// add cart item
@@ -60,38 +65,68 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 				this.layout.cartRegion.show( view );
 			},
 
-			customerRegion: function(){
+			_showTotalsRegion: function(itemsRegion) {
+				
+				var view = new View.CartTotals({ 
+					model: this.totals,
+					el: itemsRegion.$('tfoot') 
+				});
+
+				// toggle discount box
+				this.on( 'cart:discount:clicked', function() {
+					view.showDiscountRow();
+				});
+
+				view.render();
+			},
+
+			_showCustomerRegion: function(){
 				POS.execute('cart:customer', this.layout.cartCustomerRegion);
 			},
 
-			actionsRegion: function(){
+			_showActionsRegion: function(){
 
 				// get actions view
 				var view = new View.CartActions();
 
 				// void cart
-				this.listenTo( view, 'cart:void', function(args) {
+				this.listenTo( view, 'cart:void:clicked', function(args) {
 					_.invoke( this.items.toArray(), 'destroy' );
 				});
 
 				// add note
-				this.listenTo( view, 'cart:note', function(args) {
-					
+				this.listenTo( view, 'cart:note:clicked', function(args) {
+					this.trigger('cart:note:clicked');
 				});
 
 				// cart discount
-				this.listenTo( view, 'cart:discount', function(args) {
-					
+				this.listenTo( view, 'cart:discount:clicked', function(args) {
+					this.trigger('cart:discount:clicked');
 				});
 
 				// checkout
-				this.listenTo( view, 'checkout:cart', function(args) {
+				this.listenTo( view, 'cart:checkout:clicked', function(args) {
 					POS.execute('checkout:show');
 				});
 
 				// show
 				this.layout.cartActionsRegion.show( view );
-			}
+			},
+
+			_showNotesRegion: function() {
+
+				var view = new View.Notes({
+					model: this.totals
+				});
+
+				// toggle discount box
+				this.on( 'cart:note:clicked', function() {
+					view.showNoteField();
+				});
+
+				// show
+				this.layout.cartNotesRegion.show( view );
+			},
 
 		});
 

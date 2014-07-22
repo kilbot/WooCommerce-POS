@@ -28,18 +28,20 @@ define([
 			}
 		});
 
-		var startController = function(Controller, options){
+		var _getController = function(Controller, options){
 			POS.startSubApp('CheckoutApp');
-			var controller = new Controller(options);
-			controller.listenTo(POS.CheckoutApp, 'stop', function(){
-				controller.destroy();
+			var c = new Controller(options);
+			c.listenTo(POS.CheckoutApp, 'stop', function(){
+				c.destroy();
 			});
+			return c;
 		};
 
 		var API = {
 			showCheckout: function(options){
 				options || ( options = { cartId: 1 } );
-				startController(ShowController, options);
+				var c = _getController(ShowController, options);
+				c.show();
 			}
 		};
 

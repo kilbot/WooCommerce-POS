@@ -36,4 +36,7 @@
 
 #cart-notes {
     border: 0;
+    div::after {
+        content: ' '; // hack 
+    }
 }

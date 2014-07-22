@@ -12,23 +12,21 @@ define(['app', 'apps/checkout/show/show_view', 'common/views'], function(POS, Vi
 
 				// init layout
 				this.layout = new View.Layout();
-				
-				// show
-				this.showCheckout();
+
 			},
 
-			showCheckout: function(){
+			show: function(){
 				
 				this.listenTo( this.layout, 'show', function() {
-					this.paymentRegion();		
-					this.actionsRegion();		
+					this._showPaymentRegion();		
+					this._showActionsRegion();		
 				});
 
 				POS.rightRegion.show(this.layout);
 
 			},
 
-			paymentRegion: function(){
+			_showPaymentRegion: function(){
 				
 				// get payment view
 				var view = new View.Payment();
@@ -37,7 +35,7 @@ define(['app', 'apps/checkout/show/show_view', 'common/views'], function(POS, Vi
 				this.layout.paymentRegion.show( view );
 			},
 
-			actionsRegion: function(){
+			_showActionsRegion: function(){
 				
 				// get payment view
 				var view = new View.Actions();

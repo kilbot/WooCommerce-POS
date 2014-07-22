@@ -24,6 +24,7 @@ requirejs.config({
 
 		// Custom Plugins
 		autoGrowInput	: '../../../public/assets/js/src/jquery.autoGrowInput',
+		selectText	: '../../../public/assets/js/src/jquery.selectText',
 	},
 
 	shim: {
