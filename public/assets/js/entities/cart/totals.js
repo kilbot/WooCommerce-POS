@@ -35,13 +35,10 @@ define(['app', 'apps/config/storage/localstorage'], function(POS){
 					tax_rates 		= {};
 
 				// if cart is empty
-				if( this.length === 0 ) {
-
+				if( this.cart.length === 0 ) {
+					
 					// clear the cart totals
 					this.set( this.defaults, { silent: true });
-
-					// and bail
-					return;
 				}
 
 				// sum up the line totals
