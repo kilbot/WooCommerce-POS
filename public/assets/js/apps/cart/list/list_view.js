@@ -7,7 +7,7 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput'], function
 
 			regions: {
 				cartRegion: '#cart',
-				cartAccountRegion: '#cart-account',
+				cartCustomerRegion: '#cart-customer',
 				cartActionsRegion: '#cart-actions',
 				cartNotesRegion: '#cart-notes'
 			}
@@ -149,20 +149,14 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput'], function
 			}
 		});
 
-		View.CartAccount = Marionette.ItemView.extend({
-			template: _.template( $('#tmpl-cart-account').html() ),
-		});
-
 		View.CartActions = Marionette.ItemView.extend({
 			template: _.template( $('#tmpl-cart-actions').html() ),
 
-			events: {
-				'click .action-checkout' : 'showCheckout'
-			},
-
-			showCheckout: function() {
-				// this.trigger('checkout:show');
-				POS.execute('checkout:show')
+			triggers: {
+				'click .action-void' 	: 'cart:void',
+				'click .action-note' 	: 'cart:note',
+				'click .action-discount': 'cart:discount',
+				'click .action-checkout': 'checkout:cart'
 			}
 
 		});

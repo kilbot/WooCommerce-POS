@@ -1,87 +1,98 @@
-define(['app', 'apps/cart/list/list_view'], function(POS, View){
+define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'entities/cart'], function(POS, View){
 
 	POS.module('CartApp.List', function(List, POS, Backbone, Marionette, $, _){
 
-		var Controller = Marionette.Controller.extend({
+		List.Controller = Marionette.Controller.extend({
 
-			initialize: function() {
-				// layout
+			initialize: function(options) {
+
+				// loading view
+				var loadingView = new POS.Common.Views.Loading();
+				POS.rightRegion.show(loadingView);
+
+				// init layout
 				this.layout = new View.Layout();
+
+				// get cart items
+				this.items = POS.request('cart:items');
+
+				// show cart
+				this.showCart();
 			},
 			
-			listCartItems: function(options){
-				require(['common/views', 'common/helpers', 'entities/cart'], function(){
-
-					// loading view
-					var loadingView = new POS.Common.Views.Loading();
-					POS.rightRegion.show(loadingView);
-
-					// get cart items
-					var items = POS.request('cart:items');
-					
-					List.Controller.listenTo( List.Controller.layout, 'show', function() {
-						List.Controller.itemsRegion(items);						
-					});
-					POS.rightRegion.show(List.Controller.layout);
-
-
-					// /**
-					//  * Listen for delete events
-					//  */
-					// cartItemsList.on('childview:cartitem:delete', function(childview, model) {
-					// 	model.destroy();
-					// });
-
-					// /**
-					//  * Listen for Void
-					//  */
-					// cartActions.on('childview:cart:void', function(childview, model) {
-						
-					// });
-
-					// /**
-					//  * Listen for add events
-					//  */
-
-
-					
+			showCart: function(){
+				
+				this.listenTo( this.layout, 'show', function() {
+					this.itemsRegion();
+					this.customerRegion();
+					this.actionsRegion();			
 				});
+
+				POS.rightRegion.show(this.layout);
+
 			},
 
-			itemsRegion: function(items) {
+			itemsRegion: function(){
 
 				// get cart view
 				var view = new View.CartItems({
-					collection: items
+					collection: this.items
 				});
 
 				// add cart item
 				POS.commands.setHandler('cart:add', function(model) {
 					// if product already exists in cart, increase qty
-					if( _( items.pluck('id') ).contains( model.attributes.id ) ) {
-						items.get( model.attributes.id ).quantity('increase');
+					if( _( this.items.pluck('id') ).contains( model.attributes.id ) ) {
+						this.items.get( model.attributes.id ).quantity('increase');
 					}
 					// else, add the product
 					else { 
-						items.create(model.attributes);
+						this.items.create(model.attributes);
 					}
-				});
+				}, this);
 
 				// remove cart item
-				List.Controller.listenTo( view, 'childview:cartitem:delete', function(childview, model) {
+				this.listenTo( view, 'childview:cartitem:delete', function(childview, model) {
 					model.destroy();
 				});
 
 				// show
-				List.Controller.layout.cartRegion.show( view );
+				this.layout.cartRegion.show( view );
 			},
 
-		});
+			customerRegion: function(){
+				POS.execute('cart:customer', this.layout.cartCustomerRegion);
+			},
 
-		List.Controller = new Controller();
+			actionsRegion: function(){
 
-		List.Controller.listenTo(POS.CartApp, 'stop', function(){
-			List.Controller.destroy();
+				// get actions view
+				var view = new View.CartActions();
+
+				// void cart
+				this.listenTo( view, 'cart:void', function(args) {
+					_.invoke( this.items.toArray(), 'destroy' );
+				});
+
+				// add note
+				this.listenTo( view, 'cart:note', function(args) {
+					
+				});
+
+				// cart discount
+				this.listenTo( view, 'cart:discount', function(args) {
+					
+				});
+
+				// checkout
+				this.listenTo( view, 'checkout:cart', function(args) {
+					POS.execute('checkout:show');
+				});
+
+				// show
+				this.layout.cartActionsRegion.show( view );
+			}
+
 		});
 
 	});

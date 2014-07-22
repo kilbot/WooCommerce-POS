@@ -1,15 +1,21 @@
-define(['app', 'marionette'], function(POS, Marionette){
+define([
+	'app', 
+	'apps/checkout/show/show_controller'
+], function(
+	POS, 
+	ShowController
+){
 
 	POS.module('CheckoutApp', function(CheckoutApp, POS, Backbone, Marionette, $, _){
 
 		CheckoutApp.startWithParent = false;
 
 		CheckoutApp.onStart = function(){
-      		console.log('starting Checkout');
+      		console.log('starting Checkout Module');
     	};
 
     	CheckoutApp.onStop = function(){
-			console.log('stopping Checkout');
+			console.log('stopping Checkout Module');
 		};
 
 	});
@@ -22,12 +28,18 @@ define(['app', 'marionette'], function(POS, Marionette){
 			}
 		});
 
+		var startController = function(Controller, options){
+			POS.startSubApp('CheckoutApp');
+			var controller = new Controller(options);
+			controller.listenTo(POS.CheckoutApp, 'stop', function(){
+				controller.destroy();
+			});
+		};
+
 		var API = {
-			showCheckout: function(){
-				require(['apps/checkout/show/show_controller'], function(ShowController){
-					POS.startSubApp('CheckoutApp');
-					ShowController.showCheckout();
-				});
+			showCheckout: function(options){
+				options || ( options = { cartId: 1 } );
+				startController(ShowController, options);
 			}
 		};
 
@@ -43,5 +55,5 @@ define(['app', 'marionette'], function(POS, Marionette){
 
 	});
 
-	return POS.CheckoutAppRouter;
+	// return POS.CheckoutAppRouter;
 });

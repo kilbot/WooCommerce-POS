@@ -6,7 +6,7 @@
 
 <script type="text/template" id="tmpl-cart-layout">
 	<div id="cart"></div>
-	<div id="cart-account"></div>
+	<div id="cart-customer"></div>
 	<div id="cart-actions"></div>
 	<div id="cart-notes"></div>
 </script>
@@ -92,7 +92,7 @@
 	</tr>
 </script>
 
-<script type="text/x-handlebars-template" id="tmpl-cart-account">
+<script type="text/x-handlebars-template" id="tmpl-cart-customer">
 	<?php _e( 'Customer', 'woocommerce-pos' ); ?>:
 	<input type="hidden" id="select-customer" style="width:200px" value="{{ customer_id }}" data-customer="{{ customer_name }}" data-nonce="<?= wp_create_nonce( 'search-customers' ) ?>">
 </script>
@@ -101,7 +101,7 @@
 	<button class="btn btn-danger action-void alignleft">
 		<?php _e( 'Void', 'woocommerce-pos' ); ?> 
 	</button>
-	<button class="btn btn-primary action-note action-hi">
+	<button class="btn btn-primary action-note">
 		<?php _e( 'Note', 'woocommerce-pos' ); ?> 
 	</button>
 	<button class="btn btn-primary action-discount">

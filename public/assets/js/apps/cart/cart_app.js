@@ -1,4 +1,14 @@
-define(['app'], function(POS){
+define([
+	'app',
+	'apps/cart/list/list_controller',
+	'apps/cart/totals/totals_controller',
+	'apps/cart/customer/customer_controller'
+], function(
+	POS, 
+	ListController,
+	TotalsController,
+	CustomerController
+){
 	
 	POS.module('CartApp', function(CartApp, POS, Backbone, Marionette, $, _){
 
@@ -22,23 +32,21 @@ define(['app'], function(POS){
 			}
 		});
 
-		var executeAction = function(action, arg){
+		var startController = function(Controller, options){
 			POS.startSubApp('CartApp');
-			action(arg);
-			// POS.execute( 'set:active:header', 'cart' );
+			var controller = new Controller(options);
+			controller.listenTo(POS.CartApp, 'stop', function(){
+				controller.destroy();
+			});
 		};
 
 		var API = {
 			listCartItems: function(options) {
 				options || ( options = { cartId: 1 } );
-				require(['apps/cart/list/list_controller'], function(ListController){
-					executeAction(ListController.listCartItems, options);
-				});
+				startController(ListController, options);
 			},
-			cartTotals: function(options) {
-				require(['apps/cart/totals/totals_controller'], function(TotalsController){
-					executeAction(TotalsController.showTotals, options);
-				});
+			showCustomer: function(region) {
+				startController(CustomerController, region);
 			}
 		};
 
@@ -46,8 +54,8 @@ define(['app'], function(POS){
 			API.listCartItems();
 		});
 
-		this.listenTo( POS, 'cart:totals', function(options){
-			API.showTotals(options);
+		POS.commands.setHandler( 'cart:customer', function(region) {
+			API.showCustomer(region)
 		});
 
 		POS.addInitializer( function(){
@@ -58,5 +66,4 @@ define(['app'], function(POS){
 
 	});
 
-	return POS.CartAppRouter;
 });

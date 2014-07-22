@@ -2221,7 +2221,7 @@ table tfoot div.alert {
 }
 
 /* line 28, sass/partials/_cart.scss */
-#cart-account, #cart-actions, #cart-notes {
+#cart-customer, #cart-actions, #cart-notes {
   padding: 0.75em;
   border-bottom: 1px solid #d4d4d4;
 }
@@ -2257,6 +2257,12 @@ table tfoot div.alert {
 #numpad table td button.return {
   height: 100%;
   font-size: 14px;
+}
+
+/* line 1, sass/partials/_checkout.scss */
+#checkout-actions {
+  text-align: right;
+  padding: 0.75em;
 }
 
 /* line 10, sass/partials/_component-animations.scss */

@@ -1,4 +1,4 @@
- define(['marionette', 'apps/config/marionette/regions/modal'], function(Marionette){
+define(['marionette', 'apps/config/marionette/regions/modal'], function(Marionette){
 	
 	var POS = new Marionette.Application();
 
@@ -30,9 +30,7 @@
 		}
 
 		POS.currentApp = currentApp;
-			if( currentApp ){
-			currentApp.start( args );
-		}
+		currentApp.start( args );
 	};
 
 	POS.on('start', function(){
