@@ -6,6 +6,14 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 
 			initialize: function(options) {
 
+				// set cartId
+				var id = options.cartId;
+				if(0 === id % (!isNaN(parseFloat(id)) && 0 <= ~~id)) {
+					this.cartId = id;
+				} else {
+					this.cartId = 1;
+				}
+
 				// loading view
 				var loadingView = new POS.Common.Views.Loading();
 				POS.rightRegion.show(loadingView);
@@ -14,18 +22,17 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 				this.layout = new View.Layout();
 
 				// get cart items & totals
-				this.items = POS.request('cart:items');
-				this.totals = POS.request('cart:totals', this.items);
+				this.items = POS.request('cart:items', { cartId: this.cartId });
+				this.totals = POS.request('cart:totals', { id: this.cartId, cart: this.items });
+
+				this.listenTo( this.items, 'add remove', this._showOrHideCart );
 
 			},
 			
 			show: function(){
 				
 				this.listenTo( this.layout, 'show', function() {
-					this._showItemsRegion();
-					this._showCustomerRegion();
-					this._showActionsRegion();
-					this._showNotesRegion();		
+					this._showItemsRegion();		
 				});
 
 				POS.rightRegion.show(this.layout);
@@ -41,7 +48,8 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 
 				// on show, display totals
 				this.listenTo( view, 'render', function(itemsRegion) {
-					this._showTotalsRegion(itemsRegion);
+					this.totalsRegion = itemsRegion.$('tfoot');
+					this._initCart();
 				});
 
 				// add cart item
@@ -65,11 +73,31 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 				this.layout.cartRegion.show( view );
 			},
 
-			_showTotalsRegion: function(itemsRegion) {
+			_initCart: function() {
+				if( this.items.length > 0 ) {
+					this._showTotalsRegion();
+					this._showCustomerRegion();
+					this._showActionsRegion();
+					this._showNotesRegion();
+				}
+			},
+
+			_showOrHideCart: function() {
+
+				if( this.items.length === 1 ) {
+					this._initCart();
+				}
+				else if( this.items.length === 0 ) {
+					this._emptyCart();
+				}
+			
+			},
+
+			_showTotalsRegion: function() {
 				
 				var view = new View.CartTotals({ 
 					model: this.totals,
-					el: itemsRegion.$('tfoot') 
+					el: this.totalsRegion
 				});
 
 				// toggle discount box
@@ -106,7 +134,7 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 
 				// checkout
 				this.listenTo( view, 'cart:checkout:clicked', function(args) {
-					POS.execute('checkout:show');
+					POS.execute('checkout:show', this.cartId);
 				});
 
 				// show
@@ -127,6 +155,12 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 				// show
 				this.layout.cartNotesRegion.show( view );
 			},
+
+			_emptyCart: function() {
+				// return cart to inital state
+				this.layout = new View.Layout();
+				this.show();
+			}
 
 		});
 

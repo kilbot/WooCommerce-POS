@@ -1,9 +1,8 @@
-define(['app', 'accounting', 'apps/config/storage/localstorage'], function(POS, accounting){
+define(['app', 'accounting'], function(POS, accounting){
 
 	POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
 		Entities.CartItem = Backbone.Model.extend({
-			urlRoot: 'cart',
 
 			defaults : {
 				'display_price'		: 0,
@@ -18,7 +17,7 @@ define(['app', 'accounting', 'apps/config/storage/localstorage'], function(POS, 
 			},
 			params: pos_params,
 
-			initialize: function() { 
+			initialize: function(options) { 
 				// this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
 
 				// set the accounting settings
@@ -232,8 +231,6 @@ define(['app', 'accounting', 'apps/config/storage/localstorage'], function(POS, 
 			},
 
 		});
-
-		Entities.configureStorage(Entities.CartItem);
 
 	});
 

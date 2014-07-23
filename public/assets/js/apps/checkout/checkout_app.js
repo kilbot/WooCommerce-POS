@@ -24,7 +24,7 @@ define([
 	
 		CheckoutAppRouter.Router = Marionette.AppRouter.extend({
 			appRoutes: {
-				'checkout' : 'showCheckout'
+				'checkout/:id' : 'showCheckout'
 			}
 		});
 
@@ -38,14 +38,19 @@ define([
 		};
 
 		var API = {
-			showCheckout: function(options){
-				options || ( options = { cartId: 1 } );
+			showCheckout: function(id){
+				id ? options = { cartId: id } : options = {};
 				var c = _getController(ShowController, options);
 				c.show();
 			}
 		};
 
-		POS.commands.setHandler('checkout:show', function(){
+		POS.commands.setHandler('checkout:show', function(id){
+			if(id) {
+				POS.navigate('checkout/' + id);
+			} else {
+				POS.navigate('checkout');
+			}
 			API.showCheckout();
 		});
 

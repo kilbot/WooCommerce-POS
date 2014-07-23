@@ -1,21 +1,28 @@
-define(['app', 'entities/cart/item', 'apps/config/storage/localstorage'], function(POS){
+define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 
 	POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
 		Entities.CartItemCollection = Backbone.Collection.extend({
-			url: 'cart',
+
+			// url: function() {
+			// 	return 'cart-' + this.cartId;
+			// },
+			
 			model: Entities.CartItem,
 
 			initialize: function(models, options) { 
-				// this.on('all', function(e) { console.log("Cart Items event: " + e); }); // debug
+				// this.on('all', function(e) { console.log("Cart Items event: " + e); }); // debug				
 				
-				// listen to cart collection
-				this.listenTo( this, 'add change remove reset', this.updateTotals );
+				this.localStorage = new Backbone.LocalStorage( 'cart-' + options.cartId );
+
 			},
+
+
 
 		});
 
-		Entities.configureStorage(Entities.CartItemCollection);
+		// this gets mixed before initialize is called :(
+		// Entities.configureStorage(Entities.CartItemCollection);
 
 	});
 

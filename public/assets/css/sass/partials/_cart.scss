@@ -25,15 +25,17 @@
     }
 } 
 
-#cart-customer, #cart-actions, #cart-notes {
+#cart-customer div, #cart-actions div, #cart-notes div {
     padding: $vspacing/2;
     border-bottom: 1px solid $border-dark;
 }
 
-#cart-actions {
+#cart-actions div {
     text-align: right;
+    border: 0;
 }
 
-#cart-notes {
+#cart-notes div {
     border: 0;
+    border-top: 1px solid $border-dark;
 }

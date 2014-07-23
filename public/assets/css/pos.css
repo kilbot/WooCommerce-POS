@@ -2221,19 +2221,21 @@ table tfoot div.alert {
 }
 
 /* line 28, sass/partials/_cart.scss */
-#cart-customer, #cart-actions, #cart-notes {
+#cart-customer div, #cart-actions div, #cart-notes div {
   padding: 0.75em;
   border-bottom: 1px solid #d4d4d4;
 }
 
 /* line 33, sass/partials/_cart.scss */
-#cart-actions {
+#cart-actions div {
   text-align: right;
+  border: 0;
 }
 
-/* line 37, sass/partials/_cart.scss */
-#cart-notes {
+/* line 38, sass/partials/_cart.scss */
+#cart-notes div {
   border: 0;
+  border-top: 1px solid #d4d4d4;
 }
 
 /* line 2, sass/partials/_numpad.scss */

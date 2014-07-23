@@ -15,11 +15,11 @@ define(['app', 'apps/config/storage/localstorage'], function(POS){
 
 			initialize: function(options) {
 				// this.on('all', function(e) { console.log("Cart Totals Model event: " + e); }); // debug
-				
+
 				this.cart = options.cart;
 
 				// update totals on change to the cart items
-				this.listenTo( this.cart, 'add change remove reset', this.updateTotals );
+				this.listenTo( options.cart, 'add change remove reset', this.updateTotals );
 				this.listenTo( this, 'change:order_discount', this.updateTotals );
 
 			},
@@ -38,7 +38,7 @@ define(['app', 'apps/config/storage/localstorage'], function(POS){
 				if( this.cart.length === 0 ) {
 					
 					// clear the cart totals
-					this.set( this.defaults, { silent: true });
+					this.save( this.defaults, { silent: true });
 				}
 
 				// sum up the line totals
@@ -66,7 +66,7 @@ define(['app', 'apps/config/storage/localstorage'], function(POS){
 					tax_rates = this.tax_rates();
 					_.each(tax_rates, function(tax, key) {
 						var tax_sum = 0;
-						tax_sum = _.reduce( _.compact( this.pluck( 'line_tax_' + key ) ), function(memo, num){ return memo + num; }, 0 );
+						tax_sum = _.reduce( _.compact( this.cart.pluck( 'line_tax_' + key ) ), function(memo, num){ return memo + num; }, 0 );
 						if( tax_sum !== 0 ) {
 							itemized_tax[tax.label] = tax_sum;
 						}

@@ -32,27 +32,32 @@ define([
 
 		var _getController = function(Controller, options){
 			POS.startSubApp('CartApp');
-			var controller = new Controller(options);
-			controller.listenTo(POS.CartApp, 'stop', function(){
-				controller.destroy();
+			var c = new Controller(options);
+			c.listenTo(POS.CartApp, 'stop', function(){
+				c.destroy();
 			});
-			return controller;
+			return c;
 		};
 
 		var API = {
-			listCartItems: function(options) {
-				options || ( options = { cartId: 1 } );
-				var controller = _getController(ListController, options);
-				controller.show();
+			listCartItems: function(id) {
+				id ? options = { cartId: id } : options = {};
+				var c = _getController(ListController, options);
+				c.show();
 			},
 			showCustomer: function(region) {
-				var controller = _getController(CustomerController, region);
-				controller.show();
+				var c = _getController(CustomerController, region);
+				c.show();
 			}
 		};
 
-		this.listenTo( POS, 'cart:list', function(){
-			API.listCartItems();
+		this.listenTo( POS, 'cart:list', function(id){
+			if(id) {
+				POS.navigate('cart/' + id);
+			} else {
+				POS.navigate('');
+			}
+			API.listCartItems(id);
 		});
 
 		POS.commands.setHandler( 'cart:customer', function(region) {

@@ -7,25 +7,24 @@ define(['app',
 	POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
 		var API = {
-			getCartItems: function() {
-				var items = new Entities.CartItemCollection();
+			getCartItems: function(options) {
+				var items = new Entities.CartItemCollection([], options);
 				items.fetch();
 				return items;
 			},
-			getCartTotals: function(cart) {
-				var cartId = 1;
-				var totals = new Entities.Totals({ id: cartId, cart: cart });
+			getCartTotals: function(options) {
+				var totals = new Entities.Totals(options);
 				totals.fetch();
 				return totals;
 			}
 		};
 
-		POS.reqres.setHandler('cart:items', function() {
-			return API.getCartItems();
+		POS.reqres.setHandler('cart:items', function(options) {
+			return API.getCartItems(options);
 		});
 
-		POS.reqres.setHandler('cart:totals', function(cart) {
-			return API.getCartTotals(cart);
+		POS.reqres.setHandler('cart:totals', function(options) {
+			return API.getCartTotals(options);
 		});
 
 	});

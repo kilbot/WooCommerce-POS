@@ -10,7 +10,8 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectTe
 				cartCustomerRegion: '#cart-customer',
 				cartActionsRegion: '#cart-actions',
 				cartNotesRegion: '#cart-notes'
-			}
+			},
+
 		});
 		
 		View.CartItem = Marionette.ItemView.extend({
@@ -54,7 +55,8 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectTe
 				POS.numpadRegion.show(numpad);
 			},
 
-			removeFromCart: function() {
+			removeFromCart: function(e) {
+				e.preventDefault();
 				this.trigger('cartitem:delete', this.model);
 			},
 
@@ -118,6 +120,10 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectTe
 			childView: View.CartItem,
 			childViewContainer: 'tbody',
 			emptyView: NoCartItemsView,
+
+			initialize: function() {
+				// this.on('all', function(e) { console.log("Cart Items View event: " + e); }); // debug
+			}
 
 			// onChildviewCartitemDelete: function() {
 			// 	console.log('test');
@@ -186,6 +192,10 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectTe
 		View.CartActions = Marionette.ItemView.extend({
 			template: _.template( $('#tmpl-cart-actions').html() ),
 
+			initialize: function() {
+				// this.on('all', function(e) { console.log("Cart Actions View event: " + e); }); // debug
+			},
+
 			triggers: {
 				'click .action-void' 	: 'cart:void:clicked',
 				'click .action-note' 	: 'cart:note:clicked',
@@ -198,10 +208,24 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectTe
 		View.Notes = Marionette.ItemView.extend({
 			template: _.template( '<%= note %>' ),
 
+			modelEvents: {
+				'change:note': 'render'
+			},
+
 			events: {
 				'click' 	: 'edit',
 				'keypress'	: 'saveOnEnter',
 				'blur'		: 'save',
+			},
+
+			onShow: function() {
+				this.showOrHide();
+			},
+
+			showOrHide: function() {
+				if( this.model.get('note') === '' ) {
+					this.$el.parent('#cart-notes').hide();
+				}
 			},
 
 			edit: function(e) {
@@ -209,21 +233,25 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectTe
 			},
 
 			save: function(e) {
-				var value = $(e.target).text();
+				var value = this.$el.text();
 
 				// validate and save
 				this.model.save({ note: value });
+				this.$el.attr('contenteditable','false');
+				this.showOrHide();
 			},
 
 			saveOnEnter: function(e) {
 				// save note on enter
 				if (e.which === 13) { 
-					this.save(e);
+					e.preventDefault();
+					this.$el.blur();
 				}
 			},
 
 			showNoteField: function() {
-				this.$el.show().attr('contenteditable','true').focus();
+				this.$el.parent('#cart-notes').show();
+				this.$el.attr('contenteditable','true').focus();
 			}
 		});
 
