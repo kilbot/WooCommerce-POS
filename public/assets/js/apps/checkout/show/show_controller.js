@@ -6,6 +6,14 @@ define(['app', 'apps/checkout/show/show_view', 'common/views'], function(POS, Vi
 
 			initialize: function(options) {
 
+				// set cartId
+				var id = options.cartId;
+				if(0 === id % (!isNaN(parseFloat(id)) && 0 <= ~~id)) {
+					this.cartId = id;
+				} else {
+					this.cartId = 1;
+				}
+
 				// loading view
 				var loadingView = new POS.Common.Views.Loading();
 				POS.rightRegion.show(loadingView);

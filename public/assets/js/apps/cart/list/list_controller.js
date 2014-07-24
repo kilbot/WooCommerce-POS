@@ -1,4 +1,13 @@
-define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'entities/cart'], function(POS, View){
+define([
+	'app',
+	'apps/cart/list/list_view', 
+	'entities/cart',
+	'common/views', 
+	'common/helpers'
+], function(
+	POS, 
+	View
+){
 
 	POS.module('CartApp.List', function(List, POS, Backbone, Marionette, $, _){
 
@@ -20,6 +29,7 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 
 				// init layout
 				this.layout = new View.Layout();
+				this.layout.cartTotalsRegion = ''; // cartTotalsRegion is a fake region
 
 				// get cart items & totals
 				this.items = POS.request('cart:items', { cartId: this.cartId });
@@ -46,14 +56,16 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 					collection: this.items
 				});
 
-				// on show, display totals
-				this.listenTo( view, 'render', function(itemsRegion) {
-					this.totalsRegion = itemsRegion.$('tfoot');
+				// on show, add totals child view
+				this.listenTo( view, 'render', function(itemsView) {
+					this.layout.cartTotalsRegion = itemsView.$('tfoot');
+					this._showTotalsRegion();
 					this._initCart();
 				});
 
 				// add cart item
-				POS.commands.setHandler('cart:add', function(model) {
+				this.listenTo( POS, 'cart:add', function(model) {
+
 					// if product already exists in cart, increase qty
 					if( _( this.items.pluck('id') ).contains( model.attributes.id ) ) {
 						this.items.get( model.attributes.id ).quantity('increase');
@@ -75,29 +87,38 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 
 			_initCart: function() {
 				if( this.items.length > 0 ) {
-					this._showTotalsRegion();
 					this._showCustomerRegion();
 					this._showActionsRegion();
 					this._showNotesRegion();
+				}
+				else {
+					this.layout.cartTotalsRegion.hide();
 				}
 			},
 
 			_showOrHideCart: function() {
 
 				if( this.items.length === 1 ) {
+					this.layout.cartTotalsRegion.show();
 					this._initCart();
 				}
 				else if( this.items.length === 0 ) {
+					this.layout.cartTotalsRegion.hide();
 					this._emptyCart();
 				}
 			
 			},
 
-			_showTotalsRegion: function() {
-				
+			_showTotalsRegion: function(totalsRegion) {
+
 				var view = new View.CartTotals({ 
 					model: this.totals,
-					el: this.totalsRegion
+					el: this.layout.cartTotalsRegion
+				});
+
+				// clean up if itemsView is removed
+				this.listenTo( this, 'before:destroy', function(e){
+					view.destroy();
 				});
 
 				// toggle discount box
@@ -118,23 +139,23 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 				var view = new View.CartActions();
 
 				// void cart
-				this.listenTo( view, 'cart:void:clicked', function(args) {
+				this.listenTo( view, 'cart:void:clicked', function() {
 					_.invoke( this.items.toArray(), 'destroy' );
 				});
 
 				// add note
-				this.listenTo( view, 'cart:note:clicked', function(args) {
+				this.listenTo( view, 'cart:note:clicked', function() {
 					this.trigger('cart:note:clicked');
 				});
 
 				// cart discount
-				this.listenTo( view, 'cart:discount:clicked', function(args) {
+				this.listenTo( view, 'cart:discount:clicked', function() {
 					this.trigger('cart:discount:clicked');
 				});
 
 				// checkout
-				this.listenTo( view, 'cart:checkout:clicked', function(args) {
-					POS.execute('checkout:show', this.cartId);
+				this.listenTo( view, 'cart:checkout:clicked', function() {
+					POS.trigger('checkout:show', this.cartId);
 				});
 
 				// show
@@ -158,8 +179,9 @@ define(['app', 'apps/cart/list/list_view', 'common/views', 'common/helpers', 'en
 
 			_emptyCart: function() {
 				// return cart to inital state
-				this.layout = new View.Layout();
-				this.show();
+				this.layout.cartCustomerRegion.empty();
+				this.layout.cartActionsRegion.empty();
+				this.layout.cartNotesRegion.empty();
 			}
 
 		});

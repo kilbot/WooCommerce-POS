@@ -45,9 +45,9 @@
 		{{/is}}
 	</div>
 	{{#is type 'variable'}}
-		<div class="action"><a class="btn btn-success btn-circle action-variations" href="#products/parent/{{id}}"><i class="fa fa-chevron-right"></i></a></div>
+		<div class="action"><a class="btn btn-success btn-circle action-variations" href="#"><i class="fa fa-chevron-right"></i></a></div>
 	{{else}}
-		<div class="action"><a class="btn btn-success btn-circle action-add" href="#cart/add/{{id}}"><i class="fa fa-plus"></i></a></div>
+		<div class="action"><a class="btn btn-success btn-circle action-add" href="#"><i class="fa fa-plus"></i></a></div>
 	{{/is}}
 </script>
 

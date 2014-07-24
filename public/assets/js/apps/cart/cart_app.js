@@ -26,7 +26,7 @@ define([
 
 		CartAppRouter.Router = Marionette.AppRouter.extend({
 			appRoutes: {
-				'cart/:id' : 'listCartItems'
+				'cart/:id' : 'list'
 			}
 		});
 
@@ -40,12 +40,12 @@ define([
 		};
 
 		var API = {
-			listCartItems: function(id) {
+			list: function(id) {
 				id ? options = { cartId: id } : options = {};
 				var c = _getController(ListController, options);
 				c.show();
 			},
-			showCustomer: function(region) {
+			showCustomerRegion: function(region) {
 				var c = _getController(CustomerController, region);
 				c.show();
 			}
@@ -57,11 +57,22 @@ define([
 			} else {
 				POS.navigate('');
 			}
-			API.listCartItems(id);
+			API.list(id);
+		});
+
+		this.listenTo( POS, 'cart:add', function(model){
+			// console.log(POS.CartApp);
+
+			// if(CartApp) {
+			// 	console.log();
+			// }
+			// else {
+			// 	console.log('Cart Module is not open');
+			// }
 		});
 
 		POS.commands.setHandler( 'cart:customer', function(region) {
-			API.showCustomer(region)
+			API.showCustomerRegion(region)
 		});
 
 		POS.addInitializer( function(){

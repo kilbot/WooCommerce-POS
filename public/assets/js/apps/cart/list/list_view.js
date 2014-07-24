@@ -61,8 +61,10 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectTe
 			},
 
 			remove: function() {
+				this.$el.parent('tbody').addClass('animating');
 				var self = this;
 				this.$el.fadeOut( 300, function() {
+					self.$el.parent('tbody').removeClass('animating');
 					Marionette.ItemView.prototype.remove.call(self);
 				});
 			},
@@ -112,6 +114,7 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectTe
 
 		var NoCartItemsView = Marionette.ItemView.extend({
 			tagName: 'tr',
+			className: 'empty',
 			template: '#tmpl-cart-empty',
 		});
 

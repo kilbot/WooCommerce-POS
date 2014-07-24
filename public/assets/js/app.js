@@ -1,6 +1,15 @@
-define(['marionette', 'apps/config/marionette/regions/modal'], function(Marionette){
+define([
+	'marionette', 
+	'apps/config/marionette/regions/modal'
+], function(
+	Marionette
+){
 	
 	var POS = new Marionette.Application();
+
+	POS.on('initialize:before', function() {
+		POS.environment = options.environment;
+	});
 
 	POS.addRegions({
 		headerRegion: '#header',
@@ -35,22 +44,17 @@ define(['marionette', 'apps/config/marionette/regions/modal'], function(Marionet
 
 	POS.on('start', function(){
 		if(Backbone.history){
-			require([
-				'apps/products/products_app', 			// products
-				'apps/cart/cart_app',					// cart
-				'apps/checkout/checkout_app'			// checkout
-			], function () {
-				Backbone.history.start();
 
-				// show products 
-				POS.trigger('products:list');
+			Backbone.history.start();
 
-				if(POS.getCurrentRoute() === ''){
+			// show products 
+			POS.module('ProductsApp').start();
 
-					// default to cart
-					POS.trigger('cart:list');
-				}
-			});
+			if(POS.getCurrentRoute() === ''){
+
+				// default to cart
+				POS.trigger('cart:list');
+			}
 		}
 	});
 

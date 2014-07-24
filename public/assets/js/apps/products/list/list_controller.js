@@ -1,108 +1,94 @@
-define(['app', 'apps/products/list/list_view'], function(POS, View){
+define([
+	'app', 
+	'apps/products/list/list_view',
+	'common/views',
+	'entities/products',
+], function(
+	POS, 
+	View
+){
 
 	POS.module('ProductsApp.List', function(List, POS, Backbone, Marionette, $, _){
 
-		List.Controller = {
-			listProducts: function(criterion){
-				require(['common/views', 'entities/product', 'entities/search_parser'], function(){
+		List.Controller = Marionette.Controller.extend({
 
-					// loading view
-					var loadingView = new POS.Common.Views.Loading();
-					POS.leftRegion.show(loadingView);
+			initialize: function(options) {
 
-					// fetch products
-					var fetchingProducts = POS.request('product:entities');
+				// loading view
+				var loadingView = new POS.Common.Views.Loading();
+				POS.leftRegion.show(loadingView);
 
-					// init the search query collection
-					var filterCollection = POS.request('filter:entities');
+				// init layout
+				this.layout = new View.Layout();
 
-					// init Views
-					var productListLayout 	= new View.Layout();
-					var productListFilter 	= new View.Filter();
-					var productListTabs 	= new View.FilterTabs({
-						collection: filterCollection
-					});
+			},
 
-					// when fetch complete, display the products
-					require(['entities/common'], function(FilteredCollection){
+			show: function() {
 
-						$.when(fetchingProducts).done( function(products){
+				// fetch products
+				var fetchingProducts = POS.request('product:entities');
 
-							if(criterion){
-								products.parameters.set({ criterion: criterion });
-								productListFilter.once('show', function(){
-									productListFilter.triggerMethod('set:filter:criterion', criterion);
-								});
-							}
-
-							products.getPage(1);
-							var productListView = new View.Products({
-								collection: products
-							});
-
-							productListFilter.on('products:filter', function(filterCriterion){
-								products.parameters.set({
-									page: 1,
-									criterion: filterCriterion
-								})
-								POS.trigger('products:filter', filterCriterion);
-							});
-
-							// show the productsRegion
-							productListLayout.on('show', function() {
-								productListLayout.filterRegion.show( productListFilter );
-								productListLayout.tabsRegion.show( productListTabs );
-								productListLayout.productsRegion.show( productListView );
-							});
-
-							/**
-							 * Add to Cart
-							 */
-							productListView.on('childview:product:add', function(childview, model) {
-								POS.trigger('cart:add', model);
-							});
-
-							/**
-							 * Slide in Variations
-							 */
-							productListView.on('childview:product:variations', function(childview, model) {
-								// reset collection based on parent id
-								var productVariations = new POS.Entities.VariationsCollection( model.get('variations'), model );
-
-								var variationsView = new View.Products({
-									collection: productVariations,
-									slideIn: 'left',
-								});
-								productListLayout.productsRegion.show( variationsView );
-
-								// add tab to the filter tabs
-								var parsedQuery = POS.Entities.SearchParser.parse('parent:' + model.get('id') );
-								filterCollection.reset(parsedQuery);
-
-							});
-
-							/**
-							 * Remove Filter
-							 */
-							productListTabs.on('childview:filter:remove', function(childview, model) {
-								if( model.get('category') === 'parent' ) {
-									var productListView = new View.Products({
-										collection: products
-									});
-									productListLayout.productsRegion.show( productListView );
-								}
-								model.destroy();
-							});
-
-							// show the leftRegion
-							POS.leftRegion.show(productListLayout);
-						});	
-
-					});
-
+				this.listenTo( this.layout, 'show', function() {
+					this._showFilterRegion();		
+					this._showTabsRegion();		
+					this._showProductsRegion(this.products);		
+					this._showPaginationRegion();		
 				});
-			}
-		};
+
+				var self = this;
+				$.when(fetchingProducts).done( function(products){
+					self.products = products;
+					POS.leftRegion.show(self.layout);
+				});
+
+			},
+
+			_showFilterRegion: function() {
+
+				var view = new View.Filter();
+
+				// show
+				this.layout.filterRegion.show( view );
+			},
+
+			_showTabsRegion: function() {
+
+				var tabs = new Backbone.Collection([ 
+					{ category: 'label', value: 'All' },  
+					{ category: 'cat', value: 'Albums' },  
+					{ category: 'id', value: '3|6|9' },  
+				]);
+
+				var view = new View.Tabs({
+					collection: tabs
+				});
+
+				// show
+				this.layout.tabsRegion.show( view );
+			},
+
+			_showProductsRegion: function(products) {
+
+				products.getPage(1);
+				var view = new View.Products({
+					collection: products
+				});
+
+				this.listenTo( view, 'childview:cart:add:clicked', function(childview, args) {
+					POS.trigger('cart:add', args.model);
+				});
+
+				// show
+				this.layout.productsRegion.show( view );
+
+			},
+
+			_showPaginationRegion: function() {
+
+			},
+
+		});
+		
 	});
 
 	return POS.ProductsApp.List.Controller;

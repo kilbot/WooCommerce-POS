@@ -63,7 +63,7 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 		/**
 		 * Filter Tabs
 		 */
-		View.FilterTab = Marionette.ItemView.extend({
+		View.Tab = Marionette.ItemView.extend({
 			tagName: 'li',
 			template: _.template('<a href="#"><i class="fa fa-times-circle action-remove"></i></a> <%= category %>: <%= value %>'),
 
@@ -76,9 +76,9 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			}
 		});
 
-		View.FilterTabs = Marionette.CollectionView.extend({
+		View.Tabs = Marionette.CollectionView.extend({
 			tagName: 'ul',
-			childView: View.FilterTab,
+			childView: View.Tab,
 
 			initialize: function() {
 				// this.on('all', function(e) { console.log("Tabs View event: " + e); }); // debug
@@ -94,9 +94,9 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			template: Handlebars.compile( $('#tmpl-product').html() ),
 			className: function(){ if( this.isVariable() ) return 'variable' },
 
-			events: {
-				'click .action-add' 	: 'addToCart',
-				'click .action-variations' 	: 'showVariations'
+			triggers: {
+				'click .action-add' 		: 'cart:add:clicked',
+				'click .action-variations' 	: 'product:variations:clicked'
 			},
 
 			onBeforeRender: function(){
@@ -107,15 +107,6 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 				if( this.model.get('type') === 'variable' ) { return true; }
 			},
 
-			addToCart: function(e) {
-				e.preventDefault();
-				POS.execute( 'cart:add', this.model );
-			},
-
-			showVariations: function(e) {
-				e.preventDefault();
-				this.trigger('product:variations', this.model);
-			}
 		});
 
 		/**

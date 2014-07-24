@@ -57,6 +57,11 @@ requirejs.config({
 	}
 });
 
-require(['app'], function(POS){
+require([
+	'app',
+	'apps/products/products_app',
+	'apps/cart/cart_app',
+	'apps/checkout/checkout_app'
+], function(POS){
 	POS.start();
 });

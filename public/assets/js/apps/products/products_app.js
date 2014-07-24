@@ -1,11 +1,34 @@
-define(['app'], function(POS){
+define([
+	'app',
+	'apps/products/list/list_controller'
+], function(
+	POS,
+	ListController
+){
 	
 	POS.module('ProductsApp', function(ProductsApp, POS, Backbone, Marionette, $, _){
 
 		ProductsApp.startWithParent = false;
 
+		var _getController = function(Controller, options){
+			var c = new Controller(options);
+			c.listenTo(POS.ProductsApp, 'stop', function(){
+				c.destroy();
+			});
+			return c;
+		};
+
+		var API = {
+			list: function(id){
+				id ? options = { cartId: id } : options = {};
+				var c = _getController(ListController, options);
+				c.show();
+			}
+		};
+
 		ProductsApp.onStart = function(){
       		console.log('starting Products Module');
+      		API.list();
     	};
 
     	ProductsApp.onStop = function(){
@@ -14,38 +37,4 @@ define(['app'], function(POS){
 
 	});
 
-	POS.module('Routers.ProductsApp', function(ProductsAppRouter, POS, Backbone, Marionette, $, _){
-
-		// ProductsAppRouter.Router = Marionette.AppRouter.extend({
-		// 	appRoutes: {
-		// 		'products' : 'listProducts'
-		// 	}
-		// });
-
-		var executeAction = function(action, arg){
-			POS.ProductsApp.start();
-			action(arg);
-		};
-
-		var API = {
-			listProducts: function() {
-				require(['apps/products/list/list_controller'], function(ListController){
-					executeAction(ListController.listProducts);
-				});
-			}
-		};
-
-		POS.on( 'products:list', function(){
-			API.listProducts();
-		});
-
-		// POS.addInitializer( function(){
-		// 	new ProductsAppRouter.Router({
-		// 		controller: API
-		// 	});
-		// });
-
-	});
-
-	return POS.ProductsAppRouter;
 });

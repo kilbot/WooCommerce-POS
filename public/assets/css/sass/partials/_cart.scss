@@ -21,6 +21,11 @@
                     cursor: pointer;
                 }
             }
+            &.animating {
+                tr.empty {
+                    display: none;
+                }
+            }
         }
     }
 } 
