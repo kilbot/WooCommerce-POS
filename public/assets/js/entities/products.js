@@ -61,7 +61,7 @@ define(['app', 'paginator'], function(POS, PageableCollection){
 			},
 
 			initialize: function( variations, parent ) {
-				this.on('all', function(e) { console.log("Variation Collection event: " + e); }); // debug
+				// this.on('all', function(e) { console.log("Variation Collection event: " + e); }); // debug
 
 				// set some attributes from the parent
 				_(variations).forEach( function(variation) {
@@ -100,11 +100,20 @@ define(['app', 'paginator'], function(POS, PageableCollection){
 				});
 
 				return defer.promise();
-			} 
+			},
+
+			getProductVariations: function(model){
+				return new Entities.VariationsCollection(model.get('variations'), model);
+			}
+
 		};
 
 		POS.reqres.setHandler('product:entities', function() {
 			return API.getProductEntities();
+		});
+
+		POS.reqres.setHandler('product:variations', function(model) {
+			return API.getProductVariations(model);
 		});
 
 	});

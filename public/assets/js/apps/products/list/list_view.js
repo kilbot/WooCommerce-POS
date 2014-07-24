@@ -67,13 +67,11 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			tagName: 'li',
 			template: _.template('<a href="#"><i class="fa fa-times-circle action-remove"></i></a> <%= category %>: <%= value %>'),
 
-			events: {
-				'click .action-remove' : 'removeFilter'
+			triggers: {
+				'click': 'tab:clicked',
+				'click .action-remove': 'tab:remove:clicked'
 			},
 
-			removeFilter: function(e) {
-				this.trigger('filter:remove', this.model);
-			}
 		});
 
 		View.Tabs = Marionette.CollectionView.extend({
@@ -137,16 +135,6 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 
 				this.listenToOnce( this, 'animateIn', this.cssTearDown );
 				this.listenToOnce( this, 'animateOut', this.cssTearDown );
-			},
-
-			onShow: function() {
-				// add pagination
-				var pagination = new View.Pagination({
-					collection: this.collection
-				});
-				
-				// hmm .. perhaps just append?
-				POS.leftRegion.currentView.paginationRegion.show(pagination);
 			},
 
 			// Do some jQuery stuff, then, once you're done, trigger 'animateIn' to let the region
@@ -225,11 +213,14 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 				return state;
 			},
 
+			triggers: {
+				'click a.sync'		: 'pagination:sync:clicked',
+				'click a.destroy'	: 'pagination:clear:clicked',
+			},
+
 			events: {
 				'click a.prev'		: 'previous',
 				'click a.next'		: 'next',
-				'click a.sync'		: 'sync',
-				'click a.destroy'	: 'clear',
 			},
 
 			previous: function(e) {
@@ -244,16 +235,6 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 				if(this.collection.hasNextPage()) {
 					this.collection.getNextPage();
 				}
-			},
-
-			sync: function(e) {
-				e.preventDefault();
-				console.log('execute server sync');
-			},
-
-			clear: function(e) {
-				e.preventDefault();
-				console.log('execute database clear');
 			},
 
 		});
