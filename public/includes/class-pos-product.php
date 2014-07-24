@@ -115,27 +115,14 @@ class WooCommerce_POS_Product {
 		// if taxable, get the tax_rates array
 		if( $product_data['taxable'] ) {
 
-			// if we have rates already 
-			if( isset($this->tax_rates[$product_data['tax_class']]) ) {
-				$tax_rates = $this->tax_rates[$product_data['tax_class']];
-			}
-
-			// else, get the rates and store them
-			else {
-				$tax = new WC_Tax();
-				$base = get_option( 'woocommerce_default_country' );
-				if ( strstr( $base, ':' ) ) {
-					list( $country, $state ) = explode( ':', $base );
-				} else {
-					$country = $base;
-					$state = '';
+			$product_data['tax_rates'] = $this->get_tax_rates( $product_data['tax_class'] );
+			
+			// if variable we have to add tax rates for variations as well
+			if( $product_data['type'] == 'variable' ) {
+				foreach( $product_data['variations'] as &$variation ) {
+					$variation['tax_rates'] = $this->get_tax_rates( $variation['tax_class'] );
 				}
-				$tax_rates = $tax->find_rates( array( 'country' => $country, 'state' => $state, 'tax_class' => $product_data['tax_class'] ) );
-				$this->tax_rates[$product_data['tax_class']] = $tax_rates;
 			}
-
-			$product_data['tax_rates'] = $tax_rates;
-			// error_log( print_R( $tax_rates, TRUE ) ); //debug
 		}
 
 		// add special key for barcode, defaults to sku
@@ -174,6 +161,32 @@ class WooCommerce_POS_Product {
 		}
 
 		return $product_data;
+	}
+
+	/**
+	 * [get_tax_rates description]
+	 * @return [type] [description]
+	 */
+	public function get_tax_rates( $tax_class = '' ) {
+
+		if( isset($this->tax_rates[$tax_class]) ) {
+			return $this->tax_rates[$tax_class];
+		} 
+
+		else {
+			$tax = new WC_Tax();
+			$base = get_option( 'woocommerce_default_country' );
+			if ( strstr( $base, ':' ) ) {
+				list( $country, $state ) = explode( ':', $base );
+			} else {
+				$country = $base;
+				$state = '';
+			}
+			$tax_rates = $tax->find_rates( array( 'country' => $country, 'state' => $state, 'tax_class' => $tax_class ) );
+			$this->tax_rates[$tax_class] = $tax_rates;
+			return $tax_rates;
+		}
+
 	}
 
 }
