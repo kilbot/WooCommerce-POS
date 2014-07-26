@@ -17,6 +17,7 @@ define(['app',
 					products.fetch({
 						success: function(data, models) {
 							// console.log(data);
+							data.filterCollection = data.fullCollection.clone();
 						},
 						error: function(data) {
 							// console.log(data);

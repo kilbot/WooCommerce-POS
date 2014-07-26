@@ -91,44 +91,6 @@ class WooCommerce_POS_Product {
 	 */
 	public function filter_product_response( $product_data, $product, $fields, $server ) {
 
-		// use thumbnails for images or placeholder
-		if( $product_data['featured_src'] ) {
-			$product_data['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $this->thumb_suffix.'$1', $product_data['featured_src']);
-		} else {
-			$product_data['featured_src'] = $this->placeholder_img;
-		}
-
-		// use thumbnails for variations as well
-		if( $product_data['type'] == 'variable' ) {
-
-			// have to dive into the nested array .. nasty :(
-			foreach( $product_data['variations'] as &$variation ) {
-				if( isset( $variation['image'][0]['src'] ) && $variation['image'][0]['src'] != $this->placeholder_img ) {
-					$variation['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $this->thumb_suffix.'$1', $variation['image'][0]['src']);
-				}
-				else {
-					$variation['featured_src'] = $this->placeholder_img;
-				}
-			}
-		}
-		
-		// if taxable, get the tax_rates array
-		if( $product_data['taxable'] ) {
-
-			$product_data['tax_rates'] = $this->get_tax_rates( $product_data['tax_class'] );
-			
-			// if variable we have to add tax rates for variations as well
-			if( $product_data['type'] == 'variable' ) {
-				foreach( $product_data['variations'] as &$variation ) {
-					$variation['tax_rates'] = $this->get_tax_rates( $variation['tax_class'] );
-				}
-			}
-		}
-
-		// add special key for barcode, defaults to sku
-		// TODO: add an option for any meta field
-		$product_data['barcode'] = $product_data['sku'];
-
 		// remove some unnecessary keys
 		// - saves storage space in IndexedDB
 		// - saves bandwidth transferring the data
@@ -142,8 +104,8 @@ class WooCommerce_POS_Product {
 			'download_limit',
 			'download_type',
 			'downloads',
-			// 'images',
-			'parent',
+			'image',
+			'images',
 			'rating_count',
 			'related_ids',
 			'reviews_allowed',
@@ -158,6 +120,52 @@ class WooCommerce_POS_Product {
 		);
 		foreach($removeKeys as $key) {
 			unset($product_data[$key]);
+		}
+
+		// use thumbnails for images or placeholder
+		if( $product_data['featured_src'] ) {
+			$product_data['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $this->thumb_suffix.'$1', $product_data['featured_src']);
+		} else {
+			$product_data['featured_src'] = $this->placeholder_img;
+		}
+
+		// if taxable, get the tax_rates array
+		if( $product_data['taxable'] ) {
+			$product_data['tax_rates'] = $this->get_tax_rates( $product_data['tax_class'] );
+		}
+
+		// add special key for barcode, defaults to sku
+		// TODO: add an option for any meta field
+		$product_data['barcode'] = $product_data['sku'];
+
+		// deep dive on variations
+		if( $product_data['type'] == 'variable' ) {
+
+			foreach( $product_data['variations'] as &$variation ) {
+
+				// remove keys
+				foreach($removeKeys as $key) {
+					unset($variation[$key]);
+				}
+
+				// add taxes
+				if( $product_data['taxable'] ) {
+					$variation['tax_rates'] = $this->get_tax_rates( $variation['tax_class'] );
+				}
+
+				// add featured_src
+				if( isset( $variation['image'][0]['src'] ) && $variation['image'][0]['src'] != $this->placeholder_img ) {
+					$variation['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $this->thumb_suffix.'$1', $variation['image'][0]['src']);
+				}
+				else {
+					$variation['featured_src'] = $this->placeholder_img;
+				}
+
+				// add special key for barcode, defaults to sku
+				// TODO: add an option for any meta field
+				$variation['barcode'] = $variation['sku'];
+
+			}
 		}
 
 		return $product_data;

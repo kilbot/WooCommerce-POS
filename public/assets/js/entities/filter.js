@@ -230,13 +230,20 @@ define(['app'], function(POS) {
 
 		var API = {
 			getFilterEntities: function() {
-				var tabs = new Entities.SearchQuery();
-				return tabs;
+				// a collection of filter facets
+				return new Entities.SearchQuery();
+			},
+			getFilterFacets: function(query) {
+				return Entities.SearchParser.parse(query);
 			}
 		};
 
 		POS.reqres.setHandler('filter:entities', function() {
 			return API.getFilterEntities();
+		});
+
+		POS.reqres.setHandler('filter:facets', function(query) {
+			return API.getFilterFacets(query);
 		});
 
 	});

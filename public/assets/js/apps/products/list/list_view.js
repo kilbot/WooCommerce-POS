@@ -44,13 +44,13 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 
 			// actually make the query
 			search: _.debounce( function() {
-				this.trigger('products:filter', this.ui.searchField.val());
+				this.trigger('products:filter:query', this.ui.searchField.val());
 			}, 149),
 
 			// clear the filter
 			clear: function(e) {
 				this.ui.searchField.val('');
-				this.trigger('products:filter', '');
+				this.trigger('products:filter:query', '');
 				this.showClearButtonMaybe();
 			},
 

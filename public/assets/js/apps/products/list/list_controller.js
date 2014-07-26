@@ -45,11 +45,9 @@ define([
 
 				var view = new View.Filter({ collection: products });
 
-				this.listenTo( view, 'products:filter', function(filterCriterion){
-					products.parameters.set({
-						page: 1,
-						criterion: filterCriterion
-					})
+				this.listenTo( view, 'products:filter:query', function(filterCriterion){
+					var filter = POS.request('filter:facets', filterCriterion);
+					products.filterEntities.reset(filter);
 				});
 
 				// show
