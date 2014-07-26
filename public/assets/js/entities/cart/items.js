@@ -17,8 +17,6 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 
 			},
 
-
-
 		});
 
 		// this gets mixed before initialize is called :(

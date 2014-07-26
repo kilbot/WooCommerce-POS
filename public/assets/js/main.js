@@ -11,6 +11,7 @@ requirejs.config({
 		backbone	: '../../../bower_components/backbone/backbone',
 		marionette	: '../../../bower_components/marionette/lib/backbone.marionette',
 		handlebars 	: '../../../bower_components/handlebars/handlebars.min',
+		indexeddb 	: '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
 		localstorage: '../../../bower_components/backbone.localstorage/backbone.localStorage',
 		paginator 	: '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
 		accounting 	: '../../../bower_components/accounting/accounting.min',
@@ -21,6 +22,7 @@ requirejs.config({
 		tooltip 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip',
 		popover 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover',
 		spin 		: '../../../bower_components/spinjs/spin',
+		select2 	: '../../../bower_components/select2/select2.min',
 
 		// Custom Plugins
 		autoGrowInput	: '../../../public/assets/js/src/jquery.autoGrowInput',
@@ -59,6 +61,7 @@ requirejs.config({
 
 require([
 	'app',
+	'entities/options',
 	'apps/products/products_app',
 	'apps/cart/cart_app',
 	'apps/checkout/checkout_app'

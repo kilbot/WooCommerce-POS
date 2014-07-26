@@ -23,7 +23,6 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 		 */
 		View.Filter = Marionette.ItemView.extend({
 			template: '#tmpl-products-filter',
-			db: 'server', // local or server swicth
 
 			events: {
 				'keyup input[type=search]': 'searchTrigger',
@@ -39,7 +38,7 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			// else 
 			searchTrigger: function(e){
 				this.showClearButtonMaybe();
-				if(this.db === 'server' && e.keyCode !== 13) { return; }
+				if(this.collection.mode === 'server' && e.keyCode !== 13) { return; }
 				this.search();
 			},
 
@@ -197,6 +196,11 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 
 			serializeData: function(){
 				var state = _.clone(this.collection.state);
+
+				if(Modernizr.indexeddb) {
+					var last_update = new Date( parseInt( POS.request('options:get', 'last_update') ) );
+					state.last_update = last_update.getTime() > 0 ? last_update.toLocaleTimeString() : ' - ' ;
+				}
 
 				// calculate number of items on a page
 				if(state.currentPage === state.lastPage) {

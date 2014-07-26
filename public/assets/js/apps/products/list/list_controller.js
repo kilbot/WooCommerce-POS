@@ -43,7 +43,7 @@ define([
 
 			_showFilterView: function(products) {
 
-				var view = new View.Filter();
+				var view = new View.Filter({ collection: products });
 
 				this.listenTo( view, 'products:filter', function(filterCriterion){
 					products.parameters.set({
@@ -82,7 +82,6 @@ define([
 
 			_showProductsRegion: function(products) {
 
-				products.getPage(1);
 				var view = new View.Products({
 					collection: products
 				});
@@ -133,12 +132,15 @@ define([
 					collection: products
 				});
 
-				this.listenTo( view, 'pagination:sync:clicked', function(childview, args) {
-					console.log('sync');
+				this.listenTo( view, 'pagination:sync:clicked', function(args) {
+					// POS.execute('options:set', 'last_update', Date.now() );
+					POS.execute('product:sync');
+					args.view.render();
 				});
 
-				this.listenTo( view, 'pagination:clear:clicked', function(childview, args) {
-					console.log('clear');
+				this.listenTo( view, 'pagination:clear:clicked', function(args) {
+					POS.execute('options:set', 'last_update', '' );
+					args.view.render();
 				});
 				
 				// show
