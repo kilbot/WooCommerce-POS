@@ -1804,7 +1804,7 @@ table tfoot div.alert {
 /* line 7, sass/partials/_filter_tabs.scss */
 #filter-tabs ul li {
   display: inline-block;
-  background-color: white;
+  background-color: #e4e4e4;
   padding: 0.375em 0.75em;
   margin: 0 1px 0 0;
   cursor: pointer;

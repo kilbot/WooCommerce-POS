@@ -16,6 +16,7 @@ requirejs.config({
 		paginator 	: '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
 		accounting 	: '../../../bower_components/accounting/accounting.min',
 		transitionRegion: '../../../bower_components/marionette.transition-region/marionette.transition-region',
+		hbs 		: '../../../bower_components/hbs/hbs',
 
 		// Plugins
 		modal 		: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal',

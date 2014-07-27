@@ -3,7 +3,8 @@ define([
 	'paginator', 
 	'entities/products/db', 
 	'entities/products/product',
-	'entities/filter'
+	'entities/filter',
+	'entities/products/tabs',
 ], function(
 	POS, 
 	PageableCollection
@@ -18,6 +19,7 @@ define([
 			mode: 'client',
 
 			filterEntities: POS.request('filter:entities'),
+			tabEntities: POS.request('tab:entities'),
 
 			state: {
 				pageSize: 5,
@@ -28,6 +30,11 @@ define([
 
 				this.listenTo( this.filterEntities, 'reset', function(e) {
 					this._filterProducts();
+				}, this);
+
+				this.listenTo( this.tabEntities, 'change:active', function(model) {
+					var filter = POS.request('filter:facets', model.get('filter'));
+					this.filterEntities.reset(filter);
 				}, this);
 
 			},

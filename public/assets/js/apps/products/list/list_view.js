@@ -1,4 +1,13 @@
-define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], function(POS, Handlebars){
+define([
+	'app', 
+	'handlebars', 
+	'hbs!apps/products/list/templates/tabs',
+	'apps/config/marionette/regions/transition'
+], function(
+	POS, 
+	Handlebars,
+	TabsTmpl
+){
 
 	POS.module('ProductsApp.List.View', function(View, POS, Backbone, Marionette, $, _){
 
@@ -64,7 +73,10 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 		 */
 		View.Tab = Marionette.ItemView.extend({
 			tagName: 'li',
-			template: _.template('<a href="#"><i class="fa fa-times-circle action-remove"></i></a> <%= category %>: <%= value %>'),
+			template: TabsTmpl,
+			className: function() {
+				if( this.model.get('active') ) { return 'active'; }
+			},
 
 			triggers: {
 				'click': 'tab:clicked',
@@ -77,10 +89,10 @@ define(['app', 'handlebars', 'apps/config/marionette/regions/transition'], funct
 			tagName: 'ul',
 			childView: View.Tab,
 
-			initialize: function() {
-				// this.on('all', function(e) { console.log("Tabs View event: " + e); }); // debug
-				this.listenTo( this.collection, 'add remove', this.render );
+			collectionEvents: {
+				'change:active': 'render'
 			},
+			
 		});
 
 		/**

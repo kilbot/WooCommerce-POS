@@ -1,4 +1,5 @@
 define(['app', 
+	'entities/products/tabs', 
 	'entities/products/product', 
 	'entities/products/products', 
 	'entities/products/product_variations',
@@ -9,6 +10,9 @@ define(['app',
 
 	POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
+		/**
+		 * API
+		 */
 		var API = {
 
 			getProductEntities: function() {
@@ -80,10 +84,11 @@ define(['app',
 				_startWorker();
 			},
 
-
-
 		};
 
+		/**
+		 * Handlers
+		 */
 		POS.reqres.setHandler('product:entities', function() {
 			return API.getProductEntities();
 		});
@@ -100,7 +105,6 @@ define(['app',
 		/**
 		 * Server Sync
 		 */
-		
 		var _startWorker = function() {
 			var self = this;
 			var worker = new Worker( pos_params.worker );

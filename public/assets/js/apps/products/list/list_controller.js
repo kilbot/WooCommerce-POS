@@ -28,8 +28,7 @@ define([
 				// fetch products
 				var fetchingProducts = POS.request('product:entities');
 
-				this.listenTo( this.layout, 'show', function() {
-					this._showTabsRegion();		
+				this.listenTo( this.layout, 'show', function() {	
 					this._showProductsRegion(this.products);		
 				});
 
@@ -43,7 +42,9 @@ define([
 
 			_showFilterView: function(products) {
 
-				var view = new View.Filter({ collection: products });
+				var view = new View.Filter({ 
+					collection: products 
+				});
 
 				this.listenTo( view, 'products:filter:query', function(filterCriterion){
 					var filter = POS.request('filter:facets', filterCriterion);
@@ -54,20 +55,17 @@ define([
 				this.layout.filterRegion.show( view );
 			},
 
-			_showTabsRegion: function() {
-
-				var tabs = new Backbone.Collection([ 
-					{ category: 'label', value: 'All' },  
-					{ category: 'cat', value: 'Albums' },  
-					{ category: 'id', value: '3|6|9' },  
-				]);
+			_showTabsRegion: function(products) {
 
 				var view = new View.Tabs({
-					collection: tabs
+					collection: products.tabEntities
 				});
 
 				this.listenTo( view, 'childview:tab:clicked', function(childview, args) {
-					console.log('tab click');
+					_(args.model.collection.models).each( function(tab) {
+						tab.set({ active: false }, [{ silent: true }]);
+					}); 
+					args.model.set({ active: true });
 				});
 
 				this.listenTo( view, 'childview:tab:remove:clicked', function(childview, args) {
@@ -86,6 +84,7 @@ define([
 
 				this.listenTo( view, 'show', function() {
 					this._showFilterView(products);
+					this._showTabsRegion(products);
 					this._showPaginationView(products);
 				});
 
