@@ -45,11 +45,16 @@ define(['app'], function(POS) {
 					}
 
 					if (category && value) {
-						var searchFacet = new Entities.SearchFacet({
-							category : category,
-							value    : this.trim(value),
-						});
-						facets.push(searchFacet);
+						_( value.split('|') ).each(function( value ){
+							var val = this.trim( value );
+							if( val ) {
+								var searchFacet = new Entities.SearchFacet({
+									category : category,
+									value    : val,
+								});
+								facets.push(searchFacet);
+							}
+						}, this);
 					}
 					if (originalQuery == query) break;
 				}
@@ -110,12 +115,24 @@ define(['app'], function(POS) {
 				return this.map(function(facet){ return facet.serialize(); }).join(' ');
 			},
 
-			facets : function() {
-				return this.map(function(facet) {
-					var value = {};
-					value[facet.get('category')] = facet.get('value');
-					return value;
+			// facets : function() {
+			// 	return this.map(function(facet) {
+			// 		var value = {};
+			// 		value[facet.get('category')] = facet.get('value');
+			// 		return value;
+			// 	});
+			// },
+
+			// return facets as grouped object
+			facets: function() {
+				var facets = {};
+				this.map(function(facet) {
+					if( !_( facets ).has( facet.get('category') ) ) {
+						facets[ facet.get('category') ] = [];
+					} 
+					return facets[ facet.get('category') ].push( facet.get('value') );
 				});
+				return facets;
 			},
 
 			// Find a facet by its category. Multiple facets with the same category
@@ -180,7 +197,8 @@ define(['app'], function(POS) {
 
 				if (!value) return '';
 
-				if (!_.contains(this.get("app").options.unquotable || [], category) && category != remainder) {
+				// if (!_.contains(this.get("app").options.unquotable || [], category) && category != remainder) {
+				if (!_.contains([], category) && category != remainder) {
 					value = this.quoteValue(value);
 				}
 

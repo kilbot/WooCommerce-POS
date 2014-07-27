@@ -26,29 +26,82 @@ define([
 			initialize: function(models, options) {
 				// this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
 
-				var self = this;
 				this.listenTo( this.filterEntities, 'reset', function(e) {
-					self.filterProducts();
-				});
+					this._filterProducts();
+				}, this);
 
 			},
 
-			filterProducts: function() {
+			/**
+			 * Reset collection with filtered results
+			 */
+			_filterProducts: function() {
 
-				// reset filtered
+				// reset to original list
 				filtered = this.filterCollection.models;
 
 				// if active filter
 				if( this.filterEntities.length > 0 ) {
-					var text = _.first( this.filterEntities.values('text') );
 
+					// get facets object
+					var criterion = this.filterEntities.facets();
+
+					// filter collection
 					filtered = this.filterCollection.filter( function(product){
-						return product.get( 'title' ).toLowerCase().indexOf( text ) !== -1
-					});
+						return this._matchMaker(product, criterion);
+					}, this);
 				}
 
+				// reset with filtered list
 				this.fullCollection.reset(filtered, {reindex: false});
-			}
+			},
+
+			/**
+			 * Matchmaker
+			 * Returns true if product passes criterion
+			 */
+			_matchMaker: function(product, criterion) {
+
+				return _.every( criterion, function( arr, attr ) {
+
+					if( attr === 'text' ) {
+						return _.some( arr, function( value ) {
+							return product.get( 'title' ).toLowerCase().indexOf( value ) !== -1;
+						});
+					}
+
+					// special shorthand for category
+					else if( attr === 'cat' ) {
+						return _.some( arr, function( value ) {
+							var categories = _( product.get('categories') ).map( function( category ) {
+								return category.toLowerCase();
+							});
+							return _( categories ).contains( value );							
+						});
+					}
+
+					// match array values
+					else if( _( product.get( attr ) ).isArray() ) {
+						return _.some( arr, function( value ) {
+							var array = _( product.get( attr ) ).map( function( value ) {
+								return value.toLowerCase();
+							});
+							return _( array ).contains( value );							
+						});
+					}
+
+					// else match any attribute
+					else {
+						return _.some( arr, function( value ) {
+							return product.get( attr ).toString() === value;
+						});
+					}
+
+					return false;
+
+				}, this);
+
+			},
 
 		});
 
