@@ -5,6 +5,10 @@ define(['app', 'entities/products/db'], function(POS){
 		Entities.Product = Backbone.Model.extend({
 			database: Entities.DB,
 			storeName: 'products',
+
+			initialize: function(attributes, options) {
+
+			}
 		});
 
 	});

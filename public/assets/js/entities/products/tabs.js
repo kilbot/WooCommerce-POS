@@ -6,36 +6,26 @@ define(['app'], function(POS){
 			defaults: {
 				label: '',
 				filter: '',
-				active: false
-
-			}
+				active: false,
+				fixed: true
+			},
+			idAttribute: 'filter',
+			initialize: function(models, options) { 
+				this.on('all', function(e) { console.log("Tab event: " + e); }); // debug				
+			},
 		});
 
 		Entities.ProductTabs = Backbone.Collection.extend({
 			model: Entities.ProductTab,
 			initialize: function(models, options) { 
-				// this.on('all', function(e) { console.log("Product Tab event: " + e); }); // debug				
+				this.on('all', function(e) { console.log("Tab Collection event: " + e); }); // debug				
 			},
 
 		});
 
 		var API = {
 			getTabEntities: function() {
-				return new Entities.ProductTabs([
-					{
-						label: 'All',
-						filter: '',
-						active: true
-					},
-					{
-						label: 'Featured',
-						filter: 'featured:true'
-					},
-					{
-						label: 'Music',
-						filter: 'cat:music'
-					}
-				]);
+				return new Entities.ProductTabs( pos_params.tabs );
 			}
 		}
 

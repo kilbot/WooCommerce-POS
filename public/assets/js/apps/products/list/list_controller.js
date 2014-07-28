@@ -62,14 +62,13 @@ define([
 				});
 
 				this.listenTo( view, 'childview:tab:clicked', function(childview, args) {
-					_(args.model.collection.models).each( function(tab) {
-						tab.set({ active: false }, [{ silent: true }]);
-					}); 
 					args.model.set({ active: true });
+					var filter = POS.request('filter:facets', args.model.get('filter'));
+					products.filterEntities.reset(filter);
 				});
 
 				this.listenTo( view, 'childview:tab:remove:clicked', function(childview, args) {
-					console.log('tab remove click');
+					products.tabEntities.remove(args.model);
 				});
 
 				// show
@@ -93,7 +92,12 @@ define([
 				});
 
 				this.listenTo( view, 'childview:product:variations:clicked', function(childview, args) {
-					this._showVariationsView( args.model );
+					products.tabEntities.add({
+						label: args.model.get('title'),
+						filter: 'parent:' + args.model.get('id'),
+						fixed: false,
+						active: false
+					});
 				});
 
 				// show

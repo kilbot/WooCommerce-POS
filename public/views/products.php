@@ -18,7 +18,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-product">
-	<div class="img"><img src="{{featured_src}}"></div>
+	<div class="img"><img src="{{featured_src}}" title="#{{id}}"></div>
 	<div class="name">
 		<strong>{{title}}</strong>
 		{{#with attributes}}

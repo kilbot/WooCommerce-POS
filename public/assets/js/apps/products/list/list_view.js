@@ -20,7 +20,6 @@ define([
 				productsRegion: Marionette.Region.Transition.extend({
 					el: '#products',
 					concurrentTransition: true,
-					animateOnPageLoad: false
 				}),
 				paginationRegion: '#pagination'
 			},
@@ -90,8 +89,27 @@ define([
 			childView: View.Tab,
 
 			collectionEvents: {
-				'change:active': 'render'
+				'add' 			: 'addTab',
+				'remove' 		: 'removeTab',
+				'change:active'	: 'activateTab'
 			},
+
+			addTab: function(model) {
+				model.set({ active: true });
+			},
+
+			removeTab: function(model) {
+				this.collection.first().set({ active: true });
+			},
+
+			activateTab: function(model) {
+				_(this.collection.models).each( function(tab) {
+					if( model.id !== tab.id ) {
+						tab.set( { active: false }, { silent: true } );
+					}
+				});
+				this.render();
+			}
 			
 		});
 

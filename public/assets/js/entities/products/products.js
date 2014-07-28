@@ -15,7 +15,7 @@ define([
 		Entities.ProductCollection = Backbone.PageableCollection.extend({
 			database: Entities.DB,
 			storeName: 'products',
-			// model: Entities.Product,
+			model: Entities.Product,
 			mode: 'client',
 
 			filterEntities: POS.request('filter:entities'),
@@ -32,11 +32,6 @@ define([
 					this._filterProducts();
 				}, this);
 
-				this.listenTo( this.tabEntities, 'change:active', function(model) {
-					var filter = POS.request('filter:facets', model.get('filter'));
-					this.filterEntities.reset(filter);
-				}, this);
-
 			},
 
 			/**
@@ -45,22 +40,63 @@ define([
 			_filterProducts: function() {
 
 				// reset to original list
-				filtered = this.filterCollection.models;
+				var filtered,
+					original = this.productDatabase.models;
 
 				// if active filter
 				if( this.filterEntities.length > 0 ) {
 
 					// get facets object
 					var criterion = this.filterEntities.facets();
+					
+					// if has parent reset list as variations
+					if( _(criterion).has('parent') ) {
+						original = this._variations( criterion['parent'] );
+						delete criterion.parent;
+					}
 
 					// filter collection
-					filtered = this.filterCollection.filter( function(product){
+					filtered = original.filter( function(product){
 						return this._matchMaker(product, criterion);
 					}, this);
+
+				}
+
+				else {
+					filtered = original;
 				}
 
 				// reset with filtered list
-				this.fullCollection.reset(filtered, {reindex: false});
+				this.fullCollection.reset(filtered, { reindex: false });
+
+			},
+
+			/**
+			 * Contruct product variations
+			 * @param  {array} parent ids
+			 * @return {array} variations
+			 */
+			_variations: function(parent_ids) {
+				var parents 	= [],
+					variations 	= [];
+
+				// get array of parent products
+				_( parent_ids ).each( function(id) {
+					var parent = this.productDatabase.get(id);
+					if(parent) { parents.push(parent); }
+				}, this);
+
+				// build array of product variations
+				_( parents ).each( function( product ) {
+					_( product.get('variations') ).each( function(variation) {
+						variation['type'] = 'variation';
+						variation['title'] = product.get('title');
+						variation['categories'] = product.get('categories');	
+						variations.push( new Entities.Product(variation) );
+					})
+				});
+
+				return variations;
 			},
 
 			/**
@@ -87,21 +123,25 @@ define([
 						});
 					}
 
-					// match array values
-					else if( _( product.get( attr ) ).isArray() ) {
-						return _.some( arr, function( value ) {
-							var array = _( product.get( attr ) ).map( function( value ) {
-								return value.toLowerCase();
-							});
-							return _( array ).contains( value );							
-						});
-					}
+					// match any attribute
+					else if( _( product.attributes ).has( attr ) ) {
 
-					// else match any attribute
-					else {
-						return _.some( arr, function( value ) {
-							return product.get( attr ).toString() === value;
-						});
+						// attribute is array, return any match
+						if( _( product.get( attr ) ).isArray() ) {
+							return _.some( arr, function( value ) {
+								var array = _( product.get( attr ) ).map( function( value ) {
+									return value.toLowerCase();
+								});
+								return _( array ).contains( value );							
+							});
+						}
+
+						// else match as string 
+						else {
+							return _.some( arr, function( value ) {
+								return product.get( attr ).toString() === value;
+							});
+						}
 					}
 
 					return false;

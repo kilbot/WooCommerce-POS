@@ -334,7 +334,10 @@ class WooCommerce_POS {
 		return $format;
 	}
 
-
+	/**
+	 * Select2
+	 * @return array settings
+	 */
 	public function select2_settings() {
 		$settings = array(
 			'no_matches'=> __( 'No matches found', 'woocommerce-pos' ),
@@ -350,6 +353,24 @@ class WooCommerce_POS {
 		return $settings;
 	}
 
+	public function product_tabs() {
+		$tabs = array(
+			array(
+				'label' => _x( 'All', 'Product tab: \'All\' products', 'woocommerce-pos'),
+				'active' => true
+			),
+			array(
+				'label' => _x( 'Featured', 'Product tab: \'Featured\' products', 'woocommerce-pos'),
+				'filter' => 'featured:true'
+			),
+			array(
+				'label' => _x( 'On Sale', 'Product tab: \'On Sale\' products', 'woocommerce-pos'),
+				'filter' => 'on_sale:true'
+			),
+		);
+		return $tabs;
+	}
+
 	/**
 	 * Add variables for use by js scripts
 	 * @return [type] [description]
@@ -363,6 +384,7 @@ class WooCommerce_POS {
 		$js_vars['wc'] 			= $this->wc_settings();
 		$js_vars['select'] 		= $this->select2_settings();
 		$js_vars['customer'] 	= $this->get_default_customer();
+		$js_vars['tabs'] 		= $this->product_tabs();
 
 		// switch for development
 		if( $this->development ) {

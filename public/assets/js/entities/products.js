@@ -18,10 +18,12 @@ define(['app',
 			getProductEntities: function() {
 				if(Modernizr.indexeddb) {
 					var products = new Entities.ProductCollection();
+
+					// bootstrap from indexeddb, store full collection
 					products.fetch({
 						success: function(data, models) {
 							// console.log(data);
-							data.filterCollection = data.fullCollection.clone();
+							data.productDatabase = data.fullCollection.clone();
 						},
 						error: function(data) {
 							// console.log(data);
@@ -33,17 +35,6 @@ define(['app',
 				// fallback for no IndexedDB
 				else {
 					return this.getFallbackProductEntities();
-				}
-			},
-
-			getProductVariations: function(model){
-				if(Modernizr.indexeddb) {
-					return new Entities.VariationsCollection(model.get('variations'), model);
-				}
-
-				// fallback for no IndexedDB
-				else {
-					return this.getFallbackProductVariations();
 				}
 			},
 
@@ -76,10 +67,6 @@ define(['app',
 				return defer.promise();
 			},
 
-			getFallbackProductVariations: function(model){
-				return new Entities.FallbackVariationsCollection(model.get('variations'), model);
-			},
-
 			syncProducts: function() {
 				_startWorker();
 			},
@@ -91,10 +78,6 @@ define(['app',
 		 */
 		POS.reqres.setHandler('product:entities', function() {
 			return API.getProductEntities();
-		});
-
-		POS.reqres.setHandler('product:variations', function(model) {
-			return API.getProductVariations(model);
 		});
 
 		POS.commands.setHandler('product:sync', function() {
