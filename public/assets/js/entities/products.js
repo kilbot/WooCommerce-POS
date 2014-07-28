@@ -68,7 +68,25 @@ define(['app',
 			},
 
 			syncProducts: function() {
-				_startWorker();
+
+				var self = this;
+
+				$('#pagination').addClass('working');
+
+				// first audit the products, delete any that have been removed from the server
+				_auditProducts()
+				.then( function( productArray ) {
+					if( productArray.length > 0 ) { 
+						return self.removeProducts( productArray ); 
+					}
+				})
+
+				// then: start the web worker sync
+				.then( function(){
+
+					self.startWorker();
+				});
+
 			},
 
 		};
@@ -117,6 +135,8 @@ define(['app',
 				break;
 				case 'complete':
 					console.log(data.msg);
+					POS.execute('options:set', 'last_update', Date.now() );
+					$('#pagination').removeClass('working');
 				break;
 				case 'showModal': 
 					console.log(data.type);
@@ -130,6 +150,92 @@ define(['app',
 				default:
 					// ?
 			}
+		};
+
+		/**
+		 * Check local product ids against a the server
+		 * @return promise, then array of ids
+		 */
+		var _auditProducts = function() {
+			var self = this;
+
+			// get list of product ids from the server
+			return $.getJSON( pos_params.ajax_url , { 'action' : 'pos_get_product_ids' } )
+			.then( function( sids ) {
+				if (sids instanceof Array) {  
+					// build an array of ids stored locally
+					var models = self.fullCollection.models;
+					var lids = [];
+					for (var i = 0; i < models.length; i++) {
+						lids.push(models[i].id);
+					}
+
+					// use underscore method to check difference
+					var diff = _.difference(lids, sids);
+					console.log(diff.length + ' products need to be deleted');
+					return diff;
+
+				} else {
+					console.log('server response is no good');
+				}
+
+			}, function(jqXHR, textStatus, errorThrown) {
+				console.log('error ' + textStatus);
+				console.log('incoming Text ' + jqXHR.responseText);
+				alert(errorThrown);
+			});
+		};
+
+		/**
+		 * Remove the products the local database
+		 * @param  array expects and array of product ids
+		 * @return null
+		 */
+		var _removeProducts = function(models) {
+			if (models instanceof Array) { 
+
+				for (var i = 0; i < models.length; i++) {
+					var model = this.fullCollection.get(models[i]);
+					var jqxhr = model.destroy();
+					this.remove(model);
+				}
+				console.log(i + ' products removed');
+			}
+		};
+
+		/**
+		 * Fallback function for Firefox
+		 */
+		var _saveProducts = function( products, progress, count ) {
+			var self = this,
+				i = 0;
+
+			(function putNext(){
+
+				// save each product
+				if( i < products.length ) {
+					self.fullCollection.create( products[i], {
+						merge: true,
+						silent: true,
+						success: putNext,
+						error: function(model, response) {
+							console.log('error saving model: ' + response.title);
+						}
+					});
+					i++;
+				}
+
+				// then update progress
+				else {
+					var storeCount = progress + i;
+					self.workerEvents({ status: 'progress', count: storeCount });
+					if( storeCount === count ) {
+						self.workerEvents({ status: 'complete', msg: 'Sync complete!' });
+					}
+					return;
+				}
+			})();
+
 		};
 
 		/*

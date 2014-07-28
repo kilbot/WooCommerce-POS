@@ -2,8 +2,7 @@ define([
 	'app',
 	'apps/products/list/list_controller'
 ], function(
-	POS,
-	ListController
+	POS
 ){
 	
 	POS.module('ProductsApp', function(ProductsApp, POS, Backbone, Marionette, $, _){
@@ -21,7 +20,7 @@ define([
 		var API = {
 			list: function(id){
 				id ? options = { cartId: id } : options = {};
-				var c = _getController(ListController, options);
+				var c = _getController(ProductsApp.List.Controller, options);
 				c.show();
 			}
 		};

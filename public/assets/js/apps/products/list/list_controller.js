@@ -134,7 +134,6 @@ define([
 				});
 
 				this.listenTo( view, 'pagination:sync:clicked', function(args) {
-					// POS.execute('options:set', 'last_update', Date.now() );
 					POS.execute('product:sync');
 					args.view.render();
 				});
@@ -149,8 +148,10 @@ define([
 			},
 
 		});
+
+		return List.Controller;
 		
 	});
 
-	return POS.ProductsApp.List.Controller;
+	// return POS.ProductsApp.List.Controller;
 });

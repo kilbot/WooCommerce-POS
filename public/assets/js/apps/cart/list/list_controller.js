@@ -25,6 +25,7 @@ define([
 
 				// loading view
 				var loadingView = new POS.Common.Views.Loading();
+				// POS.execute('show:loading', view, options); 
 				POS.rightRegion.show(loadingView);
 
 				// init layout

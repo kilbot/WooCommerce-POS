@@ -62,10 +62,11 @@ requirejs.config({
 
 require([
 	'app',
-	'entities/options',
 	'apps/products/products_app',
 	'apps/cart/cart_app',
-	'apps/checkout/checkout_app'
+	'apps/checkout/checkout_app',
+	'lib/components/components_app',
+	'entities/options'
 ], function(POS){
 	POS.start();
 });
