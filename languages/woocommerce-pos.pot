@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.3.1-beta\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-07-27 15:01:20+00:00\n"
+"POT-Creation-Date: 2014-07-29 06:35:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,25 +26,25 @@ msgid ""
 "to work correctly. Please enable <a href=\"%s\">permalinks</a>."
 msgstr ""
 
-#: admin/class-pos-admin.php:395 admin/class-pos-admin.php:396
+#: admin/class-pos-admin.php:400 admin/class-pos-admin.php:401
 #: admin/includes/settings/class-settings-checkout.php:257
 #: public/views/footer.php:11
 msgid "POS"
 msgstr ""
 
-#: admin/class-pos-admin.php:406 admin/class-pos-admin.php:407
-#: admin/class-pos-admin.php:467
+#: admin/class-pos-admin.php:411 admin/class-pos-admin.php:412
+#: admin/class-pos-admin.php:472
 #: admin/includes/settings/class-settings-checkout.php:157
 #: admin/includes/settings/class-settings-checkout.php:161
 msgid "Settings"
 msgstr ""
 
-#: admin/class-pos-admin.php:413
+#: admin/class-pos-admin.php:418
 #: admin/includes/settings/class-settings-checkout.php:278
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: admin/class-pos-admin.php:468
+#: admin/class-pos-admin.php:473
 msgid "View POS"
 msgstr ""
 
@@ -53,8 +53,24 @@ msgstr ""
 msgid "Enabled"
 msgstr ""
 
-#: admin/includes/class-pos-product-admin.php:38
+#: admin/includes/class-pos-product-admin.php:45
+msgid "POS & Online"
+msgstr ""
+
+#: admin/includes/class-pos-product-admin.php:46
 msgid "POS Only"
+msgstr ""
+
+#: admin/includes/class-pos-product-admin.php:47
+msgid "Online Only"
+msgstr ""
+
+#: admin/includes/class-pos-product-admin.php:52
+msgid "POS visibility"
+msgstr ""
+
+#: admin/includes/class-pos-product-admin.php:56
+msgid "Edit"
 msgstr ""
 
 #: admin/includes/class-pos-settings.php:43
@@ -270,39 +286,39 @@ msgstr ""
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: public/class-pos.php:340
+#: public/class-pos.php:343
 msgid "No matches found"
 msgstr ""
 
-#: public/class-pos.php:341
+#: public/class-pos.php:344
 msgid "Please enter 1 more character"
 msgstr ""
 
-#: public/class-pos.php:342
+#: public/class-pos.php:345
 msgid "Please enter %d more characters"
 msgstr ""
 
-#: public/class-pos.php:343
+#: public/class-pos.php:346
 msgid "Please delete 1 character"
 msgstr ""
 
-#: public/class-pos.php:344
+#: public/class-pos.php:347
 msgid "Please delete %d characters"
 msgstr ""
 
-#: public/class-pos.php:345
+#: public/class-pos.php:348
 msgid "You can only select 1 item"
 msgstr ""
 
-#: public/class-pos.php:346
+#: public/class-pos.php:349
 msgid "You can only select %d items"
 msgstr ""
 
-#: public/class-pos.php:347
+#: public/class-pos.php:350
 msgid "Loading more results"
 msgstr ""
 
-#: public/class-pos.php:348
+#: public/class-pos.php:351
 msgid "Searching"
 msgstr ""
 
@@ -657,6 +673,21 @@ msgstr ""
 #: admin/includes/settings/class-settings-checkout.php:19
 msgctxt "Settings tab label"
 msgid "Checkout"
+msgstr ""
+
+#: public/class-pos.php:359
+msgctxt "Product tab: 'All' products"
+msgid "All"
+msgstr ""
+
+#: public/class-pos.php:363
+msgctxt "Product tab: 'Featured' products"
+msgid "Featured"
+msgstr ""
+
+#: public/class-pos.php:367
+msgctxt "Product tab: 'On Sale' products"
+msgid "On Sale"
 msgstr ""
 
 #: public/includes/class-pos-checkout.php:93

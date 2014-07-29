@@ -50,6 +50,9 @@ class WooCommerce_POS_Admin {
 		// check version
 		add_action( 'admin_init', array( $this, 'run_checks' ) );
 
+		// add pos_params to admin head
+		add_action('admin_head', array( $this, 'admin_head' ) );
+
 		// add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
@@ -379,6 +382,11 @@ class WooCommerce_POS_Admin {
 	    	wp_enqueue_script( 'jquery-ui-sortable' );
 		}
 
+		// js for product page
+		if ( in_array( $screen->id, array( 'product' ) ) ) {
+			wp_enqueue_script( $this->plugin_slug . '-admin-products', plugins_url( 'assets/js/products.min.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore' ), WooCommerce_POS::VERSION );
+		}
+
 	}
 
 	/**
@@ -483,6 +491,13 @@ class WooCommerce_POS_Admin {
 				</div>';
 			} 
 		} 
+	}
+
+	/**
+	 * Add pos_params global variable for js
+	 */
+	public function admin_head() {
+		echo '<script type="text/javascript">window.pos_params={};</script>';
 	}
 
 }

@@ -62,18 +62,24 @@ class WooCommerce_POS_Product {
 	 * @param  $query 		the wordpress query
 	 */
 	public function pre_get_posts( $query ) {
+error_log(print_r($query, true));
+		// TODO check on pos=1
+		if( true ) {
+			$hide = 'online_only';
+		} else {
+			$hide = 'pos_only';
+		}
 
 		// remove variable products
 		$meta_query =  array(
 			'relation' => 'OR',
 			array(
 				'key' 		=> '_pos_visibility',
-				'value' 	=> 'pos_hidden',
+				'value' 	=> $hide,
 				'compare'	=> '!='
 			),
 			array(
 				'key' 		=> '_pos_visibility',
-				'value' 	=> 'pos_hidden',
 				'compare'	=> 'NOT EXISTS'
 			)
 		);

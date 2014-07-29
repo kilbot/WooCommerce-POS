@@ -1,6 +1,7 @@
 define([
 	'marionette', 
-	'apps/config/marionette/regions/modal'
+	'apps/config/marionette/regions/modal',
+	'apps/config/marionette/regions/transition'
 ], function(
 	Marionette
 ){
@@ -14,7 +15,11 @@ define([
 	POS.addRegions({
 		headerRegion: '#header',
 		leftRegion: '#left-panel',
-		rightRegion: '#right-panel',
+		rightRegion: Marionette.Region.Transition.extend({
+			el: '#right-panel',
+			concurrentTransition: true,
+		}),
+		// rightRegion: '#right-panel',
 		dialogRegion: Marionette.Region.Modal.extend({
 			el: '#modal'
 		}),

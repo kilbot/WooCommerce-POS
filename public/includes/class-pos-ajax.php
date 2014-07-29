@@ -21,10 +21,11 @@ class WooCommerce_POS_AJAX {
 
 		// woocommerce_EVENT => nopriv
 		$ajax_events = array(
-			'process_order'             => true,
-			'get_product_ids'			=> true,
-			'get_modal'					=> true,
-			'json_search_customers'		=> true,
+			'process_order'             => false,
+			'get_product_ids'			=> false,
+			'get_modal'					=> false,
+			'json_search_customers'		=> false,
+			'set_product_visibilty' 	=> false 
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -42,6 +43,8 @@ class WooCommerce_POS_AJAX {
 	 * @return json
 	 */
 	public function process_order() {
+
+		// add a nonce check?!
 
 		// create order 
 		$checkout = new WooCommerce_POS_Checkout();
@@ -154,6 +157,24 @@ class WooCommerce_POS_AJAX {
 
 		$this->json_headers();
 		echo json_encode( $found_customers );
+		die();
+	}
+
+	/**
+	 * Update POS visibilty option
+	 */
+	public function set_product_visibilty() {
+
+		if( wp_verify_nonce( $_REQUEST['security'], 'pos-visibility-' . $_REQUEST['post_id'] ) &&
+			update_post_meta( $_REQUEST['post_id'], '_pos_visibility', $_REQUEST['_pos_visibility'] ) ) {
+			$response = array('success' => true);
+		}
+		else {
+			throw new Exception( 'Set POS visibilty failed', 401 );
+		}	
+
+		$this->json_headers();
+		echo json_encode( $response );
 		die();
 	}
 

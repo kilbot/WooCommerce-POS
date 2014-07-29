@@ -12,6 +12,27 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectTe
 				cartNotesRegion: '#cart-notes'
 			},
 
+			// Do some jQuery stuff, then, once you're done, trigger 'animateIn' to let the region
+			// know that you're done
+			animateIn: function() {
+				// this.cssSetUp();
+				this.$el.animate(
+					{ opacity: 1 },
+					400,
+					_.bind(this.trigger, this, 'animateIn')
+				);
+			},
+
+			// Same as above, except this time we trigger 'animateOut'
+			animateOut: function() {
+				// this.cssSetUp();
+				this.$el.animate(
+					{ opacity: 0 },
+					400,
+					_.bind(this.trigger, this, 'animateOut')
+				);
+			},
+
 		});
 		
 		View.CartItem = Marionette.ItemView.extend({
