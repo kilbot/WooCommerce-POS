@@ -7,8 +7,8 @@ define(['app', 'entities/products/db'], function(POS){
 			storeName: 'products',
 
 			initialize: function(attributes, options) {
-
 			}
+			
 		});
 
 	});

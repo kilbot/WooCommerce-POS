@@ -65,8 +65,10 @@ require([
 	'apps/products/products_app',
 	'apps/cart/cart_app',
 	'apps/checkout/checkout_app',
-	'lib/components/components_app',
-	'entities/options'
+	'lib/components/tabs/tabs_controller',
+	'entities/options',
+	'entities/abstract/tabs',
+	'entities/abstract/search_parser'
 ], function(POS){
 	POS.start();
 });

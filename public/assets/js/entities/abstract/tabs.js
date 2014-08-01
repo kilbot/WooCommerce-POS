@@ -5,11 +5,11 @@ define(['app'], function(POS){
 		Entities.ProductTab = Backbone.Model.extend({
 			defaults: {
 				label: '',
-				filter: '',
+				value: '',
 				active: false,
 				fixed: true
 			},
-			idAttribute: 'filter',
+			idAttribute: 'value',
 			initialize: function(models, options) { 
 				this.on('all', function(e) { console.log("Tab event: " + e); }); // debug				
 			},

@@ -29,7 +29,7 @@ define([
 				var fetchingProducts = POS.request('product:entities');
 
 				this.listenTo( this.layout, 'show', function() {	
-					this._showProductsRegion(this.products);		
+					this._showProductsRegion();		
 				});
 
 				var self = this;
@@ -40,61 +40,27 @@ define([
 
 			},
 
-			_showFilterView: function(products) {
-
-				var view = new View.Filter({ 
-					collection: products 
-				});
-
-				this.listenTo( view, 'products:filter:query', function(filterCriterion){
-					var filter = POS.request('filter:facets', filterCriterion);
-					products.filterEntities.reset(filter);
-				});
-
-				// show
-				this.layout.filterRegion.show( view );
-			},
-
-			_showTabsRegion: function(products) {
-
-				var view = new View.Tabs({
-					collection: products.tabEntities
-				});
-
-				this.listenTo( view, 'childview:tab:clicked', function(childview, args) {
-					args.model.set({ active: true });
-					var filter = POS.request('filter:facets', args.model.get('filter'));
-					products.filterEntities.reset(filter);
-				});
-
-				this.listenTo( view, 'childview:tab:remove:clicked', function(childview, args) {
-					products.tabEntities.remove(args.model);
-				});
-
-				// show
-				this.layout.tabsRegion.show( view );
-			},
-
-			_showProductsRegion: function(products) {
+			_showProductsRegion: function() {
 
 				var view = new View.Products({
-					collection: products
+					collection: this.products
 				});
 
 				this.listenTo( view, 'show', function() {
-					this._showFilterView(products);
-					this._showTabsRegion(products);
-					this._showPaginationView(products);
+					this._showFilterView();
+					this._showPaginationView();
 				});
 
+				// add to cart
 				this.listenTo( view, 'childview:cart:add:clicked', function(childview, args) {
 					POS.trigger('cart:add', args.model);
 				});
 
+				// variations
 				this.listenTo( view, 'childview:product:variations:clicked', function(childview, args) {
-					products.tabEntities.add({
+					this.tabEntities.add({
 						label: args.model.get('title'),
-						filter: 'parent:' + args.model.get('id'),
+						value: 'parent:' + args.model.get('id'),
 						fixed: false,
 						active: false
 					});
@@ -105,39 +71,54 @@ define([
 
 			},
 
-			_showVariationsView: function(model) {
+			_showFilterView: function() {
 
-				var productVariations = POS.request('product:variations', model);
+				var view = new View.Filter();
 
-				var view = new View.Products({
-					collection: productVariations,
-					slideIn: 'left',
-				});
+				// filter collection = clone of products collection
+				this.filterCollection = POS.request('product:filtercollection', this.products);
 
+				// add product tabs
 				this.listenTo( view, 'show', function() {
-					this._showFilterView(productVariations);
-					this._showPaginationView(productVariations);
+					this._showTabsRegion();
 				});
-
-				this.listenTo( view, 'childview:cart:add:clicked', function(childview, args) {
-					POS.trigger('cart:add', args.model);
+				
+				// search queries
+				this.listenTo( view, 'products:search:query', function( query ){
+					this.filterCollection.searchQuery = query;
+					this.filterCollection.trigger('filter:products');
 				});
 
 				// show
-				this.layout.productsRegion.show( view );
+				this.layout.filterRegion.show( view );
 			},
 
-			_showPaginationView: function(products) {
+			_showTabsRegion: function() {
+
+				this.tabEntities = POS.request('tab:entities');
+
+				// listen to changes to active tab
+				this.listenTo( this.tabEntities, 'change:active', function( tab ) {
+					this.filterCollection.activeTab = tab.get('value');
+					this.filterCollection.trigger('filter:products');
+				});
+
+				// show tabs component
+				POS.execute('show:tabs', this.layout.tabsRegion, this.tabEntities);
+			},
+
+			_showPaginationView: function() {
 
 				var view = new View.Pagination({
-					collection: products
+					collection: this.products
 				});
 
+				// sync
 				this.listenTo( view, 'pagination:sync:clicked', function(args) {
-					POS.execute('product:sync');
-					args.view.render();
+					this.products.serverSync();
 				});
 
+				// clear
 				this.listenTo( view, 'pagination:clear:clicked', function(args) {
 					POS.execute('options:set', 'last_update', '' );
 					args.view.render();

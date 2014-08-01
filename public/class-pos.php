@@ -36,9 +36,11 @@ class WooCommerce_POS {
 	public $is_pos = false;
 	public $template = null;
 
-	/** @var object WooCommerce_POS_Product
-	 */
+	/** @var object WooCommerce_POS_Product */
 	public $product = null;
+
+	/** @var cache logged in user id */
+	private $logged_in_user = false;
 
 
 	/**
@@ -121,6 +123,11 @@ class WooCommerce_POS {
 	 * Init WooCommerce POS
 	 */
 	public function init() {
+		global $current_user;
+		
+		// get and set current user for api auth
+		if ( isset( $current_user ) && ( $current_user instanceof WP_User ) && $current_user->ID != 0 )
+			$this->logged_in_user = $current_user;
 
 		// Set up localisation
 		$this->load_plugin_textdomain();
@@ -169,10 +176,6 @@ class WooCommerce_POS {
 	 */
 	public function show_pos() {
 
-		// bail if this is not a POS request
-		if( !$this->is_pos )
-			return;
-
 		// set up $current_user for use in includes
 		global $current_user;
 		get_currentuserinfo();
@@ -181,6 +184,8 @@ class WooCommerce_POS {
 		if( get_query_var( 'pos' ) == 1 ) {
 			$this->is_pos = true;
 			$this->template = ( get_query_var( 'pos_template' ) ) ? get_query_var( 'pos_template' ) : 'main';
+		} else {
+			return;
 		}
 
 		// check page and credentials
@@ -214,16 +219,14 @@ class WooCommerce_POS {
 	 */
 	public function wc_api_authentication( $user) {
 
-		// get user_id from the wp logged in cookie
-		$user_id = apply_filters( 'determine_current_user', false );
+		if( $this->is_pos ) {
+			$user = $this->logged_in_user;
+			if( !user_can( $user->ID, 'manage_woocommerce_pos' ) ) {
+				$user = new WP_Error( 'woocommerce_pos_authentication_error', __( 'User not authorized to manage WooCommerce POS', 'woocommerce-pos' ), array( 'code' => 500 ) );
+			}
+		} 
 
-		// if user can manage_woocommerce_pos, open the api
-		if( is_numeric($user_id) && user_can( $user_id, 'manage_woocommerce_pos' ) ) {
-			// error_log( print_R( $user, TRUE ) ); //debug
-			return new WP_User( $user_id );
-		} else {
-			return $user;
-		}
+		return $user;
 	}
 
 	/**
@@ -357,11 +360,11 @@ class WooCommerce_POS {
 			),
 			array(
 				'label' => _x( 'Featured', 'Product tab: \'Featured\' products', 'woocommerce-pos'),
-				'filter' => 'featured:true'
+				'value' => 'featured:true'
 			),
 			array(
 				'label' => _x( 'On Sale', 'Product tab: \'On Sale\' products', 'woocommerce-pos'),
-				'filter' => 'on_sale:true'
+				'value' => 'on_sale:true'
 			),
 		);
 		return $tabs;

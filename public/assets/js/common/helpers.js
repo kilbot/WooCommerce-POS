@@ -12,6 +12,10 @@ define(['app', 'handlebars', 'accounting'], function (POS, Handlebars, accountin
 			}
 		});
 
+		Handlebars.registerHelper('csv', function(items, options) {
+			return options.fn(items.join(', '));
+		});
+
 		Handlebars.registerHelper('money', function(num, options){
 
 			// round the number to even

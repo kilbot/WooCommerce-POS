@@ -1,25 +1,17 @@
 define([
 	'marionette', 
 	'apps/config/marionette/regions/modal',
-	'apps/config/marionette/regions/transition'
+	// 'apps/config/marionette/regions/transition'
 ], function(
 	Marionette
 ){
 	
 	var POS = new Marionette.Application();
 
-	POS.on('initialize:before', function() {
-		POS.environment = options.environment;
-	});
-
 	POS.addRegions({
 		headerRegion: '#header',
 		leftRegion: '#left-panel',
-		rightRegion: Marionette.Region.Transition.extend({
-			el: '#right-panel',
-			concurrentTransition: true,
-		}),
-		// rightRegion: '#right-panel',
+		rightRegion: '#right-panel',
 		dialogRegion: Marionette.Region.Modal.extend({
 			el: '#modal'
 		}),
@@ -48,15 +40,21 @@ define([
 	};
 
 	POS.on('start', function(){
+
+		// debugging
+		if( POS.request('options:get', 'debug') ) {
+			POS.debug = true;
+			console.info('Debugging is on, visit http://woopos.com.au/docs/debugging');
+		} else {
+			console.info('Debugging is off, visit http://woopos.com.au/docs/debugging');
+		}
+
+		// show products 
+		POS.module('ProductsApp').start();
+
 		if(Backbone.history){
-
 			Backbone.history.start();
-
-			// show products 
-			POS.module('ProductsApp').start();
-
 			if(POS.getCurrentRoute() === ''){
-
 				// default to cart
 				POS.trigger('cart:list');
 			}

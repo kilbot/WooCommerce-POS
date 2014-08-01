@@ -51,7 +51,13 @@ define(['app', 'lib/components/loading/loading_view'], function(POS){
 
 		});
 
-		return Loading.LoadingController;
+		POS.commands.setHandler('show:loading', function(view, options) {
+			return new Loading.LoadingController({
+				view: view,
+				region: options.region,
+				config: options.loading
+			});
+		});
 
 	});
 

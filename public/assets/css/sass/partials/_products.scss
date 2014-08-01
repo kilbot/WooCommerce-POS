@@ -89,7 +89,7 @@
 //     padding: 50px 0;
 // }
 
-#filter {
+#products-filter {
     padding: $vspacing/2 ;
     border-bottom: 1px solid $border-dark;
     position: relative;
@@ -131,7 +131,7 @@
     }
 }
 
-#pagination {
+#products-pagination {
     @extend %clearfix;
     padding: $vspacing/2;
     small {

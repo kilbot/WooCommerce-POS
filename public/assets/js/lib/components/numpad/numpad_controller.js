@@ -5,10 +5,8 @@ define(['app', 'lib/components/numpad/numpad_view'], function(POS){
 		Numpad.NumpadController = Marionette.Controller.extend({
 
 			initialize: function(options) {
-
 				var numpadView = this.getNumpadView();
 				this.show(numpadView);
-
 			},
 
 			getNumpadView: function() {
@@ -17,7 +15,9 @@ define(['app', 'lib/components/numpad/numpad_view'], function(POS){
 
 		});
 
-		// return Numpad.NumpadController;
+		POS.commands.setHandler('show:numpad', function() {
+			return new Numpad.NumpadController();
+		});
 
 	});
 

@@ -247,21 +247,21 @@ define(['app'], function(POS) {
 		});
 
 		var API = {
-			getFilterEntities: function() {
-				// a collection of filter facets
+			getSearchEntities: function() {
+				// a collection of search facets
 				return new Entities.SearchQuery();
 			},
-			getFilterFacets: function(query) {
+			getSearchFacets: function(query) {
 				return Entities.SearchParser.parse(query);
 			}
 		};
 
-		POS.reqres.setHandler('filter:entities', function() {
-			return API.getFilterEntities();
+		POS.reqres.setHandler('search:entities', function() {
+			return API.getSearchEntities();
 		});
 
-		POS.reqres.setHandler('filter:facets', function(query) {
-			return API.getFilterFacets(query);
+		POS.reqres.setHandler('search:facets', function(query) {
+			return API.getSearchFacets(query);
 		});
 
 	});

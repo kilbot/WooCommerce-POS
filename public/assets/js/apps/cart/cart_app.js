@@ -13,11 +13,11 @@ define([
 		CartApp.startWithParent = false;
 
 		CartApp.onStart = function(){
-      		console.log('starting Cart Module');
+      		if(POS.debug) console.log('[notice] starting Cart Module');
     	};
 
     	CartApp.onStop = function(){
-			console.log('stopping Cart Module');
+			if(POS.debug) console.log('[notice] stopping Cart Module');
 		};
 
 	});

@@ -1,12 +1,10 @@
 define([
 	'app', 
 	'handlebars', 
-	'hbs!apps/products/list/templates/tabs',
 	'apps/config/marionette/regions/transition'
 ], function(
 	POS, 
-	Handlebars,
-	TabsTmpl
+	Handlebars
 ){
 
 	POS.module('ProductsApp.List.View', function(View, POS, Backbone, Marionette, $, _){
@@ -15,13 +13,13 @@ define([
 			template: '#tmpl-products-layout',
 
 			regions: {
-				filterRegion: '#filter',
-				tabsRegion: '#filter-tabs',
+				filterRegion: '#products-filter',
+				tabsRegion: '#products-tabs',
 				productsRegion: Marionette.Region.Transition.extend({
 					el: '#products',
 					concurrentTransition: true,
 				}),
-				paginationRegion: '#pagination'
+				paginationRegion: '#products-pagination'
 			},
 
 		});
@@ -31,6 +29,7 @@ define([
 		 */
 		View.Filter = Marionette.ItemView.extend({
 			template: '#tmpl-products-filter',
+			mode: 'client',
 
 			events: {
 				'keyup input[type=search]': 'searchTrigger',
@@ -46,71 +45,25 @@ define([
 			// else 
 			searchTrigger: function(e){
 				this.showClearButtonMaybe();
-				if(this.collection.mode === 'server' && e.keyCode !== 13) { return; }
+				if(this.mode === 'server' && e.keyCode !== 13) { return; }
 				this.search();
 			},
 
 			// actually make the query
 			search: _.debounce( function() {
-				this.trigger('products:filter:query', this.ui.searchField.val());
+				this.trigger('products:search:query', this.ui.searchField.val());
 			}, 149),
 
 			// clear the filter
 			clear: function(e) {
 				this.ui.searchField.val('');
-				this.trigger('products:filter:query', '');
+				this.trigger('products:search:query', '');
 				this.showClearButtonMaybe();
 			},
 
 			showClearButtonMaybe: function() {
 				_.isEmpty( this.ui.searchField.val() ) ? this.ui.clearBtn.hide() : this.ui.clearBtn.show() ;
 			},
-		});
-
-		/**
-		 * Filter Tabs
-		 */
-		View.Tab = Marionette.ItemView.extend({
-			tagName: 'li',
-			template: TabsTmpl,
-			className: function() {
-				if( this.model.get('active') ) { return 'active'; }
-			},
-
-			triggers: {
-				'click': 'tab:clicked',
-				'click .action-remove': 'tab:remove:clicked'
-			},
-
-		});
-
-		View.Tabs = Marionette.CollectionView.extend({
-			tagName: 'ul',
-			childView: View.Tab,
-
-			collectionEvents: {
-				'add' 			: 'addTab',
-				'remove' 		: 'removeTab',
-				'change:active'	: 'activateTab'
-			},
-
-			addTab: function(model) {
-				model.set({ active: true });
-			},
-
-			removeTab: function(model) {
-				this.collection.first().set({ active: true });
-			},
-
-			activateTab: function(model) {
-				_(this.collection.models).each( function(tab) {
-					if( model.id !== tab.id ) {
-						tab.set( { active: false }, { silent: true } );
-					}
-				});
-				this.render();
-			}
-			
 		});
 
 		/**
@@ -217,7 +170,7 @@ define([
 
 			initialize: function() {
 				// this.on('all', function(e) { console.log("Pagination View event: " + e); }); // debug
-				// this.listenTo( this.collection, 'sync reset', this.render );
+				
 			},
 
 			collectionEvents: {

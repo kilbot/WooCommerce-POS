@@ -1,53 +1,52 @@
 define([
 	'app', 
-	'paginator', 
-	'entities/products/db', 
-	'entities/products/product',
-	'entities/filter',
-	'entities/products/tabs',
+	'entities/products/product'
 ], function(
-	POS, 
-	PageableCollection
+	POS
 ){
 
 	POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
-		Entities.ProductCollection = Backbone.PageableCollection.extend({
-			database: Entities.DB,
-			storeName: 'products',
+		Entities.FilterCollection = Backbone.Collection.extend({
 			model: Entities.Product,
-			mode: 'client',
-
-			filterEntities: POS.request('filter:entities'),
-			tabEntities: POS.request('tab:entities'),
-
-			state: {
-				pageSize: 5,
-			},
 			
 			initialize: function(models, options) {
-				// this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
+				// this.on('all', function(e) { console.log("Filter Collection event: " + e); }); // debug
+				
+				// init references
+				this.pageableCollection = options.pageableCollection;
+				this.filterEntities = POS.request('search:entities');
+				this.activeTab = '';
+				this.searchQuery = '';
 
-				this.listenTo( this.filterEntities, 'reset', function(e) {
-					this._filterProducts();
-				}, this);
+				this.on( 'filter:products', function() {
+					this.onFilterProducts();
+				});
 
 			},
 
 			/**
 			 * Reset collection with filtered results
 			 */
-			_filterProducts: function() {
-
-				// reset to original list
-				var filtered,
-					original = this.productDatabase.models;
+			onFilterProducts: function() {
+				var original = this.models,
+					facets = POS.request('search:facets', this.activeTab + ' ' + this.searchQuery );
+				
+				this.filterEntities.reset( facets );
 
 				// if active filter
 				if( this.filterEntities.length > 0 ) {
 
-					// get facets object
+					if(POS.debug) console.log('[notice] Product filter = ' + this.activeTab + ' ' + this.searchQuery);
+
+					// get criterion array
 					var criterion = this.filterEntities.facets();
+
+					// special case for barcode
+					if( _(criterion).has('barcode') ) {
+						this._barcodeSearch( criterion['barcode'] );
+						return;
+					}
 					
 					// if has parent reset list as variations
 					if( _(criterion).has('parent') ) {
@@ -56,18 +55,21 @@ define([
 					}
 
 					// filter collection
-					filtered = original.filter( function(product){
+					filteredList = original.filter( function(product){
 						return this._matchMaker(product, criterion);
 					}, this);
 
+					// update pageable collection
+					this.pageableCollection.fullCollection.reset(filteredList, { reindex: false });
+
 				}
 
+				// else reset with original
 				else {
-					filtered = original;
+					this.pageableCollection.fullCollection.reset(original, { reindex: false });
 				}
 
-				// reset with filtered list
-				this.fullCollection.reset(filtered, { reindex: false });
+				
 
 			},
 
@@ -82,7 +84,7 @@ define([
 
 				// get array of parent products
 				_( parent_ids ).each( function(id) {
-					var parent = this.productDatabase.get(id);
+					var parent = this.get(id);
 					if(parent) { parents.push(parent); }
 				}, this);
 
@@ -149,6 +151,11 @@ define([
 				}, this);
 
 			},
+
+			_barcodeSearch: function(barcode) {
+
+			},
+
 
 		});
 

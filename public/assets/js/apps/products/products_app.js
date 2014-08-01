@@ -26,12 +26,12 @@ define([
 		};
 
 		ProductsApp.onStart = function(){
-      		console.log('starting Products Module');
+      		if(POS.debug) console.log('[notice] starting Products Module');
       		API.list();
     	};
 
     	ProductsApp.onStop = function(){
-			console.log('stopping Products Module');
+			if(POS.debug) console.log('[notice] stopping Products Module');
 		};
 
 	});

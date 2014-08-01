@@ -5,10 +5,10 @@
 ?>
 
 <script type="text/template" id="tmpl-products-layout">
-	<div id="filter"></div>
-	<div id="filter-tabs"></div>
+	<div id="products-filter" class="search"></div>
+	<div id="products-tabs" class="tabs"></div>
 	<div id="products"></div>
-	<div id="pagination"></div>
+	<div id="products-pagination"></div>
 </script>
 
 <script type="text/template" id="tmpl-products-filter">
@@ -23,10 +23,10 @@
 		<strong>{{title}}</strong>
 		{{#with attributes}}
 			<dl>
-			{{#each this}}
+			{{#each this}}{{#if variation}}
 				<dt>{{name}}:</dt>
-				<dd>{{#if option}}{{option}}{{/if}}{{#if options}}{{options}}{{/if}}</dd>
-			{{/each}}
+				<dd>{{#if option}}{{option}}{{/if}}{{#if options}}{{#csv options}}{{this}}{{/csv}}{{/if}}</dd>
+			{{/if}}{{/each}}
 			</dl>
 		{{/with}}
 		{{#if managing_stock}}
