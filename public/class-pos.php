@@ -11,40 +11,35 @@
 
 class WooCommerce_POS {
 
-	/**
-	 * Version numbers
-	 */
+	/** Version numbers */
 	const VERSION = '0.3.1';
 	const JQUERY_VERSION = '2.1.1';
 
-	/**
-	 * Development flag
-	 */
+	/** Development flag */
 	public $development = true;
 
-	/**
-	 * Unique identifier
-	 */
+	/** Unique identifier */
 	protected $plugin_slug = 'woocommerce-pos';
 
-	/**
-	 * Instance of this class.
-	 * @var object
-	 */
+	/** @var object Instance of this class. */
 	protected static $instance = null;
 
-	/**
-	 * WooCommerce API endpoint
-	 */
+	/** @var string WooCommerce API endpoint */
 	public $wc_api_url;
 
-	/**
-	 * Plugin variables
-	 * @var string
-	 */
+	/** @var string Plugin paths */
 	public $plugin_dir;
 	public $plugin_path;
 	public $plugin_url;
+
+	/** @var bool Flag for requests coming from POS */
+	public $is_pos = false;
+	public $template = null;
+
+	/** @var object WooCommerce_POS_Product
+	 */
+	public $product = null;
+
 
 	/**
 	 * Initialize WooCommerce_POS
@@ -61,18 +56,17 @@ class WooCommerce_POS {
 		// include required files
 		$this->includes();
 
-		// Load plugin text domain
-		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+		// init
+		add_action( 'init', array( $this, 'init' ), 0 );
 
 		// Set up templates
-		add_filter('generate_rewrite_rules', array( $this, 'generate_rewrite_rules') );
-		add_filter('query_vars', array( $this, 'add_query_vars') );
-		add_action('template_redirect', array( $this, 'show_pos') );
+		add_filter( 'generate_rewrite_rules', array( $this, 'generate_rewrite_rules' ) );
+		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
+		add_action( 'template_redirect', array( $this, 'show_pos' ) );
 
-		// allow access to the WC REST API, init product class before serving response
-		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 99, 1 );
+		// allow access to the WC REST API
+		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 1 );
 		add_action( 'woocommerce_api_server_before_serve', array( $this, 'wc_api_init') );
-				
 	}
 
 	/**
@@ -124,6 +118,18 @@ class WooCommerce_POS {
 	}
 
 	/**
+	 * Init WooCommerce POS
+	 */
+	public function init() {
+
+		// Set up localisation
+		$this->load_plugin_textdomain();
+
+		// Load class instances
+		$this->product = new WooCommerce_POS_Product();
+	}
+
+	/**
 	 * Add rewrite rules for pos
 	 * @param  object $wp_rewrite
 	 */
@@ -163,21 +169,27 @@ class WooCommerce_POS {
 	 */
 	public function show_pos() {
 
-		$template = $this->is_pos();
-		if( !$template )
+		// bail if this is not a POS request
+		if( !$this->is_pos )
 			return;
 
 		// set up $current_user for use in includes
 		global $current_user;
 		get_currentuserinfo();
 
+		// check query_var for pos = 1
+		if( get_query_var( 'pos' ) == 1 ) {
+			$this->is_pos = true;
+			$this->template = ( get_query_var( 'pos_template' ) ) ? get_query_var( 'pos_template' ) : 'main';
+		}
+
 		// check page and credentials
 		if ( is_user_logged_in() && current_user_can('manage_woocommerce_pos') ) {
 
 			// check if template exists
-			if( $template !== 'main' && file_exists( $this->plugin_path . 'public/views/' . $template . '.php' ) ) {
+			if( $this->template !== 'main' && file_exists( $this->plugin_path . 'public/views/' . $this->template . '.php' ) ) {
 				if( $template === 'support') $this->support = new WooCommerce_POS_Support();
-				include_once( 'views/' . $template . '.php' );
+				include_once( 'views/' . $this->template . '.php' );
 			}
 
 			// else: default to main page
@@ -194,22 +206,6 @@ class WooCommerce_POS {
 		} else {
 			auth_redirect();
 		}
-	}
-
-	/**
-	 * Are we using point of sale front-end?
-	 * @return string or false
-	 */
-	public function is_pos() {
-		// $pagename = $this->options['pagename']; TODO: set custom url as an option
-		global $wp_query;
-		$is_pos = false;
-
-		if( get_query_var( 'pos' ) == 1 ) {
-			$is_pos = ( get_query_var( 'pos_template' ) ) ? get_query_var( 'pos_template' ) : 'main';
-		}
-
-		return $is_pos;
 	}
 
 	/**
@@ -231,7 +227,7 @@ class WooCommerce_POS {
 	}
 
 	/**
-	 * Instantiate the Product Class when making api requests
+	 * Check if request is coming from POS
 	 * @param  object $api_server  WC_API_Server Object      
 	 */
 	public function wc_api_init( $api_server ) {
@@ -239,7 +235,7 @@ class WooCommerce_POS {
 		// check both GET & POST requests
 		$params = array_merge($api_server->params['GET'], $api_server->params['POST']);
 		if( isset($params['pos']) && $params['pos'] == 1 ) {
-			$this->product = new WooCommerce_POS_Product();
+			$this->is_pos = true;
 		}
 
 		// error_log( print_R( $api_server, TRUE ) ); //debug
@@ -377,7 +373,7 @@ class WooCommerce_POS {
 	 */
 	public function pos_localize_script() {
 
-		$js_vars['page']		= $this->is_pos();
+		$js_vars['page']		= $this->template;
 		$js_vars['ajax_url'] 	= admin_url( 'admin-ajax.php', 'relative' );
 		$js_vars['wc_api_url']	= $this->wc_api_url;
 		$js_vars['accounting'] 	= $this->accounting_settings();
@@ -385,6 +381,7 @@ class WooCommerce_POS {
 		$js_vars['select'] 		= $this->select2_settings();
 		$js_vars['customer'] 	= $this->get_default_customer();
 		$js_vars['tabs'] 		= $this->product_tabs();
+		$js_vars['nonce'] 		= wp_create_nonce( "woocommerce-pos");
 
 		// switch for development
 		if( $this->development ) {
@@ -435,7 +432,7 @@ class WooCommerce_POS {
 			echo $html;
 
 			// only include the app js on main page
-			if( $this->is_pos() == 'main' ) {
+			if( $this->template == 'main' ) {
 
 				// switch for development
 				if( $this->development ) {
@@ -446,7 +443,7 @@ class WooCommerce_POS {
 			}
 
 			// include support.js on support page
-			elseif ( $this->is_pos() == 'support' ) {
+			elseif ( $this->template == 'support' ) {
 				echo '<script src="'. $this->plugin_url .'public/assets/js/support.min.js?ver='. self::VERSION .'"></script>';
 			}
 		}

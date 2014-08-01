@@ -66,7 +66,7 @@ class WooCommerce_POS_Products_Admin {
 		echo '
 		<script type="text/javascript">
 			pos_params.post_id = ' . $post->ID . ';
-			pos_params.visibility_nonce = "' . wp_create_nonce( 'pos-visibility-' . $post->ID ) . '";
+			pos_params.visibility_nonce = "' . wp_create_nonce( 'set-product-visibilty-' . $post->ID ) . '";
 			pos_params.visibility = ' . json_encode($pos_params) . ';
 		</script>
 		<script type="text/template" id="tmpl-pos-visibility">

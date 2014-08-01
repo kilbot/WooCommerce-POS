@@ -14,24 +14,21 @@
 class WooCommerce_POS_Product {
 
 	/** @var string Contains the thumbnail size. */
-	public $thumb_suffix;
-	public $placeholder_img;
+	private $thumb_suffix = null;
+
+	/** @var string Contains placeholder image src. */
+	private $placeholder_img = null;
 
 	/** @var array Contains an array of tax rates, by tax class. */
-	public $tax_rates = array();
+	private $tax_rates = array();
 
-
+	/**
+	 * Initialize WooCommerce_POS_Product
+	 */
 	public function __construct() {
 
-		// init some variables 
-		$thumb_size = get_option( 'shop_thumbnail_image_size', array( 'width' => 90, 'height' => 90 ) );
-		$this->thumb_suffix = '-'.$thumb_size['width'].'x'.$thumb_size['height'];
-		$this->placeholder_img = wc_placeholder_img_src();
-
-		// we're going to manipulate the wp_query to display POS products
+		// hooks
 		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
-
-		// and we're going to filter on the way out
 		add_filter( 'woocommerce_api_product_response', array( $this, 'filter_product_response' ), 10, 4 );
 
 	}
@@ -39,9 +36,6 @@ class WooCommerce_POS_Product {
 	/**
 	 * Get all the product ids 
 	 * @return array
-	 * TODO: there is a problem with updates returning the wrong result.
-	 * product_variations do not modify their date in the database,
-	 * either need a workaround based on parent_id, or submit change to wc
 	 */
 	public function get_all_ids() {
 
@@ -49,7 +43,7 @@ class WooCommerce_POS_Product {
 		$args = array(
 			'post_type' 	=> array('product'),
 			'posts_per_page'=>  -1,
-			'fields'		=> 'ids',
+			'fields'		=> 'ids'
 		);
 
 		// init WP_QUERY: uses pre_get_posts
@@ -58,13 +52,15 @@ class WooCommerce_POS_Product {
 	}
 
 	/**
-	 * Make changes to the product query for POS
+	 * Show/hide POS products
 	 * @param  $query 		the wordpress query
 	 */
 	public function pre_get_posts( $query ) {
-error_log(print_r($query, true));
-		// TODO check on pos=1
-		if( true ) {
+
+		// don't alter any queries in the admin
+		if( is_admin() && !WC_POS()->is_pos ) return;
+
+		if( WC_POS()->is_pos ) {
 			$hide = 'online_only';
 		} else {
 			$hide = 'pos_only';
@@ -88,7 +84,7 @@ error_log(print_r($query, true));
 	}
 
 	/**
-	 * Filter product response from WC REST API for easier handling by the POS
+	 * Filter each product response from WC REST API for easier handling by the POS
 	 * - use the thumbnails rather than fullsize
 	 * - add tax rates & barcode field
 	 * - unset unnecessary data
@@ -96,6 +92,11 @@ error_log(print_r($query, true));
 	 * @return array modified data array $product_data
 	 */
 	public function filter_product_response( $product_data, $product, $fields, $server ) {
+
+		// only filter requests from POS
+		if( !WC_POS()->is_pos ) {
+			return $product_data;
+		}
 
 		// remove some unnecessary keys
 		// - saves storage space in IndexedDB
@@ -127,6 +128,17 @@ error_log(print_r($query, true));
 		foreach($removeKeys as $key) {
 			unset($product_data[$key]);
 		}
+
+		// set thumb_suffix
+		if( $this->thumb_suffix === null ) {
+			$thumb_size = get_option( 'shop_thumbnail_image_size', array( 'width' => 90, 'height' => 90 ) );
+			$this->thumb_suffix = '-'.$thumb_size['width'].'x'.$thumb_size['height'];
+		}
+
+		// set placeholder
+		if( $this->placeholder_img === null ) {
+			$this->placeholder_img = wc_placeholder_img_src();
+		} 
 
 		// use thumbnails for images or placeholder
 		if( $product_data['featured_src'] ) {
