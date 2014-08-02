@@ -58,12 +58,12 @@ define([
 
 				// variations
 				this.listenTo( view, 'childview:product:variations:clicked', function(childview, args) {
-					this.tabEntities.add({
+					var newTab = this.tabEntities.add({
 						label: args.model.get('title'),
 						value: 'parent:' + args.model.get('id'),
-						fixed: false,
-						active: false
+						fixed: false
 					});
+					newTab.set({ active: true }); // trigger active 
 				});
 
 				// show

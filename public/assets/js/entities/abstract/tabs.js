@@ -11,15 +11,30 @@ define(['app'], function(POS){
 			},
 			idAttribute: 'value',
 			initialize: function(models, options) { 
-				this.on('all', function(e) { console.log("Tab event: " + e); }); // debug				
+				// this.on('all', function(e) { console.log("Tab event: " + e); }); // debug				
 			},
 		});
 
 		Entities.ProductTabs = Backbone.Collection.extend({
 			model: Entities.ProductTab,
 			initialize: function(models, options) { 
-				this.on('all', function(e) { console.log("Tab Collection event: " + e); }); // debug				
+				// this.on('all', function(e) { console.log("Tab Collection event: " + e); }); // debug
+				
+				this.on( 'remove', this.onRemove );			
+				this.on( 'change:active', this.onChangeActive );			
 			},
+
+			onRemove: function() {
+				this.first().set({ active: true });
+			},
+
+			onChangeActive: function(model) {
+				_(this.models).each( function(tab) {
+					if( model.id !== tab.id ) {
+						tab.set( { active: false }, { silent: true } );
+					}
+				});
+			}
 
 		});
 

@@ -16,8 +16,6 @@ define([
 				// init references
 				this.pageableCollection = options.pageableCollection;
 				this.filterEntities = POS.request('search:entities');
-				this.activeTab = '';
-				this.searchQuery = '';
 
 				this.on( 'filter:products', function() {
 					this.onFilterProducts();
@@ -29,15 +27,16 @@ define([
 			 * Reset collection with filtered results
 			 */
 			onFilterProducts: function() {
-				var original = this.models,
-					facets = POS.request('search:facets', this.activeTab + ' ' + this.searchQuery );
+				var filteredList = this.models,
+					combinedFilter = _.compact([this.activeTab, this.searchQuery]).join(' '),
+					facets = POS.request('search:facets', combinedFilter );
 				
 				this.filterEntities.reset( facets );
 
+				if(POS.debug) console.log('[notice] Product filter = "' + combinedFilter + '"');
+
 				// if active filter
 				if( this.filterEntities.length > 0 ) {
-
-					if(POS.debug) console.log('[notice] Product filter = ' + this.activeTab + ' ' + this.searchQuery);
 
 					// get criterion array
 					var criterion = this.filterEntities.facets();
@@ -48,28 +47,21 @@ define([
 						return;
 					}
 					
-					// if has parent reset list as variations
+					// if has parent switch list to variations
 					if( _(criterion).has('parent') ) {
-						original = this._variations( criterion['parent'] );
+						filteredList = this._variations( criterion['parent'] );
 						delete criterion.parent;
 					}
 
 					// filter collection
-					filteredList = original.filter( function(product){
+					filteredList = filteredList.filter( function(product){
 						return this._matchMaker(product, criterion);
 					}, this);
 
-					// update pageable collection
-					this.pageableCollection.fullCollection.reset(filteredList, { reindex: false });
-
 				}
 
-				// else reset with original
-				else {
-					this.pageableCollection.fullCollection.reset(original, { reindex: false });
-				}
-
-				
+				this.pageableCollection.getFirstPage({ silent: true });
+				this.pageableCollection.fullCollection.reset(filteredList, { reindex: false });
 
 			},
 
@@ -88,7 +80,7 @@ define([
 					if(parent) { parents.push(parent); }
 				}, this);
 
-				// build array of product variations
+				// build array of product variations			
 				_( parents ).each( function( product ) {
 					_( product.get('variations') ).each( function(variation) {
 						variation['type'] = 'variation';

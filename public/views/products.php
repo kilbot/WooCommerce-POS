@@ -6,7 +6,7 @@
 
 <script type="text/template" id="tmpl-products-layout">
 	<div id="products-filter" class="search"></div>
-	<div id="products-tabs" class="tabs"></div>
+	<div id="products-tabs" class="tabs infinite-tabs"></div>
 	<div id="products"></div>
 	<div id="products-pagination"></div>
 </script>
