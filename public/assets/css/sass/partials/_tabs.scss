@@ -1,0 +1,33 @@
+.tabs {
+	background-color: $border-dark;
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		li {
+			display: inline-block;
+			background-color: lighten( $border-dark, 6% );
+			padding: $vspacing/4 $vspacing/2;
+			margin: 0 1px 0 0;
+			cursor: pointer;
+			a {
+				color: $text-color;
+				&:hover {
+					color: $brand-danger;
+				}
+			}
+			&.active {
+				background-color: $content-background;
+			}
+			&:hover {
+
+			}
+		}
+	}
+}
+.infinite-tabs {
+	overflow-x: hidden;
+	ul {
+		width: 2000px;
+	} 
+}

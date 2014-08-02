@@ -94,7 +94,7 @@ module.exports = function(grunt) {
 			all: [
 				'Gruntfile.js',
 				'public/assets/js/**/*.js',
-				'admin/assets/js/admin.js',
+				'admin/assets/js/src/**/*.js',
 				'!public/assets/js/pos.min.js',
 				'!public/assets/js/scripts.min.js',
 				'!public/assets/js/plugins.min.js',
@@ -174,10 +174,9 @@ module.exports = function(grunt) {
 			},
 			admin: {
 				files: {
-					'admin/assets/js/admin.min.js' : [
-						'admin/assets/js/admin.js',
-					]
-				}
+					'admin/assets/js/admin.min.js': 'admin/assets/js/src/admin.js',
+					'admin/assets/js/products.min.js': 'admin/assets/js/src/products.js'
+				},
 			}
 		},
 

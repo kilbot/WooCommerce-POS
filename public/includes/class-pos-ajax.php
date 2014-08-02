@@ -21,10 +21,11 @@ class WooCommerce_POS_AJAX {
 
 		// woocommerce_EVENT => nopriv
 		$ajax_events = array(
-			'process_order'             => true,
-			'get_product_ids'			=> true,
-			'get_modal'					=> true,
-			'json_search_customers'		=> true,
+			'process_order'             => false,
+			'get_product_ids'			=> false,
+			'get_modal'					=> false,
+			'json_search_customers'		=> false,
+			'set_product_visibilty' 	=> false 
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -43,6 +44,9 @@ class WooCommerce_POS_AJAX {
 	 */
 	public function process_order() {
 
+		// security
+		check_ajax_referer( 'woocommerce-pos', 'security' );
+
 		// create order 
 		$checkout = new WooCommerce_POS_Checkout();
 		$order = $checkout->create_order();
@@ -59,9 +63,14 @@ class WooCommerce_POS_AJAX {
 	 */
 	public function get_product_ids() {
 
+		// security
+		check_ajax_referer( 'woocommerce-pos', 'security' );
+
+		// this is a POS request
+		if( isset($_REQUEST['pos']) && $_REQUEST['pos'] == 1 ) WC_POS()->is_pos = true;
+
 		// get an array of product ids
-		$products = new WooCommerce_POS_Product();
-		$ids = $products->get_all_ids();
+		$ids = WC_POS()->product->get_all_ids();
 
 		$this->json_headers();
 		echo json_encode( $ids );
@@ -69,6 +78,9 @@ class WooCommerce_POS_AJAX {
 	}
 
 	public function get_modal() {
+
+		// security
+		check_ajax_referer( 'woocommerce-pos', 'security' );
 
 		if( isset( $_REQUEST['data']) ) 
 			extract( $_REQUEST['data'] );
@@ -83,9 +95,9 @@ class WooCommerce_POS_AJAX {
 	 * with a few changes to display more info
 	 */
 	public function json_search_customers() {
-		check_ajax_referer( 'search-customers', 'security' );
-
-		self::json_headers();
+		
+		// security
+		check_ajax_referer( 'json-search-customers', 'security' );
 
 		$term = wc_clean( stripslashes( $_GET['term'] ) );
 
@@ -154,6 +166,30 @@ class WooCommerce_POS_AJAX {
 
 		$this->json_headers();
 		echo json_encode( $found_customers );
+		die();
+	}
+
+	/**
+	 * Update POS visibilty option
+	 */
+	public function set_product_visibilty() {
+
+		if( !isset( $_REQUEST['post_id'] ) ) 
+			wp_die('Product ID required');
+
+		// security
+		check_ajax_referer( 'set-product-visibilty-'.$_REQUEST['post_id'], 'security' );
+
+		// set the post_meta field
+		if( update_post_meta( $_REQUEST['post_id'], '_pos_visibility', $_REQUEST['_pos_visibility'] ) ) {
+			$response = array('success' => true);
+		}
+		else {
+			wp_die('Failed to update post meta table');
+		}	
+
+		$this->json_headers();
+		echo json_encode( $response );
 		die();
 	}
 

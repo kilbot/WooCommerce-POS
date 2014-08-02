@@ -45,12 +45,6 @@ class WooCommerce_POS_Checkout {
 	 */
 	public function __construct() {
 
-		// if there is no cart, there is nothing to process!
-		if( empty( $_REQUEST['cart'] ) ) 
-			return;
-	
-		$this->process_checkout_data();
-
 		// remove the New Order admin emails
 		add_filter( 'woocommerce_email', array( $this, 'remove_new_order_emails' ), 99 );
 
@@ -60,32 +54,18 @@ class WooCommerce_POS_Checkout {
 	}
 
 	/**
-	 * Process any data that is sent from POS
-	 */
-	public function process_checkout_data() {
-
-		// process checkout data
-		$this->cart_items = $_REQUEST['cart'];
-
-		// default to Guest
-		$this->customer_id = isset( $_REQUEST['customer_id'] ) ? absint( $_REQUEST['customer_id'] ) : 0 ;
-
-		// the id of the logged in user
-		$this->user_id = get_current_user_id();
-
-		// all other data
-		$this->posted['payment_method'] = isset( $_REQUEST['payment_method'] ) ? $_REQUEST['payment_method'] : '' ;
-		$this->posted['order_discount'] = isset( $_REQUEST['order_discount'] ) ? $_REQUEST['order_discount'] : 0 ;
-		$this->posted['note'] 			= isset( $_REQUEST['note'] ) ? wp_kses_post( trim( stripslashes( $_REQUEST['note'] ) ) ) : '' ;
-
-	}
-
-	/**
 	 * Create the new order
 	 * based on same function in woocommerce/includes/class-wc-checkout.php
 	 * @return {int} $order_id
 	 */
 	public function create_order() {
+
+		// if there is no cart, there is nothing to process!
+		if( empty( $_REQUEST['cart'] ) ) 
+			return;
+
+		// set up order variables
+		$this->process_checkout_data();
 
 		// create empty order
 		$order_data = apply_filters( 'woocommerce_new_order_data', array(
@@ -127,6 +107,30 @@ class WooCommerce_POS_Checkout {
 		return $response;
 	}
 
+	/**
+	 * Process any data that is sent from POS
+	 */
+	public function process_checkout_data() {
+
+		// process checkout data
+		$this->cart_items = $_REQUEST['cart'];
+
+		// default to Guest
+		$this->customer_id = isset( $_REQUEST['customer_id'] ) ? absint( $_REQUEST['customer_id'] ) : 0 ;
+
+		// the id of the logged in user
+		$this->user_id = get_current_user_id();
+
+		// all other data
+		$this->posted['payment_method'] = isset( $_REQUEST['payment_method'] ) ? $_REQUEST['payment_method'] : '' ;
+		$this->posted['order_discount'] = isset( $_REQUEST['order_discount'] ) ? $_REQUEST['order_discount'] : 0 ;
+		$this->posted['note'] 			= isset( $_REQUEST['note'] ) ? wp_kses_post( trim( stripslashes( $_REQUEST['note'] ) ) ) : '' ;
+
+	}
+
+	/**
+	 * Process payment
+	 */
 	public function process_payment() {
 
 		// process the payment
@@ -475,6 +479,8 @@ class WooCommerce_POS_Checkout {
 		$post_modified_gmt = current_time( 'mysql', 1 );
 
 		foreach ( $order->get_items() as $item ) {
+
+			// TODO: if variable, update the parent?
 			$id = isset( $item['variation_id'] ) && is_numeric( $item['variation_id'] ) ? $item['variation_id'] : $item['product_id'] ;
 
 			wp_update_post( array(

@@ -36,7 +36,7 @@
 <body>
 <div id="page" class="site">
 	<header id="masthead" role="banner" class="site-header">
-		<a href="#menu" id="menu-btn" class="btn-header alignleft"><i class="fa fa-bars"></i> <span><?php _e( 'Menu', 'woocommerce-pos' ); ?></span></a>
+		<a href="#" id="menu-btn" class="btn-header alignleft"><i class="fa fa-bars"></i> <span><?php _e( 'Menu', 'woocommerce-pos' ); ?></span></a>
 		<div class="dropdown alignright">
 			<a href="#" class="btn-header" data-toggle="dropdown">
 				<i class="fa fa-cog"></i> <span><?php _e( 'Howdy', 'woocommerce-pos' ); ?>, <?= $current_user->display_name ?></span>

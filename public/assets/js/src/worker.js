@@ -4,40 +4,39 @@
  */
 
 var db,
-	storeCount = 0,
+	progress = 0,
 	wc_api_url = '/wc-api/v1/';
 
 // number of products to get in a single ajax call
 // adjust to prevent server timeouts
-var ajaxLimit = 50;
+var ajaxLimit = 3;
 
+/**
+ * Messaging from main thread 
+ */
 addEventListener('message', function(e) {
 	var data = e.data;
 
 	switch (data.cmd) {
-		case 'sync':
-			if( typeof indexedDB !== 'undefined' ) {
-				openDB();
-			}
-			if( typeof data.wc_api_url !== 'undefined' && data.wc_api_url !== '') {
+		case 'update':
+			if( typeof data.wc_api_url !== 'undefined' && data.wc_api_url !== '' ) {
 				wc_api_url = data.wc_api_url;
 			}
 			getUpdateCount(data.last_update);
 		break;
-		case 'clear':
-			deleteDB();
-		break;
 		case 'stop':
-			self.postMessage({ 'status': 'complete', 'msg': 'Worker stopped: ' + data.msg });
+			postMessage({ 'status': 'notice', 'msg': 'Worker stopped' });
 			close(); // Terminates the worker.
 		break;
 		default:
-			self.postMessage({ 'status': 'complete', 'msg': 'Unknown command: ' + data.cmd });
+			postMessage({ 'status': 'complete', 'msg': 'Unknown command: ' + data.cmd });
 	}
 
 }, false);
 
-// getJSON helper function
+/**
+ * getJSON helper function
+ */
 var getJSON = function(url, successHandler, errorHandler) {
 	var xhr = typeof XMLHttpRequest !== 'undefined'
 		? new XMLHttpRequest()
@@ -64,34 +63,9 @@ var getJSON = function(url, successHandler, errorHandler) {
 	xhr.send();
 };
 
-var openDB = function() {
-	var openRequest = indexedDB.open( 'productsDB' );
-
-	openRequest.onupgradeneeded = function(e) {
-
-		// this should produce an error
-		// let the main app create the database
-
-		console.log('Upgrading products database');
-
-		// var thisDB = e.target.result;
-
-		// if(!thisDB.objectStoreNames.contains( 'products' )) {
-		//		 var objectStore = thisDB.createObjectStore( 'products', { keyPath: 'id' } );
-		//		 objectStore.createIndex( 'titleIndex', 'title', { unique: false} );
-		// }	
-	};
-
-	openRequest.onsuccess = function(e) {
-		console.log('Opened products database');
-		db = e.target.result;
-	};
-
-	openRequest.onerror = function(e) {
-		self.postMessage({ 'status': 'error', 'msg': 'idberror' });
-	};
-};
-
+/**
+ * Get updated product count
+ */
 var getUpdateCount = function(updated_at_min){
 	// updated at min should be value like 2014-05-14 or null
 	updated_at_min = typeof updated_at_min !== 'undefined' ? updated_at_min : null;
@@ -104,20 +78,23 @@ var getUpdateCount = function(updated_at_min){
 	// get the update count
 	getJSON( wc_api_url + 'products/count?' + query.join('&'), function(data) {
 		if( data.count > 0 ) {
-			console.log( data.count + ' products need to be updated' );
+			postMessage({ 'status': 'notice', 'msg': data.count + ' products need to be updated' });
 			if( data.count > ajaxLimit ) {
-				self.postMessage({ 'status': 'showModal', 'type': 'downloadProgress', 'total': data.count });
+				postMessage({ 'status': 'modal', 'total': data.count });
 			}
 			getProducts( data.count, ajaxLimit, updated_at_min );
 		}
 		else {
-			self.postMessage({ 'status': 'complete', 'msg': '0 products need to be updated' });
+			postMessage({ 'status': 'products', 'products': [], 'progress': 0, 'total': 0 });
 		}
 	}, function(status) {
-		self.postMessage({ 'status': 'error', 'msg': status });
+		postMessage({ 'status': 'error', 'msg': wc_api_url + 'products/count returned an error' });
 	});
 };
 
+/**
+ * Get products
+ */
 var getProducts = function(count, limit, updated_at_min) {
 	// default values
 	count = typeof count !== 'undefined' ? count : 10; // default count is 10
@@ -140,14 +117,15 @@ var getProducts = function(count, limit, updated_at_min) {
 
 			getJSON( wc_api_url + 'products?' + query.join('&'), function(data) {
 
+				// send products back to main thread
+				progress += data.products.length;
+				postMessage({ 'status': 'products', 'products': data.products, 'progress': progress, 'total': count });
+
 				// get the next limit of products
 				next = offset + limit;
 				if( next < count ) {
 					getNext( next );
 				}
-
-				// store the products
-				storeProducts( data.products, count );
 
 			}, function(status) {
 
@@ -159,55 +137,25 @@ var getProducts = function(count, limit, updated_at_min) {
 						// give the server some breathing room
 						interval = interval + 1000;
 						getNext( offset, interval );
+						postMessage({ 'status': 'error', 'msg': 'Failed to retrieve products, trying again ...' });
 					}
 
 					// server could be down or overloaded
 					else {
-						self.postMessage({ 'status': 'error', 'msg': status });
+						postMessage({ 'status': 'error', 'msg': 'Server down or overloaded' });
+						postMessage({ 'status': 'products', 'progress': progress, 'total': progress });
 					}
 				}
 				else if ( 401 === status ) { // 
-					self.postMessage({ 'status': 'error', 'msg': status });
+					postMessage({ 'status': 'error', 'msg': 'Authentication error when retrieving products' });
+					postMessage({ 'status': 'products', 'progress': progress, 'total': progress });
 				}
 				else {
-					self.postMessage({ 'status': 'error', 'msg': 'dlerror' });
+					postMessage({ 'status': 'error', 'msg': 'Server error when retrieving products' });
+					postMessage({ 'status': 'products', 'progress': progress, 'total': progress });
 				}
+
 			});
 		}, interval);
 	})( offset, interval );
-};
-
-var storeProducts = function( products, count ) {
-
-	// if Indexeddb not available from worker
-	if( typeof db !== 'object' ) {
-		self.postMessage({ 'status': 'noIndexedDB', 'products': products, 'progress': storeCount, 'count': count });
-		storeCount += products.length;
-		return;
-	}
-
-	// prepare for database transaction
-	var transaction = db.transaction( ['products'], 'readwrite' );
-	var store = transaction.objectStore('products');
-	var i = 0;
-
-	(function putNext(){
-		if( i < products.length ) {
-			var request = store.put( products[i] );
-			request.onsuccess = putNext;
-			request.onerror = function(e) {
-				self.postMessage({ 'status': 'error', 'msg': 'idberror' });
-			};
-			i++;
-		}
-
-		// complete
-		else {
-			storeCount += i;
-			self.postMessage({ 'status': 'progress', 'count': storeCount });
-			if( storeCount === count ) {
-				self.postMessage({ 'status': 'complete', 'msg': 'Sync complete!' });
-			}
-		}
-	})();
 };

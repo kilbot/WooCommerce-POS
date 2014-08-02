@@ -1,0 +1,20 @@
+#numpad {
+	table {
+		margin: 0 -5px -5px 0;
+		td {
+			border: 0;
+			padding: 0 5px 5px 0 !important;
+			button {
+				font-size: 20px;
+				line-height: 50px;
+				width: 50px;
+				padding: 0;
+				outline: 0;
+				&.return {
+					height: 100%;
+					font-size: 13px;
+				}
+			}
+		}
+	}
+}

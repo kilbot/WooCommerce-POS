@@ -1,43 +1,35 @@
-// Require.js Configurations
-// -------------------------
 
 // load jQuery using CDN, keep jQuery separate for other pages
 define('jquery', [], function() { return jQuery; });
 
-require.config({
-
-	// Sets the js folder as the base directory for all future relative paths
+requirejs.config({
 	baseUrl: '/wp-content/plugins/woocommerce-pos/public/assets/js',
-
-
 	paths: {
 
 		// Core Libraries
-		// 'jquery': '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
-		// 'jquery': '../../../bower_components/jquery/dist/jquery.min',
-		'underscore': '../../../bower_components/lodash/dist/lodash.min',
-		// 'underscore': '../../../bower_components/underscore/underscore',
-		'backbone': '../../../bower_components/backbone/backbone',
-		'handlebars': '../../../bower_components/handlebars/handlebars.min',
-		'accounting': '../../../bower_components/accounting/accounting.min',
-		
-		// Convenience methods for getting and setting User settings
-		'settings': '../../../public/assets/js/src/Settings',
+		underscore	: '../../../bower_components/lodash/dist/lodash.min',
+		backbone	: '../../../bower_components/backbone/backbone',
+		marionette	: '../../../bower_components/marionette/lib/backbone.marionette',
+		handlebars 	: '../../../bower_components/handlebars/handlebars.min',
+		indexeddb 	: '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
+		localstorage: '../../../bower_components/backbone.localstorage/backbone.localStorage',
+		paginator 	: '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
+		accounting 	: '../../../bower_components/accounting/accounting.min',
+		transitionRegion: '../../../bower_components/marionette.transition-region/marionette.transition-region',
+		hbs 		: '../../../bower_components/hbs/hbs',
 
 		// Plugins
-		// 'bootstrap-modal': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal',
-		'backbone-indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
-		'backbone-localstorage': '../../../bower_components/backbone.localStorage/backbone.localStorage',
-		'backbone-paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
-		'select2': '../../../bower_components/select2/select2.min',
+		modal 		: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal',
+		tooltip 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip',
+		popover 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover',
+		spin 		: '../../../bower_components/spinjs/spin',
+		select2 	: '../../../bower_components/select2/select2.min',
 
 		// Custom Plugins
-		'autoGrowInput': '../../../public/assets/js/src/jquery.autoGrowInput',
-		'selectText': '../../../public/assets/js/src/jquery.selectText',
-
+		autoGrowInput	: '../../../public/assets/js/src/jquery.autoGrowInput',
+		selectText	: '../../../public/assets/js/src/jquery.selectText',
 	},
 
-	// Sets the configuration for third party scripts that are not AMD compatible
 	shim: {
 		handlebars: {
 			exports: 'Handlebars',
@@ -45,39 +37,38 @@ require.config({
 				this.Handlebars = Handlebars;
 				return this.Handlebars;
 			}
-		}
-    }
-
+		},
+		popover: {
+			deps: ['jquery', 'tooltip']
+		},
+		transitionRegion: {
+			deps: ['marionette'],
+			exports: 'TransitionRegion'
+		},
+		// underscore: {
+		// 	exports: '_'
+		// },
+		// backbone: {
+		// 	deps: ['jquery', 'underscore'],
+		// 	exports: 'Backbone'
+		// },
+		// marionette: {
+		// 	deps: ['backbone'],
+		// 	exports: 'Marionette'
+		// },
+		// localstorage: ['backbone'],
+	}
 });
 
-require(['underscore', 'backbone', 'views/ProductList', 'views/CartList'], 
-	function(_, Backbone, ProductList, CartList ){
-
-	// create pubsub object
-	var pubSub = _.extend({},Backbone.Events);
-
-	// init the cart
-	new CartList({ pubSub: pubSub });
-
-	// load the products
-	new ProductList({ pubSub: pubSub });
-
-	MyRouter = Backbone.Router.extend({
-		routes : {
-			'' 			: 'showCart',
-			'checkout' 	: 'showCheckout'
-		},
-
-		showCart: function() {
-			console.log('cart');
-		},
-
-		showCheckout: function() {
-			console.log('checkout');
-		},
-	});
-
-	var router = new MyRouter();
-	Backbone.history.start();
-
+require([
+	'app',
+	'apps/products/products_app',
+	'apps/cart/cart_app',
+	'apps/checkout/checkout_app',
+	'lib/components/tabs/tabs_controller',
+	'entities/options',
+	'entities/abstract/tabs',
+	'entities/abstract/search_parser'
+], function(POS){
+	POS.start();
 });

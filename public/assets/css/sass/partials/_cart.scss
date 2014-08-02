@@ -1,0 +1,46 @@
+#cart {
+    table {
+        tbody {
+            input {
+                text-align: center;
+                max-width: 7em;
+                background-color: $odd-background;
+                border: 1px solid $border-dark;
+                -moz-appearance: textfield;
+                // outline: none;
+                @include border-radius(16px);
+                &::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                &::-webkit-outer-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            &.animating {
+                tr.empty {
+                    display: none;
+                }
+            }
+        }
+    }
+} 
+
+#cart-customer div, #cart-actions div, #cart-notes div {
+    padding: $vspacing/2;
+    border-bottom: 1px solid $border-dark;
+}
+
+#cart-actions div {
+    text-align: right;
+    border: 0;
+}
+
+#cart-notes div {
+    border: 0;
+    border-top: 1px solid $border-dark;
+}

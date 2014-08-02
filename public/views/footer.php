@@ -1,6 +1,6 @@
 </div><!-- /page -->
 
-<?php if( WC_POS()->is_pos() == 'main' ) : ?> 
+<?php if( WC_POS()->template == 'main' ) : ?> 
 <div id="footer" class="textcenter">
 	<i class="fa fa-support"></i> <?= sprintf( __( 'Need help? Visit the <a href="%s">support</a> page', 'woocommerce-pos' ), WC_POS()->pos_url( 'support' ) ); ?>
 </div>
@@ -16,6 +16,8 @@
 		<li class="support"><a href="<?= WC_POS()->pos_url('support'); ?>"><i class="fa fa-support"></i> <?php _e( 'Support', 'woocommerce-pos' ); ?></a></li>
 	</ul>
 </div><!-- /menu -->
+
+<div id="modal"></div>
 
 <?php WooCommerce_POS::pos_print_js('footer'); ?>
 

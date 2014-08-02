@@ -62,12 +62,12 @@ Tables
 .comment-content:before,
 .site-header:before,
 .site-content:before,
-.site-footer:before, table tr td dl:before, #pagination:before, .clear:after,
+.site-footer:before, table tr td dl:before, #products ul.list li:before, #products ul.list li div.name dl:before, #products-pagination:before, .clear:after,
 .entry-content:after,
 .comment-content:after,
 .site-header:after,
 .site-content:after,
-.site-footer:after, table tr td dl:after, #pagination:after {
+.site-footer:after, table tr td dl:after, #products ul.list li:after, #products ul.list li div.name dl:after, #products-pagination:after {
   content: "";
   display: table;
 }
@@ -77,7 +77,7 @@ Tables
 .comment-content:after,
 .site-header:after,
 .site-content:after,
-.site-footer:after, table tr td dl:after, #pagination:after {
+.site-footer:after, table tr td dl:after, #products ul.list li:after, #products ul.list li div.name dl:after, #products-pagination:after {
   clear: both;
 }
 
@@ -1228,11 +1228,11 @@ fieldset {
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
-/* line 30, sass/partials/_layout.scss */
+/* line 29, sass/partials/_layout.scss */
 .col.leftcol {
   margin-bottom: 0.93458%;
 }
-/* line 33, sass/partials/_layout.scss */
+/* line 32, sass/partials/_layout.scss */
 .col h4 {
   line-height: 1;
   padding: 0.75em;
@@ -1241,42 +1241,42 @@ fieldset {
 }
 
 @media (min-width: 768px) {
-  /* line 42, sass/partials/_layout.scss */
+  /* line 41, sass/partials/_layout.scss */
   header .btn-header span {
     display: inline !important;
   }
 
-  /* line 45, sass/partials/_layout.scss */
+  /* line 44, sass/partials/_layout.scss */
   .leftcol {
     width: 49.53271%;
     float: left;
     margin-right: 0.93458%;
   }
 
-  /* line 49, sass/partials/_layout.scss */
+  /* line 48, sass/partials/_layout.scss */
   .rightcol {
     width: 49.53271%;
     float: right;
   }
 }
-/* line 54, sass/partials/_layout.scss */
+/* line 53, sass/partials/_layout.scss */
 #page, #menu, #footer {
   font-size: 0.8em;
 }
 
 @media (min-width: 320px) {
-  /* line 58, sass/partials/_layout.scss */
+  /* line 57, sass/partials/_layout.scss */
   #page, #menu, #footer {
     font-size: 0.9em;
   }
 }
 @media (min-width: 480px) {
-  /* line 63, sass/partials/_layout.scss */
+  /* line 62, sass/partials/_layout.scss */
   #page, #menu, #footer {
     font-size: 1em;
   }
 }
-/* line 68, sass/partials/_layout.scss */
+/* line 67, sass/partials/_layout.scss */
 #footer {
   position: fixed;
   left: 0px;
@@ -1286,18 +1286,18 @@ fieldset {
   background: white;
   border-top: 1px solid #d4d4d4;
 }
-/* line 76, sass/partials/_layout.scss */
+/* line 75, sass/partials/_layout.scss */
 #footer a, #footer .fa-support {
   color: #e54028;
 }
 
 /* Header =================================================== */
-/* line 82, sass/partials/_layout.scss */
+/* line 81, sass/partials/_layout.scss */
 header {
   color: #eeeeee;
   background-color: #222222;
 }
-/* line 86, sass/partials/_layout.scss */
+/* line 85, sass/partials/_layout.scss */
 header h1 {
   font-size: 1em;
   text-align: center;
@@ -1305,7 +1305,7 @@ header h1 {
   line-height: 2.25em;
   margin: 0;
 }
-/* line 94, sass/partials/_layout.scss */
+/* line 93, sass/partials/_layout.scss */
 header a {
   color: #eeeeee;
   text-decoration: none;
@@ -1314,7 +1314,7 @@ header a {
 header a:hover, header a:active, header a:focus {
   color: #0099d5;
 }
-/* line 101, sass/partials/_layout.scss */
+/* line 100, sass/partials/_layout.scss */
 header a.btn-header {
   color: #eeeeee;
   background-color: #222222;
@@ -1328,12 +1328,12 @@ header a.btn-header:hover, header a.btn-header:active, header a.btn-header:focus
   background-color: #0074a2;
   text-decoration: none;
 }
-/* line 112, sass/partials/_layout.scss */
+/* line 111, sass/partials/_layout.scss */
 header a.btn-header span {
   display: none;
 }
 
-/* line 120, sass/partials/_layout.scss */
+/* line 119, sass/partials/_layout.scss */
 .pushy-active #menu-btn {
   background-color: #0074a2;
 }
@@ -1457,440 +1457,67 @@ html, body {
   z-index: 9999;
 }
 
+/* line 2, sass/partials/_panels.scss */
+.panel .panel-heading {
+  border-bottom: 1px solid #d4d4d4;
+}
+/* line 4, sass/partials/_panels.scss */
+.panel .panel-heading h5 {
+  margin: 0;
+  padding: 0.75em;
+}
 /* line 7, sass/partials/_panels.scss */
-.panel {
-  margin-bottom: 22px;
-  background-color: white;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+.panel .panel-heading h5 img {
+  vertical-align: middle;
 }
-
-/* line 16, sass/partials/_panels.scss */
-.panel-body {
-  padding: 15px;
+/* line 12, sass/partials/_panels.scss */
+.panel .panel-body {
+  border-bottom: 1px solid #d4d4d4;
+  padding: 0.75em;
 }
-/* line 12, sass/partials/_mixins.scss */
-.panel-body:before, .panel-body:after {
-  content: " ";
-  display: table;
-}
-/* line 17, sass/partials/_mixins.scss */
-.panel-body:after {
-  clear: both;
-}
-/* line 19, sass/partials/_panels.scss */
-.panel-body p {
+/* line 15, sass/partials/_panels.scss */
+.panel .panel-body p {
   margin-bottom: 5px;
 }
-/* line 22, sass/partials/_panels.scss */
-.panel-body fieldset {
-  padding: 0;
-}
-
-/* line 28, sass/partials/_panels.scss */
-.panel-heading {
-  padding: 10px 15px;
-  border-bottom: 1px solid transparent;
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
-  border-top-left-radius: 3px;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
-  border-top-right-radius: 3px;
-}
-/* line 33, sass/partials/_panels.scss */
-.panel-heading > .dropdown .dropdown-toggle {
-  color: inherit;
-}
-/* line 37, sass/partials/_panels.scss */
-#payment-options .panel-heading {
-  cursor: pointer;
-}
-
-/* line 43, sass/partials/_panels.scss */
-.panel-title {
-  margin-top: 0;
-  margin-bottom: 0;
-  font-size: 18px;
-  color: inherit;
-}
-/* line 49, sass/partials/_panels.scss */
-.panel-title > a {
-  color: inherit;
-}
-/* line 53, sass/partials/_panels.scss */
-.panel-title img {
-  vertical-align: middle;
-  max-height: 26px;
-}
-
-/* line 60, sass/partials/_panels.scss */
-.panel-footer {
-  padding: 10px 15px;
+/* line 20, sass/partials/_panels.scss */
+.panel.panel-default .panel-heading {
   background-color: whitesmoke;
-  border-top: 1px solid #dddddd;
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  border-bottom-right-radius: 3px;
 }
-
-/* line 74, sass/partials/_panels.scss */
-.panel > .list-group {
-  margin-bottom: 0;
-}
-/* line 77, sass/partials/_panels.scss */
-.panel > .list-group .list-group-item {
-  border-width: 1px 0;
-  border-radius: 0;
-}
-/* line 84, sass/partials/_panels.scss */
-.panel > .list-group:first-child .list-group-item:first-child {
-  border-top: 0;
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
-  border-top-left-radius: 3px;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
-  border-top-right-radius: 3px;
-}
-/* line 91, sass/partials/_panels.scss */
-.panel > .list-group:last-child .list-group-item:last-child {
-  border-bottom: 0;
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-}
-
-/* line 100, sass/partials/_panels.scss */
-.panel-heading + .list-group .list-group-item:first-child {
-  border-top-width: 0;
-}
-
-/* line 112, sass/partials/_panels.scss */
-.panel > .table,
-.panel > .table-responsive > .table {
-  margin-bottom: 0;
-}
-/* line 117, sass/partials/_panels.scss */
-.panel > .table:first-child,
-.panel > .table-responsive:first-child > .table:first-child {
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
-  border-top-left-radius: 3px;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
-  border-top-right-radius: 3px;
-}
-/* line 124, sass/partials/_panels.scss */
-.panel > .table:first-child > thead:first-child > tr:first-child td:first-child,
-.panel > .table:first-child > thead:first-child > tr:first-child th:first-child,
-.panel > .table:first-child > tbody:first-child > tr:first-child td:first-child,
-.panel > .table:first-child > tbody:first-child > tr:first-child th:first-child,
-.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,
-.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
-.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,
-.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child {
-  border-top-left-radius: 3px;
-}
-/* line 128, sass/partials/_panels.scss */
-.panel > .table:first-child > thead:first-child > tr:first-child td:last-child,
-.panel > .table:first-child > thead:first-child > tr:first-child th:last-child,
-.panel > .table:first-child > tbody:first-child > tr:first-child td:last-child,
-.panel > .table:first-child > tbody:first-child > tr:first-child th:last-child,
-.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,
-.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
-.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,
-.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child {
-  border-top-right-radius: 3px;
-}
-/* line 136, sass/partials/_panels.scss */
-.panel > .table:last-child,
-.panel > .table-responsive:last-child > .table:last-child {
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-}
-/* line 143, sass/partials/_panels.scss */
-.panel > .table:last-child > tbody:last-child > tr:last-child td:first-child,
-.panel > .table:last-child > tbody:last-child > tr:last-child th:first-child,
-.panel > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
-.panel > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
-.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,
-.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
-.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
-.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child {
-  border-bottom-left-radius: 3px;
-}
-/* line 147, sass/partials/_panels.scss */
-.panel > .table:last-child > tbody:last-child > tr:last-child td:last-child,
-.panel > .table:last-child > tbody:last-child > tr:last-child th:last-child,
-.panel > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
-.panel > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
-.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,
-.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
-.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
-.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child {
-  border-bottom-right-radius: 3px;
-}
-/* line 154, sass/partials/_panels.scss */
-.panel > .panel-body + .table,
-.panel > .panel-body + .table-responsive {
-  border-top: 1px solid #dddddd;
-}
-/* line 158, sass/partials/_panels.scss */
-.panel > .table > tbody:first-child > tr:first-child th,
-.panel > .table > tbody:first-child > tr:first-child td {
-  border-top: 0;
-}
-/* line 162, sass/partials/_panels.scss */
-.panel > .table-bordered,
-.panel > .table-responsive > .table-bordered {
-  border: 0;
-}
-/* line 169, sass/partials/_panels.scss */
-.panel > .table-bordered > thead > tr > th:first-child,
-.panel > .table-bordered > thead > tr > td:first-child,
-.panel > .table-bordered > tbody > tr > th:first-child,
-.panel > .table-bordered > tbody > tr > td:first-child,
-.panel > .table-bordered > tfoot > tr > th:first-child,
-.panel > .table-bordered > tfoot > tr > td:first-child,
-.panel > .table-responsive > .table-bordered > thead > tr > th:first-child,
-.panel > .table-responsive > .table-bordered > thead > tr > td:first-child,
-.panel > .table-responsive > .table-bordered > tbody > tr > th:first-child,
-.panel > .table-responsive > .table-bordered > tbody > tr > td:first-child,
-.panel > .table-responsive > .table-bordered > tfoot > tr > th:first-child,
-.panel > .table-responsive > .table-bordered > tfoot > tr > td:first-child {
-  border-left: 0;
-}
-/* line 173, sass/partials/_panels.scss */
-.panel > .table-bordered > thead > tr > th:last-child,
-.panel > .table-bordered > thead > tr > td:last-child,
-.panel > .table-bordered > tbody > tr > th:last-child,
-.panel > .table-bordered > tbody > tr > td:last-child,
-.panel > .table-bordered > tfoot > tr > th:last-child,
-.panel > .table-bordered > tfoot > tr > td:last-child,
-.panel > .table-responsive > .table-bordered > thead > tr > th:last-child,
-.panel > .table-responsive > .table-bordered > thead > tr > td:last-child,
-.panel > .table-responsive > .table-bordered > tbody > tr > th:last-child,
-.panel > .table-responsive > .table-bordered > tbody > tr > td:last-child,
-.panel > .table-responsive > .table-bordered > tfoot > tr > th:last-child,
-.panel > .table-responsive > .table-bordered > tfoot > tr > td:last-child {
-  border-right: 0;
-}
-/* line 182, sass/partials/_panels.scss */
-.panel > .table-bordered > thead > tr:first-child > td,
-.panel > .table-bordered > thead > tr:first-child > th,
-.panel > .table-bordered > tbody > tr:first-child > td,
-.panel > .table-bordered > tbody > tr:first-child > th,
-.panel > .table-responsive > .table-bordered > thead > tr:first-child > td,
-.panel > .table-responsive > .table-bordered > thead > tr:first-child > th,
-.panel > .table-responsive > .table-bordered > tbody > tr:first-child > td,
-.panel > .table-responsive > .table-bordered > tbody > tr:first-child > th {
-  border-bottom: 0;
-}
-/* line 191, sass/partials/_panels.scss */
-.panel > .table-bordered > tbody > tr:last-child > td,
-.panel > .table-bordered > tbody > tr:last-child > th,
-.panel > .table-bordered > tfoot > tr:last-child > td,
-.panel > .table-bordered > tfoot > tr:last-child > th,
-.panel > .table-responsive > .table-bordered > tbody > tr:last-child > td,
-.panel > .table-responsive > .table-bordered > tbody > tr:last-child > th,
-.panel > .table-responsive > .table-bordered > tfoot > tr:last-child > td,
-.panel > .table-responsive > .table-bordered > tfoot > tr:last-child > th {
-  border-bottom: 0;
-}
-/* line 198, sass/partials/_panels.scss */
-.panel > .table-responsive {
-  border: 0;
-  margin-bottom: 0;
-}
-
-/* line 210, sass/partials/_panels.scss */
-.panel-group {
-  margin-bottom: 22px;
-}
-/* line 214, sass/partials/_panels.scss */
-.panel-group .panel {
-  margin-bottom: 0;
-  border-radius: 4px;
-}
-/* line 217, sass/partials/_panels.scss */
-.panel-group .panel + .panel {
-  margin-top: 5px;
-}
-/* line 222, sass/partials/_panels.scss */
-.panel-group .panel-heading {
-  border-bottom: 0;
-}
-/* line 224, sass/partials/_panels.scss */
-.panel-group .panel-heading + .panel-collapse .panel-body {
-  border-top: 1px solid #dddddd;
-}
-/* line 228, sass/partials/_panels.scss */
-.panel-group .panel-footer {
-  border-top: 0;
-}
-/* line 230, sass/partials/_panels.scss */
-.panel-group .panel-footer + .panel-collapse .panel-body {
-  border-bottom: 1px solid #dddddd;
-}
-
-/* line 238, sass/partials/_panels.scss */
-.panel-default {
-  border-color: #dddddd;
-}
-/* line 133, sass/partials/_mixins.scss */
-.panel-default > .panel-heading {
-  color: #333333;
-  background-color: whitesmoke;
-  border-color: #dddddd;
-}
-/* line 138, sass/partials/_mixins.scss */
-.panel-default > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #dddddd;
-}
-/* line 143, sass/partials/_mixins.scss */
-.panel-default > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #dddddd;
-}
-
-/* line 241, sass/partials/_panels.scss */
-.panel-primary {
-  border-color: #00a1cb;
-}
-/* line 133, sass/partials/_mixins.scss */
-.panel-primary > .panel-heading {
-  color: white;
-  background-color: #00a1cb;
-  border-color: #00a1cb;
-}
-/* line 138, sass/partials/_mixins.scss */
-.panel-primary > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #00a1cb;
-}
-/* line 143, sass/partials/_mixins.scss */
-.panel-primary > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #00a1cb;
-}
-
-/* line 244, sass/partials/_panels.scss */
-.panel-success {
-  border-color: #d6e9c6;
-}
-/* line 133, sass/partials/_mixins.scss */
-.panel-success > .panel-heading {
-  color: #3c763d;
+/* line 25, sass/partials/_panels.scss */
+.panel.panel-success .panel-heading {
   background-color: #dff0d8;
-  border-color: #d6e9c6;
-}
-/* line 138, sass/partials/_mixins.scss */
-.panel-success > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #d6e9c6;
-}
-/* line 143, sass/partials/_mixins.scss */
-.panel-success > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #d6e9c6;
 }
 
-/* line 247, sass/partials/_panels.scss */
-.panel-info {
-  border-color: #bce8f1;
-}
-/* line 133, sass/partials/_mixins.scss */
-.panel-info > .panel-heading {
-  color: #31708f;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-}
-/* line 138, sass/partials/_mixins.scss */
-.panel-info > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #bce8f1;
-}
-/* line 143, sass/partials/_mixins.scss */
-.panel-info > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #bce8f1;
-}
-
-/* line 250, sass/partials/_panels.scss */
-.panel-warning {
-  border-color: #faebcc;
-}
-/* line 133, sass/partials/_mixins.scss */
-.panel-warning > .panel-heading {
-  color: #8a6d3b;
-  background-color: #fcf8e3;
-  border-color: #faebcc;
-}
-/* line 138, sass/partials/_mixins.scss */
-.panel-warning > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #faebcc;
-}
-/* line 143, sass/partials/_mixins.scss */
-.panel-warning > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #faebcc;
-}
-
-/* line 253, sass/partials/_panels.scss */
-.panel-danger {
-  border-color: #ebccd1;
-}
-/* line 133, sass/partials/_mixins.scss */
-.panel-danger > .panel-heading {
-  color: #a94442;
-  background-color: #f2dede;
-  border-color: #ebccd1;
-}
-/* line 138, sass/partials/_mixins.scss */
-.panel-danger > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #ebccd1;
-}
-/* line 143, sass/partials/_mixins.scss */
-.panel-danger > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #ebccd1;
-}
-
-/* line 259, sass/partials/_panels.scss */
+/* line 32, sass/partials/_panels.scss */
 .panel-success .fa-circle-o {
   display: none;
 }
-/* line 260, sass/partials/_panels.scss */
+/* line 33, sass/partials/_panels.scss */
 .panel-success .fa-square-o {
   display: none;
 }
-/* line 261, sass/partials/_panels.scss */
+/* line 34, sass/partials/_panels.scss */
 .panel-success .fa-check-circle-o {
   display: inline;
 }
-/* line 262, sass/partials/_panels.scss */
+/* line 35, sass/partials/_panels.scss */
 .panel-success .fa-check-square-o {
   display: inline;
 }
 
-/* line 266, sass/partials/_panels.scss */
+/* line 39, sass/partials/_panels.scss */
 .panel-default .fa-circle-o {
   display: inline;
 }
-/* line 267, sass/partials/_panels.scss */
+/* line 40, sass/partials/_panels.scss */
 .panel-default .fa-square-o {
   display: inline;
 }
-/* line 268, sass/partials/_panels.scss */
+/* line 41, sass/partials/_panels.scss */
 .panel-default .fa-check-circle-o {
   display: none;
 }
-/* line 269, sass/partials/_panels.scss */
+/* line 42, sass/partials/_panels.scss */
 .panel-default .fa-check-square-o {
   display: none;
 }
@@ -1963,148 +1590,7 @@ table tfoot div.alert {
   font-size: 14px;
 }
 
-/* line 56, sass/partials/_tables.scss */
-#products .loading {
-  display: block;
-  margin: 0 auto;
-  padding: 50px 0;
-}
-
-/* line 62, sass/partials/_tables.scss */
-#filter {
-  padding: 0.75em;
-  border-bottom: 1px solid #d4d4d4;
-  position: relative;
-}
-/* line 66, sass/partials/_tables.scss */
-#filter input[type=search] {
-  width: 100%;
-  height: 2.25em;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  padding-left: 35px;
-  padding-right: 35px;
-  -webkit-appearance: textfield;
-}
-/* line 73, sass/partials/_tables.scss */
-#filter input[type=search]::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-/* line 76, sass/partials/_tables.scss */
-#filter input[type=search]::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-}
-/* line 79, sass/partials/_tables.scss */
-#filter input[type=search]::-ms-clear {
-  display: none;
-}
-/* line 83, sass/partials/_tables.scss */
-#filter i.fa-search {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0 10px;
-  margin: 0.75em 0.75em;
-  pointer-events: none;
-  line-height: 2.25em;
-}
-/* line 92, sass/partials/_tables.scss */
-#filter a.clear {
-  display: none;
-  color: #444444;
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 0 10px;
-  margin: 0.75em 0.75em;
-  line-height: 2.25em;
-}
-
-/* line 105, sass/partials/_tables.scss */
-#products table thead {
-  display: none;
-}
-/* line 107, sass/partials/_tables.scss */
-#products table tbody strong {
-  display: block;
-}
-/* line 109, sass/partials/_tables.scss */
-#products table tbody tr:nth-of-type(even) {
-  background-color: white;
-}
-/* line 112, sass/partials/_tables.scss */
-#products table tbody tr:nth-of-type(odd) {
-  background-color: #f9f9f9;
-}
-/* line 116, sass/partials/_tables.scss */
-#products table tbody tr:last-of-type td {
-  border-bottom: 1px solid #d4d4d4;
-}
-
-/* line 122, sass/partials/_tables.scss */
-#pagination {
-  padding: 0.75em;
-}
-/* line 125, sass/partials/_tables.scss */
-#pagination small {
-  text-align: center;
-  display: block;
-  margin: 0 60px;
-  line-height: 1.3;
-}
-/* line 131, sass/partials/_tables.scss */
-#pagination.working {
-  background-color: rgba(125, 181, 0, 0.3);
-  background-image: url(../../../assets/bg-working.gif);
-}
-
-/* line 140, sass/partials/_tables.scss */
-#cart table tbody input {
-  text-align: center;
-  max-width: 7em;
-  background-color: #f9f9f9;
-  border: 1px solid #d4d4d4;
-  -moz-appearance: textfield;
-  -moz-border-radius: 16px;
-  -webkit-border-radius: 16px;
-  border-radius: 16px;
-}
-/* line 148, sass/partials/_tables.scss */
-#cart table tbody input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* line 152, sass/partials/_tables.scss */
-#cart table tbody input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* line 156, sass/partials/_tables.scss */
-#cart table tbody input:hover {
-  cursor: pointer;
-}
-/* line 163, sass/partials/_tables.scss */
-#cart table tfoot tr.order-total th, #cart table tfoot tr.order-total td, #cart table tfoot tr.customer th, #cart table tfoot tr.customer td {
-  border-bottom: 1px solid #d4d4d4;
-}
-/* line 168, sass/partials/_tables.scss */
-#cart table tfoot tr.actions th, #cart table tfoot tr.actions td {
-  text-align: right;
-  border-bottom: 0;
-}
-/* line 172, sass/partials/_tables.scss */
-#cart table tfoot tr.actions.working td {
-  background-color: rgba(125, 181, 0, 0.3);
-  background-image: url(../../../assets/bg-working.gif);
-}
-/* line 178, sass/partials/_tables.scss */
-#cart table tfoot tr.note th, #cart table tfoot tr.note td {
-  border-top: 1px solid #d4d4d4;
-  border-bottom: 0;
-}
-
-/* line 188, sass/partials/_tables.scss */
+/* line 57, sass/partials/_tables.scss */
 .modal table tfoot tr:last-of-type th, .modal table tfoot tr:last-of-type td {
   border-bottom: 0;
 }
@@ -2141,6 +1627,285 @@ table tfoot div.alert {
   right: 6px;
   top: 0;
   line-height: 24px;
+}
+
+/* line 27, sass/partials/_progress-bars.scss */
+#spinner {
+  min-height: 80px;
+}
+
+/* line 5, sass/partials/_products.scss */
+#products ul {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* line 12, sass/partials/_products.scss */
+#products ul.list li {
+  display: table-row;
+}
+/* line 15, sass/partials/_products.scss */
+#products ul.list li div {
+  padding: 0.75em;
+  display: table-cell;
+  vertical-align: middle !important;
+  border-top: 1px solid #eeeeee;
+}
+/* line 20, sass/partials/_products.scss */
+#products ul.list li div.img {
+  width: 20%;
+}
+/* line 22, sass/partials/_products.scss */
+#products ul.list li div.img img {
+  width: 100%;
+  max-width: 90px;
+  vertical-align: middle;
+}
+/* line 28, sass/partials/_products.scss */
+#products ul.list li div.name {
+  width: 50%;
+}
+/* line 30, sass/partials/_products.scss */
+#products ul.list li div.name dl {
+  width: 100%;
+  font-size: 0.8em;
+}
+/* line 34, sass/partials/_products.scss */
+#products ul.list li div.name dl dt {
+  font-weight: normal;
+  float: left;
+  padding-right: 5px;
+  clear: left;
+}
+/* line 40, sass/partials/_products.scss */
+#products ul.list li div.name dl dd {
+  float: left;
+  margin: 0;
+}
+/* line 45, sass/partials/_products.scss */
+#products ul.list li div.name strong {
+  display: block;
+}
+/* line 47, sass/partials/_products.scss */
+#products ul.list li div.price {
+  width: 15%;
+  text-align: center;
+}
+/* line 51, sass/partials/_products.scss */
+#products ul.list li div.action {
+  width: 15%;
+  text-align: center;
+}
+/* line 55, sass/partials/_products.scss */
+#products ul.list li div.empty {
+  width: 100%;
+  text-align: center;
+}
+/* line 60, sass/partials/_products.scss */
+#products ul.list li div span:before, #products ul.list li div span:after {
+  content: " ";
+}
+/* line 65, sass/partials/_products.scss */
+#products ul.list li:nth-of-type(even) {
+  background-color: #f9f9f9;
+}
+/* line 66, sass/partials/_products.scss */
+#products ul.list li:nth-of-type(odd) {
+  background-color: white;
+}
+/* line 68, sass/partials/_products.scss */
+#products ul.list li:first-of-type div {
+  border: 0;
+}
+/* line 73, sass/partials/_products.scss */
+#products ul.list li:last-of-type div {
+  border-bottom: 1px solid #d4d4d4;
+}
+
+/* line 92, sass/partials/_products.scss */
+#products-filter {
+  padding: 0.75em;
+  border-bottom: 1px solid #d4d4d4;
+  position: relative;
+}
+/* line 96, sass/partials/_products.scss */
+#products-filter input[type=search] {
+  width: 100%;
+  height: 2.25em;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-left: 35px;
+  padding-right: 35px;
+  -webkit-appearance: textfield;
+}
+/* line 103, sass/partials/_products.scss */
+#products-filter input[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+/* line 106, sass/partials/_products.scss */
+#products-filter input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+/* line 109, sass/partials/_products.scss */
+#products-filter input[type=search]::-ms-clear {
+  display: none;
+}
+/* line 113, sass/partials/_products.scss */
+#products-filter i.fa-search {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0 10px;
+  margin: 0.75em 0.75em;
+  pointer-events: none;
+  line-height: 2.25em;
+}
+/* line 122, sass/partials/_products.scss */
+#products-filter a.clear {
+  display: none;
+  color: #444444;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 10px;
+  margin: 0.75em 0.75em;
+  line-height: 2.25em;
+}
+
+/* line 134, sass/partials/_products.scss */
+#products-pagination {
+  padding: 0.75em;
+}
+/* line 137, sass/partials/_products.scss */
+#products-pagination small {
+  text-align: center;
+  display: block;
+  margin: 0 60px;
+  line-height: 1.3;
+}
+/* line 143, sass/partials/_products.scss */
+#products-pagination.working {
+  background-color: rgba(125, 181, 0, 0.3);
+  background-image: url(../../../assets/bg-working.gif);
+}
+
+/* line 1, sass/partials/_tabs.scss */
+.tabs {
+  background-color: #d4d4d4;
+}
+/* line 3, sass/partials/_tabs.scss */
+.tabs ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* line 7, sass/partials/_tabs.scss */
+.tabs ul li {
+  display: inline-block;
+  background-color: #e4e4e4;
+  padding: 0.375em 0.75em;
+  margin: 0 1px 0 0;
+  cursor: pointer;
+}
+/* line 13, sass/partials/_tabs.scss */
+.tabs ul li a {
+  color: #444444;
+}
+/* line 15, sass/partials/_tabs.scss */
+.tabs ul li a:hover {
+  color: #e54028;
+}
+/* line 19, sass/partials/_tabs.scss */
+.tabs ul li.active {
+  background-color: white;
+}
+
+/* line 28, sass/partials/_tabs.scss */
+.infinite-tabs {
+  overflow-x: hidden;
+}
+/* line 30, sass/partials/_tabs.scss */
+.infinite-tabs ul {
+  width: 2000px;
+}
+
+/* line 4, sass/partials/_cart.scss */
+#cart table tbody input {
+  text-align: center;
+  max-width: 7em;
+  background-color: #f9f9f9;
+  border: 1px solid #d4d4d4;
+  -moz-appearance: textfield;
+  -moz-border-radius: 16px;
+  -webkit-border-radius: 16px;
+  border-radius: 16px;
+}
+/* line 12, sass/partials/_cart.scss */
+#cart table tbody input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* line 16, sass/partials/_cart.scss */
+#cart table tbody input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* line 20, sass/partials/_cart.scss */
+#cart table tbody input:hover {
+  cursor: pointer;
+}
+/* line 25, sass/partials/_cart.scss */
+#cart table tbody.animating tr.empty {
+  display: none;
+}
+
+/* line 33, sass/partials/_cart.scss */
+#cart-customer div, #cart-actions div, #cart-notes div {
+  padding: 0.75em;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+/* line 38, sass/partials/_cart.scss */
+#cart-actions div {
+  text-align: right;
+  border: 0;
+}
+
+/* line 43, sass/partials/_cart.scss */
+#cart-notes div {
+  border: 0;
+  border-top: 1px solid #d4d4d4;
+}
+
+/* line 2, sass/partials/_numpad.scss */
+#numpad table {
+  margin: 0 -5px -5px 0;
+}
+/* line 4, sass/partials/_numpad.scss */
+#numpad table td {
+  border: 0;
+  padding: 0 5px 5px 0 !important;
+}
+/* line 7, sass/partials/_numpad.scss */
+#numpad table td button {
+  font-size: 20px;
+  line-height: 50px;
+  width: 50px;
+  padding: 0;
+  outline: 0;
+}
+/* line 13, sass/partials/_numpad.scss */
+#numpad table td button.return {
+  height: 100%;
+  font-size: 13px;
+}
+
+/* line 1, sass/partials/_checkout.scss */
+#checkout-actions div {
+  text-align: right;
+  padding: 0.75em;
 }
 
 /* line 10, sass/partials/_component-animations.scss */
@@ -2460,7 +2225,6 @@ tbody.collapse.in {
   left: 0;
   z-index: 1010;
   display: none;
-  max-width: 276px;
   padding: 1px;
   text-align: left;
   background-color: white;
@@ -2504,7 +2268,7 @@ tbody.collapse.in {
 
 /* line 43, sass/partials/_popovers.scss */
 .popover-content {
-  padding: 9px 14px;
+  padding: 5px 5px;
 }
 
 /* line 52, sass/partials/_popovers.scss */

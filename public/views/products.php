@@ -4,53 +4,60 @@
  */
 ?>
 
-<div id="filter">
+<script type="text/template" id="tmpl-products-layout">
+	<div id="products-filter" class="search"></div>
+	<div id="products-tabs" class="tabs infinite-tabs"></div>
+	<div id="products"></div>
+	<div id="products-pagination"></div>
+</script>
+
+<script type="text/template" id="tmpl-products-filter">
 	<i class="fa fa-search"></i>
 	<input type="search" placeholder="<?php _e( 'Search for products', 'woocommerce-pos' ); ?>" tabindex="1"  autofocus="autofocus">
 	<a class="clear" href="#"><i class="fa fa-times-circle fa-lg"></i></a>
-</div>
-<div id="products">
-	<table cellspacing="0">
-		<thead>
-			<tr>
-				<th>&nbsp;</th>
-				<th><?php _e( 'Product', 'woocommerce-pos' ); ?></th>
-				<th><?php _e( 'Price', 'woocommerce-pos' ); ?></th>
-				<th>&nbsp;</th>
-			</tr>
-		</thead>
-		<tbody id="product-list" class="empty">
-			<tr>
-				<td colspan="4"><?php _e( 'No products found', 'woocommerce-pos' ); ?></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-<div id="pagination"></div>
+</script>
 
 <script type="text/x-handlebars-template" id="tmpl-product">
-	<td class="img"><img src="{{featured_src}}"></td>
-	<td class="name">
+	<div class="img"><img src="{{featured_src}}" title="#{{id}}"></div>
+	<div class="name">
 		<strong>{{title}}</strong>
 		{{#with attributes}}
 			<dl>
-			{{#each this}}
+			{{#each this}}{{#if variation}}
 				<dt>{{name}}:</dt>
-				<dd>{{option}}</dd>
-			{{/each}}
+				<dd>{{#if option}}{{option}}{{/if}}{{#if options}}{{#csv options}}{{this}}{{/csv}}{{/if}}</dd>
+			{{/if}}{{/each}}
 			</dl>
 		{{/with}}
 		{{#if managing_stock}}
 			<small>{{stock_quantity}} <?php _ex( 'in stock', '%d in stock', 'woocommerce-pos' ) ?></small>
 		{{/if}}
-	</td>
-	<td class="price">{{{price_html}}}</td>
-	<td class="add"><a class="add-to-cart btn btn-success btn-circle" href="#"><i class="fa fa-plus"></i></a></td>
+	</div>
+	<div class="price">
+		{{#is type 'variation'}}
+			{{#if on_sale}}
+				<del>{{{money regular_price}}}</del> <ins>{{{money sale_price}}}</ins>
+			{{else}}
+				{{{money price}}}
+			{{/if}}
+		{{else}}
+			{{{price_html}}}
+		{{/is}}
+	</div>
+	{{#is type 'variable'}}
+		<div class="action"><a class="btn btn-success btn-circle action-variations" href="#"><i class="fa fa-chevron-right"></i></a></div>
+	{{else}}
+		<div class="action"><a class="btn btn-success btn-circle action-add" href="#"><i class="fa fa-plus"></i></a></div>
+	{{/is}}
+</script>
+
+<script type="text/template" id="tmpl-products-empty">
+	<div class="empty"><?php _e( 'No products found', 'woocommerce-pos' ); ?></div>
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-pagination">
-	<a href="#" class="prev btn btn-default alignleft"><i class="fa fa-chevron-left"></i></a> 
-	<a href="#" class="next btn btn-default alignright"><i class="fa fa-chevron-right"></i></a>
+	<a href="#" class="prev btn btn-default alignleft {{#is currentPage 1}}disabled{{/is}}"><i class="fa fa-chevron-left"></i></a> 
+	<a href="#" class="next btn btn-default alignright {{#is currentPage lastPage}}disabled{{/is}}"><i class="fa fa-chevron-right"></i></a>
 	<small>
 		<?= sprintf( __( 'Page %s of %s', 'woocommerce-pos' ), '{{currentPage}}', '{{totalPages}}' ); ?>. 
 		<?= sprintf( __( 'Showing %s of %s products', 'woocommerce-pos' ), '{{currentRecords}}', '{{totalRecords}}' ); ?>.<br>

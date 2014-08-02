@@ -9,7 +9,7 @@
   left: 0;
   z-index: $zindex-popover;
   display: none;
-  max-width: $popover-max-width;
+  // max-width: $popover-max-width;
   padding: 1px;
   text-align: left; // Reset given new insertion method
   background-color: $popover-bg;
@@ -41,7 +41,7 @@
 }
 
 .popover-content {
-  padding: 9px 14px;
+  padding: 5px 5px;
 }
 
 // Arrows
