@@ -21,7 +21,7 @@
     "select2": "~3.5.0",
     "marionette": "^2.0.0",
     "spinjs": "~2.0.1",
-    "hbs": "~0.8.1"
+    "text": "~2.0.12"
   },
   "devDependencies": {},
   "resolutions": {

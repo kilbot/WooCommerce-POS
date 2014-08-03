@@ -1,15 +1,17 @@
 define([
 	'app',
-	'hbs!lib/components/numpad/template'
+	'text!lib/components/numpad/template.html',
+	'handlebars'
 ], function(
 	POS,
-	NumpadTmpl
+	NumpadTmpl,
+	Handlebars
 ){
 	
 	POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _){
 		
 		Numpad.NumpadView = Marionette.ItemView.extend({
-			template: NumpadTmpl,
+			template: Handlebars.compile( NumpadTmpl ),
 
 		});
 

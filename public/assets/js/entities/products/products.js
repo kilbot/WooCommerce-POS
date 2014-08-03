@@ -80,13 +80,13 @@ define([
 							if(POS.debug) console.log('[error] ' + e.data.msg);
 						break;
 						case 'modal':
-							POS.execute('show:modal', 'download-progress', { total: e.data.total } );
+							POS.execute('products:download:modal', 'download-progress', { total: e.data.total } );
 						break;
 						case 'products':
 							$.when( self._saveProducts( e.data.products ) )
 							.done( function() {
 								// update progress
-								POS.Components.Modal.channel.vent.trigger('update:progress', e.data.progress );
+								POS.vent.trigger( 'update:progress', e.data.progress );
 								// complete
 								if( e.data.progress === e.data.total ) {
 									if(POS.debug) console.log('[notice] ' + e.data.total + ' products saved in total');

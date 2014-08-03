@@ -10,7 +10,7 @@ define([
 	
 	POS.module('Components', function(Components, POS, Backbone, Marionette, $, _){
 
-		// channels
+		// modals
 		Components.Modal.channel = new Backbone.Wreqr.Channel('modal');
 
 		Components.Modal.controller = new Components.Modal.Controller({
@@ -21,11 +21,19 @@ define([
 			Components.Modal.controller.getModal( template, data );
 		});
 
+		// tabs
 		POS.commands.setHandler( 'show:tabs', function(region, entities) {
 			return new Components.Tabs.Controller({
 				region: region,
 				entities: entities
 			})
+		});
+
+		// progress bar
+		Components.ProgressBar.channel = new Backbone.Wreqr.Channel('progressbar');
+		
+		POS.reqres.setHandler( 'progressbar', function(options) {
+			return new Components.ProgressBar.View(options);
 		});
 
 	});

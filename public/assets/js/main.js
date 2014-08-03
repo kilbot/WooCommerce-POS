@@ -15,7 +15,7 @@ requirejs.config({
 		localstorage: '../../../bower_components/backbone.localstorage/backbone.localStorage',
 		paginator 	: '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
 		accounting 	: '../../../bower_components/accounting/accounting.min',
-		hbs 		: '../../../bower_components/hbs/hbs',
+		text 		: '../../../bower_components/text/text',
 
 		// Plugins
 		modal 		: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal',

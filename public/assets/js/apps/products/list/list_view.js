@@ -167,7 +167,46 @@ define([
 				if(this.collection.hasNextPage()) {
 					this.collection.getNextPage();
 				}
+			}
+
+		});
+
+		View.DownloadProgress = Marionette.ItemView.extend({
+
+			behaviors: {
+				Modal: {
+					behaviorClass: POS.Components.Modal.Behavior
+				}
 			},
+
+			events: {
+				'click .btn-primary' : 'confirm',
+				'click .btn-default' : 'cancel',
+				'click .close' 		 : 'cancel'
+			},
+
+			initialize: function (options) {
+				this.template = _.template(options.data);
+				this.trigger('modal:open', this.showProgressBar );
+			},
+
+			confirm: function () {
+				this.trigger('modal:close');
+			},
+
+			cancel: function () {
+				this.trigger('modal:close');
+			},
+
+			showProgressBar: function(args) {
+				var el = args.view.content.$el.find('#progress-bar');
+				var progressBar = POS.request( 'progressbar', { el: el } );
+				progressBar.model.set({ max: el.data('total'), progress: 0, display: 'fraction' });
+
+				this.listenTo( progressBar.model, 'progress:complete', function() {
+					args.view.content.$el.find('.modal-footer').show();
+				});
+			}
 
 		});
 

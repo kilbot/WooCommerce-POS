@@ -70,7 +70,7 @@ define([
 
 			initialize: function (options) {
 				this.template = _.template(options.data);
-				this.trigger('modal:open');
+				this.trigger('modal:open' );
 			},
 
 			events: {

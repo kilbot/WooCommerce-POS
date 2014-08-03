@@ -128,6 +128,19 @@ define([
 				this.layout.paginationRegion.show(view);
 			},
 
+			showModal: function( template, data ) {
+
+				if(POS.debug) console.log('[notice] Fetching modal template: ' + template);
+				$.get( pos_params.ajax_url , { action: 'pos_get_modal', template: template, data: data, security: pos_params.nonce } )
+				.done(function( data ) {
+					new View.DownloadProgress({ data: data });
+				})
+				.fail(function() {
+					if(POS.debug) console.log('[error] Problem fetching modal template');
+				});
+
+			}
+
 		});
 
 		return List.Controller;

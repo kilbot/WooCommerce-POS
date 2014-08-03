@@ -1,16 +1,18 @@
 define([
 	'app',
-	'hbs!lib/components/tabs/template'
+	'text!lib/components/tabs/template.html',
+	'handlebars'
 ], function(
 	POS,
-	TabsTmpl
+	TabsTmpl,
+	Handlebars
 ){
 	
 	POS.module('Components.Tabs', function(Tabs, POS, Backbone, Marionette, $, _){
 		
 		Tabs.ItemView = Marionette.ItemView.extend({
 			tagName: 'li',
-			template: TabsTmpl,
+			template: Handlebars.compile( TabsTmpl ),
 			className: function() {
 				if( this.model.get('active') ) { return 'active'; }
 			},
