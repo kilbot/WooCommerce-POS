@@ -20,7 +20,7 @@ define(['app', 'apps/config/storage/localstorage'], function(POS){
 
 				// update totals on change to the cart items
 				this.listenTo( options.cart, 'add change remove reset', this.updateTotals );
-				this.listenTo( this, 'change:order_discount', this.updateTotals );
+				this.on( 'change:order_discount', this.updateTotals );
 
 			},
 

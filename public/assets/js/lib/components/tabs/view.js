@@ -1,6 +1,6 @@
 define([
 	'app',
-	'hbs!lib/components/tabs/templates/tabs'
+	'hbs!lib/components/tabs/template'
 ], function(
 	POS,
 	TabsTmpl
@@ -8,7 +8,7 @@ define([
 	
 	POS.module('Components.Tabs', function(Tabs, POS, Backbone, Marionette, $, _){
 		
-		Tabs.TabView = Marionette.ItemView.extend({
+		Tabs.ItemView = Marionette.ItemView.extend({
 			tagName: 'li',
 			template: TabsTmpl,
 			className: function() {
@@ -22,9 +22,9 @@ define([
 
 		});
 
-		Tabs.TabsView = Marionette.CollectionView.extend({
+		Tabs.View = Marionette.CollectionView.extend({
 			tagName: 'ul',
-			childView: Tabs.TabView,
+			childView: Tabs.ItemView,
 
 			collectionEvents: {
 				'change:active'	: 'render',

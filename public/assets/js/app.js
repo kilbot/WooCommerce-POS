@@ -1,7 +1,5 @@
 define([
-	'marionette', 
-	'apps/config/marionette/regions/modal',
-	// 'apps/config/marionette/regions/transition'
+	'marionette'
 ], function(
 	Marionette
 ){
@@ -12,10 +10,10 @@ define([
 		headerRegion: '#header',
 		leftRegion: '#left-panel',
 		rightRegion: '#right-panel',
-		dialogRegion: Marionette.Region.Modal.extend({
-			el: '#modal'
-		}),
-		numpadRegion: '#numpad'
+		modalRegion: '#modal',
+		// modalRegion: Marionette.Region.Modal.extend({
+		// 	el: '#modal'
+		// }),
 	});
 
 	POS.navigate = function(route, options){

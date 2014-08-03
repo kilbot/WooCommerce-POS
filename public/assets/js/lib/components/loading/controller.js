@@ -1,4 +1,4 @@
-define(['app', 'lib/components/loading/loading_view'], function(POS){
+define(['app', 'lib/components/loading/view'], function(POS){
 
 	POS.module('Components.Loading', function(Loading, POS, Backbone, Marionette, $, _){
 

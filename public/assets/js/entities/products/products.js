@@ -37,7 +37,7 @@ define([
 				
 				// make sure a sync is not already in progress
 				if( POS.request('options:get', '_syncing') ) { 
-					if(POS.debug) console.log('Sync already in progress');
+					if(POS.debug) console.log('[notice] Sync already in progress');
 					return; 
 				}
 
@@ -80,11 +80,14 @@ define([
 							if(POS.debug) console.log('[error] ' + e.data.msg);
 						break;
 						case 'modal':
-							console.log( e.data.total )
+							POS.execute('show:modal', 'download-progress', { total: e.data.total } );
 						break;
 						case 'products':
 							$.when( self._saveProducts( e.data.products ) )
 							.done( function() {
+								// update progress
+								POS.Components.Modal.channel.vent.trigger('update:progress', e.data.progress );
+								// complete
 								if( e.data.progress === e.data.total ) {
 									if(POS.debug) console.log('[notice] ' + e.data.total + ' products saved in total');
 									worker.postMessage({ 'cmd': 'stop' });

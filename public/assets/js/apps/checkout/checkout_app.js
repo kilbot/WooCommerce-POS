@@ -11,11 +11,11 @@ define([
 		CheckoutApp.startWithParent = false;
 
 		CheckoutApp.onStart = function(){
-      		console.log('starting Checkout Module');
+      		console.log('[notice] starting Checkout Module');
     	};
 
     	CheckoutApp.onStop = function(){
-			console.log('stopping Checkout Module');
+			console.log('[notice] stopping Checkout Module');
 		};
 
 	});

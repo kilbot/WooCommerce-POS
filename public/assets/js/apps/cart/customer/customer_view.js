@@ -5,6 +5,16 @@ define(['app', 'handlebars', 'select2'], function(POS, Handlebars){
 		View.Customer = Marionette.ItemView.extend({
 			template: _.template( $('#tmpl-cart-customer').html() ),
 
+			events: {
+				'click .open-modal' : 'openModal'
+			},
+
+			openModal: function() {
+				// open browser support modal
+				POS.execute('show:modal', 'browser-support');
+				// var modalView = new POS.Components.Modal.ExampleView();
+			},
+
 			onRender: function() {
 
 				// add select2 to select_customer

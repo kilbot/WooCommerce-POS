@@ -118,7 +118,7 @@ define([
 				});
 
 				// clean up if itemsView is removed
-				this.listenTo( this, 'before:destroy', function(e){
+				this.on( 'before:destroy', function(){
 					view.destroy();
 				});
 

@@ -1,4 +1,4 @@
-define(['app', 'lib/components/numpad/numpad_view'], function(POS){
+define(['app', 'lib/components/numpad/view'], function(POS){
 
 	POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _){
 

@@ -1,6 +1,6 @@
 define([
 	'app',
-	'hbs!lib/components/numpad/templates/numpad'
+	'hbs!lib/components/numpad/template'
 ], function(
 	POS,
 	NumpadTmpl

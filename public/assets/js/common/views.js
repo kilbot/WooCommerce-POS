@@ -30,33 +30,6 @@ define(['app', 'spin'], function(POS, Spinner){
 			}
 		});
 
-		Views.Numpad = Marionette.ItemView.extend({
-			template : '#tmpl-numpad',
-
-			events: {
-				'click button' 	: 'btnPress',
-			},
-
-			keyEvents: {
-				'x': 'onXPress',
-			},
-
-			btnPress: function(e){
-				console.log( $(e.target).text() );
-			},
-
-			// onRender: function() {
-			// 	// HotKeys.bind(this.keyEvents, this, this.cid);
-				
-			// 	this.$el.html( this.template({ key: 'hello!' }) );
-			// },
-
-			onXPress: function() {
-				console.log('x was pressed');
-			}
-
-		});
-
 	});
 
 	return POS.Common.Views;

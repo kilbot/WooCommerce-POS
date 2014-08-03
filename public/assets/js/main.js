@@ -15,7 +15,6 @@ requirejs.config({
 		localstorage: '../../../bower_components/backbone.localstorage/backbone.localStorage',
 		paginator 	: '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
 		accounting 	: '../../../bower_components/accounting/accounting.min',
-		transitionRegion: '../../../bower_components/marionette.transition-region/marionette.transition-region',
 		hbs 		: '../../../bower_components/hbs/hbs',
 
 		// Plugins
@@ -26,7 +25,7 @@ requirejs.config({
 		select2 	: '../../../bower_components/select2/select2.min',
 
 		// Custom Plugins
-		autoGrowInput	: '../../../public/assets/js/src/jquery.autoGrowInput',
+		autoGrowInput: '../../../public/assets/js/src/jquery.autoGrowInput',
 		selectText	: '../../../public/assets/js/src/jquery.selectText',
 	},
 
@@ -40,10 +39,6 @@ requirejs.config({
 		},
 		popover: {
 			deps: ['jquery', 'tooltip']
-		},
-		transitionRegion: {
-			deps: ['marionette'],
-			exports: 'TransitionRegion'
 		},
 		// underscore: {
 		// 	exports: '_'
@@ -65,7 +60,7 @@ require([
 	'apps/products/products_app',
 	'apps/cart/cart_app',
 	'apps/checkout/checkout_app',
-	'lib/components/tabs/tabs_controller',
+	'lib/components/components_app',
 	'entities/options',
 	'entities/abstract/tabs',
 	'entities/abstract/search_parser'

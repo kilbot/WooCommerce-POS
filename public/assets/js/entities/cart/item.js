@@ -24,7 +24,7 @@ define(['app', 'accounting'], function(POS, accounting){
 				accounting.settings = this.params.accounting;
 
 				// update on change to qty or line discount
-				this.listenTo( this, 'change:qty change:display_price', this.updateLineTotals );
+				this.on( 'change:qty change:display_price', this.updateLineTotals );
 
 				// set item price on init, this will trigger updateLineTotals()
 				if( this.get('display_price') === 0 ) {

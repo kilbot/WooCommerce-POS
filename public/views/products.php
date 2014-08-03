@@ -23,10 +23,16 @@
 		<strong>{{title}}</strong>
 		{{#with attributes}}
 			<dl>
-			{{#each this}}{{#if variation}}
+			{{#each this}}
+			{{#if variation}}
 				<dt>{{name}}:</dt>
-				<dd>{{#if option}}{{option}}{{/if}}{{#if options}}{{#csv options}}{{this}}{{/csv}}{{/if}}</dd>
-			{{/if}}{{/each}}
+				<dd>{{#csv options}}{{this}}{{/csv}}</dd>
+			{{/if}}
+			{{#unless variation}}
+				<dt>{{name}}:</dt>
+				<dd>{{option}}</dd>
+			{{/unless}}
+			{{/each}}
 			</dl>
 		{{/with}}
 		{{#if managing_stock}}
