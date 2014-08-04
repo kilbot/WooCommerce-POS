@@ -25,7 +25,6 @@ requirejs.config({
 		select2 	: '../../../bower_components/select2/select2.min',
 
 		// Custom Plugins
-		autoGrowInput: '../../../public/assets/js/src/jquery.autoGrowInput',
 		selectText	: '../../../public/assets/js/src/jquery.selectText',
 	},
 

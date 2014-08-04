@@ -19,7 +19,13 @@ define([
 
 			triggers: {
 				'click': 'tab:clicked',
-				'click .action-remove': 'tab:remove:clicked'
+				'click .action-remove': 'tab:removed'
+			},
+
+			onTabClicked : function() {
+				if( !this.model.get('active') ) {
+					this.model.set({ active: true });
+				}
 			},
 
 		});
@@ -31,6 +37,12 @@ define([
 			collectionEvents: {
 				'change:active'	: 'render',
 			},
+
+			initialize: function() {
+				this.on( 'childview:tab:removed', function( childview, args ) {
+					this.collection.remove( args.model );
+				});
+			}
 			
 		});
 

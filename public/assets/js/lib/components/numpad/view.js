@@ -10,7 +10,7 @@ define([
 	
 	POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _){
 		
-		Numpad.NumpadView = Marionette.ItemView.extend({
+		Numpad.View = Marionette.ItemView.extend({
 			template: Handlebars.compile( NumpadTmpl ),
 
 		});

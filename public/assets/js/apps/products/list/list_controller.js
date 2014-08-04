@@ -56,14 +56,14 @@ define([
 					POS.trigger('cart:add', args.model);
 				});
 
-				// variations
+				// variations, new tab filter
 				this.listenTo( view, 'childview:product:variations:clicked', function(childview, args) {
-					var newTab = this.tabEntities.add({
+					var newTab = {
 						label: args.model.get('title'),
 						value: 'parent:' + args.model.get('id'),
-						fixed: false
-					});
-					newTab.set({ active: true }); // trigger active 
+						fixed: false					
+					};
+					this.trigger( 'add:new:tab', newTab );
 				});
 
 				// show
@@ -95,16 +95,22 @@ define([
 
 			_showTabsRegion: function() {
 
-				this.tabEntities = POS.request('tab:entities');
+				// get new tabs component
+				var view = POS.request( 'get:tabs:component', pos_params.tabs );
 
-				// listen to changes to active tab
-				this.listenTo( this.tabEntities, 'change:active', function( tab ) {
+				// listen to tab collection
+				this.listenTo( view.collection, 'change:active', function(tab) {
 					this.filterCollection.activeTab = tab.get('value');
 					this.filterCollection.trigger('filter:products');
 				});
 
+				// listen for new tabs
+				this.on( 'add:new:tab', function(tab) {
+					view.collection.add( tab ).set({ active: true });
+				}); 
+
 				// show tabs component
-				POS.execute('show:tabs', this.layout.tabsRegion, this.tabEntities);
+				this.layout.tabsRegion.show( view );
 			},
 
 			_showPaginationView: function() {

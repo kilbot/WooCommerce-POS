@@ -1,4 +1,4 @@
-define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectText'], function(POS, Handlebars, accounting){
+define(['app', 'handlebars', 'accounting', 'selectText'], function(POS, Handlebars, accounting){
 
 	POS.module('CartApp.List.View', function(View, POS, Backbone, Marionette, $, _){
 
@@ -20,8 +20,18 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectTe
 			params: pos_params,
 
 			initialize: function( options ) {
+				// this.on('all', function(e) { console.log("Cart Item View event: " + e); }); // debug
 				// set the accounting settings
 				accounting.settings = this.params.accounting;
+			},
+
+			behaviors: {
+				AutoGrow: {
+					behaviorClass: POS.Components.AutoGrow.Behavior
+				},
+				// Numpad: {
+				// 	behaviorClass: POS.Components.Numpad.Behavior
+				// },
 			},
 
 			modelEvents: {
@@ -30,23 +40,19 @@ define(['app', 'handlebars', 'accounting', 'popover', 'autoGrowInput', 'selectTe
 
 			events: {
 				'click .action-remove' 	: 'removeFromCart',
-				'show.bs.popover' 		: 'showNumpad',
+				// 'show.bs.popover' 		: 'showNumpad',
 				'click input'  			: 'change',
 				'keypress input'  		: 'updateOnEnter',
-      			'blur input'      		: 'save'
-			},
-
-			onRender: function() {
-				this.$('input').autoGrowInput();
+      			'blur input'      		: 'save',
 			},
 
 			// TODO: abstract this
 			onShow: function() {
-				this.$('input').popover({
-					placement: 'bottom',
-					html: true,
-					content: $('#numpad')
-				}).autoGrowInput();
+				// this.$('input').popover({
+				// 	placement: 'bottom',
+				// 	html: true,
+				// 	content: $('#numpad')
+				// });
 			},
 
 			// TODO: move this

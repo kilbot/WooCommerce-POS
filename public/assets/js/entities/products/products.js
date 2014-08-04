@@ -86,7 +86,10 @@ define([
 							$.when( self._saveProducts( e.data.products ) )
 							.done( function() {
 								// update progress
-								POS.vent.trigger( 'update:progress', e.data.progress );
+								if( e.data.total > 0 ) {
+									POS.vent.trigger( 'update:progress', e.data.progress );
+								}
+								
 								// complete
 								if( e.data.progress === e.data.total ) {
 									if(POS.debug) console.log('[notice] ' + e.data.total + ' products saved in total');

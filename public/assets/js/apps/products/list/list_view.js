@@ -200,12 +200,14 @@ define([
 
 			showProgressBar: function(args) {
 				var el = args.view.content.$el.find('#progress-bar');
-				var progressBar = POS.request( 'progressbar', { el: el } );
+				var progressBar = POS.request( 'get:progressbar:component', { el: el } );
 				progressBar.model.set({ max: el.data('total'), progress: 0, display: 'fraction' });
 
 				this.listenTo( progressBar.model, 'progress:complete', function() {
 					args.view.content.$el.find('.modal-footer').show();
 				});
+
+				progressBar.render();
 			}
 
 		});

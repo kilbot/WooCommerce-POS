@@ -32,7 +32,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item">
-	<td class="qty"><input type="number" value="{{qty}}" size="10" step="any" data-id="qty"></td>
+	<td class="qty"><input type="number" value="{{qty}}" size="10" step="any" data-id="qty" class="autogrow numpad"></td>
 	<td class="name">
 		{{title}}
 		{{#with attributes}}
@@ -44,7 +44,7 @@
 			</dl>
 		{{/with}}
 	</td>
-	<td class="price"><input type="type" value="{{{number display_price}}}" size="10" data-id="price" data-precise="{{item_price}}"></td>
+	<td class="price"><input type="type" value="{{{number display_price}}}" size="10" data-id="price" data-precise="{{item_price}}" class="autogrow numpad"></td>
 	<td class="total">
 		{{#if discounted}}
 			<del>{{{money display_total}}}</del>

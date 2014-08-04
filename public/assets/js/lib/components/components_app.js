@@ -1,14 +1,37 @@
 define([
 	'app',
+
+	// behaviors
+	'lib/components/autogrow/behavior',
+
+	// controllers
 	'lib/components/loading/controller',
 	'lib/components/modal/controller',
-	'lib/components/progress_bar/view',
-	'lib/components/tabs/controller',
+	'lib/components/numpad/controller',
+	'lib/components/progress_bar/controller',
+	'lib/components/tabs/controller'
+	
 ], function(
 	POS
 ){
 	
 	POS.module('Components', function(Components, POS, Backbone, Marionette, $, _){
+
+
+		var API = {
+
+			// returns new tabs view
+			getTabs: function(tabs) {
+				var controller = new Components.Tabs.Controller();
+				return controller.getTabView(tabs);
+			},
+
+			// returns new progress bar view
+			getProgressBar: function(options) {
+				var controller = new Components.ProgressBar.Controller();
+				return controller.getProgressBarView(options);
+			} 
+		};
 
 		// modals
 		Components.Modal.channel = new Backbone.Wreqr.Channel('modal');
@@ -22,18 +45,13 @@ define([
 		});
 
 		// tabs
-		POS.commands.setHandler( 'show:tabs', function(region, entities) {
-			return new Components.Tabs.Controller({
-				region: region,
-				entities: entities
-			})
+		POS.reqres.setHandler( 'get:tabs:component', function( tabs ) {
+			return API.getTabs(tabs);
 		});
 
 		// progress bar
-		Components.ProgressBar.channel = new Backbone.Wreqr.Channel('progressbar');
-		
-		POS.reqres.setHandler( 'progressbar', function(options) {
-			return new Components.ProgressBar.View(options);
+		POS.reqres.setHandler( 'get:progressbar:component', function(options) {
+			return API.getProgressBar(options);
 		});
 
 	});

@@ -21,7 +21,8 @@
     "select2": "~3.5.0",
     "marionette": "^2.0.0",
     "spinjs": "~2.0.1",
-    "text": "~2.0.12"
+    "text": "~2.0.12",
+    "backbone.radio": "~0.6.0"
   },
   "devDependencies": {},
   "resolutions": {
