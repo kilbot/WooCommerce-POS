@@ -26,7 +26,7 @@ define([
 			show: function() {
 
 				// fetch products
-				var fetchingProducts = POS.request('product:entities');
+				var fetchingProducts = POS.Entities.channel.request('product:entities');
 
 				this.listenTo( this.layout, 'show', function() {	
 					this._showProductsRegion();		
@@ -76,7 +76,7 @@ define([
 				var view = new View.Filter();
 
 				// filter collection = clone of products collection
-				this.filterCollection = POS.request('product:filtercollection', this.products);
+				this.filterCollection = POS.Entities.channel.request('product:filtercollection', this.products);
 
 				// add product tabs
 				this.listenTo( view, 'show', function() {
@@ -96,7 +96,7 @@ define([
 			_showTabsRegion: function() {
 
 				// get new tabs component
-				var view = POS.request( 'get:tabs:component', pos_params.tabs );
+				var view = POS.Components.channel.request( 'get:tabs', pos_params.tabs );
 
 				// listen to tab collection
 				this.listenTo( view.collection, 'change:active', function(tab) {
@@ -126,7 +126,7 @@ define([
 
 				// clear
 				this.listenTo( view, 'pagination:clear:clicked', function(args) {
-					POS.execute('options:set', 'last_update', '' );
+					POS.Entities.channel.command('options:set', 'last_update', '' );
 					args.view.render();
 				});
 				

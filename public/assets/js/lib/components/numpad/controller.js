@@ -21,10 +21,6 @@ define([
 
 		});
 
-		POS.commands.setHandler('show:numpad', function() {
-			return new Numpad.Controller();
-		});
-
 	});
 
 });

@@ -1,4 +1,3 @@
-
 // load jQuery using CDN, keep jQuery separate for other pages
 define('jquery', [], function() { return jQuery; });
 
@@ -9,7 +8,11 @@ requirejs.config({
 		// Core Libraries
 		underscore	: '../../../bower_components/lodash/dist/lodash.min',
 		backbone	: '../../../bower_components/backbone/backbone',
-		marionette	: '../../../bower_components/marionette/lib/backbone.marionette',
+		// 'backbone.wreqr': '../../../bower_components/backbone.wreqr/lib/backbone.wreqr',
+		'backbone.radio': '../../../bower_components/backbone.radio/build/backbone.radio',
+        'backbone.babysitter': '../../../bower_components/backbone.babysitter/lib/backbone.babysitter',
+		'backbone.marionette': '../../../bower_components/marionette/lib/core/backbone.marionette',
+		'radio.shim': 'lib/utilities/radio.shim',
 		handlebars 	: '../../../bower_components/handlebars/handlebars.min',
 		indexeddb 	: '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
 		localstorage: '../../../bower_components/backbone.localstorage/backbone.localStorage',
@@ -25,10 +28,13 @@ requirejs.config({
 		select2 	: '../../../bower_components/select2/select2.min',
 
 		// Custom Plugins
-		selectText	: '../../../public/assets/js/src/jquery.selectText',
+		selectText	: 'src/jquery.selectText',
 	},
 
 	shim: {
+		// 'radio.shim': {
+		// 	exports: 'Radio'
+		// },
 		handlebars: {
 			exports: 'Handlebars',
 			init: function() {
@@ -61,7 +67,6 @@ require([
 	'apps/checkout/checkout_app',
 	'lib/components/components_app',
 	'entities/options',
-	'entities/abstract/tabs',
 	'entities/abstract/search_parser'
 ], function(POS){
 	POS.start();

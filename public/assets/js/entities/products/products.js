@@ -36,13 +36,13 @@ define([
 				var self = this;
 				
 				// make sure a sync is not already in progress
-				if( POS.request('options:get', '_syncing') ) { 
+				if( POS.Entities.channel.request('options:get', '_syncing') ) { 
 					if(POS.debug) console.log('[notice] Sync already in progress');
 					return; 
 				}
 
 				// start the sync
-				POS.execute('options:set', '_syncing', 1);
+				POS.Entities.channel.command('options:set', '_syncing', 1);
 				$('#products-pagination').addClass('working');
 
 				// audit and update products
@@ -54,8 +54,8 @@ define([
 					if(POS.debug) console.log('[error] Product audit & update failed');
 				})
 				.always( function() {
-					POS.execute('options:set', 'last_update', Date.now() );
-					POS.execute('options:delete', '_syncing');
+					POS.Entities.channel.command('options:set', 'last_update', Date.now() );
+					POS.Entities.channel.command('options:delete', '_syncing');
 					self.trigger('sync'); // trigger sync to time display
 					$('#products-pagination').removeClass('working');
 				});
@@ -64,7 +64,7 @@ define([
 
 			// web worker to get updated products
 			_updateProducts: function() {
-				var worker = new Worker( POS.request('params:get', 'worker') ),
+				var worker = new Worker( pos_params.worker ),
 					defer = $.Deferred(),
 					self = this;
 
@@ -80,14 +80,14 @@ define([
 							if(POS.debug) console.log('[error] ' + e.data.msg);
 						break;
 						case 'modal':
-							POS.execute('products:download:modal', 'download-progress', { total: e.data.total } );
+							POS.ProductsApp.channel.command('products:download:modal', 'download-progress', { total: e.data.total } );
 						break;
 						case 'products':
 							$.when( self._saveProducts( e.data.products ) )
 							.done( function() {
 								// update progress
 								if( e.data.total > 0 ) {
-									POS.vent.trigger( 'update:progress', e.data.progress );
+									POS.Components.ProgressBar.channel.trigger( 'update:progress', e.data.progress );
 								}
 								
 								// complete
@@ -105,7 +105,7 @@ define([
 				}, false);
 
 				// format the last-update and start the worker
-				var updated_at_min = this._formatLastUpdateFilter( POS.request('options:get', 'last_update') );
+				var updated_at_min = this._formatLastUpdateFilter( POS.Entities.channel.request('options:get', 'last_update') );
 				worker.postMessage({ 
 					'cmd': 'update', 
 					'last_update': updated_at_min, 
@@ -161,10 +161,10 @@ define([
 			_getServerIds: function() {
 
 				var product_ids = $.getJSON( 
-					POS.request('params:get', 'ajax_url'), 
+					pos_params.ajax_url, 
 					{ 
 						'action': 'pos_get_product_ids',
-						'security': POS.request('params:get', 'nonce'),
+						'security': pos_params.nonce,
 						'pos': 1
 					}
 				);

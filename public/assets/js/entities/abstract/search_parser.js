@@ -256,11 +256,11 @@ define(['app'], function(POS) {
 			}
 		};
 
-		POS.reqres.setHandler('search:entities', function() {
+		POS.Entities.channel.reply('search:entities', function() {
 			return API.getSearchEntities();
 		});
 
-		POS.reqres.setHandler('search:facets', function(query) {
+		POS.Entities.channel.reply('search:facets', function(query) {
 			return API.getSearchFacets(query);
 		});
 

@@ -19,11 +19,11 @@ define(['app',
 			}
 		};
 
-		POS.reqres.setHandler('cart:items', function(options) {
+		Entities.channel.reply('cart:items', function(options) {
 			return API.getCartItems(options);
 		});
 
-		POS.reqres.setHandler('cart:totals', function(options) {
+		Entities.channel.reply('cart:totals', function(options) {
 			return API.getCartTotals(options);
 		});
 

@@ -9,7 +9,7 @@ define(['app'], function(POS){
 			},
 
 			openModal: function (callback) {
-				Modal.channel.commands.execute('open', {
+				Modal.channel.command('open', {
 					view: this.view,
 					callback: callback
 				});
@@ -18,7 +18,7 @@ define(['app'], function(POS){
 			},
 
 			closeModal: function (callback) {
-				Modal.channel.commands.execute('close', {
+				Modal.channel.command('close', {
 					callback: callback
 				});
 			}

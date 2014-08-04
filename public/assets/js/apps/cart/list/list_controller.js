@@ -33,8 +33,8 @@ define([
 				this.layout.cartTotalsRegion = ''; // cartTotalsRegion is a fake region
 
 				// get cart items & totals
-				this.items = POS.request('cart:items', { cartId: this.cartId });
-				this.totals = POS.request('cart:totals', { id: this.cartId, cart: this.items });
+				this.items = POS.Entities.channel.request('cart:items', { cartId: this.cartId });
+				this.totals = POS.Entities.channel.request('cart:totals', { id: this.cartId, cart: this.items });
 
 				this.listenTo( this.items, 'add remove', this._showOrHideCart );
 
@@ -131,7 +131,7 @@ define([
 			},
 
 			_showCustomerRegion: function(){
-				POS.execute('cart:customer', this.layout.cartCustomerRegion);
+				POS.CartApp.channel.command('cart:customer', this.layout.cartCustomerRegion);
 			},
 
 			_showActionsRegion: function(){

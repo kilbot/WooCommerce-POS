@@ -77,11 +77,11 @@ define([
 		/**
 		 * Handlers
 		 */
-		POS.reqres.setHandler('product:entities', function() {
+		Entities.channel.reply('product:entities', function() {
 			return API.getProductEntities();
 		});
 
-		POS.reqres.setHandler('product:filtercollection', function(products) {
+		Entities.channel.reply('product:filtercollection', function(products) {
 			return API.getFilterCollection(products);
 		});
 

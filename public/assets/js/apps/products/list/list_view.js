@@ -136,7 +136,7 @@ define([
 				var state = _.clone(this.collection.state);
 
 				if(Modernizr.indexeddb) {
-					var last_update = new Date( parseInt( POS.request('options:get', 'last_update') ) );
+					var last_update = new Date( parseInt( POS.Entities.channel.request('options:get', 'last_update') ) );
 					state.last_update = last_update.getTime() > 0 ? last_update.toLocaleTimeString() : ' - ' ;
 				}
 
@@ -200,7 +200,7 @@ define([
 
 			showProgressBar: function(args) {
 				var el = args.view.content.$el.find('#progress-bar');
-				var progressBar = POS.request( 'get:progressbar:component', { el: el } );
+				var progressBar = POS.Components.ProgressBar.channel.request( 'get:progressbar', { el: el } );
 				progressBar.model.set({ max: el.data('total'), progress: 0, display: 'fraction' });
 
 				this.listenTo( progressBar.model, 'progress:complete', function() {

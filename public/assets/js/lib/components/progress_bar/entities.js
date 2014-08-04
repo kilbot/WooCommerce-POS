@@ -12,7 +12,7 @@ define(['app'], function(POS){
 			},
 
 			initialize: function() {
-				this.listenTo( POS.vent, 'update:progress', this._updatePercentage );
+				ProgressBar.channel.on( 'update:progress', this._updatePercentage, this );
 			},
 
 			_updatePercentage: function( progress ){

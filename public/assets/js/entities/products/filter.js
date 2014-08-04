@@ -15,7 +15,7 @@ define([
 				
 				// init references
 				this.pageableCollection = options.pageableCollection;
-				this.filterEntities = POS.request('search:entities');
+				this.filterEntities = POS.Entities.channel.request('search:entities');
 
 				this.on( 'filter:products', function() {
 					this.onFilterProducts();
@@ -29,7 +29,7 @@ define([
 			onFilterProducts: function() {
 				var filteredList = this.models,
 					combinedFilter = _.compact([this.activeTab, this.searchQuery]).join(' '),
-					facets = POS.request('search:facets', combinedFilter );
+					facets = POS.Entities.channel.request('search:facets', combinedFilter );
 				
 				this.filterEntities.reset( facets );
 

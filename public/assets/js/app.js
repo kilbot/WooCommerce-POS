@@ -1,10 +1,13 @@
 define([
-	'marionette'
+	'backbone.marionette',
+	'radio.shim'
 ], function(
 	Marionette
 ){
-	
+
 	var POS = new Marionette.Application();
+
+	POS.globalChannel = Backbone.Radio.channel('global');
 
 	POS.addRegions({
 		headerRegion: '#header',
@@ -40,8 +43,9 @@ define([
 	POS.on('start', function(){
 
 		// debugging
-		if( POS.request('options:get', 'debug') ) {
+		if( POS.Entities.channel.request('options:get', 'debug') ) {
 			POS.debug = true;
+			Backbone.Radio.DEBUG = true;
 			console.info('Debugging is on, visit http://woopos.com.au/docs/debugging');
 		} else {
 			console.info('Debugging is off, visit http://woopos.com.au/docs/debugging');

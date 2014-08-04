@@ -16,8 +16,8 @@ define([
 				this.container.show(this.view);
 
 				_.bindAll(this, 'openModal', 'closeModal');
-				Modal.channel.commands.setHandler('open', this.openModal);
-				Modal.channel.commands.setHandler('close', this.closeModal);
+				Modal.channel.comply('open', this.openModal);
+				Modal.channel.comply('close', this.closeModal);
 			},
 
 			openModal: function (options) {

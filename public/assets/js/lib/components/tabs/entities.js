@@ -14,19 +14,20 @@ define(['app'], function(POS){
 
 		Tabs.Collection = Backbone.Collection.extend({
 			model: Tabs.Model,
-			initialize: function(models, options) { 
-				// this.on('all', function(e) { console.log("Tab Collection event: " + e); }); // debug
-				
+			initialize: function(models, options) { 				
 				this.on( 'remove', this.onRemove );			
 				this.on( 'change:active', this.onChangeActive );			
 			},
 
 			onRemove: function() {
-				this.first().set({ active: true });
+				var activeTabs = _.compact( this.pluck('active') );
+				if( _.isEmpty( activeTabs ) ) {
+					this.first().set({ active: true });
+				}
 			},
 
 			onChangeActive: function(model) {
-				_(this.models).each( function(tab) {
+				this.each( function(tab) {
 					if( model.id !== tab.id ) {
 						tab.set( { active: false }, { silent: true } );
 					}

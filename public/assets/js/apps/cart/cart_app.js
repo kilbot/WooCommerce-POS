@@ -10,6 +10,8 @@ define([
 	
 	POS.module('CartApp', function(CartApp, POS, Backbone, Marionette, $, _){
 
+		CartApp.channel = Backbone.Radio.channel('cart');
+
 		CartApp.startWithParent = false;
 
 		CartApp.onStart = function(){
@@ -71,7 +73,7 @@ define([
 			// }
 		});
 
-		POS.commands.setHandler( 'cart:customer', function(region) {
+		POS.CartApp.channel.comply( 'cart:customer', function(region) {
 			API.showCustomerRegion(region)
 		});
 

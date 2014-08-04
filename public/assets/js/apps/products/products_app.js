@@ -7,6 +7,8 @@ define([
 	
 	POS.module('ProductsApp', function(ProductsApp, POS, Backbone, Marionette, $, _){
 
+		ProductsApp.channel = Backbone.Radio.channel('products');
+
 		ProductsApp.startWithParent = false;
 
 		var listController = new ProductsApp.List.Controller();
@@ -21,7 +23,7 @@ define([
 			listController.destroy();
 		};
 
-		POS.commands.setHandler( 'products:download:modal', function( template, data ) {
+		ProductsApp.channel.comply( 'products:download:modal', function( template, data ) {
 			listController.showModal( template, data );
 		});
 

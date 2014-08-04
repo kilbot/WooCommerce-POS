@@ -23,8 +23,10 @@ define(['app'], function(POS){
 				'input @ui.input' : 'onInputEvent'
 			},
 
-			onShow: function() {
-				this.ui.input.trigger('input');
+			onRender: function() {
+				_.each( this.ui.input, function( input ) {
+					$(input).trigger('input');
+				});
 			},
 
 			onInputEvent: function(e) {
@@ -37,8 +39,8 @@ define(['app'], function(POS){
 								.replace(/>/g, '&gt;');
 
 				this.tester.html(value);
-				var width = this.tester.width();
-				input.width(width + 20);
+				var width = this.tester.width() + 20;
+				input.width(width);
 			}
 
 		});

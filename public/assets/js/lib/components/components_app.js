@@ -5,7 +5,7 @@ define([
 	'lib/components/autogrow/behavior',
 
 	// controllers
-	'lib/components/loading/controller',
+	// 'lib/components/loading/controller',
 	'lib/components/modal/controller',
 	'lib/components/numpad/controller',
 	'lib/components/progress_bar/controller',
@@ -17,6 +17,7 @@ define([
 	
 	POS.module('Components', function(Components, POS, Backbone, Marionette, $, _){
 
+		Components.channel = Backbone.Radio.channel('components');
 
 		var API = {
 
@@ -34,23 +35,25 @@ define([
 		};
 
 		// modals
-		Components.Modal.channel = new Backbone.Wreqr.Channel('modal');
+		Components.Modal.channel = Backbone.Radio.channel('modal');
 
 		Components.Modal.controller = new Components.Modal.Controller({
 			container: POS.modalRegion
 		});
 
-		POS.commands.setHandler( 'show:modal', function( template, data ) {
+		Components.Modal.channel.comply( 'show:modal', function( template, data ) {
 			Components.Modal.controller.getModal( template, data );
 		});
 
 		// tabs
-		POS.reqres.setHandler( 'get:tabs:component', function( tabs ) {
+		Components.channel.reply( 'get:tabs', function( tabs ) {
 			return API.getTabs(tabs);
 		});
 
 		// progress bar
-		POS.reqres.setHandler( 'get:progressbar:component', function(options) {
+		Components.ProgressBar.channel = Backbone.Radio.channel('components');
+
+		Components.ProgressBar.channel.reply( 'get:progressbar', function(options) {
 			return API.getProgressBar(options);
 		});
 
