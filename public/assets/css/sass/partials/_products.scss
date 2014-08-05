@@ -10,7 +10,9 @@
 			// display: table;
 			li {
 				@extend %clearfix;
-				display: table-row;
+				display: table;
+				table-layout: fixed;
+				width: 100%;
 				div {
 					padding: $vspacing/2;
 					display: table-cell;

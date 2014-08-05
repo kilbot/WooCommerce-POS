@@ -1,4 +1,4 @@
-define(['app', 'handlebars', 'accounting', 'selectText'], function(POS, Handlebars, accounting){
+define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting){
 
 	POS.module('CartApp.List.View', function(View, POS, Backbone, Marionette, $, _){
 
@@ -9,7 +9,8 @@ define(['app', 'handlebars', 'accounting', 'selectText'], function(POS, Handleba
 				cartRegion: '#cart',
 				cartCustomerRegion: '#cart-customer',
 				cartActionsRegion: '#cart-actions',
-				cartNotesRegion: '#cart-notes'
+				cartNotesRegion: '#cart-notes',
+				numpadRegion: '#numpad'
 			},
 
 		});
@@ -27,11 +28,11 @@ define(['app', 'handlebars', 'accounting', 'selectText'], function(POS, Handleba
 
 			behaviors: {
 				AutoGrow: {
-					behaviorClass: POS.Components.AutoGrow.Behavior
+					// options
 				},
-				// Numpad: {
-				// 	behaviorClass: POS.Components.Numpad.Behavior
-				// },
+				Numpad: {
+					// options
+				},
 			},
 
 			modelEvents: {
@@ -40,25 +41,9 @@ define(['app', 'handlebars', 'accounting', 'selectText'], function(POS, Handleba
 
 			events: {
 				'click .action-remove' 	: 'removeFromCart',
-				// 'show.bs.popover' 		: 'showNumpad',
-				'click input'  			: 'change',
+				// 'focus input'  			: 'change',
 				'keypress input'  		: 'updateOnEnter',
       			'blur input'      		: 'save',
-			},
-
-			// TODO: abstract this
-			onShow: function() {
-				// this.$('input').popover({
-				// 	placement: 'bottom',
-				// 	html: true,
-				// 	content: $('#numpad')
-				// });
-			},
-
-			// TODO: move this
-			showNumpad: function(e) {
-				var numpad = new POS.Common.Views.Numpad();
-				POS.numpadRegion.show(numpad);
 			},
 
 			removeFromCart: function(e) {
@@ -76,7 +61,8 @@ define(['app', 'handlebars', 'accounting', 'selectText'], function(POS, Handleba
 			},
 
 			change: function(e) {
-				this.$(e.target).addClass('editing').focus().select();
+				// console.log('inputting');
+				// this.$(e.target).addClass('editing').focus().select();
 			},
 
 			save: function(e) {
@@ -142,6 +128,12 @@ define(['app', 'handlebars', 'accounting', 'selectText'], function(POS, Handleba
 		View.CartTotals = Marionette.ItemView.extend({
 			template: Handlebars.compile( $('#tmpl-cart-totals').html() ),
 
+			behaviors: {
+				Numpad: {
+					// options
+				},
+			},
+
 			modelEvents: {
 				'sync': 'render'
 			},
@@ -154,7 +146,7 @@ define(['app', 'handlebars', 'accounting', 'selectText'], function(POS, Handleba
 
 			edit: function(e) {
 				var td = $(e.currentTarget).children('td');
-				td.attr('contenteditable','true').text( td.data('value') ).selectText();
+				td.attr('contenteditable','true').text( td.data('value') );
 			},
 
 			save: function(e) {
@@ -165,7 +157,6 @@ define(['app', 'handlebars', 'accounting', 'selectText'], function(POS, Handleba
 
 				// validate
 				if( isNaN( parseFloat( value ) ) ) {
-					$(e.target).selectText(); 
 					return;
 				}
 
@@ -194,7 +185,7 @@ define(['app', 'handlebars', 'accounting', 'selectText'], function(POS, Handleba
 			showDiscountRow: function() {
 				// toggle discount row
 				td = this.$('.order-discount').show().children('td');
-				td.attr('contenteditable','true').text( td.data('value') ).selectText();
+				td.attr('contenteditable','true').text( td.data('value') );
 			}
 		});
 

@@ -43,7 +43,10 @@ define([
 			show: function(){
 				
 				this.listenTo( this.layout, 'show', function() {
-					this._showItemsRegion();		
+					this._showItemsRegion();
+
+					numpad = POS.Components.channel.request('get:numpad');
+					this.layout.numpadRegion.show(numpad);
 				});
 
 				POS.rightRegion.show(this.layout);

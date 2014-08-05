@@ -1,7 +1,6 @@
 define([
 	'app', 
-	'lib/components/numpad/view',
-	'lib/components/numpad/behavior'
+	'lib/components/numpad/view'
 ], function(
 	POS
 ){
@@ -11,12 +10,11 @@ define([
 		Numpad.Controller = Marionette.Controller.extend({
 
 			initialize: function(options) {
-				var numpadView = this.getNumpadView();
-				this.show(numpadView);
+				this.view = new Numpad.View();
 			},
 
 			getNumpadView: function() {
-				return new Numpad.View();
+				return this.view;
 			}
 
 		});

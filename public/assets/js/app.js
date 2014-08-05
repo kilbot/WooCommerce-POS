@@ -1,6 +1,6 @@
 define([
 	'backbone.marionette',
-	'radio.shim'
+	'lib/utilities/radio.shim'
 ], function(
 	Marionette
 ){

@@ -37,7 +37,7 @@ define([
 				
 				// make sure a sync is not already in progress
 				if( POS.Entities.channel.request('options:get', '_syncing') ) { 
-					if(POS.debug) console.log('[notice] Sync already in progress');
+					if(POS.debug) console.warn('Sync already in progress');
 					return; 
 				}
 
@@ -48,10 +48,10 @@ define([
 				// audit and update products
 				$.when( this._auditProducts(), this._updateProducts() )
 				.done( function() {
-					if(POS.debug) console.log('[notice] Product audit & update done');
+					if(POS.debug) console.log('Product audit & update done');
 				})
 				.fail( function() {
-					if(POS.debug) console.log('[error] Product audit & update failed');
+					if(POS.debug) console.warn('Product audit & update failed');
 				})
 				.always( function() {
 					POS.Entities.channel.command('options:set', 'last_update', Date.now() );
@@ -74,10 +74,10 @@ define([
 
 					switch (status) {
 						case 'notice':
-							if(POS.debug) console.log('[notice] ' + e.data.msg);
+							if(POS.debug) console.log(e.data.msg);
 						break;
 						case 'error':
-							if(POS.debug) console.log('[error] ' + e.data.msg);
+							if(POS.debug) console.warn(e.data.msg);
 						break;
 						case 'modal':
 							POS.ProductsApp.channel.command('products:download:modal', 'download-progress', { total: e.data.total } );
@@ -92,7 +92,7 @@ define([
 								
 								// complete
 								if( e.data.progress === e.data.total ) {
-									if(POS.debug) console.log('[notice] ' + e.data.total + ' products saved in total');
+									if(POS.debug) console.log(e.data.total + ' products saved in total');
 									worker.postMessage({ 'cmd': 'stop' });
 									defer.resolve();
 								}
@@ -120,7 +120,7 @@ define([
 			_auditProducts: function() {
 				var self = this;
 				var local_ids = this.fullCollection.pluck('id');
-				if(POS.debug) console.log('[notice] ' + local_ids.length + ' products stored locally');
+				if(POS.debug) console.log(local_ids.length + ' products stored locally');
 
 				var defer = $.Deferred();
 
@@ -130,25 +130,25 @@ define([
 				// then compare against local ids
 				.then( function( server_ids ) {
 
-					if(POS.debug) console.log('[notice] ' + server_ids.length + ' products stored on server');
+					if(POS.debug) console.log(server_ids.length + ' products stored on server');
 
 				 	var diff = _.difference( local_ids, server_ids );
 				 	if( diff.length > 0 ) {
 						return self._removeProducts( diff );
 				 	} else {
-				 		if(POS.debug) console.log('[notice] 0 products need to be removed');
+				 		if(POS.debug) console.log('0 products need to be removed');
 				 		return;
 				 	}
 				}, function() {
-					if(POS.debug) console.log('[error] Failed to get product ids from server');
+					if(POS.debug) console.warn('[error] Failed to get product ids from server');
 				})
 
 				// resolve when done
 				.done( function() {
-					if(POS.debug) console.log('[notice] Product audit complete');
+					if(POS.debug) console.log('Product audit complete');
 				})
 				.fail( function() {
-					if(POS.debug) console.log('[error] Product audit failed');
+					if(POS.debug) console.warn('Product audit failed');
 				})
 				.always( function() {
 					defer.resolve();
@@ -184,7 +184,7 @@ define([
 					model.destroy();
 				}, this);
 
-				if(POS.debug) console.log('[notice] ' + ids.length + ' products removed');
+				if(POS.debug) console.log(ids.length + ' products removed');
 
 				return;
 
@@ -210,7 +210,7 @@ define([
 							silent: true, // reset after loop
 							success: putNext,
 							error: function(model, response) {
-								if(POS.debug) console.log('[notice] error saving product: ' + response.title);
+								if(POS.debug) console.warn('error saving product: ' + response.title);
 							}
 						});
 						i++;
@@ -218,7 +218,7 @@ define([
 
 					// update progress when finished
 					else {
-						if(POS.debug) console.log('[notice] ' + products.length + ' products saved');
+						if(POS.debug) console.log(products.length + ' products saved');
 						self.trigger('sync');
 						defer.resolve();
 					}

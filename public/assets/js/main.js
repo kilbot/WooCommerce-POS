@@ -8,11 +8,9 @@ requirejs.config({
 		// Core Libraries
 		underscore	: '../../../bower_components/lodash/dist/lodash.min',
 		backbone	: '../../../bower_components/backbone/backbone',
-		// 'backbone.wreqr': '../../../bower_components/backbone.wreqr/lib/backbone.wreqr',
 		'backbone.radio': '../../../bower_components/backbone.radio/build/backbone.radio',
         'backbone.babysitter': '../../../bower_components/backbone.babysitter/lib/backbone.babysitter',
 		'backbone.marionette': '../../../bower_components/marionette/lib/core/backbone.marionette',
-		'radio.shim': 'lib/utilities/radio.shim',
 		handlebars 	: '../../../bower_components/handlebars/handlebars.min',
 		indexeddb 	: '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
 		localstorage: '../../../bower_components/backbone.localstorage/backbone.localStorage',
@@ -26,15 +24,10 @@ requirejs.config({
 		popover 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover',
 		spin 		: '../../../bower_components/spinjs/spin',
 		select2 	: '../../../bower_components/select2/select2.min',
-
-		// Custom Plugins
-		selectText	: 'src/jquery.selectText',
+		
 	},
 
 	shim: {
-		// 'radio.shim': {
-		// 	exports: 'Radio'
-		// },
 		handlebars: {
 			exports: 'Handlebars',
 			init: function() {
@@ -62,12 +55,12 @@ requirejs.config({
 
 require([
 	'app',
+	'entities/options',
+	'entities/abstract/search_parser',
+	'lib/components/components_app',
 	'apps/products/products_app',
 	'apps/cart/cart_app',
-	'apps/checkout/checkout_app',
-	'lib/components/components_app',
-	'entities/options',
-	'entities/abstract/search_parser'
+	'apps/checkout/checkout_app'
 ], function(POS){
 	POS.start();
 });

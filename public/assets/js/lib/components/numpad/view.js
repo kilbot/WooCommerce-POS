@@ -12,6 +12,15 @@ define([
 		
 		Numpad.View = Marionette.ItemView.extend({
 			template: Handlebars.compile( NumpadTmpl ),
+			className: 'numpad',
+
+			events: {
+				'click button': 'onClick'
+			},
+
+			onClick: function(e){
+				this.trigger( 'numpad:keypress', $(e.target).data('key') );
+			}
 
 		});
 
