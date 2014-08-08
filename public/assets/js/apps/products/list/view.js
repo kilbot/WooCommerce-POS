@@ -173,9 +173,29 @@ define([
 
 		View.DownloadProgress = Marionette.ItemView.extend({
 
+			initialize: function (options) {
+				var self = this;
+				this.total = options.total;
+
+				if(POS.debug) console.log('fetching modal download progress template');
+
+				$.when( this.fetchTemplate( options.data ) )
+				.done( function( data ) {
+					self.template = _.template(data);
+					self.trigger('modal:open', self.showProgressBar );
+				})
+				.fail( function() {
+					if(POS.debug) console.warn('problem fetching download progress template');
+				});
+			},
+
+			serializeData: function(){
+				return { total : this.total }; 
+			},
+
 			behaviors: {
 				Modal: {
-					behaviorClass: POS.Components.Modal.Behavior
+
 				}
 			},
 
@@ -185,17 +205,23 @@ define([
 				'click .close' 		 : 'cancel'
 			},
 
-			initialize: function (options) {
-				this.template = _.template(options.data);
-				this.trigger('modal:open', this.showProgressBar );
-			},
-
 			confirm: function () {
 				this.trigger('modal:close');
 			},
 
 			cancel: function () {
 				this.trigger('modal:close');
+			},
+
+			fetchTemplate: function(data) {
+				return $.get( 
+					pos_params.ajax_url , { 
+						action: 'pos_get_modal', 
+						template: 'download-progress', 
+						data: data, 
+						security: pos_params.nonce 
+					} 
+				);
 			},
 
 			showProgressBar: function(args) {

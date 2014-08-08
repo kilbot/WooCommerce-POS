@@ -5,7 +5,7 @@ define(['app'], function(POS){
 		Modal.Behavior = Marionette.Behavior.extend({
 
 			initialize: function () {
-				this.listenToOnce(this.view, 'modal:open',this.openModal);
+				this.listenToOnce(this.view, 'modal:open', this.openModal);
 			},
 
 			openModal: function (callback) {
@@ -28,4 +28,3 @@ define(['app'], function(POS){
 	});
 
 });
-

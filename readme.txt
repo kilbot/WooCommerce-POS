@@ -82,7 +82,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
-= 0.3.1 =
+= 0.3.1 - [read blog post](http://woopos.com.au/2014/08/woocommerce-pos-v0-3-1-released/) =
 * New: choose which user roles have access to POS
 * New: set products as visible to POS Only or Online Only
 * New: filter products in WP-Admin by POS Only or Online Only
@@ -93,11 +93,11 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: Payment Gateway settings, enable POS only gateways and reorder through new settings tab
 * TODO: Payment Gateway processing, experimental
 * TODO: ui: change calculator
-* TODO: ui: numpad module
+* New: Numpad
 * TODO: send order meta: user_id, payment_type
-* TODO: look at this authentication issue with Super Cache
 * TODO: test access to POS, multisite
 * TODO: Add menu link directly to POS
+* New: Debug flag for Javascript console logging
 * Improved: Most JS has been rewritten to improve performance and extensibility
 * Improved: Initial download of products, improved performance for large stores and/or slow servers
 * New: Greek translation thanks to Marios Polycarpou! [http://el.woopos.com.au/pos](http://el.woopos.com.au/pos)

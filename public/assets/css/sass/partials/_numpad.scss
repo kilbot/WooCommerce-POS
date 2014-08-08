@@ -1,25 +1,71 @@
-.numpad {
+.numpad-header {
+	padding: 5px;
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #ebebeb;
+	input {
+		max-width: 7em;
+		text-align: center;
+	}
+}
+
+.numpad-keys {
 	table {
-		width: 100%;
-		margin: 0 -5px -5px 0;
-		td {
-			border: 0 !important;
-			padding: 0 5px 5px 0 !important;
-			button {
-				font-size: 20px;
-				line-height: 50px;
-				min-width: 50px;
-				width: 100%;
-				padding: 0;
-				outline: 0;
-				&.return {
-					height: 109px;
-					font-size: 13px;
-				}
-				&:active {
-					background-color: #ccc;
+		width: auto;
+		padding: 5px 0 0 5px;
+		tr {
+			td {
+				border: 0;
+				padding: 0 5px 5px 0;
+				button {
+					display: table-cell;
+					height: 50px;
+					width: 50px;
+					font-size: 18px;
+					padding: 0;
+					outline: 0;
+					small {
+						font-size: 13px;
+						display: block;
+					}
+					&.return {
+						height: 105px;
+					}
+					&:active {
+						background-color: #ccc;
+					}
 				}
 			}
 		}
+	}
+
+	table.cash, table.discount {
+		float: left;
+		background-color: #f7f7f7;
+		border-right: 1px solid #ebebeb;
+		button {
+			// color: rgba(#000, 0.6);
+			color: $text-color;
+		}
+	}
+
+	table.discount {
+		float: right;
+		border-right: 0; 
+		border-left: 1px solid #ebebeb;
+	}
+
+	table.standard {
+		&.with-cash-buttons {
+			margin-left: 61px;
+		} 
+		&.with-discount-buttons {
+			margin-right: 61px;
+		}
+	}
+}
+
+.numpad-popover {
+	.popover-content {
+		padding: 0;
 	}
 }

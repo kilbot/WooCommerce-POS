@@ -1,6 +1,6 @@
 define([
 	'app', 
-	'apps/products/list/list_view',
+	'apps/products/list/view',
 	'common/views',
 	'entities/products',
 ], function(
@@ -13,6 +13,8 @@ define([
 		List.Controller = Marionette.Controller.extend({
 
 			initialize: function(options) {
+
+				List.channel.comply( 'show:download:progress', this.showModal );
 
 				// loading view
 				var loadingView = new POS.Common.Views.Loading();
@@ -134,17 +136,8 @@ define([
 				this.layout.paginationRegion.show(view);
 			},
 
-			showModal: function( template, data ) {
-
-				if(POS.debug) console.log('[notice] Fetching modal template: ' + template);
-				$.get( pos_params.ajax_url , { action: 'pos_get_modal', template: template, data: data, security: pos_params.nonce } )
-				.done(function( data ) {
-					new View.DownloadProgress({ data: data });
-				})
-				.fail(function() {
-					if(POS.debug) console.log('[error] Problem fetching modal template');
-				});
-
+			showModal: function( data ) {
+				new View.DownloadProgress( data );
 			}
 
 		});

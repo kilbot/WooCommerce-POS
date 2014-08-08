@@ -1544,7 +1544,7 @@ table tr.even {
 }
 /* line 12, sass/partials/_tables.scss */
 table tr th, table tr td {
-  padding: 0.75em !important;
+  padding: 0.75em;
   vertical-align: middle;
 }
 /* line 16, sass/partials/_tables.scss */
@@ -1576,21 +1576,17 @@ table tr td.img {
 table tr td.img img {
   vertical-align: middle;
 }
-/* line 40, sass/partials/_tables.scss */
-table tr:last-of-type th, table tr:last-of-type td {
-  border-bottom: 1px solid #d4d4d4;
-}
-/* line 46, sass/partials/_tables.scss */
+/* line 43, sass/partials/_tables.scss */
 table tfoot th {
   text-align: right;
 }
-/* line 49, sass/partials/_tables.scss */
+/* line 46, sass/partials/_tables.scss */
 table tfoot div.alert {
   margin-bottom: 0;
   font-size: 14px;
 }
 
-/* line 57, sass/partials/_tables.scss */
+/* line 54, sass/partials/_tables.scss */
 .modal table tfoot tr:last-of-type th, .modal table tfoot tr:last-of-type td {
   border-bottom: 0;
 }
@@ -1861,52 +1857,101 @@ table tfoot div.alert {
 #cart table tbody.animating tr.empty {
   display: none;
 }
+/* line 31, sass/partials/_cart.scss */
+#cart table tr:last-of-type th, #cart table tr:last-of-type td {
+  border-bottom: 1px solid #d4d4d4;
+}
 
-/* line 33, sass/partials/_cart.scss */
+/* line 38, sass/partials/_cart.scss */
 #cart-customer div, #cart-actions div, #cart-notes div {
   padding: 0.75em;
   border-bottom: 1px solid #d4d4d4;
 }
 
-/* line 38, sass/partials/_cart.scss */
+/* line 43, sass/partials/_cart.scss */
 #cart-actions div {
   text-align: right;
   border: 0;
 }
 
-/* line 43, sass/partials/_cart.scss */
+/* line 48, sass/partials/_cart.scss */
 #cart-notes div {
   border: 0;
   border-top: 1px solid #d4d4d4;
 }
 
-/* line 2, sass/partials/_numpad.scss */
-.numpad table {
-  width: 100%;
-  margin: 0 -5px -5px 0;
+/* line 1, sass/partials/_numpad.scss */
+.numpad-header {
+  padding: 5px;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #ebebeb;
 }
 /* line 5, sass/partials/_numpad.scss */
-.numpad table td {
-  border: 0 !important;
-  padding: 0 5px 5px 0 !important;
+.numpad-header input {
+  max-width: 7em;
+  text-align: center;
 }
-/* line 8, sass/partials/_numpad.scss */
-.numpad table td button {
-  font-size: 20px;
-  line-height: 50px;
-  min-width: 50px;
-  width: 100%;
+
+/* line 12, sass/partials/_numpad.scss */
+.numpad-keys table {
+  width: auto;
+  padding: 5px 0 0 5px;
+}
+/* line 16, sass/partials/_numpad.scss */
+.numpad-keys table tr td {
+  border: 0;
+  padding: 0 5px 5px 0;
+}
+/* line 19, sass/partials/_numpad.scss */
+.numpad-keys table tr td button {
+  display: table-cell;
+  height: 50px;
+  width: 50px;
+  font-size: 18px;
   padding: 0;
   outline: 0;
 }
-/* line 15, sass/partials/_numpad.scss */
-.numpad table td button.return {
-  height: 109px;
+/* line 26, sass/partials/_numpad.scss */
+.numpad-keys table tr td button small {
   font-size: 13px;
+  display: block;
 }
-/* line 19, sass/partials/_numpad.scss */
-.numpad table td button:active {
+/* line 30, sass/partials/_numpad.scss */
+.numpad-keys table tr td button.return {
+  height: 105px;
+}
+/* line 33, sass/partials/_numpad.scss */
+.numpad-keys table tr td button:active {
   background-color: #ccc;
+}
+/* line 41, sass/partials/_numpad.scss */
+.numpad-keys table.cash, .numpad-keys table.discount {
+  float: left;
+  background-color: #f7f7f7;
+  border-right: 1px solid #ebebeb;
+}
+/* line 45, sass/partials/_numpad.scss */
+.numpad-keys table.cash button, .numpad-keys table.discount button {
+  color: #444444;
+}
+/* line 51, sass/partials/_numpad.scss */
+.numpad-keys table.discount {
+  float: right;
+  border-right: 0;
+  border-left: 1px solid #ebebeb;
+}
+/* line 58, sass/partials/_numpad.scss */
+.numpad-keys table.standard.with-cash-buttons {
+  margin-left: 61px;
+}
+/* line 61, sass/partials/_numpad.scss */
+.numpad-keys table.standard.with-discount-buttons {
+  margin-right: 61px;
+}
+
+/* line 68, sass/partials/_numpad.scss */
+.numpad-popover .popover-content {
+  padding: 0;
 }
 
 /* line 1, sass/partials/_checkout.scss */

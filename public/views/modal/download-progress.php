@@ -3,7 +3,7 @@
 	<h4 class="modal-title"><?php _e( 'Downloading products', 'woocommerce-pos' ); ?>&hellip;</h4>
 </div>
 <div class="modal-body">
-	<div id="progress-bar" data-total="<?= isset( $total ) ? $total : 1 ; ?>"></div>
+	<div id="progress-bar" data-total="<%= total %>"></div>
 	<p class="small alert alert-info">
 	<?= __('WooCommerce POS is storing your products locally.', 'woocommerce-pos'); ?>
 	<?= __('This could take some time depending on the number of products you have, the speed of your connection and the speed of your server.', 'woocommerce-pos'); ?>

@@ -9,8 +9,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				cartRegion: '#cart',
 				cartCustomerRegion: '#cart-customer',
 				cartActionsRegion: '#cart-actions',
-				cartNotesRegion: '#cart-notes',
-				numpadRegion: '#numpad'
+				cartNotesRegion: '#cart-notes'
 			},
 
 		});
@@ -18,21 +17,15 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 		View.CartItem = Marionette.ItemView.extend({
 			tagName: 'tr',
 			template: Handlebars.compile( $('#tmpl-cart-item').html() ),
-			params: pos_params,
 
 			initialize: function( options ) {
 				// this.on('all', function(e) { console.log("Cart Item View event: " + e); }); // debug
 				// set the accounting settings
-				accounting.settings = this.params.accounting;
+				accounting.settings = pos_params.accounting;
 			},
 
 			behaviors: {
-				AutoGrow: {
-					// options
-				},
-				Numpad: {
-					// options
-				},
+				AutoGrow: {},
 			},
 
 			modelEvents: {
@@ -41,9 +34,9 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 
 			events: {
 				'click .action-remove' 	: 'removeFromCart',
-				// 'focus input'  			: 'change',
+				'click *[data-numpad]'  : 'numpadPopover',
 				'keypress input'  		: 'updateOnEnter',
-      			'blur input'      		: 'save',
+      			'blur input'      		: 'save'
 			},
 
 			removeFromCart: function(e) {
@@ -60,9 +53,22 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				});
 			},
 
-			change: function(e) {
-				// console.log('inputting');
-				// this.$(e.target).addClass('editing').focus().select();
+			numpadPopover: function(e) {
+
+				// get Numpad View
+				var numpad = POS.Components.channel.request('get:numpad', { 
+					title: $(e.target).data('title'),
+					value: $(e.target).val(),
+					select: true
+				});
+
+				this.listenTo( numpad, 'numpad:return', function( value ) {
+					$(e.target).val( value ).trigger('blur');
+				});
+				
+				// popover target
+				numpad.trigger('popover:open', { target: $(e.target), width: 286 });
+
 			},
 
 			save: function(e) {
@@ -127,12 +133,6 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 
 		View.CartTotals = Marionette.ItemView.extend({
 			template: Handlebars.compile( $('#tmpl-cart-totals').html() ),
-
-			behaviors: {
-				Numpad: {
-					// options
-				},
-			},
 
 			modelEvents: {
 				'sync': 'render'

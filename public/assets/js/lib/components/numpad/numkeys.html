@@ -1,0 +1,59 @@
+{{#if cash}}
+<table class="cash">
+	<tr>
+		<td><button data-key="{{amount}}">4.35</button></td>
+	</tr>
+	<tr>
+		<td><button data-key="{{amount}}">4.50</button></td>
+	</tr>
+	<tr>
+		<td><button data-key="{{amount}}">5</button></td>
+	</tr>
+	<tr>
+		<td><button data-key="{{amount}}">10</button></td>
+	</tr>
+</table>
+{{/if}}
+
+{{#if discount}}
+<table class="discount">
+	<tr>
+		<td><button data-key="%">%<small>off</small></button></td>
+	</tr>
+	<tr>
+		<td><button data-key="5%">5%<small>off</small></button></td>
+	</tr>
+	<tr>
+		<td><button data-key="10%">10%<small>off</small></button></td>
+	</tr>
+	<tr>
+		<td><button data-key="20%">20%<small>off</small></button></td>
+	</tr>
+</table>
+{{/if}}
+
+<table class="standard {{#if cash}}with-cash-buttons{{/if}} {{#if discount}}with-discount-buttons{{/if}}">
+	<tr>
+		<td><button data-key="1">1</button></td>
+		<td><button data-key="2">2</button></td>
+		<td><button data-key="3">3</button></td>
+		<td><button data-key="del">del</button></td>
+	</tr>
+	<tr>
+		<td><button data-key="4">4</button></td>
+		<td><button data-key="5">5</button></td>
+		<td><button data-key="6">6</button></td>
+		<td><button data-key="+/-">+/-</button></td>
+	</tr>
+	<tr>
+		<td><button data-key="7">7</button></td>
+		<td><button data-key="8">8</button></td>
+		<td><button data-key="9">9</button></td>
+		<td rowspan="2"><button data-key="ret" class="return"><small>return</small></button></td>
+	</tr>
+	<tr>
+		<td><button data-key="0">0</button></td>
+		<td><button data-key="00">00</button></td>
+		<td><button data-key=".">.</button></td>
+	</tr>
+</table>

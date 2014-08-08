@@ -70,14 +70,12 @@ class POS_Gateway_Cash extends WC_Payment_Gateway {
 			echo '<p>' . wp_kses_post( $this->description ) . '</p>';
 		}
 
-		woocommerce_form_field(
-			'pos-cash-tendered',
-			array(
-				'type' 		=> 'text',
-				'label' 	=> __( 'Amount Tendered', 'woocommerce-pos' ),
-				'maxlength' => 20
-			)
-		);
+		echo '
+			<p class="form-row " id="pos-cash-tendered_field">
+				<label for="pos-cash-tendered" class="">Amount Tendered</label>
+				<input type="text" class="input-text " name="pos-cash-tendered" id="pos-cash-tendered" placeholder="" maxlength="20" value="" data-numpad="discount">
+			</p>
+		';
 
 	}
 

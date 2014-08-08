@@ -4,57 +4,52 @@ define(['app', 'popover'], function(POS){
 	
 		Numpad.Behavior = Marionette.Behavior.extend({
 
+			initialize: function() {
+				// check user agent and apply readonly to mobile
+				// to prevent keyboard popup?
+			},
+
 			ui: {
 				inputField: '*[data-numpad]'
 			},
 
 			events: {
-				'focus @ui.inputField' : 'onFocus'
+				'click @ui.inputField' : 'onClick'
 			},
 
-			onFocus: function(e) {
+			onClick: function(e) {
 				var self = this;
 
 				// close any open popovers
 				$('.popover').popover('destroy');
-
+				
 				this.input = $(e.target);
-				this.getNumpad();
-				this.popOver();
 
-				// listeners
-				this.input.on( 'shown.bs.popover', function(){
-					self.input.select();
-					self.input.selected = true;
+				this.input.on('show.bs.popover', function(e) {
+					console.log(e);
+// POS.Components.channel.request('show:numpad', { region: view.content });
 				});
 
-				this.input.on( 'hidden.bs.popover', function(){
-					self.tearDown();
+
+				var settings = {};
+var view = new Numpad.Popover();
+view.render();
+
+				var options = _.defaults( settings, {
+					placement: 'bottom',
+					content: 'hi',
+					html: true,
+					trigger: 'manual',
+					container: 'body',
+					template: view.el
 				});
 
-				this.numpad.on( 'numpad:keypress', function(key){
-					var value = self.input.val();
-					switch(key) {
-						case 'ret': 
-							self.input.popover('hide');
-							self.input.trigger('blur');
-						break;
-						case 'del': 
-							self.input.val( value.slice(0, -1) );
-						break;
-						case '+/-': 
-							self.input.val( value*-1 );
-						break;
-						default: 
-							if(self.input.selected) {
-								self.input.val(key);
-								self.input.selected = false;
-							} else {
-								self.input.val(value + key);
-							}
-					}
-					self.input.trigger('input');
-				});
+				// popover
+				this.input.popover(options);
+
+				this.input.popover('show');
+
+				POS.Components.channel.request('show:numpad', { region: view.content });
 			},
 
 			// get Numpad
@@ -64,8 +59,9 @@ define(['app', 'popover'], function(POS){
 				var data = this.input.data('numpad').split(' ');
 
 				// get numpad view
-				this.numpad = POS.Components.channel.request('get:numpad');
-				this.numpad.render();
+				POS.Components.channel.request('show:numpad', { region: this.layout.numpadRegion });
+				// this.numpad = POS.Components.channel.request('get:numpad');
+				// this.numpad.render();
 			},
 
 			popOver: function() {
@@ -83,18 +79,17 @@ define(['app', 'popover'], function(POS){
 
 				var options = _.defaults( settings, {
 					placement: 'bottom',
+					content: this.numpad.$el,
 					html: true,
-					content: this.numpad.$el
+					trigger: 'manual',
+					container: 'body',
+					template: '<div class="popover numpad-popover" role="textbox"><div class="arrow"></div><div class="popover-content"></div></div>'
 				});
 
 				// popover
 				this.input.popover(options);
-			},
 
-			// only one popover at a time
-			tearDown: function() {
-				this.numpad.destroy();
-			}
+			},
 
 		});
 

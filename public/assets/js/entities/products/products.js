@@ -80,7 +80,7 @@ define([
 							if(POS.debug) console.warn(e.data.msg);
 						break;
 						case 'modal':
-							POS.ProductsApp.channel.command('products:download:modal', 'download-progress', { total: e.data.total } );
+							POS.ProductsApp.channel.command('show:download:progress', { total: e.data.total } );
 						break;
 						case 'products':
 							$.when( self._saveProducts( e.data.products ) )

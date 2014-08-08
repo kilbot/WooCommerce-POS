@@ -3,12 +3,15 @@ define([
 
 	// behaviors
 	'lib/components/autogrow/behavior',
-	'lib/components/numpad/behavior',
+	'lib/components/collapse/behavior',
+	'lib/components/popover/behavior',
+	'lib/components/modal/behavior',
 
 	// controllers
 	// 'lib/components/loading/controller',
 	'lib/components/modal/controller',
 	'lib/components/numpad/controller',
+	'lib/components/popover/controller',
 	'lib/components/progress_bar/controller',
 	'lib/components/tabs/controller'
 	
@@ -25,8 +28,14 @@ define([
 				case 'AutoGrow':
 					return Components.AutoGrow.Behavior;
 				break;
-				case 'Numpad':
-					return Components.Numpad.Behavior;
+				case 'Popover':
+					return Components.Popover.Behavior;
+				break;
+				case 'Collapse':
+					return Components.Collapse.Behavior;
+				break;
+				case 'Modal':
+					return Components.Modal.Behavior;
 				break;
 				default:
 					return Marionette.Behaviors.behaviorsLookup[key];
@@ -47,22 +56,19 @@ define([
 				return controller.getProgressBarView(options);
 			},
 
-			getNumpad: function() {
-				var controller = new Components.Numpad.Controller();
-				return controller.getNumpadView();
+			getNumpad: function(options) {
+				var controller = new Components.Numpad.Controller(options);
+				return controller.get();
 			}
 		};
 
 		// modals
 		Components.Modal.channel = Backbone.Radio.channel('modal');
+		new Components.Modal.Controller();
 
-		Components.Modal.controller = new Components.Modal.Controller({
-			container: POS.modalRegion
-		});
-
-		Components.Modal.channel.comply( 'show:modal', function( template, data ) {
-			Components.Modal.controller.getModal( template, data );
-		});
+		// popover
+		Components.Popover.channel = Backbone.Radio.channel('popover');
+		new Components.Popover.Controller();
 
 		// tabs
 		Components.channel.reply( 'get:tabs', function( tabs ) {
@@ -71,15 +77,16 @@ define([
 
 		// progress bar
 		Components.ProgressBar.channel = Backbone.Radio.channel('progressbar');
-
 		Components.ProgressBar.channel.reply( 'get:progressbar', function(options) {
 			return API.getProgressBar(options);
 		});
 
 		// numpad
-		Components.channel.reply( 'get:numpad', function() {
-			return API.getNumpad();
+		Components.Numpad.channel = Backbone.Radio.channel('numpad');
+		Components.channel.reply( 'get:numpad', function(options) {
+			return API.getNumpad(options);
 		});
+
 
 	});
 

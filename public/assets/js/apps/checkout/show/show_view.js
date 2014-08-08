@@ -6,13 +6,37 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 			template: '#tmpl-checkout',
 
 			regions: {
+				statusRegion: '#checkout-status',
 				paymentRegion: '#checkout-payment',
 				actionsRegion: '#checkout-actions',
 			}
 		});
 
+		View.Status = Marionette.ItemView.extend({
+			template: Handlebars.compile( $('#tmpl-checkout-status').html() ),
+
+			initialize: function(options){
+				this.total = options.total;
+			},
+
+			serializeData: function() {
+				return { total: this.total };
+			}
+
+		});
+
 		View.Payment = Marionette.ItemView.extend({
 			template: Handlebars.compile( $('#tmpl-checkout-payment').html() ),
+
+			behaviors: {
+				Collapse: {
+					// options
+				},
+				Numpad: {
+					// options
+				}
+			},
+
 		});
 
 		View.Actions = Marionette.ItemView.extend({

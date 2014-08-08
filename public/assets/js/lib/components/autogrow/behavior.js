@@ -5,14 +5,19 @@ define(['app'], function(POS){
 		AutoGrow.Behavior = Marionette.Behavior.extend({
 
 			initialize: function(){
-				this.tester = $('<div />').css({
-					opacity     : 0,
-					top         : -9999,
-					left        : -9999,
-					position    : 'absolute',
-					whiteSpace  : 'nowrap',
-				});
-				$('body').append(this.tester);
+				this.tester = $('#autogrow-tester');
+				if( this.tester.length === 0 ) {
+					this.tester = $('<div id="autogrow-tester" />')
+					.css({
+						opacity     : 0,
+						top         : -9999,
+						left        : -9999,
+						position    : 'absolute',
+						whiteSpace  : 'nowrap',
+					});
+					$('body').append(this.tester);
+				}
+
 			},
 
 			ui: {

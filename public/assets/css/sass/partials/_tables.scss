@@ -10,7 +10,7 @@ table {
         &.odd { background-color: $odd-background; }
         &.even { background-color: $even-background; }
         th, td {
-            padding: $vspacing/2 !important;
+            padding: $vspacing/2;
             vertical-align: middle;
         }
         td {
@@ -36,9 +36,6 @@ table {
                     vertical-align: middle;
                 }
             }
-        }
-        &:last-of-type th, &:last-of-type td {
-            border-bottom: 1px solid $border-dark;
         }
     }
 

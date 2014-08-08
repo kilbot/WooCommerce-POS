@@ -8,13 +8,23 @@
 	<div>
 		<h4><?php _e( 'Payment', 'woocommerce-pos' ); ?></h4>
 	</div>
+	<div id="checkout-status"></div>
 	<div id="checkout-payment"></div>
 	<div id="checkout-actions"></div>
 </script>
 
-<script type="text/x-handlebars-template" id="tmpl-checkout-payment">
-	<h4 class="textcenter"><?php _e( 'To Pay', 'woocommerce-pos' ); ?>: {{{money totals.total}}}</h4>
+<script type="text/x-handlebars-template" id="tmpl-checkout-status">
+	<h4 class="textcenter">
+		<span class="status">
+			<?php _e( 'To Pay', 'woocommerce-pos' ); ?>:
+			<?php _e( 'Processing', 'woocommerce-pos' ); ?>:
+			<i class="fa fa-check"></i> <?php _e( 'Paid', 'woocommerce-pos' ); ?>:
+		</span>
+		<span class="amount">{{{money total}}}</span>
+	</h4>
+</script>
 
+<script type="text/x-handlebars-template" id="tmpl-checkout-payment">
 	<div class="panel-group" id="payment-options">
 
 		<?php  
@@ -36,9 +46,7 @@
 			<?php if ( $gateway->has_fields() || $gateway->get_description() ): ?>
 			<div id="payment_box_<?= $gateway->id; ?>" class="panel-collapse collapse <?= $gateway->id == $default_gateway ? 'in' : '' ; ?>">
 				<div class="panel-body">
-					<form>
-						<?php $gateway->payment_fields(); ?>
-					</form>
+					<?php $gateway->payment_fields(); ?>
 				</div>
 			</div>
 			<?php endif; ?>

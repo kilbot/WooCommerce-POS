@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.3.1-beta\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-08-04 05:59:24+00:00\n"
+"POT-Creation-Date: 2014-08-07 02:24:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -281,10 +281,6 @@ msgstr ""
 msgid "Cash sales at the Point of Sale."
 msgstr ""
 
-#: includes/gateways/cash/class-pos-gateway-cash.php:77
-msgid "Amount Tendered"
-msgstr ""
-
 #: public/class-pos.php:208
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
@@ -333,59 +329,67 @@ msgstr ""
 msgid "Order &ndash; %s"
 msgstr ""
 
-#: public/views/cart.php:18 public/views/receipt.php:13
+#: public/views/cart.php:19 public/views/receipt.php:13
 msgid "Qty"
 msgstr ""
 
-#: public/views/cart.php:19 public/views/receipt.php:12
+#: public/views/cart.php:20 public/views/receipt.php:12
 msgid "Product"
 msgstr ""
 
-#: public/views/cart.php:20 public/views/receipt.php:14
+#: public/views/cart.php:21 public/views/receipt.php:14
 msgid "Price"
 msgstr ""
 
-#: public/views/cart.php:21
+#: public/views/cart.php:22
 msgid "Total"
 msgstr ""
 
-#: public/views/cart.php:31
+#: public/views/cart.php:32
 msgid "Cart is empty"
 msgstr ""
 
-#: public/views/cart.php:61 public/views/receipt.php:45
+#: public/views/cart.php:36
+msgid "Quantity"
+msgstr ""
+
+#: public/views/cart.php:48
+msgid "Item Price"
+msgstr ""
+
+#: public/views/cart.php:62 public/views/receipt.php:45
 msgid "Cart Subtotal"
 msgstr ""
 
-#: public/views/cart.php:66 public/views/receipt.php:50
+#: public/views/cart.php:67 public/views/receipt.php:50
 msgid "Cart Discount"
 msgstr ""
 
-#: public/views/cart.php:86 public/views/receipt.php:71
+#: public/views/cart.php:87 public/views/receipt.php:71
 msgid "Order Discount"
 msgstr ""
 
-#: public/views/cart.php:90 public/views/receipt.php:75
-msgid "Order Total"
-msgstr ""
-
-#: public/views/cart.php:96
-msgid "Customer"
-msgstr ""
-
-#: public/views/cart.php:103
-msgid "Void"
-msgstr ""
-
-#: public/views/cart.php:106
-msgid "Note"
-msgstr ""
-
-#: public/views/cart.php:109
+#: public/views/cart.php:88 public/views/cart.php:110
 msgid "Discount"
 msgstr ""
 
-#: public/views/cart.php:112
+#: public/views/cart.php:91 public/views/receipt.php:75
+msgid "Order Total"
+msgstr ""
+
+#: public/views/cart.php:97
+msgid "Customer"
+msgstr ""
+
+#: public/views/cart.php:104
+msgid "Void"
+msgstr ""
+
+#: public/views/cart.php:107
+msgid "Note"
+msgstr ""
+
+#: public/views/cart.php:113
 msgid "Checkout"
 msgstr ""
 
@@ -393,19 +397,27 @@ msgstr ""
 msgid "Payment"
 msgstr ""
 
-#: public/views/checkout.php:16 public/views/receipt.php:106
+#: public/views/checkout.php:19 public/views/receipt.php:106
 msgid "To Pay"
 msgstr ""
 
-#: public/views/checkout.php:51 public/views/receipt.php:141
+#: public/views/checkout.php:20
+msgid "Processing"
+msgstr ""
+
+#: public/views/checkout.php:21
+msgid "Paid"
+msgstr ""
+
+#: public/views/checkout.php:59 public/views/receipt.php:141
 msgid "No payment gateways enabled."
 msgstr ""
 
-#: public/views/checkout.php:58 public/views/receipt.php:148
+#: public/views/checkout.php:66 public/views/receipt.php:148
 msgid "Return to Sale"
 msgstr ""
 
-#: public/views/checkout.php:59 public/views/receipt.php:149
+#: public/views/checkout.php:67 public/views/receipt.php:149
 msgid "Process Payment"
 msgstr ""
 
@@ -534,35 +546,35 @@ msgstr ""
 msgid "There has been an error."
 msgstr ""
 
-#: public/views/products.php:16
+#: public/views/products.php:30
 msgid "Search for products"
 msgstr ""
 
-#: public/views/products.php:61
+#: public/views/products.php:75
 msgid "No products found"
 msgstr ""
 
-#: public/views/products.php:68
+#: public/views/products.php:82
 msgid "Page %s of %s"
 msgstr ""
 
-#: public/views/products.php:69
+#: public/views/products.php:83
 msgid "Showing %s of %s products"
 msgstr ""
 
-#: public/views/products.php:71
+#: public/views/products.php:85
 msgid "Last updated %s"
 msgstr ""
 
-#: public/views/products.php:72
+#: public/views/products.php:86
 msgid "sync"
 msgstr ""
 
-#: public/views/products.php:72
+#: public/views/products.php:86
 msgid "clear"
 msgstr ""
 
-#: public/views/products.php:74
+#: public/views/products.php:88
 msgid "Your browser does not support indexeddb"
 msgstr ""
 
@@ -702,7 +714,7 @@ msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
 
-#: public/views/products.php:39
+#: public/views/products.php:53
 msgctxt "%d in stock"
 msgid "in stock"
 msgstr ""

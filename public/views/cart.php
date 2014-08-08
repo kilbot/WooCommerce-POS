@@ -9,7 +9,6 @@
 	<div id="cart-customer"></div>
 	<div id="cart-actions"></div>
 	<div id="cart-notes"></div>
-	<div id="numpad"></div>
 </script>
 
 <script type="text/template" id="tmpl-cart-items">
@@ -96,7 +95,6 @@
 <script type="text/x-handlebars-template" id="tmpl-cart-customer">
 	<?php _e( 'Customer', 'woocommerce-pos' ); ?>:
 	<input type="hidden" id="select-customer" style="width:200px" value="{{ customer_id }}" data-customer="{{ customer_name }}" data-nonce="<?= wp_create_nonce( 'search-customers' ) ?>">
-	<a href="#" class="open-modal">Modal</a>
 </script>
 
 <script type="text/template" id="tmpl-cart-actions">

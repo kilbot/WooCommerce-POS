@@ -27,6 +27,11 @@
                 }
             }
         }
+        tr {
+            &:last-of-type th, &:last-of-type td {
+                border-bottom: 1px solid $border-dark;
+            }
+        }
     }
 } 
 

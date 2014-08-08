@@ -18,6 +18,10 @@ define(['app', 'apps/checkout/show/show_view', 'common/views'], function(POS, Vi
 				var loadingView = new POS.Common.Views.Loading();
 				POS.rightRegion.show(loadingView);
 
+				// get cart totals
+				this.items = POS.Entities.channel.request('cart:items', { cartId: this.cartId });
+				this.totals = POS.Entities.channel.request('cart:totals', { id: this.cartId, cart: this.items });
+
 				// init layout
 				this.layout = new View.Layout();
 
@@ -26,12 +30,24 @@ define(['app', 'apps/checkout/show/show_view', 'common/views'], function(POS, Vi
 			show: function(){
 				
 				this.listenTo( this.layout, 'show', function() {
+					this._showStatusRegion();		
 					this._showPaymentRegion();		
 					this._showActionsRegion();		
 				});
 
 				POS.rightRegion.show(this.layout);
 
+			},
+
+			_showStatusRegion: function(){
+				
+				// get payment view
+				var view = new View.Status({
+					total: this.totals.get('total')
+				});
+
+				// show
+				this.layout.statusRegion.show( view );
 			},
 
 			_showPaymentRegion: function(){
