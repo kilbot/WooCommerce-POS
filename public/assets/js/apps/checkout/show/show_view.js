@@ -32,9 +32,6 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 				Collapse: {
 					// options
 				},
-				Numpad: {
-					// options
-				}
 			},
 
 		});

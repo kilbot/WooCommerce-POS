@@ -4,8 +4,8 @@
             input {
                 text-align: center;
                 max-width: 7em;
-                background-color: $odd-background;
-                border: 1px solid $border-dark;
+                background-color: $table-bg-accent;
+                border: 1px solid darken($border-color, 10%);
                 -moz-appearance: textfield;
                 // outline: none;
                 @include border-radius(16px);
@@ -28,16 +28,25 @@
             }
         }
         tr {
+            th, td {
+                vertical-align: middle;
+            }
             &:last-of-type th, &:last-of-type td {
-                border-bottom: 1px solid $border-dark;
+                border-bottom: 1px solid darken($border-color, 10%);
             }
         }
     }
-} 
+}
+
+#cart-totals {
+    th {
+        text-align: right;
+    }
+}
 
 #cart-customer div, #cart-actions div, #cart-notes div {
-    padding: $vspacing/2;
-    border-bottom: 1px solid $border-dark;
+    padding: $spacing/2;
+    border-bottom: 1px solid darken($border-color, 10%);
 }
 
 #cart-actions div {
@@ -47,5 +56,5 @@
 
 #cart-notes div {
     border: 0;
-    border-top: 1px solid $border-dark;
+    border-top: 1px solid darken($border-color, 10%);
 }

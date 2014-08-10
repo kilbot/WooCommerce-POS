@@ -225,7 +225,7 @@ define([
 			},
 
 			showProgressBar: function(args) {
-				var el = args.view.content.$el.find('#progress-bar');
+				var el = args.view.content.$el.find('.progress');
 				var progressBar = POS.Components.ProgressBar.channel.request( 'get:progressbar', { el: el } );
 				progressBar.model.set({ max: el.data('total'), progress: 0, display: 'fraction' });
 

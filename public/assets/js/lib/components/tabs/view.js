@@ -33,6 +33,10 @@ define([
 		Tabs.View = Marionette.CollectionView.extend({
 			tagName: 'ul',
 			childView: Tabs.ItemView,
+			// className: 'nav nav-tabs',
+			attributes: {
+				'role' : 'tablist'
+			},
 
 			collectionEvents: {
 				'change:active'	: 'render',

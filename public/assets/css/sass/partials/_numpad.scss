@@ -1,21 +1,26 @@
 .numpad-header {
+	@include clearfix();
 	padding: 5px;
 	background-color: #f7f7f7;
 	border-bottom: 1px solid #ebebeb;
-	input {
-		max-width: 7em;
-		text-align: center;
+	.input-group {
+		input {
+			text-align: center;
+		}		
+	}
+	.title {
+		line-height: 30px;
 	}
 }
 
 .numpad-keys {
 	table {
 		width: auto;
-		padding: 5px 0 0 5px;
+		border-collapse: separate;
+		border-spacing: 5px;
 		tr {
 			td {
 				border: 0;
-				padding: 0 5px 5px 0;
 				button {
 					display: table-cell;
 					height: 50px;

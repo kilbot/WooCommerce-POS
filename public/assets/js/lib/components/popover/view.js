@@ -21,6 +21,13 @@ define([
 			initialize: function (options) {
 				this.target = options.target;
 
+				// remove any open popovers
+				if( $('.popover').length > 0 ) {
+					$('.popover').each( function() {
+						$(this).popover('hide');
+					});
+				}
+
 				this.popoverOpts = _.clone(options) || {};
 				_.defaults(this.popoverOpts, {
 					placement: 'bottom',
@@ -31,12 +38,11 @@ define([
 				});
 
 				var self = this;
-				this.target.on( 'show.bs.popover', function(){
-					self.trigger('show:popover');
+				this.target.on( 'shown.bs.popover', function(){
+					self.trigger('after:show:popover');
 				});
 				this.target.on( 'shown.bs.popover', function(){
 					self.trigger('after:show:popover');
-					self.showContent(options);
 				});
 				this.target.on( 'hide.bs.popover', function(){
 					self.trigger('hide:popover');
@@ -44,11 +50,6 @@ define([
 				this.target.on( 'hidden.bs.popover', function(){
 					self.trigger('after:hide:popover');
 				});
-
-				this.render();
-
-				// TODO: fix this hack!
-				this.$el.find('.popover-content').width(options.width);
 			},
 
 			openPopover: function (options) {
@@ -59,24 +60,23 @@ define([
 
 			closePopover: function (options) {
 				this.once('after:hide:popover', options.callback);
-				this.once('after:hide:popover', this.teardownModal);
+				this.once('after:hide:popover', this.teardownPopover);
 				this.target.popover('hide');
 			},
 
 			setupPopover: function (options) {
-				if (this.isShown) this.teardownModal();
+				// so much hack
+				this.render();
 				this.target.popover(this.popoverOpts);
-				this.isShown = true;
-			},
-
-			showContent: function(options) {
+				var thisPopover = this.target.data('bs.popover');
 				this.content.show(options.view);
+
+				// prevent setContent method from emptying .popover-content
+				thisPopover.__proto__.setContent = function() {}; 
 			},
 
 			teardownPopover: function () {
-				if (!this.isShown) return;
 				this.content.empty();
-				this.isShown = false;
 			}
 			
 		});

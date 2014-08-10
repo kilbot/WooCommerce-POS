@@ -3,7 +3,7 @@
 	<h4 class="modal-title"><?php _e( 'Downloading products', 'woocommerce-pos' ); ?>&hellip;</h4>
 </div>
 <div class="modal-body">
-	<div id="progress-bar" data-total="<%= total %>"></div>
+	<div class="progress" data-total="<%= total %>"></div>
 	<p class="small alert alert-info">
 	<?= __('WooCommerce POS is storing your products locally.', 'woocommerce-pos'); ?>
 	<?= __('This could take some time depending on the number of products you have, the speed of your connection and the speed of your server.', 'woocommerce-pos'); ?>
@@ -11,6 +11,6 @@
 	</p>
 </div>
 <div class="modal-footer" style="display:none;">
-	<strong class="alignleft"><?= __('Download complete!', 'woocommerce-pos'); ?></strong>
+	<strong class="pull-left"><?= __('Download complete!', 'woocommerce-pos'); ?></strong>
 	<button type="button" class="btn btn-primary" data-dismiss="modal"><?php _e( 'Okay', 'woocommerce-pos' ); ?></button>
 </div>

@@ -29,20 +29,28 @@ module.exports = function(grunt) {
 			php: {
 				files: '<%= paths.php.files_std %>',
 				tasks: ['phplint']
-			}
+			},
+			// svgstore: {
+			// 	files: ['assets/svg/*.svg'],
+			// 	tasks: ['svgstore']
+			// }
 		},
 
 		// compass
 		compass: {
+			options: {
+				require: ['susy', 'breakpoint'],
+				sassDir: 'public/assets/css/sass',
+				cssDir: 'public/assets/css',
+				fontsDir: 'public/assets/fonts',
+				javascriptsDir: 'public/assets/js',
+				imagesDir: 'assets',
+				relativeAssets: true,
+				raw: "Sass::Script::Number.precision = 10\n"
+			},
 			dev: {
 				options: {
-					require: ['susy', 'breakpoint'],
-					sassDir: 'public/assets/css/sass',
-					cssDir: 'public/assets/css',
-					fontsDir: 'public/assets/fonts',
-					javascriptsDir: 'public/assets/js',
-					imagesDir: 'assets',
-					relativeAssets: true,
+
 				}
 			}
 		},
@@ -157,10 +165,7 @@ module.exports = function(grunt) {
 			plugins: {
 				files: {
 					'public/assets/js/plugins.min.js' : [
-						'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown.js',
-						'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal.js',
-						'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/collapse.js',
-						// 'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tooltip.js',
+						'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js',
 						'public/assets/js/src/pushy.js'
 					]
 				}
@@ -180,15 +185,15 @@ module.exports = function(grunt) {
 			}
 		},
 
-		// unused
-		// convert readme.txt to readme.md
-		wp_readme_to_markdown: {
-			woopos: {
-				files: {
-					'README.md': 'readme.txt'
-				}
-			}
-		},
+		// // unused
+		// // convert readme.txt to readme.md
+		// wp_readme_to_markdown: {
+		// 	woopos: {
+		// 		files: {
+		// 			'README.md': 'readme.txt'
+		// 		}
+		// 	}
+		// },
 
 		// Localize
 		makepot: {
@@ -239,6 +244,22 @@ module.exports = function(grunt) {
       			expand: true,
     		},
   		},
+
+  		// svgstore: {
+  		// 	options: {
+  		// 		prefix: 'shape-',
+  		// 		cleanup: false,
+  		// 		svg: {
+  		// 			style: 'display: none;'
+  		// 		}
+
+  		// 	},
+  		// 	default: {
+  		// 		files: {
+  		// 			'assets/svg-defs.svg': ['assets/svg/*.svg']
+  		// 		}
+  		// 	}
+  		// }
 
 	});
 

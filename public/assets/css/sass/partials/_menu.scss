@@ -18,7 +18,7 @@ html, body{
         li.support a {
             color: $brand-danger;
             &:hover {
-                color: $menu-text;
+                color: $navbar-inverse-color;
                 background-color: $brand-danger;
             }
         }
@@ -32,23 +32,23 @@ html, body{
     height: 100%;
     top: 0;
     z-index: 9999;
-    background: $menu-background;
+    background: $navbar-inverse-bg;
     @include box-shadow(inset -10px 0 6px -9px rgba(0, 0, 0, .7));
     overflow: auto;
     -webkit-overflow-scrolling: touch; /* enables momentum scrolling in iOS overflow elements */
 
     a {
+        line-height: 1;
         display: block;
-        color: $menu-text;
-        padding: 0 $vspacing/2;
-        line-height: $vspacing*1.5;
+        color: $navbar-inverse-color;
+        padding: $spacing/2;
         // border-bottom: 1px solid rgba(0, 0, 0, .1);
         border-top: 1px solid rgba(255, 255, 255, .1);
         text-decoration: none; 
 
         @include hoverActiveFocus {
-            background: $menu-highlight-background;
-            color: $menu-text;
+            background-color: darken($link-color, 5%);
+            color: $navbar-inverse-color;
         }     
     }
 

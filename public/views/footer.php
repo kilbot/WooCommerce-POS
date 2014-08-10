@@ -1,7 +1,7 @@
 </div><!-- /page -->
 
 <?php if( WC_POS()->template == 'main' ) : ?> 
-<div id="footer" class="textcenter">
+<div id="footer" class="text-center">
 	<i class="fa fa-support"></i> <?= sprintf( __( 'Need help? Visit the <a href="%s">support</a> page', 'woocommerce-pos' ), WC_POS()->pos_url( 'support' ) ); ?>
 </div>
 <?php endif; ?>
@@ -19,7 +19,7 @@
 
 <div id="modal"></div>
 
-<?php WooCommerce_POS::pos_print_js('footer'); ?>
+<?php do_action('woocommerce_pos_after'); ?>
 
 </body>
 </html>

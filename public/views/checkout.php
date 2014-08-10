@@ -63,6 +63,6 @@
 </script>
 
 <script type="text/template" id="tmpl-checkout-actions">
-	<button class="btn action-close alignleft"><?php _e( 'Return to Sale', 'woocommerce-pos' ); ?></button>
+	<button class="btn action-close pull-left"><?php _e( 'Return to Sale', 'woocommerce-pos' ); ?></button>
 	<button class="btn btn-success action-process"><?php _e( 'Process Payment', 'woocommerce-pos' ); ?></button>
 </script>

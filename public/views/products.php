@@ -12,9 +12,20 @@
 </script>
 
 <script type="text/template" id="tmpl-products-filter">
-	<i class="fa fa-search"></i>
-	<input type="search" placeholder="<?php _e( 'Search for products', 'woocommerce-pos' ); ?>" tabindex="1"  autofocus="autofocus">
-	<a class="clear" href="#"><i class="fa fa-times-circle fa-lg"></i></a>
+<div class="input-group">
+	<div class="input-group-btn">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="dropdownMenu1"><i class="fa fa-search"></i></button>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+			<li><a href="#"><i class="fa fa-search"></i> Search</a></li>
+			<li><a href="#"><i class="fa fa-barcode"></i> Scan Barcode</a></li>
+		</ul>
+	</div><!-- /btn-group -->
+	<input type="search" placeholder="<?php _e( 'Search for products', 'woocommerce-pos' ); ?>" tabindex="1"  autofocus="autofocus" class="form-control">
+	<span class="input-group-addon clear-btn"><a class="clear" href="#"><i class="fa fa-times-circle fa-lg"></i></a></span>
+	<div class="input-group-btn">
+        <button type="button" class="btn btn-default action-sync"><i class="fa fa-refresh"></i></button>
+    </div>
+</div><!-- /input-group -->
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-product">
@@ -62,8 +73,8 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-pagination">
-	<a href="#" class="prev btn btn-default alignleft {{#is currentPage 1}}disabled{{/is}}"><i class="fa fa-chevron-left"></i></a> 
-	<a href="#" class="next btn btn-default alignright {{#is currentPage lastPage}}disabled{{/is}}"><i class="fa fa-chevron-right"></i></a>
+	<a href="#" class="prev btn btn-default pull-left {{#is currentPage 1}}disabled{{/is}}"><i class="fa fa-chevron-left"></i></a> 
+	<a href="#" class="next btn btn-default pull-right {{#is currentPage lastPage}}disabled{{/is}}"><i class="fa fa-chevron-right"></i></a>
 	<small>
 		<?= sprintf( __( 'Page %s of %s', 'woocommerce-pos' ), '{{currentPage}}', '{{totalPages}}' ); ?>. 
 		<?= sprintf( __( 'Showing %s of %s products', 'woocommerce-pos' ), '{{currentRecords}}', '{{totalRecords}}' ); ?>.<br>

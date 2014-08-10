@@ -1,39 +1,72 @@
 @import "compass";
 @import "breakpoint";
 @import "susy";
+@import "partials/variables"; // overrides bootstrap
 
-// configure the style from settings
-@import "partials/settings";
+// Core variables and mixins
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins";
+
+// Reset and dependencies
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/normalize";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/print";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/glyphicons";
+
+// Core CSS
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/scaffolding";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/type";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/code";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/grid";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/tables";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/forms";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/buttons";
+
+// Components
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/component-animations";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/dropdowns";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/button-groups";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/input-groups";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/navs";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/navbar";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/breadcrumbs";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/pagination";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/pager";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/labels";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/badges";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/jumbotron";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/thumbnails";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/alerts";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/progress-bars";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/media";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/list-group";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/panels";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-embed";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/wells";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/close";
+
+// Components w/ JavaScript
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/modals";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/tooltip";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/popovers";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/carousel";
+
+// Utility classes
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/utilities";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-utilities";
+
+/**
+ * POS THEME
+ */
 @import "partials/mixins";
-
-// reset styles should stay at the top
-@import "partials/print";
-@import "partials/reset";
-
-// core css
-@import "partials/global";
-@import "partials/typography";
 @import "partials/buttons";
-@import "partials/close";
-@import "partials/dropdowns";
-@import "partials/forms";
+@import "partials/cart";
+@import "partials/checkout";
+@import "partials/footer";
+@import "partials/header";
 @import "partials/layout";
 @import "partials/menu";
-@import "partials/panels";
-@import "partials/tables";
-@import "partials/progress-bars";
-
-// pos modules
-@import "partials/products";
-@import "partials/tabs";
-@import "partials/cart";
 @import "partials/numpad";
-@import "partials/checkout";
-
-// js components
-@import "partials/component-animations";
-@import "partials/alerts";
-@import "partials/modals";
-@import "partials/popovers";
-@import "partials/tooltip";
+@import "partials/popover";
+@import "partials/products";
 @import "partials/select2";
+@import "partials/tabs";

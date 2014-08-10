@@ -12,7 +12,7 @@
 </script>
 
 <script type="text/template" id="tmpl-cart-items">
-	<table cellspacing="0">
+	<table class="table">
 		<thead>
 			<tr>
 				<th><?php _e( 'Qty', 'woocommerce-pos' ); ?></th>
@@ -98,7 +98,7 @@
 </script>
 
 <script type="text/template" id="tmpl-cart-actions">
-	<button class="btn btn-danger action-void alignleft">
+	<button class="btn btn-danger action-void pull-left">
 		<?php _e( 'Void', 'woocommerce-pos' ); ?> 
 	</button>
 	<button class="btn btn-primary action-note">

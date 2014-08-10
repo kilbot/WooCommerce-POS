@@ -11,12 +11,15 @@ define([
 	POS.module('Components.ProgressBar', function(ProgressBar, POS, Backbone, Marionette, $, _){
 		
 		ProgressBar.View = Marionette.ItemView.extend({
-			tagName: 'div',
 			template: Handlebars.compile( ProgressBarTmpl ),
-			className: 'progress',
 
 			modelEvents: {
-				'change:progress'	: 'render'
+				'change:progress'	: 'render',
+				'progress:complete' : 'deactivate'
+			},
+
+			deactivate: function() {
+				this.$('.progress-bar').removeClass('active progress-bar-striped');
 			}
 
 		});
