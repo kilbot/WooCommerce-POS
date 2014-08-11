@@ -142,7 +142,7 @@ module.exports = function(grunt) {
 					// optimize: 'none'
 					uglify2: {
 						compress: {
-                        	drop_console: true
+                        	// drop_console: true
                     	}
 					}
 				}

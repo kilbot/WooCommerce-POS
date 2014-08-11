@@ -61,7 +61,8 @@ require([
 	'lib/components/components_app',
 	'apps/products/products_app',
 	'apps/cart/cart_app',
-	'apps/checkout/checkout_app'
+	'apps/checkout/checkout_app',
+	'apps/customer/customer_app'
 ], function(POS){
 	POS.start();
 });

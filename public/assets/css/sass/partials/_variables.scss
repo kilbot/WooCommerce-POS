@@ -12,8 +12,9 @@ $body-bg: 				#f1f1f1;
 $content-background: 	#FFF;
 $navbar-inverse-color: 	#eee;
 
-$border-color: 			#eee !default;	
-$table-border-color:    $border-color;      
+$border-color: 			#eee;	
+$table-border-color:    $border-color;
+$dark-border-color: 	darken($border-color, 6%);   
 
 // Widths & Spacing 
 $spacing: 				24px;

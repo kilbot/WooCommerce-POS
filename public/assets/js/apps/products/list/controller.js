@@ -91,6 +91,11 @@ define([
 					this.filterCollection.trigger('filter:products');
 				});
 
+				// sync
+				this.listenTo( view, 'sync:clicked', function(args) {
+					this.products.serverSync();
+				});
+
 				// show
 				this.layout.filterRegion.show( view );
 			},

@@ -28,8 +28,13 @@ define([
 			mode: 'client',
 
 			events: {
-				'keyup input[type=search]': 'searchTrigger',
-				'click a.clear'	: 'clear',
+				'keyup input[type=search]' 	: 'searchTrigger',
+				'click .clear'				: 'clear',
+				'click .dropdown-menu a'	: 'switchMode'
+			},
+
+			triggers: {
+				'click .action-sync'		: 'sync:clicked'
 			},
 
 			ui: {
@@ -60,6 +65,20 @@ define([
 			showClearButtonMaybe: function() {
 				_.isEmpty( this.ui.searchField.val() ) ? this.ui.clearBtn.hide() : this.ui.clearBtn.show() ;
 			},
+
+			switchMode: function(e) {
+				var action = e.currentTarget.className.match(/\s*action-([a-z]+)/);
+				if( !action ) { return; }
+
+				switch( action[1] ) {
+					case 'search': 
+						console.log('set search');
+					break;
+					case 'barcode': 
+						console.log('set barcode');
+					break;
+				}
+			}
 		});
 
 		/**

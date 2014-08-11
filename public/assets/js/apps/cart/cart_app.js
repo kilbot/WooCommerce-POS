@@ -1,11 +1,9 @@
 define([
 	'app',
-	'apps/cart/list/list_controller',
-	'apps/cart/customer/customer_controller'
+	'apps/cart/list/controller'
 ], function(
 	POS, 
-	ListController,
-	CustomerController
+	ListController
 ){
 	
 	POS.module('CartApp', function(CartApp, POS, Backbone, Marionette, $, _){
@@ -15,11 +13,11 @@ define([
 		CartApp.startWithParent = false;
 
 		CartApp.onStart = function(){
-      		if(POS.debug) console.log('[notice] starting Cart Module');
+      		if(POS.debug) console.log('starting Cart Module');
     	};
 
     	CartApp.onStop = function(){
-			if(POS.debug) console.log('[notice] stopping Cart Module');
+			if(POS.debug) console.log('stopping Cart Module');
 		};
 
 	});
@@ -46,10 +44,6 @@ define([
 				id ? options = { cartId: id } : options = {};
 				var c = _getController(ListController, options);
 				c.show();
-			},
-			showCustomerRegion: function(region) {
-				var c = _getController(CustomerController, region);
-				c.show();
 			}
 		};
 
@@ -71,10 +65,6 @@ define([
 			// else {
 			// 	console.log('Cart Module is not open');
 			// }
-		});
-
-		POS.CartApp.channel.comply( 'cart:customer', function(region) {
-			API.showCustomerRegion(region)
 		});
 
 		POS.addInitializer( function(){

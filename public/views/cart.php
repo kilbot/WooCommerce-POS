@@ -94,7 +94,7 @@
 
 <script type="text/x-handlebars-template" id="tmpl-cart-customer">
 	<?php _e( 'Customer', 'woocommerce-pos' ); ?>:
-	<input type="hidden" id="select-customer" style="width:200px" value="{{ customer_id }}" data-customer="{{ customer_name }}" data-nonce="<?= wp_create_nonce( 'search-customers' ) ?>">
+	<input type="hidden" id="select-customer" class="select2" style="width:200px" value="{{ customer_id }}" data-customer="{{ customer_name }}" data-nonce="<?= wp_create_nonce( 'json-search-customers' ) ?>">
 </script>
 
 <script type="text/template" id="tmpl-cart-actions">

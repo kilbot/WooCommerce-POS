@@ -72,7 +72,7 @@
 	        	}
 	        	&:last-of-type {
 	        		div {
-	        			border-bottom: 1px solid darken($border-color, 10%);
+	        			border-bottom: 1px solid $dark-border-color;
 	        		}
 	        	}
 			}
@@ -86,7 +86,7 @@
 
 #products-filter {
     padding: $padding-base-vertical;
-    border-bottom: 1px solid darken($border-color, 10%);
+    border-bottom: 1px solid $dark-border-color;
     input[type=search] {
         -webkit-appearance: textfield;
         &::-webkit-search-decoration {

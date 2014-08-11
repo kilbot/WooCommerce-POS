@@ -6,6 +6,7 @@ define([
 	'lib/components/collapse/behavior',
 	'lib/components/popover/behavior',
 	'lib/components/modal/behavior',
+	'lib/components/select2/behavior',
 
 	// controllers
 	// 'lib/components/loading/controller',
@@ -36,6 +37,9 @@ define([
 				break;
 				case 'Modal':
 					return Components.Modal.Behavior;
+				break;
+				case 'Select2':
+					return Components.Select2.Behavior;
 				break;
 				default:
 					return Marionette.Behaviors.behaviorsLookup[key];

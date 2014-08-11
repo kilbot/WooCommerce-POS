@@ -4052,7 +4052,7 @@ button.close {
   text-align: center;
   max-width: 7em;
   background-color: #f9f9f9;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #dfdfdf;
   -moz-appearance: textfield;
   -moz-border-radius: 16px;
   -webkit-border-radius: 16px;
@@ -4082,7 +4082,7 @@ button.close {
 }
 /* line 34, sass/partials/_cart.scss */
 #cart table tr:last-of-type th, #cart table tr:last-of-type td {
-  border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid #dfdfdf;
 }
 
 /* line 42, sass/partials/_cart.scss */
@@ -4091,21 +4091,21 @@ button.close {
 }
 
 /* line 47, sass/partials/_cart.scss */
-#cart-customer div, #cart-actions div, #cart-notes div {
+#cart-customer, #cart-actions, #cart-notes {
   padding: 12px;
-  border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid #dfdfdf;
 }
 
 /* line 52, sass/partials/_cart.scss */
-#cart-actions div {
+#cart-actions {
   text-align: right;
   border: 0;
 }
 
 /* line 57, sass/partials/_cart.scss */
-#cart-notes div {
+#cart-notes {
   border: 0;
-  border-top: 1px solid #d4d4d4;
+  border-top: 1px solid #dfdfdf;
 }
 
 /* line 1, sass/partials/_checkout.scss */
@@ -4458,11 +4458,6 @@ html, body {
   padding: 0;
 }
 
-/* line 1, sass/partials/_popover.scss */
-.popover {
-  max-width: auto;
-}
-
 /* line 5, sass/partials/_products.scss */
 #products ul {
   margin: 0;
@@ -4568,13 +4563,13 @@ html, body {
 }
 /* line 74, sass/partials/_products.scss */
 #products ul.list li:last-of-type div {
-  border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid #dfdfdf;
 }
 
 /* line 87, sass/partials/_products.scss */
 #products-filter {
   padding: 6px;
-  border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid #dfdfdf;
 }
 /* line 90, sass/partials/_products.scss */
 #products-filter input[type=search] {
@@ -5472,4 +5467,23 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
 /* line 30, sass/partials/_tabs.scss */
 .infinite-tabs ul {
   width: 2000px;
+}
+
+/**
+ * Bootstrap overrides
+ */
+/* line 5, sass/partials/_bootstrap.scss */
+.popover {
+  max-width: auto;
+}
+
+/* line 9, sass/partials/_bootstrap.scss */
+ins {
+  background: #fff9c0;
+  text-decoration: none;
+}
+
+/* line 14, sass/partials/_bootstrap.scss */
+.table {
+  margin-bottom: 0;
 }

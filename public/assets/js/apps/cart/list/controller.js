@@ -1,6 +1,6 @@
 define([
 	'app',
-	'apps/cart/list/list_view', 
+	'apps/cart/list/view', 
 	'entities/cart',
 	'common/views', 
 	'common/helpers'
@@ -131,7 +131,13 @@ define([
 			},
 
 			_showCustomerRegion: function(){
-				POS.CartApp.channel.command('cart:customer', this.layout.cartCustomerRegion);
+				var view = POS.CustomerApp.channel.request('customer:select');
+
+				this.listenTo( view, 'all', function(e) {
+					console.log(e);
+				});
+
+				this.layout.cartCustomerRegion.show( view );
 			},
 
 			_showActionsRegion: function(){
