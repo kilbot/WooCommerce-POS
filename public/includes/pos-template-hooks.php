@@ -36,6 +36,21 @@ class WooCommerce_POS_Template_Hooks {
 	}
 
 	/**
+	 * User settings 
+	 * @return array $settings
+	 */
+	public function get_user_settings() {
+		global $current_user;
+		
+		$settings = array(
+			'id' 			=> $current_user->ID,
+			'display_name' 	=> $current_user->display_name
+		);
+
+		return $settings;
+	}
+
+	/**
 	 * Get the default customer
 	 * @return object $customer
 	 */
@@ -151,15 +166,16 @@ class WooCommerce_POS_Template_Hooks {
 	 */
 	public function pos_localize_script() {
 
-		$js_vars['page']		= WC_POS()->template;
-		$js_vars['ajax_url'] 	= admin_url( 'admin-ajax.php', 'relative' );
-		$js_vars['wc_api_url']	= WC_POS()->wc_api_url;
 		$js_vars['accounting'] 	= $this->accounting_settings();
-		$js_vars['wc'] 			= $this->wc_settings();
-		$js_vars['select'] 		= $this->select2_settings();
+		$js_vars['ajax_url'] 	= admin_url( 'admin-ajax.php', 'relative' );
 		$js_vars['customer'] 	= $this->get_default_customer();
-		$js_vars['tabs'] 		= $this->product_tabs();
 		$js_vars['nonce'] 		= wp_create_nonce( "woocommerce-pos");
+		$js_vars['page']		= WC_POS()->template;
+		$js_vars['select'] 		= $this->select2_settings();
+		$js_vars['tabs'] 		= $this->product_tabs();
+		$js_vars['user'] 		= $this->get_user_settings();
+		$js_vars['wc'] 			= $this->wc_settings();
+		$js_vars['wc_api_url']	= WC_POS()->wc_api_url;
 
 		// switch for development
 		if( WC_POS()->development ) {

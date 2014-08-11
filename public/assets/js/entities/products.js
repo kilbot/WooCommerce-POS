@@ -5,7 +5,8 @@ define([
 	'entities/products/filter', 
 	'entities/products/fallback/product', 
 	'entities/products/fallback/products', 
-	'entities/products/fallback/product_variations'
+	'entities/products/fallback/product_variations',
+	'entities/user'
 ], function(
 	POS
 ){

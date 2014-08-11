@@ -2,8 +2,7 @@ define([
 	'app',
 	'apps/cart/list/view', 
 	'entities/cart',
-	'common/views', 
-	'common/helpers'
+	'common/views'
 ], function(
 	POS, 
 	View

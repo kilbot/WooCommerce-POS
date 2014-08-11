@@ -17,8 +17,12 @@ define([
 				this.pageableCollection = options.pageableCollection;
 				this.filterEntities = POS.Entities.channel.request('search:entities');
 
-				this.on( 'filter:products', function() {
-					this.onFilterProducts();
+				this.on( 'filter:products', function( mode ) {
+					if( mode === 'barcode' ) {
+						this._barcodeSearch( this.searchQuery );
+					} else {
+						this.onFilterProducts();
+					}
 				});
 
 			},
@@ -33,19 +37,13 @@ define([
 				
 				this.filterEntities.reset( facets );
 
-				if(POS.debug) console.log('[notice] Product filter = "' + combinedFilter + '"');
+				if(POS.debug) console.log('Product filter = "' + combinedFilter + '"');
 
 				// if active filter
 				if( this.filterEntities.length > 0 ) {
 
 					// get criterion array
 					var criterion = this.filterEntities.facets();
-
-					// special case for barcode
-					if( _(criterion).has('barcode') ) {
-						this._barcodeSearch( criterion['barcode'] );
-						return;
-					}
 					
 					// if has parent switch list to variations
 					if( _(criterion).has('parent') ) {
@@ -144,8 +142,40 @@ define([
 
 			},
 
-			_barcodeSearch: function(barcode) {
+			_barcodeSearch: function( query ) {
+				var filteredList = this.models,
+					filteredVariations = [],
+					exact = [];
 
+				if( query !== '' ) {
+
+					filteredProducts = filteredList.filter( function(product){
+						if( product.get('type') === 'variable' ) {
+							_( product.get('variations') ).each( function(variation) {
+								if( variation.barcode.toLowerCase().indexOf( query ) !== -1 ) {
+									variation['type'] = 'variation';
+									variation['title'] = product.get('title');
+									variation['categories'] = product.get('categories');
+									var model = new Entities.Product( variation );
+									filteredVariations.push( model );
+									if( variation.barcode.toLowerCase() === query ) exact.push( model );
+								}
+							})
+						}
+						if( product.get( 'barcode' ).toLowerCase() === query ) exact.push( product );
+						return product.get( 'barcode' ).toLowerCase().indexOf( query ) !== -1;
+					}, this);
+
+					filteredList = filteredProducts.concat(filteredVariations);
+
+				}
+console.log(exact);
+				if( exact.length === 1 ){
+					POS.trigger( 'cart:add', _.first(exact) );
+				}
+
+				this.pageableCollection.getFirstPage({ silent: true });
+				this.pageableCollection.fullCollection.reset(filteredList, { reindex: false });
 			},
 
 

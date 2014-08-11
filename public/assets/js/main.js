@@ -56,6 +56,7 @@ requirejs.config({
 
 require([
 	'app',
+	'lib/utilities/helpers',
 	'entities/options',
 	'entities/abstract/search_parser',
 	'lib/components/components_app',

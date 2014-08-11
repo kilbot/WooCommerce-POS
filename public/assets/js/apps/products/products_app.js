@@ -1,5 +1,6 @@
 define([
 	'app',
+	'entities/products',
 	'apps/products/list/controller'
 ], function(
 	POS
@@ -9,7 +10,7 @@ define([
 
 		ProductsApp.startWithParent = false;
 
-		// create products channel & pass to sub-modules
+		// products channel
 		ProductsApp.channel = Backbone.Radio.channel('products');
 		ProductsApp.List.channel = ProductsApp.channel;
 
@@ -24,6 +25,8 @@ define([
 			if(POS.debug) console.log('stopping Products Module');
 			listController.destroy();
 		};
+
+		ProductsApp.channel.comply( 'show:download:progress', listController.showModal );
 
 	});
 

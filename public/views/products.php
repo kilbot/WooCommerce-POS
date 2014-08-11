@@ -14,13 +14,17 @@
 <script type="text/template" id="tmpl-products-filter">
 <div class="input-group">
 	<div class="input-group-btn">
-		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></button>
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa {{#is search_mode 'barcode'}}fa-barcode{{else}}fa-search{{/is}}"></i></button>
 		<ul class="dropdown-menu" role="menu">
 			<li><a href="#" class="action-search"><i class="fa fa-search"></i> Search</a></li>
 			<li><a href="#" class="action-barcode"><i class="fa fa-barcode"></i> Scan Barcode</a></li>
 		</ul>
 	</div><!-- /btn-group -->
+	{{#is search_mode 'barcode'}}
+	<input type="search" placeholder="<?php _e( 'Scan Barcode', 'woocommerce-pos' ); ?>" tabindex="1"  autofocus="autofocus" class="form-control">
+	{{else}}
 	<input type="search" placeholder="<?php _e( 'Search for products', 'woocommerce-pos' ); ?>" tabindex="1"  autofocus="autofocus" class="form-control">
+	{{/is}}
 	<span class="input-group-addon clear-btn"><a class="clear" href="#"><i class="fa fa-times-circle fa-lg"></i></a></span>
 	<div class="input-group-btn">
         <button type="button" class="btn btn-default action-sync"><i class="fa fa-refresh"></i></button>

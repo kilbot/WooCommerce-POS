@@ -1,8 +1,7 @@
 define([
 	'app', 
 	'apps/products/list/view',
-	'common/views',
-	'entities/products',
+	'common/views'
 ], function(
 	POS, 
 	View
@@ -13,8 +12,6 @@ define([
 		List.Controller = Marionette.Controller.extend({
 
 			initialize: function(options) {
-
-				List.channel.comply( 'show:download:progress', this.showModal );
 
 				// loading view
 				var loadingView = new POS.Common.Views.Loading();
@@ -75,7 +72,9 @@ define([
 
 			_showFilterView: function() {
 
-				var view = new View.Filter();
+				var display_settings = POS.Entities.channel.request('user:display:settings');
+
+				var view = new View.Filter({ model: display_settings });
 
 				// filter collection = clone of products collection
 				this.filterCollection = POS.Entities.channel.request('product:filtercollection', this.products);
@@ -88,12 +87,17 @@ define([
 				// search queries
 				this.listenTo( view, 'products:search:query', function( query ){
 					this.filterCollection.searchQuery = query;
-					this.filterCollection.trigger('filter:products');
+					this.filterCollection.trigger('filter:products', display_settings.get('search_mode') );
 				});
 
 				// sync
-				this.listenTo( view, 'sync:clicked', function(args) {
+				this.listenTo( view, 'sync:clicked', function( args ) {
 					this.products.serverSync();
+				});
+
+				// search mode
+				this.listenTo( view, 'products:search:mode', function( mode ) {
+					view.model.save({ search_mode: mode });
 				});
 
 				// show
@@ -151,5 +155,4 @@ define([
 		
 	});
 
-	// return POS.ProductsApp.List.Controller;
 });

@@ -1,10 +1,4 @@
-define([
-	'app', 
-	'handlebars'
-], function(
-	POS, 
-	Handlebars
-){
+define(['app', 'handlebars'], function(POS, Handlebars){
 
 	POS.module('ProductsApp.List.View', function(View, POS, Backbone, Marionette, $, _){
 
@@ -24,7 +18,7 @@ define([
 		 * Filter
 		 */
 		View.Filter = Marionette.ItemView.extend({
-			template: '#tmpl-products-filter',
+			template: Handlebars.compile( $('#tmpl-products-filter').html() ),
 			mode: 'client',
 
 			events: {
@@ -40,6 +34,14 @@ define([
 			ui: {
 				searchField : 'input[type=search]',
 				clearBtn 	: 'a.clear'
+			},
+
+			modelEvents: {
+				'change:search_mode': 'render'
+			},
+
+			onRender: function(){
+				this.$('input[type=search]').focus();
 			},
 
 			// if idb make the query instantly
@@ -72,10 +74,10 @@ define([
 
 				switch( action[1] ) {
 					case 'search': 
-						console.log('set search');
+						this.trigger('products:search:mode', 'search');
 					break;
 					case 'barcode': 
-						console.log('set barcode');
+						this.trigger('products:search:mode', 'barcode');
 					break;
 				}
 			}
