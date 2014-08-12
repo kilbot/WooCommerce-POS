@@ -28,11 +28,27 @@
             }
         }
         tr {
-            th, td {
-                vertical-align: middle;
-            }
             &:last-of-type th, &:last-of-type td {
                 border-bottom: 1px solid $dark-border-color;
+            }
+        }
+        th, td {
+            vertical-align: middle;
+        }
+        dl {
+            @include clearfix();
+            width: 100%;
+            font-size: $font-size-small;
+            margin: 0;
+            dt {
+                font-weight: normal;
+                float: left;
+                padding-right: 5px;
+                clear: left;
+            }
+            dd {
+                float: left;
+                margin: 0;
             }
         }
     }

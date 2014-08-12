@@ -152,27 +152,28 @@ define([
 					filteredProducts = filteredList.filter( function(product){
 						if( product.get('type') === 'variable' ) {
 							_( product.get('variations') ).each( function(variation) {
-								if( variation.barcode.toLowerCase().indexOf( query ) !== -1 ) {
+								if( variation.barcode.toLowerCase() === query ) {
 									variation['type'] = 'variation';
 									variation['title'] = product.get('title');
 									variation['categories'] = product.get('categories');
 									var model = new Entities.Product( variation );
 									filteredVariations.push( model );
-									if( variation.barcode.toLowerCase() === query ) exact.push( model );
 								}
 							})
 						}
-						if( product.get( 'barcode' ).toLowerCase() === query ) exact.push( product );
-						return product.get( 'barcode' ).toLowerCase().indexOf( query ) !== -1;
+						return product.get( 'barcode' ).toLowerCase() === query;
 					}, this);
 
 					filteredList = filteredProducts.concat(filteredVariations);
 
 				}
-console.log(exact);
-				if( exact.length === 1 ){
-					POS.trigger( 'cart:add', _.first(exact) );
+
+				if( filteredList.length === 1 && filteredList[0].get('type') !== 'variable' ){
+					POS.CartApp.channel.command( 'cart:add', filteredList[0] );
+					// POS.trigger( 'cart:add', filteredList[0] );
 				}
+
+				// set tab to all
 
 				this.pageableCollection.getFirstPage({ silent: true });
 				this.pageableCollection.fullCollection.reset(filteredList, { reindex: false });

@@ -7,6 +7,7 @@ define([
 	'lib/components/popover/behavior',
 	'lib/components/modal/behavior',
 	'lib/components/select2/behavior',
+	'lib/components/pulse/behavior',
 
 	// controllers
 	// 'lib/components/loading/controller',
@@ -40,6 +41,9 @@ define([
 				break;
 				case 'Select2':
 					return Components.Select2.Behavior;
+				break;
+				case 'Pulse':
+					return Components.Pulse.Behavior;
 				break;
 				default:
 					return Marionette.Behaviors.behaviorsLookup[key];

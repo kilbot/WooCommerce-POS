@@ -18,6 +18,7 @@ define([
 
     	CartApp.onStop = function(){
 			if(POS.debug) console.log('stopping Cart Module');
+			CartApp.channel.stopComplying();
 		};
 
 	});
@@ -54,17 +55,6 @@ define([
 				POS.navigate('');
 			}
 			API.list(id);
-		});
-
-		this.listenTo( POS, 'cart:add', function(model){
-			// console.log(POS.CartApp);
-
-			// if(CartApp) {
-			// 	console.log();
-			// }
-			// else {
-			// 	console.log('Cart Module is not open');
-			// }
 		});
 
 		POS.addInitializer( function(){

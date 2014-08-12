@@ -52,7 +52,7 @@ define([
 
 				// add to cart
 				this.listenTo( view, 'childview:cart:add:clicked', function(childview, args) {
-					POS.trigger('cart:add', args.model);
+					POS.CartApp.channel.command('cart:add', args.model);
 				});
 
 				// variations, new tab filter

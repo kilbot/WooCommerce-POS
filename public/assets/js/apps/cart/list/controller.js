@@ -63,9 +63,9 @@ define([
 					this._initCart();
 				});
 
-				// add cart item
-				this.listenTo( POS, 'cart:add', function(model) {
-
+				// Add To Cart commands
+				POS.CartApp.channel.comply('cart:add', function(model){
+					
 					// if product already exists in cart, increase qty
 					if( _( this.items.pluck('id') ).contains( model.attributes.id ) ) {
 						this.items.get( model.attributes.id ).quantity('increase');
@@ -74,6 +74,9 @@ define([
 					else { 
 						this.items.create(model.attributes);
 					}
+
+					// pulse item
+					this.items.get( model.attributes.id ).trigger( 'pulse:item' );
 				}, this);
 
 				// remove cart item

@@ -6,9 +6,9 @@
 
 <script type="text/template" id="tmpl-cart-layout">
 	<div id="cart"></div>
-	<div id="cart-customer"></div>
-	<div id="cart-actions"></div>
-	<div id="cart-notes"></div>
+	<div id="cart-customer" style="display:none"></div>
+	<div id="cart-actions" style="display:none"></div>
+	<div id="cart-notes" style="display:none"></div>
 </script>
 
 <script type="text/template" id="tmpl-cart-items">

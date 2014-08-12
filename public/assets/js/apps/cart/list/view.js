@@ -12,6 +12,26 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				cartNotesRegion: '#cart-notes'
 			},
 
+			initialize: function() {
+
+				// move this to a regionClass?
+				this.cartCustomerRegion.on( 'show', function() {
+					this.$el.show();
+				});
+				this.cartActionsRegion.on( 'show', function() {
+					this.$el.show();
+				});
+				this.cartCustomerRegion.on( 'empty', function() {
+					this.$el.hide();
+				});
+				this.cartActionsRegion.on( 'empty', function() {
+					this.$el.hide();
+				});
+				this.cartNotesRegion.on( 'empty', function() {
+					this.$el.hide();
+				});
+			}
+
 		});
 		
 		View.CartItem = Marionette.ItemView.extend({
@@ -26,6 +46,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 
 			behaviors: {
 				AutoGrow: {},
+				Pulse: {}
 			},
 
 			modelEvents: {
@@ -46,8 +67,9 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 
 			remove: function() {
 				this.$el.parent('tbody').addClass('animating');
+				this.$('td').addClass('bg-danger');
 				var self = this;
-				this.$el.fadeOut( 300, function() {
+				this.$el.fadeOut( 500, function() {
 					self.$el.parent('tbody').removeClass('animating');
 					Marionette.ItemView.prototype.remove.call(self);
 				});
@@ -122,13 +144,6 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			childViewContainer: 'tbody',
 			emptyView: NoCartItemsView,
 
-			initialize: function() {
-				// this.on('all', function(e) { console.log("Cart Items View event: " + e); }); // debug
-			}
-
-			// onChildviewCartitemDelete: function() {
-			// 	console.log('test');
-			// }
 		});
 
 		View.CartTotals = Marionette.ItemView.extend({

@@ -22,7 +22,8 @@
     "marionette": "^2.0.0",
     "spinjs": "~2.0.1",
     "text": "~2.0.12",
-    "backbone.radio": "~0.6.0"
+    "backbone.radio": "~0.6.0",
+    "jquery-color": "~2.1.2"
   },
   "devDependencies": {},
   "resolutions": {
