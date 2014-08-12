@@ -19,9 +19,9 @@ define([
 
 				this.on( 'filter:products', function( mode ) {
 					if( mode === 'barcode' ) {
-						this._barcodeSearch( this.searchQuery );
+						this._barcodeSearch();
 					} else {
-						this.onFilterProducts();
+						this._filterProducts();
 					}
 				});
 
@@ -30,7 +30,7 @@ define([
 			/**
 			 * Reset collection with filtered results
 			 */
-			onFilterProducts: function() {
+			_filterProducts: function() {
 				var filteredList = this.models,
 					combinedFilter = _.compact([this.activeTab, this.searchQuery]).join(' '),
 					facets = POS.Entities.channel.request('search:facets', combinedFilter );
@@ -131,7 +131,7 @@ define([
 						// else match as string 
 						else {
 							return _.some( arr, function( value ) {
-								return product.get( attr ).toString() === value;
+								return product.get( attr ).toString().toLowerCase() === value.toLowerCase();
 							});
 						}
 					}
@@ -142,13 +142,14 @@ define([
 
 			},
 
-			_barcodeSearch: function( query ) {
+			_barcodeSearch: function() {
 				var filteredList = this.models,
-					filteredVariations = [],
-					exact = [];
+					query = this.searchQuery.toLowerCase(),
+					filteredVariations = [];
 
-				if( query !== '' ) {
+				if( query ) {
 
+					if(POS.debug) console.log('searching for barcode: ' + query);
 					filteredProducts = filteredList.filter( function(product){
 						if( product.get('type') === 'variable' ) {
 							_( product.get('variations') ).each( function(variation) {
@@ -165,20 +166,25 @@ define([
 					}, this);
 
 					filteredList = filteredProducts.concat(filteredVariations);
+					if(POS.debug) console.log('found ' + filteredList.length + ' products');
+
+					this.pageableCollection.getFirstPage({ silent: true });
+					this.pageableCollection.fullCollection.reset(filteredList, { reindex: false });
+
+					if( filteredList.length === 1 && filteredList[0].get('type') !== 'variable' ){
+						if(POS.debug) console.log('adding ' + filteredList[0].get('title') + ' to cart');
+						POS.CartApp.channel.command( 'cart:add', filteredList[0] );
+						POS.ProductsApp.channel.command( 'clear:filter' );
+					}
 
 				}
 
-				if( filteredList.length === 1 && filteredList[0].get('type') !== 'variable' ){
-					POS.CartApp.channel.command( 'cart:add', filteredList[0] );
-					// POS.trigger( 'cart:add', filteredList[0] );
+				// honor tab filters
+				else {
+					this._filterProducts();	
 				}
 
-				// set tab to all
-
-				this.pageableCollection.getFirstPage({ silent: true });
-				this.pageableCollection.fullCollection.reset(filteredList, { reindex: false });
 			},
-
 
 		});
 

@@ -20,6 +20,9 @@ define([
 				// init layout
 				this.layout = new View.Layout();
 
+				// display settings
+				this.display_settings = POS.Entities.channel.request('user:display:settings');
+
 			},
 
 			show: function() {
@@ -63,6 +66,10 @@ define([
 						fixed: false					
 					};
 					this.trigger( 'add:new:tab', newTab );
+
+					if( this.display_settings.get('search_mode') === 'barcode' ){
+						POS.ProductsApp.channel.command( 'clear:filter' );
+					}
 				});
 
 				// show
@@ -72,9 +79,7 @@ define([
 
 			_showFilterView: function() {
 
-				var display_settings = POS.Entities.channel.request('user:display:settings');
-
-				var view = new View.Filter({ model: display_settings });
+				var view = new View.Filter({ model: this.display_settings });
 
 				// filter collection = clone of products collection
 				this.filterCollection = POS.Entities.channel.request('product:filtercollection', this.products);
@@ -87,7 +92,7 @@ define([
 				// search queries
 				this.listenTo( view, 'products:search:query', function( query ){
 					this.filterCollection.searchQuery = query;
-					this.filterCollection.trigger('filter:products', display_settings.get('search_mode') );
+					this.filterCollection.trigger('filter:products', this.display_settings.get('search_mode') );
 				});
 
 				// sync
@@ -110,9 +115,13 @@ define([
 				var view = POS.Components.channel.request( 'get:tabs', pos_params.tabs );
 
 				// listen to tab collection
-				this.listenTo( view.collection, 'change:active', function(tab) {
+				this.listenTo( view.collection, 'change:active', function(tab) {					
 					this.filterCollection.activeTab = tab.get('value');
-					this.filterCollection.trigger('filter:products');
+					if( this.display_settings.get('search_mode') === 'barcode' ) {
+						POS.ProductsApp.channel.command( 'clear:filter' );
+					} else {
+						this.filterCollection.trigger('filter:products');
+					}
 				});
 
 				// listen for new tabs

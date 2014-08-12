@@ -22,7 +22,7 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 			mode: 'client',
 
 			events: {
-				'keyup input[type=search]' 	: 'searchTrigger',
+				'keyup input[type=search]'	: 'searchTrigger',
 				'click .clear'				: 'clear',
 				'click .dropdown-menu a'	: 'switchMode'
 			},
@@ -38,6 +38,11 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 
 			modelEvents: {
 				'change:search_mode': 'render'
+			},
+
+			initialize: function() {
+				var self = this;
+				POS.ProductsApp.channel.comply( 'clear:filter', this.clear, this );
 			},
 
 			onRender: function(){
@@ -81,6 +86,7 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 					break;
 				}
 			}
+
 		});
 
 		/**
