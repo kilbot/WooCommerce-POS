@@ -20,11 +20,6 @@ define([
 				keysRegion: '.numpad-keys',
 			},
 
-			behaviors: {
-				Popover: {
-				}
-			},
-
 		});
 
 		Numpad.Header = Marionette.ItemView.extend({

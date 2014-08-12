@@ -4,19 +4,25 @@ define(['app'], function(POS){
 	
 		Popover.Behavior = Marionette.Behavior.extend({
 
-			initialize: function () {
-				this.listenToOnce(this.view, 'popover:open', this.openPopover);
+			initialize: function (options) {
+				this.listenTo(this.view, 'popover:open', this.openPopover);
 			},
 
 			openPopover: function (options) {
-				Popover.channel.command('open', _.defaults( options, { view: this.view } ) );
-				this.listenToOnce(this.view, 'popover:close', this.closePopover);
+				options || (options = {});
+				this.target = options.target;
+
+				Popover.channel.command('open', options);
+
+				this.listenTo(this.view, 'popover:close', this.closePopover);
 			},
 
-			closePopover: function (callback) {
-				Popover.channel.command('close', {
-					callback: callback
-				});
+			closePopover: function (options) {
+				options || (options = {});
+
+				if( !_(options).has('target') ) options.target = this.target;
+				
+				Popover.channel.command('close', options);
 			}
 
 		});
@@ -24,4 +30,3 @@ define(['app'], function(POS){
 	});
 
 });
-

@@ -32,7 +32,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item">
-	<td class="qty"><input type="number" value="{{qty}}" size="10" step="any" data-id="qty" data-title="<?php _e( 'Quantity', 'woocommerce-pos' ); ?>" data-numpad="standard" class="autogrow"></td>
+	<td class="qty"><input type="number" value="{{qty}}" size="10" step="any" data-id="qty" data-title="<?php _e( 'Quantity', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="standard" class="autogrow"></td>
 	<td class="name">
 		{{title}}
 		{{#with attributes}}
@@ -44,7 +44,7 @@
 			</dl>
 		{{/with}}
 	</td>
-	<td class="price"><input type="type" value="{{{number display_price}}}" size="10" data-id="price" data-precise="{{item_price}}" data-title="<?php _e( 'Item Price', 'woocommerce-pos' ); ?>"  data-numpad="discount" class="autogrow"></td>
+	<td class="price"><input type="type" value="{{{number display_price}}}" size="10" data-id="price" data-precise="{{item_price}}" data-title="<?php _e( 'Item Price', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="discount" class="autogrow"></td>
 	<td class="total">
 		{{#if discounted}}
 			<del>{{{money display_total}}}</del>
@@ -84,7 +84,7 @@
 	{{/if}}
 	<tr class="order-discount" {{#unless show_order_discount}}style="display:none"{{/unless}}>
 		<th colspan="3"><?php _e( 'Order Discount', 'woocommerce-pos' ); ?>:</th>
-		<td colspan="2" data-value="{{number order_discount}}" data-title="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-numpad="discount left">{{{money order_discount negative=true}}}</td>
+		<td colspan="2" data-value="{{number order_discount}}" data-title="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-numpad="discount" data-placement="left">{{{money order_discount negative=true}}}</td>
 	</tr>
 	<tr class="order-total">
 		<th colspan="3"><?php _e( 'Order Total', 'woocommerce-pos' ); ?>:</th>

@@ -16,9 +16,9 @@
 <script type="text/x-handlebars-template" id="tmpl-checkout-status">
 	<h4 class="textcenter">
 		<span class="status">
-			<?php _e( 'To Pay', 'woocommerce-pos' ); ?>:
-			<?php _e( 'Processing', 'woocommerce-pos' ); ?>:
-			<i class="fa fa-check"></i> <?php _e( 'Paid', 'woocommerce-pos' ); ?>:
+			{{#if isPaid}}<i class="fa fa-check"></i> <?php _e( 'Paid', 'woocommerce-pos' ); ?>:{{/if}}
+			{{#if isProcessing}}<?php _e( 'To Pay', 'woocommerce-pos' ); ?>:{{/if}}
+			<?php _e( 'Processing', 'woocommerce-pos' ); ?>:	
 		</span>
 		<span class="amount">{{{money total}}}</span>
 	</h4>

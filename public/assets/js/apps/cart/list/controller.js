@@ -135,8 +135,8 @@ define([
 			_showCustomerRegion: function(){
 				var view = POS.CustomerApp.channel.request('customer:select');
 
-				this.listenTo( view, 'all', function(e) {
-					console.log(e);
+				this.listenTo( view, 'customer:select', function() {
+					// console.log();
 				});
 
 				this.layout.cartCustomerRegion.show( view );

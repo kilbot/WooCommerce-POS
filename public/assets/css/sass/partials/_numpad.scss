@@ -1,15 +1,49 @@
+$numpad-bg: $dark-border-color;
+
+.numpad-popover {
+  background-color: $numpad-bg;
+  &.top > .arrow {
+    border-top-color: $numpad-bg;
+    &:after {
+      border-top-color: $numpad-bg;
+    }
+  }
+  &.right > .arrow {
+    border-right-color: $numpad-bg;
+    &:after {
+      border-right-color: $numpad-bg;
+    }
+  }
+  &.bottom > .arrow {
+    border-bottom-color: $numpad-bg;
+    &:after {
+      border-bottom-color: $numpad-bg;
+    }
+  }
+
+  &.left > .arrow {
+    border-left-color: $numpad-bg;
+    &:after {
+      border-left-color: $numpad-bg;
+    }
+  }
+  .popover-content {
+	padding: 0;
+  }
+}
+
 .numpad-header {
 	@include clearfix();
-	padding: 5px;
-	background-color: #f7f7f7;
-	border-bottom: 1px solid #ebebeb;
+	padding: $spacing/4;
+	background-color: transparent;
+	border-bottom: 1px solid lighten($numpad-bg, 5%);
 	.input-group {
 		input {
 			text-align: center;
 		}		
 	}
 	.title {
-		line-height: 30px;
+		line-height: 34px;
 	}
 }
 
@@ -17,7 +51,7 @@
 	table {
 		width: auto;
 		border-collapse: separate;
-		border-spacing: 5px;
+		border-spacing: $spacing/4;
 		tr {
 			td {
 				border: 0;
@@ -45,8 +79,8 @@
 
 	table.cash, table.discount {
 		float: left;
-		background-color: #f7f7f7;
-		border-right: 1px solid #ebebeb;
+		background-color: transparent;
+		border-right: 1px solid lighten($numpad-bg, 5%);
 		button {
 			// color: rgba(#000, 0.6);
 			color: $text-color;
@@ -56,7 +90,7 @@
 	table.discount {
 		float: right;
 		border-right: 0; 
-		border-left: 1px solid #ebebeb;
+		border-left: 1px solid lighten($numpad-bg, 5%);
 	}
 
 	table.standard {
@@ -66,11 +100,5 @@
 		&.with-discount-buttons {
 			margin-right: 61px;
 		}
-	}
-}
-
-.numpad-popover {
-	.popover-content {
-		padding: 0;
 	}
 }

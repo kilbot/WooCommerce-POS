@@ -4399,10 +4399,51 @@ html, body {
   z-index: 9999;
 }
 
-/* line 1, sass/partials/_numpad.scss */
+/* line 3, sass/partials/_numpad.scss */
+.numpad-popover {
+  background-color: #dfdfdf;
+}
+/* line 5, sass/partials/_numpad.scss */
+.numpad-popover.top > .arrow {
+  border-top-color: #dfdfdf;
+}
+/* line 7, sass/partials/_numpad.scss */
+.numpad-popover.top > .arrow:after {
+  border-top-color: #dfdfdf;
+}
+/* line 11, sass/partials/_numpad.scss */
+.numpad-popover.right > .arrow {
+  border-right-color: #dfdfdf;
+}
+/* line 13, sass/partials/_numpad.scss */
+.numpad-popover.right > .arrow:after {
+  border-right-color: #dfdfdf;
+}
+/* line 17, sass/partials/_numpad.scss */
+.numpad-popover.bottom > .arrow {
+  border-bottom-color: #dfdfdf;
+}
+/* line 19, sass/partials/_numpad.scss */
+.numpad-popover.bottom > .arrow:after {
+  border-bottom-color: #dfdfdf;
+}
+/* line 24, sass/partials/_numpad.scss */
+.numpad-popover.left > .arrow {
+  border-left-color: #dfdfdf;
+}
+/* line 26, sass/partials/_numpad.scss */
+.numpad-popover.left > .arrow:after {
+  border-left-color: #dfdfdf;
+}
+/* line 30, sass/partials/_numpad.scss */
+.numpad-popover .popover-content {
+  padding: 0;
+}
+
+/* line 35, sass/partials/_numpad.scss */
 .numpad-header {
-  padding: 5px;
-  background-color: #f7f7f7;
+  padding: 6px;
+  background-color: transparent;
   border-bottom: 1px solid #ebebeb;
 }
 /* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
@@ -4414,26 +4455,26 @@ html, body {
 .numpad-header:after {
   clear: both;
 }
-/* line 7, sass/partials/_numpad.scss */
+/* line 41, sass/partials/_numpad.scss */
 .numpad-header .input-group input {
   text-align: center;
 }
-/* line 11, sass/partials/_numpad.scss */
+/* line 45, sass/partials/_numpad.scss */
 .numpad-header .title {
-  line-height: 30px;
+  line-height: 34px;
 }
 
-/* line 17, sass/partials/_numpad.scss */
+/* line 51, sass/partials/_numpad.scss */
 .numpad-keys table {
   width: auto;
   border-collapse: separate;
-  border-spacing: 5px;
+  border-spacing: 6px;
 }
-/* line 22, sass/partials/_numpad.scss */
+/* line 56, sass/partials/_numpad.scss */
 .numpad-keys table tr td {
   border: 0;
 }
-/* line 24, sass/partials/_numpad.scss */
+/* line 58, sass/partials/_numpad.scss */
 .numpad-keys table tr td button {
   display: table-cell;
   height: 50px;
@@ -4442,47 +4483,42 @@ html, body {
   padding: 0;
   outline: 0;
 }
-/* line 31, sass/partials/_numpad.scss */
+/* line 65, sass/partials/_numpad.scss */
 .numpad-keys table tr td button small {
   font-size: 13px;
   display: block;
 }
-/* line 35, sass/partials/_numpad.scss */
+/* line 69, sass/partials/_numpad.scss */
 .numpad-keys table tr td button.return {
   height: 105px;
 }
-/* line 38, sass/partials/_numpad.scss */
+/* line 72, sass/partials/_numpad.scss */
 .numpad-keys table tr td button:active {
   background-color: #ccc;
 }
-/* line 46, sass/partials/_numpad.scss */
+/* line 80, sass/partials/_numpad.scss */
 .numpad-keys table.cash, .numpad-keys table.discount {
   float: left;
-  background-color: #f7f7f7;
+  background-color: transparent;
   border-right: 1px solid #ebebeb;
 }
-/* line 50, sass/partials/_numpad.scss */
+/* line 84, sass/partials/_numpad.scss */
 .numpad-keys table.cash button, .numpad-keys table.discount button {
   color: #333333;
 }
-/* line 56, sass/partials/_numpad.scss */
+/* line 90, sass/partials/_numpad.scss */
 .numpad-keys table.discount {
   float: right;
   border-right: 0;
   border-left: 1px solid #ebebeb;
 }
-/* line 63, sass/partials/_numpad.scss */
+/* line 97, sass/partials/_numpad.scss */
 .numpad-keys table.standard.with-cash-buttons {
   margin-left: 61px;
 }
-/* line 66, sass/partials/_numpad.scss */
+/* line 100, sass/partials/_numpad.scss */
 .numpad-keys table.standard.with-discount-buttons {
   margin-right: 61px;
-}
-
-/* line 73, sass/partials/_numpad.scss */
-.numpad-popover .popover-content {
-  padding: 0;
 }
 
 /* line 5, sass/partials/_products.scss */
