@@ -208,7 +208,7 @@ class WooCommerce_POS_Template_Hooks {
 	 */
 	public function print_head_js () {
 		$html = '
-<!-- Modernizr: checks: indexeddb, websql, localstrorage and CSS 3D transforms -->
+<!-- Modernizr: checks: indexeddb, localstrorage, touch and CSS 3D transforms -->
 <script src="'. WC_POS()->plugin_url .'public/assets/js/vendor/modernizr.custom.min.js"></script>
 		';
 		echo $html;

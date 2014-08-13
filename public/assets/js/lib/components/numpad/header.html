@@ -1,10 +1,29 @@
 <strong class="title">{{title}}</strong>
-<div class="input-group pull-right" style="width:120px">
+
+{{#is type 'standard'}}
+<input type="text" value="{{value}}" class="form-control pull-right autogrow">
+{{/is}}
+
+{{#is type 'discount'}}
+<div class="input-group pull-right">
 	<span class="input-group-btn">
-		<button class="btn btn-default" type="button"><i class="fa fa-minus"></i></button>
+		<button class="btn btn-default" type="button" data-modifier="amount" disabled>{{{ currency_symbol }}}</button>
 	</span>
-	<input type="text" value="{{value}}" class="form-control">
+	<input type="text" value="{{number value}}" class="form-control autogrow">
 	<span class="input-group-btn">
-		<button class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
+		<button class="btn btn-default" type="button" data-modifier="percentage">%</button>
 	</span>
 </div>
+{{/is}}
+
+{{#is type 'quantity'}}
+<div class="input-group pull-right">
+	<span class="input-group-btn">
+		<button class="btn btn-default" type="button" data-qty="decrease"><i class="fa fa-minus"></i></button>
+	</span>
+	<input type="text" value="{{value}}" class="form-control autogrow">
+	<span class="input-group-btn">
+		<button class="btn btn-default" type="button" data-qty="increase"><i class="fa fa-plus"></i></button>
+	</span>
+</div>
+{{/is}}

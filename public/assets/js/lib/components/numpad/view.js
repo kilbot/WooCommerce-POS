@@ -38,7 +38,12 @@ define([
 			},
 
 			events: {
-				'keyup @ui.inputField': 'directInput'
+				'keyup @ui.inputField' 	: 'directInput',
+				'click *[data-qty]' 	: 'quantity'
+			},
+
+			initialize: function() {
+				this.model.set({ currency_symbol: pos_params.accounting.currency.symbol });
 			},
 
 			onShow: function() {
@@ -53,6 +58,13 @@ define([
 				if( e.which === 13 ) {
 					this.trigger('enter:keypress');
 				}
+			},
+
+			quantity: function(e) {
+				var type = $(e.currentTarget).data('qty'),
+					value = this.model.get('value');
+
+				this.model.set('value', (type === 'increase' ? ++value : --value) );
 			}
 
 		});
@@ -62,10 +74,6 @@ define([
 
 			events: {
 				'click button': 'onClick'
-			},
-
-			serializeData: function() {
-				return { discount: true };
 			},
 
 			onClick: function(e){

@@ -42,13 +42,12 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				accounting.settings = pos_params.accounting;
 
 				// remove any open popovers
-				this.on( 'before:render before:destroy', function() { this.trigger( 'popover:close' ) });
+				this.on( 'before:destroy', this.removePopovers );
 			},
 
 			behaviors: {
 				AutoGrow: {},
-				Pulse: {},
-				Popover: {}
+				Pulse: {}
 			},
 
 			modelEvents: {
@@ -60,6 +59,12 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				'click *[data-numpad]'  : 'numpadPopover',
 				'keypress input'  		: 'updateOnEnter',
       			'blur input'      		: 'save'
+			},
+
+			onShow: function() {
+				// if(Modernizr.touch) {
+					this.$('*[data-numpad]').attr('readonly', true);
+				// }
 			},
 
 			removeFromCart: function(e) {
@@ -77,28 +82,19 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				});
 			},
 
-			numpadPopover: function(e) {
-
-				this.trigger( 'popover:open', {
-					target 				: $(e.target),
-					popoverTmpl 		: '<div class="arrow"></div><div class="popover-content"></div>',
-					className 			: 'popover numpad-popover',
-					attributes 			: { 'role' : 'textbox' },
-					onShowPopover 		: this.onShowPopover
-				});
-
+			removePopovers: function() {
+				POS.Components.Popover.channel.command( 'close' );
 			},
 
-			onShowPopover: function() {
-				this.numpad = POS.Components.channel.request('get:numpad', { 
-					title: this.options.target.data('title'),
-					value: this.options.target.val(),
-					select: true
+			numpadPopover: function(e) {
+				if( $(e.target).attr('aria-describedby') ) {
+					return;
+				}
+				POS.Components.Numpad.channel.command( 'showPopover', { target: $(e.target) } );
+				$(e.target).on( 'numpad:return', function( e, value ) {
+					$(e.target).val( value ).trigger('blur');
+					POS.Components.Popover.channel.command( 'close' );
 				});
-
-				// hijack popover setContent, and show numpad instead
-				this.options.target.data('bs.popover').__proto__.setContent = function() {};
-				this.content.show(this.numpad);
 			},
 
 			save: function(e) {
@@ -109,13 +105,13 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 
 				switch( key ) {
 					case 'qty':
-						if ( value === this.model.get('qty') ) { break; }
+						// if ( value === this.model.get('qty') ) { break; }
 						if ( value === 0 ) {
 							this.removeFromCart();
 							break;
 						}
 						if ( value ) {
-							this.model.save( { qty: value } );
+							this.model.save({ qty: value });
 							input.removeClass('editing');
 						} else {
 							input.focus();
@@ -124,7 +120,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 
 					case 'price':
 						if( !isNaN( decimal ) ) {
-							this.model.save( { display_price: decimal } );
+							this.model.save({ display_price: decimal });
 						} else {
 							input.focus();
 						}

@@ -17,12 +17,20 @@ define([
 			},
 
 			openPopover: function (options) {
+				options || (options = {});
+				if( this.view ) {
+					this.closePopover();
+				}
 				this.view = new Popover.View(options);
 				this.view.openPopover(options);
 			},
 
 			closePopover: function (options) {
-				this.view.closePopover(options);
+				options || (options = {});
+				if( this.view ) {
+					this.view.closePopover(options);
+					this.view.remove();
+				}
 			},
 
 		});

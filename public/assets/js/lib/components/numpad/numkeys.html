@@ -1,5 +1,5 @@
-{{#if cash}}
-<table class="cash">
+{{#is type 'cash'}}
+<table class="cash pull-left">
 	<tr>
 		<td><button data-key="{{amount}}" class="btn btn-default">4.35</button></td>
 	</tr>
@@ -13,26 +13,9 @@
 		<td><button data-key="{{amount}}" class="btn btn-default">10</button></td>
 	</tr>
 </table>
-{{/if}}
+{{/is}}
 
-{{#if discount}}
-<table class="discount">
-	<tr>
-		<td><button data-key="%" class="btn btn-default">%<small>off</small></button></td>
-	</tr>
-	<tr>
-		<td><button data-key="5%" class="btn btn-default">5%<small>off</small></button></td>
-	</tr>
-	<tr>
-		<td><button data-key="10%" class="btn btn-default">10%<small>off</small></button></td>
-	</tr>
-	<tr>
-		<td><button data-key="20%" class="btn btn-default">20%<small>off</small></button></td>
-	</tr>
-</table>
-{{/if}}
-
-<table class="standard {{#if cash}}with-cash-buttons{{/if}} {{#if discount}}with-discount-buttons{{/if}}">
+<table class="standard {{#is type 'cash'}}pull-right{{/is}} {{#is type 'discount'}}pull-left{{/is}}">
 	<tr>
 		<td><button data-key="1" class="btn btn-default">1</button></td>
 		<td><button data-key="2" class="btn btn-default">2</button></td>
@@ -57,3 +40,20 @@
 		<td><button data-key="." class="btn btn-default">.</button></td>
 	</tr>
 </table>
+
+{{#is type 'discount'}}
+<table class="discount pull-right">
+	<tr>
+		<td><button data-key="%" class="btn btn-default">5%</button></td>
+	</tr>
+	<tr>
+		<td><button data-key="5%" class="btn btn-default">10%</button></td>
+	</tr>
+	<tr>
+		<td><button data-key="10%" class="btn btn-default">20%</button></td>
+	</tr>
+	<tr>
+		<td><button data-key="20%" class="btn btn-default">25%</button></td>
+	</tr>
+</table>
+{{/is}}

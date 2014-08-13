@@ -4,10 +4,10 @@ define(['app'], function(POS){
 
 		Numpad.Model = Backbone.Model.extend({
 			defaults: {
-				title: '', // eg: Item Price
-				value: '', // eg: 4.25
-				input: '', // eg: Cash, Discount
-				select: false // select input on init
+				title: 'Numpad', // eg: Item Price
+				value: '0', // eg: 4.25
+				type: 'standard', // eg: quantity, discount
+				select: true // select input on init
 			}
 		});
 

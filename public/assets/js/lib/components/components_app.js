@@ -64,9 +64,9 @@ define([
 				return controller.getProgressBarView(options);
 			},
 
-			getNumpad: function(options) {
-				var controller = new Components.Numpad.Controller(options);
-				return controller.get();
+			showPopover: function(options) {
+				var controller = new Components.Popover.Controller(options);
+				controller.openPopover(options);
 			}
 		};
 
@@ -76,7 +76,7 @@ define([
 
 		// popover
 		Components.Popover.channel = Backbone.Radio.channel('popover');
-		new Components.Popover.Controller();
+		new Components.Popover.Controller()
 
 		// tabs
 		Components.channel.reply( 'get:tabs', function( tabs ) {
@@ -85,14 +85,22 @@ define([
 
 		// progress bar
 		Components.ProgressBar.channel = Backbone.Radio.channel('progressbar');
+		
 		Components.ProgressBar.channel.reply( 'get:progressbar', function(options) {
 			return API.getProgressBar(options);
 		});
 
 		// numpad
 		Components.Numpad.channel = Backbone.Radio.channel('numpad');
-		Components.channel.reply( 'get:numpad', function(options) {
-			return API.getNumpad(options);
+
+		Components.Numpad.channel.reply( 'getView', function(options) {
+			var controller = new Components.Numpad.Controller(options);
+			return controller.getNumpadView();
+		});
+
+		Components.Numpad.channel.comply( 'showPopover', function(options) {
+			var controller = new Components.Numpad.Controller(options);
+			controller.showNumpadPopover(options);
 		});
 
 

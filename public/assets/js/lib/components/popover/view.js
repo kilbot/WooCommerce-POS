@@ -19,22 +19,15 @@ define([
 			},
 
 			initialize: function (options) {
-
 				if( _(options).has('popoverTmpl') ) this.template = _.template( options.popoverTmpl );
+				this.target = options.target;
 
 				// popover events come from the target element
 				var self = this;
-				options.target.on( 'show.bs.popover', function() { self.trigger('show:popover') });
-				options.target.on( 'shown.bs.popover', function() { self.trigger('after:show:popover') });
-				options.target.on( 'hide.bs.popover', function() { self.trigger('hide:popover') });
-				options.target.on( 'hidden.bs.popover', function() { self.trigger('after:hide:popover') });
-
-				// remove any open popovers
-				if( $('.popover').length > 0 ) {
-					$('.popover').each( function() {
-						$(this).popover('destroy');
-					});
-				}
+				this.target.on( 'show.bs.popover', function() { self.trigger('show:popover') });
+				this.target.on( 'shown.bs.popover', function() { self.trigger('after:show:popover') });
+				this.target.on( 'hide.bs.popover', function() { self.trigger('hide:popover') });
+				this.target.on( 'hidden.bs.popover', function() { self.trigger('after:hide:popover') });
 
 				// popover options
 				this.popoverOpts = _.clone(options) || {};
@@ -54,18 +47,18 @@ define([
 				this.once('show:popover', options.onShowPopover );
 				this.once('after:show:popover', options.onAfterShowPopover);
 				this.setupPopover(options);
-				options.target.popover('show');
+				this.target.popover('show');
 			},
 
 			closePopover: function (options) {
 				this.once('hide:popover', options.onHidePopover);
 				this.once('after:hide:popover', options.onAfterHidePopover);
 				this.once('after:hide:popover', this.teardownPopover);
-				options.target.popover('hide');
+				this.target.popover('hide');
 			},
 
 			setupPopover: function (options) {
-				options.target.popover(this.popoverOpts);
+				this.target.popover(this.popoverOpts);
 			},
 
 			teardownPopover: function () {

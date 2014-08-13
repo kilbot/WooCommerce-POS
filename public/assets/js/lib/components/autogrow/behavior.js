@@ -4,7 +4,12 @@ define(['app'], function(POS){
 	
 		AutoGrow.Behavior = Marionette.Behavior.extend({
 
-			initialize: function(){
+			initialize: function(options){
+				this.options = options || (options = {});
+				_.defaults(this.options, {
+					padding: 20
+				});
+
 				this.tester = $('#autogrow-tester');
 				if( this.tester.length === 0 ) {
 					this.tester = $('<div id="autogrow-tester" />')
@@ -17,7 +22,6 @@ define(['app'], function(POS){
 					});
 					$('body').append(this.tester);
 				}
-
 			},
 
 			ui: {
@@ -25,7 +29,7 @@ define(['app'], function(POS){
 			},
 
 			events: {
-				'input @ui.input' : 'onInputEvent'
+				'input @ui.input' : 'onInputEvent',
 			},
 
 			onRender: function() {
@@ -44,7 +48,7 @@ define(['app'], function(POS){
 								.replace(/>/g, '&gt;');
 
 				this.tester.html(value);
-				var width = this.tester.width() + 20;
+				var width = this.tester.width() + this.options.padding;
 				input.width(width);
 			}
 

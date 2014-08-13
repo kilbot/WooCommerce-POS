@@ -37,10 +37,13 @@ $numpad-bg: $dark-border-color;
 	padding: $spacing/4;
 	background-color: transparent;
 	border-bottom: 1px solid lighten($numpad-bg, 5%);
+	input {
+		text-align: center;
+		padding: $spacing/4 0;
+		max-width: 7em;
+	}
 	.input-group {
-		input {
-			text-align: center;
-		}		
+		width: 86px;		
 	}
 	.title {
 		line-height: 34px;
@@ -48,6 +51,7 @@ $numpad-bg: $dark-border-color;
 }
 
 .numpad-keys {
+	@include clearfix();
 	table {
 		width: auto;
 		border-collapse: separate;
@@ -77,28 +81,14 @@ $numpad-bg: $dark-border-color;
 		}
 	}
 
-	table.cash, table.discount {
+	table.cash {
 		float: left;
-		background-color: transparent;
 		border-right: 1px solid lighten($numpad-bg, 5%);
-		button {
-			// color: rgba(#000, 0.6);
-			color: $text-color;
-		}
 	}
 
 	table.discount {
 		float: right;
-		border-right: 0; 
 		border-left: 1px solid lighten($numpad-bg, 5%);
 	}
 
-	table.standard {
-		&.with-cash-buttons {
-			margin-left: 61px;
-		} 
-		&.with-discount-buttons {
-			margin-right: 61px;
-		}
-	}
 }
