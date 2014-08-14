@@ -1,13 +1,15 @@
-define([
-	'app', 
-	'lib/components/modal/view',
-	'lib/components/modal/behavior'
-], function(
-	POS
-){
+define(['app', 'lib/components/modal/view', 'lib/components/modal/behavior'], function(POS){
 
 	POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _){
 
+		/**
+		 * API
+		 */
+		Modal.channel = Backbone.Radio.channel('modal');
+
+		/**
+		 * Controller
+		 */
 		Modal.Controller = Marionette.Controller.extend({
 
 			initialize: function (options) {
@@ -28,6 +30,9 @@ define([
 			},
 
 		});
+
+		// instantiate controller
+		new Modal.Controller();
 
 	});
 

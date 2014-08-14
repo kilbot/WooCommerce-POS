@@ -48,6 +48,12 @@ $numpad-bg: $dark-border-color;
 	.title {
 		line-height: 34px;
 	}
+	.input-alt {
+		display: inline-block;
+		line-height: 34px;
+		margin-right: $spacing/4;
+		@include opacity(0.65);
+	}
 }
 
 .numpad-keys {

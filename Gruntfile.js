@@ -30,10 +30,10 @@ module.exports = function(grunt) {
 				files: '<%= paths.php.files_std %>',
 				tasks: ['phplint']
 			},
-			// svgstore: {
-			// 	files: ['assets/svg/*.svg'],
-			// 	tasks: ['svgstore']
-			// }
+			svgstore: {
+				files: ['assets/svg/*.svg'],
+				tasks: ['svgstore']
+			}
 		},
 
 		// compass
@@ -245,26 +245,26 @@ module.exports = function(grunt) {
     		},
   		},
 
-  		// svgstore: {
-  		// 	options: {
-  		// 		prefix: 'shape-',
-  		// 		cleanup: false,
-  		// 		svg: {
-  		// 			style: 'display: none;'
-  		// 		}
+  		svgstore: {
+  			options: {
+  				prefix: 'shape-',
+  				cleanup: false,
+  				svg: {
+  					style: 'display: none;'
+  				}
 
-  		// 	},
-  		// 	default: {
-  		// 		files: {
-  		// 			'assets/svg-defs.svg': ['assets/svg/*.svg']
-  		// 		}
-  		// 	}
-  		// }
+  			},
+  			default: {
+  				files: {
+  					'assets/svg-defs.svg': ['assets/svg/*.svg']
+  				}
+  			}
+  		}
 
 	});
 
 
 	// register task
-	grunt.registerTask('default', ['makepot', 'compass', 'cssmin', 'jshint', 'uglify', 'phplint', 'requirejs', 'watch']);
+	grunt.registerTask('default', ['makepot', 'compass', 'cssmin', 'jshint', 'uglify', 'phplint', 'requirejs', 'svgstore', 'watch']);
 
 };

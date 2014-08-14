@@ -1,3 +1,40 @@
+#checkout-status {
+	padding: $spacing;
+	border-bottom: 1px solid $dark-border-color;
+}
+
+#checkout-payment {
+	border-bottom: 1px solid $dark-border-color;
+	.panel-title {
+		&:before {
+			font-family: 'FontAwesome';
+    		content: "\f00c";
+    		// display: inline-block;
+    		line-height: 1;
+    		padding: 2px;
+    		margin-right: $spacing/4;
+    		border: 1px solid $border-color;
+		    border-radius: 3px;
+		    background-color: #fff;
+		    -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+		    transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+		    border-radius: 50%;
+		    color: #fff;
+		}
+		img {
+			margin-left: $spacing/4;
+		}
+	}
+	.panel-success {
+		.panel-title {
+			&:before {
+				color: $panel-success-text;
+				border-color: $panel-success-border;
+			}
+		}
+	}
+}
+
 #checkout-actions div {
 	text-align: right;
 	padding: $spacing/2;

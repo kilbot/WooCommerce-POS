@@ -1,114 +1,15 @@
-/**
- * Used to extract keywords and facets from the free text search.
- * based on https://github.com/documentcloud/visualsearch/
- */
+define(['app'], function(POS){
 
-define(['app'], function(POS) {
-
-	POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
-
-		var QUOTES_RE   = "('[^']+'|\"[^\"]+\")";
-		var FREETEXT_RE = "('[^']+'|\"[^\"]+\"|[^'\"\\s]\\S*)";
-		var CATEGORY_RE = FREETEXT_RE +                     ':\\s*';
-		var FREETEXT_CAT = 'text';
-	
-		Entities.SearchParser = {
-
-  			ALL_FIELDS : new RegExp(CATEGORY_RE + FREETEXT_RE, 'g'),
-			CATEGORY   : new RegExp(CATEGORY_RE),
-
-			parse : function(query) {
-				var searchFacets = this._extractAllFacets(query);
-				return searchFacets;
-			},
-
-			// Walks the query and extracts facets, categories, and free text.
-  			_extractAllFacets : function(query) {
-				var facets = [];
-				var originalQuery = query;
-				while (query) {
-					var category, value;
-					originalQuery = query;
-					var field = this._extractNextField(query);
-					if (!field) {
-						category = FREETEXT_CAT;
-						value    = this._extractSearchText(query);
-						query    = this.trim(query.replace(value, ''));
-					} else if (field.indexOf(':') != -1) {
-						category = field.match(this.CATEGORY)[1].replace(/(^['"]|['"]$)/g, '');
-						value    = field.replace(this.CATEGORY, '').replace(/(^['"]|['"]$)/g, '');
-						query    = this.trim(query.replace(field, ''));
-					} else if (field.indexOf(':') == -1) {
-						category = FREETEXT_CAT;
-						value    = field;
-						query    = this.trim(query.replace(value, ''));
-					}
-
-					if (category && value) {
-						_( value.split('|') ).each(function( value ){
-							var val = this.trim( value );
-							if( val ) {
-								var searchFacet = new Entities.SearchFacet({
-									category : category,
-									value    : val,
-								});
-								facets.push(searchFacet);
-							}
-						}, this);
-					}
-					if (originalQuery == query) break;
-				}
-
-				return facets;
-  			},
-
-			// Extracts the first field found, capturing any free text that comes
-			// before the category.
-			_extractNextField : function(query) {
-				var textRe = new RegExp('^\\s*(\\S+)\\s+(?=' + QUOTES_RE + FREETEXT_RE + ')');
-				var textMatch = query.match(textRe);
-				if (textMatch && textMatch.length >= 1) {
-					return textMatch[1];
-				} else {
-					return this._extractFirstField(query);
-				}
-			},
-
-			// If there is no free text before the facet, extract the category and value.
-			_extractFirstField : function(query) {
-				var fields = query.match(this.ALL_FIELDS);
-				return fields && fields.length && fields[0];
-			},
-
-			// If the found match is not a category and facet, extract the trimmed free text.
-			_extractSearchText : function(query) {
-				query = query || '';
-				var text = this.trim(query.replace(this.ALL_FIELDS, ''));
-				return text;
-			},
-
-			// Delegate to the ECMA5 String.prototype.trim function, if available.
-			trim : function(s) {
-				return s.trim ? s.trim() : s.replace(/^\s+|\s+$/g, '');
-			},
-
-			// Escape strings that are going to be used in a regex. Escapes punctuation
-			// that would be incorrect in a regex.
-			escapeRegExp : function(s) {
-				return s.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
-			}
-
-  		};
-
+	POS.module('Components.SearchParser', function(SearchParser, POS, Backbone, Marionette, $, _){
 
 		/**
 		 * Collection which holds all of the individual facets (category: value).
 		 * Used for finding and removing specific facets.
 		 */
-		Entities.SearchQuery = Backbone.Collection.extend({
+		SearchParser.Query = Backbone.Collection.extend({
 
 			// Model holds the category and value of the facet.
-			model : Entities.SearchFacet,
+			model : SearchParser.Facet,
 
 			// Turns all of the facets into a single serialized string.
 			serialize : function() {
@@ -185,15 +86,15 @@ define(['app'], function(POS) {
 		 * The model that holds individual search facets and their categories.
 		 */
 		
-		Entities.SearchFacet = Backbone.Model.extend({
+		SearchParser.Facet = Backbone.Model.extend({
 
 			// Extract the category and value and serialize it in preparation for
 			// turning the entire searchBox into a search query that can be sent
 			// to the server for parsing and searching.
 			serialize : function() {
 				var category = this.quoteCategory(this.get('category'));
-				var value    = Entities.SearchParser.trim(this.get('value'));
-				var remainder = FREETEXT_CAT;
+				var value    = SearchParser.Controller.trim(this.get('value'));
+				var remainder = 'text';
 
 				if (!value) return '';
 
@@ -246,26 +147,6 @@ define(['app'], function(POS) {
 
 		});
 
-		var API = {
-			getSearchEntities: function() {
-				// a collection of search facets
-				return new Entities.SearchQuery();
-			},
-			getSearchFacets: function(query) {
-				return Entities.SearchParser.parse(query);
-			}
-		};
-
-		POS.Entities.channel.reply('search:entities', function() {
-			return API.getSearchEntities();
-		});
-
-		POS.Entities.channel.reply('search:facets', function(query) {
-			return API.getSearchFacets(query);
-		});
-
 	});
-
-	return POS.Entities;
 
 });

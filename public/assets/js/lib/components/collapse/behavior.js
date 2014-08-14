@@ -4,22 +4,6 @@ define(['app', 'collapse'], function(POS){
 	
 		Collapse.Behavior = Marionette.Behavior.extend({
 
-			initialize: function(){
-
-			},
-
-			ui: {
-				heading: '.panel-heading'
-			},
-
-			events: {
-				'heading @ui.heading' : 'expandPanel'
-			},
-
-			expandPanel: function() {
-				
-			}
-
 		});
 
 	});

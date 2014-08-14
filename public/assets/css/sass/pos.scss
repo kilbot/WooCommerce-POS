@@ -39,7 +39,7 @@
 @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/progress-bars";
 // @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/media";
 // @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/list-group";
-@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/panels";
+// @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/panels";
 // @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-embed";
 // @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/wells";
 @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/close";
@@ -58,15 +58,18 @@
  * POS THEME
  */
 @import "partials/mixins";
+@import "partials/bootstrap";
 @import "partials/buttons";
 @import "partials/cart";
 @import "partials/checkout";
 @import "partials/footer";
+@import "partials/forms";
 @import "partials/header";
 @import "partials/layout";
 @import "partials/menu";
 @import "partials/numpad";
+@import "partials/panels";
 @import "partials/products";
 @import "partials/select2";
 @import "partials/tabs";
-@import "partials/bootstrap";
+@import "partials/type";

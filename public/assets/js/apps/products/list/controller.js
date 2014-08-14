@@ -112,7 +112,7 @@ define([
 			_showTabsRegion: function() {
 
 				// get new tabs component
-				var view = POS.Components.channel.request( 'get:tabs', pos_params.tabs );
+				var view = POS.Components.Tabs.channel.request( 'get:tabs', pos_params.tabs );
 
 				// listen to tab collection
 				this.listenTo( view.collection, 'change:active', function(tab) {					

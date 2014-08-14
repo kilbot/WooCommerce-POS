@@ -9,14 +9,15 @@ define([
 
 	POS.globalChannel = Backbone.Radio.channel('global');
 
+	Marionette.Behaviors.getBehaviorClass = function(options, key) {
+		return POS.Components[key].Behavior; // eg: POS.Components.Modal.Behavior
+	};
+
 	POS.addRegions({
 		headerRegion: '#header',
-		leftRegion: '#left-panel',
-		rightRegion: '#right-panel',
-		modalRegion: '#modal',
-		// modalRegion: Marionette.Region.Modal.extend({
-		// 	el: '#modal'
-		// }),
+		leftRegion	: '#left-panel',
+		rightRegion	: '#right-panel',
+		modalRegion	: '#modal'
 	});
 
 	POS.navigate = function(route, options){

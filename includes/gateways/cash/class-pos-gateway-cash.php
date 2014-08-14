@@ -72,8 +72,8 @@ class POS_Gateway_Cash extends WC_Payment_Gateway {
 
 		echo '
 			<p class="form-row " id="pos-cash-tendered_field">
-				<label for="pos-cash-tendered" class="">Amount Tendered</label>
-				<input type="text" class="input-text " name="pos-cash-tendered" id="pos-cash-tendered" placeholder="" maxlength="20" value="" data-numpad="discount">
+				<label for="pos-cash-tendered" class="">'. __('Amount Tendered', 'woocommerce-pos') .'</label>
+				<input type="text" class="input-text " name="pos-cash-tendered" id="pos-cash-tendered" placeholder="" maxlength="20" value="" data-numpad="cash" data-title="'. __('Amount Tendered', 'woocommerce-pos') .'" data-placement="bottom">
 			</p>
 		';
 

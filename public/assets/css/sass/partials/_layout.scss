@@ -29,12 +29,12 @@ $desktop-wide 		: 1500px;
 	&.leftcol {
 		margin-bottom: gutter();
 	}
-	h4 {
-		line-height: 1;
-		padding: $spacing/2;
-		border-bottom: 1px solid darken($border-color, 20%);
-		margin: 0;
-	}
+}
+.loading {
+	background: transparent url(../../../assets/loader.gif) no-repeat center center;
+	height: 40px;
+	width: 100%;
+	padding: 40px 0;
 }
 
 @include breakpoint($tablet) {

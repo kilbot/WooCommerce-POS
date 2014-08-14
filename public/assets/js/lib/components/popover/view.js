@@ -46,15 +46,19 @@ define([
 			openPopover: function (options) {
 				this.once('show:popover', options.onShowPopover );
 				this.once('after:show:popover', options.onAfterShowPopover);
-				this.setupPopover(options);
+				this.setupPopover(options);			
+				
 				this.target.popover('show');
+				if(POS.debug) console.log('showing ' + this.target.attr('aria-describedby') );
 			},
 
 			closePopover: function (options) {
 				this.once('hide:popover', options.onHidePopover);
 				this.once('after:hide:popover', options.onAfterHidePopover);
 				this.once('after:hide:popover', this.teardownPopover);
-				this.target.popover('hide');
+				
+				if(POS.debug) console.log('destroying ' + this.target.attr('aria-describedby') );
+				this.target.popover('destroy');
 			},
 
 			setupPopover: function (options) {

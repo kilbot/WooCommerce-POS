@@ -15,7 +15,7 @@ define([
 				
 				// init references
 				this.pageableCollection = options.pageableCollection;
-				this.filterEntities = POS.Entities.channel.request('search:entities');
+				this.filterEntities = POS.Components.SearchParser.channel.request('search:entities');
 
 				this.on( 'filter:products', function( mode ) {
 					if( mode === 'barcode' ) {
@@ -33,7 +33,7 @@ define([
 			_filterProducts: function() {
 				var filteredList = this.models,
 					combinedFilter = _.compact([this.activeTab, this.searchQuery]).join(' '),
-					facets = POS.Entities.channel.request('search:facets', combinedFilter );
+					facets = POS.Components.SearchParser.channel.request('search:facets', combinedFilter );
 				
 				this.filterEntities.reset( facets );
 

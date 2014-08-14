@@ -8,7 +8,7 @@
 
 <div id="menu" class="pushy pushy-left">
 	<ul>
-		<li><a href="<?= WC_POS()->pos_url(); ?>"><i class="fa fa-shopping-cart"></i> <?php _e( 'POS', 'woocommerce-pos' ); ?></a></li>
+		<li><a href="<?= WC_POS()->pos_url(); ?>"><svg class="icon"><use xlink:href="#shape-woocomerce-pos">_</use></svg> <?php _e( 'POS', 'woocommerce-pos' ); ?></a></li>
 		<li><a href="<?= admin_url('edit.php?post_type=product'); ?>"><?php _e( 'View Products', 'woocommerce-pos' ); ?></a></li>
 		<li><a href="<?= admin_url('post-new.php?post_type=product'); ?>"><?php _e( 'Add Product', 'woocommerce-pos' ); ?></a></li>
 		<li><a href="<?= admin_url('edit.php?post_type=shop_order'); ?>"><?php _e( 'View Orders', 'woocommerce-pos' ); ?></a></li>

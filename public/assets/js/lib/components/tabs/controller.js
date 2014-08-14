@@ -8,6 +8,19 @@ define([
 
 	POS.module('Components.Tabs', function(Tabs, POS, Backbone, Marionette, $, _){
 
+		/**
+		 * API
+		 */
+		Tabs.channel = Backbone.Radio.channel('tabs');
+
+		Tabs.channel.reply( 'get:tabs', function( tabs ) {
+			var controller = new Tabs.Controller();
+			return controller.getTabView(tabs);
+		});
+
+		/**
+		 * Controller
+		 */
 		Tabs.Controller = Marionette.Controller.extend({
 
 			getTabView: function(tabs) {

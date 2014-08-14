@@ -34,16 +34,24 @@ define([
 			},
 
 			modelEvents: {
-				'change:value': 'render'
+				'change:value': 'render',
+				'change:mode': 'render',
 			},
 
 			events: {
 				'keyup @ui.inputField' 	: 'directInput',
-				'click *[data-qty]' 	: 'quantity'
+				'click *[data-qty]' 	: 'quantity',
+				'click *[data-modifier]': 'mode'
 			},
 
 			initialize: function() {
-				this.model.set({ currency_symbol: pos_params.accounting.currency.symbol });
+				if( this.model.get('type') === 'discount' ){
+					this.model.set({ 
+						currency_symbol: pos_params.accounting.currency.symbol,
+						mode: 'amount',
+						percentage: 0 
+					});
+				} 
 			},
 
 			onShow: function() {
@@ -65,6 +73,11 @@ define([
 					value = this.model.get('value');
 
 				this.model.set('value', (type === 'increase' ? ++value : --value) );
+			},
+
+			mode: function(e) {
+				var mode = $(e.currentTarget).data('modifier');
+				this.model.set({ mode: mode });
 			}
 
 		});

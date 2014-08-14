@@ -8,6 +8,24 @@ define([
 
 	POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _){
 
+		/**
+		 * API
+		 */
+		Numpad.channel = Backbone.Radio.channel('numpad');
+
+		Numpad.channel.reply( 'getView', function(options) {
+			var controller = new Numpad.Controller(options);
+			return controller.getNumpadView();
+		});
+
+		Numpad.channel.comply( 'showPopover', function(options) {
+			var controller = new Numpad.Controller(options);
+			controller.showNumpadPopover(options);
+		});
+
+		/**
+		 * Controller
+		 */
 		Numpad.Controller = Marionette.Controller.extend({
 
 			initialize: function(options) {
@@ -45,10 +63,6 @@ define([
 					onShowPopover 	: this._onShowPopover,
 					controller 		: this
 				});
-			},
-
-			closeNumpadPopover: function( target ) {
-				POS.Components.Popover.channel.command( 'close', target );
 			},
 
 			getNumpadValue: function() {

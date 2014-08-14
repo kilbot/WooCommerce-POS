@@ -23,6 +23,7 @@ requirejs.config({
 		tooltip 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip',
 		popover 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover',
 		collapse 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse',
+		transition 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition',
 		spin 		: '../../../bower_components/spinjs/spin',
 		select2 	: '../../../bower_components/select2/select2.min',
 		'jquery-color': '../../../bower_components/jquery-color/jquery.color'
@@ -39,6 +40,9 @@ requirejs.config({
 		},
 		popover: {
 			deps: ['jquery', 'tooltip']
+		},
+		collapse: {
+			deps: ['jquery', 'transition']
 		},
 		// underscore: {
 		// 	exports: '_'
@@ -57,14 +61,33 @@ requirejs.config({
 
 require([
 	'app',
+
+	// utilities
 	'lib/utilities/helpers',
+
+	// entities
 	'entities/options',
-	'entities/abstract/search_parser',
-	'lib/components/components_app',
-	'apps/products/products_app',
+	
+	// components
+	'lib/components/modal/controller',
+	'lib/components/numpad/controller',
+	'lib/components/popover/controller',
+	'lib/components/progress_bar/controller',
+	'lib/components/search_parser/controller',
+	'lib/components/tabs/controller',
+
+	// behaviors
+	'lib/components/autogrow/behavior',
+	'lib/components/collapse/behavior',
+	'lib/components/pulse/behavior',
+	'lib/components/select2/behavior',
+
+	// POS modules
 	'apps/cart/cart_app',
 	'apps/checkout/checkout_app',
-	'apps/customer/customer_app'
+	'apps/customer/customer_app',
+	'apps/products/products_app'
+
 ], function(POS){
 	POS.start();
 });

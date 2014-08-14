@@ -42,7 +42,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				accounting.settings = pos_params.accounting;
 
 				// remove any open popovers
-				this.on( 'before:destroy', this.removePopovers );
+				this.on( 'before:render before:destroy', this.removePopovers );
 			},
 
 			behaviors: {
@@ -62,9 +62,9 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			},
 
 			onShow: function() {
-				// if(Modernizr.touch) {
+				if(Modernizr.touch) {
 					this.$('*[data-numpad]').attr('readonly', true);
-				// }
+				}
 			},
 
 			removeFromCart: function(e) {
@@ -90,10 +90,15 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				if( $(e.target).attr('aria-describedby') ) {
 					return;
 				}
+
+				// much hack, trying to force close popovers
+				var self = this;
+				this.removePopovers();
+
 				POS.Components.Numpad.channel.command( 'showPopover', { target: $(e.target) } );
 				$(e.target).on( 'numpad:return', function( e, value ) {
 					$(e.target).val( value ).trigger('blur');
-					POS.Components.Popover.channel.command( 'close' );
+					self.removePopovers();
 				});
 			},
 

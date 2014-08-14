@@ -8,6 +8,14 @@ define([
 
 	POS.module('Components.Popover', function(Popover, POS, Backbone, Marionette, $, _){
 
+		/**
+		 * API
+		 */
+		Popover.channel = Backbone.Radio.channel('popover');
+
+		/**
+		 * Controller
+		 */
 		Popover.Controller = Marionette.Controller.extend({
 
 			initialize: function (options) {
@@ -18,9 +26,6 @@ define([
 
 			openPopover: function (options) {
 				options || (options = {});
-				if( this.view ) {
-					this.closePopover();
-				}
 				this.view = new Popover.View(options);
 				this.view.openPopover(options);
 			},
@@ -29,11 +34,12 @@ define([
 				options || (options = {});
 				if( this.view ) {
 					this.view.closePopover(options);
-					this.view.remove();
 				}
 			},
 
 		});
+
+		new Popover.Controller()
 
 	});
 

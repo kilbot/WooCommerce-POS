@@ -5,20 +5,17 @@
 ?>
 
 <script type="text/template" id="tmpl-checkout">
-	<div>
-		<h4><?php _e( 'Payment', 'woocommerce-pos' ); ?></h4>
-	</div>
 	<div id="checkout-status"></div>
 	<div id="checkout-payment"></div>
 	<div id="checkout-actions"></div>
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-checkout-status">
-	<h4 class="textcenter">
+	<h4 class="text-center">
 		<span class="status">
 			{{#if isPaid}}<i class="fa fa-check"></i> <?php _e( 'Paid', 'woocommerce-pos' ); ?>:{{/if}}
-			{{#if isProcessing}}<?php _e( 'To Pay', 'woocommerce-pos' ); ?>:{{/if}}
-			<?php _e( 'Processing', 'woocommerce-pos' ); ?>:	
+			{{#if isProcessing}}<?php _e( 'Processing', 'woocommerce-pos' ); ?>:{{/if}}
+			<?php _e( 'To Pay', 'woocommerce-pos' ); ?>:
 		</span>
 		<span class="amount">{{{money total}}}</span>
 	</h4>
@@ -36,12 +33,10 @@
 		<div class="panel panel-<?= $gateway->id == $default_gateway ? 'success' : 'default' ; ?> payment_method_<?= $gateway->id; ?>">
 			<div class="panel-heading">
 				<h5 data-toggle="collapse" data-target="#payment_box_<?= $gateway->id; ?>" data-parent="#payment-options" class="panel-title">
-					<input type="hidden" name="<?= $gateway->id; ?>">
-					<i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> 
+					<input type="hidden" name="<?= $gateway->id; ?>"> 
 					<?php echo $gateway->get_title(); ?> 
 					<?php echo $gateway->get_icon(); ?>
 				</h5>
-
 			</div>
 			<?php if ( $gateway->has_fields() || $gateway->get_description() ): ?>
 			<div id="payment_box_<?= $gateway->id; ?>" class="panel-collapse collapse <?= $gateway->id == $default_gateway ? 'in' : '' ; ?>">

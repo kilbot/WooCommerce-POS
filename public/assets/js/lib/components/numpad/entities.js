@@ -8,6 +8,10 @@ define(['app'], function(POS){
 				value: '0', // eg: 4.25
 				type: 'standard', // eg: quantity, discount
 				select: true // select input on init
+			},
+
+			initialize: function(){
+				this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
 			}
 		});
 

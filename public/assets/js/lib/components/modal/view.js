@@ -1,9 +1,4 @@
-define([
-	'app',
-	'modal'
-], function(
-	POS
-){
+define(['app', 'modal'], function(POS){
 	
 	POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _){
 	
