@@ -1,4 +1,4 @@
-define(['app', 'apps/checkout/show/show_view', 'common/views'], function(POS, View){
+define(['app', 'apps/checkout/show/show_view'], function(POS, View){
 	
 	POS.module('CheckoutApp.Show', function(Show, POS, Backbone, Marionette, $, _){
 	
@@ -13,10 +13,6 @@ define(['app', 'apps/checkout/show/show_view', 'common/views'], function(POS, Vi
 				} else {
 					this.cartId = 1;
 				}
-
-				// loading view
-				var loadingView = new POS.Common.Views.Loading();
-				POS.rightRegion.show(loadingView);
 
 				// get cart totals
 				this.items = POS.Entities.channel.request('cart:items', { cartId: this.cartId });

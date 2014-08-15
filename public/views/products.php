@@ -26,9 +26,11 @@
 	<input type="search" placeholder="<?php _e( 'Search for products', 'woocommerce-pos' ); ?>" tabindex="1"  autofocus="autofocus" class="form-control">
 	{{/is}}
 	<span class="input-group-addon clear-btn"><a class="clear" href="#"><i class="fa fa-times-circle fa-lg"></i></a></span>
+	{{#is sync_mode 'client'}}
 	<div class="input-group-btn">
         <button type="button" class="btn btn-default action-sync"><i class="fa fa-refresh"></i></button>
     </div>
+    {{/is}}
 </div><!-- /input-group -->
 </script>
 

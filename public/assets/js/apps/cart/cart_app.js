@@ -1,15 +1,10 @@
-define([
-	'app',
-	'apps/cart/list/controller'
-], function(
-	POS, 
-	ListController
-){
+define(['app','apps/cart/list/controller'], function(POS){
 	
 	POS.module('CartApp', function(CartApp, POS, Backbone, Marionette, $, _){
 
-		CartApp.channel = Backbone.Radio.channel('cart');
-
+		/**
+		 * Cart Module
+		 */
 		CartApp.startWithParent = false;
 
 		CartApp.onStart = function(){
@@ -18,50 +13,44 @@ define([
 
     	CartApp.onStop = function(){
 			if(POS.debug) console.log('stopping Cart Module');
-			CartApp.channel.stopComplying();
 		};
 
-	});
+		/**
+		 * API
+		 */
+		var API = {
+			list: function(id) {
+				new CartApp.List.Controller({
+					cartId: id
+				});
+			}
+		};
 
-	POS.module('Routers.CartApp', function(CartAppRouter, POS, Backbone, Marionette, $, _){
-
-		CartAppRouter.Router = Marionette.AppRouter.extend({
+		/**
+		 * Router
+		 */
+		CartApp.Router = Marionette.AppRouter.extend({
 			appRoutes: {
 				'cart/:id' : 'list'
 			}
 		});
 
-		var _getController = function(Controller, options){
-			POS.startSubApp('CartApp');
-			var c = new Controller(options);
-			c.listenTo(POS.CartApp, 'stop', function(){
-				c.destroy();
-			});
-			return c;
-		};
-
-		var API = {
-			list: function(id) {
-				id ? options = { cartId: id } : options = {};
-				var c = _getController(ListController, options);
-				c.show();
-			}
-		};
-
-		this.listenTo( POS, 'cart:list', function(id){
-			if(id) {
-				POS.navigate('cart/' + id);
-			} else {
-				POS.navigate('');
-			}
-			API.list(id);
-		});
-
 		POS.addInitializer( function(){
-			new CartAppRouter.Router({
+			new CartApp.Router({
 				controller: API
 			});
 		});
+
+		/**
+		 * Radio
+		 */
+		CartApp.channel = Backbone.Radio.channel('cart');
+
+		CartApp.channel.comply( 'cart:list', function(id){
+			id ? POS.navigate('cart/' + id) : POS.navigate('') ;
+			API.list(id);
+		});
+
 
 	});
 

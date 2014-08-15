@@ -1,16 +1,8 @@
-define([
-	'app',
-	'apps/cart/list/view', 
-	'entities/cart',
-	'common/views'
-], function(
-	POS, 
-	View
-){
+define(['app', 'apps/cart/list/view', 'entities/cart'], function(POS, View){
 
 	POS.module('CartApp.List', function(List, POS, Backbone, Marionette, $, _){
 
-		List.Controller = Marionette.Controller.extend({
+		List.Controller = POS.Controller.Base.extend({
 
 			initialize: function(options) {
 
@@ -22,11 +14,6 @@ define([
 					this.cartId = 1;
 				}
 
-				// loading view
-				var loadingView = new POS.Common.Views.Loading();
-				// POS.execute('show:loading', view, options); 
-				POS.rightRegion.show(loadingView);
-
 				// init layout
 				this.layout = new View.Layout();
 				this.layout.cartTotalsRegion = ''; // cartTotalsRegion is a fake region
@@ -37,15 +24,17 @@ define([
 
 				this.listenTo( this.items, 'add remove', this._showOrHideCart );
 
-			},
-			
-			show: function(){
-				
 				this.listenTo( this.layout, 'show', function() {
 					this._showItemsRegion();
 				});
 
-				POS.rightRegion.show(this.layout);
+				// show loader
+				this.show( this.layout, { 
+					region: POS.rightRegion,
+					loading: {
+						entities: this.items
+					}
+				});
 
 			},
 
@@ -197,5 +186,4 @@ define([
 
 	});
 
-	return POS.CartApp.List.Controller;
 });

@@ -2,8 +2,7 @@ define([
 	'app', 
 	'paginator', 
 	'entities/products/db', 
-	'entities/products/product',
-	'entities/products/filter',
+	'entities/products/product'
 ], function(
 	POS,
 	PageableCollection
@@ -24,10 +23,20 @@ define([
 			initialize: function(models, options) {
 				// this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
 
+				var filterCollection = Entities.channel.request('product:filtercollection', options);
+
+				this.once('sync', function() {
+					filterCollection.reset( this.fullCollection.models, { silent: true } );
+				});
+
+				this.listenTo( filterCollection, 'reset', function( collection ){
+					this.getFirstPage({ silent: true });
+					this.fullCollection.reset(collection, { reindex: false });			
+				});
+
 				// debugging on IndexedDB adapter
 				if(POS.debug) Entities.DB.nolog = false;
 			},
-
 
 			/**
 			 * Syncing with server

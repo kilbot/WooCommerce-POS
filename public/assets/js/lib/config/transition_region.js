@@ -3,7 +3,7 @@
  * https://github.com/jmeas/marionette.transition-region
  */
 
-define(['marionette'], function(Marionette){
+define(['backbone.marionette'], function(Marionette){
 
   Marionette.Region.Transition = Marionette.Region.extend({
 

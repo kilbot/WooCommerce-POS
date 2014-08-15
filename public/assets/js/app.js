@@ -1,18 +1,16 @@
 define([
 	'backbone.marionette',
-	'lib/utilities/radio.shim'
+	'lib/utilities/radio.shim',
+	'lib/config/application'
 ], function(
 	Marionette
 ){
 
-	var POS = new Marionette.Application();
+	window.POS = new Marionette.Application();
 
-	POS.globalChannel = Backbone.Radio.channel('global');
-
-	Marionette.Behaviors.getBehaviorClass = function(options, key) {
-		return POS.Components[key].Behavior; // eg: POS.Components.Modal.Behavior
-	};
-
+	/**
+	 * Regions
+	 */
 	POS.addRegions({
 		headerRegion: '#header',
 		leftRegion	: '#left-panel',
@@ -20,27 +18,33 @@ define([
 		modalRegion	: '#modal'
 	});
 
-	POS.navigate = function(route, options){
-		options || (options = {});
-		Backbone.history.navigate(route, options);
+	/**
+	 * Behaviors
+	 */
+	Marionette.Behaviors.getBehaviorClass = function(options, key) {
+		return POS.Components[key].Behavior; // eg: POS.Components.Modal.Behavior
 	};
 
-	POS.getCurrentRoute = function(){
-		return Backbone.history.fragment;
-	};
+	/**
+	 * Global Channel
+	 */
+	POS.globalChannel = Backbone.Radio.channel('global');
 
-	POS.startSubApp = function(appName, args){
-		var currentApp = appName ? POS.module( appName ) : null;
-		if ( POS.currentApp === currentApp ){ return; }
+	POS.globalChannel.reply('default:region', function() {
+		return POS.leftRegion;
+	});
 
-		if ( POS.currentApp ){
-			POS.currentApp.stop();
-		}
+	POS.globalChannel.comply('register:instance', function(instance, id) {
+		return POS.register(instance, id);
+	});
 
-		POS.currentApp = currentApp;
-		currentApp.start( args );
-	};
+	POS.globalChannel.comply('unregister:instance', function(instance, id) {
+		return POS.unregister(instance, id);
+	});
 
+	/**
+	 * Start POS
+	 */
 	POS.on('start', function(){
 
 		// debugging
@@ -55,13 +59,11 @@ define([
 		// show products 
 		POS.module('ProductsApp').start();
 
-		if(Backbone.history){
-			Backbone.history.start();
-			if(POS.getCurrentRoute() === ''){
-				// default to cart
-				POS.trigger('cart:list');
-			}
+		POS.startHistory();
+		if( !POS.getCurrentRoute() ){
+			POS.CartApp.channel.command('cart:list');
 		}
+
 	});
 
 	return POS;

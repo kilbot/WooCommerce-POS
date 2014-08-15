@@ -80,7 +80,18 @@ class WooCommerce_POS_Product {
 			)
 		);
 		$query->set( 'meta_query', $meta_query );
-        
+
+		// server filter
+        if( isset( $_GET['filter'] ) && array_key_exists( 'barcode', $_GET['filter'] ) ){
+	  		$meta_query =  array(
+				array(
+					'key' 		=> '_sku',
+					'value' 	=> $_GET['filter']['barcode'],
+					'compare'	=> '='
+				),
+			);
+			$query->set( 'meta_query', $meta_query );      	
+        } 
 	}
 
 	/**

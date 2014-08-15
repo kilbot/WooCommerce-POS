@@ -1,4 +1,4 @@
-define(['app', 'lib/entities/localstorage'], function(POS){
+define(['app'], function(POS){
 
 	POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 

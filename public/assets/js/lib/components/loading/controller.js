@@ -1,8 +1,28 @@
 define(['app', 'lib/components/loading/view'], function(POS){
 
+/**
+ * Based on https://github.com/brian-mann/sc02-loading-views
+ */
+
 	POS.module('Components.Loading', function(Loading, POS, Backbone, Marionette, $, _){
 
-		Loading.LoadingController = Marionette.Controller.extend({
+		/**
+		 * API
+		 */
+		Loading.channel = Backbone.Radio.channel('loading');
+
+		Loading.channel.comply('show:loading', function(view, options) {
+			return new Loading.Controller({
+				view: view,
+				region: options.region,
+				config: options.loading
+			});
+		});
+
+		/**
+		 * Controller
+		 */
+		Loading.Controller = POS.Controller.Base.extend({
 
 			initialize: function(options) {
       			var view 	= options.view, 
@@ -12,14 +32,17 @@ define(['app', 'lib/components/loading/view'], function(POS){
 
 				_.defaults(config, { 
 					loadingType : 'spinner', 
-					entities 	: this.getEntities(view),
+					// entities 	: this.getEntities(view),
 					debug 		: false
 				});
 
 				switch (config.loadingType) {
 					case 'spinner':
-						var loadingView = this.getLoadingView();
+						var loadingView = new Loading.Spinner();
 						this.show(loadingView);
+					break;
+					case 'opacity':
+						this.region.currentView.$el.css({ 'opacity': 0.5 });
 					break;
 					default:
 						throw new Error('Invalid loadingType');
@@ -29,34 +52,28 @@ define(['app', 'lib/components/loading/view'], function(POS){
 			},
 
 			showRealView: function(realView, loadingView, config){
-				POS.execute('when:fetched', config.entities, function(){
+				var self = this;
+
+				$.when( config.entities ).done( function(){
 					switch (config.loadingType) {
 						case 'spinner':
-							if(this.region.currentView !== loadingView) {
+							if(self.region.currentView !== loadingView) {
 								return realView.close();
 							}
 						break;
+						case 'opacity':
+							self.region.currentView.$el.renderAttr('style');
+						break;
 					}
-					this.show(realView);
+					self.show(realView);
 				});
+
 			},
 
-			getEntities: function(view) {
-				_.chain(view).pick('model', 'collection').toArray().compact().value();
-			},
+			// getEntities: function(view) {
+			// 	_.chain(view).pick('model', 'collection').toArray().compact().value();
+			// }
 
-			getLoadingView: function() {
-				return new Loading.LoadingView();
-			}
-
-		});
-
-		POS.commands.setHandler('show:loading', function(view, options) {
-			return new Loading.LoadingController({
-				view: view,
-				region: options.region,
-				config: options.loading
-			});
 		});
 
 	});

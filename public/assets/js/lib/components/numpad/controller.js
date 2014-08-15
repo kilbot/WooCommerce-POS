@@ -41,6 +41,7 @@ define([
 					this._showKeysRegion();
 				});
 
+				_.bindAll(this, '_onShowPopover');
 			},
 
 			getNumpadView: function() {
@@ -57,11 +58,9 @@ define([
 
 				POS.Components.Popover.channel.command( 'open', { 
 					target 			: this.options.target,
-					popoverTmpl 	: '<div class="arrow"></div><div class="popover-content"></div>',
 					className 		: 'popover numpad-popover',
 					attributes 		: { 'role' : 'textbox' },
-					onShowPopover 	: this._onShowPopover,
-					controller 		: this
+					onShowPopover 	: this._onShowPopover
 				});
 			},
 
@@ -89,11 +88,8 @@ define([
 				this.layout.keysRegion.show( view );
 			},
 
-			_onShowPopover: function() {
-
-				// hijack popover setContent, and show numpad instead
-				this.options.target.data('bs.popover').__proto__.setContent = function() {};
-				this.content.show(this.options.controller.layout);
+			_onShowPopover: function( popoverRegion ) {
+				popoverRegion.show(this.layout);
 			}
 
 		});

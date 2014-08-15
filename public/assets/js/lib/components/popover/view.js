@@ -8,18 +8,17 @@ define([
 	POS.module('Components.Popover', function(Popover, POS, Backbone, Marionette, $, _){
 	
 		Popover.View = Marionette.LayoutView.extend({
-			template: _.template('<div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div>'),
+			template: _.template('<div class="arrow"></div><div class="popover-region"><h3 class="popover-title"></h3><div class="popover-content"></div></div>'),
 			className: 'popover',
 			attributes: {
 				'role' : 'tooltip'
 			},
 
 			regions: {
-				content : '.popover-content'
+				content : '.popover-region'
 			},
 
 			initialize: function (options) {
-				if( _(options).has('popoverTmpl') ) this.template = _.template( options.popoverTmpl );
 				this.target = options.target;
 
 				// popover events come from the target element
@@ -44,7 +43,7 @@ define([
 			},
 
 			openPopover: function (options) {
-				this.once('show:popover', options.onShowPopover );
+				this.once('show:popover', options.onShowPopover(this.content));
 				this.once('after:show:popover', options.onAfterShowPopover);
 				this.setupPopover(options);			
 				

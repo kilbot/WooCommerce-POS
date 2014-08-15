@@ -62,6 +62,11 @@ requirejs.config({
 require([
 	'app',
 
+	// config
+	'lib/config/base_controller',
+	'lib/config/localstorage_entities',
+	// 'lib/config/transition_region',
+
 	// utilities
 	'lib/utilities/helpers',
 
@@ -69,6 +74,7 @@ require([
 	'entities/options',
 	
 	// components
+	'lib/components/loading/controller',
 	'lib/components/modal/controller',
 	'lib/components/numpad/controller',
 	'lib/components/popover/controller',

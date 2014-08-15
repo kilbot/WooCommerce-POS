@@ -1,56 +1,49 @@
-define([
-	'app', 
-	'apps/products/list/view',
-	'common/views'
-], function(
-	POS, 
-	View
-){
+define(['app', 'apps/products/list/view', 'entities/products'], function(POS, View){
 
 	POS.module('ProductsApp.List', function(List, POS, Backbone, Marionette, $, _){
 
-		List.Controller = Marionette.Controller.extend({
+		List.Controller = POS.Controller.Base.extend({
 
 			initialize: function(options) {
+				options || (options = {});
 
-				// loading view
-				var loadingView = new POS.Common.Views.Loading();
-				POS.leftRegion.show(loadingView);
+				// user settings
+				var settings = POS.Entities.channel.request('user:product:settings');
+
+				if(!Modernizr.indexeddb) settings.set({ sync_mode : 'server' });
+
+				_.defaults(options, {
+					settings: settings
+				});
+
+				// product collection
+				var products = POS.Entities.channel.request('product:entities', options);
 
 				// init layout
 				this.layout = new View.Layout();
 
-				// display settings
-				this.display_settings = POS.Entities.channel.request('user:display:settings');
-
-			},
-
-			show: function() {
-
-				// fetch products
-				var fetchingProducts = POS.Entities.channel.request('product:entities');
-
-				this.listenTo( this.layout, 'show', function() {	
-					this._showProductsRegion();		
+				this.listenTo( this.layout, 'show', function() {
+					this._showProductsRegion( products );
 				});
 
-				var self = this;
-				$.when(fetchingProducts).done( function(products){
-					self.products = products;
-					POS.leftRegion.show(self.layout);
+				// show with loader
+				this.show( this.layout, { 
+					region: POS.leftRegion,
+					loading: {
+						entities: products.fetch()
+					}
 				});
 
 			},
 
-			_showProductsRegion: function() {
-
+			_showProductsRegion: function( products ) {				
 				var view = new View.Products({
-					collection: this.products
+					collection: products
 				});
 
 				this.listenTo( view, 'show', function() {
-					this._showFilterView();
-					this._showPaginationView();
+					this._showFilterView( products );
+					this._showPaginationView( products );
 				});
 
 				// add to cart
@@ -66,10 +59,6 @@ define([
 						fixed: false					
 					};
 					this.trigger( 'add:new:tab', newTab );
-
-					if( this.display_settings.get('search_mode') === 'barcode' ){
-						POS.ProductsApp.channel.command( 'clear:filter' );
-					}
 				});
 
 				// show
@@ -77,32 +66,29 @@ define([
 
 			},
 
-			_showFilterView: function() {
+			_showFilterView: function( products ) {
 
-				var view = new View.Filter({ model: this.display_settings });
-
-				// filter collection = clone of products collection
-				this.filterCollection = POS.Entities.channel.request('product:filtercollection', this.products);
+				var options = this.options,
+					view = new View.Filter(options);
 
 				// add product tabs
 				this.listenTo( view, 'show', function() {
 					this._showTabsRegion();
 				});
-				
+
 				// search queries
 				this.listenTo( view, 'products:search:query', function( query ){
-					this.filterCollection.searchQuery = query;
-					this.filterCollection.trigger('filter:products', this.display_settings.get('search_mode') );
-				});
-
-				// sync
-				this.listenTo( view, 'sync:clicked', function( args ) {
-					this.products.serverSync();
+					options.settings.set({ query: query });
 				});
 
 				// search mode
 				this.listenTo( view, 'products:search:mode', function( mode ) {
-					view.model.save({ search_mode: mode });
+					options.settings.set({ search_mode: mode });
+				});
+
+				// sync
+				this.listenTo( view, 'sync:clicked', function( args ) {
+					products.serverSync();
 				});
 
 				// show
@@ -115,13 +101,8 @@ define([
 				var view = POS.Components.Tabs.channel.request( 'get:tabs', pos_params.tabs );
 
 				// listen to tab collection
-				this.listenTo( view.collection, 'change:active', function(tab) {					
-					this.filterCollection.activeTab = tab.get('value');
-					if( this.display_settings.get('search_mode') === 'barcode' ) {
-						POS.ProductsApp.channel.command( 'clear:filter' );
-					} else {
-						this.filterCollection.trigger('filter:products');
-					}
+				this.listenTo( view.collection, 'change:active', function(tab) {
+					this.options.settings.set({ tab: tab.get('value') });				
 				});
 
 				// listen for new tabs
@@ -133,15 +114,15 @@ define([
 				this.layout.tabsRegion.show( view );
 			},
 
-			_showPaginationView: function() {
+			_showPaginationView: function( products ) {
 
 				var view = new View.Pagination({
-					collection: this.products
+					collection: products
 				});
 
 				// sync
 				this.listenTo( view, 'pagination:sync:clicked', function(args) {
-					this.products.serverSync();
+					products.serverSync();
 				});
 
 				// clear
@@ -159,8 +140,6 @@ define([
 			}
 
 		});
-
-		return List.Controller;
 		
 	});
 

@@ -2,10 +2,8 @@ define([
 	'app', 
 	'entities/products/product', 
 	'entities/products/products', 
-	'entities/products/filter', 
-	'entities/products/fallback/product', 
-	'entities/products/fallback/products', 
-	'entities/products/fallback/product_variations',
+	'entities/products/filter_collection', 
+	'entities/products/fallback_products', 
 	'entities/user'
 ], function(
 	POS
@@ -16,77 +14,22 @@ define([
 		/**
 		 * API
 		 */
-		var API = {
+		Entities.channel.reply('product:entities', function( options ) {
+			var products;
 
-			getProductEntities: function() {
-				if(Modernizr.indexeddb) {
-
-					var products = new Entities.Products();
-
-					var defer = $.Deferred();
-					products.fetch({
-						success: function(data) {
-							defer.resolve(data);
-						}
-					});
-
-					return defer.promise();
-
-				}
-
-				// fallback for no IndexedDB
-				else {
-					return this.getFallbackProductEntities();
-				}
-			},
-
-			getFallbackProductEntities: function() {
-				var products = new Entities.FallbackProductCollection();
-
-				var defer = $.Deferred();
-				products.fetch({
-					success: function(data) {
-						defer.resolve(data);
-					}
-				});
-
-				return defer.promise();
-			},
-
-			getFallbackProductEntity: function(productId){
-				var product = new Entities.FallbackProduct({ id: productId });
-
-				var defer = $.Deferred();
-				products.fetch({
-					success: function(data) {
-						defer.resolve(data);
-					},
-					error: function(data) {
-						defer.resolve(undefined);
-					}
-				});
-
-				return defer.promise();
-			},
-
-			getFilterCollection: function(products) {
-				return new Entities.FilterCollection(products.fullCollection.models, { pageableCollection: products });
+			if(Modernizr.indexeddb) {
+				products = new Entities.Products( [], options );	
+			} else {
+				products = new Entities.FallbackProductCollection( [], options );
 			}
 
-		};
-
-		/**
-		 * Handlers
-		 */
-		Entities.channel.reply('product:entities', function() {
-			return API.getProductEntities();
+			return products;
 		});
 
-		Entities.channel.reply('product:filtercollection', function(products) {
-			return API.getFilterCollection(products);
+		Entities.channel.reply('product:filtercollection', function( options ) {
+			return new Entities.FilterCollection( [], options );
 		});
 
 	});
 
-	return;
 });

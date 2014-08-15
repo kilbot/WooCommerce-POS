@@ -19,7 +19,6 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 		 */
 		View.Filter = Marionette.ItemView.extend({
 			template: Handlebars.compile( $('#tmpl-products-filter').html() ),
-			mode: 'client',
 
 			events: {
 				'keyup input[type=search]'	: 'searchTrigger',
@@ -40,13 +39,14 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 				'change:search_mode': 'render'
 			},
 
-			initialize: function() {
-				var self = this;
+			initialize: function(options) {
 				POS.ProductsApp.channel.comply( 'clear:filter', this.clear, this );
+				this.model = options.settings;
+				this.mode = options.settings.get('sync_mode');
 			},
 
 			onRender: function(){
-				this.$('input[type=search]').focus();
+				this.$('input[type=search]').val('').focus();
 			},
 
 			// if idb make the query instantly

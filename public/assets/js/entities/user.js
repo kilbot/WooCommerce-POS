@@ -1,6 +1,6 @@
 define([
 	'app',
-	'entities/user/display_settings'
+	'entities/user/product_settings'
 ], function(
 	POS
 ){
@@ -10,20 +10,8 @@ define([
 		/**
 		 * API
 		 */
-		var API = {
-			getDisplaySettings: function(){
-				var settings = new Entities.DisplaySettings();
-				settings.fetch();
-				return settings;
-			},
-			
-		};
-
-		/**
-		 * Handlers
-		 */
-		Entities.channel.reply('user:display:settings', function() {
-			return API.getDisplaySettings();
+		Entities.channel.reply('user:product:settings', function() {
+			return new Entities.ProductSettings();
 		});
 
 	});

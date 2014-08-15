@@ -13,17 +13,12 @@ define([
 			initialize: function(models, options) {
 				// this.on('all', function(e) { console.log("Filter Collection event: " + e); }); // debug
 				
-				// init references
-				this.pageableCollection = options.pageableCollection;
+				this.settings = options.settings;
+				
+				// init search parser collection
 				this.filterEntities = POS.Components.SearchParser.channel.request('search:entities');
 
-				this.on( 'filter:products', function( mode ) {
-					if( mode === 'barcode' ) {
-						this._barcodeSearch();
-					} else {
-						this._filterProducts();
-					}
-				});
+				this.listenTo( this.settings, 'change:query change:tab change:search_mode', this._filterProducts );
 
 			},
 
@@ -32,12 +27,25 @@ define([
 			 */
 			_filterProducts: function() {
 				var filteredList = this.models,
-					combinedFilter = _.compact([this.activeTab, this.searchQuery]).join(' '),
-					facets = POS.Components.SearchParser.channel.request('search:facets', combinedFilter );
-				
-				this.filterEntities.reset( facets );
+					query = this.settings.get('query'),
+					tab = this.settings.get('tab');
 
-				if(POS.debug) console.log('Product filter = "' + combinedFilter + '"');
+				if( this.settings.get('search_mode') === 'barcode' && query ) {
+
+					if(POS.debug) console.log('Barcode search = "' + query + '"');
+
+					this._barcodeSearch(filteredList, query);
+					this.filterEntities.reset(); // no attribute search in barcode mode
+
+				} else {
+
+					var combinedFilter = _.compact([tab, query]).join(' '),
+						facets = POS.Components.SearchParser.channel.request('search:facets', combinedFilter );
+					this.filterEntities.reset( facets );
+
+					if(POS.debug) console.log('Product filter = "' + combinedFilter + '"');
+
+				}
 
 				// if active filter
 				if( this.filterEntities.length > 0 ) {
@@ -58,8 +66,7 @@ define([
 
 				}
 
-				this.pageableCollection.getFirstPage({ silent: true });
-				this.pageableCollection.fullCollection.reset(filteredList, { reindex: false });
+				this.trigger('reset', filteredList);
 
 			},
 
@@ -142,46 +149,32 @@ define([
 
 			},
 
-			_barcodeSearch: function() {
-				var filteredList = this.models,
-					query = this.searchQuery.toLowerCase(),
-					filteredVariations = [];
+			_barcodeSearch: function(products, query) {
+				var filteredVariations = [];
 
-				if( query ) {
-
-					if(POS.debug) console.log('searching for barcode: ' + query);
-					filteredProducts = filteredList.filter( function(product){
-						if( product.get('type') === 'variable' ) {
-							_( product.get('variations') ).each( function(variation) {
-								if( variation.barcode.toLowerCase() === query ) {
-									variation['type'] = 'variation';
-									variation['title'] = product.get('title');
-									variation['categories'] = product.get('categories');
-									var model = new Entities.Product( variation );
-									filteredVariations.push( model );
-								}
-							})
-						}
-						return product.get( 'barcode' ).toLowerCase() === query;
-					}, this);
-
-					filteredList = filteredProducts.concat(filteredVariations);
-					if(POS.debug) console.log('found ' + filteredList.length + ' products');
-
-					this.pageableCollection.getFirstPage({ silent: true });
-					this.pageableCollection.fullCollection.reset(filteredList, { reindex: false });
-
-					if( filteredList.length === 1 && filteredList[0].get('type') !== 'variable' ){
-						if(POS.debug) console.log('adding ' + filteredList[0].get('title') + ' to cart');
-						POS.CartApp.channel.command( 'cart:add', filteredList[0] );
-						POS.ProductsApp.channel.command( 'clear:filter' );
+				filteredProducts = products.filter( function(product){
+					if( product.get('type') === 'variable' ) {
+						_( product.get('variations') ).each( function(variation) {
+							if( variation.barcode.toLowerCase() === query.toLowerCase() ) {
+								variation['type'] = 'variation';
+								variation['title'] = product.get('title');
+								variation['categories'] = product.get('categories');
+								var model = new Entities.Product( variation );
+								filteredVariations.push( model );
+							}
+						})
 					}
+					return product.get( 'barcode' ).toLowerCase() === query.toLowerCase();
+				}, this);
 
-				}
+				products = filteredProducts.concat(filteredVariations);
+				if(POS.debug) console.log('found ' + products.length + ' products');
 
-				// honor tab filters
-				else {
-					this._filterProducts();	
+				// add product to cart and reset search field
+				if( products.length === 1 && products[0].get('type') !== 'variable' ){
+					if(POS.debug) console.log('adding ' + products[0].get('title') + ' to cart');
+					POS.CartApp.channel.command( 'cart:add', products[0] );
+					POS.ProductsApp.channel.command( 'clear:filter' );
 				}
 
 			},

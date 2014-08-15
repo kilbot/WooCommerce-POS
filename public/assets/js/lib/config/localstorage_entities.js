@@ -34,5 +34,4 @@ define(['app', 'localstorage'], function(POS){
 
 	});
 
-	return;
 });
