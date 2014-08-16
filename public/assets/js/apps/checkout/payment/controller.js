@@ -1,8 +1,8 @@
-define(['app', 'apps/checkout/show/show_view'], function(POS, View){
+define(['app', 'apps/checkout/payment/view'], function(POS, View){
 	
-	POS.module('CheckoutApp.Show', function(Show, POS, Backbone, Marionette, $, _){
+	POS.module('CheckoutApp.Payment', function(Payment, POS, Backbone, Marionette, $, _){
 	
-		Show.Controller = Marionette.Controller.extend({
+		Payment.Controller = POS.Controller.Base.extend({
 
 			initialize: function(options) {
 
@@ -21,17 +21,15 @@ define(['app', 'apps/checkout/show/show_view'], function(POS, View){
 				// init layout
 				this.layout = new View.Layout();
 
-			},
-
-			show: function(){
-				
 				this.listenTo( this.layout, 'show', function() {
 					this._showStatusRegion();		
 					this._showPaymentRegion();		
 					this._showActionsRegion();		
 				});
 
-				POS.rightRegion.show(this.layout);
+				this.show(this.layout, {
+					region: POS.rightRegion
+				});
 
 			},
 
@@ -49,7 +47,9 @@ define(['app', 'apps/checkout/show/show_view'], function(POS, View){
 			_showPaymentRegion: function(){
 				
 				// get payment view
-				var view = new View.Payment();
+				var view = new View.Payment({
+					model: this.totals
+				});
 
 				// show
 				this.layout.paymentRegion.show( view );
@@ -62,7 +62,7 @@ define(['app', 'apps/checkout/show/show_view'], function(POS, View){
 
 				// return to sale
 				this.listenTo( view, 'checkout:close', function(args) {
-					POS.trigger('cart:list');
+					POS.CartApp.channel.command('cart:list');
 				});
 
 				// show
@@ -73,5 +73,4 @@ define(['app', 'apps/checkout/show/show_view'], function(POS, View){
 		
 	});
 
-	return POS.CheckoutApp.Show.Controller;
 });

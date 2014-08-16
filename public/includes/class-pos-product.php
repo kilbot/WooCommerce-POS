@@ -82,16 +82,40 @@ class WooCommerce_POS_Product {
 		$query->set( 'meta_query', $meta_query );
 
 		// server filter
-        if( isset( $_GET['filter'] ) && array_key_exists( 'barcode', $_GET['filter'] ) ){
-	  		$meta_query =  array(
-				array(
-					'key' 		=> '_sku',
-					'value' 	=> $_GET['filter']['barcode'],
-					'compare'	=> '='
-				),
-			);
-			$query->set( 'meta_query', $meta_query );      	
-        } 
+        if( isset( $_GET['filter'] ) ) {
+        
+        	// barcode 
+        	if( array_key_exists( 'barcode', $_GET['filter'] ) ) {
+		  		$meta_query =  array(
+					array(
+						'key' 		=> '_sku',
+						'value' 	=> $_GET['filter']['barcode'],
+						'compare'	=> '='
+					),
+				);
+				$query->set( 'meta_query', $meta_query );
+				$query->set( 'post_type', array('product', 'product_variation' ) );
+        	}
+
+        	// variations
+        	if( array_key_exists( 'parent', $_GET['filter'] ) ) {
+        		$query->set( 'post_type', 'product_variation' );
+        		$query->set( 'post_parent', $_GET['filter']['parent'] );
+        	}
+
+        	// featured
+			if( array_key_exists( 'featured', $_GET['filter'] ) && $_GET['filter']['featured'] ) {
+		  		$meta_query =  array(
+					array(
+						'key' 		=> '_featured',
+						'value' 	=> 'yes',
+						'compare'	=> '='
+					),
+				);
+				$query->set( 'meta_query', $meta_query );
+        	}
+        }
+
 	}
 
 	/**

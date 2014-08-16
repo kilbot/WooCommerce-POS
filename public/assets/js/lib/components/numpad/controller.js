@@ -1,7 +1,8 @@
 define([
 	'app', 
 	'lib/components/numpad/entities',
-	'lib/components/numpad/view'
+	'lib/components/numpad/view',
+	'lib/components/numpad/behavior'
 ], function(
 	POS
 ){
@@ -53,6 +54,7 @@ define([
 					title: this.options.target.data('title'),
 					value: this.options.target.val(),
 					type: this.options.target.data('numpad'),
+					original: this.options.target.data('original'),
 					select: true
 				});
 

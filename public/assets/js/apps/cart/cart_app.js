@@ -31,6 +31,7 @@ define(['app','apps/cart/list/controller'], function(POS){
 		 */
 		CartApp.Router = Marionette.AppRouter.extend({
 			appRoutes: {
+				'cart' : 'list',
 				'cart/:id' : 'list'
 			}
 		});

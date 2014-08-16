@@ -40,14 +40,12 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 
 			initialize: function( options ) {
 				accounting.settings = pos_params.accounting;
-
-				// remove any open popovers
-				this.on( 'before:render before:destroy', this.removePopovers );
 			},
 
 			behaviors: {
 				AutoGrow: {},
-				Pulse: {}
+				Pulse: {},
+				Numpad: {}
 			},
 
 			modelEvents: {
@@ -56,15 +54,8 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 
 			events: {
 				'click .action-remove' 	: 'removeFromCart',
-				'click *[data-numpad]'  : 'numpadPopover',
 				'keypress input'  		: 'updateOnEnter',
       			'blur input'      		: 'save'
-			},
-
-			onShow: function() {
-				if(Modernizr.touch) {
-					this.$('*[data-numpad]').attr('readonly', true);
-				}
 			},
 
 			removeFromCart: function(e) {
@@ -79,26 +70,6 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				this.$el.fadeOut( 500, function() {
 					self.$el.parent('tbody').removeClass('animating');
 					Marionette.ItemView.prototype.remove.call(self);
-				});
-			},
-
-			removePopovers: function() {
-				POS.Components.Popover.channel.command( 'close' );
-			},
-
-			numpadPopover: function(e) {
-				if( $(e.target).attr('aria-describedby') ) {
-					return;
-				}
-
-				// much hack, trying to force close popovers
-				var self = this;
-				this.removePopovers();
-
-				POS.Components.Numpad.channel.command( 'showPopover', { target: $(e.target) } );
-				$(e.target).on( 'numpad:return', function( e, value ) {
-					$(e.target).val( value ).trigger('blur');
-					self.removePopovers();
 				});
 			},
 
@@ -160,7 +131,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			template: Handlebars.compile( $('#tmpl-cart-totals').html() ),
 
 			behaviors: {
-				Popover: {}
+				Numpad: {}
 			},
 
 			modelEvents: {
@@ -176,7 +147,6 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			edit: function(e) {
 				var td = $(e.currentTarget).children('td');
 				td.attr('contenteditable','true').text( td.data('value') );
-				this.numpadPopover(e);
 			},
 
 			save: function(e) {
@@ -216,29 +186,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				// toggle discount row
 				td = this.$('.order-discount').show().children('td');
 				td.attr('contenteditable','true').text( td.data('value') );
-			},
-
-			numpadPopover: function(e) {
-				this.trigger( 'popover:open', {
-					target 				: $(e.target),
-					popoverTmpl 		: '<div class="arrow"></div><div class="popover-content"></div>',
-					className 			: 'popover numpad-popover',
-					attributes 			: { 'role' : 'textbox' },
-					onShowPopover 		: this.onShowPopover
-				});
-			},
-
-			onShowPopover: function() {
-				this.numpad = POS.Components.channel.request('get:numpad', { 
-					title: this.options.target.data('title'),
-					value: this.options.target.val(),
-					select: true
-				});
-
-				// hijack popover setContent, and show numpad instead
-				this.options.target.data('bs.popover').__proto__.setContent = function() {};
-				this.content.show(this.numpad);
-			},
+			}
 
 		});
 
@@ -311,4 +259,5 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 	});
 
 	return POS.CartApp.List.View;
+
 });

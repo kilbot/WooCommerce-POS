@@ -34,8 +34,7 @@ define([
 			},
 
 			modelEvents: {
-				'change:value': 'render',
-				'change:mode': 'render',
+				'change:value change:mode': 'render'			
 			},
 
 			events: {
@@ -48,9 +47,10 @@ define([
 				if( this.model.get('type') === 'discount' ){
 					this.model.set({ 
 						currency_symbol: pos_params.accounting.currency.symbol,
-						mode: 'amount',
-						percentage: 0 
+						mode: 'amount'
 					});
+					this.calcDiscount();
+					this.model.on( 'change:value', this.calcDiscount, this );
 				} 
 			},
 
@@ -78,6 +78,15 @@ define([
 			mode: function(e) {
 				var mode = $(e.currentTarget).data('modifier');
 				this.model.set({ mode: mode });
+			},
+
+			calcDiscount: function() {
+				var value = parseFloat( this.model.get('value') ),
+					original = parseFloat( this.model.get('original') );
+
+				if( _.isNaN( value ) ) value = 0;
+				var percentage = 100 * ( 1 - ( value / original ) );
+				this.model.set({ percentage: percentage });
 			}
 
 		});
@@ -86,10 +95,22 @@ define([
 			template: Handlebars.compile( NumkeysTmpl ),
 
 			events: {
-				'click button': 'onClick'
+				'click .standard button': 'standardKeyEvent',
+				'click .discount button': 'discountKeyEvent'
 			},
 
-			onClick: function(e){
+			serializeData: function(){
+				var data = {};
+				data.type = this.model.get('type');
+
+				if( data.type === 'cash' ) {
+					data.quick_key = this.cashKeys( this.model.get('original') );
+				}
+				
+				return data;
+			},
+
+			standardKeyEvent: function(e){
 				var key = $(e.currentTarget).data('key'),
 					value = this.model.get('value'),
 					newValue;
@@ -99,7 +120,11 @@ define([
 						this.trigger('return:keypress');
 					break;
 					case 'del': 
-						newValue = value.slice(0, -1);
+						if(value[value.length-1] === '.') {
+							newValue = value.toString().slice(0, -2);
+						} else {
+							newValue = value.toString().slice(0, -1);
+						}
 					break;
 					case '+/-': 
 						newValue = value*-1;
@@ -109,14 +134,58 @@ define([
 							newValue = key;
 							this.model.set({ select: false });
 						} else {
-							newValue = value + key;
+							newValue = '' + value + key; // concat as string
 						}
 				}
-				
-				if( newValue !== undefined ) {
-					this.model.set({ value: newValue.toString() });
-				}
+
+				this.model.set({ value: newValue }); // store as ??
 			},
+
+			discountKeyEvent: function(e){
+				var discount = $(e.currentTarget).data('key');
+				this.model.set({
+					percentage: discount,
+					mode: 'percentage'
+				});
+			},
+
+			// create 4 quick keys based on amount
+			cashKeys: function( amount ){
+				var amount = parseFloat( amount ),
+					keys = [],
+					x;
+
+				// start with the correct change
+				keys.push(amount);
+
+				// round up to nearest 5 cent
+				x = Math.ceil( amount / 0.05 );
+				keys.push( x * 0.05 );
+				
+				// round up to nearest $1
+				x = Math.ceil( amount );
+				keys.push( x );
+
+				// round up to nearest $5
+				x = Math.ceil( amount / 5 );
+				keys.push( x * 5 );
+
+				// round up to nearest $10
+				x = Math.ceil( amount / 10 );
+				keys.push( x * 10 );
+
+				// round up to nearest $20
+				x = Math.ceil( amount / 20 );
+				keys.push( x * 20 );
+
+				// round up to nearest $50
+				x = Math.ceil( amount / 50 );
+				keys.push( x * 50 );
+
+				keys = _.uniq(keys, true).slice(0, 4);
+
+				return keys;
+			}
 
 		});
 

@@ -62,7 +62,7 @@ define(['app', 'lib/components/loading/view'], function(POS){
 							}
 						break;
 						case 'opacity':
-							self.region.currentView.$el.renderAttr('style');
+							self.region.currentView.$el.removeAttr('style');
 						break;
 					}
 					self.show(realView);

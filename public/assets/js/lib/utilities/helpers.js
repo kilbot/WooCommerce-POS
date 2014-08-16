@@ -26,10 +26,14 @@ define(['app', 'handlebars', 'accounting'], function (POS, Handlebars, accountin
 	});
 
 	Handlebars.registerHelper('number', function(num, options){
+		var precision = accounting.settings.number.precision;
 		if(options.hash.negative) {
 			num = num * -1;
 		}
-		return accounting.formatNumber(num);
+		if( _.isNumber(options.hash.precision) ) {
+			precision = options.hash.precision;
+		}
+		return accounting.formatNumber(num, precision);
 	});
 
 	// accounting.js does not seem to do Bankers Rounding

@@ -13,13 +13,13 @@
 	<input type="text" value="{{number value}}" class="form-control autogrow">
 	{{/is}}
 	{{#is mode 'percentage'}}
-	<input type="text" value="0" class="form-control autogrow">
+	<input type="text" value="{{number percentage precision=0}}" class="form-control autogrow">
 	{{/is}}
 	<span class="input-group-btn">
 		<button class="btn btn-default" type="button" data-modifier="percentage" {{#is mode 'percentage'}}disabled{{/is}}>%</button>
 	</span>
 </div>
-<span class="input-alt pull-right">{{#is mode 'amount'}}{{percentage}}%{{/is}}{{#is mode 'percentage'}}{{{money value}}}{{/is}}</span>
+<span class="input-alt pull-right">{{#is mode 'amount'}}{{number percentage precision=0}}% off{{/is}}{{#is mode 'percentage'}}{{{money value}}}{{/is}}</span>
 {{/is}}
 
 

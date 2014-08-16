@@ -153,7 +153,8 @@ define(['app', 'apps/cart/list/view', 'entities/cart'], function(POS, View){
 
 				// checkout
 				this.listenTo( view, 'cart:checkout:clicked', function() {
-					POS.trigger('checkout:show', this.cartId);
+					// POS.CheckoutApp.channel.command('checkout:payment', this.cartId);
+					POS.CheckoutApp.channel.command('checkout:payment');
 				});
 
 				// show

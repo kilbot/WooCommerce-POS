@@ -4181,7 +4181,11 @@ html, body {
   float: left;
   border-right: 1px solid #ebebeb;
 }
-/* line 95, sass/partials/_numpad.scss */
+/* line 93, sass/partials/_numpad.scss */
+.numpad-keys table.cash button {
+  width: 100px;
+}
+/* line 98, sass/partials/_numpad.scss */
 .numpad-keys table.discount {
   float: right;
   border-left: 1px solid #ebebeb;

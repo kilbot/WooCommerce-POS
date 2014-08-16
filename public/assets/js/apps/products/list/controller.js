@@ -100,6 +100,12 @@ define(['app', 'apps/products/list/view', 'entities/products'], function(POS, Vi
 				// get new tabs component
 				var view = POS.Components.Tabs.channel.request( 'get:tabs', pos_params.tabs );
 
+				// remove On Sale tab for Safari
+				if(!Modernizr.indexeddb) {
+					var onSaleTab = view.collection.get('on_sale:true');
+					view.collection.remove(onSaleTab);
+				}
+
 				// listen to tab collection
 				this.listenTo( view.collection, 'change:active', function(tab) {
 					this.options.settings.set({ tab: tab.get('value') });				

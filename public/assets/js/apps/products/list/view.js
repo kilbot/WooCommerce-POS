@@ -128,7 +128,16 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 
 			initialize: function(options) {
 				// this.on('all', function(e) { console.log("Product Collection View event: " + e); }); // debug
-				
+				this.collection.bind('request', this.ajaxStart, this);
+        		this.collection.bind('sync', this.ajaxComplete, this);
+			},
+
+			ajaxStart: function() {
+				this.$el.css({ 'opacity': 0.5 });
+			},
+
+			ajaxComplete: function() {
+				this.$el.removeAttr('style');
 			},
 
 		});

@@ -1,6 +1,6 @@
 define(['app', 'handlebars'], function(POS, Handlebars){
 
-	POS.module('CheckoutApp.Show.View', function(View, POS, Backbone, Marionette, $, _){
+	POS.module('CheckoutApp.Payment.View', function(View, POS, Backbone, Marionette, $, _){
 
 		View.Layout = Marionette.LayoutView.extend({
 			template: '#tmpl-checkout',
@@ -86,5 +86,6 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 
 	});
 
-	return POS.CheckoutApp.Show.View;
+	return POS.CheckoutApp.Payment.View;
+
 });
