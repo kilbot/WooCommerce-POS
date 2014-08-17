@@ -1,22 +1,37 @@
-define([
-	'app',
-	'apps/customer/list/controller'
-], function(
-	POS
-){
+define(['app', 'apps/customer/list/controller'], function(POS){
 	
 	POS.module('CustomerApp', function(CustomerApp, POS, Backbone, Marionette, $, _){
 
-		// CustomerApp.startWithParent = false;
+		/**
+		 * Customer Module
+		 */
+		CustomerApp.startWithParent = false;
 
-		// create products channel & pass to sub-modules
+		CustomerApp.onStart = function(){
+      		if(POS.debug) console.log('starting Customer Module');
+    	};
+
+    	CustomerApp.onStop = function(){
+			if(POS.debug) console.log('stopping Customer Module');
+		};
+
+		/**
+		 * API
+		 */
+		var API = {
+			getCartComponent: function(options) {
+				var controller = new CustomerApp.List.Controller();
+				return controller.getCartComponent(options)
+			}
+		};
+
+		/**
+		 * Radio
+		 */
 		CustomerApp.channel = Backbone.Radio.channel('customer');
-		CustomerApp.List.channel = CustomerApp.channel;
 
-		var listController = new CustomerApp.List.Controller();	
-
-		CustomerApp.channel.reply( 'customer:select', function() {
-			return listController.select();
+		CustomerApp.channel.reply( 'customer:select', function(options) {
+			return API.getCartComponent(options);
 		});
 
 	});

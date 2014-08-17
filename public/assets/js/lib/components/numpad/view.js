@@ -151,36 +151,31 @@ define([
 
 			// create 4 quick keys based on amount
 			cashKeys: function( amount ){
-				var amount = parseFloat( amount ),
+				var coins = pos_params.denominations.coins,
+					notes = pos_params.denominations.notes,
+					amount = parseFloat( amount ),
 					keys = [],
 					x;
 
-				// start with the correct change
-				keys.push(amount);
 
-				// round up to nearest 5 cent
-				x = Math.ceil( amount / 0.05 );
-				keys.push( x * 0.05 );
-				
-				// round up to nearest $1
-				x = Math.ceil( amount );
-				keys.push( x );
+				// round for two coins
+				_.each( coins, function(coin) {
+					if( _.isEmpty(keys) ) {
+						x = Math.round( amount / coin );
+					} else {
+						x = Math.ceil( amount / coin );
+					}
+					keys.push( x * coin );
+				});
 
-				// round up to nearest $5
-				x = Math.ceil( amount / 5 );
-				keys.push( x * 5 );
+				keys = _.uniq(keys, true).slice(0, 2);
 
-				// round up to nearest $10
-				x = Math.ceil( amount / 10 );
-				keys.push( x * 10 );
 
-				// round up to nearest $20
-				x = Math.ceil( amount / 20 );
-				keys.push( x * 20 );
-
-				// round up to nearest $50
-				x = Math.ceil( amount / 50 );
-				keys.push( x * 50 );
+				// round for two notes
+				_.each( notes, function(note) {
+					x = Math.ceil( amount / note );
+					keys.push( x * note );
+				});
 
 				keys = _.uniq(keys, true).slice(0, 4);
 

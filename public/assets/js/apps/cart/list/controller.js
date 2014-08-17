@@ -6,36 +6,48 @@ define(['app', 'apps/cart/list/view', 'entities/cart'], function(POS, View){
 
 			initialize: function(options) {
 
-				// set cartId
-				var id = options.cartId;
-				if(0 === id % (!isNaN(parseFloat(id)) && 0 <= ~~id)) {
-					this.cartId = id;
-				} else {
-					this.cartId = 1;
-				}
+				// get cart items & totals
+				this.items = POS.Entities.channel.request('cart:items', options.cartId);
+				this.totals = POS.Entities.channel.request('cart:totals', options.cartId);
+
+				// listen for Add to Cart commands
+				POS.CartApp.channel.comply('cart:add', this.addToCart, this);
+
+				// listen for update to totals
+				POS.CartApp.channel.comply( 'update:totals', function(attributes) {
+					this.totals.set(attributes);
+				}, this);
 
 				// init layout
 				this.layout = new View.Layout();
-				this.layout.cartTotalsRegion = ''; // cartTotalsRegion is a fake region
-
-				// get cart items & totals
-				this.items = POS.Entities.channel.request('cart:items', { cartId: this.cartId });
-				this.totals = POS.Entities.channel.request('cart:totals', { id: this.cartId, cart: this.items });
-
-				this.listenTo( this.items, 'add remove', this._showOrHideCart );
+				this.layout.cartTotalsRegion = ''; // cartTotalsRegion is a faux region
 
 				this.listenTo( this.layout, 'show', function() {
 					this._showItemsRegion();
 				});
 
-				// show loader
+				// loader
 				this.show( this.layout, { 
 					region: POS.rightRegion,
 					loading: {
-						entities: this.items
+						entities: [ this.items.fetch({ silent: true }), this.totals.fetch({ silent: true }) ]
 					}
 				});
 
+			},
+
+			addToCart: function(model) {
+				// if product already exists in cart, increase qty
+				if( _( this.items.pluck('id') ).contains( model.attributes.id ) ) {
+					this.items.get( model.attributes.id ).quantity('increase');
+				}
+				// else, add the product
+				else { 
+					this.items.create(model.attributes);
+				}
+
+				// pulse item
+				this.items.get( model.attributes.id ).trigger( 'pulse:item' );
 			},
 
 			_showItemsRegion: function(){
@@ -49,24 +61,7 @@ define(['app', 'apps/cart/list/view', 'entities/cart'], function(POS, View){
 				this.listenTo( view, 'render', function(itemsView) {
 					this.layout.cartTotalsRegion = itemsView.$('tfoot');
 					this._showTotalsRegion();
-					this._initCart();
 				});
-
-				// Add To Cart commands
-				POS.CartApp.channel.comply('cart:add', function(model){
-					
-					// if product already exists in cart, increase qty
-					if( _( this.items.pluck('id') ).contains( model.attributes.id ) ) {
-						this.items.get( model.attributes.id ).quantity('increase');
-					}
-					// else, add the product
-					else { 
-						this.items.create(model.attributes);
-					}
-
-					// pulse item
-					this.items.get( model.attributes.id ).trigger( 'pulse:item' );
-				}, this);
 
 				// remove cart item
 				this.listenTo( view, 'childview:cartitem:delete', function(childview, model) {
@@ -77,36 +72,16 @@ define(['app', 'apps/cart/list/view', 'entities/cart'], function(POS, View){
 				this.layout.cartRegion.show( view );
 			},
 
-			_initCart: function() {
-				if( this.items.length > 0 ) {
-					this._showCustomerRegion();
-					this._showActionsRegion();
-					this._showNotesRegion();
-				}
-				else {
-					this.layout.cartTotalsRegion.hide();
-				}
-			},
-
-			_showOrHideCart: function() {
-
-				if( this.items.length === 1 ) {
-					this.layout.cartTotalsRegion.show();
-					this._initCart();
-				}
-				else if( this.items.length === 0 ) {
-					this.layout.cartTotalsRegion.hide();
-					this._emptyCart();
-				}
-			
-			},
-
-			_showTotalsRegion: function(totalsRegion) {
+			_showTotalsRegion: function() {
 
 				var view = new View.CartTotals({ 
 					model: this.totals,
 					el: this.layout.cartTotalsRegion
 				});
+
+				// show/hide
+				this._showOrHideCart();
+				this.items.on( 'add remove', this._showOrHideCart, this );
 
 				// clean up if itemsView is removed
 				this.on( 'before:destroy', function(){
@@ -122,10 +97,14 @@ define(['app', 'apps/cart/list/view', 'entities/cart'], function(POS, View){
 			},
 
 			_showCustomerRegion: function(){
-				var view = POS.CustomerApp.channel.request('customer:select');
+				var view = POS.CustomerApp.channel.request('customer:select', { model: this.totals });
+				var self = this;
 
-				this.listenTo( view, 'customer:select', function() {
-					// console.log();
+				this.listenTo( view, 'customer:select', function( id, name ) {
+					self.totals.save({
+						customer_id: id,
+						customer_name: name
+					});
 				});
 
 				this.layout.cartCustomerRegion.show( view );
@@ -176,11 +155,23 @@ define(['app', 'apps/cart/list/view', 'entities/cart'], function(POS, View){
 				this.layout.cartNotesRegion.show( view );
 			},
 
-			_emptyCart: function() {
-				// return cart to inital state
-				this.layout.cartCustomerRegion.empty();
-				this.layout.cartActionsRegion.empty();
-				this.layout.cartNotesRegion.empty();
+			_showOrHideCart: function() {
+				if( this.items.length > 0 ) {
+					this.layout.cartTotalsRegion.show();
+					this._showCustomerRegion();
+					this._showActionsRegion();
+					this._showNotesRegion();
+				}
+
+				else {
+					this.layout.cartTotalsRegion.hide();
+					this.layout.cartCustomerRegion.empty();
+					this.layout.cartActionsRegion.empty();
+					this.layout.cartNotesRegion.empty();
+
+					// reset totals to defaults
+					this.totals.set( this.totals.defaults );
+				}
 			}
 
 		});

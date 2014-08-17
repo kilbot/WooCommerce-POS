@@ -5,12 +5,8 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 		View.CartComponent = Marionette.ItemView.extend({
 			template: Handlebars.compile( $('#tmpl-cart-customer').html() ),
 
-			initialize: function() {
-				var Customer = Backbone.Model.extend({});
-				this.model = new Customer({
-					customer_id: 1,
-					customer_name: 'Hi there!'
-				});
+			initialize: function(options) {
+
 			},
 
 			behaviors: {
@@ -45,10 +41,7 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 			},
 
 			updateCustomer: function(e) {
-				this.model.set({
-					customer_id: e.added.id,
-					customer_name: this.formatSelection( e.added )
-				})
+				this.trigger( 'customer:select', e.added.id, this.formatSelection( e.added ) );
 			},
 
 			formatResult: function( customer ) {

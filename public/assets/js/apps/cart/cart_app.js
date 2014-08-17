@@ -20,8 +20,16 @@ define(['app','apps/cart/list/controller'], function(POS){
 		 */
 		var API = {
 			list: function(id) {
+				var validId;
+
+				if(0 === id % (!isNaN(parseFloat(id)) && 0 <= ~~id)) {
+					validId = id;
+				} else {
+					validId = 1;
+				}
+
 				new CartApp.List.Controller({
-					cartId: id
+					cartId: validId
 				});
 			}
 		};

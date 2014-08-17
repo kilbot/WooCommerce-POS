@@ -21,6 +21,9 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				this.cartActionsRegion.on( 'show', function() {
 					this.$el.show();
 				});
+				this.cartNotesRegion.on( 'show', function() {
+					this.$el.show();
+				});
 				this.cartCustomerRegion.on( 'empty', function() {
 					this.$el.hide();
 				});
@@ -144,6 +147,30 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				'blur .order-discount'		: 'save',
 			},
 
+			serializeData: function() {
+				var data = this.model.toJSON();
+
+				// show/hide cart discount
+				if( data.cart_discount !== 0 ) {
+					data.show_cart_discount = true;
+				}
+
+				// show/hide tax
+				if( data.tax !== 0 ) {
+					data.show_tax = true;
+					if( pos_params.wc.tax_total_display === 'itemized' ) {
+						data.show_itemized = true;
+					}
+				}
+
+				// show/hide order discount
+				if( data.order_discount !== 0 ) {
+					data.show_order_discount = true;
+				}
+
+				return data;
+			},
+
 			edit: function(e) {
 				var td = $(e.currentTarget).children('td');
 				td.attr('contenteditable','true').text( td.data('value') );
@@ -164,8 +191,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				var decimal = accounting.unformat( value, accounting.settings.number.decimal );				
 
 				// save
-				this.model.save({ order_discount: decimal });
-				// this.model.trigger('change:order_discount');
+				this.model.set({ order_discount: decimal });
 			},
 
 			saveOnEnter: function(e) {
@@ -237,7 +263,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				var value = this.$el.text();
 
 				// validate and save
-				this.model.save({ note: value });
+				this.model.set({ note: value });
 				this.$el.attr('contenteditable','false');
 				this.showOrHide();
 			},

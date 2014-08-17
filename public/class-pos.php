@@ -39,6 +39,9 @@ class WooCommerce_POS {
 	/** @var object WooCommerce_POS_Product */
 	public $product = null;
 
+	/** @var object WooCommerce_POS_Product */
+	public $currency = null;	
+
 	/** @var cache logged in user id */
 	private $logged_in_user = false;
 
@@ -117,6 +120,9 @@ class WooCommerce_POS {
 		if ( defined( 'DOING_AJAX' ) ) {
 			include_once( 'includes/class-pos-ajax.php' );
 		}
+
+		include_once( $this->plugin_path . 'includes/class-pos-currency.php' );
+		$this->currency = new WooCommerce_POS_Currency();
 
 		include_once( 'includes/pos-template-hooks.php' );
 	}

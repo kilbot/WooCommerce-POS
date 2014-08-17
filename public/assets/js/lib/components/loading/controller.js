@@ -54,7 +54,7 @@ define(['app', 'lib/components/loading/view'], function(POS){
 			showRealView: function(realView, loadingView, config){
 				var self = this;
 
-				$.when( config.entities ).done( function(){
+				$.when.apply( $, config.entities ).done( function(){
 					switch (config.loadingType) {
 						case 'spinner':
 							if(self.region.currentView !== loadingView) {

@@ -174,6 +174,7 @@ class WooCommerce_POS_Template_Hooks {
 		$js_vars['accounting'] 	= $this->accounting_settings();
 		$js_vars['ajax_url'] 	= admin_url( 'admin-ajax.php', 'relative' );
 		$js_vars['customer'] 	= $this->get_default_customer();
+		$js_vars['denominations']= WC_POS()->currency->get_denomination( get_option('woocommerce_currency') );
 		$js_vars['nonce'] 		= wp_create_nonce( "woocommerce-pos");
 		$js_vars['page']		= WC_POS()->template;
 		$js_vars['select'] 		= $this->select2_settings();

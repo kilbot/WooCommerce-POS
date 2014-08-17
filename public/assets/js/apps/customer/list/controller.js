@@ -8,8 +8,8 @@ define(['app', 'apps/customer/list/view'], function(POS, View){
 
 			},
 
-			select: function() {
-				var view = new View.CartComponent();
+			getCartComponent: function(options) {
+				var view = new View.CartComponent(options);
 				return view;
 			}
 
