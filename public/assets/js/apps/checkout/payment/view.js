@@ -74,8 +74,32 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 			template: _.template( $('#tmpl-checkout-actions').html() ),
 
 			triggers: {
-				'click .action-close' 	: 'checkout:close',
-				'click .action-process' : 'checkout:process',
+				'click .action-close' 	: 'checkout:close'
+			},
+
+			events: {
+				'click .action-process' : 'processPayment'
+			},
+
+			processPayment: function() {
+
+				// get any payment form inputs
+				var fields = {};
+				_( $('#checkout-payment').find('form.panel-success').serializeArray() ).each( function(o){
+					var n = o.name,
+						v = o.value;
+
+					fields[n] = fields[n] === undefined ? v
+							: _.isArray( fields[n] ) ? fields[n].concat( v )
+							: [ fields[n], v ];
+				}, this);
+
+				if( _.isEmpty(fields) ) {
+					if(POS.debug) console.warn('No payment method selected');
+				} else {
+					this.model.processPayment( fields );
+				}
+				
 			}
 
 		});

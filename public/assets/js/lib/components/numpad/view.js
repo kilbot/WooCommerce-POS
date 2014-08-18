@@ -96,7 +96,8 @@ define([
 
 			events: {
 				'click .standard button': 'standardKeyEvent',
-				'click .discount button': 'discountKeyEvent'
+				'click .discount button': 'discountKeyEvent',
+				'click .cash button' 	: 'cashKeyEvent',
 			},
 
 			serializeData: function(){
@@ -147,6 +148,11 @@ define([
 					percentage: discount,
 					mode: 'percentage'
 				});
+			},
+
+			cashKeyEvent: function(e) {
+				var cash = $(e.currentTarget).data('key');
+				this.model.set({ value: cash });
 			},
 
 			// create 4 quick keys based on amount

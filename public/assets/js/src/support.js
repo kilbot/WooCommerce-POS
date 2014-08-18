@@ -25,7 +25,7 @@ jQuery( document ).ready(function( $ ) {
 			$('#system-status tbody')
 			.append('<tr class="pass"><td><i class="fa fa-check"></i></td><td>Product Download</td>' + 
 				'<td colspan="2">Product Retrieved OK <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a> ' + 
-				'<textarea class="small" readonly="readonly" style="display:none">' + JSON.stringify( data ) + '</textarea></td></tr>');
+				'<textarea class="small form-control" readonly="readonly" style="display:none">' + JSON.stringify( data ) + '</textarea></td></tr>');
 			$('#pos_status').append('\n*** Product Download ***\n\n' + JSON.stringify( data ) + '\n\n');
 		}) 
 		.fail( function( jqxhr, textStatus, error ) {
@@ -34,7 +34,7 @@ jQuery( document ).ready(function( $ ) {
 			$('#system-status tbody')
 			.append('<tr class="fail"><td><i class="fa fa-times"></i></td><td>Product Download</td>' + 
 				'<td colspan="2">Product Download Failed <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a> ' + 
-				'<textarea class="small" readonly="readonly" style="display:none">' + response + '</textarea></td></tr>');
+				'<textarea class="small form-control" readonly="readonly" style="display:none">' + response + '</textarea></td></tr>');
 			$('#pos_status').append('\n*** Product Download ***\n\n' + response.trim() + '\n\n');
 		});
 	}	

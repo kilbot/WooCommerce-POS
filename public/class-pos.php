@@ -201,7 +201,7 @@ class WooCommerce_POS {
 
 			// check if template exists
 			if( $this->template !== 'main' && file_exists( $this->plugin_path . 'public/views/' . $this->template . '.php' ) ) {
-				if( $template === 'support') $this->support = new WooCommerce_POS_Support();
+				if( $this->template === 'support') $this->support = new WooCommerce_POS_Support();
 				include_once( 'views/' . $this->template . '.php' );
 			}
 

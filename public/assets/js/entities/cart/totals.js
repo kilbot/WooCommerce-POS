@@ -4,7 +4,6 @@ define(['app', 'localstorage'], function(POS){
 
 		Entities.Totals = Backbone.Model.extend({
 			defaults: {
-				title 			: 'Cart Totals',
 				note			: '',
 				order_discount 	: 0,
 				customer_id 	: pos_params.customer.default_id,
@@ -33,6 +32,27 @@ define(['app', 'localstorage'], function(POS){
 				this.set({ total: total }, { silent: true });
 				this.save();
 			},
+
+			processPayment: function( gateway_data ) {
+
+				// combine total model with checkout form data
+				var order = _.assign( this.toJSON(), gateway_data);
+
+				// add ajax info
+				var data = _.assign( order, {
+					action 	: 'pos_process_order',
+					security: pos_params.nonce
+				});
+
+				// send the cart data to the server
+				$.post( pos_params.ajax_url, data )
+				.done(function( data ) {
+					console.log(data);
+				})
+				.fail(function( jqXHR, textStatus, errorThrown ) {
+					if(POS.debug) console.warn('error processing payment');
+				});
+			}
 
 		});
 

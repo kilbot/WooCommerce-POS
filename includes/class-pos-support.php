@@ -85,19 +85,19 @@ class WooCommerce_POS_Support {
 				'action'=> admin_url('admin.php?page=wc-settings'),
 				'prompt'=> __( 'Enable REST API', 'woocommerce-pos' ),
 			),
-			'check_orphan_variations' => array(
-				'title' => __( 'Orphaned Variations', 'woocommerce-pos' ),
-				'test' 	=> !$this->tools->check_orphan_variations(),
-				'pass' 	=> __( 'No orphans.', 'woocommerce-pos' ),
-				'fail' 	=> sprintf( __( 'Some of your variations have no parent. The post ids of the orphans are: %s', 'woocommerce-pos' ), '<code style="font-size:0.8em">'. $this->tools->orphans .'</code>' ),
-				'action'=> wp_nonce_url( WC_POS()->pos_url('support?action=delete_orphans'), 'debug_action' ),
-				'prompt'=> __( 'Delete orphans', 'woocommerce-pos' ),
-			),
+			// 'check_orphan_variations' => array(
+			// 	'title' => __( 'Orphaned Variations', 'woocommerce-pos' ),
+			// 	'test' 	=> !$this->tools->check_orphan_variations(),
+			// 	'pass' 	=> __( 'No orphans.', 'woocommerce-pos' ),
+			// 	'fail' 	=> sprintf( __( 'Some of your variations have no parent. The post ids of the orphans are: %s', 'woocommerce-pos' ), '<code style="font-size:0.8em">'. $this->tools->orphans .'</code>' ),
+			// 	'action'=> wp_nonce_url( WC_POS()->pos_url('support?action=delete_orphans'), 'debug_action' ),
+			// 	'prompt'=> __( 'Delete orphans', 'woocommerce-pos' ),
+			// ),
 			array(
 				'title' => __( 'API Authentication', 'woocommerce-pos' ),
 				'test' 	=> $this->tools->check_api_auth(),
-				'pass' 	=> __( 'Authentication Passed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a><textarea readonly="readonly" class="small" style="display:none">' . $this->tools->auth_response . '</textarea>',
-				'fail' 	=> __( 'Authentication Failed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a><textarea readonly="readonly" class="small" style="display:none">' . $this->tools->auth_response . '</textarea>',
+				'pass' 	=> __( 'Authentication Passed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a><textarea readonly="readonly" class="small form-control" style="display:none">' . $this->tools->auth_response . '</textarea>',
+				'fail' 	=> __( 'Authentication Failed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a><textarea readonly="readonly" class="small form-control" style="display:none">' . $this->tools->auth_response . '</textarea>',
 			),
 		);
 

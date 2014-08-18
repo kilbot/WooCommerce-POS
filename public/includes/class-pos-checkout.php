@@ -60,10 +60,6 @@ class WooCommerce_POS_Checkout {
 	 */
 	public function create_order() {
 
-		// if there is no cart, there is nothing to process!
-		if( empty( $_REQUEST['cart'] ) ) 
-			return;
-
 		// set up order variables
 		$this->process_checkout_data();
 
@@ -393,8 +389,8 @@ class WooCommerce_POS_Checkout {
 		}
 
 		// Remove old tax rows?
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}woocommerce_order_itemmeta WHERE order_item_id IN ( SELECT order_item_id FROM {$wpdb->prefix}woocommerce_order_items WHERE order_id = %d AND order_item_type = 'tax' )", $order_id ) );
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}woocommerce_order_items WHERE order_id = %d AND order_item_type = 'tax'", $order_id ) );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}woocommerce_order_itemmeta WHERE order_item_id IN ( SELECT order_item_id FROM {$wpdb->prefix}woocommerce_order_items WHERE order_id = %d AND order_item_type = 'tax' )", $this->order_id ) );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}woocommerce_order_items WHERE order_id = %d AND order_item_type = 'tax'", $this->order_id ) );
 
 		// Get tax rates 
 		// seems to duplicate $tax->get_rate_code( $key )
@@ -429,7 +425,7 @@ class WooCommerce_POS_Checkout {
 			}
 
 			// Add line item
-			$item_id = wc_add_order_item( $order_id, array(
+			$item_id = wc_add_order_item( $this->order_id, array(
 				'order_item_name' => $item['name'],
 				'order_item_type' => 'tax'
 			) );

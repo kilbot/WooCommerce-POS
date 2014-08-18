@@ -6,23 +6,23 @@
 		<h4><?php _e( 'POS Support Form', 'woocommerce-pos' ); ?></h4>
 		<?php if( WC_POS()->support->support_form() ): ?>
 		<form method="post" action="./">
-			<fieldset class="name">
+			<fieldset class="form-group">
 				<label for="name"><?php _e( 'Name', 'woocommerce-pos' ); ?>:</label>
-				<input type="text" id="name" name="name" value="<?= $current_user->display_name ?>" placeholder="<?php _e( 'Your name', 'woocommerce-pos') ?>" required="required" />
+				<input class="form-control" type="text" id="name" name="name" value="<?= $current_user->display_name ?>" placeholder="<?php _e( 'Your name', 'woocommerce-pos') ?>" required="required" />
 			</fieldset>
-			<fieldset class="name">
+			<fieldset class="form-group">
 				<label for="email"><?php _e( 'Email', 'woocommerce-pos' ); ?>:</label>
-				<input type="email" id="email" name="email" value="<?= $current_user->user_email ?>" placeholder="<?php _e( 'Your email', 'woocommerce-pos') ?>" required="required" />
+				<input class="form-control" type="email" id="email" name="email" value="<?= $current_user->user_email ?>" placeholder="<?php _e( 'Your email', 'woocommerce-pos') ?>" required="required" />
 			</fieldset>
-			<fieldset class="message">
+			<fieldset class="form-group">
 				<label for="message"><?php _e( 'Message', 'woocommerce-pos' ); ?>:</label>
-				<textarea id="message" name="message" placeholder="<?php _e('Describe your problem here ...', 'woocommerce-pos') ?>" required="required"></textarea>
+				<textarea class="form-control" id="message" name="message" placeholder="<?php _e('Describe your problem here ...', 'woocommerce-pos') ?>" required="required"></textarea>
 			</fieldset>
-			<fieldset>
+			<fieldset class="no-border">
 				<small><label><input type="checkbox" name="reports[]" value="pos" checked="checked"> <?php _e( 'Append POS system report', 'woocommerce-pos' ); ?></label></small> <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a>
-				<textarea id="pos_status" name="pos_status" readonly="readonly" class="small" style="display:none">Shop URL: <?= get_bloginfo('url')."\n"; ?></textarea>
+				<textarea class="form-control" id="pos_status" name="pos_status" readonly="readonly" class="small" style="display:none">Shop URL: <?= get_bloginfo('url')."\n"; ?></textarea>
 			</fieldset>
-			<fieldset>
+			<fieldset class="actions text-right">
 				<?php wp_nonce_field('email_support', 'email_support_nonce'); ?>
 				<button type="submit" name="email-support" id="email-support" class="btn btn-primary alignright"><?php _e( 'Send', 'woocommerce-pos' ); ?></button>
 			</fieldset>
@@ -38,7 +38,7 @@
 
 	<section id="system-status" class="col rightcol"> 
 		<h4><?php _e( 'POS System Status', 'woocommerce-pos' ); ?></h4>
-		<table>
+		<table class="table">
 			<tbody>
 				<?php WC_POS()->support->pos_status(); ?>
 			</tbody>

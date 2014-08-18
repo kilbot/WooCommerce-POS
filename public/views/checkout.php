@@ -30,22 +30,23 @@
 				foreach ( $enabled_gateways as $gateway ) :
 		?>
 
-		<div class="panel panel-<?= $gateway->id == $default_gateway ? 'success' : 'default' ; ?> payment_method_<?= $gateway->id; ?>">
-			<div class="panel-heading">
-				<h5 data-toggle="collapse" data-target="#payment_box_<?= $gateway->id; ?>" data-parent="#payment-options" class="panel-title">
-					<input type="hidden" name="<?= $gateway->id; ?>"> 
+		<form class="panel panel-<?= $gateway->id == $default_gateway ? 'success' : 'default' ; ?> payment_method_<?= $gateway->id; ?>">
+			<div class="panel-heading" data-toggle="collapse" data-target="#payment_box_<?= $gateway->id; ?>" data-parent="#payment-options">
+				<h5 class="panel-title">
+					<input type="hidden" name="payment_method" value="<?= $gateway->id; ?>"> 
 					<?php echo $gateway->get_title(); ?> 
 					<?php echo $gateway->get_icon(); ?>
 				</h5>
 			</div>
-			<?php if ( $gateway->has_fields() || $gateway->get_description() ): ?>
 			<div id="payment_box_<?= $gateway->id; ?>" class="panel-collapse collapse <?= $gateway->id == $default_gateway ? 'in' : '' ; ?>">
 				<div class="panel-body">
-					<?php $gateway->payment_fields(); ?>
+					<?php 
+						if( $gateway->has_fields() || $gateway->get_description() ) 
+							$gateway->payment_fields(); 
+					?>
 				</div>
 			</div>
-			<?php endif; ?>
-		</div>
+		</form>
 
 		<?php 
 				endforeach;

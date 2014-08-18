@@ -42,12 +42,18 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 					}, this);
 				}
 
+				// pick the data from the cart items we are going to send
+				var items = this.map( function( model ) {
+					return _.pick( model.toJSON(), ['id', 'qty', 'line_total'] );  
+				});
+
 				// create totals object
 				var totals = {
-					'subtotal'				: subtotal,
-					'cart_discount'			: cart_discount,
-					'tax'					: tax,
-					'itemized_tax'			: itemized_tax
+					'subtotal'		: subtotal,
+					'cart_discount'	: cart_discount,
+					'tax'			: tax,
+					'itemized_tax'	: itemized_tax,
+					'cart' 			: items
 				};
 
 				// now, update the totals

@@ -54,7 +54,9 @@ define(['app', 'apps/checkout/payment/view'], function(POS, View){
 			_showActionsRegion: function(){
 				
 				// get payment view
-				var view = new View.Actions();
+				var view = new View.Actions({
+					model: this.totals
+				});
 
 				// return to sale
 				this.listenTo( view, 'checkout:close', function(args) {

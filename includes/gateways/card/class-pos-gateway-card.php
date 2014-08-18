@@ -70,11 +70,25 @@ class POS_Gateway_Card extends WC_Payment_Gateway {
 			echo '<p>' . wp_kses_post( $this->description ) . '</p>';
 		}
 
+		$currency_pos = get_option( 'woocommerce_currency_pos' );
+
+		if( $currency_pos == 'left' || 'left_space') {
+			$left_addon = '<span class="input-group-addon">'. get_woocommerce_currency_symbol( get_woocommerce_currency() ) .'</span>';
+			$right_addon = '';
+		} else {
+			$left_addon = '';
+			$right_addon = '<span class="input-group-addon">'. get_woocommerce_currency_symbol( get_woocommerce_currency() ) .'</span>';
+		}
+
 		echo '
-			<p class="form-row " id="pos-cashback_field">
+			<div class="form-row " id="pos-cashback_field">
 				<label for="pos-cashback" class="">'. __('Cashback', 'woocommerce-pos') .'</label>
-				<input type="text" class="input-text " name="pos-cashback" id="pos-cashback" placeholder="" maxlength="20" value="" data-numpad="cash" data-title="'. __('Cashback', 'woocommerce-pos') .'" data-placement="bottom" data-original="0">
-			</p>
+				<div class="input-group">
+				'. $left_addon .'
+					<input type="text" class="input-text " name="pos-cashback" id="pos-cashback" placeholder="" maxlength="20" value="" data-numpad="cash" data-title="'. __('Cashback', 'woocommerce-pos') .'" data-placement="bottom" data-original="0">
+				'. $right_addon .'
+				</div>
+			</div>
 		';
 
 	}

@@ -4,7 +4,7 @@
 }
 
 #checkout-payment {
-	border-bottom: 1px solid $dark-border-color;
+	// border-bottom: 1px solid $dark-border-color;
 	.panel-title {
 		&:before {
 			font-family: 'FontAwesome';
@@ -32,6 +32,26 @@
 				border-color: $panel-success-border;
 			}
 		}
+	}
+	.panel-body {
+		.form-row {
+			@include clearfix();
+			label {
+				float: left;
+				margin-right: $spacing;
+				line-height: 34px;
+			}
+			.input-group {
+				float: left;
+				width: 150px;
+			}
+		}
+	}
+	.panel-body:last-of-type {
+		border-bottom: 1px solid $dark-border-color;
+	}
+	input {
+		@extend .form-control; 
 	}
 }
 

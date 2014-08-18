@@ -95,13 +95,13 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * TODO: ui: change calculator
 * New: Numpad
 * TODO: send order meta: user_id, payment_type
-* TODO: test access to POS, multisite
 * TODO: Add menu link directly to POS
 * New: Debug flag for Javascript console logging
 * Improved: Most JS has been rewritten to improve performance and extensibility
 * Improved: Initial download of products, improved performance for large stores and/or slow servers
 * New: Greek translation thanks to Marios Polycarpou! [http://el.woopos.com.au/pos](http://el.woopos.com.au/pos)
 * New: German translation thanks to Simon Potye! [http://de.woopos.com.au/pos](http://de.woopos.com.au/pos)
+* New: Danish translation thanks to Thomas Clausen! [http://da.woopos.com.au/pos](http://da.woopos.com.au/pos)
 * Fix: Authenication no longer relies on cookies, should fix authentication issues for some users
 * Fix: Bug preventing product display on Safari for subfolder installs of WordPress
 

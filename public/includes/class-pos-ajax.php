@@ -47,6 +47,10 @@ class WooCommerce_POS_AJAX {
 		// security
 		check_ajax_referer( 'woocommerce-pos', 'security' );
 
+		// if there is no cart, there is nothing to process!
+		if( empty( $_REQUEST['cart'] ) ) 
+			wp_die('There are no cart items');
+
 		// create order 
 		$checkout = new WooCommerce_POS_Checkout();
 		$order = $checkout->create_order();

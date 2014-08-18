@@ -22,6 +22,7 @@ define(['app'], function(POS){
 					});
 					$('body').append(this.tester);
 				}
+
 			},
 
 			ui: {
@@ -35,7 +36,7 @@ define(['app'], function(POS){
 			onRender: function() {
 				_.each( this.ui.input, function( input ) {
 					$(input).trigger('input');
-				});
+				}, this);
 			},
 
 			onInputEvent: function(e) {
