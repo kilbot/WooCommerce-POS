@@ -61,6 +61,18 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
       			'blur input'      		: 'save'
 			},
 
+			serializeData: function() {
+				var data = this.model.toJSON();
+
+				// discount
+				if( data.line_discount !== 0 ) {
+					data.show_line_discount = true;
+					data.regular_total = ( this.model.get('regular_price') * this.model.get('qty') );
+				}
+
+				return data;
+			},
+
 			removeFromCart: function(e) {
 				e.preventDefault();
 				this.trigger('cartitem:delete', this.model);
@@ -90,7 +102,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 							break;
 						}
 						if ( value ) {
-							this.model.save({ qty: value });
+							this.model.save({ qty: parseFloat( value ) });
 							input.removeClass('editing');
 						} else {
 							input.focus();
@@ -99,7 +111,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 
 					case 'price':
 						if( !isNaN( decimal ) ) {
-							this.model.save({ display_price: decimal });
+							this.model.save({ item_price: decimal });
 						} else {
 							input.focus();
 						}
@@ -153,6 +165,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				// show/hide cart discount
 				if( data.cart_discount !== 0 ) {
 					data.show_cart_discount = true;
+					data.subtotal = this.model.get('subtotal') + this.model.get('cart_discount');
 				}
 
 				// show/hide tax
@@ -166,6 +179,11 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				// show/hide order discount
 				if( data.order_discount !== 0 ) {
 					data.show_order_discount = true;
+				}
+
+				// prices include tax?
+				if( pos_params.wc.prices_include_tax === 'yes' ) {
+					data.prices_include_tax = true;
 				}
 
 				return data;

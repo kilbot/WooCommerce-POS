@@ -6,17 +6,9 @@ define(['app', 'apps/checkout/payment/view'], function(POS, View){
 
 			initialize: function(options) {
 
-				// set cartId
-				var id = options.cartId;
-				if(0 === id % (!isNaN(parseFloat(id)) && 0 <= ~~id)) {
-					this.cartId = id;
-				} else {
-					this.cartId = 1;
-				}
-
-				// get cart totals
-				this.items = POS.Entities.channel.request('cart:items', { cartId: this.cartId });
-				this.totals = POS.Entities.channel.request('cart:totals', { id: this.cartId, cart: this.items });
+				// get cart items & totals
+				this.items = POS.Entities.channel.request('cart:items', options.cartId);
+				this.totals = POS.Entities.channel.request('cart:totals', options.cartId);
 
 				// init layout
 				this.layout = new View.Layout();
@@ -27,8 +19,12 @@ define(['app', 'apps/checkout/payment/view'], function(POS, View){
 					this._showActionsRegion();		
 				});
 
-				this.show(this.layout, {
-					region: POS.rightRegion
+				// loader
+				this.show( this.layout, { 
+					region: POS.rightRegion,
+					loading: {
+						entities: [ this.items.fetch({ silent: true }), this.totals.fetch({ silent: true }) ]
+					}
 				});
 
 			},
@@ -37,7 +33,7 @@ define(['app', 'apps/checkout/payment/view'], function(POS, View){
 				
 				// get payment view
 				var view = new View.Status({
-					total: this.totals.get('total')
+					model: this.totals
 				});
 
 				// show

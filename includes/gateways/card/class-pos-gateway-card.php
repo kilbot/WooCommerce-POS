@@ -23,7 +23,7 @@ class POS_Gateway_Card extends WC_Payment_Gateway {
 		$this->icon               = apply_filters( 'woocommerce_pos_card_icon', '' );
 		$this->method_title       = __( 'Card', 'woocommerce-pos' );
 		$this->method_description = __( 'Debit & Credit Card sales using an external EFTPOS machine.', 'woocommerce-pos' );
-		$this->has_fields         = false;
+		$this->has_fields         = true;
 
 		// Load the settings.
 		$this->init_form_fields();
@@ -60,6 +60,24 @@ class POS_Gateway_Card extends WC_Payment_Gateway {
 			),
  	   );
     }
+
+    /**
+	 * Display the payment fields in the checkout
+	 */
+	public function payment_fields() {
+
+		if ( $this->description ) {
+			echo '<p>' . wp_kses_post( $this->description ) . '</p>';
+		}
+
+		echo '
+			<p class="form-row " id="pos-cashback_field">
+				<label for="pos-cashback" class="">'. __('Cashback', 'woocommerce-pos') .'</label>
+				<input type="text" class="input-text " name="pos-cashback" id="pos-cashback" placeholder="" maxlength="20" value="" data-numpad="cash" data-title="'. __('Cashback', 'woocommerce-pos') .'" data-placement="bottom" data-original="0">
+			</p>
+		';
+
+	}
 
 	/**
 	 * Check If The Gateway Is Available For Use

@@ -20,8 +20,16 @@ define(['app', 'apps/checkout/payment/controller'], function(POS){
 		 */
 		var API = {
 			payment: function(id){
+				var validId;
+
+				if(0 === id % (!isNaN(parseFloat(id)) && 0 <= ~~id)) {
+					validId = id;
+				} else {
+					validId = 1;
+				}
+
 				new CheckoutApp.Payment.Controller({
-					cartId: id
+					cartId: validId
 				});
 			}
 		};

@@ -15,13 +15,9 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 		View.Status = Marionette.ItemView.extend({
 			template: Handlebars.compile( $('#tmpl-checkout-status').html() ),
 
-			initialize: function(options){
-				this.total = options.total;
-			},
-
-			serializeData: function() {
-				return { total: this.total };
-			}
+			// initialize: function(options) {
+				
+			// }
 
 		});
 

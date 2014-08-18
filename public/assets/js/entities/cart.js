@@ -8,7 +8,7 @@ define(['app',
 
 		var API = {
 			getCartItems: function(id) {
-				return items = new Entities.CartItemCollection([], {
+				return items = new Entities.CartItems([], {
 					cartId: id
 				});
 			},

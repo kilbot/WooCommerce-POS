@@ -14,9 +14,9 @@ define(['app', 'apps/cart/list/view', 'entities/cart'], function(POS, View){
 				POS.CartApp.channel.comply('cart:add', this.addToCart, this);
 
 				// listen for update to totals
-				POS.CartApp.channel.comply( 'update:totals', function(attributes) {
-					this.totals.set(attributes);
-				}, this);
+				this.totals.listenTo( this.items, 'update:totals', function(subtotals) {
+					this.set(subtotals);
+				});
 
 				// init layout
 				this.layout = new View.Layout();
@@ -34,6 +34,10 @@ define(['app', 'apps/cart/list/view', 'entities/cart'], function(POS, View){
 					}
 				});
 
+			},
+
+			onDestroy: function(){
+				POS.CartApp.channel.stopComplying('cart:add');
 			},
 
 			addToCart: function(model) {

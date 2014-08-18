@@ -12,32 +12,26 @@ define(['app', 'localstorage'], function(POS){
 			},
 
 			initialize: function(options) {
-				this.on('all', function(e) { console.log("Cart Totals Model event: " + e); }); // debug
+				// this.on('all', function(e) { console.log("Cart Totals Model event: " + e); }); // debug
 				
 				// localStorage
 				this.localStorage = new Backbone.LocalStorage( 'cart_totals' );
 
+				// update total and save on change
 				this.on( 'change', this.updateTotal, this ); 
 
 			},
 
-			updateTotal: function() {				
-				var total = this.get('subtotal') - this.get('cart_discount') + this.get('tax') - this.get('order_discount');
+			updateTotal: function() {
+				var total;
+				if( pos_params.wc.prices_include_tax === 'yes' ) {
+					total = this.get('subtotal') - this.get('order_discount');
+				} else {
+					total = this.get('subtotal') + this.get('tax') - this.get('order_discount');
+				}			
+				
 				this.set({ total: total }, { silent: true });
 				this.save();
-
-				// // get order discount
-				// order_discount = this.get('order_discount');
-
-				// // totals calc
-				// subtotal = line_totals + cart_discount;
-				// total = line_totals + tax - order_discount;
-
-				// special case: display cart with tax
-				// if ( this.params.wc.tax_display_cart === 'incl' ) {
-				// 	subtotal += tax;
-				// }
-
 			},
 
 		});

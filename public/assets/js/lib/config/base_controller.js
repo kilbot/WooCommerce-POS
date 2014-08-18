@@ -14,9 +14,9 @@ define(['app', 'backbone.marionette'], function(POS, Marionette){
 			return Marionette.Controller.prototype.constructor.apply(this, arguments);
 		},
 
-		close: function() {
+		destroy: function() {
 			POS.globalChannel.command( 'unregister:instance', this, this._instance_id );
-			return Marionette.Controller.prototype.close.apply(this, arguments);
+			return Marionette.Controller.prototype.destroy.apply(this, arguments);
 		},
 
 		show: function(view, options) {
@@ -34,7 +34,8 @@ define(['app', 'backbone.marionette'], function(POS, Marionette){
 			if( this._mainView ) return;
 
 			this._mainView = view;
-			this.listenTo( view, 'close', this.close );
+			this.listenTo( view, 'destroy', this.destroy );
+
 		},
 
 		_manageView: function(view, options) {

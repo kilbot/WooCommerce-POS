@@ -1,64 +1,49 @@
-define(['app', 'accounting'], function(POS, accounting){
+define(['app', 'localstorage'], function(POS){
 
 	POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
 		Entities.CartItem = Backbone.Model.extend({
 
 			defaults : {
-				'display_price'		: 0,
-				'display_total' 	: 0,
 				'item_discount'		: 0,
 				'item_price'		: 0,
+				'item_tax' 			: 0,
+				'line_discount' 	: 0,
+				'line_tax' 			: 0,
 				'line_total'		: 0,
 				'qty'				: 1,
-				'line_tax' 			: 0,
-				'item_tax' 			: 0,
-				'total_discount' 	: 0,
 			},
-			params: pos_params,
 
-			initialize: function(options) { 
+			initialize: function(attributes, options) { 
 				// this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
 
-				// set the accounting settings
-				accounting.settings = this.params.accounting;
-
 				// update on change to qty or line discount
-				this.on( 'change:qty change:display_price', this.updateLineTotals );
+				this.on( 'change:qty change:item_price', this.updateLineTotals );
 
 				// set item price on init, this will trigger updateLineTotals()
-				if( this.get('display_price') === 0 ) {
-					this.set( { 'display_price': parseFloat( this.get('price') ) } );
+				if( this.get('item_price') === 0 ) {
+					this.set( { 'item_price': parseFloat( this.get('price') ) } );
 				}
 			},
 
 			updateLineTotals: function() {
-				var qty 		   = this.get('qty'),
-					display_price  = this.get('display_price'),
-					original_price = parseFloat( this.get('price') ),
-					line_tax 	   = 0,
-					discount 	   = 0,
-					item_price 	   = 0,
-					display_total  = 0,
-					discounted 	   = false,
-					taxable 	   = this.get('taxable');
-					
-				// set taxes first
-				if( taxable && this.params.wc.calc_taxes === 'yes' ) {
-					this.calcTax( display_price, qty, this.get('tax_rates') );
+				var qty 			= this.get('qty'),
+					item_price 		= this.get('item_price'),
+					discount 		= 0;
+				
+				// calc discount
+				discount = parseFloat( this.get('regular_price') ) - item_price;
+				
+				// set taxes
+				if( this.get('taxable') && pos_params.wc.calc_taxes === 'yes' ) {
+					this.calcTax( item_price, qty, this.get('tax_rates') );
 				}
 
-				discount = original_price - display_price;
-				item_price = ( this.params.wc.prices_include_tax === 'yes' ) ? display_price - this.get('item_tax') : display_price;
-				display_total = this.displayTotal( original_price, taxable );
-				discounted = discount !== 0 ? this.roundNum( display_total * qty ) - this.roundNum( discount * qty ) : false;
 				this.save({
-					'item_price'		: this.roundNum( item_price ),
 					'item_discount'		: this.roundNum( discount ),
-					'total_discount'	: this.roundNum( discount * qty ),
-					'line_total'		: this.roundNum( item_price * qty ),
-					'display_total'		: this.roundNum( display_total * qty ),
-					'discounted'		: discounted,
+					'line_discount'		: this.roundNum( discount * qty ),
+					'item_price'		: this.roundNum( item_price ),
+					'line_total'		: this.roundNum( item_price * qty )
 				});
 			},
 
@@ -69,7 +54,7 @@ define(['app', 'accounting'], function(POS, accounting){
 			calcTax: function( price, qty, rates ) {
 				var line_total = 0;
 
-				if( this.params.wc.prices_include_tax === 'yes' ) {
+				if( pos_params.wc.prices_include_tax === 'yes' ) {
 					line_total = this.calcInclusiveTax( price, qty, rates );
 				}
 				else {
@@ -196,29 +181,10 @@ define(['app', 'accounting'], function(POS, accounting){
 				// return this.roundNum( item_tax * qty );
 			},
 
-			/**
-			 * Handle special cases of display
-			 */
-			displayTotal: function(price, taxable) {
-				var tax = 0;
-
-				if( taxable && this.params.wc.calc_taxes === 'yes' ) {
-					tax = this.get('line_tax');
-					if( this.params.wc.prices_include_tax === 'no' && this.params.wc.tax_display_cart === 'incl' ) {
-						price = price + tax;
-					}
-					else if ( this.params.wc.prices_include_tax === 'yes' && this.params.wc.tax_display_cart === 'excl' ) {
-						price = price - tax;
-					}
-				}
-				
-				return price;
-			},
-
 			// Convenience method for rounding to 4 decimal places
 			// TODO: mirror the functionality of WC_ROUNDING_PRECISION
 			roundNum: function(num) {
-				if( this.params.wc.tax_round_at_subtotal === 'no' ) {
+				if( pos_params.wc.tax_round_at_subtotal === 'no' ) {
 					return parseFloat( num.toFixed(4) );
 				}
 				return num;
@@ -234,5 +200,5 @@ define(['app', 'accounting'], function(POS, accounting){
 
 	});
 
-	return;
+	return POS.Entities.CartItem;
 });

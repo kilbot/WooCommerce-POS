@@ -13,29 +13,21 @@ require.config({
         'boot': '../../../tests/lib/jasmine-2.0.0/boot',
 
         // Core Libraries
-        'jquery': '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
+        'jquery': 'vendor/jquery-2.1.1.min',
         // 'jquery': '../../../bower_components/jquery/dist/jquery.min',
-        'underscore': '../../../bower_components/lodash/dist/lodash.min',
-        // 'underscore': '../../../bower_components/underscore/underscore',
-        'backbone': '../../../bower_components/backbone/backbone',
-        'handlebars': '../../../bower_components/handlebars/handlebars.min',
-        'accounting': '../../../bower_components/accounting/accounting.min',
+        underscore  : '../../../bower_components/lodash/dist/lodash.min',
+        backbone    : '../../../bower_components/backbone/backbone',
+        'backbone.radio': '../../../bower_components/backbone.radio/build/backbone.radio',
+        'backbone.babysitter': '../../../bower_components/backbone.babysitter/lib/backbone.babysitter',
+        'backbone.marionette': '../../../bower_components/marionette/lib/core/backbone.marionette',
+        handlebars  : '../../../bower_components/handlebars/handlebars.min',
+        indexeddb   : '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
+        localstorage: '../../../bower_components/backbone.localstorage/backbone.localStorage',
+        paginator   : '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
+        accounting  : '../../../bower_components/accounting/accounting.min',
         
-        // Convenience methods for getting and setting User settings
-        'settings': '../../../public/assets/js/src/Settings',
-
-        // Plugins
-        'bootstrap-modal': '../../../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal',
-        'backbone-indexeddb': '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
-        'backbone-localstorage': '../../../bower_components/backbone.localStorage/backbone.localStorage',
-        'backbone-paginator': '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
-
-        // Custom Plugins
-        'autoGrowInput': '../../../public/assets/js/src/jquery.autoGrowInput',
-        'selectText': '../../../public/assets/js/src/jquery.selectText',
-        
-        'text': '../../../tests/lib/text',
-		'json': '../../../tests/lib/json',
+        text: '../../../tests/lib/text',
+		json: '../../../tests/lib/json',
 
         // Dummy Data
         'dummy-products': '../../../tests/data/dummy-products.json'
@@ -67,13 +59,13 @@ require.config({
 
 var specs = [
     '../../../tests/spec/cartItemSpec',
-    '../../../tests/spec/cartTotalsSpec',
+    '../../../tests/spec/cartItemsSpec',
+    // '../../../tests/spec/cartTotalsSpec',
 ];
 
 // default params
 var pos_params = {
     "ajax_url": "\/wp-admin\/admin-ajax.php",
-    "loading_icon": "http:\/\/woopos.com.au\/wp-content\/plugins\/woocommerce-pos\/\/assets\/ajax-loader.gif",
     "accounting": {
         "currency": {
             "symbol": "&#36;",
@@ -99,6 +91,10 @@ var pos_params = {
         "tax_round_at_subtotal": "no",
         "tax_display_cart": "excl",
         "tax_total_display": "single"
+    },
+    "customer": {
+        "default_id": "0",
+        "default_name": "Guest"
     }
 };
 

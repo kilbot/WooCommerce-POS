@@ -2,7 +2,7 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 
 	POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
-		Entities.CartItemCollection = Backbone.Collection.extend({
+		Entities.CartItems = Backbone.Collection.extend({
 			model: Entities.CartItem,
 
 			initialize: function(models, options) { 
@@ -24,7 +24,7 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 
 				// sum up the line totals
 				subtotal = _( this.pluck('line_total') ).reduce( function(memo, num){ return memo + num; }, 0 );
-				cart_discount = _( this.pluck('total_discount') ).reduce( function(memo, num){ return memo + num; }, 0 );
+				cart_discount = _( this.pluck('line_discount') ).reduce( function(memo, num){ return memo + num; }, 0 );
 				
 				if( pos_params.wc.calc_taxes === 'yes' ) {
 					tax = _( this.pluck('line_tax') ).reduce( function(memo, num){ return memo + num; }, 0 );			
@@ -51,7 +51,7 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 				};
 
 				// now, update the totals
-				POS.CartApp.channel.command('update:totals', totals);
+				this.trigger('update:totals', totals);
 
 			},
 	 
@@ -74,5 +74,5 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 
 	});
 
-	return;
+	return POS.Entities.CartItems;
 });

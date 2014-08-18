@@ -157,6 +157,9 @@ define([
 					keys = [],
 					x;
 
+				if(amount === 0) {
+					return notes.slice(-4);
+				}
 
 				// round for two coins
 				_.each( coins, function(coin) {
