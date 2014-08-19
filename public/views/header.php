@@ -35,10 +35,10 @@
 <?php do_action('woocommerce_pos_before'); ?>
 <div id="page" class="site">
 	<header id="masthead" role="banner" class="site-header">
-		<a href="#" id="menu-btn" class="btn-header pull-left"><i class="fa fa-bars"></i> <span><?php _e( 'Menu', 'woocommerce-pos' ); ?></span></a>
+		<a href="#" id="menu-btn" class="btn-header pull-left"><i class="icon icon-bars"></i> <span><?php _e( 'Menu', 'woocommerce-pos' ); ?></span></a>
 		<div class="dropdown pull-right">
 			<a href="#" class="btn-header" data-toggle="dropdown">
-				<i class="fa fa-cog"></i> <span><?php _e( 'Howdy', 'woocommerce-pos' ); ?>, <?= $current_user->display_name ?></span>
+				<i class="icon icon-cog"></i> <span><?php _e( 'Howdy', 'woocommerce-pos' ); ?>, <?= $current_user->display_name ?></span>
 			</a>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 				<li><a href="<?php echo wp_logout_url( home_url() ); ?>" title="Logout"><?php _e( 'Logout', 'woocommerce-pos' ); ?></a></li>

@@ -16,13 +16,12 @@ class WooCommerce_POS_Template_Hooks {
 
 		add_action( 'woocommerce_pos_head', array( $this, 'pos_print_css' ) );
 		add_action( 'woocommerce_pos_head', array( $this, 'print_head_js' ) );
-		add_action( 'woocommerce_pos_before', array( $this, 'svg_defs' ) );
 		add_action( 'woocommerce_pos_after', array( $this, 'print_footer_js' ) );
 	}
 
-	public function svg_defs() {
-		include_once( WC_POS()->plugin_path . 'assets/svg-defs.svg' );
-	}
+	// public function svg_defs() {
+	// 	include_once( WC_POS()->plugin_path . 'assets/svg-defs.svg' );
+	// }
 
 	/**
 	 * Get the woocommerce shop settings
@@ -204,7 +203,7 @@ class WooCommerce_POS_Template_Hooks {
 	public function pos_print_css() {
 		$html = '
 	<link rel="stylesheet" href="'. WC_POS()->plugin_url .'public/assets/css/pos.min.css?ver='. WooCommerce_POS::VERSION .'" type="text/css" />
-	<link rel="stylesheet" href="'. WC_POS()->plugin_url .'assets/css/font-awesome.min.css" type="text/css" />
+	<link rel="stylesheet" href="'. WC_POS()->plugin_url .'assets/css/icons.min.css" type="text/css" />
 		';
 		echo $html;
 	}

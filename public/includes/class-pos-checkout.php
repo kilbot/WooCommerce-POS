@@ -94,6 +94,9 @@ class WooCommerce_POS_Checkout {
 			$order->add_order_note( $this->posted['note'], false );
 		}
 
+		// Store Order ID in session
+		WC()->session->order_awaiting_payment = $this->order_id;
+
 		// now process the payment
 		$response = $this->process_payment();
 

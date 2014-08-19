@@ -1,5 +1,5 @@
 @font-face {
-	font-family: 'WooCommerce-POS';
+	font-family: 'WooCommercePOS';
 	src:url('../../../assets/fonts/woocommerce-pos.eot?ye6tud');
 	src:url('../../../assets/fonts/woocommerce-pos.eot?#iefixye6tud') format('embedded-opentype'),
 		url('../../../assets/fonts/woocommerce-pos.woff?ye6tud') format('woff'),
@@ -10,7 +10,7 @@
 }
 
 [class^="icon-"], [class*=" icon-"] {
-	font-family: 'WooCommerce-POS';
+	font-family: 'WooCommercePOS';
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
@@ -28,6 +28,6 @@
 }
 
 #toplevel_page_woocommerce-pos .wp-menu-image:before {
-	font-family: 'WooCommerce-POS' !important;
+	font-family: 'WooCommercePOS' !important;
 	content: '\e600' !important;
 }

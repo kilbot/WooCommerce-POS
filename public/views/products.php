@@ -14,10 +14,10 @@
 <script type="text/template" id="tmpl-products-filter">
 <div class="input-group">
 	<div class="input-group-btn">
-		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa {{#is search_mode 'barcode'}}fa-barcode{{else}}fa-search{{/is}}"></i></button>
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="icon {{#is search_mode 'barcode'}}icon-barcode{{else}}icon-search{{/is}}"></i></button>
 		<ul class="dropdown-menu" role="menu">
-			<li><a href="#" class="action-search"><i class="fa fa-search"></i> Search</a></li>
-			<li><a href="#" class="action-barcode"><i class="fa fa-barcode"></i> Scan Barcode</a></li>
+			<li><a href="#" class="action-search"><i class="icon icon-search"></i> Search</a></li>
+			<li><a href="#" class="action-barcode"><i class="icon icon-barcode"></i> Scan Barcode</a></li>
 		</ul>
 	</div><!-- /btn-group -->
 	{{#is search_mode 'barcode'}}
@@ -25,10 +25,10 @@
 	{{else}}
 	<input type="search" placeholder="<?php _e( 'Search for products', 'woocommerce-pos' ); ?>" tabindex="1"  autofocus="autofocus" class="form-control">
 	{{/is}}
-	<span class="input-group-addon clear-btn"><a class="clear" href="#"><i class="fa fa-times-circle fa-lg"></i></a></span>
+	<span class="input-group-addon clear-btn"><a class="clear" href="#"><i class="icon icon-times-circle icon-lg"></i></a></span>
 	{{#is sync_mode 'client'}}
 	<div class="input-group-btn">
-        <button type="button" class="btn btn-default action-sync"><i class="fa fa-refresh"></i></button>
+        <button type="button" class="btn btn-default action-sync"><i class="icon icon-refresh"></i></button>
     </div>
     {{/is}}
 </div><!-- /input-group -->
@@ -68,9 +68,9 @@
 		{{/is}}
 	</div>
 	{{#is type 'variable'}}
-		<div class="action"><a class="btn btn-success btn-circle action-variations" href="#"><i class="fa fa-chevron-right"></i></a></div>
+		<div class="action"><a class="btn btn-success btn-circle action-variations" href="#"><i class="icon icon-chevron-right"></i></a></div>
 	{{else}}
-		<div class="action"><a class="btn btn-success btn-circle action-add" href="#"><i class="fa fa-plus"></i></a></div>
+		<div class="action"><a class="btn btn-success btn-circle action-add" href="#"><i class="icon icon-plus"></i></a></div>
 	{{/is}}
 </script>
 
@@ -79,14 +79,14 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-pagination">
-	<a href="#" class="prev btn btn-default pull-left {{#is currentPage 1}}disabled{{/is}}"><i class="fa fa-chevron-left"></i></a> 
-	<a href="#" class="next btn btn-default pull-right {{#is currentPage lastPage}}disabled{{/is}}"><i class="fa fa-chevron-right"></i></a>
+	<a href="#" class="prev btn btn-default pull-left {{#is currentPage 1}}disabled{{/is}}"><i class="icon icon-chevron-left"></i></a> 
+	<a href="#" class="next btn btn-default pull-right {{#is currentPage lastPage}}disabled{{/is}}"><i class="icon icon-chevron-right"></i></a>
 	<small>
 		<?= sprintf( __( 'Page %s of %s', 'woocommerce-pos' ), '{{currentPage}}', '{{totalPages}}' ); ?>. 
 		<?= sprintf( __( 'Showing %s of %s products', 'woocommerce-pos' ), '{{currentRecords}}', '{{totalRecords}}' ); ?>.<br>
 		{{#if last_update}}
 			<?= sprintf( __( 'Last updated %s', 'woocommerce-pos' ), '{{last_update}}' ); ?>.
-			<a href="#" class="sync"><i class="fa fa-refresh"></i> <?php _e( 'sync', 'woocommerce-pos' ); ?></a> | <a href="#" class="destroy"><i class="fa fa-times-circle"></i> <?php _e( 'clear', 'woocommerce-pos' ); ?></a>
+			<a href="#" class="sync"><i class="icon icon-refresh"></i> <?php _e( 'sync', 'woocommerce-pos' ); ?></a> | <a href="#" class="destroy"><i class="icon icon-times-circle"></i> <?php _e( 'clear', 'woocommerce-pos' ); ?></a>
 		{{else}}
 			<?php _e( 'Your browser does not support indexeddb', 'woocommerce-pos' ); ?>
 		{{/if}}

@@ -53,7 +53,7 @@
 			{{{money line_total}}}
 		{{/if}}
 	</td>
-	<td><a class="btn btn-circle btn-danger action-remove" href="#"><i class="fa fa-times"></i></a></td>
+	<td><a class="btn btn-circle btn-danger action-remove" href="#"><i class="icon icon-times"></i></a></td>
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-totals">

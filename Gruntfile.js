@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 		// watch for changes and trigger sass, jshint, uglify and livereload
 		watch: {
 			compass: {
-				files: ['public/assets/css/sass/{,*/}*.{scss,sass}', 'public/assets/css/pos.css', 'admin/assets/css/admin.css', 'admin/assets/css/dashicons.css'],
+				files: ['public/assets/css/sass/{,*/}*.{scss,sass}', 'public/assets/css/pos.css', 'admin/assets/css/admin.css', 'admin/assets/css/dashicons.css', 'assets/css/icons.css'],
 				tasks: ['compass:dev', 'cssmin']
 			},
 			js: {
@@ -64,7 +64,8 @@ module.exports = function(grunt) {
 				files: {
 					'public/assets/css/pos.min.css': ['public/assets/css/pos.css'],
 					'admin/assets/css/admin.min.css':['admin/assets/css/admin.css'],
-					'admin/assets/css/dashicons.min.css':['admin/assets/css/dashicons.css']
+					'admin/assets/css/dashicons.min.css':['admin/assets/css/dashicons.css'],
+					'assets/css/icons.min.css':['assets/css/icons.css']
 				}
 			}
 		},
