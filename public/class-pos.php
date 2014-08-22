@@ -39,7 +39,10 @@ class WooCommerce_POS {
 	/** @var object WooCommerce_POS_Product */
 	public $product = null;
 
-	/** @var object WooCommerce_POS_Product */
+	/** @var object WooCommerce_POS_Checkout */
+	public $checkout = null;
+
+	/** @var object WooCommerce_POS_Currency */
 	public $currency = null;	
 
 	/** @var cache logged in user id */
@@ -122,8 +125,6 @@ class WooCommerce_POS {
 		}
 
 		include_once( $this->plugin_path . 'includes/class-pos-currency.php' );
-		$this->currency = new WooCommerce_POS_Currency();
-
 		include_once( 'includes/pos-template-hooks.php' );
 	}
 
@@ -142,6 +143,8 @@ class WooCommerce_POS {
 
 		// Load class instances
 		$this->product = new WooCommerce_POS_Product();
+		$this->checkout = new WooCommerce_POS_Checkout();
+		$this->currency = new WooCommerce_POS_Currency();
 	}
 
 	/**

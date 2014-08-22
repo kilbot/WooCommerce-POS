@@ -11,7 +11,7 @@ define(['app'], function(POS){
 			},
 
 			initialize: function(){
-				this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
+				// this.on('all', function(e) { console.log(this.get('title') + " event: " + e); }); // debug
 			}
 		});
 

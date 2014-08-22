@@ -54,8 +54,7 @@ class WooCommerce_POS_AJAX {
 			wp_die('There are no cart items');
 
 		// create order 
-		$checkout = new WooCommerce_POS_Checkout();
-		$order = $checkout->create_order();
+		$order = WC_POS()->checkout->create_order();
 
 		$this->json_headers();
 		echo json_encode( $order );

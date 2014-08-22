@@ -5,13 +5,15 @@ define(['app', 'localstorage'], function(POS){
 		Entities.CartItem = Backbone.Model.extend({
 
 			defaults : {
-				'item_discount'		: 0,
-				'item_price'		: 0,
-				'item_tax' 			: 0,
-				'line_discount' 	: 0,
-				'line_tax' 			: 0,
-				'line_total'		: 0,
-				'qty'				: 1,
+				'subtotal' 			: 0, // regular price * qty
+				'subtotal_tax' 		: 0, // regular tax * qty
+				'item_discount'		: 0, // regular price - item price
+				'item_price'		: 0, // price entered in POS
+				'item_tax' 			: 0, // tax calc on item price
+				'line_discount' 	: 0, // item discount * qty
+				'line_tax' 			: 0, // item tax * qty
+				'line_total'		: 0, // item price * qty
+				'qty'				: 1, // quantity
 			},
 
 			initialize: function(attributes, options) { 
@@ -22,27 +24,38 @@ define(['app', 'localstorage'], function(POS){
 
 				// set item price on init, this will trigger updateLineTotals()
 				if( this.get('item_price') === 0 ) {
-					this.set( { 'item_price': parseFloat( this.get('price') ) } );
+					var regular_price = parseFloat( this.get('regular_price') );
+					this.set({ 
+						'item_subtotal': regular_price,
+						'item_subtotal_tax': this.calcTax( regular_price, 1 ),
+						'item_price': parseFloat( this.get('price') ) 
+					});
 				}
 			},
 
-			updateLineTotals: function() {
+			updateLineTotals: function(e) {
 				var qty 			= this.get('qty'),
 					item_price 		= this.get('item_price'),
 					discount 		= 0;
 				
-				// calc discount
-				discount = parseFloat( this.get('regular_price') ) - item_price;
-				
-				// set taxes
-				if( this.get('taxable') && pos_params.wc.calc_taxes === 'yes' ) {
-					this.calcTax( item_price, qty, this.get('tax_rates') );
-				}
+				// update subtotal on change to qty
+				this.set({
+					'subtotal' 		: this.roundNum( this.get('item_subtotal') * qty ),
+					'subtotal_tax' 	: this.roundNum( this.get('item_subtotal_tax') * qty ),				
+				});					
 
-				this.save({
+				// update discount calc
+				discount = this.get('item_subtotal') - item_price;
+				this.set({
 					'item_discount'		: this.roundNum( discount ),
 					'line_discount'		: this.roundNum( discount * qty ),
-					'item_price'		: this.roundNum( item_price ),
+				});
+
+				// set taxes
+				this.calcTax( item_price, qty );
+
+				// now save
+				this.save({
 					'line_total'		: this.roundNum( item_price * qty )
 				});
 			},
@@ -51,17 +64,19 @@ define(['app', 'localstorage'], function(POS){
 			 * Calculate the line item tax total
 			 * based on the calc_tax function in woocommerce/includes/class-wc-tax.php
 			 */
-			calcTax: function( price, qty, rates ) {
+			calcTax: function( price, qty ) {
 				var line_total = 0;
 
-				if( pos_params.wc.prices_include_tax === 'yes' ) {
-					line_total = this.calcInclusiveTax( price, qty, rates );
-				}
-				else {
-					line_total = this.calcExclusiveTax( price, qty, rates );
+				if( this.get('taxable') && pos_params.wc.calc_taxes === 'yes' ) {
+					if( pos_params.wc.prices_include_tax === 'yes' ) {
+						line_total = this.calcInclusiveTax( price, qty );
+					}
+					else {
+						line_total = this.calcExclusiveTax( price, qty );
+					}
 				}
 
-				// not using at present
+				// use for init subtotal_tax
 				return line_total;
 			},
 
@@ -69,8 +84,9 @@ define(['app', 'localstorage'], function(POS){
 			 * Calculate the line item tax total
 			 * based on the calc_inclusive_tax function in woocommerce/includes/class-wc-tax.php
 			 */
-			calcInclusiveTax: function( price, qty, rates ) {
-				var regular_tax_rates = 0,
+			calcInclusiveTax: function( price, qty ) {
+				var rates = this.get('tax_rates'),
+					regular_tax_rates = 0,
 					compound_tax_rates = 0,
 					non_compound_price = 0,
 					tax_amount = 0,
@@ -113,6 +129,7 @@ define(['app', 'localstorage'], function(POS){
 					// set the itemized taxes
 					this.set( 'item_tax_' + key, item_tax_ );
 					this.set( 'line_tax_' + key, line_tax_ );
+					rate.tax_amount = line_tax_; // nested attribute, for WC API
 
 					// combine taxes
 					item_tax += item_tax_;
@@ -125,15 +142,16 @@ define(['app', 'localstorage'], function(POS){
 				this.set( 'line_tax' , this.roundNum( line_tax ) );
 				
 				// return the line tax
-				// return this.roundNum( item_tax * qty );
+				return this.roundNum( item_tax * qty );
 			},
 
 			/**
 			 * Calculate the line item tax total
 			 * based on the calc_exclusive_tax function in woocommerce/includes/class-wc-tax.php
 			 */
-			calcExclusiveTax: function( price, qty, rates ) {
-				var taxes = [],
+			calcExclusiveTax: function( price, qty ) {
+				var rates = this.get('tax_rates'),
+					taxes = [],
 					pre_compound_total = 0,
 					tax_amount = 0,
 					item_tax = 0,
@@ -166,6 +184,7 @@ define(['app', 'localstorage'], function(POS){
 					// set the itemized taxes
 					this.set( 'item_tax_' + key, item_tax_ );
 					this.set( 'line_tax_' + key, line_tax_ );
+					rate.tax_amount = line_tax_; // nested attribute, for WC API
 
 					// combine taxes
 					item_tax += item_tax_;
@@ -178,7 +197,7 @@ define(['app', 'localstorage'], function(POS){
 				this.set( 'line_tax' , this.roundNum( line_tax ) );
 				
 				// return the line tax
-				// return this.roundNum( item_tax * qty );
+				return this.roundNum( item_tax * qty );
 			},
 
 			// Convenience method for rounding to 4 decimal places

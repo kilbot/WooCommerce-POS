@@ -24,9 +24,9 @@ define(['app', 'localstorage'], function(POS){
 			updateTotal: function() {
 				var total;
 				if( pos_params.wc.prices_include_tax === 'yes' ) {
-					total = this.get('subtotal') - this.get('order_discount');
+					total = this.get('subtotal') - this.get('cart_discount') - this.get('order_discount');
 				} else {
-					total = this.get('subtotal') + this.get('tax') - this.get('order_discount');
+					total = this.get('subtotal') - this.get('cart_discount') + this.get('tax') - this.get('order_discount');
 				}			
 				
 				this.set({ total: total }, { silent: true });

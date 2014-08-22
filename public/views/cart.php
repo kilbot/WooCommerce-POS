@@ -47,7 +47,7 @@
 	<td class="price"><input type="text" value="{{{number item_price}}}" size="10" data-id="price" data-original="{{regular_price}}" data-title="<?php _e( 'Item Price', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="discount" class="autogrow"></td>
 	<td class="total">
 		{{#if show_line_discount}}
-			<del>{{{money regular_total}}}</del>
+			<del>{{{money subtotal}}}</del>
 			<ins>{{{money line_total}}}</ins>
 		{{else}}
 			{{{money line_total}}}

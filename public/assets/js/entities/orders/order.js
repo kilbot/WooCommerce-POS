@@ -37,7 +37,11 @@ define(['app'], function(POS){
 					var item = {
 						product_id 	: model.get('id'),
 						quantity 	: model.get('qty'),
-						total 		: model.get('line_total')
+						subtotal_tax: model.get('subtotal_tax'),
+						subtotal 	: model.get('subtotal'),
+						total_tax	: model.get('line_tax'),
+						total 		: model.get('line_total'),
+						itemized_tax: model.get('tax_rates')
 					}
 					return item;
 				});

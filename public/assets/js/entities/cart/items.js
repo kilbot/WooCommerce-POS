@@ -23,7 +23,7 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 					tax_rates 		= {};
 
 				// sum up the line totals
-				subtotal = _( this.pluck('line_total') ).reduce( function(memo, num){ return memo + num; }, 0 );
+				subtotal = _( this.pluck('subtotal') ).reduce( function(memo, num){ return memo + num; }, 0 );
 				cart_discount = _( this.pluck('line_discount') ).reduce( function(memo, num){ return memo + num; }, 0 );
 				
 				if( pos_params.wc.calc_taxes === 'yes' ) {
@@ -47,7 +47,7 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 					'subtotal'		: subtotal,
 					'cart_discount'	: cart_discount,
 					'total_tax'		: total_tax,
-					'itemized_tax'	: itemized_tax
+					'itemized_tax'	: itemized_tax,
 				};
 
 				// now, update the totals

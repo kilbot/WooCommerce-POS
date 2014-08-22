@@ -67,7 +67,6 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				// discount
 				if( data.line_discount !== 0 ) {
 					data.show_line_discount = true;
-					data.regular_total = ( this.model.get('regular_price') * this.model.get('qty') );
 				}
 
 				return data;
@@ -165,7 +164,6 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				// show/hide cart discount
 				if( data.cart_discount !== 0 ) {
 					data.show_cart_discount = true;
-					data.subtotal = this.model.get('subtotal') + this.model.get('cart_discount');
 				}
 
 				// show/hide tax

@@ -17,9 +17,9 @@
 		</h4>
 	</div>
 
-	{{#if show_message}}
+	{{#if payment_details.message}}
 	<div id="receipt-message">
-		{{message}}
+		{{payment_details.message}}
 	</div>
 	{{/if}}
 
@@ -49,12 +49,12 @@
 						</td>
 						<td class="qty">{{quantity}}</td>
 						<td class="total">
-							{{#if discounted}}
+							{{#compare total '!==' subtotal}}
 								<del>{{{money subtotal}}}</del>
 								<ins>{{{money total}}}</ins>
 							{{else}}
 								{{{money total}}}
-							{{/if}}
+							{{/compare}}
 						</td>
 					</tr>
 				{{/each}}
@@ -64,13 +64,13 @@
 					<th colspan="2"><?php _e( 'Cart Subtotal', 'woocommerce-pos' ); ?>:</th>
 					<td colspan="1">{{{money subtotal}}}</td>
 				</tr>
-				{{#if show_cart_discount}}
+				{{#compare cart_discount '!=' '0.00'}}
 				<tr class="cart-discount">
 					<th colspan="2"><?php _e( 'Cart Discount', 'woocommerce-pos' ); ?>:</th>
 					<td colspan="1">{{{money cart_discount negative=true}}}</td>
 				</tr>
-				{{/if}}
-				{{#if show_tax}}
+				{{/compare}}
+				{{#compare total_tax '!=' '0.00'}}
 					{{#if show_itemized}}
 						{{#each tax_lines}}
 							<tr class="tax">
@@ -81,16 +81,16 @@
 					{{else}}
 						<tr class="tax">
 							<th colspan="2"><?php echo esc_html( WC()->countries->tax_or_vat() ); ?>:</th>
-							<td colspan="1">{{{money totals_tax}}}</td>
+							<td colspan="1">{{{money total_tax}}}</td>
 						</tr>
 					{{/if}}
-				{{/if}}
-				{{#if show_order_discount}}
+				{{/compare}}
+				{{#compare order_discount '!=' '0.00'}}
 				<tr class="order-discount">
 					<th colspan="2"><?php _e( 'Order Discount', 'woocommerce-pos' ); ?>:</th>
 					<td colspan="1">{{{money order_discount negative=true}}}</td>
 				</tr>
-				{{/if}}
+				{{/compare}}
 				<tr class="order-total">
 					<th colspan="2"><?php _e( 'Order Total', 'woocommerce-pos' ); ?>:</th>
 					<td colspan="1">{{{money total}}}</td>

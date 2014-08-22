@@ -15,32 +15,6 @@
 class WooCommerce_POS_Checkout {
 
 	/**
-	 * Checkout data
-	 * @var mixed
-	 */
-	public $cart_items;
-	public $customer_id; 		// the customer ID
-	public $posted;
-	public $user_id; 			// the cashier ID
-
-	/**
-	 * Results of calculations by wc
-	 * @var float
-	 */
-	public $subtotal_ex_tax = 0;
-	public $total_ex_tax 	= 0;
-	public $subtotal_tax 	= 0;
-	public $total_tax 		= 0;
-	public $wc_total 		= 0;
-	public $cart_discount 	= 0;
-
-	/**
-	 * Order data
-	 * @var [type]
-	 */
-	public $order_id;
-
-	/**
 	 * init
 	 */
 	public function __construct() {
@@ -51,6 +25,9 @@ class WooCommerce_POS_Checkout {
 		// bump date after stock change
 		add_action( 'woocommerce_reduce_order_stock', array( $this, 'stock_modified' ), 10, 1 );
 
+		// add payment info to order response
+		add_filter( 'woocommerce_api_order_response', array( $this, 'add_payment_fields' ), 10, 4 );
+
 	}
 
 	/**
@@ -59,9 +36,6 @@ class WooCommerce_POS_Checkout {
 	 * @return {int} $order_id
 	 */
 	public function create_order() {
-
-		// set up order variables
-		$this->process_checkout_data();
 
 		// create empty order
 		$order_data = apply_filters( 'woocommerce_new_order_data', array(
@@ -74,69 +48,175 @@ class WooCommerce_POS_Checkout {
 			'post_password'	=> uniqid( 'order_' )	// Protects the post just in case
 		) );
 
-		$this->order_id = wp_insert_post( $order_data, true );
+		$order_id = wp_insert_post( $order_data, true );
 
-		// add items to order
-		foreach ( $this->cart_items as $item ) {
-			$this->add_order_item( $item['product_id'], $item['quantity'], $item['total'] );
+		// set customer details
+		$customer_id = isset( $_REQUEST['customer_id'] ) ? absint( $_REQUEST['customer_id'] ) : 0 ;
+		if( $customer_id !== 0 ) {
+			$this->set_order_addresses( $order_id, $customer_id );
 		}
 
-		// now calculate the taxes
-		if( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) {
-			$this->calc_line_taxes();
+		// set line items
+		foreach ( $_REQUEST['line_items'] as $item ) {
+			$this->set_line_item( $order_id, $item );
 		}
 
-		// calculations are done, add order meta
-		$this->add_order_meta();
+		// add other order meta
+		$this->add_order_meta( $order_id );
 
 		// now process the payment
-		$response = $this->process_payment();
+		$gateway_response = $this->process_payment( $order_id, $customer_id );
 
-		// add order id and wc calculation
-		$response['order_id'] = $this->order_id;
-		$response['wc_total'] = wc_format_decimal( $this->wc_total, get_option( 'woocommerce_price_num_decimals' ) );
-
-		return $response;
+		// return gateway response
+		return $gateway_response;
 	}
 
 	/**
-	 * Process any data that is sent from POS
+	 * Set billing & shipping addresses using customer id
+	 * follows same function in woocommerce/includes/api/class-wc-api-orders.php
 	 */
-	public function process_checkout_data() {
+	private function set_order_addresses( $order_id, $customer_id ) {
 
-		// process checkout data
-		$this->cart_items = $_REQUEST['line_items'];
+		update_post_meta( $order_id, '_customer_user', $customer_id );
 
-		// default to Guest
-		$this->customer_id = isset( $_REQUEST['customer_id'] ) ? absint( $_REQUEST['customer_id'] ) : 0 ;
+		$address_fields = array(
+			'first_name',
+			'last_name',
+			'company',
+			'email',
+			'phone',
+			'address_1',
+			'address_2',
+			'city',
+			'state',
+			'postcode',
+			'country',
+		);
 
-		// the id of the logged in user
-		$this->user_id = get_current_user_id();
+		$billing_address = $shipping_address = array();
 
-		// all other data
-		$this->posted['payment_method'] = isset( $_REQUEST['payment_method'] ) ? $_REQUEST['payment_method'] : '' ;
-		$this->posted['order_discount'] = isset( $_REQUEST['order_discount'] ) ? $_REQUEST['order_discount'] : 0 ;
-		$this->posted['note'] 			= isset( $_REQUEST['note'] ) ? wp_kses_post( trim( stripslashes( $_REQUEST['note'] ) ) ) : '' ;
+		// billing address
+		foreach ( $address_fields as $field ) {
+			$value = get_user_meta( $customer_id, 'billing_' . $field, true );
+			if( $value ) {
+				update_post_meta( $order_id, '_billing_'. $field, $value );
+			}
+		}
+
+		unset( $address_fields['email'] );
+		unset( $address_fields['phone'] );
+
+		// shipping address
+		foreach ( $address_fields as $field ) {
+			$value = get_user_meta( $customer_id, 'shipping_' . $field, true );
+			if( $value ) {
+				update_post_meta( $order_id, '_shipping_'. $field, $value );
+			}
+		}
+
+	}
+
+	/**
+	 * Set line item
+	 * follows same function in woocommerce/includes/api/class-wc-api-orders.php
+	 */
+	private function set_line_item( $order_id, $line ) {
+
+		// Find the item
+		if ( ! is_numeric( $line['product_id'] ) )
+			die();
+
+		$post = get_post( $line['product_id']  );
+
+		if ( ! $post || ( 'product' !== $post->post_type && 'product_variation' !== $post->post_type ) ) {
+			die();
+		}
+
+		$_product = get_product( $line['product_id'] );
+
+		// Set values
+		$item = array();
+
+		$item['product_id']        = $_product->id;
+		$item['variation_id']      = isset( $_product->variation_id ) ? $_product->variation_id : '';
+		$item['variation_data']    = isset( $_product->variation_data ) ? $_product->variation_data : '';
+		$item['name']              = $_product->get_title();
+		$item['tax_class']         = $_product->get_tax_class();
+		$item['qty']               = isset( $line['quantity'] ) ? $line['quantity'] : 1 ;
+		$item['line_subtotal']     = wc_format_decimal( $line['subtotal'] );
+		$item['line_subtotal_tax'] = wc_format_decimal( $line['subtotal_tax'] );
+		$item['line_total']        = wc_format_decimal( $line['total'] );
+		$item['line_tax']          = wc_format_decimal( $line['total_tax'] );
+
+		// Add line item
+		$item_id = wc_add_order_item( $order_id, array(
+			'order_item_name' 		=> $item['name'],
+			'order_item_type' 		=> 'line_item'
+		) );
+
+		// Add line item meta
+		if ( $item_id ) {
+			wc_add_order_item_meta( $item_id, '_qty', $item['qty'] );
+			wc_add_order_item_meta( $item_id, '_tax_class', $item['tax_class'] );
+			wc_add_order_item_meta( $item_id, '_product_id', $item['product_id'] );
+			wc_add_order_item_meta( $item_id, '_variation_id', $item['variation_id'] );
+			wc_add_order_item_meta( $item_id, '_line_subtotal', $item['line_subtotal'] );
+			wc_add_order_item_meta( $item_id, '_line_subtotal_tax', $item['line_subtotal_tax'] ); 
+			wc_add_order_item_meta( $item_id, '_line_total', $item['line_total'] );
+			wc_add_order_item_meta( $item_id, '_line_tax', $item['line_tax'] );
+
+			// Store variation data in meta
+			if ( $item['variation_data'] && is_array( $item['variation_data'] ) ) {
+				foreach ( $item['variation_data'] as $key => $value ) {
+					wc_add_order_item_meta( $item_id, str_replace( 'attribute_', '', $key ), $value );
+				}
+			}
+
+			// Since 2.2 _line_tax_data ?
+			// wc_add_order_item_meta( $item_id, '_line_tax_data', $tax_data );
+
+			do_action( 'woocommerce_ajax_add_order_item_meta', $item_id, $item );
+		}
+
+		foreach ( $line['itemized_tax'] as $key => $tax ) {
+
+			// Add tax meta
+			$item_id = wc_add_order_item( $order_id, array(
+				'order_item_name' => $item['name'],
+				'order_item_type' => 'tax'
+			) );
+
+			$compound = $tax['compound'] === 'yes' ? 1 : 0;
+
+			// Add line item meta
+			if ( $item_id ) {
+				wc_add_order_item_meta( $item_id, 'rate_id', $key );
+				wc_add_order_item_meta( $item_id, 'label', $tax['label'] );
+				wc_add_order_item_meta( $item_id, 'compound', $compound );
+				wc_add_order_item_meta( $item_id, 'tax_amount', $tax['tax_amount'] );
+				wc_add_order_item_meta( $item_id, 'shipping_tax_amount', 0 );
+			}
+
+		}
 
 	}
 
 	/**
 	 * Process payment
 	 */
-	public function process_payment() {
+	private function process_payment( $order_id, $customer_id ) {
 
-		// process the payment
-		$order_id = $this->order_id;
+		$payment_method = isset( $_REQUEST['payment_method'] ) ? $_REQUEST['payment_method'] : '' ;
 
 		// some gateways check if a user is signed in, so let's switch to customer
-		wp_set_current_user( $this->customer_id );
+		wp_set_current_user( $customer_id );
 
 		// get the enabled payment gateways
 		$enabled_gateways = WC_POS()->payment_gateways()->get_payment_gateways();
 
 		// load the gateway
 		foreach( $enabled_gateways as $gateway ) {
-			if( $this->posted['payment_method'] == $gateway->id ) 
+			if( $payment_method == $gateway->id ) 
 				$payment_gateway = $gateway;
 		}
 
@@ -148,28 +228,28 @@ class WooCommerce_POS_Checkout {
 		// special cases
 		$this->special_cases( $payment_gateway->id );
 
-		$gateway_response = $payment_gateway->process_payment( $order_id );
+		$response = $payment_gateway->process_payment( $order_id );
 
-		if($gateway_response['result'] == 'success') {
+		if($response['result'] == 'success') {
+
+			// add order_id to response
+			$response['order_id'] = $order_id;
 
 			// capture any instructions
 			ob_start();
 			do_action( 'woocommerce_thankyou_' . $payment_gateway->id, $order_id );
-			$gateway_response['messages'] = ob_get_contents();
+			$response['messages'] = ob_get_contents();
 			ob_end_clean();
 
 			// add order status to the response
-			$order = new WC_Order( $this->order_id );
+			$order = new WC_Order( $order_id );
 			if( $order->status == 'processing' ) {
 				$order->update_status( 'completed', 'POS Transaction completed.' );
-				$gateway_response['status'] = 'completed';
-			} else {
-				$gateway_response['status'] = $order->status;
 			}
 
 			// add any order notes
-			if( $this->posted['note'] ) {
-				$order->add_order_note( $this->posted['note'], false );
+			if( isset($_REQUEST['note']) && $_REQUEST['note'] != '' ) {
+				$order->add_order_note( $_REQUEST['note'], false );
 			}
 
 		} else {
@@ -182,10 +262,10 @@ class WooCommerce_POS_Checkout {
 				'reload'    => false
 			);
 
-			if( is_array( $gateway_response) ) {
-				$gateway_response = array_merge($default, $gateway_response);
+			if( is_array( $response) ) {
+				$response = array_merge($default, $response);
 			} else {
-				$gateway_response = $default;
+				$response = $default;
 			}
 
 			// delete the post
@@ -193,7 +273,7 @@ class WooCommerce_POS_Checkout {
 			
 		}
 
-		return $gateway_response;
+		return $response;
 	}
 
 	/**
@@ -202,7 +282,7 @@ class WooCommerce_POS_Checkout {
 	 * @param  string $type_to_load [description]
 	 * @return [type]               [description]
 	 */
-	public function get_customer_details( $type_to_load = 'billing' ) {
+	private function get_customer_details( $type_to_load = 'billing' ) {
 
 		$customer_id = $this->customer_id;
 
@@ -223,246 +303,29 @@ class WooCommerce_POS_Checkout {
 		return array_filter( $customer_data );
 	}
 
-	public function add_order_meta() {
-
-		$order_id = $this->order_id;
-
-		// now calculate the final totals & update the post_meta
-		$this->total_tax = get_option( 'woocommerce_calc_taxes' ) == 'yes' ? $this->total_tax : 0 ;
-		$this->cart_discount = ( $this->subtotal_ex_tax + $this->subtotal_tax ) - ( $this->total_ex_tax + $this->total_tax );
-		$this->wc_total = $this->total_ex_tax + $this->total_tax - $this->posted['order_discount'];
+	private function add_order_meta( $order_id ) {
 
 		// add standard order meta
 		update_post_meta( $order_id, '_order_shipping', 	wc_format_decimal( 0 ) );
-		update_post_meta( $order_id, '_order_discount', 	wc_format_decimal( $this->posted['order_discount'] ) );
-		update_post_meta( $order_id, '_cart_discount', 		wc_format_decimal( $this->cart_discount ) );
-		update_post_meta( $order_id, '_order_tax', 			wc_format_decimal( $this->total_tax ) );
+		update_post_meta( $order_id, '_order_discount', 	wc_format_decimal( $_REQUEST['order_discount'] ) );
+		update_post_meta( $order_id, '_cart_discount', 		wc_format_decimal( $_REQUEST['cart_discount'] ) );
+		update_post_meta( $order_id, '_order_tax', 			wc_format_decimal( $_REQUEST['total_tax'] ) );
 		update_post_meta( $order_id, '_order_shipping_tax', wc_format_decimal( 0 ) );
-		update_post_meta( $order_id, '_order_total', 		wc_format_decimal( $this->wc_total, get_option( 'woocommerce_price_num_decimals' ) ) );
+		update_post_meta( $order_id, '_order_total', 		wc_format_decimal( $_REQUEST['total'] ) );
 		update_post_meta( $order_id, '_order_key', 			'wc_' . apply_filters('woocommerce_generate_order_key', uniqid('order_') ) );
 		update_post_meta( $order_id, '_order_currency', 	get_woocommerce_currency() );
 		update_post_meta( $order_id, '_prices_include_tax', get_option( 'woocommerce_prices_include_tax' ) );
 
-		// customer details
-		update_post_meta( $order_id, '_customer_user', $this->customer_id );
-		foreach( $this->get_customer_details() as $key => $value ) {
-			update_post_meta( $order_id, '_'.$key, $value );
-		}
-
 		// pos meta 
 		update_post_meta( $order_id, '_pos', 1 );
-		update_post_meta( $order_id, '_pos_user', $this->user_id );
+		update_post_meta( $order_id, '_pos_user', get_current_user_id() );
 	}
 
-	/**
-	 * Add order item
-	 * based on same function in woocommerce/includes/class-wc-ajax.php
-	 * @param mixed $item_to_add, $qty, $line_total
-	 */
-	public function add_order_item( $item_to_add, $qty, $line_total ) {
-		global $wpdb;
-
-		// Find the item
-		if ( ! is_numeric( $item_to_add ) )
-			die();
-
-		$post = get_post( $item_to_add );
-
-		if ( ! $post || ( 'product' !== $post->post_type && 'product_variation' !== $post->post_type ) ) {
-			die();
+	public function add_payment_fields( $order_data, $order, $fields, $server ) {
+		if( WC_POS()->is_pos ) {
+			// $order_data['payment_details']['message'] = 'Hello World';
+			return $order_data;
 		}
-
-		$_product = get_product( $post->ID );
-
-		// Set values
-		$item = array();
-
-		$item['product_id']        = $_product->id;
-		$item['variation_id']      = isset( $_product->variation_id ) ? $_product->variation_id : '';
-		$item['variation_data']    = isset( $_product->variation_data ) ? $_product->variation_data : '';
-		$item['name']              = $_product->get_title();
-		$item['tax_class']         = $_product->get_tax_class();
-		$item['qty']               = isset( $qty ) ? $qty : 1 ;
-		$item['line_subtotal']     = wc_format_decimal( $item['qty'] * $_product->get_price_excluding_tax() );
-		$item['line_subtotal_tax'] = ''; 
-		$item['line_total']        = isset( $line_total ) ? $line_total : wc_format_decimal( $item['qty'] * $_product->get_price_excluding_tax() );
-		$item['line_tax']          = ''; 
-
-		// Add line item
-		$item_id = wc_add_order_item( $this->order_id, array(
-			'order_item_name' 		=> $item['name'],
-			'order_item_type' 		=> 'line_item'
-		) );
-
-		// Add line item meta
-		if ( $item_id ) {
-			wc_add_order_item_meta( $item_id, '_qty', $item['qty'] );
-			wc_add_order_item_meta( $item_id, '_tax_class', $item['tax_class'] );
-			wc_add_order_item_meta( $item_id, '_product_id', $item['product_id'] );
-			wc_add_order_item_meta( $item_id, '_variation_id', $item['variation_id'] );
-			wc_add_order_item_meta( $item_id, '_line_subtotal', $item['line_subtotal'] );
-			wc_add_order_item_meta( $item_id, '_line_subtotal_tax', $item['line_subtotal_tax'] ); 
-			wc_add_order_item_meta( $item_id, '_line_total', $item['line_total'] );
-			wc_add_order_item_meta( $item_id, '_line_tax', $item['line_tax'] ); 
-
-			// Store variation data in meta
-			if ( $item['variation_data'] && is_array( $item['variation_data'] ) ) {
-				foreach ( $item['variation_data'] as $key => $value ) {
-					wc_add_order_item_meta( $item_id, str_replace( 'attribute_', '', $key ), $value );
-				}
-			}
-
-			do_action( 'woocommerce_ajax_add_order_item_meta', $item_id, $item );
-		}
-
-		$item = apply_filters( 'woocommerce_ajax_order_item', $item, $item_id );
-
-		$this->subtotal_ex_tax += $item['line_subtotal'];
-		$this->total_ex_tax += $item['line_total'];
-
-	}
-
-
-	/**
-	 * Calc line tax
-	 * based on same function in woocommerce/includes/class-wc-ajax.php
-	 * @param {float} total
-	 * 
-	 */
-	public function calc_line_taxes() {
-		global $wpdb;
-
-		// init the tax class and get our order
-		$tax 		= new WC_Tax();
-		$taxes 		= $tax_rows = $item_taxes = array();
-		$order 		= new WC_Order( $this->order_id );
-		$items    	= $order->get_items();
-		$item_tax 	= 0;
-
-		// calculate tax rates at store base
-		// this could be conditional on get_option for stores with more than one location
-		$base = get_option( 'woocommerce_default_country' );
-		if ( strstr( $base, ':' ) ) {
-			list( $country, $state ) = explode( ':', $base );
-		} else {
-			$country = $base;
-			$state = '';
-		}
-		$tax_rates = $tax->find_rates( array( 'country' => $country, 'state' => $state ) );
-
-		// Calculate sales tax
-		if ( sizeof( $items ) > 0 ) {
-			foreach( $items as $item_id => $item ) {
-
-				$item_id       = absint( $item_id );
-				$line_subtotal = isset( $item['line_subtotal'] ) ? wc_format_decimal( $item['line_subtotal'] ) : 0;
-				$line_total    = wc_format_decimal( $item['line_total'] );
-				$tax_class     = sanitize_text_field( $item['tax_class'] );
-				$product_id    = $order->get_item_meta( $item_id, '_product_id', true );
-
-				if ( ! $item_id || '0' == $tax_class ) {
-					continue;
-				}
-
-				// Get product details
-				if ( get_post_type( $product_id ) == 'product' ) {
-					$_product        = get_product( $product_id );
-					$item_tax_status = $_product->get_tax_status();
-				} else {
-					$item_tax_status = 'taxable';
-				}
-
-				// Only calc if taxable
-				if ( 'taxable' == $item_tax_status ) {
-
-					$tax_rates = $tax->find_rates( array(
-						'country'   => $country,
-						'state'     => $state,
-						'tax_class' => $tax_class
-					) );
-
-					$line_subtotal_taxes = $tax->calc_tax( $line_subtotal, $tax_rates, false );
-					$line_taxes          = $tax->calc_tax( $line_total, $tax_rates, false );
-					$line_subtotal_tax   = array_sum( $line_subtotal_taxes );
-					$line_tax            = array_sum( $line_taxes );
-
-					if ( $line_subtotal_tax < 0 ) {
-						$line_subtotal_tax = 0;
-					}
-
-					if ( $line_tax < 0 ) {
-						$line_tax = 0;
-					}
-
-					// Add line item meta now
-					wc_update_order_item_meta( $item_id, '_line_subtotal_tax', $line_subtotal_tax );
-					wc_update_order_item_meta( $item_id, '_line_tax', $line_tax );
-
-					$this->subtotal_tax += $line_subtotal_tax;
-					$this->total_tax += $line_tax;
-
-					// Sum the item taxes
-					foreach ( array_keys( $taxes + $line_taxes ) as $key ) {
-						$taxes[ $key ] = ( isset( $line_taxes[ $key ] ) ? $line_taxes[ $key ] : 0 ) + ( isset( $taxes[ $key ] ) ? $taxes[ $key ] : 0 );
-					}
-				}
-
-			}
-		}
-
-		// Remove old tax rows?
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}woocommerce_order_itemmeta WHERE order_item_id IN ( SELECT order_item_id FROM {$wpdb->prefix}woocommerce_order_items WHERE order_id = %d AND order_item_type = 'tax' )", $this->order_id ) );
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}woocommerce_order_items WHERE order_id = %d AND order_item_type = 'tax'", $this->order_id ) );
-
-		// Get tax rates 
-		// seems to duplicate $tax->get_rate_code( $key )
-		// but it's in the WC code so I'll leave it for now
-		$rates = $wpdb->get_results( "SELECT tax_rate_id, tax_rate_country, tax_rate_state, tax_rate_name, tax_rate_priority FROM {$wpdb->prefix}woocommerce_tax_rates ORDER BY tax_rate_name" );
-
-		$tax_codes = array();
-
-		foreach( $rates as $rate ) {
-			$code = array();
-
-			$code[] = $rate->tax_rate_country;
-			$code[] = $rate->tax_rate_state;
-			$code[] = $rate->tax_rate_name ? sanitize_title( $rate->tax_rate_name ) : 'TAX';
-			$code[] = absint( $rate->tax_rate_priority );
-
-			$tax_codes[ $rate->tax_rate_id ] = strtoupper( implode( '-', array_filter( $code ) ) );
-		}
-
-		foreach ( array_keys( $taxes ) as $key ) {
-
-			$item                        = array();
-			$item['rate_id']             = $key;
-			$item['name']                = $tax_codes[ $key ];
-			$item['label']               = $tax->get_rate_label( $key );
-			$item['compound']            = $tax->is_compound( $key ) ? 1 : 0;
-			$item['tax_amount']          = wc_format_decimal( isset( $taxes[ $key ] ) ? $taxes[ $key ] : 0 );
-			$item['shipping_tax_amount'] = 0;
-
-			if ( ! $item['label'] ) {
-				$item['label'] = WC()->countries->tax_or_vat();
-			}
-
-			// Add line item
-			$item_id = wc_add_order_item( $this->order_id, array(
-				'order_item_name' => $item['name'],
-				'order_item_type' => 'tax'
-			) );
-
-			// Add line item meta
-			if ( $item_id ) {
-				wc_add_order_item_meta( $item_id, 'rate_id', $item['rate_id'] );
-				wc_add_order_item_meta( $item_id, 'label', $item['label'] );
-				wc_add_order_item_meta( $item_id, 'compound', $item['compound'] );
-				wc_add_order_item_meta( $item_id, 'tax_amount', $item['tax_amount'] );
-				wc_add_order_item_meta( $item_id, 'shipping_tax_amount', $item['shipping_tax_amount'] );
-			}
-
-		}
-
 	}
 
 	/**
@@ -470,21 +333,24 @@ class WooCommerce_POS_Checkout {
 	 */
 	public function remove_new_order_emails( WC_Emails $wc_emails ) {
 
-		// Hooks for sending emails during store events
-		
-		//' woocommerce_low_stock_notification'
-		// 'woocommerce_no_stock_notification'
-		// 'woocommerce_product_on_backorder_notification'
-		remove_action('woocommerce_order_status_pending_to_processing_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-		remove_action('woocommerce_order_status_pending_to_completed_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-		remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-		remove_action('woocommerce_order_status_failed_to_processing_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-		remove_action('woocommerce_order_status_failed_to_completed_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-		remove_action('woocommerce_order_status_failed_to_on-hold_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-		remove_action('woocommerce_order_status_pending_to_processing_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
-		remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
-		remove_action('woocommerce_order_status_completed_notification', array($wc_emails->emails['WC_Email_Customer_Completed_Order'], 'trigger'));
+		if( WC_POS()->is_pos ) {
 
+			// Hooks for sending emails during store events
+			
+			//' woocommerce_low_stock_notification'
+			// 'woocommerce_no_stock_notification'
+			// 'woocommerce_product_on_backorder_notification'
+			remove_action('woocommerce_order_status_pending_to_processing_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+			remove_action('woocommerce_order_status_pending_to_completed_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+			remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+			remove_action('woocommerce_order_status_failed_to_processing_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+			remove_action('woocommerce_order_status_failed_to_completed_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+			remove_action('woocommerce_order_status_failed_to_on-hold_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+			remove_action('woocommerce_order_status_pending_to_processing_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
+			remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
+			remove_action('woocommerce_order_status_completed_notification', array($wc_emails->emails['WC_Email_Customer_Completed_Order'], 'trigger'));
+
+		}
 	}
 
 	/**
@@ -512,7 +378,7 @@ class WooCommerce_POS_Checkout {
 	/**
 	 * Special cases for payment processing ... beware, here be dragons!
 	 */
-	public function special_cases( $gateway_id ) {
+	private function special_cases( $gateway_id ) {
 		switch ($gateway_id) {
 			case 'braintree':
 				$_POST['number'] = $_POST['braintree-cc-number'];

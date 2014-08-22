@@ -19,23 +19,9 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 			serializeData: function() {
 				var data = this.model.toJSON();
 
-				// show/hide cart discount
-				if( data.cart_discount !== 0 ) {
-					data.show_cart_discount = true;
-					data.subtotal = this.model.get('subtotal') + this.model.get('cart_discount');
-				}
-
-				// show/hide tax
-				if( data.tax !== 0 ) {
-					data.show_tax = true;
-					if( pos_params.wc.tax_total_display === 'itemized' ) {
-						data.show_itemized = true;
-					}
-				}
-
-				// show/hide order discount
-				if( data.order_discount !== 0 ) {
-					data.show_order_discount = true;
+				// itemized tax
+				if( pos_params.wc.tax_total_display === 'itemized' ) {
+					data.show_itemized = true;
 				}
 
 				// prices include tax?
@@ -43,18 +29,13 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 					data.prices_include_tax = true;
 				}
 
-				// message 
-				if(true) {
-					data.show_message = true;
-				}
-
 				return data;
 			},
 
 			onRender: function() {
 
-				var message = '<table class=\"bwwc-payment-instructions-table\" id=\"bwwc-payment-instructions-table\">\n<tr class=\"bpit-table-row\">\n<td colspan=\"2\">Please send your bitcoin payment as follows:<\/td>\n<\/tr>\n<tr class=\"bpit-table-row\">\n<td style=\"vertical-align:middle\" class=\"bpit-td-name bpit-td-name-amount\">\n      Amount (<strong>BTC<\/strong>):\n    <\/td>\n<td class=\"bpit-td-value bpit-td-value-amount\">\n<div style=\"border:1px solid #FCCA09;padding:2px 6px;margin:2px;background-color:#FCF8E3;color:#CC0000;font-weight: bold;font-size: 120%\">\n      \t0.08533582\n      <\/div>\n<\/td>\n<\/tr>\n<tr class=\"bpit-table-row\">\n<td style=\"vertical-align:middle\" class=\"bpit-td-name bpit-td-name-btcaddr\">\n      Address:\n    <\/td>\n<td class=\"bpit-td-value bpit-td-value-btcaddr\">\n<div style=\"border:1px solid #FCCA09;padding:2px 6px;margin:2px;background-color:#FCF8E3;color:#555;font-weight: bold;font-size: 120%\">\n        16YdyjR8bEnafrtHZEpjiSsXVd4xV1Rws\n      <\/div>\n<\/td>\n<\/tr>\n<tr class=\"bpit-table-row\">\n<td style=\"vertical-align:middle\" class=\"bpit-td-name bpit-td-name-qr\">\n\t    QR Code:\n    <\/td>\n<td class=\"bpit-td-value bpit-td-value-qr\">\n<div style=\"border:1px solid #FCCA09;padding:5px;margin:2px;background-color:#FCF8E3\">\n        <a href=\"\/\/16YdyjR8bEnafrtHZEpjiSsXVd4xV1Rws?amount=0.08533582\"><img src=\"https:\/\/blockchain.info\/qr?data=bitcoin:\/\/16YdyjR8bEnafrtHZEpjiSsXVd4xV1Rws?amount=0.08533582&amp;size=180\" style=\"vertical-align:middle;border:1px solid #888\" \/><\/a>\n      <\/div>\n<\/td>\n<\/tr>\n<\/table>\n<p>Please note:<\/p>\n<ol class=\"bpit-instructions\">\n<li>You must make a payment within 1 hour, or your order will be cancelled<\/li>\n<li>As soon as your payment is received in full you will receive email confirmation with order delivery details.<\/li>\n<li>You may send payments from multiple accounts to reach the total required.<\/li>\n<\/ol>\n';
-				this.$('#receipt-message').html(message);
+				// var message = '<table class=\"bwwc-payment-instructions-table\" id=\"bwwc-payment-instructions-table\">\n<tr class=\"bpit-table-row\">\n<td colspan=\"2\">Please send your bitcoin payment as follows:<\/td>\n<\/tr>\n<tr class=\"bpit-table-row\">\n<td style=\"vertical-align:middle\" class=\"bpit-td-name bpit-td-name-amount\">\n      Amount (<strong>BTC<\/strong>):\n    <\/td>\n<td class=\"bpit-td-value bpit-td-value-amount\">\n<div style=\"border:1px solid #FCCA09;padding:2px 6px;margin:2px;background-color:#FCF8E3;color:#CC0000;font-weight: bold;font-size: 120%\">\n      \t0.08533582\n      <\/div>\n<\/td>\n<\/tr>\n<tr class=\"bpit-table-row\">\n<td style=\"vertical-align:middle\" class=\"bpit-td-name bpit-td-name-btcaddr\">\n      Address:\n    <\/td>\n<td class=\"bpit-td-value bpit-td-value-btcaddr\">\n<div style=\"border:1px solid #FCCA09;padding:2px 6px;margin:2px;background-color:#FCF8E3;color:#555;font-weight: bold;font-size: 120%\">\n        16YdyjR8bEnafrtHZEpjiSsXVd4xV1Rws\n      <\/div>\n<\/td>\n<\/tr>\n<tr class=\"bpit-table-row\">\n<td style=\"vertical-align:middle\" class=\"bpit-td-name bpit-td-name-qr\">\n\t    QR Code:\n    <\/td>\n<td class=\"bpit-td-value bpit-td-value-qr\">\n<div style=\"border:1px solid #FCCA09;padding:5px;margin:2px;background-color:#FCF8E3\">\n        <a href=\"\/\/16YdyjR8bEnafrtHZEpjiSsXVd4xV1Rws?amount=0.08533582\"><img src=\"https:\/\/blockchain.info\/qr?data=bitcoin:\/\/16YdyjR8bEnafrtHZEpjiSsXVd4xV1Rws?amount=0.08533582&amp;size=180\" style=\"vertical-align:middle;border:1px solid #888\" \/><\/a>\n      <\/div>\n<\/td>\n<\/tr>\n<\/table>\n<p>Please note:<\/p>\n<ol class=\"bpit-instructions\">\n<li>You must make a payment within 1 hour, or your order will be cancelled<\/li>\n<li>As soon as your payment is received in full you will receive email confirmation with order delivery details.<\/li>\n<li>You may send payments from multiple accounts to reach the total required.<\/li>\n<\/ol>\n';
+				// this.$('#receipt-message').html(message);
 
 			},
 
