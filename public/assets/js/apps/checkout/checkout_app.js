@@ -1,4 +1,4 @@
-define(['app', 'apps/checkout/payment/controller'], function(POS){
+define(['app', 'apps/checkout/payment/controller', 'apps/checkout/receipt/controller'], function(POS){
 
 	POS.module('CheckoutApp', function(CheckoutApp, POS, Backbone, Marionette, $, _){
 
@@ -31,6 +31,11 @@ define(['app', 'apps/checkout/payment/controller'], function(POS){
 				new CheckoutApp.Payment.Controller({
 					cartId: validId
 				});
+			},
+			receipt: function(id){
+				new CheckoutApp.Receipt.Controller({
+					orderId: id
+				});
 			}
 		};
 		
@@ -40,7 +45,8 @@ define(['app', 'apps/checkout/payment/controller'], function(POS){
 		CheckoutApp.Router = Marionette.AppRouter.extend({
 			appRoutes: {
 				'checkout' : 'payment',
-				'checkout/:id' : 'payment'
+				'checkout/:id' : 'payment',
+				'receipt/:id' : 'receipt'
 			}
 		});
 

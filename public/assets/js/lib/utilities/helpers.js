@@ -1,4 +1,4 @@
-define(['app', 'handlebars', 'accounting'], function (POS, Handlebars, accounting) {
+define(['app', 'handlebars', 'accounting', 'moment'], function (POS, Handlebars, accounting, moment) {
 	
 	accounting.settings = pos_params.accounting;
 
@@ -34,6 +34,35 @@ define(['app', 'handlebars', 'accounting'], function (POS, Handlebars, accountin
 			precision = options.hash.precision;
 		}
 		return accounting.formatNumber(num, precision);
+	});
+
+	Handlebars.registerHelper('formatAddress', function(address, options){
+		var addr = '';
+
+		if( address.first_name || address.last_name )
+			addr += address.first_name + ' ' + address.last_name + '<br>';
+
+		if( address.company )
+			addr += address.company + '<br>';
+
+		if( address.address_1 )
+			addr += address.address_1 + '<br>';
+
+		if( address.address_2 )
+			addr += address.address_2 + '<br>';
+
+		if( address.city || address.state || address.postcode )
+			addr += address.city + ' ' + address.state + ' ' + address.postcode;
+
+		if( addr && options.hash.title )
+			addr = '<h3>' + options.hash.title + '</h3>' + addr;
+
+		return new Handlebars.SafeString(addr);
+	});
+
+	Handlebars.registerHelper('formatDate', function(date, options){
+		var f = options.hash.format || '';
+		return moment(date).format(f);
 	});
 
 	// accounting.js does not seem to do Bankers Rounding

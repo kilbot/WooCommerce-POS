@@ -18,7 +18,7 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 			calcTotals: function() {
 				var subtotal 		= 0,
 					cart_discount 	= 0,
-					tax 			= 0,
+					total_tax 		= 0,
 					itemized_tax 	= {},
 					tax_rates 		= {};
 
@@ -27,11 +27,11 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 				cart_discount = _( this.pluck('line_discount') ).reduce( function(memo, num){ return memo + num; }, 0 );
 				
 				if( pos_params.wc.calc_taxes === 'yes' ) {
-					tax = _( this.pluck('line_tax') ).reduce( function(memo, num){ return memo + num; }, 0 );			
+					total_tax = _( this.pluck('line_tax') ).reduce( function(memo, num){ return memo + num; }, 0 );			
 				}
 
 				// special case: itemized taxes
-				if( tax !== 0 && pos_params.wc.tax_total_display === 'itemized') {
+				if( total_tax !== 0 && pos_params.wc.tax_total_display === 'itemized') {
 					tax_rates = this._tax_rates();
 					_.each(tax_rates, function(tax, key) {
 						var tax_sum = 0;
@@ -42,18 +42,12 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 					}, this);
 				}
 
-				// pick the data from the cart items we are going to send
-				var items = this.map( function( model ) {
-					return _.pick( model.toJSON(), ['id', 'qty', 'line_total'] );  
-				});
-
 				// create totals object
 				var totals = {
 					'subtotal'		: subtotal,
 					'cart_discount'	: cart_discount,
-					'tax'			: tax,
-					'itemized_tax'	: itemized_tax,
-					'cart' 			: items
+					'total_tax'		: total_tax,
+					'itemized_tax'	: itemized_tax
 				};
 
 				// now, update the totals

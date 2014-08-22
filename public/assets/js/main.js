@@ -15,7 +15,9 @@ requirejs.config({
 		indexeddb 	: '../../../bower_components/indexeddb-backbonejs-adapter/backbone-indexeddb',
 		localstorage: '../../../bower_components/backbone.localstorage/backbone.localStorage',
 		paginator 	: '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
+		'backbone.syphon': '../../../bower_components/backbone.syphon/lib/amd/backbone.syphon.min',
 		accounting 	: '../../../bower_components/accounting/accounting.min',
+		moment 		: '../../../bower_components/moment/min/moment.min',
 		text 		: '../../../bower_components/text/text',
 
 		// Plugins
@@ -78,6 +80,7 @@ require([
 	'lib/components/modal/controller',
 	'lib/components/numpad/controller',
 	'lib/components/popover/controller',
+	'lib/components/print/controller',
 	'lib/components/progress_bar/controller',
 	'lib/components/search_parser/controller',
 	'lib/components/tabs/controller',

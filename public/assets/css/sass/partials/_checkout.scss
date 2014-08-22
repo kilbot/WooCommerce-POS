@@ -1,9 +1,4 @@
-#checkout-status {
-	padding: $spacing;
-	border-bottom: 1px solid $dark-border-color;
-}
-
-#checkout-payment {
+#checkout-gateways {
 	// border-bottom: 1px solid $dark-border-color;
 	.panel-title {
 		&:before {
@@ -53,10 +48,4 @@
 	input {
 		@extend .form-control; 
 	}
-}
-
-#checkout-actions div {
-	text-align: right;
-	padding: $spacing/2;
-	// border-top: 1px solid $border-dark;
 }

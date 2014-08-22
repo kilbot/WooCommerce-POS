@@ -78,7 +78,7 @@ class WooCommerce_POS_Checkout {
 
 		// add items to order
 		foreach ( $this->cart_items as $item ) {
-			$this->add_order_item( $item['id'], $item['qty'], $item['line_total'] );
+			$this->add_order_item( $item['product_id'], $item['quantity'], $item['total'] );
 		}
 
 		// now calculate the taxes
@@ -89,17 +89,10 @@ class WooCommerce_POS_Checkout {
 		// calculations are done, add order meta
 		$this->add_order_meta();
 
-		// add any order notes
-		if( $this->posted['note'] ) {
-			$order->add_order_note( $this->posted['note'], false );
-		}
-
-		// Store Order ID in session
-		WC()->session->order_awaiting_payment = $this->order_id;
-
 		// now process the payment
 		$response = $this->process_payment();
 
+		// add order id and wc calculation
 		$response['order_id'] = $this->order_id;
 		$response['wc_total'] = wc_format_decimal( $this->wc_total, get_option( 'woocommerce_price_num_decimals' ) );
 
@@ -112,7 +105,7 @@ class WooCommerce_POS_Checkout {
 	public function process_checkout_data() {
 
 		// process checkout data
-		$this->cart_items = $_REQUEST['cart'];
+		$this->cart_items = $_REQUEST['line_items'];
 
 		// default to Guest
 		$this->customer_id = isset( $_REQUEST['customer_id'] ) ? absint( $_REQUEST['customer_id'] ) : 0 ;
@@ -134,7 +127,6 @@ class WooCommerce_POS_Checkout {
 
 		// process the payment
 		$order_id = $this->order_id;
-		$order = new WC_Order( $order_id );
 
 		// some gateways check if a user is signed in, so let's switch to customer
 		wp_set_current_user( $this->customer_id );
@@ -151,30 +143,57 @@ class WooCommerce_POS_Checkout {
 		update_post_meta( $order_id, '_payment_method', $payment_gateway->id );
 		update_post_meta( $order_id, '_payment_method_title', $payment_gateway->get_title() );
 
-		// $payment_gateway->validate_fields(); // what is returned?
+		$payment_gateway->validate_fields();
 
-		// Abort if errors are present
-		if ( wc_notice_count( 'error' ) > 0 ) {
-			$result = array(
+		// special cases
+		$this->special_cases( $payment_gateway->id );
+
+		$gateway_response = $payment_gateway->process_payment( $order_id );
+
+		if($gateway_response['result'] == 'success') {
+
+			// capture any instructions
+			ob_start();
+			do_action( 'woocommerce_thankyou_' . $payment_gateway->id, $order_id );
+			$gateway_response['messages'] = ob_get_contents();
+			ob_end_clean();
+
+			// add order status to the response
+			$order = new WC_Order( $this->order_id );
+			if( $order->status == 'processing' ) {
+				$order->update_status( 'completed', 'POS Transaction completed.' );
+				$gateway_response['status'] = 'completed';
+			} else {
+				$gateway_response['status'] = $order->status;
+			}
+
+			// add any order notes
+			if( $this->posted['note'] ) {
+				$order->add_order_note( $this->posted['note'], false );
+			}
+
+		} else {
+
+			// payment failed
+			$default = array(
 				'result'	=> 'failure',
 				'messages' 	=> wc_get_notices( 'error' ),
 				'refresh' 	=> false,
 				'reload'    => false
 			);
 
-			// delete 
-			wp_delete_post( $order_id, true );
-		} else {
-			$result = $payment_gateway->process_payment( $order_id );
+			if( is_array( $gateway_response) ) {
+				$gateway_response = array_merge($default, $gateway_response);
+			} else {
+				$gateway_response = $default;
+			}
 
-			// capture any instructions
-			ob_start();
-			do_action( 'woocommerce_thankyou_' . $payment_gateway->id, $order_id );
-			$result['messages'] = ob_get_contents();
-			ob_end_clean();
+			// delete the post
+			wp_delete_post( $order_id, true );
+			
 		}
 
-		return $result;
+		return $gateway_response;
 	}
 
 	/**
@@ -487,6 +506,20 @@ class WooCommerce_POS_Checkout {
 				'post_modified' 	=> $post_modified,
 				'post_modified_gmt' => $post_modified_gmt
 			));
+		}
+	}
+
+	/**
+	 * Special cases for payment processing ... beware, here be dragons!
+	 */
+	public function special_cases( $gateway_id ) {
+		switch ($gateway_id) {
+			case 'braintree':
+				$_POST['number'] = $_POST['braintree-cc-number'];
+				$_POST['month'] = $_POST['braintree-cc-exp-month'];
+				$_POST['year'] = $_POST['braintree-cc-exp-year'];
+				$_POST['cvv'] = $_POST['braintree-cc-cvv'];
+			break;
 		}
 	}
 

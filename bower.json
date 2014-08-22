@@ -23,7 +23,9 @@
     "spinjs": "~2.0.1",
     "text": "~2.0.12",
     "backbone.radio": "~0.6.0",
-    "jquery-color": "~2.1.2"
+    "jquery-color": "~2.1.2",
+    "backbone.syphon": "~0.4.1",
+    "moment": "~2.8.1"
   },
   "devDependencies": {},
   "resolutions": {

@@ -74,6 +74,9 @@ class WC_POS_Settings_Checkout extends WC_POS_Settings_Page {
 					__( 'Installed gateways are listed below. Drag and drop gateways to control their display order at the Point of Sale. ', 'woocommerce-pos' )
 					.'<br>'
 					.__( 'Payment Gateways enabled here will be available at the Point of Sale. Payment Gateways enabled on the settings page will be available in your Online Store. ', 'woocommerce-pos' )
+					.'<br><div class="woocommerce-pos-warning"><p>'
+					.__( 'It is your responsibility to ensure the security of your customer\'s information. Transmitting credit card or other sensitive information should only be done using a secure connnection. For more information please visit <a href="http://woopos.com.au/docs/security">http://woopos.com.au/docs/security</a>', 'woocommerce-pos' )
+					.'</p></div>'
 				, 
 				'type' => 'title', 
 				'id' => 'payment_gateways_options' 

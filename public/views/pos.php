@@ -8,5 +8,6 @@
 <?php include_once( 'products.php' ); ?>
 <?php include_once( 'cart.php' ); ?>
 <?php include_once( 'checkout.php' ); ?>
+<?php include_once( 'receipt.php' ); ?>
 
 <?php include_once( 'footer.php' ); ?>

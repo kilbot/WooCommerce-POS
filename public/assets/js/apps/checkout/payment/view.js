@@ -1,37 +1,31 @@
-define(['app', 'handlebars'], function(POS, Handlebars){
+define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 
 	POS.module('CheckoutApp.Payment.View', function(View, POS, Backbone, Marionette, $, _){
 
-		View.Layout = Marionette.LayoutView.extend({
-			template: '#tmpl-checkout',
-
-			regions: {
-				statusRegion: '#checkout-status',
-				paymentRegion: '#checkout-payment',
-				actionsRegion: '#checkout-actions',
-			}
-		});
-
-		View.Status = Marionette.ItemView.extend({
-			template: Handlebars.compile( $('#tmpl-checkout-status').html() ),
-
-			// initialize: function(options) {
-				
-			// }
-
-		});
-
-		View.Payment = Marionette.ItemView.extend({
-			template: Handlebars.compile( $('#tmpl-checkout-payment').html() ),
+		View.Checkout = Marionette.ItemView.extend({
+			template: Handlebars.compile( $('#tmpl-checkout').html() ),
 
 			behaviors: {
-				Collapse: {
-					// options
-				},
+				Collapse: {},
+				Numpad: {}
+			},
+
+			triggers: {
+				'click .action-close' 	: 'checkout:close'
 			},
 
 			events: {
-				'click *[data-numpad]'  : 'numpadPopover',
+				'click .action-process' : 'processPayment'
+			},
+
+			ui: {
+				status: '#checkout-status',
+				gateways: '#checkout-gateways',
+				actions: '#checkout-actions',
+			},
+
+			modelEvents: {
+				'change:status': 'onChangeStatus'
 			},
 
 			onRender: function(){
@@ -43,63 +37,19 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 				});
 			},
 
-			onShow: function() {
-				if(Modernizr.touch) {
-					this.$('*[data-numpad]').attr('readonly', true);
-				}
-			},
-
-			removePopovers: function() {
-				POS.Components.Popover.channel.command( 'close' );
-			},
-
-			numpadPopover: function(e) {
-				if( $(e.target).attr('aria-describedby') ) {
-					return;
-				}
-
-				// much hack, trying to force close popovers
-				var self = this;
-
-				POS.Components.Numpad.channel.command( 'showPopover', { target: $(e.target) } );
-				$(e.target).on( 'numpad:return', function( e, value ) {
-					$(e.target).val( value ).trigger('blur');
-					self.removePopovers();
-				});
-			}
-
-		});
-
-		View.Actions = Marionette.ItemView.extend({
-			template: _.template( $('#tmpl-checkout-actions').html() ),
-
-			triggers: {
-				'click .action-close' 	: 'checkout:close'
-			},
-
-			events: {
-				'click .action-process' : 'processPayment'
-			},
-
 			processPayment: function() {
+				this.model.set({ status: 'processing' });
+				var data = Backbone.Syphon.serialize( this.ui.gateways.find('.panel-success')[0] );
+				this.model.process( data );
+			},
 
-				// get any payment form inputs
-				var fields = {};
-				_( $('#checkout-payment').find('form.panel-success').serializeArray() ).each( function(o){
-					var n = o.name,
-						v = o.value;
-
-					fields[n] = fields[n] === undefined ? v
-							: _.isArray( fields[n] ) ? fields[n].concat( v )
-							: [ fields[n], v ];
-				}, this);
-
-				if( _.isEmpty(fields) ) {
-					if(POS.debug) console.warn('No payment method selected');
+			onChangeStatus: function(e) {
+				if( e.changed.status === 'processing' ) {
+					this.ui.actions.addClass('working').find('button').prop('disabled', true);
 				} else {
-					this.model.processPayment( fields );
+					this.ui.actions.removeClass('working').find('button').prop('disabled', false);
+					this.render();
 				}
-				
 			}
 
 		});

@@ -1,3 +1,20 @@
 .no-border {
 	border: 0 !important;
 }
+
+.working {
+	background-color: rgba(#7db500, 0.3);
+	background-image: url(../../../assets/bg-working.gif);
+}
+
+#right-panel {
+	.status {
+		padding: $spacing;
+		border-bottom: 1px solid $dark-border-color;
+	}
+}
+
+.action-btns {
+	text-align: right;
+	padding: $spacing/2;
+}

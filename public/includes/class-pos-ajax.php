@@ -25,7 +25,9 @@ class WooCommerce_POS_AJAX {
 			'get_product_ids'			=> false,
 			'get_modal'					=> false,
 			'json_search_customers'		=> false,
-			'set_product_visibilty' 	=> false 
+			'set_product_visibilty' 	=> false,
+			'email_receipt' 			=> false,
+			'get_print_template' 		=> false
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -48,7 +50,7 @@ class WooCommerce_POS_AJAX {
 		check_ajax_referer( 'woocommerce-pos', 'security' );
 
 		// if there is no cart, there is nothing to process!
-		if( empty( $_REQUEST['cart'] ) ) 
+		if( empty( $_REQUEST['line_items'] ) ) 
 			wp_die('There are no cart items');
 
 		// create order 
@@ -58,6 +60,21 @@ class WooCommerce_POS_AJAX {
 		$this->json_headers();
 		echo json_encode( $order );
 		
+		die();
+	}
+
+	public function email_receipt() {
+
+		// security
+		check_ajax_referer( 'woocommerce-pos', 'security' );
+
+		// update order with email
+		
+		// trigger email
+		$response = 'success';
+
+		$this->json_headers();
+		echo json_encode( $response );
 		die();
 	}
 
@@ -90,6 +107,20 @@ class WooCommerce_POS_AJAX {
 			extract( $_REQUEST['data'] );
 
 		include_once( dirname(__FILE__) . '/../views/modal/' . $_REQUEST['template'] . '.php' );
+		die();
+	}
+
+	public function get_print_template() {
+
+		// security
+		check_ajax_referer( 'woocommerce-pos', 'security' );
+
+		// check for custom template
+		$template_path_theme = '/woocommerce-pos/';
+		$template_path_plugin = WC_POS()->plugin_path. 'public/views/print/';
+
+		wc_get_template( $_REQUEST['template'] . '.php', null, $template_path_theme, $template_path_plugin );
+
 		die();
 	}
 

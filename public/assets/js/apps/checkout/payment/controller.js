@@ -1,4 +1,4 @@
-define(['app', 'apps/checkout/payment/view'], function(POS, View){
+define(['app', 'apps/checkout/payment/view', 'entities/orders'], function(POS, View){
 	
 	POS.module('CheckoutApp.Payment', function(Payment, POS, Backbone, Marionette, $, _){
 	
@@ -6,56 +6,21 @@ define(['app', 'apps/checkout/payment/view'], function(POS, View){
 
 			initialize: function(options) {
 
-				// get cart items & totals
-				this.items = POS.Entities.channel.request('cart:items', options.cartId);
-				this.totals = POS.Entities.channel.request('cart:totals', options.cartId);
+				// get cart from local storage
+				var items = POS.Entities.channel.request('cart:items', options.cartId);
+				var totals = POS.Entities.channel.request('cart:totals', options.cartId);
 
-				// init layout
-				this.layout = new View.Layout();
+				// get empty order model
+				var order = POS.Entities.channel.request('order:entity');
 
-				this.listenTo( this.layout, 'show', function() {
-					this._showStatusRegion();		
-					this._showPaymentRegion();		
-					this._showActionsRegion();		
+				// init view
+				var view = new View.Checkout({
+					model: order
 				});
 
-				// loader
-				this.show( this.layout, { 
-					region: POS.rightRegion,
-					loading: {
-						entities: [ this.items.fetch({ silent: true }), this.totals.fetch({ silent: true }) ]
-					}
-				});
-
-			},
-
-			_showStatusRegion: function(){
-				
-				// get payment view
-				var view = new View.Status({
-					model: this.totals
-				});
-
-				// show
-				this.layout.statusRegion.show( view );
-			},
-
-			_showPaymentRegion: function(){
-				
-				// get payment view
-				var view = new View.Payment({
-					model: this.totals
-				});
-
-				// show
-				this.layout.paymentRegion.show( view );
-			},
-
-			_showActionsRegion: function(){
-				
-				// get payment view
-				var view = new View.Actions({
-					model: this.totals
+				// create new order
+				this.listenTo( view, 'before:render', function(e) {
+					order.create(items, totals);
 				});
 
 				// return to sale
@@ -63,9 +28,22 @@ define(['app', 'apps/checkout/payment/view'], function(POS, View){
 					POS.CartApp.channel.command('cart:list');
 				});
 
-				// show
-				this.layout.actionsRegion.show( view );
-			}
+				// return to sale
+				this.listenTo( order, 'change:status', function(e) {
+					if( e.changed.status === 'completed' ) {
+						// go to receipt??
+					}
+				});
+
+				// loader
+				this.show( view, { 
+					region: POS.rightRegion,
+					loading: {
+						entities: [ items.fetch({ silent: true }), totals.fetch({ silent: true }) ]
+					}
+				});
+
+			},
 
 		});
 		

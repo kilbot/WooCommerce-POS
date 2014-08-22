@@ -82,7 +82,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
-= 0.3.1 - [read blog post](http://woopos.com.au/2014/08/woocommerce-pos-v0-3-1-released/) =
+= 0.3.1 - [read blog post](http://woopos.com.au/2014/08/version-0-3-1-released/) =
 * New: choose which user roles have access to POS
 * New: set products as visible to POS Only or Online Only
 * New: filter products in WP-Admin by POS Only or Online Only
