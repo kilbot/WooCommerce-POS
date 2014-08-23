@@ -86,6 +86,11 @@ define(['app','apps/cart/list/controller', 'apps/cart/checkout/controller', 'app
 			API.payment(id);
 		});
 
+		CartApp.channel.comply( 'show:receipt', function(id){
+			POS.navigate('receipt/' + id);
+			API.receipt(id);
+		});
+
 
 	});
 

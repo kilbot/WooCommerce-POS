@@ -42,7 +42,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			template: Handlebars.compile( $('#tmpl-cart-item').html() ),
 
 			initialize: function( options ) {
-				accounting.settings = pos_params.accounting;
+
 			},
 
 			behaviors: {
@@ -91,7 +91,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				var input 	= $(e.target),
 					key 	= input.data('id'),
 					value 	= input.val(),
-					decimal = accounting.unformat( value, accounting.settings.number.decimal );
+					decimal = accounting.unformat( value, pos_params.accounting.number.decimal );
 
 				switch( key ) {
 					case 'qty':
@@ -145,7 +145,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			template: Handlebars.compile( $('#tmpl-cart-totals').html() ),
 
 			behaviors: {
-				Numpad: {}
+				// Numpad: {}
 			},
 
 			modelEvents: {
@@ -198,13 +198,14 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				// if empty, go back to zero
 				if( value === '' ) { value = 0; } 
 
-				// validate
-				if( isNaN( parseFloat( value ) ) ) {
-					return;
-				}
-
 				// unformat number
-				var decimal = accounting.unformat( value, accounting.settings.number.decimal );				
+				var decimal = accounting.unformat( value, pos_params.accounting.number.decimal );
+
+				// // validate
+				if( isNaN( parseFloat( decimal ) ) ) {
+					$(e.target).focus(); 
+					return;
+				}	
 
 				// save
 				this.model.set({ order_discount: decimal });

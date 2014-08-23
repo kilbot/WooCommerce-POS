@@ -21,11 +21,11 @@ define([
 			},
 			
 			initialize: function(models, options) {
-				// this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
+				this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
 
 				var filterCollection = Entities.channel.request('product:filtercollection', options);
 
-				this.once('sync', function() {
+				this.on('sync', function() {
 					filterCollection.reset( this.fullCollection.models, { silent: true } );
 				});
 
@@ -33,6 +33,8 @@ define([
 					this.getFirstPage({ silent: true });
 					this.fullCollection.reset(collection, { reindex: false });			
 				});
+
+				Entities.channel.comply('product:sync', this.serverSync, this );
 
 				// debugging on IndexedDB adapter
 				if(POS.debug) Entities.DB.nolog = false;
@@ -65,7 +67,7 @@ define([
 				.always( function() {
 					POS.Entities.channel.command('options:set', 'last_update', Date.now() );
 					POS.Entities.channel.command('options:delete', '_syncing');
-					self.trigger('sync'); // trigger sync to time display
+					self.fetch();
 					$('#products-pagination').removeClass('working');
 				});
 

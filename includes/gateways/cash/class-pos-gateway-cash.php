@@ -35,7 +35,7 @@ class POS_Gateway_Cash extends WC_Payment_Gateway {
 
 		// Actions
 		add_action( 'woocommerce_pos_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-
+		add_action( 'woocommerce_thankyou_pos_cash', array( $this, 'calculate_change' ) );
 	}
 
     /**
@@ -94,18 +94,51 @@ class POS_Gateway_Cash extends WC_Payment_Gateway {
 
 	}
 
-	function process_payment( $order_id ) {
+	public function process_payment( $order_id ) {
 
+		// get order object
 		$order = new WC_Order( $order_id );
+
+		$tendered = isset( $_REQUEST['pos-cash-tendered'] ) ? $_REQUEST['pos-cash-tendered'] : 0 ;
+		$tendered = abs((int) filter_var( $tendered, FILTER_SANITIZE_NUMBER_INT ));
+
+		$total = isset( $_REQUEST['total'] ) ? $_REQUEST['total'] : 0 ;
+		$total = abs((int) filter_var( $total, FILTER_SANITIZE_NUMBER_INT ));
+		
+		if( $tendered !== 0 ) {
+
+			// calculate change
+			$change = $tendered - $total;
+
+			// add order meta
+			update_post_meta( $order_id, '_pos_cash_amount_tendered', $tendered );
+			update_post_meta( $order_id, '_pos_cash_change', $change );
+
+		}
 
 		// payment complete
 		$order->payment_complete();
 
 		// Return thankyou redirect
 		return array(
-			'result' => 'success',
-			'redirect' => $this->get_return_url( $order )
+			'result' => 'success'
 		);
+	}
+
+	public function calculate_change( $order_id ) {
+		$message = '';
+		$tendered = get_post_meta( $order_id, '_pos_cash_amount_tendered', true );
+		$change = get_post_meta( $order_id, '_pos_cash_change', true );
+
+		// construct message
+		if( $tendered && $change ) {
+			$message = '<strong>'. __('Amount Tendered', 'woocommerce-pos') .':</strong> ';
+			$message .= wc_price($tendered) .'<br>';
+			$message .= '<strong>'. _x('Change', 'Money returned from cash sale', 'woocommerce-pos') .':</strong> ';
+			$message .= wc_price($change);
+		}
+
+		echo $message;
 	}
 
 	/**

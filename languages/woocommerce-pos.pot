@@ -2,9 +2,9 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce POS 0.3.1-beta\n"
+"Project-Id-Version: WooCommerce POS 0.3.1-beta2\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-08-23 03:11:03+00:00\n"
+"POT-Creation-Date: 2014-08-23 10:17:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -168,7 +168,7 @@ msgid "The default customer for POS orders, eg: Guest or create a new customer."
 msgstr ""
 
 #: admin/includes/settings/class-settings-general.php:85
-#: public/includes/class-pos-ajax.php:153
+#: public/includes/class-pos-ajax.php:151
 #: public/includes/pos-template-hooks.php:70
 msgid "Guest"
 msgstr ""
@@ -239,7 +239,7 @@ msgid "Authentication Failed"
 msgstr ""
 
 #: includes/gateways/card/class-pos-gateway-card.php:24
-#: includes/gateways/card/class-pos-gateway-card.php:51
+#: includes/gateways/card/class-pos-gateway-card.php:52
 msgid "Card"
 msgstr ""
 
@@ -247,28 +247,30 @@ msgstr ""
 msgid "Debit & Credit Card sales using an external EFTPOS machine."
 msgstr ""
 
-#: includes/gateways/card/class-pos-gateway-card.php:48
+#: includes/gateways/card/class-pos-gateway-card.php:49
 #: includes/gateways/cash/class-pos-gateway-cash.php:48
 msgid "Title"
 msgstr ""
 
-#: includes/gateways/card/class-pos-gateway-card.php:50
+#: includes/gateways/card/class-pos-gateway-card.php:51
 #: includes/gateways/cash/class-pos-gateway-cash.php:50
 msgid "Payment method title."
 msgstr ""
 
-#: includes/gateways/card/class-pos-gateway-card.php:55
+#: includes/gateways/card/class-pos-gateway-card.php:56
 #: includes/gateways/cash/class-pos-gateway-cash.php:55
 msgid "Description"
 msgstr ""
 
-#: includes/gateways/card/class-pos-gateway-card.php:57
+#: includes/gateways/card/class-pos-gateway-card.php:58
 #: includes/gateways/cash/class-pos-gateway-cash.php:57
 msgid "Payment method description that will be shown in the POS."
 msgstr ""
 
-#: includes/gateways/card/class-pos-gateway-card.php:85
-#: includes/gateways/card/class-pos-gateway-card.php:88
+#: includes/gateways/card/class-pos-gateway-card.php:86
+#: includes/gateways/card/class-pos-gateway-card.php:89
+#: includes/gateways/card/class-pos-gateway-card.php:112
+#: includes/gateways/card/class-pos-gateway-card.php:140
 msgid "Cashback"
 msgstr ""
 
@@ -283,6 +285,7 @@ msgstr ""
 
 #: includes/gateways/cash/class-pos-gateway-cash.php:86
 #: includes/gateways/cash/class-pos-gateway-cash.php:89
+#: includes/gateways/cash/class-pos-gateway-cash.php:135
 msgid "Amount Tendered"
 msgstr ""
 
@@ -296,6 +299,14 @@ msgstr ""
 
 #: public/includes/class-pos-checkout.php:43
 msgid "Order &ndash; %s"
+msgstr ""
+
+#: public/includes/class-pos-checkout.php:332
+msgid "Email sent"
+msgstr ""
+
+#: public/includes/class-pos-checkout.php:337
+msgid "There was an error sending the email"
 msgstr ""
 
 #: public/includes/pos-template-hooks.php:136
@@ -375,8 +386,8 @@ msgstr ""
 msgid "Cart Discount"
 msgstr ""
 
-#: public/views/cart.php:92 public/views/print/receipt.php:194
-#: public/views/receipt.php:90
+#: public/views/cart.php:92 public/views/print/receipt.php:200
+#: public/views/receipt.php:96
 msgid "Order Discount"
 msgstr ""
 
@@ -384,8 +395,8 @@ msgstr ""
 msgid "Discount"
 msgstr ""
 
-#: public/views/cart.php:96 public/views/print/receipt.php:199
-#: public/views/receipt.php:95
+#: public/views/cart.php:96 public/views/print/receipt.php:205
+#: public/views/receipt.php:101
 msgid "Order Total"
 msgstr ""
 
@@ -515,11 +526,15 @@ msgstr ""
 msgid "Email Receipt"
 msgstr ""
 
-#: public/views/modal/email-receipt.php:6
+#: public/views/modal/email-receipt.php:9
 msgid "Email Address"
 msgstr ""
 
-#: public/views/modal/email-receipt.php:9 public/views/support.php:27
+#: public/views/modal/email-receipt.php:15
+msgid "Close"
+msgstr ""
+
+#: public/views/modal/email-receipt.php:17 public/views/support.php:27
 msgid "Send"
 msgstr ""
 
@@ -582,7 +597,7 @@ msgstr ""
 msgid "Payment Method"
 msgstr ""
 
-#: public/views/print/receipt.php:121 public/views/receipt.php:108
+#: public/views/print/receipt.php:121 public/views/receipt.php:114
 #: public/views/support.php:14
 msgid "Email"
 msgstr ""
@@ -631,15 +646,15 @@ msgstr ""
 msgid "Paid"
 msgstr ""
 
-#: public/views/receipt.php:107
+#: public/views/receipt.php:113
 msgid "Print"
 msgstr ""
 
-#: public/views/receipt.php:111
+#: public/views/receipt.php:117
 msgid "Refresh"
 msgstr ""
 
-#: public/views/receipt.php:114
+#: public/views/receipt.php:120
 msgid "New Order"
 msgstr ""
 
@@ -722,6 +737,11 @@ msgctxt "Settings tab label"
 msgid "Checkout"
 msgstr ""
 
+#: includes/gateways/cash/class-pos-gateway-cash.php:137
+msgctxt "Money returned from cash sale"
+msgid "Change"
+msgstr ""
+
 #: public/includes/class-pos-checkout.php:43
 msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
@@ -743,6 +763,8 @@ msgid "On Sale"
 msgstr ""
 
 #: public/views/cart.php:75 public/views/cart.php:84
+#: public/views/print/receipt.php:182 public/views/print/receipt.php:191
+#: public/views/receipt.php:78 public/views/receipt.php:87
 msgctxt "abbreviation for includes (tax)"
 msgid "incl."
 msgstr ""

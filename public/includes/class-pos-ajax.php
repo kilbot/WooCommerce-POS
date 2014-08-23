@@ -214,6 +214,13 @@ class WooCommerce_POS_AJAX {
 
 		// set the post_meta field
 		if( update_post_meta( $_REQUEST['post_id'], '_pos_visibility', $_REQUEST['_pos_visibility'] ) ) {
+			$post_modified     = current_time( 'mysql' );
+			$post_modified_gmt = current_time( 'mysql', 1 );
+			wp_update_post( array(
+				'ID' 				=> $_REQUEST['post_id'],
+				'post_modified' 	=> $post_modified,
+				'post_modified_gmt' => $post_modified_gmt
+			));
 			$response = array('success' => true);
 		}
 		else {

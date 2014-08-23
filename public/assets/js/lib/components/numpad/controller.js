@@ -1,10 +1,12 @@
 define([
 	'app', 
+	'accounting',
 	'lib/components/numpad/entities',
 	'lib/components/numpad/view',
 	'lib/components/numpad/behavior'
 ], function(
-	POS
+	POS,
+	accounting
 ){
 
 	POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _){
@@ -52,7 +54,7 @@ define([
 			showNumpadPopover: function() {
 				this.model.set({
 					title: this.options.target.data('title'),
-					value: this.options.target.val(),
+					value: accounting.unformat( this.options.target.val(), pos_params.accounting.number.decimal ),
 					type: this.options.target.data('numpad'),
 					original: this.options.target.data('original'),
 					select: true

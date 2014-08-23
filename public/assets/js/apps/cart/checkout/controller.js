@@ -29,9 +29,15 @@ define(['app', 'apps/cart/checkout/view', 'entities/orders'], function(POS, View
 				});
 
 				// return to sale
-				this.listenTo( order, 'change:status', function(e) {
-					if( e.changed.status === 'completed' ) {
-						// go to receipt
+				this.listenTo( order, 'processing:complete', function( response ) {
+					view.processing(false);
+					if( response.result === 'success' ) {
+						_.invoke( items.toArray(), 'destroy' );
+						POS.CartApp.channel.command('show:receipt', response.order_id );
+						POS.Entities.channel.command('product:sync');
+					} else {
+						view.model.set({ response: response });
+						view.render();
 					}
 				});
 

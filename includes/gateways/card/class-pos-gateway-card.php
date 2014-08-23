@@ -35,6 +35,7 @@ class POS_Gateway_Card extends WC_Payment_Gateway {
 
 		// Actions
 		add_action( 'woocommerce_pos_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+		add_action( 'woocommerce_thankyou_pos_card', array( $this, 'calculate_cashback' ) );
 
 	}
 
@@ -91,6 +92,56 @@ class POS_Gateway_Card extends WC_Payment_Gateway {
 			</div>
 		';
 
+	}
+
+	public function process_payment( $order_id ) {
+
+		// get order object
+		$order = new WC_Order( $order_id );
+
+		$cashback = isset( $_REQUEST['pos-cashback'] ) ? $_REQUEST['pos-cashback'] : 0 ;
+		$cashback = abs((int) filter_var( $cashback, FILTER_SANITIZE_NUMBER_INT ));
+		
+		if( $cashback !== 0 ) {
+
+			// add order meta
+			update_post_meta( $order_id, '_pos_card_cashback', $cashback );
+
+			// add cashback as fee line item
+			$item_id = wc_add_order_item( $order_id, array(
+				'order_item_name' => __('Cashback', 'woocommerce-pos'),
+				'order_item_type' => 'fee'
+			) );
+
+			if ( $item_id ) {
+				wc_add_order_item_meta( $item_id, '_line_total', $cashback );
+				wc_add_order_item_meta( $item_id, '_line_tax', 0 );
+				wc_add_order_item_meta( $item_id, '_line_subtotal', $cashback );
+				wc_add_order_item_meta( $item_id, '_line_subtotal_tax', 0 );
+			}
+
+		}
+
+		// payment complete
+		$order->payment_complete();
+
+		// Return thankyou redirect
+		return array(
+			'result' => 'success'
+		);
+	}
+
+	public function calculate_cashback( $order_id ) {
+		$message = '';
+		$cashback = get_post_meta( $order_id, '_pos_card_cashback', true );
+
+		// construct message
+		if( $cashback ) {
+			$message = '<strong>'. __('Cashback', 'woocommerce-pos') .':</strong> ';
+			$message .= wc_price($cashback);
+		}
+
+		echo $message;
 	}
 
 	/**

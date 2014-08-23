@@ -9,7 +9,7 @@ var db,
 
 // number of products to get in a single ajax call
 // adjust to prevent server timeouts
-var ajaxLimit = 3;
+var ajaxLimit = 50;
 
 /**
  * Messaging from main thread 

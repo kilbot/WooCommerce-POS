@@ -220,6 +220,11 @@ class WooCommerce_POS_Checkout {
 			$response['messages'] = ob_get_contents();
 			ob_end_clean();
 
+			// store message for display
+			if( $response['messages'] !== '' ) {
+				update_post_meta( $order_id, '_pos_payment_message', $response['messages'] );
+			}
+
 			// add order status to the response
 			$order = new WC_Order( $order_id );
 			if( $order->status == 'processing' ) {
@@ -303,7 +308,10 @@ class WooCommerce_POS_Checkout {
 	 */
 	public function add_payment_fields( $order_data, $order, $fields, $server ) {
 		if( WC_POS()->is_pos ) {
-			// $order_data['payment_details']['message'] = 'Hello World';
+			$message = get_post_meta( $order->id, '_pos_payment_message', true );
+			if($message) {
+				$order_data['payment_details']['message'] = $message;
+			}
 			return $order_data;
 		}
 	}

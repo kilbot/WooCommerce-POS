@@ -88,7 +88,7 @@ define(['app', 'apps/products/list/view', 'entities/products'], function(POS, Vi
 
 				// sync
 				this.listenTo( view, 'sync:clicked', function( args ) {
-					products.serverSync();
+					POS.Entities.channel.command('product:sync');
 				});
 
 				// show
@@ -126,14 +126,21 @@ define(['app', 'apps/products/list/view', 'entities/products'], function(POS, Vi
 					collection: products
 				});
 
+				// sync on page load
+				this.listenTo( view, 'show', function() {
+					POS.Entities.channel.command('product:sync');
+				});
+
 				// sync
 				this.listenTo( view, 'pagination:sync:clicked', function(args) {
-					products.serverSync();
+					POS.Entities.channel.command('product:sync');
 				});
 
 				// clear
 				this.listenTo( view, 'pagination:clear:clicked', function(args) {
 					POS.Entities.channel.command('options:set', 'last_update', '' );
+					POS.Entities.channel.command('options:delete', '_syncing' );
+					products.fullCollection.reset();
 					args.view.render();
 				});
 				

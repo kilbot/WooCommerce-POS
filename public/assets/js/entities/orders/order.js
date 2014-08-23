@@ -66,16 +66,7 @@ define(['app'], function(POS){
 				$.post( pos_params.ajax_url, data )
 				.done(function( data ) {
 					if(POS.debug) console.log(data);
-
-					if( _.isObject(data) ) {
-						self.set(data);
-					} else {
-						self.set({
-							status: 'failure',
-							message: data
-						});
-					}
-
+					self.trigger('processing:complete', data);
 				})
 				.fail(function( jqXHR, textStatus, errorThrown ) {
 					if(POS.debug) console.warn('error processing payment');

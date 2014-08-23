@@ -19,7 +19,7 @@
 
 	{{#if payment_details.message}}
 	<div id="receipt-message">
-		{{payment_details.message}}
+		{{{payment_details.message}}}
 	</div>
 	{{/if}}
 

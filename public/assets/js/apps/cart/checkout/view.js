@@ -24,10 +24,6 @@ define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 				actions: '#checkout-actions',
 			},
 
-			modelEvents: {
-				'change:status': 'onChangeStatus'
-			},
-
 			onRender: function(){
 				this.$('.panel').on('show.bs.collapse', function(e){
 					$(e.target).closest('.panel').removeClass('panel-default').addClass('panel-success');
@@ -38,13 +34,13 @@ define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 			},
 
 			processPayment: function() {
-				this.model.set({ status: 'processing' });
+				this.processing(true);
 				var data = Backbone.Syphon.serialize( this.ui.gateways.find('.panel-success')[0] );
 				this.model.process( data );
 			},
 
-			onChangeStatus: function(e) {
-				if( e.changed.status === 'processing' ) {
+			processing: function( processing ) {
+				if( processing ) {
 					this.ui.actions.addClass('working').find('button').prop('disabled', true);
 				} else {
 					this.ui.actions.removeClass('working').find('button').prop('disabled', false);
