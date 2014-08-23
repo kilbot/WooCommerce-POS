@@ -73,9 +73,9 @@
 				<tr class="tax">
 					<th colspan="3">
 						{{#if ../prices_include_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
-						{{@key}}:
+						{{label}}:
 					</th>
-					<td colspan="2">{{{money this}}}</td>
+					<td colspan="2">{{{money total}}}</td>
 				</tr>
 			{{/each}}
 		{{else}}

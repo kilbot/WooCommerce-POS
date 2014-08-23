@@ -27,7 +27,7 @@
 						}
 					}
 					&.name {
-						width: 50%;
+						width: 45%;
 						dl {
 			                @include clearfix();
 			                width: 100%;
@@ -47,7 +47,7 @@
 			            strong { display: block; }
 					}
 					&.price {
-						width: 15%;
+						width: 20%;
 						text-align: center;
 					}
 					&.action {

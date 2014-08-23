@@ -28,7 +28,8 @@ define(['app'], function(POS){
 					'order_discount',
 					'customer_id',
 					'total_tax',
-					'note'
+					'note',
+					'itemized_tax'
 				]);
 
 				// pick required data from the cart items, 
@@ -40,8 +41,7 @@ define(['app'], function(POS){
 						subtotal_tax: model.get('subtotal_tax'),
 						subtotal 	: model.get('subtotal'),
 						total_tax	: model.get('line_tax'),
-						total 		: model.get('line_total'),
-						itemized_tax: model.get('tax_rates')
+						total 		: model.get('line_total')
 					}
 					return item;
 				});

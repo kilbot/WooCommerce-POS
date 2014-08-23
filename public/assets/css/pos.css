@@ -4459,7 +4459,7 @@ html, body {
 }
 /* line 29, sass/partials/_products.scss */
 #products ul.list li div.name {
-  width: 50%;
+  width: 45%;
 }
 /* line 31, sass/partials/_products.scss */
 #products ul.list li div.name dl {
@@ -4494,7 +4494,7 @@ html, body {
 }
 /* line 49, sass/partials/_products.scss */
 #products ul.list li div.price {
-  width: 15%;
+  width: 20%;
   text-align: center;
 }
 /* line 53, sass/partials/_products.scss */

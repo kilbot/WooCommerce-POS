@@ -174,17 +174,23 @@
 				<td colspan="1">{{{money cart_discount negative=true}}}</td>
 			</tr>
 			{{/compare}}
-			{{#compare total_tax '!==' '0.00'}}
+			{{#compare total_tax '!=' '0.00'}}
 				{{#if show_itemized}}
 					{{#each tax_lines}}
 						<tr class="tax">
-							<th colspan="2">{{title}}:</th>
+							<th colspan="2">
+								{{#if ../prices_include_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
+								{{title}}:
+							</th>
 							<td colspan="1">{{{money total}}}</td>
 						</tr>
 					{{/each}}
 				{{else}}
 					<tr class="tax">
-						<th colspan="2"><?php echo esc_html( WC()->countries->tax_or_vat() ); ?>:</th>
+						<th colspan="2">
+							{{#if prices_include_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
+							<?php echo esc_html( WC()->countries->tax_or_vat() ); ?>
+						</th>
 						<td colspan="1">{{{money total_tax}}}</td>
 					</tr>
 				{{/if}}

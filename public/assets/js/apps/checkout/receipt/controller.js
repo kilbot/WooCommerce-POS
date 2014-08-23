@@ -48,7 +48,9 @@ define(['app', 'apps/checkout/receipt/view', 'entities/orders'], function(POS, V
 							order_id: order_id,
 							email: email,
 							security: pos_params.nonce
-						} 
+						}, function(resp) {
+							view.render( resp );
+						}
 					);
 
 				})

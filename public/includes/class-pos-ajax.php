@@ -54,10 +54,10 @@ class WooCommerce_POS_AJAX {
 			wp_die('There are no cart items');
 
 		// create order 
-		$order = WC_POS()->checkout->create_order();
+		$response = WC_POS()->checkout->create_order();
 
 		$this->json_headers();
-		echo json_encode( $order );
+		echo json_encode( $response );
 		
 		die();
 	}
@@ -68,9 +68,7 @@ class WooCommerce_POS_AJAX {
 		check_ajax_referer( 'woocommerce-pos', 'security' );
 
 		// update order with email
-		
-		// trigger email
-		$response = 'success';
+		$response = WC_POS()->checkout->email_receipt();
 
 		$this->json_headers();
 		echo json_encode( $response );

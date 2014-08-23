@@ -42,11 +42,23 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 			printReceipt: function() {
 				if(POS.debug) console.log('fetching receipt template');
 
+				var data = this.model.toJSON();
+
+				// itemized tax
+				if( pos_params.wc.tax_total_display === 'itemized' ) {
+					data.show_itemized = true;
+				}
+
+				// prices include tax?
+				if( pos_params.wc.prices_include_tax === 'yes' ) {
+					data.prices_include_tax = true;
+				}
+
 				var self = this;
 				$.when( this.fetchTemplate() )
-				.done( function( data ) {
-					var template = Handlebars.compile( data );
-					var html = template( self.model.toJSON() ); 
+				.done( function( receiptTmpl ) {
+					var template = Handlebars.compile( receiptTmpl );
+					var html = template( data );
 					POS.Components.Print.channel.command('print', html);
 				})
 				.fail( function() {
@@ -82,6 +94,16 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 				});
 			},
 
+			render: function(options) {
+				options || ( options = {} );
+				_.defaults( options, {
+					result: false,
+					message: ''
+				});
+				this.$el.html( this.template(options) );
+				return this;
+			},
+
 			behaviors: {
 				Modal: {}
 			},
@@ -91,7 +113,8 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 			},
 
 			events: {
-				'click .close' 		: 'cancel'
+				'click .close' 		 : 'cancel',
+				'click .action-close': 'cancel'
 			},
 
 			cancel: function () {

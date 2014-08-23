@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.3.1-beta\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-08-22 06:52:09+00:00\n"
+"POT-Creation-Date: 2014-08-23 03:11:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -168,7 +168,7 @@ msgid "The default customer for POS orders, eg: Guest or create a new customer."
 msgstr ""
 
 #: admin/includes/settings/class-settings-general.php:85
-#: public/includes/class-pos-ajax.php:154
+#: public/includes/class-pos-ajax.php:153
 #: public/includes/pos-template-hooks.php:70
 msgid "Guest"
 msgstr ""
@@ -286,15 +286,15 @@ msgstr ""
 msgid "Amount Tendered"
 msgstr ""
 
-#: public/class-pos.php:216
+#: public/class-pos.php:219
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: public/class-pos.php:233
+#: public/class-pos.php:236
 msgid "User not authorized to manage WooCommerce POS"
 msgstr ""
 
-#: public/includes/class-pos-checkout.php:69
+#: public/includes/class-pos-checkout.php:43
 msgid "Order &ndash; %s"
 msgstr ""
 
@@ -334,17 +334,17 @@ msgstr ""
 msgid "Searching"
 msgstr ""
 
-#: public/views/cart.php:18 public/views/print/receipt.php:123
+#: public/views/cart.php:18 public/views/print/receipt.php:136
 #: public/views/receipt.php:32
 msgid "Qty"
 msgstr ""
 
-#: public/views/cart.php:19 public/views/print/receipt.php:122
+#: public/views/cart.php:19 public/views/print/receipt.php:135
 #: public/views/receipt.php:31
 msgid "Product"
 msgstr ""
 
-#: public/views/cart.php:20 public/views/print/receipt.php:124
+#: public/views/cart.php:20 public/views/print/receipt.php:137
 #: public/views/receipt.php:33
 msgid "Price"
 msgstr ""
@@ -365,17 +365,17 @@ msgstr ""
 msgid "Item Price"
 msgstr ""
 
-#: public/views/cart.php:61 public/views/print/receipt.php:155
+#: public/views/cart.php:61 public/views/print/receipt.php:168
 #: public/views/receipt.php:64
 msgid "Cart Subtotal"
 msgstr ""
 
-#: public/views/cart.php:66 public/views/print/receipt.php:160
+#: public/views/cart.php:66 public/views/print/receipt.php:173
 #: public/views/receipt.php:69
 msgid "Cart Discount"
 msgstr ""
 
-#: public/views/cart.php:92 public/views/print/receipt.php:181
+#: public/views/cart.php:92 public/views/print/receipt.php:194
 #: public/views/receipt.php:90
 msgid "Order Discount"
 msgstr ""
@@ -384,7 +384,7 @@ msgstr ""
 msgid "Discount"
 msgstr ""
 
-#: public/views/cart.php:96 public/views/print/receipt.php:186
+#: public/views/cart.php:96 public/views/print/receipt.php:199
 #: public/views/receipt.php:95
 msgid "Order Total"
 msgstr ""
@@ -562,24 +562,33 @@ msgstr ""
 msgid "Receipt"
 msgstr ""
 
-#: public/views/print/receipt.php:99
+#: public/views/print/receipt.php:100
 msgid "Billing Address"
 msgstr ""
 
-#: public/views/print/receipt.php:102
+#: public/views/print/receipt.php:103
 msgid "Shipping Address"
 msgstr ""
 
-#: public/views/print/receipt.php:107
+#: public/views/print/receipt.php:108
 msgid "Order Number"
 msgstr ""
 
-#: public/views/print/receipt.php:111
+#: public/views/print/receipt.php:112
 msgid "Order Date"
 msgstr ""
 
-#: public/views/print/receipt.php:115
+#: public/views/print/receipt.php:116
 msgid "Payment Method"
+msgstr ""
+
+#: public/views/print/receipt.php:121 public/views/receipt.php:108
+#: public/views/support.php:14
+msgid "Email"
+msgstr ""
+
+#: public/views/print/receipt.php:127
+msgid "Telephone"
 msgstr ""
 
 #: public/views/products.php:24
@@ -624,10 +633,6 @@ msgstr ""
 
 #: public/views/receipt.php:107
 msgid "Print"
-msgstr ""
-
-#: public/views/receipt.php:108 public/views/support.php:14
-msgid "Email"
 msgstr ""
 
 #: public/views/receipt.php:111
@@ -717,7 +722,7 @@ msgctxt "Settings tab label"
 msgid "Checkout"
 msgstr ""
 
-#: public/includes/class-pos-checkout.php:69
+#: public/includes/class-pos-checkout.php:43
 msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""

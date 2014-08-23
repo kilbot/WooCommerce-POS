@@ -19,7 +19,7 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 				var subtotal 		= 0,
 					cart_discount 	= 0,
 					total_tax 		= 0,
-					itemized_tax 	= {},
+					itemized_tax 	= [],
 					tax_rates 		= {};
 
 				// sum up the line totals
@@ -31,22 +31,26 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 				}
 
 				// special case: itemized taxes
-				if( total_tax !== 0 && pos_params.wc.tax_total_display === 'itemized') {
+				if( total_tax !== 0 ) {
 					tax_rates = this._tax_rates();
 					_.each(tax_rates, function(tax, key) {
 						var tax_sum = 0;
 						tax_sum = _.reduce( _.compact( this.pluck( 'line_tax_' + key ) ), function(memo, num){ return memo + num; }, 0 );
 						if( tax_sum !== 0 ) {
-							itemized_tax[tax.label] = tax_sum;
+							itemized_tax.push({
+								id: key,
+								label: tax.label,
+								total: this.roundNum( tax_sum )
+							});
 						}
 					}, this);
 				}
 
 				// create totals object
 				var totals = {
-					'subtotal'		: subtotal,
-					'cart_discount'	: cart_discount,
-					'total_tax'		: total_tax,
+					'subtotal'		: this.roundNum( subtotal ),
+					'cart_discount'	: this.roundNum( cart_discount ),
+					'total_tax'		: this.roundNum( total_tax ),
 					'itemized_tax'	: itemized_tax,
 				};
 
@@ -68,6 +72,15 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 					all_rates = _.reduce( tax_rates, function(a, b) { return _.merge(a, b); }, {});
 				}
 				return all_rates;
+			},
+
+			// Convenience method for rounding to 4 decimal places
+			// TODO: mirror the functionality of WC_ROUNDING_PRECISION
+			roundNum: function(num) {
+				if( pos_params.wc.tax_round_at_subtotal === 'no' ) {
+					return parseFloat( num.toFixed(4) );
+				}
+				return num;
 			},
 
 		});

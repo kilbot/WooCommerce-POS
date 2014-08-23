@@ -173,6 +173,36 @@ define(['json!dummy-products', 'entities/cart/items', 'entities/cart/item'],
 			expect(this.model.get('line_tax_3')).toBe(0.1316);
 		});
 
+		it("should calculate inclusive compound tax", function() {
+
+			// set up data based on user settings
+			pos_params.wc.calc_taxes = 'yes';
+			pos_params.wc.prices_include_tax = 'yes';
+
+			// set new price to $1.50
+			this.model.set( { 'taxable': true, 'qty': 2, 'item_price': 1.5 } );
+
+			// expect(this.model.get('line_tax')).toBe(0.3684);
+			// expect(this.model.get('line_tax_2')).toBe(0.2368);
+			// expect(this.model.get('line_tax_3')).toBe(0.1316);
+			expect('you').toBe('doing this');
+		});
+
+		it("should calculate exclusive compound tax", function() {
+
+			// set up data based on user settings
+			pos_params.wc.calc_taxes = 'yes';
+			pos_params.wc.prices_include_tax = 'yes';
+
+			// set new price to $1.50
+			this.model.set( { 'taxable': true, 'qty': 2, 'item_price': 1.5 } );
+
+			// expect(this.model.get('line_tax')).toBe(0.3684);
+			// expect(this.model.get('line_tax_2')).toBe(0.2368);
+			// expect(this.model.get('line_tax_3')).toBe(0.1316);
+			expect('you').toBe('doing this');
+		});
+
 	});
 
 });

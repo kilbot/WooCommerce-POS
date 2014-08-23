@@ -178,27 +178,6 @@ class WooCommerce_POS_Checkout {
 			do_action( 'woocommerce_ajax_add_order_item_meta', $item_id, $item );
 		}
 
-		foreach ( $line['itemized_tax'] as $key => $tax ) {
-
-			// Add tax meta
-			$item_id = wc_add_order_item( $order_id, array(
-				'order_item_name' => $item['name'],
-				'order_item_type' => 'tax'
-			) );
-
-			$compound = $tax['compound'] === 'yes' ? 1 : 0;
-
-			// Add line item meta
-			if ( $item_id ) {
-				wc_add_order_item_meta( $item_id, 'rate_id', $key );
-				wc_add_order_item_meta( $item_id, 'label', $tax['label'] );
-				wc_add_order_item_meta( $item_id, 'compound', $compound );
-				wc_add_order_item_meta( $item_id, 'tax_amount', $tax['tax_amount'] );
-				wc_add_order_item_meta( $item_id, 'shipping_tax_amount', 0 );
-			}
-
-		}
-
 	}
 
 	/**
@@ -277,32 +256,8 @@ class WooCommerce_POS_Checkout {
 	}
 
 	/**
-	 * [get_customer_details description]
-	 * @param  [type] $customer_id  [description]
-	 * @param  string $type_to_load [description]
-	 * @return [type]               [description]
+	 * Order meta
 	 */
-	private function get_customer_details( $type_to_load = 'billing' ) {
-
-		$customer_id = $this->customer_id;
-
-		$customer_data = array(
-			$type_to_load . '_first_name' => get_user_meta( $customer_id, $type_to_load . '_first_name', true ),
-			$type_to_load . '_last_name'  => get_user_meta( $customer_id, $type_to_load . '_last_name', true ),
-			$type_to_load . '_company'    => get_user_meta( $customer_id, $type_to_load . '_company', true ),
-			$type_to_load . '_address_1'  => get_user_meta( $customer_id, $type_to_load . '_address_1', true ),
-			$type_to_load . '_address_2'  => get_user_meta( $customer_id, $type_to_load . '_address_2', true ),
-			$type_to_load . '_city'       => get_user_meta( $customer_id, $type_to_load . '_city', true ),
-			$type_to_load . '_postcode'   => get_user_meta( $customer_id, $type_to_load . '_postcode', true ),
-			$type_to_load . '_country'    => get_user_meta( $customer_id, $type_to_load . '_country', true ),
-			$type_to_load . '_state'      => get_user_meta( $customer_id, $type_to_load . '_state', true ),
-			$type_to_load . '_email'      => get_user_meta( $customer_id, $type_to_load . '_email', true ),
-			$type_to_load . '_phone'      => get_user_meta( $customer_id, $type_to_load . '_phone', true ),
-		);
-
-		return array_filter( $customer_data );
-	}
-
 	private function add_order_meta( $order_id ) {
 
 		// add standard order meta
@@ -316,16 +271,66 @@ class WooCommerce_POS_Checkout {
 		update_post_meta( $order_id, '_order_currency', 	get_woocommerce_currency() );
 		update_post_meta( $order_id, '_prices_include_tax', get_option( 'woocommerce_prices_include_tax' ) );
 
+		// itemized tax totals
+		if( isset($_REQUEST['itemized_tax']) ) {
+			foreach ( $_REQUEST['itemized_tax'] as $tax ) {
+				$code = WC()->cart->tax->get_rate_code( $tax['id'] );
+				if ( $code ) {
+					// Add tax meta
+					$item_id = wc_add_order_item( $order_id, array(
+						'order_item_name' => $code,
+						'order_item_type' => 'tax'
+					) );
+					// Add line item meta
+					if ( $item_id ) {
+						wc_add_order_item_meta( $item_id, 'rate_id', $tax['id'] );
+						wc_add_order_item_meta( $item_id, 'label', WC()->cart->tax->get_rate_label( $tax['id'] ) );
+						wc_add_order_item_meta( $item_id, 'compound', absint( WC()->cart->tax->is_compound( $tax['id'] ) ? 1 : 0 )  );
+						wc_add_order_item_meta( $item_id, 'tax_amount', $tax['total'] );
+						wc_add_order_item_meta( $item_id, 'shipping_tax_amount', 0 );
+					}
+				}
+			}
+		}
+
 		// pos meta 
 		update_post_meta( $order_id, '_pos', 1 );
 		update_post_meta( $order_id, '_pos_user', get_current_user_id() );
 	}
 
+	/**
+	 * Add any payment messages to API response
+	 */
 	public function add_payment_fields( $order_data, $order, $fields, $server ) {
 		if( WC_POS()->is_pos ) {
 			// $order_data['payment_details']['message'] = 'Hello World';
 			return $order_data;
 		}
+	}
+
+	/**
+	 * Send email receipt
+	 */
+	public function email_receipt() {
+		$response 	= '';
+		$order_id 	= isset($_REQUEST['order_id']) ? $_REQUEST['order_id'] : '';
+		$email 		= isset($_REQUEST['email']) ? $_REQUEST['email'] : '';
+
+		if( $order_id != '' && $email != '' ) {
+			update_post_meta( $order_id, '_billing_email', $email );
+			WC()->mailer()->customer_invoice( $order_id );
+			$response = array(
+				'result' => 'success',
+				'message' => __( 'Email sent', 'woocommerce-pos')
+			);
+		} else {
+			$response = array(
+				'result' => 'failure',
+				'message' => __( 'There was an error sending the email', 'woocommerce-pos')
+			);
+		}
+
+		return $response;
 	}
 
 	/**

@@ -31,7 +31,7 @@ define(['app', 'apps/checkout/payment/view', 'entities/orders'], function(POS, V
 				// return to sale
 				this.listenTo( order, 'change:status', function(e) {
 					if( e.changed.status === 'completed' ) {
-						// go to receipt??
+						// go to receipt
 					}
 				});
 
