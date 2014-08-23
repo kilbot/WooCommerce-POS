@@ -1,7 +1,7 @@
 
 define(['app', 'handlebars'], function(POS, Handlebars){
 
-	POS.module('CheckoutApp.Receipt.View', function(View, POS, Backbone, Marionette, $, _){
+	POS.module('CartApp.Receipt.View', function(View, POS, Backbone, Marionette, $, _){
 
 		View.Receipt = Marionette.ItemView.extend({
 			template: Handlebars.compile( $('#tmpl-receipt').html() ),
@@ -135,6 +135,6 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 
 	});
 
-	return POS.CheckoutApp.Receipt.View;
+	return POS.CartApp.Receipt.View;
 
 });

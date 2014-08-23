@@ -93,7 +93,6 @@ require([
 
 	// POS modules
 	'apps/cart/cart_app',
-	'apps/checkout/checkout_app',
 	'apps/customer/customer_app',
 	'apps/products/products_app'
 

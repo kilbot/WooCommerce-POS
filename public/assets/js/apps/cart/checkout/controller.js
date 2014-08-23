@@ -1,8 +1,8 @@
-define(['app', 'apps/checkout/payment/view', 'entities/orders'], function(POS, View){
+define(['app', 'apps/cart/checkout/view', 'entities/orders'], function(POS, View){
 	
-	POS.module('CheckoutApp.Payment', function(Payment, POS, Backbone, Marionette, $, _){
+	POS.module('CartApp.Checkout', function(Checkout, POS, Backbone, Marionette, $, _){
 	
-		Payment.Controller = POS.Controller.Base.extend({
+		Checkout.Controller = POS.Controller.Base.extend({
 
 			initialize: function(options) {
 
@@ -14,7 +14,7 @@ define(['app', 'apps/checkout/payment/view', 'entities/orders'], function(POS, V
 				var order = POS.Entities.channel.request('order:entity');
 
 				// init view
-				var view = new View.Checkout({
+				var view = new View.Payment({
 					model: order
 				});
 

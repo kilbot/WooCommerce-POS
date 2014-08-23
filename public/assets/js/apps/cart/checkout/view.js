@@ -1,8 +1,8 @@
 define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 
-	POS.module('CheckoutApp.Payment.View', function(View, POS, Backbone, Marionette, $, _){
+	POS.module('CartApp.Checkout.View', function(View, POS, Backbone, Marionette, $, _){
 
-		View.Checkout = Marionette.ItemView.extend({
+		View.Payment = Marionette.ItemView.extend({
 			template: Handlebars.compile( $('#tmpl-checkout').html() ),
 
 			behaviors: {
@@ -56,6 +56,6 @@ define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 
 	});
 
-	return POS.CheckoutApp.Payment.View;
+	return POS.CartApp.Checkout.View;
 
 });

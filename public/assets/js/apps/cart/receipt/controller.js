@@ -1,6 +1,6 @@
-define(['app', 'apps/checkout/receipt/view', 'entities/orders'], function(POS, View){
+define(['app', 'apps/cart/receipt/view', 'entities/orders'], function(POS, View){
 	
-	POS.module('CheckoutApp.Receipt', function(Receipt, POS, Backbone, Marionette, $, _){
+	POS.module('CartApp.Receipt', function(Receipt, POS, Backbone, Marionette, $, _){
 	
 		Receipt.Controller = POS.Controller.Base.extend({
 
