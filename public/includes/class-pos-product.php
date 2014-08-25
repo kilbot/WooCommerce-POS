@@ -56,9 +56,14 @@ class WooCommerce_POS_Product {
 	 * @param  $query 		the wordpress query
 	 */
 	public function pre_get_posts( $query ) {
+		
+		// only alter products
+		if( $query->get('post_type') !== 'product' )
+			return;
 
-		// don't alter any queries in the admin
-		if( is_admin() && !WC_POS()->is_pos ) return;
+		// don't alter product queries in the admin
+		if( is_admin() && !WC_POS()->is_pos ) 
+			return;
 
 		if( WC_POS()->is_pos ) {
 			$hide = 'online_only';

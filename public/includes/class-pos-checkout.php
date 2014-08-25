@@ -52,6 +52,8 @@ class WooCommerce_POS_Checkout {
 
 		// set customer details
 		$customer_id = isset( $_REQUEST['customer_id'] ) ? absint( $_REQUEST['customer_id'] ) : 0 ;
+		update_post_meta( $order_id, '_customer_user', $customer_id );
+
 		if( $customer_id !== 0 ) {
 			$this->set_order_addresses( $order_id, $customer_id );
 		}
@@ -76,8 +78,6 @@ class WooCommerce_POS_Checkout {
 	 * follows same function in woocommerce/includes/api/class-wc-api-orders.php
 	 */
 	private function set_order_addresses( $order_id, $customer_id ) {
-
-		update_post_meta( $order_id, '_customer_user', $customer_id );
 
 		$address_fields = array(
 			'first_name',
