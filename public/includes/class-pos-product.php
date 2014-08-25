@@ -71,7 +71,7 @@ class WooCommerce_POS_Product {
 			$hide = 'pos_only';
 		}
 
-		// remove variable products
+		// show/hide POS products
 		$meta_query =  array(
 			'relation' => 'OR',
 			array(
