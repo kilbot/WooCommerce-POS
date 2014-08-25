@@ -66,7 +66,7 @@ define([
 
 				}
 
-				this.trigger('reset', filteredList);
+				this.trigger('filter:products', filteredList);
 
 			},
 

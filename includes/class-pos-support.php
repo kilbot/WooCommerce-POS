@@ -96,16 +96,16 @@ class WooCommerce_POS_Support {
 			array(
 				'title' => __( 'API Authentication', 'woocommerce-pos' ),
 				'test' 	=> $this->tools->check_api_auth(),
-				'pass' 	=> __( 'Authentication Passed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a><textarea readonly="readonly" class="small form-control" style="display:none">' . $this->tools->auth_response . '</textarea>',
-				'fail' 	=> __( 'Authentication Failed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a><textarea readonly="readonly" class="small form-control" style="display:none">' . $this->tools->auth_response . '</textarea>',
+				'pass' 	=> __( 'Authentication Passed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="icon icon-info-circle"></i></a><textarea readonly="readonly" class="small form-control" style="display:none">' . $this->tools->auth_response . '</textarea>',
+				'fail' 	=> __( 'Authentication Failed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="icon icon-info-circle"></i></a><textarea readonly="readonly" class="small form-control" style="display:none">' . $this->tools->auth_response . '</textarea>',
 			),
 		);
 
 		foreach ( $checks as $check ) {
 			if( $check['test'] ) {
-				$row = '<tr class="pass"><td><i class="fa fa-check"></i></td><td>'. $check['title'] .'</td><td colspan="2">'. $check['pass'] .'</td></tr>'."\n";
+				$row = '<tr class="pass"><td><i class="icon icon-check"></i></td><td>'. $check['title'] .'</td><td colspan="2">'. $check['pass'] .'</td></tr>'."\n";
 			} else {
-				$row = '<tr class="fail"><td><i class="fa fa-times"></i></td><td>'. $check['title'] .'</td><td>'. $check['fail'] .'</td>';
+				$row = '<tr class="fail"><td><i class="icon icon-times"></i></td><td>'. $check['title'] .'</td><td>'. $check['fail'] .'</td>';
 				if( isset( $check['action'] ) && isset( $check['action'] ) ) 
 					$row .= '<td><a class="btn btn-primary" href="'. $check['action'] .'">'. $check['prompt'] .'</a></td>';
 				$row .= '</tr>'."\n";

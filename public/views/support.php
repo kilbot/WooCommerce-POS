@@ -19,7 +19,7 @@
 				<textarea class="form-control" id="message" name="message" placeholder="<?php _e('Describe your problem here ...', 'woocommerce-pos') ?>" required="required"></textarea>
 			</fieldset>
 			<fieldset class="no-border">
-				<small><label><input type="checkbox" name="reports[]" value="pos" checked="checked"> <?php _e( 'Append POS system report', 'woocommerce-pos' ); ?></label></small> <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a>
+				<small><label><input type="checkbox" name="reports[]" value="pos" checked="checked"> <?php _e( 'Append POS system report', 'woocommerce-pos' ); ?></label></small> <a href="#" class="toggle"><i class="icon icon-info-circle"></i></a>
 				<textarea class="form-control" id="pos_status" name="pos_status" readonly="readonly" class="small" style="display:none">Shop URL: <?= get_bloginfo('url')."\n"; ?></textarea>
 			</fieldset>
 			<fieldset class="actions text-right">

@@ -4577,10 +4577,10 @@ html, body {
 /* line 122, sass/partials/_products.scss */
 #products-filter .clear-btn a.clear i {
   line-height: 1.428571429;
-  padding: 2px 12px;
+  padding: 2px 6px;
 }
 /* line 128, sass/partials/_products.scss */
-#products-filter .fa {
+#products-filter .icon {
   color: #666666;
 }
 /* line 131, sass/partials/_products.scss */

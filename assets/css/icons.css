@@ -169,3 +169,6 @@
 .icon-delete:before {
   content: "\e601";
 }
+.icon-info-circle:before {
+  content: "\f05a";
+}

@@ -419,6 +419,7 @@ class WooCommerce_POS_Admin {
 		);
 
 		$submenu[$this->plugin_slug][0][0] = __( 'Upgrade to Pro', 'woocommerce-pos' );
+		$submenu[$this->plugin_slug][500] = array( __( 'View POS', 'woocommerce-pos' ), 'manage_options' , WC_POS()->pos_url() ); 
 
 	}
 

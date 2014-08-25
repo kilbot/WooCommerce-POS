@@ -90,18 +90,18 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: hierarchical UI for variable products, improves experience for products with large number of variations
 * New: product filters, filter by category ( eg: cat:music ) or any attribute ( eg: in_stock:true )
 * New: quick tabs for filtering products All, Featured ( featured:true ) and On Sale ( on_sale:true )
+* New: number pad for quick entry via mouse or touch
 * New: Payment Gateway settings, enable POS only gateways and reorder through new settings tab
-* TODO: Payment Gateway processing, experimental
-* TODO: ui: change calculator
-* New: Numpad
-* TODO: send order meta: user_id, payment_type
-* TODO: Add menu link directly to POS
+* New: Payment Gateway processing (tested on some gateways but still experimental)
+* New: change calculated for Cash sales
+* New: cashback option for Card sales
+* New: Link to POS from admin menu (sorry!)
 * New: Debug flag for Javascript console logging
-* Improved: Most JS has been rewritten to improve performance and extensibility
-* Improved: Initial download of products, improved performance for large stores and/or slow servers
 * New: Greek translation thanks to Marios Polycarpou! [http://el.woopos.com.au/pos](http://el.woopos.com.au/pos)
 * New: German translation thanks to Simon Potye! [http://de.woopos.com.au/pos](http://de.woopos.com.au/pos)
 * New: Danish translation thanks to Thomas Clausen! [http://da.woopos.com.au/pos](http://da.woopos.com.au/pos)
+* Improved: Most JS has been rewritten to improve performance and extensibility
+* Improved: Initial download of products, improved performance for large stores and/or slow servers
 * Fix: Authenication no longer relies on cookies, should fix authentication issues for some users
 * Fix: Bug preventing product display on Safari for subfolder installs of WordPress
 

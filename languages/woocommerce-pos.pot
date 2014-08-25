@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.3.1-beta2\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-08-23 10:17:20+00:00\n"
+"POT-Creation-Date: 2014-08-25 02:23:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -34,7 +34,7 @@ msgid "POS"
 msgstr ""
 
 #: admin/class-pos-admin.php:414 admin/class-pos-admin.php:415
-#: admin/class-pos-admin.php:475
+#: admin/class-pos-admin.php:476
 #: admin/includes/settings/class-settings-checkout.php:160
 #: admin/includes/settings/class-settings-checkout.php:164
 msgid "Settings"
@@ -45,7 +45,7 @@ msgstr ""
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: admin/class-pos-admin.php:476
+#: admin/class-pos-admin.php:422 admin/class-pos-admin.php:477
 msgid "View POS"
 msgstr ""
 

@@ -23,7 +23,7 @@ jQuery( document ).ready(function( $ ) {
 		$.getJSON( pos_params.wc_api_url + 'products', { 'pos': 1, 'filter[limit]': 1 } )
 		.done( function( data ) {
 			$('#system-status tbody')
-			.append('<tr class="pass"><td><i class="fa fa-check"></i></td><td>Product Download</td>' + 
+			.append('<tr class="pass"><td><i class="icon icon-check"></i></td><td>Product Download</td>' + 
 				'<td colspan="2">Product Retrieved OK <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a> ' + 
 				'<textarea class="small form-control" readonly="readonly" style="display:none">' + JSON.stringify( data ) + '</textarea></td></tr>');
 			$('#pos_status').append('\n*** Product Download ***\n\n' + JSON.stringify( data ) + '\n\n');
@@ -32,7 +32,7 @@ jQuery( document ).ready(function( $ ) {
 			var response = jqxhr.responseText.replace(/(<([^>]+)>)/ig,"");
 
 			$('#system-status tbody')
-			.append('<tr class="fail"><td><i class="fa fa-times"></i></td><td>Product Download</td>' + 
+			.append('<tr class="fail"><td><i class="icon icon-times"></i></td><td>Product Download</td>' + 
 				'<td colspan="2">Product Download Failed <a href="#" class="toggle"><i class="fa fa-info-circle"></i></a> ' + 
 				'<textarea class="small form-control" readonly="readonly" style="display:none">' + response + '</textarea></td></tr>');
 			$('#pos_status').append('\n*** Product Download ***\n\n' + response.trim() + '\n\n');
