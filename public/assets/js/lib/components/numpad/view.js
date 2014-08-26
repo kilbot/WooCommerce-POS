@@ -2,12 +2,14 @@ define([
 	'app',
 	'text!lib/components/numpad/header.html',
 	'text!lib/components/numpad/numkeys.html',
-	'handlebars'
+	'handlebars',
+	'accounting'
 ], function(
 	POS,
 	HeaderTmpl,
 	NumkeysTmpl,
-	Handlebars
+	Handlebars,
+	accounting
 ){
 	
 	POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _){
@@ -18,7 +20,7 @@ define([
 			regions: {
 				headerRegion: '.numpad-header',
 				keysRegion: '.numpad-keys',
-			},
+			}
 
 		});
 
@@ -34,7 +36,7 @@ define([
 			},
 
 			modelEvents: {
-				'change:value change:mode': 'render'			
+				'change:value change:percentage change:mode': 'render'
 			},
 
 			events: {
@@ -49,8 +51,9 @@ define([
 						currency_symbol: pos_params.accounting.currency.symbol,
 						mode: 'amount'
 					});
-					this.calcDiscount();
-					this.model.on( 'change:value', this.calcDiscount, this );
+					this.calcPercentage();
+					this.model.on( 'change:value', this.calcPercentage, this );
+					this.model.on( 'change:percentage', this.calcValue, this );
 				} 
 			},
 
@@ -80,13 +83,30 @@ define([
 				this.model.set({ mode: mode });
 			},
 
-			calcDiscount: function() {
-				var value = parseFloat( this.model.get('value') ),
-					original = parseFloat( this.model.get('original') );
+			calcPercentage: function() {
+				var original = this.model.get('original'),
+					value = this.model.get('value'),
+					percentage;
 
 				if( _.isNaN( value ) ) value = 0;
-				var percentage = 100 * ( 1 - ( value / original ) );
-				this.model.set({ percentage: percentage });
+				percentage = 100 * ( 1 - ( value / original ) );
+				percentage = percentage.toFixed( 0 );
+				percentage = parseFloat( percentage );
+				this.model.set({ percentage: percentage }, { silent: true });
+
+			},
+
+			calcValue: function() {
+				var original = this.model.get('original'),
+					percentage = this.model.get('percentage'),
+					value;
+
+				if( _.isNaN( percentage ) ) percentage = 0;
+				value = original * ( 1 - ( percentage / 100 ) );
+				value = value.toFixed( pos_params.accounting.number.precision );
+				value = parseFloat( value );
+				this.model.set({ value: value }, { silent: true });
+
 			}
 
 		});
@@ -107,25 +127,34 @@ define([
 				if( data.type === 'cash' ) {
 					data.quick_key = this.cashKeys( this.model.get('original') );
 				}
+
+				data.decimal = pos_params.accounting.number.decimal;
 				
 				return data;
 			},
 
 			standardKeyEvent: function(e){
 				var key = $(e.currentTarget).data('key'),
-					value = this.model.get('value'),
 					newValue;
+
+				if( this.model.get('mode') === 'percentage' ) {
+					value = this.model.get('percentage');
+				} else {
+					value = this.model.get('value');
+				}
 
 				switch(key) {
 					case 'ret': 
 						this.trigger('return:keypress');
 					break;
 					case 'del': 
-						if(value[value.length-1] === '.') {
-							newValue = value.toString().slice(0, -2);
+						value = value.toString();
+						if( value.length === 1 ) {
+							newValue = 0;
 						} else {
-							newValue = value.toString().slice(0, -1);
+							newValue = value.slice(0, -1);
 						}
+						newValue = parseFloat(newValue);
 					break;
 					case '+/-': 
 						newValue = value*-1;
@@ -139,7 +168,12 @@ define([
 						}
 				}
 
-				this.model.set({ value: newValue }); // store as ??
+				if( this.model.get('mode') === 'percentage' ) {
+					this.model.set({ percentage: newValue });
+				} else {
+					this.model.set({ value: newValue });
+				}
+				
 			},
 
 			discountKeyEvent: function(e){
@@ -189,7 +223,12 @@ define([
 				keys = _.uniq(keys, true).slice(0, 4);
 
 				return keys;
-			}
+			},
+
+			roundNum: function(num, precision) {
+				precision = precision || pos_params.accounting.number.precision;
+				return parseFloat( num.toFixed(precision) );
+			},
 
 		});
 

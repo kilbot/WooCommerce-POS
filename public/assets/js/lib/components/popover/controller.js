@@ -17,7 +17,6 @@ define([
 		 * Controller
 		 */
 		Popover.Controller = Marionette.Controller.extend({
-
 			initialize: function (options) {
 				_.bindAll(this, 'openPopover', 'closePopover');
 				Popover.channel.comply('open', this.openPopover);
@@ -25,16 +24,13 @@ define([
 			},
 
 			openPopover: function (options) {
-				options || (options = {});
 				this.view = new Popover.View(options);
 				this.view.openPopover(options);
 			},
 
 			closePopover: function (options) {
-				options || (options = {});
-				if( this.view ) {
-					this.view.closePopover(options);
-				}
+				this.view.closePopover(options);
+
 			},
 
 		});

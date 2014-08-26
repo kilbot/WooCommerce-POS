@@ -2,7 +2,8 @@ define([
 	'app',
 	'popover'
 ], function(
-	POS
+	POS,
+	popover
 ){
 	
 	POS.module('Components.Popover', function(Popover, POS, Backbone, Marionette, $, _){
@@ -19,53 +20,50 @@ define([
 			},
 
 			initialize: function (options) {
-				this.target = options.target;
+				this.render();
 
-				// popover events come from the target element
 				var self = this;
-				this.target.on( 'show.bs.popover', function() { self.trigger('show:popover') });
-				this.target.on( 'shown.bs.popover', function() { self.trigger('after:show:popover') });
-				this.target.on( 'hide.bs.popover', function() { self.trigger('hide:popover') });
-				this.target.on( 'hidden.bs.popover', function() { self.trigger('after:hide:popover') });
+				options.target.on( 'show.bs.popover', function(e) {
+					self.trigger('after:show:popover', self);
+				});
+				options.target.on( 'hide.bs.popover', function(e) {
+					self.trigger('after:hide:popover', self);
+				});
 
-				// popover options
-				this.popoverOpts = _.clone(options) || {};
-				_.defaults(this.popoverOpts, {
+				// kill switch
+				options.target.on( 'close:popover', function(e) {
+					self.closePopover({ target: $(e.target) })
+				});
+			},
+
+			openPopover: function (options) {
+				this.once( 'after:show:popover', options.callback );
+				this.setupPopover(options);		
+				options.target.popover('show');
+			},
+
+			closePopover: function (options) {
+				this.once('after:hide:popover', options.callback );
+				this.once('after:hide:popover', this.teardownPopover );
+				options.target.popover('destroy');
+			},
+
+			setupPopover: function (options) {
+				var opts = _.clone(options) || {};
+				_.defaults(opts, {
 					html: true,
 					container: 'body',
 					trigger: 'manual',
 					template: this.el
 				});
 
-				// popover needs this.el
-				this.render();
-
-			},
-
-			openPopover: function (options) {
-				this.once('show:popover', options.onShowPopover(this.content));
-				this.once('after:show:popover', options.onAfterShowPopover);
-				this.setupPopover(options);			
-				
-				this.target.popover('show');
-				if(POS.debug) console.log('showing ' + this.target.attr('aria-describedby') );
-			},
-
-			closePopover: function (options) {
-				this.once('hide:popover', options.onHidePopover);
-				this.once('after:hide:popover', options.onAfterHidePopover);
-				this.once('after:hide:popover', this.teardownPopover);
-				
-				if(POS.debug) console.log('destroying ' + this.target.attr('aria-describedby') );
-				this.target.popover('destroy');
-			},
-
-			setupPopover: function (options) {
-				this.target.popover(this.popoverOpts);
+				// setup
+				options.target.popover(opts);
 			},
 
 			teardownPopover: function () {
-				this.content.empty();
+				if(this.content) this.content.empty();
+				this.destroy();
 			}
 			
 		});

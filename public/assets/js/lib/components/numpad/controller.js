@@ -16,12 +16,12 @@ define([
 		 */
 		Numpad.channel = Backbone.Radio.channel('numpad');
 
-		Numpad.channel.reply( 'getView', function(options) {
+		Numpad.channel.reply( 'get:view', function(options) {
 			var controller = new Numpad.Controller(options);
 			return controller.getNumpadView();
 		});
 
-		Numpad.channel.comply( 'showPopover', function(options) {
+		Numpad.channel.comply( 'show:popover', function(options) {
 			var controller = new Numpad.Controller(options);
 			controller.showNumpadPopover(options);
 		});
@@ -40,8 +40,8 @@ define([
 				this.layout = new Numpad.Layout();
 
 				this.listenTo( this.layout, 'show', function() {
-					this._showHeaderRegion();
-					this._showKeysRegion();
+					this._showHeaderRegion(options);
+					this._showKeysRegion(options);
 				});
 
 				_.bindAll(this, '_onShowPopover');
@@ -51,20 +51,20 @@ define([
 				return this.layout;
 			},
 
-			showNumpadPopover: function() {
+			showNumpadPopover: function(options) {
 				this.model.set({
-					title: this.options.target.data('title'),
-					value: accounting.unformat( this.options.target.val(), pos_params.accounting.number.decimal ),
-					type: this.options.target.data('numpad'),
-					original: this.options.target.data('original'),
+					title: options.target.data('title'),
+					value: accounting.unformat( options.target.val(), pos_params.accounting.number.decimal ),
+					type: options.target.data('numpad'),
+					original: options.target.data('original'),
 					select: true
 				});
 
 				POS.Components.Popover.channel.command( 'open', { 
-					target 			: this.options.target,
-					className 		: 'popover numpad-popover',
-					attributes 		: { 'role' : 'textbox' },
-					onShowPopover 	: this._onShowPopover
+					target 		: options.target,
+					className 	: 'popover numpad-popover',
+					attributes 	: { 'role' : 'textbox' },
+					callback 	: this._onShowPopover
 				});
 			},
 
@@ -72,28 +72,32 @@ define([
 				return this.model.get('value');
 			},
 
-			_showHeaderRegion: function() {
+			_showHeaderRegion: function(options) {
 				var view = new Numpad.Header({ model: this.model });
 
 				this.listenTo( view, 'enter:keypress', function(e) {
-					this.options.target.trigger( 'numpad:return', this.model.get('value') );
+					value = this.model.get('value');
+					value = accounting.formatNumber(value);
+					options.target.trigger( 'numpad:return', value, this );
 				});
 
 				this.layout.headerRegion.show( view );
 			},
 
-			_showKeysRegion: function() {
+			_showKeysRegion: function(options) {
 				var view = new Numpad.Keys({ model: this.model });
 
 				this.listenTo( view, 'return:keypress', function() {
-					this.options.target.trigger( 'numpad:return', this.model.get('value') );
+					value = this.model.get('value');
+					value = accounting.formatNumber(value);
+					options.target.trigger( 'numpad:return', value, this );
 				});
 
 				this.layout.keysRegion.show( view );
 			},
 
-			_onShowPopover: function( popoverRegion ) {
-				popoverRegion.show(this.layout);
+			_onShowPopover: function( view ) {
+				view.content.show(this.layout);
 			}
 
 		});

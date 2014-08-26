@@ -56,7 +56,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			},
 
 			events: {
-				'click .action-remove' 	: 'removeFromCart',
+				'click .action-remove' 	: 'removeItem',
 				'keypress input'  		: 'updateOnEnter',
       			'blur input'      		: 'save'
 			},
@@ -72,11 +72,6 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				return data;
 			},
 
-			removeFromCart: function(e) {
-				e.preventDefault();
-				this.trigger('cartitem:delete', this.model);
-			},
-
 			remove: function() {
 				this.$el.parent('tbody').addClass('animating');
 				this.$('td').addClass('bg-danger');
@@ -87,42 +82,50 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				});
 			},
 
+			removeItem: function() {
+				this.model.destroy();
+			},
+
 			save: function(e) {
 				var input 	= $(e.target),
 					key 	= input.data('id'),
-					value 	= input.val(),
-					decimal = accounting.unformat( value, pos_params.accounting.number.decimal );
+					value 	= input.val();
+
+				// always store numbers as float
+				if( value ){
+					console.log(value);
+					value = accounting.unformat( value, pos_params.accounting.number.decimal );
+					value = parseFloat( value );
+				}
 
 				switch( key ) {
 					case 'qty':
-						// if ( value === this.model.get('qty') ) { break; }
 						if ( value === 0 ) {
-							this.removeFromCart();
+							this.removeItem();
 							break;
 						}
 						if ( value ) {
-							this.model.save({ qty: parseFloat( value ) });
-							input.removeClass('editing');
-						} else {
-							input.focus();
+							this.model.save({ qty: value });
 						}
 						break;
 
 					case 'price':
-						if( !isNaN( decimal ) ) {
-							this.model.save({ item_price: decimal });
-						} else {
-							input.focus();
+						if( !isNaN( value ) ) {
+							this.model.save({ item_price: value });
 						}
 						break;		
 				}
 
+				input.focus();
 			},
 
 			updateOnEnter: function(e) {
 
 				// enter key triggers blur as well?
-				if (e.keyCode === 13) { this.save(e); }
+				if ( e.which === 13 ) { 
+					this.save(e); 
+					this.render(); 
+				}
 			},
 
 		});

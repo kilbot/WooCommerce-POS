@@ -21,7 +21,7 @@ define([
 			},
 			
 			initialize: function(models, options) {
-				this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
+				// this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
 
 				this.options = options || (options = {});
 

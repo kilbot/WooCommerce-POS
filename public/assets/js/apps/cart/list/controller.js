@@ -67,11 +67,6 @@ define(['app', 'apps/cart/list/view', 'entities/cart'], function(POS, View){
 					this._showTotalsRegion();
 				});
 
-				// remove cart item
-				this.listenTo( view, 'childview:cartitem:delete', function(childview, model) {
-					model.destroy();
-				});
-
 				// show
 				this.layout.cartRegion.show( view );
 			},

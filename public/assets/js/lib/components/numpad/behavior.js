@@ -9,41 +9,45 @@ define(['app'], function(POS){
 
 			initialize: function( options ) {
 				// remove any open popovers
-				this.on( 'before:render before:destroy', this.removePopovers );
+				// this.on( 'before:render before:destroy', this.removePopovers );
+			},
+
+			ui: {
+				input: '*[data-numpad]'
 			},
 
 			events: {
- 				'click *[data-numpad]'  : 'numpadPopover'
+ 				'click @ui.input' : 'numpadPopover',
+ 				'keydown input'  : 'onBeforeDestroy'
  			},
 
  			onShow: function() {
 				if(Modernizr.touch) {
 					this.$('*[data-numpad]').attr('readonly', true);
 				}
+
+				this.on( 'before:render', this.onBeforeDestroy );
 			},
 
 			numpadPopover: function(e) {
 
-				// dirty check to see if popover is aleady open
-				if( $(e.target).attr('aria-describedby') ) {
-					return;
-				}
+				// nuke any open numpads
+				$('*[data-numpad]').trigger( 'close:popover' );
 
-				// much hack, trying to force close popovers
-				var self = this;
-				this.removePopovers();
+				// open popover
+				Numpad.channel.command( 'show:popover', { target: $(e.target) } );
 
-				Numpad.channel.command( 'showPopover', { target: $(e.target) } );
+				// collect value from numpad
 				$(e.target).on( 'numpad:return', function( e, value ) {
-					$(e.target).val( value ).trigger('blur');
-					self.removePopovers();
+					var enter = jQuery.Event( 'keypress', { which: 13 } );
+					$(this).val( value ).trigger(enter);
 				});
 			},
 
-			removePopovers: function() {
-				// nuclear option
-				// this needs to be change to only effect popovers attached to this view
-				POS.Components.Popover.channel.command( 'close' );
+			onBeforeDestroy: function() {
+				_.each(this.ui.input, function(input) {
+					$(input).trigger( 'close:popover' );
+				});
 			}
 
 		});
