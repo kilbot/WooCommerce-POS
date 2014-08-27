@@ -8,8 +8,7 @@ define(['app'], function(POS){
 		Numpad.Behavior = Marionette.Behavior.extend({
 
 			initialize: function( options ) {
-				// remove any open popovers
-				this.on( 'before:destroy', this.removePopovers );
+
 			},
 
 			ui: {
@@ -19,7 +18,7 @@ define(['app'], function(POS){
 			events: {
  				'show:numpad' 		: 'numpadPopover',
  				'click @ui.input' 	: 'numpadPopover',
- 				'keydown @ui.input' : 'removePopovers'
+ 				'keydown @ui.input' : 'onBeforeDestroy'
  			},
 
  			onShow: function() {
@@ -51,12 +50,8 @@ define(['app'], function(POS){
 
 			},
 
-			removePopovers: function() {
-				if( _.isObject( this.ui.input ) ) {
-					_.each(this.ui.input, function(input) {
-						$(input).trigger( 'close:popover' );
-					});
-				}
+			onBeforeDestroy: function() {
+				this.view.$('*[data-numpad]').trigger( 'close:popover' );
 			}
 
 		});

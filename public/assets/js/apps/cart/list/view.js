@@ -52,7 +52,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			},
 
 			modelEvents: {
-				'sync': 'render'
+				'change': 'render'
 			},
 
 			events: {
@@ -121,6 +121,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				// enter key triggers blur as well?
 				if ( e.which === 13 ) { 
 					this.save(e);
+					this.model.trigger('change');
 				}
 
 			},
@@ -128,6 +129,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			onBlur: function(e) {
 				if( $(e.target).attr('aria-describedby') === undefined ) {
 					this.save(e);
+					this.model.trigger('change');
 				}
 			} 
 
@@ -156,7 +158,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			},
 
 			modelEvents: {
-				'sync': 'render'
+				'change': 'render'
 			},
 
 			events: {
@@ -226,6 +228,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 
 				if (e.which === 13) { 
 					this.save(e);
+					this.model.trigger('change');
 				}
 			},
 
@@ -236,6 +239,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			onBlur: function(e) {
 				if( $(e.target).attr('aria-describedby') === undefined ) {
 					this.save(e);
+					this.model.trigger('change');
 				}
 			} 
 
