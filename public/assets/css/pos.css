@@ -3692,44 +3692,31 @@ ins {
   font-weight: bold;
 }
 
-/* line 4, sass/partials/_cart.scss */
-#cart table tbody input {
-  text-align: center;
-  max-width: 7em;
-  background-color: #f9f9f9;
-  border: 1px solid #dfdfdf;
-  -moz-appearance: textfield;
-  -moz-border-radius: 16px;
-  -webkit-border-radius: 16px;
-  border-radius: 16px;
-}
-/* line 12, sass/partials/_cart.scss */
-#cart table tbody input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* line 16, sass/partials/_cart.scss */
-#cart table tbody input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* line 20, sass/partials/_cart.scss */
-#cart table tbody input:hover {
-  cursor: pointer;
-}
-/* line 25, sass/partials/_cart.scss */
+/* line 5, sass/partials/_cart.scss */
 #cart table tbody.animating tr.empty {
   display: none;
 }
-/* line 31, sass/partials/_cart.scss */
+/* line 13, sass/partials/_cart.scss */
+#cart table tr.order-discount td input {
+  display: none;
+}
+/* line 17, sass/partials/_cart.scss */
+#cart table tr.order-discount td.editing span {
+  display: none;
+}
+/* line 20, sass/partials/_cart.scss */
+#cart table tr.order-discount td.editing input {
+  display: block;
+}
+/* line 26, sass/partials/_cart.scss */
 #cart table tr:last-of-type th, #cart table tr:last-of-type td {
   border-bottom: 1px solid #dfdfdf;
 }
-/* line 35, sass/partials/_cart.scss */
+/* line 30, sass/partials/_cart.scss */
 #cart table th, #cart table td {
   vertical-align: middle;
 }
-/* line 38, sass/partials/_cart.scss */
+/* line 33, sass/partials/_cart.scss */
 #cart table dl {
   width: 100%;
   font-size: 12px;
@@ -3744,37 +3731,62 @@ ins {
 #cart table dl:after {
   clear: both;
 }
-/* line 43, sass/partials/_cart.scss */
+/* line 38, sass/partials/_cart.scss */
 #cart table dl dt {
   font-weight: normal;
   float: left;
   padding-right: 5px;
   clear: left;
 }
-/* line 49, sass/partials/_cart.scss */
+/* line 44, sass/partials/_cart.scss */
 #cart table dl dd {
   float: left;
   margin: 0;
 }
+/* line 49, sass/partials/_cart.scss */
+#cart table input {
+  text-align: center;
+  max-width: 7em;
+  background-color: #f9f9f9;
+  border: 1px solid #dfdfdf;
+  -moz-appearance: textfield;
+  -moz-border-radius: 16px;
+  -webkit-border-radius: 16px;
+  border-radius: 16px;
+}
+/* line 57, sass/partials/_cart.scss */
+#cart table input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* line 61, sass/partials/_cart.scss */
+#cart table input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* line 65, sass/partials/_cart.scss */
+#cart table input:hover {
+  cursor: pointer;
+}
 
-/* line 58, sass/partials/_cart.scss */
+/* line 73, sass/partials/_cart.scss */
 #cart-totals th {
   text-align: right;
 }
 
-/* line 63, sass/partials/_cart.scss */
+/* line 78, sass/partials/_cart.scss */
 #cart-customer, #cart-actions, #cart-notes {
   padding: 12px;
   border-bottom: 1px solid #dfdfdf;
 }
 
-/* line 68, sass/partials/_cart.scss */
+/* line 83, sass/partials/_cart.scss */
 #cart-actions {
   text-align: right;
   border: 0;
 }
 
-/* line 73, sass/partials/_cart.scss */
+/* line 88, sass/partials/_cart.scss */
 #cart-notes {
   border: 0;
   border-top: 1px solid #dfdfdf;

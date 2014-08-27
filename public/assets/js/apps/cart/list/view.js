@@ -42,7 +42,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			template: Handlebars.compile( $('#tmpl-cart-item').html() ),
 
 			initialize: function( options ) {
-
+				// this.on('all', function(e) { console.log("Cart Items View event: " + e); }); // debug
 			},
 
 			behaviors: {
@@ -52,13 +52,13 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			},
 
 			modelEvents: {
-				'change': 'render'
+				'sync': 'render'
 			},
 
 			events: {
 				'click .action-remove' 	: 'removeItem',
-				'keypress input'  		: 'updateOnEnter',
-      			'blur input'      		: 'save'
+				'keypress input'  		: 'saveOnEnter',
+      			'blur input'      		: 'onBlur'
 			},
 
 			serializeData: function() {
@@ -91,41 +91,45 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 					key 	= input.data('id'),
 					value 	= input.val();
 
+				// check for sensible input
+				if( _.isNaN( parseFloat( value ) ) ) {
+					input.select();
+					return;
+				}
+
 				// always store numbers as float
 				if( value ){
-					value = accounting.unformat( value, pos_params.accounting.number.decimal );
+					value = POS.unformat( value );
 					value = parseFloat( value );
 				}
 
-				switch( key ) {
-					case 'qty':
-						if ( value === 0 ) {
-							this.removeItem();
-							break;
-						}
-						if ( value ) {
-							this.model.save({ qty: value });
-						}
-						break;
-
-					case 'price':
-						if( !isNaN( value ) ) {
-							this.model.save({ item_price: value });
-						}
-						break;		
+				// if qty is 0, delete the item
+				if( key === 'qty' && value === 0 ) { 
+					this.removeItem();
+					return;
 				}
 
-				input.focus();
+				// save
+				var data = {};
+				data[key] = value;
+				this.model.save(data);
+
 			},
 
-			updateOnEnter: function(e) {
+			saveOnEnter: function(e) {
 
 				// enter key triggers blur as well?
 				if ( e.which === 13 ) { 
-					this.save(e); 
-					this.render(); 
+					this.save(e);
 				}
+
 			},
+
+			onBlur: function(e) {
+				if( $(e.target).attr('aria-describedby') === undefined ) {
+					this.save(e);
+				}
+			} 
 
 		});
 
@@ -147,6 +151,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			template: Handlebars.compile( $('#tmpl-cart-totals').html() ),
 
 			behaviors: {
+				AutoGrow: {},
 				Numpad: {}
 			},
 
@@ -155,9 +160,9 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			},
 
 			events: {
-				'click .order-discount' 	: 'edit',
-				'keypress .order-discount'	: 'saveOnEnter',
-				'blur .order-discount'		: 'save'
+				'click .order-discount td' 		: 'edit',
+				'keypress .order-discount input': 'saveOnEnter',
+				'blur .order-discount input'	: 'onBlur'
 			},
 
 			serializeData: function() {
@@ -186,52 +191,53 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 					data.prices_include_tax = true;
 				}
 
+				// orginal total for calculating percentage discount
+				data.original = data.total + data.order_discount;
+
 				return data;
 			},
 
 			edit: function(e) {
-				var td = $(e.currentTarget).children('td');
-				td.attr('contenteditable','true').text( td.data('value') );
+				$(e.currentTarget).addClass('editing').children('input').trigger('show:numpad');
 			},
 
 			save: function(e) {
-				var value = $(e.target).text();
+				var input 	= $(e.target),
+					value 	= input.val();
 
-				// if empty, go back to zero
-				if( value === '' ) { value = 0; } 
-
-				// unformat number
-				var decimal = accounting.unformat( value, pos_params.accounting.number.decimal );
-
-				// // validate
-				if( isNaN( parseFloat( decimal ) ) ) {
-					$(e.target).focus(); 
+				// check for sensible input
+				if( _.isNaN( parseFloat( value ) ) ) {
+					input.select();
 					return;
-				}	
+				}
+
+				// always store numbers as float
+				if( value ){
+					value = POS.unformat( value );
+					value = parseFloat( value );
+				}
 
 				// save
-				this.model.set({ order_discount: decimal });
+				this.model.save({ order_discount: value });
+
 			},
 
 			saveOnEnter: function(e) {
 
-				// save note on enter
 				if (e.which === 13) { 
-					e.preventDefault();
 					this.save(e);
-					// $(e.currentTarget).children('td').blur();
 				}
 			},
 
-			addDiscount: function() {
-				console.log('discount!');
+			showDiscountRow: function() {
+				this.$('.order-discount').show().children('td').trigger('click');
 			},
 
-			showDiscountRow: function() {
-				// toggle discount row
-				td = this.$('.order-discount').show().children('td');
-				td.attr('contenteditable','true').text( td.data('value') );
-			}
+			onBlur: function(e) {
+				if( $(e.target).attr('aria-describedby') === undefined ) {
+					this.save(e);
+				}
+			} 
 
 		});
 

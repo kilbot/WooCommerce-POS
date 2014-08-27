@@ -20,7 +20,7 @@
  * 
  */
 
-define(['jquery', 'underscore', 'backbone', 'accounting', 'collections/CartItems', 'models/CartTotals', 'json!dummy-products' ], 
+define(['jquery', 'underscore', 'backbone', 'accounting', 'collections/CartItems', 'models/CartTotals', 'json!dummy-products', 'helpers' ], 
 	function($, _, Backbone, accounting, CartItems, CartTotals, dummy_products) {
 
 	describe("The cart", function() {

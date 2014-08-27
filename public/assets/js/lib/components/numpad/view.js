@@ -105,6 +105,8 @@ define([
 				} else {
 					percentage = 100 * ( value / original );
 				}
+
+				if( !_.isFinite( percentage ) || _.isNaN( percentage ) ) percentage = 0;
 				
 				percentage = parseFloat( POS.round( percentage, 0 ) );
 				this.model.set({ percentage: percentage }, { silent: true });

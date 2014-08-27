@@ -30,6 +30,10 @@ define([
 				// init filterCollection
 				this.once('sync', function () {
 					this.filterCollection.reset( this.fullCollection.models );
+									
+					// sort list by user setting (default: updated_at)
+					this.setSorting('updated_at', 1);
+					this.fullCollection.sort();
 				});
 
 				// update filterCollection after serverSync
@@ -41,6 +45,10 @@ define([
 				// update fullCollection with filterCollection
 				this.listenTo( this.filterCollection, 'filter:products', function (collection, options){
 					this.fullCollection.reset(collection);
+
+					// sort list by user setting (default: updated_at)
+					this.setSorting('updated_at', 1);
+					this.fullCollection.sort();
 				});
 
 				Entities.channel.comply('product:sync', this.serverSync, this );
@@ -57,8 +65,16 @@ define([
 
 				// make sure a sync is not already in progress
 				if( POS.Entities.channel.request('options:get', '_syncing') ) { 
-					if(POS.debug) console.warn('Sync already in progress');
-					return; 
+
+					// if it's been longer than 10 mins, force sync
+					var last_update = POS.Entities.channel.request('options:get', 'last_update');
+					if( Date.now() - last_update > 600000 ) {
+						POS.Entities.channel.command('options:delete', '_syncing');
+					} else {
+						if(POS.debug) console.warn('Sync already in progress');
+						return; 
+					}
+
 				}
 
 				// fullcollection may be filtered, so reset before syncing

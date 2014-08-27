@@ -76,10 +76,6 @@ define(['app', 'apps/products/list/view', 'entities/products'], function(POS, Vi
 					this._showTabsRegion();
 				});
 
-				// sort list by user setting (default: updated_at)
-				products.setSorting('updated_at', 1);
-				products.fullCollection.sort();
-
 				// search queries
 				this.listenTo( view, 'products:search:query', function( query ){
 					options.settings.set({ query: query });

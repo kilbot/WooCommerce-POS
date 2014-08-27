@@ -21,7 +21,7 @@
  * 
  */
 
-define(['json!dummy-products', 'entities/cart/items', 'entities/cart/item'], 
+define(['json!dummy-products', 'entities/cart/items', 'entities/cart/item', 'helpers'], 
 	function(dummy_products, CartItems, CartItem) {
 
 	// get the dummy product

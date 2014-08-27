@@ -44,7 +44,7 @@
 			</dl>
 		{{/with}}
 	</td>
-	<td class="price"><input type="text" value="{{number item_price}}" size="10" data-id="price" data-original="{{regular_price}}" data-title="<?php _e( 'Item Price', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="item_price" class="autogrow"></td>
+	<td class="price"><input type="text" value="{{number item_price}}" size="10" data-id="item_price" data-original="{{regular_price}}" data-title="<?php _e( 'Item Price', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="item_price" class="autogrow"></td>
 	<td class="total">
 		{{#if show_line_discount}}
 			<del>{{{money subtotal}}}</del>
@@ -90,7 +90,10 @@
 	{{/if}}
 	<tr class="order-discount" {{#unless show_order_discount}}style="display:none"{{/unless}}>
 		<th colspan="3"><?php _e( 'Order Discount', 'woocommerce-pos' ); ?>:</th>
-		<td colspan="2"  data-id="order_discount" data-value="{{number order_discount}}" data-original="{{total}}" data-title="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-numpad="discount" data-placement="left">{{{money order_discount negative=true}}}</td>
+		<td colspan="2">
+			<input type="text" value="{{number order_discount}}" size="10" data-id="order_discount" data-original="{{original}}" data-title="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-placement="left" data-numpad="discount" class="autogrow">
+			<span class="amount">{{{money order_discount negative=true}}}</span>
+		</td>
 	</tr>
 	<tr class="order-total">
 		<th colspan="3"><?php _e( 'Order Total', 'woocommerce-pos' ); ?>:</th>

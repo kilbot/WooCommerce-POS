@@ -56,11 +56,15 @@ define([
 				this.model.set({
 					id: options.target.data('id'),
 					title: options.target.data('title'),
-					value: POS.unformat( options.target.val() ),
 					type: options.target.data('numpad'),
-					original: options.target.data('original'),
-					select: true
+					original: options.target.data('original')
 				});
+
+				if( options.target.val() ) {
+					this.model.set({ value: POS.unformat( options.target.val() ) });
+				} else {
+					this.model.set({ value: POS.unformat( options.target.data('value') )});
+				}
 
 				POS.Components.Popover.channel.command( 'open', { 
 					target 		: options.target,
@@ -79,7 +83,7 @@ define([
 
 				this.listenTo( view, 'enter:keypress', function(e) {
 					value = this.model.get('value');
-					value = accounting.formatNumber(value);
+					value = POS.formatNumber(value, 'auto');
 					options.target.trigger( 'numpad:return', value, this );
 				});
 
@@ -91,7 +95,7 @@ define([
 
 				this.listenTo( view, 'return:keypress', function() {
 					value = this.model.get('value');
-					value = accounting.formatNumber(value);
+					value = POS.formatNumber(value, 'auto');
 					options.target.trigger( 'numpad:return', value, this );
 				});
 

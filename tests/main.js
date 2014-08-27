@@ -25,12 +25,14 @@ require.config({
         localstorage: '../../../bower_components/backbone.localstorage/backbone.localStorage',
         paginator   : '../../../bower_components/backbone.paginator/lib/backbone.paginator.min',
         accounting  : '../../../bower_components/accounting/accounting.min',
+        moment      : '../../../bower_components/moment/min/moment.min',
         
         text: '../../../tests/lib/text',
 		json: '../../../tests/lib/json',
 
         // Dummy Data
-        'dummy-products': '../../../tests/data/dummy-products.json'
+        'dummy-products': '../../../tests/data/dummy-products.json',
+        helpers: '../../../public/assets/js/lib/utilities/helpers',
 
 	},
 
@@ -97,6 +99,8 @@ var pos_params = {
         "default_name": "Guest"
     }
 };
+
+window.POS = {};
 
 require(['boot'], function () {
 

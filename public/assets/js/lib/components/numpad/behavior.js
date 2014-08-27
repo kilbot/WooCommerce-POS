@@ -9,7 +9,7 @@ define(['app'], function(POS){
 
 			initialize: function( options ) {
 				// remove any open popovers
-				// this.on( 'before:render before:destroy', this.removePopovers );
+				this.on( 'before:destroy', this.removePopovers );
 			},
 
 			ui: {
@@ -17,19 +17,24 @@ define(['app'], function(POS){
 			},
 
 			events: {
- 				'click @ui.input' : 'numpadPopover',
- 				'keydown input'  : 'onBeforeDestroy'
+ 				'show:numpad' 		: 'numpadPopover',
+ 				'click @ui.input' 	: 'numpadPopover',
+ 				'keydown @ui.input' : 'removePopovers'
  			},
 
  			onShow: function() {
 				if(Modernizr.touch) {
 					this.$('*[data-numpad]').attr('readonly', true);
 				}
-
-				this.on( 'before:render', this.onBeforeDestroy );
 			},
 
 			numpadPopover: function(e) {
+
+				// select the target element
+				$(e.target).select();
+
+				// bail if popover is already open
+				if( $(e.target).attr('aria-describedby') ) return;
 
 				// nuke any open numpads
 				$('*[data-numpad]').trigger( 'close:popover' );
@@ -37,17 +42,21 @@ define(['app'], function(POS){
 				// open popover
 				Numpad.channel.command( 'show:popover', { target: $(e.target) } );
 
-				// collect value from numpad
+				// on numpad return, close numpad and update value
 				$(e.target).on( 'numpad:return', function( e, value ) {
+					$(this).trigger( 'close:popover' );
 					var enter = jQuery.Event( 'keypress', { which: 13 } );
 					$(this).val( value ).trigger(enter);
 				});
+
 			},
 
-			onBeforeDestroy: function() {
-				_.each(this.ui.input, function(input) {
-					$(input).trigger( 'close:popover' );
-				});
+			removePopovers: function() {
+				if( _.isObject( this.ui.input ) ) {
+					_.each(this.ui.input, function(input) {
+						$(input).trigger( 'close:popover' );
+					});
+				}
 			}
 
 		});
