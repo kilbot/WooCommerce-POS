@@ -3,7 +3,7 @@ define(['app'], function(POS){
 	POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _){
 	
 		/**
-		 * Popover behavior
+		 * Numpad behavior
 		 */
 		Numpad.Behavior = Marionette.Behavior.extend({
 

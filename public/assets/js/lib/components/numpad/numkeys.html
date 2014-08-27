@@ -20,11 +20,11 @@
 	<tr>
 		<td><button data-key="0" class="btn btn-default">0</button></td>
 		<td><button data-key="00" class="btn btn-default">00</button></td>
-		<td><button data-key="{{decimal}}" class="btn btn-default">{{decimal}}</button></td>
+		<td><button data-key="." class="btn btn-default">{{decimal}}</button></td>
 	</tr>
 </table>
 
-{{#is type 'discount'}}
+{{#if show_discount_keys}}
 <table class="discount pull-right">
 	<tr>
 		<td><button data-key="5" class="btn btn-default">5%</button></td>
@@ -39,9 +39,9 @@
 		<td><button data-key="25" class="btn btn-default">25%</button></td>
 	</tr>
 </table>
-{{/is}}
+{{/if}}
 
-{{#is type 'cash'}}
+{{#if show_cash_keys}}
 <table class="cash pull-right">
 	{{#each quick_key}}
 	<tr>
@@ -49,4 +49,4 @@
 	</tr>
 	{{/each}}
 </table>
-{{/is}}
+{{/if}}

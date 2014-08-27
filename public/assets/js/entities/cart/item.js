@@ -40,15 +40,15 @@ define(['app', 'localstorage'], function(POS){
 				
 				// update subtotal on change to qty
 				this.set({
-					'subtotal' 		: this.roundNum( this.get('item_subtotal') * qty ),
-					'subtotal_tax' 	: this.roundNum( this.get('item_subtotal_tax') * qty ),				
+					'subtotal' 		: POS.round( this.get('item_subtotal') * qty, 4 ),
+					'subtotal_tax' 	: POS.round( this.get('item_subtotal_tax') * qty, 4 ),				
 				});					
 
 				// update discount calc
 				discount = this.get('item_subtotal') - item_price;
 				this.set({
-					'item_discount'		: this.roundNum( discount ),
-					'line_discount'		: this.roundNum( discount * qty ),
+					'item_discount'		: POS.round( discount, 4 ),
+					'line_discount'		: POS.round( discount * qty, 4 ),
 				});
 
 				// set taxes
@@ -56,7 +56,7 @@ define(['app', 'localstorage'], function(POS){
 
 				// now save
 				this.save({
-					'line_total'		: this.roundNum( item_price * qty )
+					'line_total'		: POS.round( item_price * qty, 4 )
 				});
 			},
 
@@ -123,8 +123,8 @@ define(['app', 'localstorage'], function(POS){
 					tax_amount = price - net_price;
 
 					// do the rounding now if required
-					var item_tax_ = this.roundNum( tax_amount );
-					var line_tax_ = this.roundNum( tax_amount * qty );
+					var item_tax_ = POS.round( tax_amount, 4 );
+					var line_tax_ = POS.round( tax_amount * qty, 4 );
 
 					// set the itemized taxes
 					this.set( 'item_tax_' + key, item_tax_ );
@@ -138,11 +138,11 @@ define(['app', 'localstorage'], function(POS){
 				}, this);
 
 				// set the combined taxes now
-				this.set( 'item_tax' , this.roundNum( item_tax ) );
-				this.set( 'line_tax' , this.roundNum( line_tax ) );
+				this.set( 'item_tax' , POS.round( item_tax, 4 ) );
+				this.set( 'line_tax' , POS.round( line_tax, 4 ) );
 				
 				// return the line tax
-				return this.roundNum( item_tax * qty );
+				return POS.round( item_tax * qty, 4 );
 			},
 
 			/**
@@ -178,8 +178,8 @@ define(['app', 'localstorage'], function(POS){
 					}
 
 					// do the rounding now if required
-					var item_tax_ = this.roundNum( taxes[ key ] );
-					var line_tax_ = this.roundNum( taxes[ key ] * qty );
+					var item_tax_ = POS.round( taxes[ key ], 4 );
+					var line_tax_ = POS.round( taxes[ key ] * qty, 4 );
 
 					// set the itemized taxes
 					this.set( 'item_tax_' + key, item_tax_ );
@@ -193,20 +193,11 @@ define(['app', 'localstorage'], function(POS){
 				}, this);
 
 				// set the combined taxes now
-				this.set( 'item_tax' , this.roundNum( item_tax ) );
-				this.set( 'line_tax' , this.roundNum( line_tax ) );
+				this.set( 'item_tax' , POS.round( item_tax, 4 ) );
+				this.set( 'line_tax' , POS.round( line_tax, 4 ) );
 				
 				// return the line tax
-				return this.roundNum( item_tax * qty );
-			},
-
-			// Convenience method for rounding to 4 decimal places
-			// TODO: mirror the functionality of WC_ROUNDING_PRECISION
-			roundNum: function(num) {
-				if( pos_params.wc.tax_round_at_subtotal === 'no' ) {
-					return parseFloat( num.toFixed(4) );
-				}
-				return num;
+				return POS.round( item_tax * qty, 4 );
 			},
 
 			// Convenience method to increase or decrease qty

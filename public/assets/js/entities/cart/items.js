@@ -40,7 +40,7 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 							itemized_tax.push({
 								id: key,
 								label: tax.label,
-								total: this.roundNum( tax_sum )
+								total: POS.round( tax_sum, 4 )
 							});
 						}
 					}, this);
@@ -48,9 +48,9 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 
 				// create totals object
 				var totals = {
-					'subtotal'		: this.roundNum( subtotal ),
-					'cart_discount'	: this.roundNum( cart_discount ),
-					'total_tax'		: this.roundNum( total_tax ),
+					'subtotal'		: POS.round( subtotal, 4 ),
+					'cart_discount'	: POS.round( cart_discount, 4 ),
+					'total_tax'		: POS.round( total_tax, 4 ),
 					'itemized_tax'	: itemized_tax,
 				};
 
@@ -72,15 +72,6 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 					all_rates = _.reduce( tax_rates, function(a, b) { return _.merge(a, b); }, {});
 				}
 				return all_rates;
-			},
-
-			// Convenience method for rounding to 4 decimal places
-			// TODO: mirror the functionality of WC_ROUNDING_PRECISION
-			roundNum: function(num) {
-				if( pos_params.wc.tax_round_at_subtotal === 'no' ) {
-					return parseFloat( num.toFixed(4) );
-				}
-				return num;
 			},
 
 		});

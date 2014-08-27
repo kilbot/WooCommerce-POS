@@ -93,7 +93,6 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 
 				// always store numbers as float
 				if( value ){
-					console.log(value);
 					value = accounting.unformat( value, pos_params.accounting.number.decimal );
 					value = parseFloat( value );
 				}
@@ -148,7 +147,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			template: Handlebars.compile( $('#tmpl-cart-totals').html() ),
 
 			behaviors: {
-				// Numpad: {}
+				Numpad: {}
 			},
 
 			modelEvents: {
@@ -158,7 +157,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			events: {
 				'click .order-discount' 	: 'edit',
 				'keypress .order-discount'	: 'saveOnEnter',
-				'blur .order-discount'		: 'save',
+				'blur .order-discount'		: 'save'
 			},
 
 			serializeData: function() {

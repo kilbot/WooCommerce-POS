@@ -45,6 +45,7 @@ define([
 				});
 
 				_.bindAll(this, '_onShowPopover');
+
 			},
 
 			getNumpadView: function() {
@@ -53,8 +54,9 @@ define([
 
 			showNumpadPopover: function(options) {
 				this.model.set({
+					id: options.target.data('id'),
 					title: options.target.data('title'),
-					value: accounting.unformat( options.target.val(), pos_params.accounting.number.decimal ),
+					value: POS.unformat( options.target.val() ),
 					type: options.target.data('numpad'),
 					original: options.target.data('original'),
 					select: true

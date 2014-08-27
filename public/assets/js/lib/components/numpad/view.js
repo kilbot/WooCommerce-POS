@@ -46,7 +46,7 @@ define([
 			},
 
 			initialize: function() {
-				if( this.model.get('type') === 'discount' ){
+				if( this.model.get('type') === 'discount' || this.model.get('type') === 'item_price' ){
 					this.model.set({ 
 						currency_symbol: pos_params.accounting.currency.symbol,
 						mode: 'amount'
@@ -55,6 +55,16 @@ define([
 					this.model.on( 'change:value', this.calcPercentage, this );
 					this.model.on( 'change:percentage', this.calcValue, this );
 				} 
+			},
+
+			serializeData: function(){
+				var data = this.model.toJSON();
+
+				if( this.model.get('type') === 'discount' || this.model.get('type') === 'item_price' ){
+					data.show_discount_input = true;
+				}
+					
+				return data;
 			},
 
 			onShow: function() {
@@ -89,9 +99,14 @@ define([
 					percentage;
 
 				if( _.isNaN( value ) ) value = 0;
-				percentage = 100 * ( 1 - ( value / original ) );
-				percentage = percentage.toFixed( 0 );
-				percentage = parseFloat( percentage );
+
+				if( this.model.get('type') === 'item_price' ) {
+					percentage = 100 * ( 1 - ( value / original ) );
+				} else {
+					percentage = 100 * ( value / original );
+				}
+				
+				percentage = parseFloat( POS.round( percentage, 0 ) );
 				this.model.set({ percentage: percentage }, { silent: true });
 
 			},
@@ -102,11 +117,15 @@ define([
 					value;
 
 				if( _.isNaN( percentage ) ) percentage = 0;
-				value = original * ( 1 - ( percentage / 100 ) );
-				value = value.toFixed( pos_params.accounting.number.precision );
-				value = parseFloat( value );
-				this.model.set({ value: value }, { silent: true });
 
+				if( this.model.get('type') === 'item_price' ) {
+					value = original * ( 1 - ( percentage / 100 ) );
+				} else {
+					value = original * ( percentage / 100 );
+				}
+				
+				value = parseFloat( POS.round( value ) );
+				this.model.set({ value: value }, { silent: true });
 			}
 
 		});
@@ -124,7 +143,12 @@ define([
 				var data = {};
 				data.type = this.model.get('type');
 
+				if( data.type === 'discount' || data.type === 'item_price' ) {
+					data.show_discount_keys = true;
+				}
+
 				if( data.type === 'cash' ) {
+					data.show_cash_keys = true;
 					data.quick_key = this.cashKeys( this.model.get('original') );
 				}
 
@@ -223,12 +247,7 @@ define([
 				keys = _.uniq(keys, true).slice(0, 4);
 
 				return keys;
-			},
-
-			roundNum: function(num, precision) {
-				precision = precision || pos_params.accounting.number.precision;
-				return parseFloat( num.toFixed(precision) );
-			},
+			}
 
 		});
 
