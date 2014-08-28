@@ -25,10 +25,20 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 				}
 
 				// prices include tax?
-				if( pos_params.wc.prices_include_tax === 'yes' ) {
-					data.prices_include_tax = true;
-				}
+				if( pos_params.wc.tax_display_cart === 'incl' ) {
+					data.subtotal = parseFloat( data.subtotal ) + parseFloat( data.subtotal_tax );
+					data.cart_discount = data.subtotal - data.total;
 
+					_.each( data.line_items, function(item, key) {
+						item.subtotal = parseFloat( item.subtotal ) + parseFloat( item.subtotal_tax );
+						item.total = parseFloat( item.total ) + parseFloat( item.total_tax );
+					});
+
+					data.incl_tax = true;
+				}
+				console.log(this);
+
+				this.data = data;
 				return data;
 			},
 
@@ -42,23 +52,11 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 			printReceipt: function() {
 				if(POS.debug) console.log('fetching receipt template');
 
-				var data = this.model.toJSON();
-
-				// itemized tax
-				if( pos_params.wc.tax_total_display === 'itemized' ) {
-					data.show_itemized = true;
-				}
-
-				// prices include tax?
-				if( pos_params.wc.prices_include_tax === 'yes' ) {
-					data.prices_include_tax = true;
-				}
-
 				var self = this;
 				$.when( this.fetchTemplate() )
 				.done( function( receiptTmpl ) {
 					var template = Handlebars.compile( receiptTmpl );
-					var html = template( data );
+					var html = template( self.data );
 					POS.Components.Print.channel.command('print', html);
 				})
 				.fail( function() {

@@ -47,7 +47,7 @@
 	<td class="price"><input type="text" value="{{number item_price}}" size="10" data-id="item_price" data-original="{{regular_price}}" data-title="<?php _e( 'Item Price', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="item_price" class="autogrow"></td>
 	<td class="total">
 		{{#if show_line_discount}}
-			<del>{{{money subtotal}}}</del>
+			<del>{{{money line_subtotal}}}</del>
 			<ins>{{{money line_total}}}</ins>
 		{{else}}
 			{{{money line_total}}}
@@ -72,7 +72,7 @@
 			{{#each itemized_tax}}
 				<tr class="tax">
 					<th colspan="3">
-						{{#if ../prices_include_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
+						{{#if ../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
 						{{label}}:
 					</th>
 					<td colspan="2">{{{money total}}}</td>
@@ -81,10 +81,10 @@
 		{{else}}
 			<tr class="tax">
 				<th colspan="3">
-					{{#if prices_include_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
+					{{#if incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
 					<?php echo esc_html( WC()->countries->tax_or_vat() ); ?>:
 				</th>
-				<td colspan="2">{{{money tax}}}</td>
+				<td colspan="2">{{{money total_tax}}}</td>
 			</tr>
 		{{/if}}
 	{{/if}}

@@ -2,9 +2,9 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce POS 0.3.1-beta2\n"
+"Project-Id-Version: WooCommerce POS 0.3.1-beta3\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-08-25 02:23:37+00:00\n"
+"POT-Creation-Date: 2014-08-27 15:55:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -391,28 +391,28 @@ msgstr ""
 msgid "Order Discount"
 msgstr ""
 
-#: public/views/cart.php:93 public/views/cart.php:114
+#: public/views/cart.php:94 public/views/cart.php:117
 msgid "Discount"
 msgstr ""
 
-#: public/views/cart.php:96 public/views/print/receipt.php:205
+#: public/views/cart.php:99 public/views/print/receipt.php:205
 #: public/views/receipt.php:101
 msgid "Order Total"
 msgstr ""
 
-#: public/views/cart.php:102
+#: public/views/cart.php:105
 msgid "Customer"
 msgstr ""
 
-#: public/views/cart.php:108
+#: public/views/cart.php:111
 msgid "Void"
 msgstr ""
 
-#: public/views/cart.php:111
+#: public/views/cart.php:114
 msgid "Note"
 msgstr ""
 
-#: public/views/cart.php:117
+#: public/views/cart.php:120
 msgid "Checkout"
 msgstr ""
 

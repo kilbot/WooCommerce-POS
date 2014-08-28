@@ -64,8 +64,13 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 			serializeData: function() {
 				var data = this.model.toJSON();
 
+				if( pos_params.wc.tax_display_cart === 'incl' ) {
+					data.line_subtotal += data.line_subtotal_tax;
+					data.line_total += data.line_tax;
+				}
+
 				// discount
-				if( data.line_discount !== 0 ) {
+				if( data.line_subtotal !== data.line_total ) {
 					data.show_line_discount = true;
 				}
 
@@ -189,8 +194,10 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 				}
 
 				// prices include tax?
-				if( pos_params.wc.prices_include_tax === 'yes' ) {
-					data.prices_include_tax = true;
+				if( pos_params.wc.tax_display_cart === 'incl' ) {
+					data.subtotal += data.subtotal_tax;
+					data.cart_discount = data.subtotal - data.total;
+					data.incl_tax = true;
 				}
 
 				// orginal total for calculating percentage discount

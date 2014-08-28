@@ -22,15 +22,13 @@ define(['app', 'localstorage'], function(POS){
 			},
 
 			updateTotal: function() {
-				var total;
-				if( pos_params.wc.prices_include_tax === 'yes' ) {
-					total = this.get('subtotal') - this.get('cart_discount') - this.get('order_discount');
-				} else {
-					total = this.get('subtotal') - this.get('cart_discount') + this.get('tax') - this.get('order_discount');
-				}			
+				var total = this.get('subtotal');
+				total -= this.get('cart_discount');
+				total += this.get('total_tax');
+				total -= this.get('order_discount');
 				
-				this.set({ total: total }, { silent: true });
-				this.save();
+				// this.set(); // don't trigger change
+				this.save({ total: total }, { silent: true });
 			},
 
 		});

@@ -6,7 +6,7 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 			model: Entities.CartItem,
 
 			initialize: function(models, options) { 
-				// this.on('all', function(e) { console.log("Cart Items event: " + e); }); // debug	
+				this.on('all', function(e) { console.log("Cart Items event: " + e); }); // debug	
 				
 				// localStorage
 				this.localStorage = new Backbone.LocalStorage( 'cart-' + options.cartId );
@@ -17,14 +17,16 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 
 			calcTotals: function() {
 				var subtotal 		= 0,
+					subtotal_tax 	= 0,
 					cart_discount 	= 0,
 					total_tax 		= 0,
 					itemized_tax 	= [],
 					tax_rates 		= {};
 
 				// sum up the line totals
-				subtotal = _( this.pluck('subtotal') ).reduce( function(memo, num){ return memo + num; }, 0 );
-				cart_discount = _( this.pluck('line_discount') ).reduce( function(memo, num){ return memo + num; }, 0 );
+				subtotal 	  = _( this.pluck('line_subtotal') ).reduce( function(memo, num){ return memo + num; }, 0 );
+				subtotal_tax  = _( this.pluck('line_subtotal_tax') ).reduce( function(memo, num){ return memo + num; }, 0 );
+				total 		  = _( this.pluck('line_total') ).reduce( function(memo, num){ return memo + num; }, 0 );
 				
 				if( pos_params.wc.calc_taxes === 'yes' ) {
 					total_tax = _( this.pluck('line_tax') ).reduce( function(memo, num){ return memo + num; }, 0 );			
@@ -49,7 +51,8 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 				// create totals object
 				var totals = {
 					'subtotal'		: POS.round( subtotal, 4 ),
-					'cart_discount'	: POS.round( cart_discount, 4 ),
+					'subtotal_tax'	: POS.round( subtotal_tax, 4 ),
+					'cart_discount'	: POS.round( subtotal - total, 4 ),
 					'total_tax'		: POS.round( total_tax, 4 ),
 					'itemized_tax'	: itemized_tax,
 				};

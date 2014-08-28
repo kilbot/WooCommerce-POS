@@ -108,6 +108,7 @@ class POS_Gateway_Card extends WC_Payment_Gateway {
 			update_post_meta( $order_id, '_pos_card_cashback', $cashback );
 
 			// add cashback as fee line item
+			// TODO: this should be handled by $order->add_fee after WC 2.2
 			$item_id = wc_add_order_item( $order_id, array(
 				'order_item_name' => __('Cashback', 'woocommerce-pos'),
 				'order_item_type' => 'fee'
@@ -118,7 +119,13 @@ class POS_Gateway_Card extends WC_Payment_Gateway {
 				wc_add_order_item_meta( $item_id, '_line_tax', 0 );
 				wc_add_order_item_meta( $item_id, '_line_subtotal', $cashback );
 				wc_add_order_item_meta( $item_id, '_line_subtotal_tax', 0 );
+				wc_add_order_item_meta( $item_id, '_tax_class', 'zero-rate' );
 			}
+
+			// update the order total to include fee
+			$order_total = get_post_meta( $order_id, '_order_total', true );
+			$order_total += $cashback;
+			update_post_meta( $order_id, '_order_total', $order_total );
 
 		}
 

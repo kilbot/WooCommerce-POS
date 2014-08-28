@@ -26,7 +26,7 @@ class WooCommerce_POS_Checkout {
 		add_action( 'woocommerce_reduce_order_stock', array( $this, 'stock_modified' ), 10, 1 );
 
 		// add payment info to order response
-		add_filter( 'woocommerce_api_order_response', array( $this, 'add_payment_fields' ), 10, 4 );
+		add_filter( 'woocommerce_api_order_response', array( $this, 'add_receipt_fields' ), 10, 4 );
 
 	}
 
@@ -274,7 +274,7 @@ class WooCommerce_POS_Checkout {
 		update_post_meta( $order_id, '_order_total', 		wc_format_decimal( $_REQUEST['total'] ) );
 		update_post_meta( $order_id, '_order_key', 			'wc_' . apply_filters('woocommerce_generate_order_key', uniqid('order_') ) );
 		update_post_meta( $order_id, '_order_currency', 	get_woocommerce_currency() );
-		update_post_meta( $order_id, '_prices_include_tax', get_option( 'woocommerce_prices_include_tax' ) );
+		// update_post_meta( $order_id, '_prices_include_tax', get_option( 'woocommerce_prices_include_tax' ) );
 
 		// itemized tax totals
 		if( isset($_REQUEST['itemized_tax']) ) {
@@ -305,13 +305,26 @@ class WooCommerce_POS_Checkout {
 
 	/**
 	 * Add any payment messages to API response
+	 * Also add subtotal_tax to receipt which is not included for some reason
 	 */
-	public function add_payment_fields( $order_data, $order, $fields, $server ) {
+	public function add_receipt_fields( $order_data, $order, $fields, $server ) {
 		if( WC_POS()->is_pos ) {
+
+			// add any payment messages
 			$message = get_post_meta( $order->id, '_pos_payment_message', true );
 			if($message) {
 				$order_data['payment_details']['message'] = $message;
 			}
+
+			// add subtotal_tax
+			$subtotal_tax = 0;
+			foreach( $order_data['line_items'] as &$item ) {
+				$line_subtotal_tax = wc_get_order_item_meta( $item['id'], '_line_subtotal_tax', true );
+				$item['subtotal_tax'] = wc_format_decimal( $line_subtotal_tax, 2 );
+				$subtotal_tax += $line_subtotal_tax;
+			}
+			$order_data['subtotal_tax'] = wc_format_decimal( $subtotal_tax, 2 );
+			
 			return $order_data;
 		}
 	}
