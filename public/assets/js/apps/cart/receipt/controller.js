@@ -16,10 +16,6 @@ define(['app', 'apps/cart/receipt/view', 'entities/orders'], function(POS, View)
 
 				this.listenTo( view, 'email:receipt', this._emailReceipt );
 				
-				this.listenTo( view, 'refresh:receipt', function(args){
-					args.model.fetch({ data: {pos: 1} });
-				});
-				
 				this.listenTo( view, 'new:order', function() {
 					POS.CartApp.channel.command('cart:list');
 					POS.navigate('');

@@ -17,7 +17,7 @@
 		</h4>
 	</div>
 
-	{{#if payment_details.message}}
+	{{#if show_message}}
 	<div id="receipt-message">
 		{{{payment_details.message}}}
 	</div>

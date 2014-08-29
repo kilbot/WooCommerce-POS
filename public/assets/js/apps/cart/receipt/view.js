@@ -6,14 +6,27 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 		View.Receipt = Marionette.ItemView.extend({
 			template: Handlebars.compile( $('#tmpl-receipt').html() ),
 
+			ui: {
+				status: '#receipt-status',
+				message: '#receipt-message',
+				actions: '#receipt-actions'
+			},
+
 			triggers: {
 				'click .action-email' 	: 'email:receipt',
-				'click .action-refresh' : 'refresh:receipt',
 				'click .action-new-order': 'new:order'
 			},
 
 			events: {
 				'click .action-print' 	: 'printReceipt',
+				'click .action-refresh' : 'refreshReceipt'
+			},
+
+			onRender: function() {
+				var redirect;
+				if( redirect = this.ui.message.find('*[data-redirect]').attr('href') ) {
+					window.open(redirect, '_blank');
+				}
 			},
 
 			serializeData: function() {
@@ -37,15 +50,20 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 					data.incl_tax = true;
 				}
 
+				if( !data.payment_details.paid && data.payment_details.message ) {
+					data.show_message = true;
+				}
+
 				this.data = data;
 				return data;
 			},
 
-			onRender: function() {
-
-				// var message = '<table class=\"bwwc-payment-instructions-table\" id=\"bwwc-payment-instructions-table\">\n<tr class=\"bpit-table-row\">\n<td colspan=\"2\">Please send your bitcoin payment as follows:<\/td>\n<\/tr>\n<tr class=\"bpit-table-row\">\n<td style=\"vertical-align:middle\" class=\"bpit-td-name bpit-td-name-amount\">\n      Amount (<strong>BTC<\/strong>):\n    <\/td>\n<td class=\"bpit-td-value bpit-td-value-amount\">\n<div style=\"border:1px solid #FCCA09;padding:2px 6px;margin:2px;background-color:#FCF8E3;color:#CC0000;font-weight: bold;font-size: 120%\">\n      \t0.08533582\n      <\/div>\n<\/td>\n<\/tr>\n<tr class=\"bpit-table-row\">\n<td style=\"vertical-align:middle\" class=\"bpit-td-name bpit-td-name-btcaddr\">\n      Address:\n    <\/td>\n<td class=\"bpit-td-value bpit-td-value-btcaddr\">\n<div style=\"border:1px solid #FCCA09;padding:2px 6px;margin:2px;background-color:#FCF8E3;color:#555;font-weight: bold;font-size: 120%\">\n        16YdyjR8bEnafrtHZEpjiSsXVd4xV1Rws\n      <\/div>\n<\/td>\n<\/tr>\n<tr class=\"bpit-table-row\">\n<td style=\"vertical-align:middle\" class=\"bpit-td-name bpit-td-name-qr\">\n\t    QR Code:\n    <\/td>\n<td class=\"bpit-td-value bpit-td-value-qr\">\n<div style=\"border:1px solid #FCCA09;padding:5px;margin:2px;background-color:#FCF8E3\">\n        <a href=\"\/\/16YdyjR8bEnafrtHZEpjiSsXVd4xV1Rws?amount=0.08533582\"><img src=\"https:\/\/blockchain.info\/qr?data=bitcoin:\/\/16YdyjR8bEnafrtHZEpjiSsXVd4xV1Rws?amount=0.08533582&amp;size=180\" style=\"vertical-align:middle;border:1px solid #888\" \/><\/a>\n      <\/div>\n<\/td>\n<\/tr>\n<\/table>\n<p>Please note:<\/p>\n<ol class=\"bpit-instructions\">\n<li>You must make a payment within 1 hour, or your order will be cancelled<\/li>\n<li>As soon as your payment is received in full you will receive email confirmation with order delivery details.<\/li>\n<li>You may send payments from multiple accounts to reach the total required.<\/li>\n<\/ol>\n';
-				// this.$('#receipt-message').html(message);
-
+			refreshReceipt: function() {
+				var self = this;
+				this.ui.actions.addClass('working').find('button').prop('disabled', true);
+				$.when( this.model.fetch({ data: {pos: 1} }) ).done( function() {
+					self.ui.actions.removeClass('working').find('button').prop('disabled', false);
+				});
 			},
 
 			printReceipt: function() {

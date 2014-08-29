@@ -37,18 +37,10 @@ define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 			},
 
 			processPayment: function() {
-				var form, active, data;
-
 				this.processing(true);
 
-				// select only active form elements
-				form = this.$('form').clone();
-				form.children(':not(.active)').remove();
-				active = form[0];
-				form.remove();
-
 				// process data
-				data = Backbone.Syphon.serialize( active );
+				var data = Backbone.Syphon.serialize( this );
 				if( POS.debug ) console.log(data); 
 				this.model.process( data );
 			},
@@ -56,6 +48,8 @@ define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 			processing: function( processing ) {
 				if( processing ) {
 					this.ui.actions.addClass('working').find('button').prop('disabled', true);
+					// remove error messages
+					this.ui.gateways.find('.alert-danger').remove();
 				} else {
 					this.ui.actions.removeClass('working').find('button').prop('disabled', false);
 				}
@@ -85,10 +79,11 @@ define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 
 				// construct error message
 				if( _.isArray(response.messages) ) {
-					error = $('<ul/>');
+					error = '<ul>';
 					_.each(response.messages, function(message){
-						$('<li/>').text(message).appendTo(error);
+						error += '<li>' + message + '</li>';
 					});
+					error += '</ul>';
 				} else {
 					error = response.messages;
 				}
