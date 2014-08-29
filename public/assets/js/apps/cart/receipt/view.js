@@ -36,7 +36,6 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 
 					data.incl_tax = true;
 				}
-				console.log(this);
 
 				this.data = data;
 				return data;

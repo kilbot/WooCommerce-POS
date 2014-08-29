@@ -28,6 +28,10 @@ define(['app', 'select2'], function(POS){
 				this.ui.select.select2( this.options );
 			},
 
+			onBeforeDestroy: function() {
+				this.ui.select.select2( 'destroy' );	
+			},
+
 			formatInputTooShort: function( input, min ) { 
 				var n = min - input.length; 
 				if( n > 1 ) {

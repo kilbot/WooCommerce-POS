@@ -6,7 +6,6 @@ define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 			template: Handlebars.compile( $('#tmpl-checkout').html() ),
 
 			behaviors: {
-				Collapse: {},
 				Numpad: {}
 			},
 
@@ -15,7 +14,8 @@ define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 			},
 
 			events: {
-				'click .action-process' : 'processPayment'
+				'click .action-process' 	: 'processPayment',
+				'click @ui.gateways legend' : 'selectGateway'
 			},
 
 			ui: {
@@ -25,17 +25,31 @@ define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 			},
 
 			onRender: function(){
-				this.$('.panel').on('show.bs.collapse', function(e){
-					$(e.target).closest('.panel').removeClass('panel-default').addClass('panel-success');
+				// hide all except default
+				this.$('#checkout-gateways fieldset').each( function() {
+					if( !$(this).hasClass('active') ) {
+						$(this).children('.form-group').hide();
+					}
 				});
-				this.$('.panel').on('hide.bs.collapse', function(e){
-					$(e.target).closest('.panel').removeClass('panel-success').addClass('panel-default');
-				});
+
+				// listen to cash and card fields
+				this.ui.gateways.find('*[data-numpad]').on( 'keypress', this.formatMoney );
 			},
 
 			processPayment: function() {
+				var form, active, data;
+
 				this.processing(true);
-				var data = Backbone.Syphon.serialize( this.ui.gateways.find('.panel-success')[0] );
+
+				// select only active form elements
+				form = this.$('form').clone();
+				form.children(':not(.active)').remove();
+				active = form[0];
+				form.remove();
+
+				// process data
+				data = Backbone.Syphon.serialize( active );
+				if( POS.debug ) console.log(data); 
 				this.model.process( data );
 			},
 
@@ -44,8 +58,41 @@ define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 					this.ui.actions.addClass('working').find('button').prop('disabled', true);
 				} else {
 					this.ui.actions.removeClass('working').find('button').prop('disabled', false);
-					this.render();
 				}
+			},
+
+			selectGateway: function(e) {
+				var selected = $(e.currentTarget).parent('fieldset'),
+					active = this.ui.gateways.find('fieldset.active');
+
+				if( !selected.hasClass('active') ) {
+					active.removeClass('active').children('.form-group').slideUp('fast');
+					selected.addClass('active').children('legend').children('input[type="radio"]').prop('checked', true);
+					selected.children('.form-group').slideDown('fast');
+				}
+			},
+
+			formatMoney: function(e) {
+				if ( e.which === 13 ) { 
+					// insert number in the right format
+					var value = POS.unformat( $(e.target).val() );
+					$(e.target).val( POS.formatNumber(value) );
+				}
+			},
+
+			onErrorResponse: function( response ) {
+				var error;
+
+				// construct error message
+				if( _.isArray(response.messages) ) {
+					error = $('<ul/>');
+					_.each(response.messages, function(message){
+						$('<li/>').text(message).appendTo(error);
+					});
+				} else {
+					error = response.messages;
+				}
+				this.ui.gateways.find('fieldset.active .form-group').append( '<div class="alert-danger">' + error + '</div>' );
 			}
 
 		});

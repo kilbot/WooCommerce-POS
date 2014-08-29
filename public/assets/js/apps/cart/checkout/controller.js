@@ -36,8 +36,7 @@ define(['app', 'apps/cart/checkout/view', 'entities/orders'], function(POS, View
 						POS.CartApp.channel.command('show:receipt', response.order_id );
 						POS.Entities.channel.command('product:sync');
 					} else {
-						view.model.set({ response: response });
-						view.render();
+						view.onErrorResponse(response);
 					}
 				});
 

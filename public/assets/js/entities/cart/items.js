@@ -6,7 +6,7 @@ define(['app', 'entities/cart/item', 'localstorage'], function(POS){
 			model: Entities.CartItem,
 
 			initialize: function(models, options) { 
-				this.on('all', function(e) { console.log("Cart Items event: " + e); }); // debug	
+				// this.on('all', function(e) { console.log("Cart Items event: " + e); }); // debug	
 				
 				// localStorage
 				this.localStorage = new Backbone.LocalStorage( 'cart-' + options.cartId );

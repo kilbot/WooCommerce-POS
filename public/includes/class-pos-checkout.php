@@ -238,7 +238,7 @@ class WooCommerce_POS_Checkout {
 
 		} else {
 
-			// payment failed
+			// default error message
 			$default = array(
 				'result'	=> 'failure',
 				'messages' 	=> wc_get_notices( 'error' ),
@@ -246,10 +246,16 @@ class WooCommerce_POS_Checkout {
 				'reload'    => false
 			);
 
+			// merge with actual response
 			if( is_array( $response) ) {
 				$response = array_merge($default, $response);
 			} else {
 				$response = $default;
+			}
+
+			// if messages empty give generic response
+			if( empty( $response['messages'] ) ) {
+				$response['messages'] = __( 'There was an error processing the payment', 'woocommerce-pos');
 			}
 
 			// delete the post

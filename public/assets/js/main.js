@@ -24,7 +24,7 @@ requirejs.config({
 		modal 		: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal',
 		tooltip 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip',
 		popover 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover',
-		collapse 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse',
+		// collapse 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse',
 		transition 	: '../../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition',
 		spin 		: '../../../bower_components/spinjs/spin',
 		select2 	: '../../../bower_components/select2/select2.min',
@@ -87,7 +87,6 @@ require([
 
 	// behaviors
 	'lib/components/autogrow/behavior',
-	'lib/components/collapse/behavior',
 	'lib/components/pulse/behavior',
 	'lib/components/select2/behavior',
 

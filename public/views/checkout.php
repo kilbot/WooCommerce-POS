@@ -15,7 +15,7 @@
 
 	<div id="checkout-gateways">
 
-		<div class="panel-group" id="payment-options">
+		<form>
 
 			<?php  
 				// pretend we're guest
@@ -24,25 +24,22 @@
 				if ( $enabled_gateways = WC_POS()->payment_gateways()->get_enabled_payment_gateways() ) :
 					$default_gateway = get_option( 'woocommerce_pos_default_gateway' );
 					foreach ( $enabled_gateways as $gateway ) :
+						$active = $gateway->id == $default_gateway ? true : false;
 			?>
 
-			<form class="panel panel-<?= $gateway->id == $default_gateway ? 'success' : 'default' ; ?> payment_method_<?= $gateway->id; ?>">
-				<div class="panel-heading" data-toggle="collapse" data-target="#payment_box_<?= $gateway->id; ?>" data-parent="#payment-options">
-					<h5 class="panel-title">
-						<input type="hidden" name="payment_method" value="<?= $gateway->id; ?>"> 
+				<fieldset id="<?= $gateway->id; ?>" class="<?php if($active) echo 'active'; ?>">
+					<legend>
+						<input type="radio" name="payment_method" value="<?= $gateway->id; ?>" <?php if($active) echo 'checked'; ?>> 
 						<?php echo $gateway->get_title(); ?> 
 						<?php echo $gateway->get_icon(); ?>
-					</h5>
-				</div>
-				<div id="payment_box_<?= $gateway->id; ?>" class="panel-collapse collapse <?= $gateway->id == $default_gateway ? 'in' : '' ; ?>">
-					<div class="panel-body">
+					</legend>
+					<div class="form-group">
 						<?php 
 							if( $gateway->has_fields() || $gateway->get_description() ) 
 								$gateway->payment_fields(); 
 						?>
 					</div>
-				</div>
-			</form>
+				</fieldset>
 
 			<?php 
 					endforeach;
@@ -55,7 +52,8 @@
 				// back to being logged in
 				wp_set_current_user( WC_POS()->logged_in_user->ID );
 			?>
-		</div>	
+			
+		</form>	
 
 	</div>
 	<div id="checkout-actions" class="action-btns">

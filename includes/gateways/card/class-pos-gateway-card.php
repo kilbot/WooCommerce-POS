@@ -99,8 +99,7 @@ class POS_Gateway_Card extends WC_Payment_Gateway {
 		// get order object
 		$order = new WC_Order( $order_id );
 
-		$cashback = isset( $_REQUEST['pos-cashback'] ) ? $_REQUEST['pos-cashback'] : 0 ;
-		$cashback = abs((int) filter_var( $cashback, FILTER_SANITIZE_NUMBER_INT ));
+		$cashback = isset( $_REQUEST['pos-cashback'] ) ? wc_format_decimal( $_REQUEST['pos-cashback'] ) : 0 ;
 		
 		if( $cashback !== 0 ) {
 
@@ -132,7 +131,7 @@ class POS_Gateway_Card extends WC_Payment_Gateway {
 		// payment complete
 		$order->payment_complete();
 
-		// Return thankyou redirect
+		// success
 		return array(
 			'result' => 'success'
 		);

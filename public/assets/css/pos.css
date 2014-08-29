@@ -1291,7 +1291,7 @@ output {
 }
 
 /* line 115, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_forms.scss */
-.form-control, #checkout-gateways input {
+.form-control, #checkout-gateways .form-group input {
   display: block;
   width: 100%;
   height: 34px;
@@ -1310,27 +1310,27 @@ output {
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 /* line 53, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
-.form-control:focus, #checkout-gateways input:focus {
+.form-control:focus, #checkout-gateways .form-group input:focus {
   border-color: #66afe9;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 /* line 102, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_vendor-prefixes.scss */
-.form-control::-moz-placeholder, #checkout-gateways input::-moz-placeholder {
+.form-control::-moz-placeholder, #checkout-gateways .form-group input::-moz-placeholder {
   color: #777777;
   opacity: 1;
 }
 /* line 104, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_vendor-prefixes.scss */
-.form-control:-ms-input-placeholder, #checkout-gateways input:-ms-input-placeholder {
+.form-control:-ms-input-placeholder, #checkout-gateways .form-group input:-ms-input-placeholder {
   color: #777777;
 }
 /* line 105, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_vendor-prefixes.scss */
-.form-control::-webkit-input-placeholder, #checkout-gateways input::-webkit-input-placeholder {
+.form-control::-webkit-input-placeholder, #checkout-gateways .form-group input::-webkit-input-placeholder {
   color: #777777;
 }
 /* line 141, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_forms.scss */
-.form-control[disabled], #checkout-gateways input[disabled], .form-control[readonly], #checkout-gateways input[readonly], fieldset[disabled] .form-control, fieldset[disabled] #checkout-gateways input, #checkout-gateways fieldset[disabled] input {
+.form-control[disabled], #checkout-gateways .form-group input[disabled], .form-control[readonly], #checkout-gateways .form-group input[readonly], fieldset[disabled] .form-control, fieldset[disabled] #checkout-gateways .form-group input, #checkout-gateways .form-group fieldset[disabled] input {
   cursor: not-allowed;
   background-color: #eeeeee;
   opacity: 1;
@@ -1355,61 +1355,61 @@ input[type="month"] {
   line-height: 1.428571429 \0;
 }
 /* line 186, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_forms.scss */
-input[type="date"].input-sm, .form-horizontal .form-group-sm input[type="date"].form-control, .form-horizontal .form-group-sm #checkout-gateways input[type="date"], #checkout-gateways .form-horizontal .form-group-sm input[type="date"], .input-group-sm > input[type="date"].form-control, #checkout-gateways .input-group-sm > input[type="date"],
+input[type="date"].input-sm, .form-horizontal .form-group-sm input[type="date"].form-control, .form-horizontal .form-group-sm #checkout-gateways .form-group input[type="date"], #checkout-gateways .form-group .form-horizontal .form-group-sm input[type="date"], .input-group-sm > input[type="date"].form-control, #checkout-gateways .form-group .input-group-sm > input[type="date"],
 .input-group-sm > input[type="date"].input-group-addon,
 .input-group-sm > .input-group-btn > input[type="date"].btn,
 input[type="time"].input-sm,
 .form-horizontal .form-group-sm input[type="time"].form-control,
-.form-horizontal .form-group-sm #checkout-gateways input[type="time"],
-#checkout-gateways .form-horizontal .form-group-sm input[type="time"],
+.form-horizontal .form-group-sm #checkout-gateways .form-group input[type="time"],
+#checkout-gateways .form-group .form-horizontal .form-group-sm input[type="time"],
 .input-group-sm > input[type="time"].form-control,
-#checkout-gateways .input-group-sm > input[type="time"],
+#checkout-gateways .form-group .input-group-sm > input[type="time"],
 .input-group-sm > input[type="time"].input-group-addon,
 .input-group-sm > .input-group-btn > input[type="time"].btn,
 input[type="datetime-local"].input-sm,
 .form-horizontal .form-group-sm input[type="datetime-local"].form-control,
-.form-horizontal .form-group-sm #checkout-gateways input[type="datetime-local"],
-#checkout-gateways .form-horizontal .form-group-sm input[type="datetime-local"],
+.form-horizontal .form-group-sm #checkout-gateways .form-group input[type="datetime-local"],
+#checkout-gateways .form-group .form-horizontal .form-group-sm input[type="datetime-local"],
 .input-group-sm > input[type="datetime-local"].form-control,
-#checkout-gateways .input-group-sm > input[type="datetime-local"],
+#checkout-gateways .form-group .input-group-sm > input[type="datetime-local"],
 .input-group-sm > input[type="datetime-local"].input-group-addon,
 .input-group-sm > .input-group-btn > input[type="datetime-local"].btn,
 input[type="month"].input-sm,
 .form-horizontal .form-group-sm input[type="month"].form-control,
-.form-horizontal .form-group-sm #checkout-gateways input[type="month"],
-#checkout-gateways .form-horizontal .form-group-sm input[type="month"],
+.form-horizontal .form-group-sm #checkout-gateways .form-group input[type="month"],
+#checkout-gateways .form-group .form-horizontal .form-group-sm input[type="month"],
 .input-group-sm > input[type="month"].form-control,
-#checkout-gateways .input-group-sm > input[type="month"],
+#checkout-gateways .form-group .input-group-sm > input[type="month"],
 .input-group-sm > input[type="month"].input-group-addon,
 .input-group-sm > .input-group-btn > input[type="month"].btn {
   line-height: 30px;
 }
 /* line 189, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_forms.scss */
-input[type="date"].input-lg, .form-horizontal .form-group-lg input[type="date"].form-control, .form-horizontal .form-group-lg #checkout-gateways input[type="date"], #checkout-gateways .form-horizontal .form-group-lg input[type="date"], .input-group-lg > input[type="date"].form-control, #checkout-gateways .input-group-lg > input[type="date"],
+input[type="date"].input-lg, .form-horizontal .form-group-lg input[type="date"].form-control, .form-horizontal .form-group-lg #checkout-gateways .form-group input[type="date"], #checkout-gateways .form-group .form-horizontal .form-group-lg input[type="date"], .input-group-lg > input[type="date"].form-control, #checkout-gateways .form-group .input-group-lg > input[type="date"],
 .input-group-lg > input[type="date"].input-group-addon,
 .input-group-lg > .input-group-btn > input[type="date"].btn,
 input[type="time"].input-lg,
 .form-horizontal .form-group-lg input[type="time"].form-control,
-.form-horizontal .form-group-lg #checkout-gateways input[type="time"],
-#checkout-gateways .form-horizontal .form-group-lg input[type="time"],
+.form-horizontal .form-group-lg #checkout-gateways .form-group input[type="time"],
+#checkout-gateways .form-group .form-horizontal .form-group-lg input[type="time"],
 .input-group-lg > input[type="time"].form-control,
-#checkout-gateways .input-group-lg > input[type="time"],
+#checkout-gateways .form-group .input-group-lg > input[type="time"],
 .input-group-lg > input[type="time"].input-group-addon,
 .input-group-lg > .input-group-btn > input[type="time"].btn,
 input[type="datetime-local"].input-lg,
 .form-horizontal .form-group-lg input[type="datetime-local"].form-control,
-.form-horizontal .form-group-lg #checkout-gateways input[type="datetime-local"],
-#checkout-gateways .form-horizontal .form-group-lg input[type="datetime-local"],
+.form-horizontal .form-group-lg #checkout-gateways .form-group input[type="datetime-local"],
+#checkout-gateways .form-group .form-horizontal .form-group-lg input[type="datetime-local"],
 .input-group-lg > input[type="datetime-local"].form-control,
-#checkout-gateways .input-group-lg > input[type="datetime-local"],
+#checkout-gateways .form-group .input-group-lg > input[type="datetime-local"],
 .input-group-lg > input[type="datetime-local"].input-group-addon,
 .input-group-lg > .input-group-btn > input[type="datetime-local"].btn,
 input[type="month"].input-lg,
 .form-horizontal .form-group-lg input[type="month"].form-control,
-.form-horizontal .form-group-lg #checkout-gateways input[type="month"],
-#checkout-gateways .form-horizontal .form-group-lg input[type="month"],
+.form-horizontal .form-group-lg #checkout-gateways .form-group input[type="month"],
+#checkout-gateways .form-group .form-horizontal .form-group-lg input[type="month"],
 .input-group-lg > input[type="month"].form-control,
-#checkout-gateways .input-group-lg > input[type="month"],
+#checkout-gateways .form-group .input-group-lg > input[type="month"],
 .input-group-lg > input[type="month"].input-group-addon,
 .input-group-lg > .input-group-btn > input[type="month"].btn {
   line-height: 46px;
@@ -1501,9 +1501,9 @@ input[type="checkbox"] {
   margin-bottom: 0;
 }
 /* line 298, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_forms.scss */
-.form-control-static.input-lg, .form-horizontal .form-group-lg .form-control-static.form-control, .form-horizontal .form-group-lg #checkout-gateways input.form-control-static, #checkout-gateways .form-horizontal .form-group-lg input.form-control-static, .input-group-lg > .form-control-static.form-control, #checkout-gateways .input-group-lg > input.form-control-static,
+.form-control-static.input-lg, .form-horizontal .form-group-lg .form-control-static.form-control, .form-horizontal .form-group-lg #checkout-gateways .form-group input.form-control-static, #checkout-gateways .form-group .form-horizontal .form-group-lg input.form-control-static, .input-group-lg > .form-control-static.form-control, #checkout-gateways .form-group .input-group-lg > input.form-control-static,
 .input-group-lg > .form-control-static.input-group-addon,
-.input-group-lg > .input-group-btn > .form-control-static.btn, .form-control-static.input-sm, .form-horizontal .form-group-sm .form-control-static.form-control, .form-horizontal .form-group-sm #checkout-gateways input.form-control-static, #checkout-gateways .form-horizontal .form-group-sm input.form-control-static, .input-group-sm > .form-control-static.form-control, #checkout-gateways .input-group-sm > input.form-control-static,
+.input-group-lg > .input-group-btn > .form-control-static.btn, .form-control-static.input-sm, .form-horizontal .form-group-sm .form-control-static.form-control, .form-horizontal .form-group-sm #checkout-gateways .form-group input.form-control-static, #checkout-gateways .form-group .form-horizontal .form-group-sm input.form-control-static, .input-group-sm > .form-control-static.form-control, #checkout-gateways .form-group .input-group-sm > input.form-control-static,
 .input-group-sm > .form-control-static.input-group-addon,
 .input-group-sm > .input-group-btn > .form-control-static.btn {
   padding-left: 0;
@@ -1511,7 +1511,7 @@ input[type="checkbox"] {
 }
 
 /* line 67, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
-.input-sm, .form-horizontal .form-group-sm .form-control, .form-horizontal .form-group-sm #checkout-gateways input, #checkout-gateways .form-horizontal .form-group-sm input, .input-group-sm > .form-control, #checkout-gateways .input-group-sm > input,
+.input-sm, .form-horizontal .form-group-sm .form-control, .form-horizontal .form-group-sm #checkout-gateways .form-group input, #checkout-gateways .form-group .form-horizontal .form-group-sm input, .input-group-sm > .form-control, #checkout-gateways .form-group .input-group-sm > input,
 .input-group-sm > .input-group-addon,
 .input-group-sm > .input-group-btn > .btn {
   height: 30px;
@@ -1542,7 +1542,7 @@ select[multiple].input-sm,
 }
 
 /* line 67, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
-.input-lg, .form-horizontal .form-group-lg .form-control, .form-horizontal .form-group-lg #checkout-gateways input, #checkout-gateways .form-horizontal .form-group-lg input, .input-group-lg > .form-control, #checkout-gateways .input-group-lg > input,
+.input-lg, .form-horizontal .form-group-lg .form-control, .form-horizontal .form-group-lg #checkout-gateways .form-group input, #checkout-gateways .form-group .form-horizontal .form-group-lg input, .input-group-lg > .form-control, #checkout-gateways .form-group .input-group-lg > input,
 .input-group-lg > .input-group-addon,
 .input-group-lg > .input-group-btn > .btn {
   height: 46px;
@@ -1577,7 +1577,7 @@ select[multiple].input-lg,
   position: relative;
 }
 /* line 325, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_forms.scss */
-.has-feedback .form-control, .has-feedback #checkout-gateways input, #checkout-gateways .has-feedback input {
+.has-feedback .form-control, .has-feedback #checkout-gateways .form-group input, #checkout-gateways .form-group .has-feedback input {
   padding-right: 42.5px;
 }
 
@@ -1595,7 +1595,7 @@ select[multiple].input-lg,
 }
 
 /* line 341, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_forms.scss */
-.input-lg + .form-control-feedback, .form-horizontal .form-group-lg .form-control + .form-control-feedback, .form-horizontal .form-group-lg #checkout-gateways input + .form-control-feedback, #checkout-gateways .form-horizontal .form-group-lg input + .form-control-feedback, .input-group-lg > .form-control + .form-control-feedback, #checkout-gateways .input-group-lg > input + .form-control-feedback,
+.input-lg + .form-control-feedback, .form-horizontal .form-group-lg .form-control + .form-control-feedback, .form-horizontal .form-group-lg #checkout-gateways .form-group input + .form-control-feedback, #checkout-gateways .form-group .form-horizontal .form-group-lg input + .form-control-feedback, .input-group-lg > .form-control + .form-control-feedback, #checkout-gateways .form-group .input-group-lg > input + .form-control-feedback,
 .input-group-lg > .input-group-addon + .form-control-feedback,
 .input-group-lg > .input-group-btn > .btn + .form-control-feedback {
   width: 46px;
@@ -1604,7 +1604,7 @@ select[multiple].input-lg,
 }
 
 /* line 346, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_forms.scss */
-.input-sm + .form-control-feedback, .form-horizontal .form-group-sm .form-control + .form-control-feedback, .form-horizontal .form-group-sm #checkout-gateways input + .form-control-feedback, #checkout-gateways .form-horizontal .form-group-sm input + .form-control-feedback, .input-group-sm > .form-control + .form-control-feedback, #checkout-gateways .input-group-sm > input + .form-control-feedback,
+.input-sm + .form-control-feedback, .form-horizontal .form-group-sm .form-control + .form-control-feedback, .form-horizontal .form-group-sm #checkout-gateways .form-group input + .form-control-feedback, #checkout-gateways .form-group .form-horizontal .form-group-sm input + .form-control-feedback, .input-group-sm > .form-control + .form-control-feedback, #checkout-gateways .form-group .input-group-sm > input + .form-control-feedback,
 .input-group-sm > .input-group-addon + .form-control-feedback,
 .input-group-sm > .input-group-btn > .btn + .form-control-feedback {
   width: 30px;
@@ -1622,13 +1622,13 @@ select[multiple].input-lg,
   color: #3c763d;
 }
 /* line 17, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
-.has-success .form-control, .has-success #checkout-gateways input, #checkout-gateways .has-success input {
+.has-success .form-control, .has-success #checkout-gateways .form-group input, #checkout-gateways .form-group .has-success input {
   border-color: #3c763d;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 /* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
-.has-success .form-control:focus, .has-success #checkout-gateways input:focus, #checkout-gateways .has-success input:focus {
+.has-success .form-control:focus, .has-success #checkout-gateways .form-group input:focus, #checkout-gateways .form-group .has-success input:focus {
   border-color: #2b542c;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #67b168;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #67b168;
@@ -1654,13 +1654,13 @@ select[multiple].input-lg,
   color: #8a6d3b;
 }
 /* line 17, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
-.has-warning .form-control, .has-warning #checkout-gateways input, #checkout-gateways .has-warning input {
+.has-warning .form-control, .has-warning #checkout-gateways .form-group input, #checkout-gateways .form-group .has-warning input {
   border-color: #8a6d3b;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 /* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
-.has-warning .form-control:focus, .has-warning #checkout-gateways input:focus, #checkout-gateways .has-warning input:focus {
+.has-warning .form-control:focus, .has-warning #checkout-gateways .form-group input:focus, #checkout-gateways .form-group .has-warning input:focus {
   border-color: #66512c;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #c0a16b;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #c0a16b;
@@ -1686,13 +1686,13 @@ select[multiple].input-lg,
   color: #a94442;
 }
 /* line 17, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
-.has-error .form-control, .has-error #checkout-gateways input, #checkout-gateways .has-error input {
+.has-error .form-control, .has-error #checkout-gateways .form-group input, #checkout-gateways .form-group .has-error input {
   border-color: #a94442;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 /* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
-.has-error .form-control:focus, .has-error #checkout-gateways input:focus, #checkout-gateways .has-error input:focus {
+.has-error .form-control:focus, .has-error #checkout-gateways .form-group input:focus, #checkout-gateways .form-group .has-error input:focus {
   border-color: #843534;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
@@ -1729,7 +1729,7 @@ select[multiple].input-lg,
     vertical-align: middle;
   }
   /* line 407, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_forms.scss */
-  .form-inline .form-control, .form-inline #checkout-gateways input, #checkout-gateways .form-inline input {
+  .form-inline .form-control, .form-inline #checkout-gateways .form-group input, #checkout-gateways .form-group .form-inline input {
     display: inline-block;
     width: auto;
     vertical-align: middle;
@@ -1743,12 +1743,12 @@ select[multiple].input-lg,
   .form-inline .input-group .input-group-addon,
   .form-inline .input-group .input-group-btn,
   .form-inline .input-group .form-control,
-  .form-inline .input-group #checkout-gateways input,
-  #checkout-gateways .form-inline .input-group input {
+  .form-inline .input-group #checkout-gateways .form-group input,
+  #checkout-gateways .form-group .form-inline .input-group input {
     width: auto;
   }
   /* line 425, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_forms.scss */
-  .form-inline .input-group > .form-control, .form-inline #checkout-gateways .input-group > input, #checkout-gateways .form-inline .input-group > input {
+  .form-inline .input-group > .form-control, .form-inline #checkout-gateways .form-group .input-group > input, #checkout-gateways .form-group .form-inline .input-group > input {
     width: 100%;
   }
   /* line 429, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_forms.scss */
@@ -2588,7 +2588,7 @@ tbody.collapse.in {
   padding-right: 0;
 }
 /* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_input-groups.scss */
-.input-group .form-control, .input-group #checkout-gateways input, #checkout-gateways .input-group input {
+.input-group .form-control, .input-group #checkout-gateways .form-group input, #checkout-gateways .form-group .input-group input {
   position: relative;
   z-index: 2;
   float: left;
@@ -2600,16 +2600,16 @@ tbody.collapse.in {
 .input-group-addon,
 .input-group-btn,
 .input-group .form-control,
-.input-group #checkout-gateways input,
-#checkout-gateways .input-group input {
+.input-group #checkout-gateways .form-group input,
+#checkout-gateways .form-group .input-group input {
   display: table-cell;
 }
 /* line 59, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_input-groups.scss */
 .input-group-addon:not(:first-child):not(:last-child),
 .input-group-btn:not(:first-child):not(:last-child),
 .input-group .form-control:not(:first-child):not(:last-child),
-.input-group #checkout-gateways input:not(:first-child):not(:last-child),
-#checkout-gateways .input-group input:not(:first-child):not(:last-child) {
+.input-group #checkout-gateways .form-group input:not(:first-child):not(:last-child),
+#checkout-gateways .form-group .input-group input:not(:first-child):not(:last-child) {
   border-radius: 0;
 }
 
@@ -2634,7 +2634,7 @@ tbody.collapse.in {
   border-radius: 4px;
 }
 /* line 85, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_input-groups.scss */
-.input-group-addon.input-sm, .form-horizontal .form-group-sm .input-group-addon.form-control, .form-horizontal .form-group-sm #checkout-gateways input.input-group-addon, #checkout-gateways .form-horizontal .form-group-sm input.input-group-addon, #checkout-gateways .input-group-sm > input.input-group-addon,
+.input-group-addon.input-sm, .form-horizontal .form-group-sm .input-group-addon.form-control, .form-horizontal .form-group-sm #checkout-gateways .form-group input.input-group-addon, #checkout-gateways .form-group .form-horizontal .form-group-sm input.input-group-addon, #checkout-gateways .form-group .input-group-sm > input.input-group-addon,
 .input-group-sm > .input-group-addon,
 .input-group-sm > .input-group-btn > .input-group-addon.btn {
   padding: 5px 10px;
@@ -2642,7 +2642,7 @@ tbody.collapse.in {
   border-radius: 3px;
 }
 /* line 90, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_input-groups.scss */
-.input-group-addon.input-lg, .form-horizontal .form-group-lg .input-group-addon.form-control, .form-horizontal .form-group-lg #checkout-gateways input.input-group-addon, #checkout-gateways .form-horizontal .form-group-lg input.input-group-addon, #checkout-gateways .input-group-lg > input.input-group-addon,
+.input-group-addon.input-lg, .form-horizontal .form-group-lg .input-group-addon.form-control, .form-horizontal .form-group-lg #checkout-gateways .form-group input.input-group-addon, #checkout-gateways .form-group .form-horizontal .form-group-lg input.input-group-addon, #checkout-gateways .form-group .input-group-lg > input.input-group-addon,
 .input-group-lg > .input-group-addon,
 .input-group-lg > .input-group-btn > .input-group-addon.btn {
   padding: 10px 16px;
@@ -2656,7 +2656,7 @@ tbody.collapse.in {
 }
 
 /* line 104, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_input-groups.scss */
-.input-group .form-control:first-child, .input-group #checkout-gateways input:first-child, #checkout-gateways .input-group input:first-child,
+.input-group .form-control:first-child, .input-group #checkout-gateways .form-group input:first-child, #checkout-gateways .form-group .input-group input:first-child,
 .input-group-addon:first-child,
 .input-group-btn:first-child > .btn,
 .input-group-btn:first-child > .btn-group > .btn,
@@ -2673,7 +2673,7 @@ tbody.collapse.in {
 }
 
 /* line 116, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_input-groups.scss */
-.input-group .form-control:last-child, .input-group #checkout-gateways input:last-child, #checkout-gateways .input-group input:last-child,
+.input-group .form-control:last-child, .input-group #checkout-gateways .form-group input:last-child, #checkout-gateways .form-group .input-group input:last-child,
 .input-group-addon:last-child,
 .input-group-btn:last-child > .btn,
 .input-group-btn:last-child > .btn-group > .btn,
@@ -3792,52 +3792,57 @@ ins {
   border-top: 1px solid #dfdfdf;
 }
 
-/* line 4, sass/partials/_checkout.scss */
-#checkout-gateways .panel-title:before {
-  font-family: 'FontAwesome';
-  content: "\f00c";
-  line-height: 1;
-  padding: 2px;
-  margin-right: 6px;
-  border: 1px solid #eeeeee;
-  border-radius: 3px;
-  background-color: #fff;
-  -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-  transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-  border-radius: 50%;
-  color: #fff;
+/* line 2, sass/partials/_checkout.scss */
+#checkout-gateways legend {
+  margin-bottom: 0;
+  padding: 6px 12px;
+  font-size: 18px;
+  vertical-align: middle;
+  cursor: pointer;
+  background: whitesmoke;
 }
-/* line 19, sass/partials/_checkout.scss */
-#checkout-gateways .panel-title img {
+/* line 9, sass/partials/_checkout.scss */
+#checkout-gateways legend input[type="radio"] {
+  width: auto;
+  margin: 0 6px 0 0;
+}
+/* line 13, sass/partials/_checkout.scss */
+#checkout-gateways legend img {
   margin-left: 6px;
 }
-/* line 25, sass/partials/_checkout.scss */
-#checkout-gateways .panel-success .panel-title:before {
+/* line 18, sass/partials/_checkout.scss */
+#checkout-gateways fieldset.active legend {
   color: #3c763d;
   border-color: #d6e9c6;
+  background: #dff0d8;
+}
+/* line 24, sass/partials/_checkout.scss */
+#checkout-gateways .form-group {
+  padding: 12px;
+  margin-bottom: 0;
 }
 /* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
-#checkout-gateways .panel-body .form-row:before, #checkout-gateways .panel-body .form-row:after {
+#checkout-gateways .form-group .form-row:before, #checkout-gateways .form-group .form-row:after {
   content: " ";
   display: table;
 }
 /* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
-#checkout-gateways .panel-body .form-row:after {
+#checkout-gateways .form-group .form-row:after {
   clear: both;
 }
-/* line 34, sass/partials/_checkout.scss */
-#checkout-gateways .panel-body .form-row label {
+/* line 32, sass/partials/_checkout.scss */
+#checkout-gateways .form-group .form-row label {
   float: left;
   margin-right: 24px;
   line-height: 34px;
 }
-/* line 39, sass/partials/_checkout.scss */
-#checkout-gateways .panel-body .form-row .input-group {
+/* line 37, sass/partials/_checkout.scss */
+#checkout-gateways .form-group .form-row .input-group {
   float: left;
   width: 150px;
 }
-/* line 45, sass/partials/_checkout.scss */
-#checkout-gateways .panel-body:last-of-type {
+/* line 42, sass/partials/_checkout.scss */
+#checkout-gateways .form-group:last-of-type {
   border-bottom: 1px solid #dfdfdf;
 }
 
@@ -4233,202 +4238,6 @@ html, body {
 .numpad-keys table.discount {
   float: right;
   border-left: 1px solid #ebebeb;
-}
-
-/* line 7, sass/partials/_panels.scss */
-.panel {
-  background-color: white;
-}
-
-/* line 12, sass/partials/_panels.scss */
-.panel-body {
-  padding: 15px;
-  border-bottom: 1px solid #eeeeee;
-}
-/* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
-.panel-body:before, .panel-body:after {
-  content: " ";
-  display: table;
-}
-/* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
-.panel-body:after {
-  clear: both;
-}
-
-/* line 19, sass/partials/_panels.scss */
-.panel-heading {
-  padding: 10px 15px;
-  border-bottom: 1px solid #eeeeee;
-}
-/* line 23, sass/partials/_panels.scss */
-.panel-heading > .dropdown .dropdown-toggle {
-  color: inherit;
-}
-/* line 27, sass/partials/_panels.scss */
-.panel-heading:hover {
-  cursor: pointer;
-}
-
-/* line 33, sass/partials/_panels.scss */
-.panel-title {
-  margin-top: 0;
-  margin-bottom: 0;
-  font-size: 16px;
-  color: inherit;
-}
-/* line 39, sass/partials/_panels.scss */
-.panel-title > a {
-  color: inherit;
-}
-
-/* line 45, sass/partials/_panels.scss */
-.panel-footer {
-  padding: 10px 15px;
-  background-color: whitesmoke;
-}
-
-/* line 51, sass/partials/_panels.scss */
-.panel-default {
-  border-color: #dddddd;
-}
-/* line 6, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-default > .panel-heading {
-  color: #333333;
-  background-color: whitesmoke;
-  border-color: #dddddd;
-}
-/* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-default > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #dddddd;
-}
-/* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-default > .panel-heading .badge {
-  color: whitesmoke;
-  background-color: #333333;
-}
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-default > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #dddddd;
-}
-
-/* line 54, sass/partials/_panels.scss */
-.panel-primary {
-  border-color: #00a1cb;
-}
-/* line 6, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-primary > .panel-heading {
-  color: white;
-  background-color: #00a1cb;
-  border-color: #00a1cb;
-}
-/* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-primary > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #00a1cb;
-}
-/* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-primary > .panel-heading .badge {
-  color: #00a1cb;
-  background-color: white;
-}
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-primary > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #00a1cb;
-}
-
-/* line 57, sass/partials/_panels.scss */
-.panel-success {
-  border-color: #d6e9c6;
-}
-/* line 6, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-success > .panel-heading {
-  color: #3c763d;
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
-}
-/* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-success > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #d6e9c6;
-}
-/* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-success > .panel-heading .badge {
-  color: #dff0d8;
-  background-color: #3c763d;
-}
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-success > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #d6e9c6;
-}
-
-/* line 60, sass/partials/_panels.scss */
-.panel-info {
-  border-color: #bce8f1;
-}
-/* line 6, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-info > .panel-heading {
-  color: #31708f;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-}
-/* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-info > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #bce8f1;
-}
-/* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-info > .panel-heading .badge {
-  color: #d9edf7;
-  background-color: #31708f;
-}
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-info > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #bce8f1;
-}
-
-/* line 63, sass/partials/_panels.scss */
-.panel-warning {
-  border-color: #faebcc;
-}
-/* line 6, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-warning > .panel-heading {
-  color: #8a6d3b;
-  background-color: #fcf8e3;
-  border-color: #faebcc;
-}
-/* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-warning > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #faebcc;
-}
-/* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-warning > .panel-heading .badge {
-  color: #fcf8e3;
-  background-color: #8a6d3b;
-}
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-warning > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #faebcc;
-}
-
-/* line 66, sass/partials/_panels.scss */
-.panel-danger {
-  border-color: #ebccd1;
-}
-/* line 6, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-danger > .panel-heading {
-  color: #a94442;
-  background-color: #f2dede;
-  border-color: #ebccd1;
-}
-/* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-danger > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #ebccd1;
-}
-/* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-danger > .panel-heading .badge {
-  color: #f2dede;
-  background-color: #a94442;
-}
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_panels.scss */
-.panel-danger > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #ebccd1;
 }
 
 /* line 5, sass/partials/_products.scss */

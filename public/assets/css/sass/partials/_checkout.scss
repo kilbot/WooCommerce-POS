@@ -1,34 +1,32 @@
 #checkout-gateways {
-	// border-bottom: 1px solid $dark-border-color;
-	.panel-title {
-		&:before {
-			font-family: 'FontAwesome';
-    		content: "\f00c";
-    		// display: inline-block;
-    		line-height: 1;
-    		padding: 2px;
-    		margin-right: $spacing/4;
-    		border: 1px solid $border-color;
-		    border-radius: 3px;
-		    background-color: #fff;
-		    -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-		    transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-		    border-radius: 50%;
-		    color: #fff;
+	legend {
+		margin-bottom: 0;
+		padding: $spacing/4 $spacing/2;
+		font-size: 18px;
+		vertical-align: middle;
+		cursor: pointer;
+		background: $panel-default-heading-bg;
+		input[type="radio"] {
+			width: auto;
+			margin: 0 $spacing/4 0 0;
 		}
 		img {
 			margin-left: $spacing/4;
 		}
 	}
-	.panel-success {
-		.panel-title {
-			&:before {
-				color: $panel-success-text;
-				border-color: $panel-success-border;
-			}
+	fieldset.active {
+		legend {
+			color: $panel-success-text;
+			border-color: $panel-success-border;
+			background: $panel-success-heading-bg;			
 		}
 	}
-	.panel-body {
+	.form-group {
+		padding: $spacing/2;
+		margin-bottom: 0;
+		input {
+			@extend .form-control; 
+		}
 		.form-row {
 			@include clearfix();
 			label {
@@ -41,11 +39,8 @@
 				width: 150px;
 			}
 		}
-	}
-	.panel-body:last-of-type {
-		border-bottom: 1px solid $dark-border-color;
-	}
-	input {
-		@extend .form-control; 
+		&:last-of-type {
+			border-bottom: 1px solid $dark-border-color;
+		}
 	}
 }

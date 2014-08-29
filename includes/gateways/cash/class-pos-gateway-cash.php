@@ -99,11 +99,10 @@ class POS_Gateway_Cash extends WC_Payment_Gateway {
 		// get order object
 		$order = new WC_Order( $order_id );
 
-		$tendered = isset( $_REQUEST['pos-cash-tendered'] ) ? $_REQUEST['pos-cash-tendered'] : 0 ;
-		$tendered = abs((int) filter_var( $tendered, FILTER_SANITIZE_NUMBER_INT ));
-
+		$tendered = isset( $_REQUEST['pos-cash-tendered'] ) ? wc_format_decimal( $_REQUEST['pos-cash-tendered'] ) : 0 ;
+		$tendered = abs((float) $tendered);
 		$total = isset( $_REQUEST['total'] ) ? $_REQUEST['total'] : 0 ;
-		$total = abs((int) filter_var( $total, FILTER_SANITIZE_NUMBER_INT ));
+		$total = abs((float) $total);
 		
 		if( $tendered !== 0 ) {
 

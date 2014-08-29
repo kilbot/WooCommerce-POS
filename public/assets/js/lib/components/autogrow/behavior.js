@@ -50,7 +50,8 @@ define(['app'], function(POS){
 
 				this.tester.html(value);
 				var width = this.tester.width() + this.options.padding;
-				input.width(width);
+				input.css({ width: width });
+				
 			}
 
 		});
