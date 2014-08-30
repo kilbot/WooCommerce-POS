@@ -28,6 +28,9 @@ class WooCommerce_POS_Checkout {
 		// add payment info to order response
 		add_filter( 'woocommerce_api_order_response', array( $this, 'add_receipt_fields' ), 10, 4 );
 
+		// payment complete
+		add_action( 'woocommerce_payment_complete', array( $this, 'payment_complete' ), 10, 1 );
+		
 	}
 
 	/**
@@ -44,7 +47,7 @@ class WooCommerce_POS_Checkout {
 			'post_title' 	=> sprintf( __( 'Order &ndash; %s', 'woocommerce' ), strftime( _x( '%b %d, %Y @ %I:%M %p', 'Order date parsed by strftime', 'woocommerce' ) ) ),
 			'post_status' 	=> 'publish',
 			'ping_status'	=> 'closed',
-			'post_excerpt' 	=> '',
+			'post_excerpt' 	=> isset($_REQUEST['note']) && $_REQUEST['note'] != '' ? $_REQUEST['note'] : '',
 			'post_author' 	=> 1,
 			'post_password'	=> uniqid( 'order_' )	// Protects the post just in case
 		) );
@@ -70,11 +73,12 @@ class WooCommerce_POS_Checkout {
 		// now process the payment
 		$gateway_response = $this->process_payment( $order_id, $customer_id );
 
-		if( $gateway_response['result'] === 'success' ) {
-			$wpdb->query( 'COMMIT' );
-		} else {
-			$wpdb->query( 'ROLLBACK' );
-		}
+		// rollback over on fail?
+		// if( $gateway_response['result'] === 'success' ) {
+		// 	$wpdb->query( 'COMMIT' );
+		// } else {
+		// 	$wpdb->query( 'ROLLBACK' );
+		// }
 
 		// return gateway response
 		return $gateway_response;
@@ -228,7 +232,7 @@ class WooCommerce_POS_Checkout {
 			ob_end_clean();
 
 			// check if redirect is needed
-			if( $response['redirect'] ) {
+			if( isset( $response['redirect'] ) ) {
 
 				// 
 				$success_url = wc_get_endpoint_url( 'order-received', $order_id, get_permalink( wc_get_page_id( 'checkout' ) ) );
@@ -238,6 +242,7 @@ class WooCommerce_POS_Checkout {
 				$redirect_frag = parse_url( $response['redirect'] );
 
 				if( $success_frag['host'] !== $redirect_frag['host'] ) {
+					$response['messages'] = sprintf( __('You are now being redirected offsite to complete the payment.<br><a target="_blank" href="%s" data-redirect="true">Click here</a> if you are not redirected automatically.', 'woocommerce-pos'), $response['redirect'] );
 					$response['redirect_required'] = true;
 				} elseif( $success_frag['path'] !== $redirect_frag['path'] && $response['messages'] == '' ) {
 					$response['messages'] = sprintf( __('You are now being redirected offsite to complete the payment.<br><a target="_blank" href="%s" data-redirect="true">Click here</a> if you are not redirected automatically.', 'woocommerce-pos'), $response['redirect'] );
@@ -255,11 +260,6 @@ class WooCommerce_POS_Checkout {
 			$order = new WC_Order( $order_id );
 			if( $order->status == 'processing' ) {
 				$order->update_status( 'completed', 'POS Transaction completed.' );
-			}
-
-			// add any order notes
-			if( isset($_REQUEST['note']) && $_REQUEST['note'] != '' ) {
-				$order->add_order_note( $_REQUEST['note'], false );
 			}
 
 		} else {
@@ -387,26 +387,39 @@ class WooCommerce_POS_Checkout {
 	 * Stop WC sending email notifications
 	 */
 	public function remove_new_order_emails( WC_Emails $wc_emails ) {
+		// bail if not pos
+		if( ! WC_POS()->is_pos )
+			return;
 
-		if( WC_POS()->is_pos ) {
+		// CUSTOMER EMAILS
+		remove_action('woocommerce_order_status_pending_to_processing_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_completed_notification', array($wc_emails->emails['WC_Email_Customer_Completed_Order'], 'trigger'));
 
-			// Hooks for sending emails during store events
-			
-			//' woocommerce_low_stock_notification'
-			// 'woocommerce_no_stock_notification'
-			// 'woocommerce_product_on_backorder_notification'
-			remove_action('woocommerce_order_status_pending_to_processing_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-			remove_action('woocommerce_order_status_pending_to_completed_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-			remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-			remove_action('woocommerce_order_status_failed_to_processing_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-			remove_action('woocommerce_order_status_failed_to_completed_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-			remove_action('woocommerce_order_status_failed_to_on-hold_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-			remove_action('woocommerce_order_status_pending_to_processing_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
-			remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
-			remove_action('woocommerce_order_status_completed_notification', array($wc_emails->emails['WC_Email_Customer_Completed_Order'], 'trigger'));
 
-		}
+		// ADMIN EMAILS
+		
+		// send 'woocommerce_low_stock_notification'
+		// send 'woocommerce_no_stock_notification'
+		// send 'woocommerce_product_on_backorder_notification'
+		remove_action('woocommerce_order_status_pending_to_processing_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_pending_to_completed_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_failed_to_processing_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_failed_to_completed_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+		remove_action('woocommerce_order_status_failed_to_on-hold_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+
 	}
+
+	/**
+	 * 
+	 */
+	public function payment_complete( $order_id ) {
+		// payment has been received so we can remove any payment messages
+		if( get_post_meta( $order_id, '_payment_method', true ) !== 'pos_cash'  || 'pos_card' ) {
+			delete_post_meta( $order_id, '_pos_payment_message');
+		}
+	} 
 
 	/**
 	 * Bump post_modified & post_modified_gmt

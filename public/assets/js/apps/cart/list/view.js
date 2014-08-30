@@ -148,6 +148,7 @@ define(['app', 'handlebars', 'accounting'], function(POS, Handlebars, accounting
 
 		View.CartItems = Marionette.CompositeView.extend({
 			template: '#tmpl-cart-items',
+			tagName: 'form',
 			childView: View.CartItem,
 			childViewContainer: 'tbody',
 			emptyView: NoCartItemsView,

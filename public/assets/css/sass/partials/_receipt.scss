@@ -21,6 +21,9 @@
         	th {
         		text-align: right;
     		}
+    		.note td {
+    			border-top: 1px solid $dark-border-color;
+    		}
         }
 	}
 }

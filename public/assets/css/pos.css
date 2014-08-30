@@ -4227,16 +4227,14 @@ html, body {
 }
 /* line 90, sass/partials/_numpad.scss */
 .numpad-keys table.cash {
-  float: left;
-  border-right: 1px solid #ebebeb;
+  border-left: 1px solid #ebebeb;
 }
-/* line 93, sass/partials/_numpad.scss */
+/* line 92, sass/partials/_numpad.scss */
 .numpad-keys table.cash button {
   width: 100px;
 }
-/* line 98, sass/partials/_numpad.scss */
+/* line 97, sass/partials/_numpad.scss */
 .numpad-keys table.discount {
-  float: right;
   border-left: 1px solid #ebebeb;
 }
 
@@ -4456,6 +4454,10 @@ html, body {
 /* line 21, sass/partials/_receipt.scss */
 #receipt table tfoot th {
   text-align: right;
+}
+/* line 24, sass/partials/_receipt.scss */
+#receipt table tfoot .note td {
+  border-top: 1px solid #dfdfdf;
 }
 
 /*

@@ -78,7 +78,9 @@ define(['app', 'handlebars', 'backbone.syphon'], function(POS, Handlebars){
 				var error;
 
 				// construct error message
-				if( _.isArray(response.messages) ) {
+				if( !_.isObject(response) ) {
+					error = response;
+				} else if( _.isArray(response.messages) ) {
 					error = '<ul>';
 					_.each(response.messages, function(message){
 						error += '<li>' + message + '</li>';

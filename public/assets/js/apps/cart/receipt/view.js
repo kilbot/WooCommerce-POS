@@ -50,7 +50,7 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 					data.incl_tax = true;
 				}
 
-				if( !data.payment_details.paid && data.payment_details.message ) {
+				if( data.payment_details.message ) {
 					data.show_message = true;
 				}
 
@@ -63,6 +63,7 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 				this.ui.actions.addClass('working').find('button').prop('disabled', true);
 				$.when( this.model.fetch({ data: {pos: 1} }) ).done( function() {
 					self.ui.actions.removeClass('working').find('button').prop('disabled', false);
+					this.render();
 				});
 			},
 
@@ -141,7 +142,8 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 					pos_params.ajax_url , { 
 						action: 'pos_get_modal', 
 						template: 'email-receipt',
-						security: pos_params.nonce 
+						security: pos_params.nonce
+						// don't send pos flag with this
 					} 
 				);
 			},

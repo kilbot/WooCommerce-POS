@@ -107,7 +107,7 @@
 					<th colspan="2"><?php _e( 'Order Total', 'woocommerce-pos' ); ?>:</th>
 					<td colspan="1">{{{money total}}}</td>
 				</tr>
-				<tr class="note" {{#unless totals.note}}style="display:none"{{/unless}}>
+				<tr class="note" {{#unless note}}style="display:none"{{/unless}}>
 					<td colspan="5">{{note}}</td>
 				</tr>
 			</tfoot>

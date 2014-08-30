@@ -35,7 +35,7 @@ define([
 
 		});
 
-		new Popover.Controller()
+		new Popover.Controller();
 
 	});
 

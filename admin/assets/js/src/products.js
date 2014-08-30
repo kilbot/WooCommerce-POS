@@ -89,7 +89,7 @@
 	    	}
 	    });
 
-	    var App = new View;
+	    var App = new View();
 
 	});
 

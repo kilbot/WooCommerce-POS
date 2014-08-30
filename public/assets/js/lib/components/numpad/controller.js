@@ -82,7 +82,7 @@ define([
 				var view = new Numpad.Header({ model: this.model });
 
 				this.listenTo( view, 'enter:keypress', function(e) {
-					value = this.model.get('value');
+					var value = this.model.get('value');
 					value = POS.formatNumber(value, 'auto');
 					options.target.trigger( 'numpad:return', value, this );
 				});
@@ -94,7 +94,7 @@ define([
 				var view = new Numpad.Keys({ model: this.model });
 
 				this.listenTo( view, 'return:keypress', function() {
-					value = this.model.get('value');
+					var value = this.model.get('value');
 					value = POS.formatNumber(value, 'auto');
 					options.target.trigger( 'numpad:return', value, this );
 				});

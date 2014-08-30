@@ -58,7 +58,8 @@ define(['app'], function(POS){
 				// add ajax info
 				var data = _.assign( order, {
 					action 	: 'pos_process_order',
-					security: pos_params.nonce
+					security: pos_params.nonce,
+					pos 	: 1
 				});
 
 				// send the cart data to the server

@@ -1,9 +1,9 @@
 === WooCommerce Point of Sale (POS) ===
 Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
-Requires at least: 3.8
-Tested up to: 3.9
-Stable tag: 0.3
+Requires at least: 3.8 & WooCommerce 2.1
+Tested up to: 4.0
+Stable tag: 0.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -102,8 +102,10 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: Danish translation thanks to Thomas Clausen! [http://da.woopos.com.au/pos](http://da.woopos.com.au/pos)
 * Improved: Most JS has been rewritten to improve performance and extensibility
 * Improved: Initial download of products, improved performance for large stores and/or slow servers
+* Improved: Notes are now handled like Customer Notes for display on receipts
 * Fix: Authenication no longer relies on cookies, should fix authentication issues for some users
 * Fix: Bug preventing product display on Safari for subfolder installs of WordPress
+* Fix: Bug effecting admin settings for translation users
 
 * Pro Feature: Pro users can enable any Payment Gateway. (Upgrade to Pro)[http://woopos.com.au/pro].
 

@@ -28,7 +28,7 @@ define(['app', 'localstorage'], function(POS){
 				total -= this.get('order_discount');
 				
 				// this.set(); // don't trigger change
-				this.save({ total: total }, { silent: true });
+				this.save({ total: POS.round( total, 4 ) }, { silent: true });
 			},
 
 		});

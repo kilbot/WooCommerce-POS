@@ -427,10 +427,14 @@ class WooCommerce_POS_Admin {
 	 * An array of screen ids 
 	 */
 	public function screen_ids() {
-		return apply_filters( 'woocommere_pos_screen_ids', array(
-			'toplevel_page_woocommerce-pos',
-			'pos_page_wc-pos-settings',
-		));
+		$pos_screen_id = sanitize_title( __( 'POS', 'woocommerce-pos' ) );
+
+		$screen_ids = array(
+			'toplevel_page_' . $pos_screen_id,
+			$pos_screen_id . '_page_wc-pos-settings'
+		);
+		
+		return apply_filters( 'woocommere_pos_screen_ids', $screen_ids );
 	}
 
 	/**

@@ -161,6 +161,7 @@ define([
 
 			standardKeyEvent: function(e){
 				var key = $(e.currentTarget).data('key'),
+					value,
 					newValue;
 
 				if( this.model.get('mode') === 'percentage' ) {

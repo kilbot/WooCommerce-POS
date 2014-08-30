@@ -12,7 +12,7 @@
 class WooCommerce_POS {
 
 	/** Version numbers */
-	const VERSION = '0.3.1-rc1';
+	const VERSION = '0.3.1';
 	const JQUERY_VERSION = '2.1.1';
 
 	/** Development flag */
@@ -53,6 +53,10 @@ class WooCommerce_POS {
 	 * Initialize WooCommerce_POS
 	 */
 	private function __construct() {
+
+		// set is_pos flag for AJAX, API requests
+		if( isset( $_REQUEST['pos'] ) && $_REQUEST['pos'] == 1 )
+			$this->is_pos = true;
 		
 		// settings
 		$this->wc_api_url = home_url('/wc-api/v1/', 'relative');
@@ -70,11 +74,11 @@ class WooCommerce_POS {
 		// Set up templates
 		add_filter( 'generate_rewrite_rules', array( $this, 'generate_rewrite_rules' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
-		add_action( 'template_redirect', array( $this, 'show_pos' ) );
+		add_action( 'parse_request', array( $this, 'parse_request' ) );
+		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
 
 		// allow access to the WC REST API
 		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 1 );
-		add_action( 'woocommerce_api_server_before_serve', array( $this, 'wc_api_init') );
 	}
 
 	/**
@@ -170,6 +174,16 @@ class WooCommerce_POS {
 		// so POS only supports pretty permalinks ... for the moment
 		return home_url('pos/'.$page);
 	}
+
+	/**
+	 * Check if is POS template request
+	 */
+	public function parse_request( $wp ) {
+		if( isset( $wp->query_vars['pos'] ) && $wp->query_vars['pos'] == 1 ) {
+			$this->is_pos = true;
+			$this->template = isset( $wp->query_vars['pos_template'] ) ? $wp->query_vars['pos_template'] : 'main';
+		}
+	}
 	
 	/**
 	 * Filter that inserts the custom_page variable into $wp_query
@@ -185,19 +199,14 @@ class WooCommerce_POS {
 	/**
 	 * Display POS page or login screen
 	 */
-	public function show_pos() {
+	public function template_redirect() {
+		// bail if not pos
+		if( !$this->is_pos ) 
+			return;
 
 		// set up $current_user for use in includes
 		global $current_user;
 		get_currentuserinfo();
-
-		// check query_var for pos = 1
-		if( get_query_var( 'pos' ) == 1 ) {
-			$this->is_pos = true;
-			$this->template = ( get_query_var( 'pos_template' ) ) ? get_query_var( 'pos_template' ) : 'main';
-		} else {
-			return;
-		}
 
 		// check page and credentials
 		if ( is_user_logged_in() && current_user_can('manage_woocommerce_pos') ) {
@@ -238,21 +247,6 @@ class WooCommerce_POS {
 		} 
 
 		return $user;
-	}
-
-	/**
-	 * Check if request is coming from POS
-	 * @param  object $api_server  WC_API_Server Object      
-	 */
-	public function wc_api_init( $api_server ) {
-
-		// check both GET & POST requests
-		$params = array_merge($api_server->params['GET'], $api_server->params['POST']);
-		if( isset($params['pos']) && $params['pos'] == 1 ) {
-			$this->is_pos = true;
-		}
-
-		// error_log( print_R( $api_server, TRUE ) ); //debug
 	}
 
 	/** Load Instances on demand **********************************************/

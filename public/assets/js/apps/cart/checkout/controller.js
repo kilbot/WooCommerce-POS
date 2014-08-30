@@ -31,6 +31,15 @@ define(['app', 'apps/cart/checkout/view', 'entities/orders'], function(POS, View
 				// return to sale
 				this.listenTo( order, 'processing:complete', function( response ) {
 					view.processing(false);
+
+					// sanitise response
+					if( !_.isObject(response) ) {
+						if( POS.debug ) console.warn('Attempting to sanitise response');
+						response = response.substring(response.indexOf("{") - 1);
+    					response = response.substring(0, response.lastIndexOf("}") + 1);
+    					response = $.parseJSON(response);
+					}
+
 					if( response.result === 'success' ) {
 						_.invoke( items.toArray(), 'destroy' );
 						POS.CartApp.channel.command('show:receipt', response.order_id );

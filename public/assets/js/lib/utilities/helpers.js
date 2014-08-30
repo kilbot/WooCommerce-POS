@@ -114,11 +114,11 @@ define(['app', 'handlebars', 'accounting', 'moment'], function (POS, Handlebars,
 	POS.round = function( num, precision ) {
 		if( precision === undefined ) precision = accounting.settings.number.precision;
 		return parseFloat( accounting.toFixed( num, precision ) );
-	}
+	};
 
 	POS.unformat = function( num ) {
 		return accounting.unformat( num, accounting.settings.number.decimal );
-	}
+	};
 
 	POS.formatNumber = function( num, precision ) {
 		if( precision === undefined ) precision = accounting.settings.number.precision;
@@ -128,6 +128,6 @@ define(['app', 'handlebars', 'accounting', 'moment'], function (POS, Handlebars,
 		}
 
 		return accounting.formatNumber(num, precision);		
-	}
+	};
 
 });

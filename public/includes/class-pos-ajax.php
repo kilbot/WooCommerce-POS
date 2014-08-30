@@ -54,6 +54,7 @@ class WooCommerce_POS_AJAX {
 			wp_die('There are no cart items');
 
 		// create order 
+		WC_POS()->is_pos = true;
 		$response = WC_POS()->checkout->create_order();
 
 		$this->json_headers();
@@ -152,34 +153,21 @@ class WooCommerce_POS_AJAX {
 			);
 			$default->init( (object)$data );
 		}
+
+		add_action( 'pre_user_query', array( __CLASS__, 'json_search_customer_name' ) );
 		
 		// query the users table
-		$users_query = new WP_User_Query( apply_filters( 'woocommerce_pos_json_search_customers_query', array(
+		$customers_query = new WP_User_Query( apply_filters( 'woocommerce_pos_json_search_customers_query', array(
 			'fields'         => 'all',
 			'orderby'        => 'display_name',
 			'search'         => '*' . $term . '*',
 			'search_columns' => array( 'ID', 'user_login', 'user_email', 'user_nicename' ),
 		) ) );
 
-		// query the usermeta table
-		$usermeta_query = new WP_User_Query( apply_filters( 'woocommerce_pos_json_search_customers_query', array(
-			'meta_query' => array(
-				'relation' 	  => 'OR',
-				array(
-					'key'     => 'first_name',
-					'value'   => $term,
-					'compare' => 'LIKE'
-				),
-				array(
-					'key'     => 'last_name',
-					'value'   => $term,
-					'compare' => 'LIKE'
-				)
-			)
-		) ) );
+		remove_action( 'pre_user_query', array( __CLASS__, 'json_search_customer_name' ) );
 
 		// merge the two results
-		$customers = array_merge( $users_query->get_results(), $usermeta_query->get_results() );
+		$customers = $customers_query->get_results();
 		
 		// add the default customer to the results
 		array_unshift( $customers, $default );
@@ -199,6 +187,20 @@ class WooCommerce_POS_AJAX {
 		$this->json_headers();
 		echo json_encode( $found_customers );
 		die();
+	}
+
+	public static function json_search_customer_name( $query ) {
+		global $wpdb;
+
+		$term = wc_clean( stripslashes( $_GET['term'] ) );
+		if ( method_exists( $wpdb, 'esc_like' ) ) {
+			$term = $wpdb->esc_like( $term );
+		} else {
+			$term = like_escape( $term );
+		}
+
+		$query->query_from  .= " INNER JOIN {$wpdb->usermeta} AS user_name ON {$wpdb->users}.ID = user_name.user_id AND ( user_name.meta_key = 'first_name' OR user_name.meta_key = 'last_name' ) ";
+		$query->query_where .= $wpdb->prepare( " OR user_name.meta_value LIKE %s ", '%' . $term . '%' );
 	}
 
 	/**

@@ -88,15 +88,13 @@ $numpad-bg: $dark-border-color;
 	}
 
 	table.cash {
-		float: left;
-		border-right: 1px solid lighten($numpad-bg, 5%);
+		border-left: 1px solid lighten($numpad-bg, 5%);
 		button {
 			width: 100px;
 		}
 	}
 
 	table.discount {
-		float: right;
 		border-left: 1px solid lighten($numpad-bg, 5%);
 	}
 
