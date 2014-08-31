@@ -149,10 +149,9 @@ class WooCommerce_POS_Admin_Hooks {
 
 
 	function pre_get_posts( $query ) {
-		$screen = get_current_screen();
 
 		// product page
-		if( is_admin() && get_query_var('post_type') == 'product' && $screen->base == 'edit' ) {
+		if( is_admin() && get_query_var('post_type') == 'product' ) {
 			
 			if ( isset( $_GET['pos_visibility'] ) && !empty( $_GET['pos_visibility'] ) ) {
 				$meta_query =  array(
@@ -169,7 +168,7 @@ class WooCommerce_POS_Admin_Hooks {
 
 
 		// order page
-		if( is_admin() && get_query_var('post_type') === 'shop_order' && $screen->base == 'edit' ) {
+		if( is_admin() && get_query_var('post_type') === 'shop_order' ) {
 			
 			if ( isset( $_GET['pos_order'] ) && !empty( $_GET['pos_order'] ) ) {
 
