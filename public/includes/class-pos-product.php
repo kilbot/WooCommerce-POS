@@ -43,10 +43,21 @@ class WooCommerce_POS_Product {
 		$args = array(
 			'post_type' 	=> array('product'),
 			'posts_per_page'=>  -1,
-			'fields'		=> 'ids'
+			'fields'		=> 'ids',
+			'meta_query' 	=> array(
+				'relation'  => 'OR',
+				array(
+					'key' 		=> '_pos_visibility',
+					'value' 	=> 'online_only',
+					'compare'	=> '!='
+				),
+				array(
+					'key' 		=> '_pos_visibility',
+					'compare'	=> 'NOT EXISTS'
+				)
+			),
 		);
 
-		// init WP_QUERY: uses pre_get_posts
 		$query = new WP_Query( $args );
 		return array_map( 'intval', $query->posts );
 	}
@@ -222,6 +233,9 @@ class WooCommerce_POS_Product {
 				// add special key for barcode, defaults to sku
 				// TODO: add an option for any meta field
 				$variation['barcode'] = $variation['sku'];
+
+				// add stock management from parent
+				$variation['managing_stock'] = $product_data['managing_stock'];
 
 			}
 		}

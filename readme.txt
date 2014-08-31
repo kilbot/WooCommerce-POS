@@ -82,7 +82,12 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
-= 0.3.1 - [read blog post](http://woopos.com.au/2014/08/version-0-3-1-released/) =
+= 0.3.2 = 
+* Fix: managing_stock for variations
+* Fix: customer searches multisite?!
+
+= 0.3.1 =
+* [read blog post](http://woopos.com.au/2014/08/version-0-3-1-released/)
 * New: choose which user roles have access to POS
 * New: set products as visible to POS Only or Online Only
 * New: filter products in WP-Admin by POS Only or Online Only
@@ -107,7 +112,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: Bug preventing product display on Safari for subfolder installs of WordPress
 * Fix: Bug effecting admin settings for translation users
 
-* Pro Feature: Pro users can enable any Payment Gateway. (Upgrade to Pro)[http://woopos.com.au/pro].
+* Pro Feature: Pro users can enable any Payment Gateway. [Upgrade to Pro](http://woopos.com.au/pro).
 
 = 0.3 =
 * New: Set default POS customer on new settings page
@@ -119,17 +124,3 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: Add-to-cart bug for particular tax settings (tax enabled + prices exclusive from tax + no tax rates set)
 * Fix: product display for sites where home_url != site_url
 * Fix: authentication test for subfolder wordpress installs
-
-= 0.2.15 =
-* New: [website](http://woopos.com.au)!
-* New: Multisite support: visit [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos) to see WooCommerce POS in different languages using multisite
-* New: nl_NL translation thanks to Egbert Jan! [http://nl.woopos.com.au/pos](http://nl.woopos.com.au/pos)
-* New: nb_NO translation thanks to Olav Solvang! [http://no.woopos.com.au/pos](http://no.woopos.com.au/pos)
-* Visit: [http://translate.woopos.com.au](http://translate.woopos.com.au) if you would like to translate WooCommerce POS into your language
-* Improved: Search field now reset after successful barcode search
-* Fix: Bug with multiple tax rates and compound tax rates
-* Fix: WooCommerce POS will deactivate if WooCommerce not active, fixes https://github.com/kilbot/WooCommerce-POS/issues/9
-* Fix: Added admin message if permalinks not active
-* Fix: proper fix for rounding error for comma decimals
-* Fix: fixed bug for subfolder wordpress install
-* Removed: Beta tag!
