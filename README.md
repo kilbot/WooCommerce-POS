@@ -25,13 +25,13 @@ Thanks to [Wordpress](http://wordpress.org) and [WooCommerce](http://woothemes.c
 ### 0.3.1 ###
 * [read blog post](http://woopos.com.au/2014/08/version-0-3-1-released/)
 * New: choose which user roles have access to POS
-* New: set products as visible to POS Only or Online Only
+* New: set products as visible to [POS Only](http://woopos.com.au/docs/pos-only-products/) or Online Only
 * New: filter products in WP-Admin by POS Only or Online Only
 * New: filter orders in WP-Admin by POS or Online
 * New: hierarchical UI for variable products, improves experience for products with large number of variations
-* New: product filters, filter by category ( eg: cat:music ) or any attribute ( eg: in_stock:true )
+* New: [product filters](http://woopos.com.au/docs/product-searching-filtering/), filter by category ( eg: cat:music ) or any attribute ( eg: in_stock:true )
 * New: quick tabs for filtering products All, Featured ( featured:true ) and On Sale ( on_sale:true )
-* New: number pad for quick entry via mouse or touch
+* New: [number pad](http://woopos.com.au/docs/number-pads/) for quick entry via mouse or touch
 * New: Payment Gateway settings, enable POS only gateways and reorder through new settings tab
 * New: Payment Gateway processing (tested on some gateways but still experimental)
 * New: change calculated for Cash sales
