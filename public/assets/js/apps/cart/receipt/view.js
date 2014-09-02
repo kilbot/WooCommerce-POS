@@ -63,7 +63,7 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 				this.ui.actions.addClass('working').find('button').prop('disabled', true);
 				$.when( this.model.fetch({ data: {pos: 1} }) ).done( function() {
 					self.ui.actions.removeClass('working').find('button').prop('disabled', false);
-					this.render();
+					self.render();
 				});
 			},
 

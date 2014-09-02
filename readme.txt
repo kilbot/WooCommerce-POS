@@ -82,9 +82,10 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
-= 0.3.2 = 
+= 0.3.2 =
+* Urgent Fix: POS bug causing problems with product display on some websites, eg: featured products
+* Fix: refresh button on offsite payment receipts
 * Fix: managing_stock for variations
-* Fix: customer searches multisite?!
 
 = 0.3.1 =
 * [read blog post](http://woopos.com.au/2014/08/version-0-3-1-released/)
@@ -101,7 +102,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: change calculated for Cash sales
 * New: cashback option for Card sales
 * New: Link to POS from admin menu (sorry!)
-* New: Debug flag for Javascript console logging
+* New: [Debug flag](http://woopos.com.au/docs/debugging/) for Javascript console logging
 * New: Greek translation thanks to Marios Polycarpou! [http://el.woopos.com.au/pos](http://el.woopos.com.au/pos)
 * New: German translation thanks to Simon Potye! [http://de.woopos.com.au/pos](http://de.woopos.com.au/pos)
 * New: Danish translation thanks to Thomas Clausen! [http://da.woopos.com.au/pos](http://da.woopos.com.au/pos)
@@ -112,7 +113,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: Bug preventing product display on Safari for subfolder installs of WordPress
 * Fix: Bug effecting admin settings for translation users
 
-* Pro Feature: Pro users can enable any Payment Gateway. [Upgrade to Pro](http://woopos.com.au/pro).
+* Pro Feature: Pro users can enable any Payment Gateway. [Upgrade to Pro](http://woopos.com.au/pro)
 
 = 0.3 =
 * New: Set default POS customer on new settings page

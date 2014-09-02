@@ -297,7 +297,10 @@ class WooCommerce_POS_Admin {
 	public function upgrade( $old ) {
 
 		// flush rewrite rules on upgrade
-		flush_rewrite_rules( false ); 
+		flush_rewrite_rules( false );
+
+		// check _pos_visibility on upgrade
+		$this->pos_visibility_check();
 
 	}
 
@@ -330,6 +333,27 @@ class WooCommerce_POS_Admin {
 		} elseif( false === $enabled ) {
 			update_option( 'woocommerce_pos_enabled_gateways', array_slice( $defaults, 0, -1 ) );
 		}
+	}
+
+	/**
+	 * Check _pos_visibility postmeta
+	 */
+	public function pos_visibility_check() {
+		global $wpdb;
+	
+		$sql = "INSERT INTO $wpdb->postmeta (post_id, meta_key, meta_value)
+			SELECT DISTINCT pm.post_id, '_pos_visibility' AS meta_key, 'pos_and_online' AS meta_value
+			FROM $wpdb->postmeta pm
+			JOIN $wpdb->posts p ON (p.ID = pm.post_id)
+			WHERE pm.post_id NOT IN ( 
+				SELECT post_id
+				FROM $wpdb->postmeta
+				WHERE meta_key = '_pos_visibility'
+			)
+			AND p.post_type = 'product'
+			";
+
+		$wpdb->query($sql);
 	}
 
 	/**
@@ -419,7 +443,7 @@ class WooCommerce_POS_Admin {
 		);
 
 		$submenu[$this->plugin_slug][0][0] = __( 'Upgrade to Pro', 'woocommerce-pos' );
-		$submenu[$this->plugin_slug][500] = array( __( 'View POS', 'woocommerce-pos' ), 'manage_options' , WC_POS()->pos_url() ); 
+		$submenu[$this->plugin_slug][500] = array( __( 'View POS', 'woocommerce-pos' ), 'manage_woocommerce_pos' , WC_POS()->pos_url() ); 
 
 	}
 

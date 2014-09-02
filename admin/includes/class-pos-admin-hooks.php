@@ -98,9 +98,9 @@ class WooCommerce_POS_Admin_Hooks {
 
 			$class 			= ( isset( $_GET['pos_visibility'] ) && $_GET['pos_visibility'] == $key ) ? 'current' : '';
 			if( $class == '' ) $query_string = remove_query_arg(array( 'paged' ));
-			$query_string 	= remove_query_arg(array( 'pos_visibility' ));
+			$query_string 	= remove_query_arg(array( 'pos_visibility', 'post_status' ));
 			$query_string 	= add_query_arg( 'pos_visibility', urlencode($key), $query_string );
-			$views[$key] 	= '<a href="'. $query_string . '" class="' . esc_attr( $class ) . '">' . $label . ' <span class="count">(' . $count . ')</a></a>';
+			$views[$key] 	= '<a href="'. $query_string . '" class="' . esc_attr( $class ) . '">' . $label . ' <span class="count">(' . number_format_i18n( $count ) . ')</a></a>';
 		}
 
 		return $views;
@@ -141,7 +141,7 @@ class WooCommerce_POS_Admin_Hooks {
 			$query_string 	= remove_query_arg(array( 'pos_order' ));
 			if( $class == '' ) $query_string = remove_query_arg(array( 'paged' ));
 			$query_string 	= add_query_arg( 'pos_order', urlencode($key), $query_string );
-			$views[$key] 	= '<a href="'. $query_string . '" class="' . esc_attr( $class ) . '">' . $label . ' <span class="count">(' . $count . ')</a></a>';
+			$views[$key] 	= '<a href="'. $query_string . '" class="' . esc_attr( $class ) . '">' . $label . ' <span class="count">(' . number_format_i18n( $count ) . ')</a></a>';
 		}
 
 		return $views;

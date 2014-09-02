@@ -83,33 +83,25 @@ class WooCommerce_POS_Product {
 		}
 
 		// show/hide POS products
-		$meta_query =  array(
-			'relation' => 'OR',
-			array(
-				'key' 		=> '_pos_visibility',
-				'value' 	=> $hide,
-				'compare'	=> '!='
-			),
-			array(
-				'key' 		=> '_pos_visibility',
-				'compare'	=> 'NOT EXISTS'
-			)
+		$meta_query = $query->get( 'meta_query' );
+
+		$meta_query[] =  array(
+			'key' 		=> '_pos_visibility',
+			'value' 	=> $hide,
+			'compare'	=> '!='
 		);
-		$query->set( 'meta_query', $meta_query );
 
 		// server filter
+		// TODO: this needs to be replaced by WC API 2.2
         if( isset( $_GET['filter'] ) ) {
         
         	// barcode 
         	if( array_key_exists( 'barcode', $_GET['filter'] ) ) {
-		  		$meta_query =  array(
-					array(
-						'key' 		=> '_sku',
-						'value' 	=> $_GET['filter']['barcode'],
-						'compare'	=> '='
-					),
+		  		$meta_query[] = array(
+					'key' 		=> '_sku',
+					'value' 	=> $_GET['filter']['barcode'],
+					'compare'	=> '='
 				);
-				$query->set( 'meta_query', $meta_query );
 				$query->set( 'post_type', array('product', 'product_variation' ) );
         	}
 
@@ -121,16 +113,16 @@ class WooCommerce_POS_Product {
 
         	// featured
 			if( array_key_exists( 'featured', $_GET['filter'] ) && $_GET['filter']['featured'] ) {
-		  		$meta_query =  array(
-					array(
-						'key' 		=> '_featured',
-						'value' 	=> 'yes',
-						'compare'	=> '='
-					),
+		  		$meta_query[] = array(
+					'key' 		=> '_featured',
+					'value' 	=> 'yes',
+					'compare'	=> '='
 				);
-				$query->set( 'meta_query', $meta_query );
         	}
         }
+
+        // update the meta_query
+        $query->set( 'meta_query', $meta_query );
 
 	}
 

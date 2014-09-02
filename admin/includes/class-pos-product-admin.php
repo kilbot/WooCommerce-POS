@@ -25,8 +25,11 @@ class WooCommerce_POS_Products_Admin {
 		// add POS visibility
 		add_action( 'post_submitbox_misc_actions', array( $this, 'pos_visibility' ), 99 );
 
+		// hook into change to post status, eg: draft -> publish
+		add_action( 'transition_post_status', array( $this, 'transition_post_status' ), 10, 3 );
+
 		// Bump modified times
-		add_action( 'save_post_product', array( $this, 'product_updated' ), 10, 1 );
+		// add_action( 'save_post_product', array( $this, 'product_updated' ), 10, 1 );
 	}
 
 	/**
@@ -79,25 +82,38 @@ class WooCommerce_POS_Products_Admin {
 	}
 
 	/**
-	 * Bump variation modified time if parent is modified
-	 * @param  $post_ID the variable product id
+	 * 
 	 */
-	public function product_updated( $post_ID ) {
-		$product = get_product( $post_ID );
-		if( $product->is_type( 'variable' ) && $product->has_child() ) {
+	public function transition_post_status( $new_status, $old_status, $post ) {
 
-			$post_modified     = current_time( 'mysql' );
-			$post_modified_gmt = current_time( 'mysql', 1 );
+		// if new product
+		if( $old_status != 'publish' && $new_status == 'publish' && !empty($post->ID) && in_array( $post->post_type, array('product') ) ) {
 
-			foreach ( $product->get_children() as $child_id ) {
-				wp_update_post( array(
-					'ID' 				=> $child_id,
-					'post_modified' 	=> $post_modified,
-					'post_modified_gmt' => $post_modified_gmt
-				));
-			}
+			// add _pos_visibility if it doesn't already exist
+			add_post_meta($post->ID, '_pos_visibility', 'pos_and_online', true);
 		}
 	}
+
+	// /**
+	//  * Bump variation modified time if parent is modified
+	//  * @param  $post_ID the variable product id
+	//  */
+	// public function product_updated( $post_ID ) {
+	// 	$product = get_product( $post_ID );
+	// 	if( $product->is_type( 'variable' ) && $product->has_child() ) {
+
+	// 		$post_modified     = current_time( 'mysql' );
+	// 		$post_modified_gmt = current_time( 'mysql', 1 );
+
+	// 		foreach ( $product->get_children() as $child_id ) {
+	// 			wp_update_post( array(
+	// 				'ID' 				=> $child_id,
+	// 				'post_modified' 	=> $post_modified,
+	// 				'post_modified_gmt' => $post_modified_gmt
+	// 			));
+	// 		}
+	// 	}
+	// }
 
 }
 
