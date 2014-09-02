@@ -216,6 +216,9 @@ class WooCommerce_POS_Admin {
 
 		// set the auto redirection on next page load
 		set_transient( 'woocommere_pos_welcome', 1, 30 );
+
+		// check _pos_visibility on upgrade
+		self::pos_visibility_check();
 	}
 
 	/**
@@ -368,7 +371,7 @@ class WooCommerce_POS_Admin {
 			wp_enqueue_style( 'woocommerce_admin_styles', WC()->plugin_url() . '/assets/css/admin.css', array(), WC_VERSION );
 		}
 
-		if( in_array( $screen->id, array( 'pos_page_wc-pos-settings', 'woocommerce_page_wc-settings' ) )  ) {
+		if ( in_array( $screen->id, $this->screen_ids() ) ) {
 			$css = '
 				table.wc_gateways .pos_status, table.wc_gateways .pos_enabled { text-align: center; }
 				table.wc_gateways .pos_status .tips, table.wc_gateways .pos_enabled .tips { margin: 0 auto; }
@@ -454,7 +457,7 @@ class WooCommerce_POS_Admin {
 		$pos_screen_id = sanitize_title( __( 'POS', 'woocommerce-pos' ) );
 
 		$screen_ids = array(
-			'toplevel_page_' . $pos_screen_id,
+			'toplevel_page_woocommerce-pos',
 			$pos_screen_id . '_page_wc-pos-settings'
 		);
 		
