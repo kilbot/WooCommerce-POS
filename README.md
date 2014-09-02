@@ -17,6 +17,39 @@ Thanks to [Wordpress](http://wordpress.org) and [WooCommerce](http://woothemes.c
 
 ## Changelog ##
 
+### 0.3.2 ###
+* Urgent Fix: POS bug causing problems with product display on some websites, eg: featured products
+* Fix: refresh button on offsite payment receipts
+* Fix: managing_stock for variations
+
+### 0.3.1 ###
+* [read blog post](http://woopos.com.au/2014/08/version-0-3-1-released/)
+* New: choose which user roles have access to POS
+* New: set products as visible to POS Only or Online Only
+* New: filter products in WP-Admin by POS Only or Online Only
+* New: filter orders in WP-Admin by POS or Online
+* New: hierarchical UI for variable products, improves experience for products with large number of variations
+* New: product filters, filter by category ( eg: cat:music ) or any attribute ( eg: in_stock:true )
+* New: quick tabs for filtering products All, Featured ( featured:true ) and On Sale ( on_sale:true )
+* New: number pad for quick entry via mouse or touch
+* New: Payment Gateway settings, enable POS only gateways and reorder through new settings tab
+* New: Payment Gateway processing (tested on some gateways but still experimental)
+* New: change calculated for Cash sales
+* New: cashback option for Card sales
+* New: Link to POS from admin menu (sorry!)
+* New: [Debug flag](http://woopos.com.au/docs/debugging/) for Javascript console logging
+* New: Greek translation thanks to Marios Polycarpou! [http://el.woopos.com.au/pos](http://el.woopos.com.au/pos)
+* New: German translation thanks to Simon Potye! [http://de.woopos.com.au/pos](http://de.woopos.com.au/pos)
+* New: Danish translation thanks to Thomas Clausen! [http://da.woopos.com.au/pos](http://da.woopos.com.au/pos)
+* Improved: Most JS has been rewritten to improve performance and extensibility
+* Improved: Initial download of products, improved performance for large stores and/or slow servers
+* Improved: Notes are now handled like Customer Notes for display on receipts
+* Fix: Authenication no longer relies on cookies, should fix authentication issues for some users
+* Fix: Bug preventing product display on Safari for subfolder installs of WordPress
+* Fix: Bug effecting admin settings for translation users
+
+* Pro Feature: Pro users can enable any Payment Gateway. [Upgrade to Pro](http://woopos.com.au/pro)
+
 ### 0.3 ###
 * New: Set default POS customer on new settings page
 * New: Add customer to order
@@ -27,28 +60,3 @@ Thanks to [Wordpress](http://wordpress.org) and [WooCommerce](http://woothemes.c
 * Fix: Add-to-cart bug for particular tax settings (tax enabled + prices exclusive from tax + no tax rates set)
 * Fix: product display for sites where home_url != site_url
 * Fix: authentication test for subfolder wordpress installs
-
-### 0.2.15 ###
-* New: [website](http://woopos.com.au)!
-* New: Multisite support: visit [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos) to see WooCommerce POS in different languages using multisite
-* New: nl_NL translation thanks to Egbert Jan! [http://nl.woopos.com.au/pos](http://nl.woopos.com.au/pos)
-* New: nb_NO translation thanks to Olav Solvang! [http://no.woopos.com.au/pos](http://no.woopos.com.au/pos)
-* Visit: [http://translate.woopos.com.au](http://translate.woopos.com.au) if you would like to translate WooCommerce POS into your language
-* Improved: Search field now reset after successful barcode search
-* Fix: Bug with multiple tax rates and compound tax rates
-* Fix: WooCommerce POS will deactivate if WooCommerce not active, fixes https://github.com/kilbot/WooCommerce-POS/issues/9
-* Fix: Added admin message if permalinks not active
-* Fix: proper fix for rounding error for comma decimals
-* Fix: fixed bug for subfolder wordpress install
-* Removed: Beta tag!
-
-### 0.2.14 ###
-* New: Search by 'barcode'. Defaults to SKU for the moment. Instant add to cart for barcode matches, ie: barcode scanning!
-* New: Support page: contact support directly from the POS
-* New: Add order discount
-* New: Add order note
-* New: Void order
-* New: Basic translations for nl_NL, fr_FR, es_ES and pt_BR. Corrections can be submitted to [GitHub](https://github.com/kilbot/WooCommerce-POS/issues) or via email [support@woopos.com.au](mailto:support@woopos.com.au). Thanks Javier Gómez for the Spanish translation!
-* Fix: fixed bug for product_variations which effects WooCommerce < 2.1.7
-* Fix: fixed rounding bug for comma decimals
-* Fix: https://github.com/kilbot/WooCommerce-POS/issues/7

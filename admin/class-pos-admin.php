@@ -47,7 +47,7 @@ class WooCommerce_POS_Admin {
 		// includes 
 		add_action( 'init', array( $this, 'includes' ) );
 
-		// check version
+		// checks
 		add_action( 'admin_init', array( $this, 'run_checks' ) );
 
 		// add pos_params to admin head
@@ -240,9 +240,9 @@ class WooCommerce_POS_Admin {
 	}
 
 	function run_checks() {
+		$this->version_check();
 		$this->woocommerce_check();
 		$this->permalink_check();
-		$this->version_check();
 		$this->welcome_screen();
 		$this->gateway_check();
 	}
@@ -267,7 +267,8 @@ class WooCommerce_POS_Admin {
 		if ( ! class_exists( 'WooCommerce' ) ) {
 
 			// deactivate plugin
-			deactivate_plugins(WC_POS()->plugin_path. 'woocommerce-pos.php');
+			if( function_exists('deactivate_plugins')) 
+				deactivate_plugins(WC_POS()->plugin_path. 'woocommerce-pos.php');
 
 			// alert the user
 			$error = array (
