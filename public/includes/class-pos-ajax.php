@@ -85,9 +85,6 @@ class WooCommerce_POS_AJAX {
 		// security
 		check_ajax_referer( 'woocommerce-pos', 'security' );
 
-		// this is a POS request
-		if( isset($_REQUEST['pos']) && $_REQUEST['pos'] == 1 ) WC_POS()->is_pos = true;
-
 		// get an array of product ids
 		$ids = WC_POS()->product->get_all_ids();
 

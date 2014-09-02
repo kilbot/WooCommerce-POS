@@ -42,18 +42,14 @@ class WooCommerce_POS_Product {
 		// get all the ids
 		$args = array(
 			'post_type' 	=> array('product'),
+			'post_status' 	=> array('publish'),
 			'posts_per_page'=>  -1,
 			'fields'		=> 'ids',
 			'meta_query' 	=> array(
-				'relation'  => 'OR',
 				array(
 					'key' 		=> '_pos_visibility',
 					'value' 	=> 'online_only',
 					'compare'	=> '!='
-				),
-				array(
-					'key' 		=> '_pos_visibility',
-					'compare'	=> 'NOT EXISTS'
 				)
 			),
 		);
