@@ -82,6 +82,15 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.3.3 =
+* TODO: add Cash and Card to order drop down
+* TODO: custom barcode field
+* TODO: fix customer serach for network blogs
+* TODO: coupons?
+* TODO: change way database is deleted
+* TODO: fix product attribute display
+* Fix: bug effecting default customer setting
+
 = 0.3.2 =
 * Urgent Fix: POS bug causing problems with product display on some websites, eg: featured products
 * Fix: refresh button on offsite payment receipts
