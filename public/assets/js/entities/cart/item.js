@@ -57,7 +57,6 @@ define(['app', 'localstorage'], function(POS){
 			 */
 			calcTax: function( price, qty ) {
 				var item_tax = 0;
-				if( qty === undefined ) qty = 1;
 
 				if( this.get('taxable') && pos_params.wc.calc_taxes === 'yes' ) {
 					if( pos_params.wc.prices_include_tax === 'yes' ) {
@@ -84,6 +83,11 @@ define(['app', 'localstorage'], function(POS){
 					tax_amount = 0,
 					item_tax = 0,
 					line_tax = 0;
+
+				if( qty === undefined ) {
+					var subtotal_calc = true;
+					qty = 1;
+				}
 
 				_(rates).each( function(rate) {
 					if ( rate.compound === 'yes' ) {
@@ -126,6 +130,11 @@ define(['app', 'localstorage'], function(POS){
 					// sum item taxes
 					item_tax += item_tax_;
 
+					// WC API v2 
+					if( subtotal_calc ) {
+						rate.subtotal_tax = item_tax_;
+					}
+
 				}, this);
 				
 				// return the item tax
@@ -143,6 +152,11 @@ define(['app', 'localstorage'], function(POS){
 					tax_amount = 0,
 					item_tax = 0,
 					line_tax =0;
+
+				if( qty === undefined ) {
+					var subtotal_calc = true;
+					qty = 1;
+				}
 
 				// multiple taxes
 				_(rates).each( function(rate, key) {
@@ -175,6 +189,11 @@ define(['app', 'localstorage'], function(POS){
 
 					// sum item taxes
 					item_tax += item_tax_;
+
+					// WC API v2 
+					if( subtotal_calc ) {
+						rate.subtotal_tax = item_tax_;
+					}
 
 				}, this);
 				

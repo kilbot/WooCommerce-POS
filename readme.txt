@@ -89,6 +89,11 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * TODO: coupons?
 * TODO: change way database is deleted
 * TODO: fix product attribute display
+* TODO: https support
+* TODO: Safari variations broken?
+* TODO: non variable attributes??
+* TODO: WooCommerce 2.2 compatibility order status
+* TODO: check email template, customer name
 * Fix: bug effecting default customer setting
 
 = 0.3.2 =

@@ -16,7 +16,7 @@ class WooCommerce_POS {
 	const JQUERY_VERSION = '2.1.1';
 
 	/** Development flag */
-	public $development = false;
+	public $development = true;
 
 	/** Unique identifier */
 	protected $plugin_slug = 'woocommerce-pos';
@@ -54,12 +54,15 @@ class WooCommerce_POS {
 	 */
 	private function __construct() {
 
-		// set is_pos flag for AJAX, API requests
-		if( isset( $_REQUEST['pos'] ) && $_REQUEST['pos'] == 1 )
-			$this->is_pos = true;
+		// set is_pos flag for POS requests
+		$this->is_pos();
 		
-		// settings
-		$this->wc_api_url = home_url('/wc-api/v1/', 'relative');
+		// REST API version
+		if( version_compare( WC()->version, '2.2.0' ) >= 0 ) { 
+			$this->wc_api_url = home_url('/wc-api/v2/', 'relative');
+		} else {
+			$this->wc_api_url = home_url('/wc-api/v1/', 'relative');
+		}
 
 		$this->plugin_path 	= trailingslashit( dirname( dirname(__FILE__) ) );
 		$this->plugin_dir 	= trailingslashit( basename( $this->plugin_path ) );
@@ -79,6 +82,23 @@ class WooCommerce_POS {
 
 		// allow access to the WC REST API
 		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 1 );
+	}
+
+	/**
+	 * Set flag to determine if requests are from POS
+	 * TODO: bake pos=1 into all server requests from the app
+	 * @return boolean [description]
+	 */
+	public function is_pos() {
+		// set is_pos flag for GET, POS requests
+		if( isset( $_REQUEST['pos'] ) && $_REQUEST['pos'] == 1 )
+			$this->is_pos = true;
+
+		// set is_pos flag for PUT, DELETE requests
+		$json_data = json_decode(trim(file_get_contents('php://input')), true);
+		if( isset( $json_data['pos'] ) && $json_data['pos'] == 1 )
+			$this->is_pos = true;
+
 	}
 
 	/**
@@ -121,7 +141,6 @@ class WooCommerce_POS {
 	 */
 	private function includes() {
 		include_once( 'includes/class-pos-product.php' );
-		include_once( 'includes/class-pos-checkout.php' );
 		include_once( $this->plugin_path . 'includes/class-pos-payment-gateways.php' );
 		include_once( $this->plugin_path . 'includes/class-pos-support.php' );
 		if ( defined( 'DOING_AJAX' ) ) {
@@ -130,6 +149,13 @@ class WooCommerce_POS {
 
 		include_once( $this->plugin_path . 'includes/class-pos-currency.php' );
 		include_once( 'includes/pos-template-hooks.php' );
+
+		if( version_compare( WC()->version, '2.2.0' ) >= 0 ) { 
+			include_once( 'includes/class-pos-orders.php' );
+		} else {
+			include_once( 'includes/class-pos-checkout.php' );
+			$this->checkout = new WooCommerce_POS_Checkout();
+		}
 	}
 
 	/**
@@ -146,8 +172,7 @@ class WooCommerce_POS {
 		$this->load_plugin_textdomain();
 
 		// Load class instances
-		$this->product = new WooCommerce_POS_Product();
-		$this->checkout = new WooCommerce_POS_Checkout();
+		$this->product = new WooCommerce_POS_Product();	
 		$this->currency = new WooCommerce_POS_Currency();
 	}
 

@@ -4,7 +4,7 @@
  * Checkout Class
  *
  * Handles the checkout
- * TODO: hash cart and allow payment retries
+ * TODO: depreciate this in favour of REST API v2
  * 
  * @class 	  WooCommerce_POS_Checkout
  * @package   WooCommerce POS
