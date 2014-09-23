@@ -36,14 +36,8 @@ class WooCommerce_POS {
 	public $is_pos = false;
 	public $template = null;
 
-	/** @var object WooCommerce_POS_Product */
-	public $product = null;
-
 	/** @var object WooCommerce_POS_Checkout */
-	public $checkout = null;
-
-	/** @var object WooCommerce_POS_Currency */
-	public $currency = null;	
+	public $checkout = null;	
 
 	/** @var cache logged in user id */
 	private $logged_in_user = false;
@@ -170,10 +164,6 @@ class WooCommerce_POS {
 
 		// Set up localisation
 		$this->load_plugin_textdomain();
-
-		// Load class instances
-		$this->product = new WooCommerce_POS_Product();	
-		$this->currency = new WooCommerce_POS_Currency();
 	}
 
 	/**

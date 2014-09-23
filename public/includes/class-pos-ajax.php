@@ -85,8 +85,15 @@ class WooCommerce_POS_AJAX {
 		// security
 		check_ajax_referer( 'woocommerce-pos', 'security' );
 
-		// get an array of product ids
-		$ids = WC_POS()->product->get_all_ids();
+		$args = array(
+			'post_type' 	=> array('product'),
+			'post_status' 	=> array('publish'),
+			'posts_per_page'=>  -1,
+			'fields'		=> 'ids'
+		);
+
+		$query = new WP_Query( $args );
+		$ids = array_map( 'intval', $query->posts );
 
 		$this->json_headers();
 		echo json_encode( $ids );

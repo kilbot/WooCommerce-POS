@@ -28,64 +28,53 @@ class WooCommerce_POS_Product {
 	public function __construct() {
 
 		// hooks
-		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+		add_filter( 'posts_where', array( $this, 'posts_where' ), 10 , 2 );
 		add_filter( 'woocommerce_api_product_response', array( $this, 'filter_product_response' ), 10, 4 );
 
-	}
+		// server fallback, depreciate asap
+		// add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
 
-	/**
-	 * Get all the product ids 
-	 * @return array
-	 */
-	public function get_all_ids() {
-
-		// get all the ids
-		$args = array(
-			'post_type' 	=> array('product'),
-			'post_status' 	=> array('publish'),
-			'posts_per_page'=>  -1,
-			'fields'		=> 'ids',
-			'meta_query' 	=> array(
-				array(
-					'key' 		=> '_pos_visibility',
-					'value' 	=> 'online_only',
-					'compare'	=> '!='
-				)
-			),
-		);
-
-		$query = new WP_Query( $args );
-		return array_map( 'intval', $query->posts );
 	}
 
 	/**
 	 * Show/hide POS products
-	 * @param  $query 		the wordpress query
 	 */
-	public function pre_get_posts( $query ) {
-		
-		// only alter products
-		if( $query->get('post_type') !== 'product' )
-			return;
+	public function posts_where( $where, $query ) {
+		global $wpdb;
+
+		// only alter product queries
+		if( is_array( $query->get('post_type') ) && !in_array( 'product', $query->get('post_type') ) )
+			return $where;
+
+		if( !is_array( $query->get('post_type') ) && $query->get('post_type') !== 'product' ) 
+			return $where;
 
 		// don't alter product queries in the admin
 		if( is_admin() && !WC_POS()->is_pos ) 
-			return;
+			return $where;
 
+		// hide products
 		if( WC_POS()->is_pos ) {
 			$hide = 'online_only';
 		} else {
 			$hide = 'pos_only';
 		}
 
-		// show/hide POS products
-		$meta_query = $query->get( 'meta_query' );
+		$where .= " AND ID NOT IN (SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_pos_visibility' AND meta_value = '$hide')";
 
-		$meta_query[] =  array(
-			'key' 		=> '_pos_visibility',
-			'value' 	=> $hide,
-			'compare'	=> '!='
-		);
+		return $where;
+
+	}
+
+	/**
+	 * Filter products, server fallback
+	 */
+	public function pre_get_posts( $query ) {
+
+		if( !WC_POS()->is_pos || $query->get('post_type') !== 'product' ) 
+			return;	
+
+		$meta_query = $query->get( 'meta_query' );
 
 		// server filter
 		// TODO: this needs to be replaced by WC API 2.2
@@ -258,3 +247,5 @@ class WooCommerce_POS_Product {
 	}
 
 }
+
+new WooCommerce_POS_Product();
