@@ -32,7 +32,7 @@ class WooCommerce_POS_Product {
 		add_filter( 'woocommerce_api_product_response', array( $this, 'filter_product_response' ), 10, 4 );
 
 		// server fallback, depreciate asap
-		// add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
 
 	}
 
@@ -168,12 +168,9 @@ class WooCommerce_POS_Product {
 			$this->placeholder_img = wc_placeholder_img_src();
 		} 
 
-		// use thumbnails for images or placeholder
-		if( $product_data['featured_src'] ) {
-			$product_data['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $this->thumb_suffix.'$1', $product_data['featured_src']);
-		} else {
-			$product_data['featured_src'] = $this->placeholder_img;
-		}
+		// use thumbnails for images
+		$xpath = new DOMXPath(@DOMDocument::loadHTML($product->get_image()));
+		$product_data['featured_src'] = $xpath->evaluate("string(//img/@src)");
 
 		// if taxable, get the tax_rates array
 		if( $product_data['taxable'] ) {
@@ -200,11 +197,12 @@ class WooCommerce_POS_Product {
 				}
 
 				// add featured_src
-				if( isset( $variation['image'][0]['src'] ) && $variation['image'][0]['src'] != $this->placeholder_img ) {
-					$variation['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $this->thumb_suffix.'$1', $variation['image'][0]['src']);
-				}
-				else {
-					$variation['featured_src'] = $this->placeholder_img;
+				if ( has_post_thumbnail( $variation['id'] ) ) {
+					$image = get_the_post_thumbnail( $variation['id'], 'shop_thumbnail' );
+					$xpath = new DOMXPath(@DOMDocument::loadHTML($image));
+					$variation['featured_src'] = $xpath->evaluate("string(//img/@src)");
+				} else {
+					$variation['featured_src'] = $product_data['featured_src'];
 				}
 
 				// add special key for barcode, defaults to sku

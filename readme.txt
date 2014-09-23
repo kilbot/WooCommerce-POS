@@ -83,18 +83,25 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.3.3 =
+* TODO: Multi-stores
+* TODO: store widgets and shortcodes
+* TODO: hotkeys
+* TODO: custom receipts
 * TODO: add Cash and Card to order drop down
 * TODO: custom barcode field
 * TODO: fix customer serach for network blogs
 * TODO: coupons?
-* TODO: change way database is deleted
+* Improved: clearing local database improved for large stores
+* Improved: product thumbnails, support for non-cropped thumbs
 * TODO: fix product attribute display
 * TODO: https support
-* TODO: Safari variations broken?
 * TODO: non variable attributes??
 * TODO: WooCommerce 2.2 compatibility order status
 * TODO: check email template, customer name
+* TODO: check stock reduction
 * Fix: bug effecting default customer setting
+* Fix: POS Only products improved, fixes 404 errors on imported products
+* Fix: IndexedDB now available on Safari 7.1, compatibility update to db
 
 = 0.3.2 =
 * Urgent Fix: POS bug causing problems with product display on some websites, eg: featured products

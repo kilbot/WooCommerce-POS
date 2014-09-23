@@ -8,7 +8,7 @@ define(['app', 'indexeddb'], function(POS){
 			nolog: true,
 			migrations : [
 				{
-					version: '1',
+					version: '3',
 					// before: function(next) {
 					// 	next();
 					// },
@@ -18,19 +18,6 @@ define(['app', 'indexeddb'], function(POS){
 						if( !transaction.db.objectStoreNames.contains( 'products' ) ){
 							store = transaction.db.createObjectStore( 'products', { keyPath: 'id' } );
 						}
-						store.createIndex( 'titleIndex', 'title', { unique: false } );
-						next();
-					}
-				}, {
-					version: '2',
-					// before: function(next) {
-					// 	next();
-					// },
-					migrate: function(transaction, next) {
-
-						// force refresh product database
-						transaction.db.deleteObjectStore( 'products' );
-						var products = transaction.db.createObjectStore( 'products', { keyPath: 'id' } );
 						next();
 					}
 				}
