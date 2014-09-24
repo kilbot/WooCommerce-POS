@@ -216,9 +216,6 @@ class WooCommerce_POS_Admin {
 
 		// set the auto redirection on next page load
 		set_transient( 'woocommere_pos_welcome', 1, 30 );
-
-		// check _pos_visibility on upgrade
-		self::pos_visibility_check();
 	}
 
 	/**
