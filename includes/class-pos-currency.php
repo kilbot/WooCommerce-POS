@@ -57,7 +57,7 @@ class WooCommerce_POS_Currency {
 			// Swiss Franc
 			'CHF' => array(
 				'coins' => array(0.05, 0.1, 0.2, 0.5, 1, 2, 5),
-				'notes' => array(10, 20, 50, 100, 200, 500, 1,00)
+				'notes' => array(10, 20, 50, 100, 200, 500, 1000)
 			),
 			
 			// Chilean Peso
@@ -87,7 +87,7 @@ class WooCommerce_POS_Currency {
 			// Danish Krone
 			'DKK' => array(
 				'coins' => array(0.25, 0.5, 1, 2, 5, 10, 20),
-				'notes' => array(50, 100, 200, 500, 1,000)
+				'notes' => array(50, 100, 200, 500, 1000)
 			),
 			
 			// Dominican Peso

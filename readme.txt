@@ -99,6 +99,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * TODO: WooCommerce 2.2 compatibility order status
 * TODO: check email template, customer name
 * TODO: check stock reduction
+* TODO: percentage bug
 * Fix: bug effecting default customer setting
 * Fix: POS Only products improved, fixes 404 errors on imported products
 * Fix: IndexedDB now available on Safari 7.1, compatibility update to db
