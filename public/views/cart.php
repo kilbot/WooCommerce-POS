@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Template for the cart
  */
@@ -104,19 +104,20 @@
 <script type="text/x-handlebars-template" id="tmpl-cart-customer">
 	<?php _e( 'Customer', 'woocommerce-pos' ); ?>:
 	<input type="hidden" id="select-customer" class="select2" style="width:200px" value="{{ customer_id }}" data-customer="{{ customer_name }}" data-nonce="<?= wp_create_nonce( 'json-search-customers' ) ?>">
+  <BR>OR <form class="form-inline"><?php _e( 'Add new', 'woocommerce-pos' ); ?>: <input type="text" id="add-customer-name" class="form-control" placeholder="Name"><input type="email" id="add-customer-email" class="form-control" placeholder="Email"><a class="btn btn-primary action-add-customer" href="#" id="add-customer"><?php _e( 'Add', 'woocommerce-pos' ); ?></a></form>
 </script>
 
 <script type="text/template" id="tmpl-cart-actions">
 	<button class="btn btn-danger action-void pull-left">
-		<?php _e( 'Void', 'woocommerce-pos' ); ?> 
+		<?php _e( 'Void', 'woocommerce-pos' ); ?>
 	</button>
 	<button class="btn btn-primary action-note">
-		<?php _e( 'Note', 'woocommerce-pos' ); ?> 
+		<?php _e( 'Note', 'woocommerce-pos' ); ?>
 	</button>
 	<button class="btn btn-primary action-discount">
-		<?php _e( 'Discount', 'woocommerce-pos' ); ?> 
+		<?php _e( 'Discount', 'woocommerce-pos' ); ?>
 	</button>
 	<button type="submit" class="btn btn-success action-checkout">
-		<?php _e( 'Checkout', 'woocommerce-pos' ); ?> 
+		<?php _e( 'Checkout', 'woocommerce-pos' ); ?>
 	</button>
 </script>

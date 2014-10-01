@@ -5,7 +5,7 @@
  *
  * Handles the ajax
  * Borrows heavily from WooCommerce, hopefully can be replaced by WC API in time
- * 
+ *
  * @class 	  WooCommerce_POS_AJAX
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
@@ -27,7 +27,9 @@ class WooCommerce_POS_AJAX {
 			'json_search_customers'		=> false,
 			'set_product_visibilty' 	=> false,
 			'email_receipt' 			=> false,
-			'get_print_template' 		=> false
+      'email_receipt_now' => false,
+			'get_print_template' 		=> false,
+      'add_customer' => false
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -38,6 +40,62 @@ class WooCommerce_POS_AJAX {
 		}
 	}
 
+  /**
+  * Adds new customer
+  * @return json
+  */
+  public function add_customer() {
+
+    // security
+    check_ajax_referer( 'woocommerce-pos', 'security' );
+    $data = $_POST['data'];
+
+    // make sure we have name and email address
+    if( empty( $data['name'] ) || empty( $data['email'] )) {
+      $this->json_headers();
+      echo json_encode(array('error' => 'Please enter a valid name and email.'));
+      die();
+    }
+
+    // get fields from the request
+    $username = $data['name'];
+    $email = $data['email'];
+
+    // validate email address
+    if(!is_email($email)) {
+      $this->json_headers();
+      echo json_encode(array('error' => "$email is not a valid email address. Please enter a valid email address."));
+      die();
+    }
+
+    // check if user exists
+    if( username_exists($username) != null ) {
+      $this->json_headers();
+      echo json_encode(array('error' => 'That name is already taken.'));
+      die();
+    }
+
+    // create new user
+    $password = wp_generate_password(12, true);
+    $user_id = wp_create_user(
+      $username,
+      $password,
+      $email
+    );
+    $user = new WP_User( $user_id );
+
+    // set user role
+    $user->set_role('customer');
+
+    // email password
+    wp_mail( $email, 'Welcome to POS!', 'Your password is: ' . $password );
+
+
+    $this->json_headers();
+    echo json_encode( $user );
+
+    die();
+  }
 
 	/**
 	 * Process the order
@@ -50,16 +108,16 @@ class WooCommerce_POS_AJAX {
 		check_ajax_referer( 'woocommerce-pos', 'security' );
 
 		// if there is no cart, there is nothing to process!
-		if( empty( $_REQUEST['line_items'] ) ) 
+		if( empty( $_REQUEST['line_items'] ) )
 			wp_die('There are no cart items');
 
-		// create order 
+		// create order
 		WC_POS()->is_pos = true;
 		$response = WC_POS()->checkout->create_order();
 
 		$this->json_headers();
 		echo json_encode( $response );
-		
+
 		die();
 	}
 
@@ -70,6 +128,19 @@ class WooCommerce_POS_AJAX {
 
 		// update order with email
 		$response = WC_POS()->checkout->email_receipt();
+
+		$this->json_headers();
+		echo json_encode( $response );
+		die();
+	}
+
+	public function email_receipt_now() {
+
+		// security
+		check_ajax_referer( 'woocommerce-pos', 'security' );
+
+		// update order with email
+		$response = WC_POS()->checkout->email_receipt_now();
 
 		$this->json_headers();
 		echo json_encode( $response );
@@ -98,7 +169,7 @@ class WooCommerce_POS_AJAX {
 		// security
 		check_ajax_referer( 'woocommerce-pos', 'security' );
 
-		if( isset( $_REQUEST['data']) ) 
+		if( isset( $_REQUEST['data']) )
 			extract( $_REQUEST['data'] );
 
 		include_once( dirname(__FILE__) . '/../views/modal/' . $_REQUEST['template'] . '.php' );
@@ -125,7 +196,7 @@ class WooCommerce_POS_AJAX {
 	 * with a few changes to display more info
 	 */
 	public function json_search_customers() {
-		
+
 		// security
 		check_ajax_referer( 'json-search-customers', 'security' );
 
@@ -142,7 +213,7 @@ class WooCommerce_POS_AJAX {
 			$default = new WP_User(0);
 
 			// $default->first_name = __( 'Guest', 'woocommerce-pos' );
-			// 
+			//
 			// using init() because __set throws a warning if WP_DEBUG true
 			$data = array(
 				'ID' 			=> 0,
@@ -152,7 +223,7 @@ class WooCommerce_POS_AJAX {
 		}
 
 		add_action( 'pre_user_query', array( __CLASS__, 'json_search_customer_name' ) );
-		
+
 		// query the users table
 		$customers_query = new WP_User_Query( apply_filters( 'woocommerce_pos_json_search_customers_query', array(
 			'fields'         => 'all',
@@ -165,7 +236,7 @@ class WooCommerce_POS_AJAX {
 
 		// merge the two results
 		$customers = $customers_query->get_results();
-		
+
 		// add the default customer to the results
 		array_unshift( $customers, $default );
 
@@ -205,7 +276,7 @@ class WooCommerce_POS_AJAX {
 	 */
 	public function set_product_visibilty() {
 
-		if( !isset( $_REQUEST['post_id'] ) ) 
+		if( !isset( $_REQUEST['post_id'] ) )
 			wp_die('Product ID required');
 
 		// security
@@ -224,7 +295,7 @@ class WooCommerce_POS_AJAX {
 		}
 		else {
 			wp_die('Failed to update post meta table');
-		}	
+		}
 
 		$this->json_headers();
 		echo json_encode( $response );

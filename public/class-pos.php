@@ -2,7 +2,7 @@
 
 /**
  * The main POS Class
- * 
+ *
  * @class 	  WooCommerce_POS
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
@@ -43,7 +43,7 @@ class WooCommerce_POS {
 	public $checkout = null;
 
 	/** @var object WooCommerce_POS_Currency */
-	public $currency = null;	
+	public $currency = null;
 
 	/** @var cache logged in user id */
 	private $logged_in_user = false;
@@ -57,7 +57,7 @@ class WooCommerce_POS {
 		// set is_pos flag for AJAX, API requests
 		if( isset( $_REQUEST['pos'] ) && $_REQUEST['pos'] == 1 )
 			$this->is_pos = true;
-		
+
 		// settings
 		$this->wc_api_url = home_url('/wc-api/v1/', 'relative');
 
@@ -137,7 +137,7 @@ class WooCommerce_POS {
 	 */
 	public function init() {
 		global $current_user;
-		
+
 		// get and set current user for api auth
 		if ( isset( $current_user ) && ( $current_user instanceof WP_User ) && $current_user->ID != 0 )
 			$this->logged_in_user = $current_user;
@@ -184,7 +184,7 @@ class WooCommerce_POS {
 			$this->template = isset( $wp->query_vars['pos_template'] ) ? $wp->query_vars['pos_template'] : 'main';
 		}
 	}
-	
+
 	/**
 	 * Filter that inserts the custom_page variable into $wp_query
 	 * @param  array $public_query_vars
@@ -201,7 +201,7 @@ class WooCommerce_POS {
 	 */
 	public function template_redirect() {
 		// bail if not pos
-		if( !$this->is_pos ) 
+		if( !$this->is_pos )
 			return;
 
 		// set up $current_user for use in includes
@@ -220,10 +220,10 @@ class WooCommerce_POS {
 			// else: default to main page
 			else {
 				include_once( 'views/pos.php' );
-			}			
+			}
 			exit;
 
-		// insufficient privileges 
+		// insufficient privileges
 		} elseif ( is_user_logged_in() && !current_user_can('manage_woocommerce_pos') ) {
 			wp_die( __('You do not have sufficient permissions to access this page.') );
 
@@ -244,7 +244,7 @@ class WooCommerce_POS {
 			if( !user_can( $user->ID, 'manage_woocommerce_pos' ) ) {
 				$user = new WP_Error( 'woocommerce_pos_authentication_error', __( 'User not authorized to manage WooCommerce POS', 'woocommerce-pos' ), array( 'code' => 500 ) );
 			}
-		} 
+		}
 
 		return $user;
 	}

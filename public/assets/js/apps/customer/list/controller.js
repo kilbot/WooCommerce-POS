@@ -11,6 +11,10 @@ define(['app', 'apps/customer/list/view'], function(POS, View){
 			getCartComponent: function(options) {
 				var view = new View.CartComponent(options);
 				return view;
+			},
+			getUserComponent: function(options) {
+				var view = new View.UserComponent(options);
+				return view;
 			}
 
 		});
