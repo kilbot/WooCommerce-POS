@@ -2,9 +2,9 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce POS 0.3.2\n"
+"Project-Id-Version: WooCommerce POS 0.3.3\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-10-11 05:57:48+00:00\n"
+"POT-Creation-Date: 2014-10-11 07:51:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,39 +13,47 @@ msgstr ""
 "Language-Team: Team Name <team@example.com>\n"
 "X-Generator: grunt-wp-i18n 0.4.8\n"
 
-#: admin/class-pos-admin.php:276
+#: admin/class-pos-admin.php:274
 msgid ""
 "<strong>WooCommerce POS</strong> requires <a "
 "href=\"http://wordpress.org/plugins/woocommerce/\">WooCommerce</a>. Please "
 "install and activate WooCommerce before activating WooCommerce POS."
 msgstr ""
 
-#: admin/class-pos-admin.php:292
+#: admin/class-pos-admin.php:290
 msgid ""
 "<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks "
 "to work correctly. Please enable <a href=\"%s\">permalinks</a>."
 msgstr ""
 
-#: admin/class-pos-admin.php:431 admin/class-pos-admin.php:432
-#: admin/class-pos-admin.php:458 admin/includes/class-pos-admin-hooks.php:120
+#: admin/class-pos-admin.php:309
+msgid ""
+"WooCommerce 2.2 changed the way order statuses are handled which the "
+"display of POS orders in the admin. Please update any orders with status "
+"<em>published</em> to the correct status (eg: <em>completed</em>). <a "
+"class=\"button-primary\" href=\"%s\">Check your POS orders</a>"
+msgstr ""
+
+#: admin/class-pos-admin.php:414 admin/class-pos-admin.php:415
+#: admin/class-pos-admin.php:441 admin/includes/class-pos-admin-hooks.php:120
 #: admin/includes/settings/class-settings-checkout.php:260
 #: public/views/footer.php:11
 msgid "POS"
 msgstr ""
 
-#: admin/class-pos-admin.php:442 admin/class-pos-admin.php:443
-#: admin/class-pos-admin.php:508
+#: admin/class-pos-admin.php:425 admin/class-pos-admin.php:426
+#: admin/class-pos-admin.php:491
 #: admin/includes/settings/class-settings-checkout.php:160
 #: admin/includes/settings/class-settings-checkout.php:164
 msgid "Settings"
 msgstr ""
 
-#: admin/class-pos-admin.php:449
+#: admin/class-pos-admin.php:432
 #: admin/includes/settings/class-settings-checkout.php:281
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: admin/class-pos-admin.php:450 admin/class-pos-admin.php:509
+#: admin/class-pos-admin.php:433 admin/class-pos-admin.php:492
 msgid "View POS"
 msgstr ""
 
@@ -168,7 +176,7 @@ msgid "The default customer for POS orders, eg: Guest or create a new customer."
 msgstr ""
 
 #: admin/includes/settings/class-settings-general.php:85
-#: public/includes/class-pos-ajax.php:149
+#: public/includes/class-pos-ajax.php:156
 #: public/includes/pos-template-hooks.php:70
 msgid "Guest"
 msgstr ""
@@ -301,23 +309,23 @@ msgstr ""
 msgid "Order &ndash; %s"
 msgstr ""
 
-#: public/includes/class-pos-checkout.php:245
-#: public/includes/class-pos-checkout.php:248
+#: public/includes/class-pos-checkout.php:249
+#: public/includes/class-pos-checkout.php:252
 msgid ""
 "You are now being redirected offsite to complete the payment.<br><a "
 "target=\"_blank\" href=\"%s\" data-redirect=\"true\">Click here</a> if you "
 "are not redirected automatically."
 msgstr ""
 
-#: public/includes/class-pos-checkout.php:284
+#: public/includes/class-pos-checkout.php:288
 msgid "There was an error processing the payment"
 msgstr ""
 
-#: public/includes/class-pos-checkout.php:374
+#: public/includes/class-pos-checkout.php:378
 msgid "Email sent"
 msgstr ""
 
-#: public/includes/class-pos-checkout.php:379
+#: public/includes/class-pos-checkout.php:383
 msgid "There was an error sending the email"
 msgstr ""
 
