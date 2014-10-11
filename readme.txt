@@ -83,8 +83,9 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.3.3 =
-
+* Fix: IndexedDB now available on Safari 7.1, compatibility update to db
 * Fix: bug effecting default customer setting
+* Improved: clearing local database improved for large stores
 
 = 0.3.2 =
 * Urgent Fix: POS bug causing problems with product display on some websites, eg: featured products
