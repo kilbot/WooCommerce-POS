@@ -60,7 +60,7 @@ class WooCommerce_POS_Product {
 			$hide = 'pos_only';
 		}
 
-		$where .= " AND ID NOT IN (SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_pos_visibility' AND meta_value = '$hide')";
+		$where .= " AND {$wpdb->posts}.ID NOT IN (SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_pos_visibility' AND meta_value = '$hide')";
 
 		return $where;
 
