@@ -4,48 +4,48 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.3.2\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-09-02 03:57:52+00:00\n"
+"POT-Creation-Date: 2014-10-11 03:44:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Team Name <team@example.com>\n"
-"X-Generator: grunt-wp-i18n 0.4.7\n"
+"X-Generator: grunt-wp-i18n 0.4.8\n"
 
-#: admin/class-pos-admin.php:272
+#: admin/class-pos-admin.php:276
 msgid ""
 "<strong>WooCommerce POS</strong> requires <a "
 "href=\"http://wordpress.org/plugins/woocommerce/\">WooCommerce</a>. Please "
 "install and activate WooCommerce before activating WooCommerce POS."
 msgstr ""
 
-#: admin/class-pos-admin.php:288
+#: admin/class-pos-admin.php:292
 msgid ""
 "<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks "
 "to work correctly. Please enable <a href=\"%s\">permalinks</a>."
 msgstr ""
 
-#: admin/class-pos-admin.php:427 admin/class-pos-admin.php:428
-#: admin/class-pos-admin.php:454 admin/includes/class-pos-admin-hooks.php:120
+#: admin/class-pos-admin.php:431 admin/class-pos-admin.php:432
+#: admin/class-pos-admin.php:458 admin/includes/class-pos-admin-hooks.php:120
 #: admin/includes/settings/class-settings-checkout.php:260
 #: public/views/footer.php:11
 msgid "POS"
 msgstr ""
 
-#: admin/class-pos-admin.php:438 admin/class-pos-admin.php:439
-#: admin/class-pos-admin.php:504
+#: admin/class-pos-admin.php:442 admin/class-pos-admin.php:443
+#: admin/class-pos-admin.php:508
 #: admin/includes/settings/class-settings-checkout.php:160
 #: admin/includes/settings/class-settings-checkout.php:164
 msgid "Settings"
 msgstr ""
 
-#: admin/class-pos-admin.php:445
+#: admin/class-pos-admin.php:449
 #: admin/includes/settings/class-settings-checkout.php:281
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: admin/class-pos-admin.php:446 admin/class-pos-admin.php:505
+#: admin/class-pos-admin.php:450 admin/class-pos-admin.php:509
 msgid "View POS"
 msgstr ""
 
@@ -168,7 +168,7 @@ msgid "The default customer for POS orders, eg: Guest or create a new customer."
 msgstr ""
 
 #: admin/includes/settings/class-settings-general.php:85
-#: public/includes/class-pos-ajax.php:152
+#: public/includes/class-pos-ajax.php:149
 #: public/includes/pos-template-hooks.php:70
 msgid "Guest"
 msgstr ""
@@ -618,7 +618,11 @@ msgstr ""
 msgid "Telephone"
 msgstr ""
 
-#: public/views/products.php:24
+#: public/views/products.php:19
+msgid "Search"
+msgstr ""
+
+#: public/views/products.php:20 public/views/products.php:24
 msgid "Scan Barcode"
 msgstr ""
 
@@ -723,7 +727,10 @@ msgid "https://woopos.com.au"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "A simple front-end for taking WooCommerce orders at the Point of Sale."
+msgid ""
+"A simple front-end for taking WooCommerce orders at the Point of Sale. "
+"Requires <a "
+"href=\"http://wordpress.org/plugins/woocommerce/\">WooCommerce</a>."
 msgstr ""
 
 #. Author of the plugin/theme
