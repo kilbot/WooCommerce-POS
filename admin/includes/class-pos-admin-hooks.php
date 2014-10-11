@@ -132,9 +132,13 @@ class WooCommerce_POS_Admin_Hooks {
 			JOIN $wpdb->posts p ON (p.ID = pm.post_id)
 			WHERE ";
 			$sql .= $key == 'no' ? " pm.post_id NOT IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_pos' ) "  : " pm.meta_key = '_pos' AND pm.meta_value = '1' ";
-			$sql .= "AND p.post_type = 'shop_order'
-			AND p.post_status = 'publish'
-			";
+
+			if( version_compare( WC()->version, '2.2.0' ) >= 0 ) {
+				$sql .= "AND p.post_type = 'shop_order'";
+			} else {
+				$sql .= "AND p.post_type = 'shop_order' AND p.post_status = 'publish'";
+			}
+
 			$count = $wpdb->get_var($sql);
 
 			$class 			= ( isset( $_GET['pos_order'] ) && $_GET['pos_order'] == $key ) ? 'current' : '';

@@ -52,6 +52,10 @@ class WooCommerce_POS_Checkout {
 			'post_password'	=> uniqid( 'order_' )	// Protects the post just in case
 		) );
 
+		if( version_compare( WC()->version, '2.2.0' ) >= 0 ) {
+			$order_data['post_status'] = 'wc-pending';
+		}
+
 		$order_id = wp_insert_post( $order_data, true );
 
 		// set customer details

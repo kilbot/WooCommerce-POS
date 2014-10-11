@@ -301,6 +301,15 @@ class WooCommerce_POS_Admin {
 		// flush rewrite rules on upgrade
 		flush_rewrite_rules( false );
 
+		// if moving to WC v2.2
+		if( version_compare( $old, '0.3.3' ) < 0 && version_compare( WC()->version, '2.2.0' ) >= 0 ) {
+			// alert the user about order-status change
+			$error = array (
+				'msg_type' 	=> 'update-nag',
+				'msg' 		=> sprintf( __('WooCommerce 2.2 changed the way order statuses are handled which the display of POS orders in the admin. Please update any orders with status <em>published</em> to the correct status (eg: <em>completed</em>). <a class="button-primary" href="%s">Check your POS orders</a>', 'woocommerce-pos'), admin_url('edit.php?post_status=publish&post_type=shop_order') )
+			);
+			array_push( $this->notices, $error );
+		}
 	}
 
 	/**

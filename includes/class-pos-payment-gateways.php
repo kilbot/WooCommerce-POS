@@ -66,16 +66,26 @@ class WooCommerce_POS_Payment_Gateways {
 			'POS_Gateway_Card'
 		) );
 
-    	$global_gateways = apply_filters( 'woocommerce_payment_gateways', array(
-    		'WC_Gateway_Paypal',
-    		'WC_Gateway_BACS',
-			'WC_Gateway_Cheque',
-			'WC_Gateway_COD',
-			'WC_Gateway_Mijireh',
-		    'WC_Gateway_Simplify_Commerce'
-    	) );
+		if( version_compare( WC()->version, '2.2.0' ) >= 0 ) {
+			$global_gateways = apply_filters( 'woocommerce_payment_gateways', array(
+				'WC_Gateway_Paypal',
+				'WC_Gateway_BACS',
+				'WC_Gateway_Cheque',
+				'WC_Gateway_COD',
+				'WC_Gateway_Mijireh',
+				'WC_Gateway_Simplify_Commerce'
+			) );
+		} else {
+			$global_gateways = apply_filters( 'woocommerce_payment_gateways', array(
+				'WC_Gateway_Paypal',
+				'WC_Gateway_BACS',
+				'WC_Gateway_Cheque',
+				'WC_Gateway_COD',
+				'WC_Gateway_Mijireh'
+			) );
+		}
 
-    	$this->gateways = array_merge( $pos_only_gateways, $global_gateways );
+		$this->gateways = array_merge( $pos_only_gateways, $global_gateways );
 		$pos_only_gateways[] = $global_gateways[0];
 		$this->available_gateways = $pos_only_gateways;
 	}
