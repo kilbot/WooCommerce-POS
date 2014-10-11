@@ -4,7 +4,7 @@
  * Product Class
  *
  * Handles the products
- * 
+ *
  * @class 	  WooCommerce_POS_Product
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
@@ -28,97 +28,86 @@ class WooCommerce_POS_Product {
 	public function __construct() {
 
 		// hooks
-		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+		add_filter( 'posts_where', array( $this, 'posts_where' ), 10 , 2 );
 		add_filter( 'woocommerce_api_product_response', array( $this, 'filter_product_response' ), 10, 4 );
 
-	}
+		// server fallback, depreciate asap
+		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
 
-	/**
-	 * Get all the product ids 
-	 * @return array
-	 */
-	public function get_all_ids() {
-
-		// get all the ids
-		$args = array(
-			'post_type' 	=> array('product'),
-			'post_status' 	=> array('publish'),
-			'posts_per_page'=>  -1,
-			'fields'		=> 'ids',
-			'meta_query' 	=> array(
-				array(
-					'key' 		=> '_pos_visibility',
-					'value' 	=> 'online_only',
-					'compare'	=> '!='
-				)
-			),
-		);
-
-		$query = new WP_Query( $args );
-		return array_map( 'intval', $query->posts );
 	}
 
 	/**
 	 * Show/hide POS products
-	 * @param  $query 		the wordpress query
 	 */
-	public function pre_get_posts( $query ) {
-		
-		// only alter products
-		if( $query->get('post_type') !== 'product' )
-			return;
+	public function posts_where( $where, $query ) {
+		global $wpdb;
+
+		// only alter product queries
+		if( is_array( $query->get('post_type') ) && !in_array( 'product', $query->get('post_type') ) )
+			return $where;
+
+		if( !is_array( $query->get('post_type') ) && $query->get('post_type') !== 'product' )
+			return $where;
 
 		// don't alter product queries in the admin
-		if( is_admin() && !WC_POS()->is_pos ) 
-			return;
+		if( is_admin() && !WC_POS()->is_pos )
+			return $where;
 
+		// hide products
 		if( WC_POS()->is_pos ) {
 			$hide = 'online_only';
 		} else {
 			$hide = 'pos_only';
 		}
 
-		// show/hide POS products
-		$meta_query = $query->get( 'meta_query' );
+		$where .= " AND ID NOT IN (SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_pos_visibility' AND meta_value = '$hide')";
 
-		$meta_query[] =  array(
-			'key' 		=> '_pos_visibility',
-			'value' 	=> $hide,
-			'compare'	=> '!='
-		);
+		return $where;
+
+	}
+
+	/**
+	 * Filter products, server fallback
+	 */
+	public function pre_get_posts( $query ) {
+
+		if( !WC_POS()->is_pos || $query->get('post_type') !== 'product' )
+			return;
+
+		$meta_query = $query->get( 'meta_query' );
 
 		// server filter
 		// TODO: this needs to be replaced by WC API 2.2
-        if( isset( $_GET['filter'] ) ) {
-        
-        	// barcode 
-        	if( array_key_exists( 'barcode', $_GET['filter'] ) ) {
-		  		$meta_query[] = array(
+		if( isset( $_GET['filter'] ) ) {
+
+			// barcode
+			if( array_key_exists( 'barcode', $_GET['filter'] ) ) {
+				$meta_query[] = array(
 					'key' 		=> '_sku',
 					'value' 	=> $_GET['filter']['barcode'],
 					'compare'	=> '='
 				);
 				$query->set( 'post_type', array('product', 'product_variation' ) );
-        	}
+			}
 
-        	// variations
-        	if( array_key_exists( 'parent', $_GET['filter'] ) ) {
-        		$query->set( 'post_type', 'product_variation' );
-        		$query->set( 'post_parent', $_GET['filter']['parent'] );
-        	}
+			// variations
+			if( array_key_exists( 'parent', $_GET['filter'] ) ) {
+				$query->set( 'post_type', 'product_variation' );
+				$query->set( 'post_parent', $_GET['filter']['parent'] );
+			}
 
-        	// featured
+			// featured
 			if( array_key_exists( 'featured', $_GET['filter'] ) && $_GET['filter']['featured'] ) {
-		  		$meta_query[] = array(
+				$meta_query[] = array(
 					'key' 		=> '_featured',
 					'value' 	=> 'yes',
 					'compare'	=> '='
 				);
-        	}
-        }
+			}
+		}
 
-        // update the meta_query
-        $query->set( 'meta_query', $meta_query );
+		// update the meta_query
+		$query->set( 'meta_query', $meta_query );
 
 	}
 
@@ -145,7 +134,7 @@ class WooCommerce_POS_Product {
 			'average_rating',
 			'cross_sell_ids',
 			'description',
-			'dimensions', 
+			'dimensions',
 			'download_expiry',
 			'download_limit',
 			'download_type',
@@ -177,14 +166,11 @@ class WooCommerce_POS_Product {
 		// set placeholder
 		if( $this->placeholder_img === null ) {
 			$this->placeholder_img = wc_placeholder_img_src();
-		} 
-
-		// use thumbnails for images or placeholder
-		if( $product_data['featured_src'] ) {
-			$product_data['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $this->thumb_suffix.'$1', $product_data['featured_src']);
-		} else {
-			$product_data['featured_src'] = $this->placeholder_img;
 		}
+
+		// use thumbnails for images
+		$xpath = new DOMXPath(@DOMDocument::loadHTML($product->get_image()));
+		$product_data['featured_src'] = $xpath->evaluate("string(//img/@src)");
 
 		// if taxable, get the tax_rates array
 		if( $product_data['taxable'] ) {
@@ -211,11 +197,12 @@ class WooCommerce_POS_Product {
 				}
 
 				// add featured_src
-				if( isset( $variation['image'][0]['src'] ) && $variation['image'][0]['src'] != $this->placeholder_img ) {
-					$variation['featured_src'] = preg_replace('/(\.gif|\.jpg|\.png)/', $this->thumb_suffix.'$1', $variation['image'][0]['src']);
-				}
-				else {
-					$variation['featured_src'] = $this->placeholder_img;
+				if ( has_post_thumbnail( $variation['id'] ) ) {
+					$image = get_the_post_thumbnail( $variation['id'], 'shop_thumbnail' );
+					$xpath = new DOMXPath(@DOMDocument::loadHTML($image));
+					$variation['featured_src'] = $xpath->evaluate("string(//img/@src)");
+				} else {
+					$variation['featured_src'] = $product_data['featured_src'];
 				}
 
 				// add special key for barcode, defaults to sku
@@ -239,7 +226,7 @@ class WooCommerce_POS_Product {
 
 		if( isset($this->tax_rates[$tax_class]) ) {
 			return $this->tax_rates[$tax_class];
-		} 
+		}
 
 		else {
 			$tax = new WC_Tax();
@@ -258,3 +245,5 @@ class WooCommerce_POS_Product {
 	}
 
 }
+
+new WooCommerce_POS_Product();

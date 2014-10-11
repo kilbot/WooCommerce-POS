@@ -5,7 +5,7 @@
  *
  * Handles the ajax
  * Borrows heavily from WooCommerce, hopefully can be replaced by WC API in time
- * 
+ *
  * @class 	  WooCommerce_POS_AJAX
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
@@ -50,7 +50,7 @@ class WooCommerce_POS_AJAX {
 		check_ajax_referer( 'woocommerce-pos', 'security' );
 
 		// if there is no cart, there is nothing to process!
-		if( empty( $_REQUEST['line_items'] ) ) 
+		if( empty( $_REQUEST['line_items'] ) )
 			wp_die('There are no cart items');
 
 		// create order 
@@ -59,7 +59,7 @@ class WooCommerce_POS_AJAX {
 
 		$this->json_headers();
 		echo json_encode( $response );
-		
+
 		die();
 	}
 
@@ -85,8 +85,15 @@ class WooCommerce_POS_AJAX {
 		// security
 		check_ajax_referer( 'woocommerce-pos', 'security' );
 
-		// get an array of product ids
-		$ids = WC_POS()->product->get_all_ids();
+		$args = array(
+			'post_type' 	=> array('product'),
+			'post_status' 	=> array('publish'),
+			'posts_per_page'=>  -1,
+			'fields'		=> 'ids'
+		);
+
+		$query = new WP_Query( $args );
+		$ids = array_map( 'intval', $query->posts );
 
 		$this->json_headers();
 		echo json_encode( $ids );
@@ -98,7 +105,7 @@ class WooCommerce_POS_AJAX {
 		// security
 		check_ajax_referer( 'woocommerce-pos', 'security' );
 
-		if( isset( $_REQUEST['data']) ) 
+		if( isset( $_REQUEST['data']) )
 			extract( $_REQUEST['data'] );
 
 		include_once( dirname(__FILE__) . '/../views/modal/' . $_REQUEST['template'] . '.php' );
@@ -125,7 +132,7 @@ class WooCommerce_POS_AJAX {
 	 * with a few changes to display more info
 	 */
 	public function json_search_customers() {
-		
+
 		// security
 		check_ajax_referer( 'json-search-customers', 'security' );
 
@@ -152,7 +159,7 @@ class WooCommerce_POS_AJAX {
 		}
 
 		add_action( 'pre_user_query', array( __CLASS__, 'json_search_customer_name' ) );
-		
+
 		// query the users table
 		$customers_query = new WP_User_Query( apply_filters( 'woocommerce_pos_json_search_customers_query', array(
 			'fields'         => 'all',
@@ -165,7 +172,7 @@ class WooCommerce_POS_AJAX {
 
 		// merge the two results
 		$customers = $customers_query->get_results();
-		
+
 		// add the default customer to the results
 		array_unshift( $customers, $default );
 
@@ -205,7 +212,7 @@ class WooCommerce_POS_AJAX {
 	 */
 	public function set_product_visibilty() {
 
-		if( !isset( $_REQUEST['post_id'] ) ) 
+		if( !isset( $_REQUEST['post_id'] ) )
 			wp_die('Product ID required');
 
 		// security
@@ -224,7 +231,7 @@ class WooCommerce_POS_AJAX {
 		}
 		else {
 			wp_die('Failed to update post meta table');
-		}	
+		}
 
 		$this->json_headers();
 		echo json_encode( $response );
