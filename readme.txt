@@ -86,6 +86,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: POS Only products improved, fixes 404 errors on imported products
 * Fix: IndexedDB now available on Safari 7.1, compatibility update to db
 * Fix: bug effecting default customer setting
+* Fix: added support for Simplify Commerce by Mastercard
 * Improved: product thumbnails, support for non-cropped thumbs
 * Improved: clearing local database improved for large stores
 

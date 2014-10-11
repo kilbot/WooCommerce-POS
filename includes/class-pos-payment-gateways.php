@@ -71,7 +71,8 @@ class WooCommerce_POS_Payment_Gateways {
     		'WC_Gateway_BACS',
 			'WC_Gateway_Cheque',
 			'WC_Gateway_COD',
-			'WC_Gateway_Mijireh'
+			'WC_Gateway_Mijireh',
+		    'WC_Gateway_Simplify_Commerce'
     	) );
 
     	$this->gateways = array_merge( $pos_only_gateways, $global_gateways );

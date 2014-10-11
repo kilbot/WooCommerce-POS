@@ -216,7 +216,7 @@ class WooCommerce_POS_Admin {
 
 		// set the auto redirection on next page load
 		set_transient( 'woocommere_pos_welcome', 1, 30 );
-		
+
 	}
 
 	/**
