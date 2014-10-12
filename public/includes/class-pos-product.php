@@ -28,7 +28,7 @@ class WooCommerce_POS_Product {
 	public function __construct() {
 
 		// hooks
-		add_filter( 'posts_where', array( $this, 'posts_where' ), 10 , 2 );
+		add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
 		add_filter( 'woocommerce_api_product_response', array( $this, 'filter_product_response' ), 10, 4 );
 
 		// server fallback, depreciate asap
@@ -42,11 +42,19 @@ class WooCommerce_POS_Product {
 	public function posts_where( $where, $query ) {
 		global $wpdb;
 
-		// only alter product queries
-		if( is_array( $query->get('post_type') ) && !in_array( 'product', $query->get('post_type') ) )
-			return $where;
+		// check for post_type = product
+		// post_type could be part of an array
+		if( is_array( $query->get('post_type') ) ) {
+			$product_query = in_array( 'product', $query->get('post_type') );
+		} else {
+			$product_query = $query->get('post_type') == 'product';
+		}
 
-		if( !is_array( $query->get('post_type') ) && $query->get('post_type') !== 'product' )
+		// only alter product queries
+		if( !$product_query &&
+		    !is_post_type_archive( 'product' ) &&
+		    !is_tax( 'product_cat' ) &&
+		    !is_tax( 'product_tag' ) )
 			return $where;
 
 		// don't alter product queries in the admin
