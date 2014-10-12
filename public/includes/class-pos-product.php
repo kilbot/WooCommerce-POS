@@ -13,12 +13,6 @@
 
 class WooCommerce_POS_Product {
 
-	/** @var string Contains the thumbnail size. */
-	private $thumb_suffix = null;
-
-	/** @var string Contains placeholder image src. */
-	private $placeholder_img = null;
-
 	/** @var array Contains an array of tax rates, by tax class. */
 	private $tax_rates = array();
 
@@ -165,17 +159,6 @@ class WooCommerce_POS_Product {
 			unset($product_data[$key]);
 		}
 
-		// set thumb_suffix
-		if( $this->thumb_suffix === null ) {
-			$thumb_size = get_option( 'shop_thumbnail_image_size', array( 'width' => 90, 'height' => 90 ) );
-			$this->thumb_suffix = '-'.$thumb_size['width'].'x'.$thumb_size['height'];
-		}
-
-		// set placeholder
-		if( $this->placeholder_img === null ) {
-			$this->placeholder_img = wc_placeholder_img_src();
-		}
-
 		// use thumbnails for images
 		$xpath = new DOMXPath(@DOMDocument::loadHTML($product->get_image()));
 		$product_data['featured_src'] = $xpath->evaluate("string(//img/@src)");
@@ -228,7 +211,9 @@ class WooCommerce_POS_Product {
 
 	/**
 	 * [get_tax_rates description]
-	 * @return [type] [description]
+	 *
+	 * @param string $tax_class
+	 * @return array [type] [description]
 	 */
 	public function get_tax_rates( $tax_class = '' ) {
 
