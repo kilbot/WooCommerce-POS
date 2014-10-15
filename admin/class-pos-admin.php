@@ -410,14 +410,14 @@ class WooCommerce_POS_Admin {
 		if( !current_user_can( 'manage_woocommerce_pos' ) )
 			return;
 
-		add_menu_page( 
+		add_menu_page(
 			__( 'POS', 'woocommerce-pos' ),
-			__( 'POS', 'woocommerce-pos' ), 
-			'manage_woocommerce_pos', 
-			$this->plugin_slug, 
-			array( $this, 'display_upgrade_page' ), 
-			null, 
-			56 
+			__( 'POS', 'woocommerce-pos' ),
+			'manage_woocommerce_pos',
+			$this->plugin_slug,
+			array( $this, 'display_upgrade_page' ),
+			null,
+			'55.55'
 		);
 
 		add_submenu_page(

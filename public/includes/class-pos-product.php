@@ -27,11 +27,15 @@ class WooCommerce_POS_Product {
 
 		// server fallback, depreciate asap
 		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
-
 	}
 
 	/**
 	 * Show/hide POS products
+	 *
+	 * @param $where
+	 * @param $query
+	 *
+	 * @return string
 	 */
 	public function posts_where( $where, $query ) {
 		global $wpdb;
@@ -70,6 +74,8 @@ class WooCommerce_POS_Product {
 
 	/**
 	 * Filter products, server fallback
+	 *
+	 * @param $query
 	 */
 	public function pre_get_posts( $query ) {
 
@@ -118,7 +124,10 @@ class WooCommerce_POS_Product {
 	 * - use the thumbnails rather than fullsize
 	 * - add tax rates & barcode field
 	 * - unset unnecessary data
+	 *
 	 * @param  array $product_data
+	 * @param $product
+	 *
 	 * @return array modified data array $product_data
 	 */
 	public function filter_product_response( $product_data, $product, $fields, $server ) {

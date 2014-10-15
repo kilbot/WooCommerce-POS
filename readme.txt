@@ -82,6 +82,10 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.3.4 =
+* Fix: bug affecting woocommerce_api_order_response
+* Improved: POS Only products
+
 = 0.3.3 =
 * Urgent Fix: Compatibility with new order-status introduced in WooCommerce > 2.2
 * Fix: POS Only products improved, fixes 404 errors on imported products
