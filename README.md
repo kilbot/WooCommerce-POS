@@ -17,6 +17,13 @@ Thanks to [Wordpress](http://wordpress.org) and [WooCommerce](http://woothemes.c
 
 ## Changelog ##
 
+### 0.3.4 ###
+* Urgent Fix: performance issue downloading products
+* Fix: potential clash for admin menu position
+* Fix: bug affecting woocommerce_api_order_response
+* Fix: cashback entry on receipt
+* Improved: POS Only products
+
 ### 0.3.3 ###
 * Urgent Fix: Compatibility with new order-status introduced in WooCommerce > 2.2
 * Fix: POS Only products improved, fixes 404 errors on imported products
