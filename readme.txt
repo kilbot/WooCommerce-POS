@@ -83,6 +83,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.3.4 =
+* Fix: potential clash for admin menu position
 * Fix: bug affecting woocommerce_api_order_response
 * Improved: POS Only products
 
