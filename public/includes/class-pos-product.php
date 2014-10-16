@@ -169,8 +169,12 @@ class WooCommerce_POS_Product {
 		}
 
 		// use thumbnails for images
-		$xpath = new DOMXPath(@DOMDocument::loadHTML($product->get_image()));
-		$product_data['featured_src'] = $xpath->evaluate("string(//img/@src)");
+		if( $thumb_id = get_post_thumbnail_id( $product_data['id'] ) ) {
+			$image = wp_get_attachment_image_src( $thumb_id, 'shop_thumbnail' );
+			$product_data['featured_src'] = $image[0];
+		} else {
+			$product_data['featured_src'] = wc_placeholder_img_src();
+		}
 
 		// if taxable, get the tax_rates array
 		if( $product_data['taxable'] ) {
@@ -197,10 +201,9 @@ class WooCommerce_POS_Product {
 				}
 
 				// add featured_src
-				if ( has_post_thumbnail( $variation['id'] ) ) {
-					$image = get_the_post_thumbnail( $variation['id'], 'shop_thumbnail' );
-					$xpath = new DOMXPath(@DOMDocument::loadHTML($image));
-					$variation['featured_src'] = $xpath->evaluate("string(//img/@src)");
+				if( $thumb_id = get_post_thumbnail_id( $variation['id'] ) ) {
+					$image = wp_get_attachment_image_src( $thumb_id, 'shop_thumbnail' );
+					$variation['featured_src'] = $image[0];
 				} else {
 					$variation['featured_src'] = $product_data['featured_src'];
 				}
@@ -247,5 +250,3 @@ class WooCommerce_POS_Product {
 	}
 
 }
-
-new WooCommerce_POS_Product();

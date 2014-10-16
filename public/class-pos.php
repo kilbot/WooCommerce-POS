@@ -43,7 +43,7 @@ class WooCommerce_POS {
 	public $checkout = null;
 
 	/** @var object WooCommerce_POS_Currency */
-	public $currency = null;	
+	public $currency = null;
 
 	/** @var cache logged in user id */
 	private $logged_in_user = false;
