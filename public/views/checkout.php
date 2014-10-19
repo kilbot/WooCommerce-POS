@@ -35,8 +35,21 @@
 					</legend>
 					<div class="form-group">
 						<?php 
-							if( $gateway->has_fields() || $gateway->get_description() ) 
-								$gateway->payment_fields(); 
+							if( $gateway->has_fields() || $gateway->get_description() ) {
+								// remove any javascript
+								ob_start();
+								$gateway->payment_fields();
+								$html = ob_get_contents();
+								ob_end_clean();
+								$doc = new DOMDocument();
+								$doc->loadHTML($html);
+								$script_tags = $doc->getElementsByTagName('script');
+								$length = $script_tags->length;
+								for ($i = 0; $i < $length; $i++) {
+									$script_tags->item($i)->parentNode->removeChild($script_tags->item($i));
+								}
+								echo $doc->saveHTML();
+							}
 						?>
 					</div>
 				</fieldset>
