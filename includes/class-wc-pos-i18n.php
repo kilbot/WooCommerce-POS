@@ -18,22 +18,14 @@ class WC_POS_i18n {
 	 * Constructor
 	 */
 	public function __construct() {
-
 		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
-
 	}
 
 	/**
 	 * Load the plugin text domain for translation.
 	 */
 	public function load_plugin_textdomain() {
-
-		load_plugin_textdomain(
-			'woocommerce-pos',
-			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
-		);
-
+		load_plugin_textdomain( 'woocommerce-pos', false, WC_POS_PLUGIN_PATH . 'languages/' );
 	}
 
 	/**

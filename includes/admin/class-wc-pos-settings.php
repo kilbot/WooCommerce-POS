@@ -1,9 +1,9 @@
 <?php
 
 /**
- * WP Admin Settings Class
+ * WP Settings Class
  *
- * @class    WC_POS_Admin_Settings
+ * @class    WC_POS_Settings
  * @package  WooCommerce POS
  * @author   Paul Kilmurray <paul@kilbot.com.au>
  * @link     http://www.woopos.com.au
@@ -11,12 +11,27 @@
 
 class WC_POS_Admin_Settings {
 
+	private $settings = array();
+
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
+
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+
+		$this->init();
+	}
+
+	/**
+	 * Load settings subclasses
+	 */
+	private function init() {
+		$settings = array();
+		$settings[] = new WC_POS_Admin_Settings_General();
+		$settings[] = new WC_POS_Admin_Settings_Checkout();
+		$this->settings = apply_filters( 'woocommerce_pos_settings_tabs_array', $settings );
 	}
 
 	public function enqueue_admin_styles() {
@@ -49,6 +64,10 @@ class WC_POS_Admin_Settings {
 			true
 		);
 
+	}
+
+	static public function display_settings_page() {
+		echo 'why hello';
 	}
 
 }

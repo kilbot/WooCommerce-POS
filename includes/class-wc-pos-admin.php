@@ -16,17 +16,22 @@ class WC_POS_Admin {
 	 */
 	public function __construct() {
 
-		$this->load_dependencies();
-
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		add_action( 'admin_print_footer_scripts', array( $this, 'admin_print_footer_scripts' ) );
+
+		$this->init();
 	}
 
-	private function load_dependencies() {
+	/**
+	 * Load admin subclasses
+	 */
+	private function init() {
+		new WC_POS_Admin_Menu();    // add menu items
 
-		new WC_POS_Admin_Menu();
-		new WC_POS_Admin_Settings();
+		if( true ) {
+			new WC_POS_Admin_Settings();      // add settings pages
+		}
 	}
 
 	public function enqueue_admin_styles() {

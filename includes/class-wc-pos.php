@@ -11,69 +11,54 @@
 
 class WC_POS {
 
-	/** @var object Instance of this class. */
-	protected static $instance = null;
-
-	public $admin;
-
 	/**
-	 * Protected constructor to prevent creating a new instance of the
-	 * WC_POS via the `new` operator from outside of this class.
+	 *
 	 */
-//	protected function __construct() {
 	public function __construct() {
-
-		$this->plugin_name = 'woocommerce-pos';
 
 		// auto load classes
 		if ( function_exists( 'spl_autoload_register' ) ) {
 			spl_autoload_register( array( $this, 'autoload' ) );
 		}
 
-		$this->load_dependencies();
+		$this->init();
 
 	}
 
 	/**
-	 * Autoload classes prefixed with WC_POS_
+	 * Autoload classes
 	 *
 	 * @param $class
 	 */
 	private function autoload( $class ) {
-
-		// check for WooCommerce_POS_Pro_ prefix
-		$cn = strtolower( $class );
-		$key = preg_replace( '/^wc_pos_/', '', $cn );
-		if( $key == $cn ) return; // ignore non WC_POS_ prefix
-
-		// classes key => path
-		$classes = array(
-			'i18n'      => 'includes/class-wc-pos-i18n.php',
-
-			// admin
-			'admin'         => 'includes/admin/class-wc-pos-admin.php',
-			'admin_menu'    => 'includes/admin/class-wc-pos-admin-menu.php',
-			'admin_settings'=> 'includes/admin/class-wc-pos-admin-settings.php',
-		);
-
-		// require file
-		if ( isset( $classes[ $key ] ) ) {
-			require_once WC_POS_PLUGIN_PATH . $classes[ $key ];
+		$cn = preg_replace( '/^wc_pos_/', '', strtolower( $class ), 1, $count );
+		if( $count ) {
+			$path = explode('_', $cn);
+			$filename = 'class-wc-pos-'. array_pop( $path ) .'.php';
+			array_push( $path, $filename );
+			require_once WC_POS_PLUGIN_PATH . 'includes/' . implode( '/', $path );
 		}
 	}
 
 	/**
-	 * Load the required dependencies for this plugin.
+	 * Load the required resources
 	 */
-	private function load_dependencies() {
+	private function init() {
 
+		// global helper functions
 		require_once WC_POS_PLUGIN_PATH . 'includes/wc-pos-functions.php';
 
-		// internationalization
-		new WC_POS_i18n();
+		new WC_POS_i18n(); // internationalization
 
 		// admin
-		new WC_POS_Admin();
+		if  ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
+			new WC_POS_Admin();
+		}
+
+		// ajax
+		if  ( is_admin() && defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+error_log('pos admin doing ajax');
+		}
 
 	}
 
