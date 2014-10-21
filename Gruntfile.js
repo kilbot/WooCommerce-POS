@@ -100,6 +100,27 @@ module.exports = function(grunt) {
 
         // minify js
         uglify: {
+            core: {
+              files: {
+                  'assets/js/core.min.js': [
+
+                      // marionette core (uses Backbone.Radio)
+                      'bower_components/backbone.radio/build/backbone.radio.js',
+                      'bower_components/backbone.babysitter/lib/backbone.babysitter.js',
+                      'bower_components/marionette/lib/core/backbone.marionette.js',
+                      'assets/js/src/lib/utilities/radio.shim.js'
+                  ]
+              }
+            },
+            settings: {
+                files: {
+                    'assets/js/settings_app.min.js': [
+                        'assets/js/src/apps/settings/settings_app.js',
+                        'assets/js/src/apps/settings/admin/controller.js',
+                        'assets/js/src/apps/settings/admin/view.js',
+                    ]
+                }
+            },
             pos: {
                 files: {
                     'assets/js/worker.min.js' : 'assets/js/src/worker.js',
@@ -112,7 +133,7 @@ module.exports = function(grunt) {
             },
             admin: {
                 files: {
-                    'assets/js/admin.min.js': 'assets/js/src/admin.js',
+                    'assets/js/admin_app.min.js': 'assets/js/src/admin_app.js',
                     'assets/js/products.min.js': 'assets/js/src/products.js'
                 }
             }

@@ -19,16 +19,48 @@ class WC_POS_Admin {
 		$this->load_dependencies();
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
-
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		add_action( 'admin_print_footer_scripts', array( $this, 'admin_print_footer_scripts' ) );
 	}
 
 	private function load_dependencies() {
 
 		new WC_POS_Admin_Menu();
+		new WC_POS_Admin_Settings();
 	}
 
 	public function enqueue_admin_styles() {
 
+	}
+
+	public function enqueue_admin_scripts() {
+		$screen = get_current_screen();
+
+		// js for product page
+		if ( in_array( $screen->id, array( 'product' ) ) ) {
+			wp_enqueue_script(
+				WC_POS_PLUGIN_NAME . '-products',
+				WC_POS_PLUGIN_URL . 'assets/js/products.min.js',
+				array(
+					'jquery',
+					'backbone',
+					'underscore'
+				),
+				WC_POS_VERSION
+			);
+		}
+	}
+
+	/**
+	 *
+	 */
+	public function admin_print_footer_scripts() {
+		$screen = get_current_screen();
+		$js_vars = array(
+			'adminpage' => $screen->id
+		);
+		$pos_params = '<script type="text/javascript">var pos_params = ' . json_encode($js_vars) . '</script>';
+		echo $pos_params;
 	}
 
 }

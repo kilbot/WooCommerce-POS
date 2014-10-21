@@ -51,8 +51,9 @@ class WC_POS {
 			'i18n'      => 'includes/class-wc-pos-i18n.php',
 
 			// admin
-			'admin'     => 'includes/admin/class-wc-pos-admin.php',
-			'admin_menu'=> 'includes/admin/class-wc-pos-admin-menu.php',
+			'admin'         => 'includes/admin/class-wc-pos-admin.php',
+			'admin_menu'    => 'includes/admin/class-wc-pos-admin-menu.php',
+			'admin_settings'=> 'includes/admin/class-wc-pos-admin-settings.php',
 		);
 
 		// require file

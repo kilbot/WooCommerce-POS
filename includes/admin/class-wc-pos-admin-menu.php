@@ -90,6 +90,6 @@ class WC_POS_Admin_Menu {
 	 * Render the settings page for this plugin.
 	 */
 	public function display_settings_page() {
-		echo 'hi!';
+		include_once( 'views/settings.php' );
 	}
 }
