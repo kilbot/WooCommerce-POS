@@ -25,7 +25,24 @@ POS.module('SettingsApp.Admin', function(Admin, POS, Backbone, Marionette, $, _)
 
         _showSettings: function( options ) {
             var view = new Admin.View.Settings( options );
+
+            // tab clicked
+            this.listenTo( view, 'settings:form:submit', function( args ) {
+                var data = Backbone.Syphon.serialize( args.view );
+                this._saveSettings( data );
+            });
+
             this.settingsRegion.show( view );
+        },
+
+        _saveSettings: function( data ) {
+            data.action = 'wc_pos_save_admin_settings';
+            $.post(
+                pos_params.ajaxurl , data, function(resp) {
+                    console.log(resp);
+                }
+            );
+
         }
 
     });

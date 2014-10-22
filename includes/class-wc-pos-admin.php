@@ -63,6 +63,7 @@ class WC_POS_Admin {
 	public function admin_print_footer_scripts() {
 		$screen = get_current_screen();
 		$js_vars = array(
+			'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
 			'adminpage' => $screen->id
 		);
 		$pos_params = '<script type="text/javascript">var pos_params = ' . json_encode($js_vars) . '</script>';

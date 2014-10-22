@@ -14,8 +14,13 @@
 			<a href="#" class="nav-tab" data-tab="<?= $setting->id ?>"><?= $setting->label ?></a>
 		<?php endforeach; ?>
 	</h2>
-	<form id="wc-pos-settings"></form>
+	<div id="wc-pos-settings"></div>
 	<?php foreach( $settings as $setting ): ?>
-		<?= $setting->output(); ?>
+		<script id='tmpl-wc-pos-settings-<?= $setting->id ?>' type='text/html'>
+			<?= $setting->output(); ?>
+			<input class="button-primary" type="submit" value="<?= __( 'Save changes', 'woocommerce-pos' ); ?>" />
+			<input type="hidden" name="key" value="<?= $setting->option_key ?>" />
+			<?php wp_nonce_field( 'wc-pos-settings', 'security', false ); ?>
+		</script>
 	<?php endforeach; ?>
 </div>

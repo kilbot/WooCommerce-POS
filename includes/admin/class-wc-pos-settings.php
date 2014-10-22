@@ -9,10 +9,6 @@
  * @link     http://www.woopos.com.au
  */
 
-interface WC_POS_Settings_Interface {
-	public function output();
-}
-
 class WC_POS_Admin_Settings {
 
 	static public $settings = array();
@@ -38,9 +34,43 @@ class WC_POS_Admin_Settings {
 		self::$settings = apply_filters( 'woocommerce_pos_settings_tabs_array', $settings );
 	}
 
-	public static function display_settings_page() {
+	static public function display_settings_page() {
 		$settings = self::$settings;
 		include_once 'views/settings.php';
+	}
+
+	static public function save_settings() {
+
+		// get db_key
+		if( empty( $_REQUEST['key'] ) )
+			wp_die('There is no option key');
+
+		// get data
+		if( empty( $_REQUEST[$_REQUEST['key']] ) )
+			wp_die('There is no option data');
+
+		$key = $_REQUEST['key'];
+		$data = $_REQUEST[$_REQUEST['key']];
+
+		// save timestamp
+		if( isset( $data['updated'] ) )
+			wp_die('Reserved field name: updated');
+		else
+			$data['updated'] = current_time( 'timestamp' );
+
+		if( update_option( $key, $data ) ) {
+			$response = array(
+				'result' => 'success',
+				'notice' => __( 'Settings saved!', 'woocommerce-pos' )
+			);
+		} else {
+			$response = array(
+				'result' => 'error',
+				'notice' => __( 'Settings not saved!', 'woocommerce-pos' )
+			);
+		}
+
+		return $response;
 	}
 
 	public function enqueue_admin_styles() {
@@ -72,7 +102,6 @@ class WC_POS_Admin_Settings {
 			WC_POS_VERSION,
 			true
 		);
-
 	}
 
 }

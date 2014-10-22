@@ -9,13 +9,13 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_Admin_Settings_General implements WC_POS_Settings_Interface {
-
-	static public $sections = array();
+class WC_POS_Admin_Settings_General extends WC_POS_Admin_Settings_Page {
 
 	public function __construct() {
-		$this->id = 'general';
-		$this->label = _x( 'General', 'settings tab label', 'woocommerce-pos' );
+		$this->id           = 'general';
+		$this->label        = _x( 'General', 'settings tab label', 'woocommerce-pos' );
+		$this->option_key   = 'woocommerce_pos_settings_'. $this->id;
+		$this->options      = get_option( $this->option_key );
 	}
 
 	public function output() {

@@ -108,7 +108,10 @@ module.exports = function(grunt) {
                       'bower_components/backbone.radio/build/backbone.radio.js',
                       'bower_components/backbone.babysitter/lib/backbone.babysitter.js',
                       'bower_components/marionette/lib/core/backbone.marionette.js',
-                      'assets/js/src/lib/utilities/radio.shim.js'
+                      'assets/js/src/lib/utilities/radio.shim.js',
+
+                      // backbone extras
+                      'bower_components/backbone.syphon/lib/backbone.syphon.js',
                   ]
               }
             },

@@ -4,28 +4,18 @@
  */
 ?>
 
-<script id='tmpl-wc-pos-settings-general' type='text/html'>
+<h3><?= __( 'General Options', 'woocommerce-pos' ); ?></h3>
 
-	<h3 id="general" data="pos-settings-section"><?= __( 'General Options', 'woocommerce-pos' ); ?></h3>
-	<table class="form-table">
-		<tr valign="top">
-			<th scope="row">
-				<label for="">Example:</label>
-			</th>
-			<td>
-				<input name="wc_pos_settings_general[example]" type="text" />
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row">
-				<?= __( 'Grant POS Access', 'woocommerce-pos' ); ?>
-			</th>
-			<td>
-				multiselect goes here
-			</td>
-		</tr>
-	</table>
-	<input name="save" class="button-primary" type="submit" value="<?= __( 'Save changes', 'woocommerce-pos' ); ?>" />
-	<?php wp_nonce_field( 'woocommerce-pos-settings' ); ?>
+<table class="form-table">
 
-</script>
+	<tr valign="top">
+		<th scope="row"><label for="">Example:</label></th>
+		<td><input name="<?= $this->get_option_key('example'); ?>" type="text" value="<?= $this->get_option_data('example') ?>" /></td>
+	</tr>
+
+	<tr valign="top">
+		<th scope="row"><?= __( 'Grant POS Access', 'woocommerce-pos' ); ?></th>
+		<td><input name="<?= $this->get_option_key('example2'); ?>" type="text" value="<?= $this->get_option_data('example2') ?>" /></td>
+	</tr>
+
+</table>

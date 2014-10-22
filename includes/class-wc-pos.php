@@ -62,7 +62,7 @@ class WC_POS {
 
 		// ajax
 		if  ( is_admin() && defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-error_log('pos admin doing ajax');
+			new WC_POS_AJAX();
 		}
 
 	}

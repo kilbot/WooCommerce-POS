@@ -25,9 +25,14 @@ POS.module('SettingsApp.Admin.View', function(View, POS, Backbone, Marionette, $
     });
 
     View.Settings = Marionette.ItemView.extend({
+        tagName: 'form',
         initialize: function( options ) {
             var tab = options.tab || 'general';
             this.template = _.template( $('#tmpl-wc-pos-settings-' + tab ).html() );
+        },
+
+        triggers: {
+            'click input[type=submit]': 'settings:form:submit'
         }
     });
 
