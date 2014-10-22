@@ -83,13 +83,13 @@ class WC_POS_Admin_Menu {
 			// Store remote HTML file in transient, expire after 24 hours
 			set_transient( 'remote_pro_page', $upgrade, 24 * HOUR_IN_SECONDS );
 		}
-		include_once( 'views/upgrade.php' );
+		include_once 'views/upgrade.php';
 	}
 
 	/**
 	 * Render the settings page for this plugin.
 	 */
 	public function display_settings_page() {
-		include_once( 'views/settings.php' );
+		WC_POS_Admin_Settings::display_settings_page();
 	}
 }

@@ -4,23 +4,28 @@ POS.module('SettingsApp.Admin', function(Admin, POS, Backbone, Marionette, $, _)
 
         initialize: function(options) {
 
-            this.layout = new Admin.View.Layout();
-
-            this.listenTo( this.layout, 'show', function() {
-                var view = new Admin.View.Settings();
-                this.layout.settingsRegion.show( view );
+            this.settingsRegion = new Backbone.Marionette.Region({
+                el: '#wc-pos-settings'
             });
 
-            POS.main.show(this.layout);
+            this._showTabs();
+            this._showSettings();
 
         },
 
-        show: function() {
+        _showTabs: function() {
+            var view = new Admin.View.Tabs();
+
+            // tab clicked
+            this.listenTo( view, 'settings:tab:clicked', function( tab ) {
+                this._showSettings({ tab: tab });
+            }, this);
 
         },
 
-        _showGeneralSettings: function() {
-
+        _showSettings: function( options ) {
+            var view = new Admin.View.Settings( options );
+            this.settingsRegion.show( view );
         }
 
     });

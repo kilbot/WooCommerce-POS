@@ -27,6 +27,8 @@ class WC_POS {
 
 	/**
 	 * Autoload classes
+	 * turns WC_POS_i18n into includes/class-wc-pos-i18n.php and
+	 * WC_POS_Admin_Settings into includes/admin/class-wc-pos-settings.php
 	 *
 	 * @param $class
 	 */
@@ -34,9 +36,12 @@ class WC_POS {
 		$cn = preg_replace( '/^wc_pos_/', '', strtolower( $class ), 1, $count );
 		if( $count ) {
 			$path = explode('_', $cn);
-			$filename = 'class-wc-pos-'. array_pop( $path ) .'.php';
-			array_push( $path, $filename );
-			require_once WC_POS_PLUGIN_PATH . 'includes/' . implode( '/', $path );
+			if( $path[0] == 'pro' ) return;
+			$last = 'class-wc-pos-'. array_pop( $path ) .'.php';
+			array_push( $path, $last );
+			$file = WC_POS_PLUGIN_PATH . 'includes/' . implode( '/', $path );
+			if( is_readable( $file ) )
+				require_once $file;
 		}
 	}
 

@@ -3,13 +3,6 @@
     window.POS = new Marionette.Application();
 
     /**
-     * Regions
-     */
-    POS.addRegions({
-        main: '#blat'
-    });
-
-    /**
      * Start POS App
      */
     POS.on('start', function() {

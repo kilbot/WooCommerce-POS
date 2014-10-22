@@ -1,25 +1,33 @@
 POS.module('SettingsApp.Admin.View', function(View, POS, Backbone, Marionette, $, _){
 
-    View.Layout = Marionette.LayoutView.extend({
-        template: '#tmpl-wc-pos-settings-layout',
+    View.Tabs = Marionette.ItemView.extend({
+        el: '#wc-pos-settings-tabs',
 
-        regions: {
-            tabsRegion: '#wc-pos-settings-tabs',
-            settingsRegion: '#wc-pos-settings'
+        initialize: function() {
+            this.$('a.nav-tab').first().addClass('nav-tab-active');
+        },
+
+        events: {
+            'click a' : 'onTabClicked'
+        },
+
+        onTabClicked: function(e) {
+            e.preventDefault();
+            var tab = $(e.target);
+            if( tab.hasClass('nav-tab-active') )
+                return;
+
+            this.trigger( 'settings:tab:clicked', tab.data('tab') );
+            tab.addClass('nav-tab-active')
+                .siblings('a.nav-tab-active')
+                .removeClass('nav-tab-active');
         }
-
     });
 
     View.Settings = Marionette.ItemView.extend({
-        //template: Handlebars.compile($('#tmpl-settings-general').html()),
-        tagName: "table",
-        template: _.template( $('#tmpl-wc-pos-settings-general').html() ),
-
-        serializeData: function() {
-            var data = {
-                label: 'Hello World!'
-            };
-            return data;
+        initialize: function( options ) {
+            var tab = options.tab || 'general';
+            this.template = _.template( $('#tmpl-wc-pos-settings-' + tab ).html() );
         }
     });
 

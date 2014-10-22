@@ -28,6 +28,7 @@ class WC_POS_Admin {
 	 */
 	private function init() {
 		new WC_POS_Admin_Menu();    // add menu items
+		new WC_POS_Gateways();      // pos payment gateways
 
 		if( true ) {
 			new WC_POS_Admin_Settings();      // add settings pages
