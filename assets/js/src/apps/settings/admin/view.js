@@ -1,6 +1,8 @@
-POS.module('SettingsApp.Admin.View', function(View, POS, Backbone, Marionette, $, _){
+var POS = (function(App, Backbone, Marionette, $, _) {
 
-    View.Tabs = Marionette.ItemView.extend({
+    App.SettingsApp.Views = {};
+
+    App.SettingsApp.Views.Tabs = Marionette.ItemView.extend({
         el: '#wc-pos-settings-tabs',
 
         initialize: function() {
@@ -24,16 +26,46 @@ POS.module('SettingsApp.Admin.View', function(View, POS, Backbone, Marionette, $
         }
     });
 
-    View.Settings = Marionette.ItemView.extend({
+    App.SettingsApp.Views.Settings = Marionette.ItemView.extend({
         tagName: 'form',
+        saving: false,
+
         initialize: function( options ) {
-            var tab = options.tab || 'general';
-            this.template = _.template( $('#tmpl-wc-pos-settings-' + tab ).html() );
+            this.settingsCollection = options.col || {};
+            this.template = _.template( $('#tmpl-wc-pos-settings-' + options.tab ).html() );
         },
 
-        triggers: {
-            'click input[type=submit]': 'settings:form:submit'
+        onBeforeShow: function() {
+            var id = this.$('input[name="key"]').val();
+            var model = this.settingsCollection.get(id);
+            if( model ) {
+                Backbone.Syphon.deserialize( this, model.toJSON() );
+            } else {
+                this.storeState();
+            }
+        },
+
+        onBeforeDestroy: function() {
+            this.storeState();
+        },
+
+        events: {
+            'click input[type=submit]': 'onSubmit'
+        },
+
+        onSubmit: function() {
+            var data = this.storeState();
+            this.trigger( 'settings:form:submit', data );
+        },
+
+        storeState: function() {
+            var data = Backbone.Syphon.serialize( this );
+            this.settingsCollection.add( data, { merge: true } );
+            return data;
         }
+
     });
 
-});
+    return App;
+
+})(POS || {}, Backbone, Marionette, jQuery, _);

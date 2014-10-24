@@ -1,21 +1,33 @@
-(function() {
+var POS = (function(App, Backbone, Marionette, $, _) {
 
-    window.POS = new Marionette.Application();
+    // init Marionette app
+    var App = new Marionette.Application();
+    App.debug = false;
 
-    /**
-     * Start POS App
-     */
-    POS.on('start', function() {
+    // on start, set up and start modules
+    App.on('start', function() {
 
-        if( typeof pos_params === 'undefined' )
-            return;
+        // debugging
+        if( localStorage.getItem('wc_pos_debug') ) {
+            App.debug = true;
+            Backbone.Radio.DEBUG = true;
+            console.info('Debugging is on, visit http://woopos.com.au/docs/debugging');
+        } else {
+            console.info('Debugging is off, visit http://woopos.com.au/docs/debugging');
+        }
 
-        POS.debug = true;
+        if( App.debug ) console.log('POS Admin App started');
 
-        POS.module('SettingsApp').start();
+        /* global adminpage */
+        if( adminpage === 'pos_page_wc_pos_settings' ) {
+            App.module('SettingsApp').start();
+        }
+
     });
 
-})();
+    // start the app when DOM is ready
+    $( function(){ App.start(); } );
 
-// wait until everything is loaded, then start the app
-jQuery( document ).ready(function() { POS.start(); });
+    return App;
+
+})(POS || {}, Backbone, Marionette, jQuery, _);

@@ -1,15 +1,19 @@
-POS.module('SettingsApp', function(SettingsApp, POS, Backbone, Marionette, $, _){
+var POS = (function(App) {
 
-    /**
-     * Settings Module
-     */
-    SettingsApp.startWithParent = false;
+    App.module('SettingsApp', function(SettingsApp, App, Backbone, Marionette, $, _){
 
-    SettingsApp.onStart = function(){
-        if( POS.debug ) console.log('starting Settings Module');
+        /**
+         * Settings Module
+         */
+        SettingsApp.startWithParent = false;
 
-        new SettingsApp.Admin.Controller();
+        SettingsApp.onStart = function(){
+            if( App.debug ) console.log('POS Settings Module started');
+            new SettingsApp.Controller();
+        };
 
-    };
+    });
 
-});
+    return App;
+
+})(POS || {});

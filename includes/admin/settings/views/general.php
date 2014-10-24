@@ -10,12 +10,7 @@
 
 	<tr valign="top">
 		<th scope="row"><label for="">Example:</label></th>
-		<td><input name="<?= $this->get_option_key('example'); ?>" type="text" value="<?= $this->get_option_data('example') ?>" /></td>
-	</tr>
-
-	<tr valign="top">
-		<th scope="row"><?= __( 'Grant POS Access', 'woocommerce-pos' ); ?></th>
-		<td><input name="<?= $this->get_option_key('example2'); ?>" type="text" value="<?= $this->get_option_data('example2') ?>" /></td>
+		<td><input type="text" name="<?= $this->get_setting_name('example'); ?>" value="<?= $this->get_setting_value('example') ?>" /></td>
 	</tr>
 
 </table>

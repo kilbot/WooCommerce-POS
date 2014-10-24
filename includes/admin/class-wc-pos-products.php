@@ -1,15 +1,16 @@
 <?php
 
 /**
- * POS Product Class
+ * POS Product Admin Class
+ * - pos only products
  *
- * @class    WC_POS_Products
+ * @class    WC_POS_Admin_Products
  * @package  WooCommerce POS
  * @author   Paul Kilmurray <paul@kilbot.com.au>
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_Products {
+class WC_POS_Admin_Products {
 
 	/**
 	 * Constructor

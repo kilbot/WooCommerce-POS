@@ -27,12 +27,10 @@ class WC_POS_Admin {
 	 * Load admin subclasses
 	 */
 	private function init() {
+
 		new WC_POS_Admin_Menu();    // add menu items
 		new WC_POS_Gateways();      // pos payment gateways
-
-		if( true ) {
-			new WC_POS_Admin_Settings();      // add settings pages
-		}
+		new WC_POS_Admin_Settings();      // add settings pages
 	}
 
 	public function enqueue_admin_styles() {
@@ -43,7 +41,7 @@ class WC_POS_Admin {
 		$screen = get_current_screen();
 
 		// js for product page
-		if ( in_array( $screen->id, array( 'product' ) ) ) {
+		if ( false ) {
 			wp_enqueue_script(
 				WC_POS_PLUGIN_NAME . '-products',
 				WC_POS_PLUGIN_URL . 'assets/js/products.min.js',
@@ -61,13 +59,7 @@ class WC_POS_Admin {
 	 *
 	 */
 	public function admin_print_footer_scripts() {
-		$screen = get_current_screen();
-		$js_vars = array(
-			'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
-			'adminpage' => $screen->id
-		);
-		$pos_params = '<script type="text/javascript">var pos_params = ' . json_encode($js_vars) . '</script>';
-		echo $pos_params;
+
 	}
 
 }

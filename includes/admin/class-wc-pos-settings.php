@@ -35,7 +35,6 @@ class WC_POS_Admin_Settings {
 	}
 
 	static public function display_settings_page() {
-		$settings = self::$settings;
 		include_once 'views/settings.php';
 	}
 
@@ -50,15 +49,15 @@ class WC_POS_Admin_Settings {
 			wp_die('There is no option data');
 
 		$key = $_REQUEST['key'];
-		$data = $_REQUEST[$_REQUEST['key']];
+		$value = $_REQUEST[$_REQUEST['key']];
 
 		// save timestamp
 		if( isset( $data['updated'] ) )
 			wp_die('Reserved field name: updated');
 		else
-			$data['updated'] = current_time( 'timestamp' );
+			$value['updated'] = current_time( 'timestamp' );
 
-		if( update_option( $key, $data ) ) {
+		if( update_option( $key, $value ) ) {
 			$response = array(
 				'result' => 'success',
 				'notice' => __( 'Settings saved!', 'woocommerce-pos' )
@@ -78,30 +77,33 @@ class WC_POS_Admin_Settings {
 	}
 
 	public function enqueue_admin_scripts() {
+		$screen = get_current_screen();
 
-		wp_enqueue_script(
-			WC_POS_PLUGIN_NAME . '-core',
-			WC_POS_PLUGIN_URL . 'assets/js/core.min.js',
-			array( 'jquery', 'backbone', 'underscore' ),
-			WC_POS_VERSION,
-			true
-		);
+		if( $screen->id == WC_POS_Admin_Menu::$settings_screen_id ) {
+			wp_enqueue_script(
+				WC_POS_PLUGIN_NAME . '-core',
+				WC_POS_PLUGIN_URL . 'assets/js/core.min.js',
+				array( 'jquery', 'backbone', 'underscore' ),
+				WC_POS_VERSION,
+				true
+			);
 
-		wp_enqueue_script(
-			WC_POS_PLUGIN_NAME . '-admin-app',
-			WC_POS_PLUGIN_URL . 'assets/js/admin_app.min.js',
-			array( WC_POS_PLUGIN_NAME . '-core' ),
-			WC_POS_VERSION,
-			true
-		);
+			wp_enqueue_script(
+				WC_POS_PLUGIN_NAME . '-admin-app',
+				WC_POS_PLUGIN_URL . 'assets/js/admin_app.min.js',
+				array( WC_POS_PLUGIN_NAME . '-core' ),
+				WC_POS_VERSION,
+				true
+			);
 
-		wp_enqueue_script(
-			WC_POS_PLUGIN_NAME . '-settings-app',
-			WC_POS_PLUGIN_URL . 'assets/js/settings_app.min.js',
-			array( WC_POS_PLUGIN_NAME . '-admin-app' ),
-			WC_POS_VERSION,
-			true
-		);
+			wp_enqueue_script(
+				WC_POS_PLUGIN_NAME . '-settings-app',
+				WC_POS_PLUGIN_URL . 'assets/js/settings_app.min.js',
+				array( WC_POS_PLUGIN_NAME . '-admin-app' ),
+				WC_POS_VERSION,
+				true
+			);
+		}
 	}
 
 }

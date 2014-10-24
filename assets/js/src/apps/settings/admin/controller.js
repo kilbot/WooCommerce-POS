@@ -1,50 +1,59 @@
-POS.module('SettingsApp.Admin', function(Admin, POS, Backbone, Marionette, $, _){
+var POS = (function(App, Backbone, Marionette, $, _) {
 
-    Admin.Controller = Marionette.Controller.extend({
+    App.SettingsApp.Controller = Marionette.Controller.extend({
 
-        initialize: function(options) {
+        initialize: function () {
 
-            this.settingsRegion = new Backbone.Marionette.Region({
+            this.settingsRegion = new Marionette.Region({
                 el: '#wc-pos-settings'
             });
 
+            // store form state
+            var settingsModel = Backbone.Model.extend({ idAttribute: "key" });
+            var settingsCollection = Backbone.Collection.extend({ model: settingsModel });
+            this.settingsCollection = new settingsCollection();
+
             this._showTabs();
-            this._showSettings();
+            this._showSettings({ tab: 'general' });
 
         },
 
-        _showTabs: function() {
-            var view = new Admin.View.Tabs();
+        _showTabs: function () {
+            var view = new App.SettingsApp.Views.Tabs();
 
             // tab clicked
-            this.listenTo( view, 'settings:tab:clicked', function( tab ) {
+            this.listenTo(view, 'settings:tab:clicked', function (tab) {
                 this._showSettings({ tab: tab });
             }, this);
 
         },
 
-        _showSettings: function( options ) {
-            var view = new Admin.View.Settings( options );
+        _showSettings: function (options) {
+            _.defaults( options, { col: this.settingsCollection } );
+            var view = new App.SettingsApp.Views.Settings(options);
 
             // tab clicked
-            this.listenTo( view, 'settings:form:submit', function( args ) {
-                var data = Backbone.Syphon.serialize( args.view );
-                this._saveSettings( data );
+            this.listenTo(view, 'settings:form:submit', function (data) {
+                this._saveSettings(data);
             });
 
-            this.settingsRegion.show( view );
+            this.settingsRegion.show(view);
+
         },
 
-        _saveSettings: function( data ) {
+        _saveSettings: function (data) {
+            console.log(data);
             data.action = 'wc_pos_save_admin_settings';
-            $.post(
-                pos_params.ajaxurl , data, function(resp) {
-                    console.log(resp);
-                }
-            );
+
+            /* global ajaxurl */
+            $.post(ajaxurl, data, function (resp) {
+                console.log(resp);
+            });
 
         }
 
     });
 
-});
+    return App;
+
+})(POS || {}, Backbone, Marionette, jQuery, _);

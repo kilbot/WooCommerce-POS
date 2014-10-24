@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-10-21 03:06:44+00:00\n"
+"POT-Creation-Date: 2014-10-24 00:20:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,22 +13,130 @@ msgstr ""
 "Language-Team: Team Name <team@example.com>\n"
 "X-Generator: grunt-wp-i18n 0.4.9\n"
 
-#: includes/admin/class-wc-pos-admin-menu.php:36
-#: includes/admin/class-wc-pos-admin-menu.php:37
+#: includes/admin/class-wc-pos-menu.php:37
+#: includes/admin/class-wc-pos-menu.php:38
 msgid "POS"
 msgstr ""
 
-#: includes/admin/class-wc-pos-admin-menu.php:47
-#: includes/admin/class-wc-pos-admin-menu.php:48
+#: includes/admin/class-wc-pos-menu.php:48
+#: includes/admin/class-wc-pos-menu.php:49
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/class-wc-pos-admin-menu.php:54
+#: includes/admin/class-wc-pos-menu.php:55
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: includes/admin/class-wc-pos-admin-menu.php:55
+#: includes/admin/class-wc-pos-menu.php:56
 msgid "View POS"
+msgstr ""
+
+#: includes/admin/class-wc-pos-settings.php:63
+msgid "Settings saved!"
+msgstr ""
+
+#: includes/admin/class-wc-pos-settings.php:68
+msgid "Settings not saved!"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:7
+msgid "Payment Gateways"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:10
+msgid ""
+"Installed gateways are listed below. Drag and drop gateways to control "
+"their display order at the Point of Sale. "
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:11
+msgid ""
+"Payment Gateways enabled here will be available at the Point of Sale. "
+"Payment Gateways enabled on the settings page will be available in your "
+"Online Store. "
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:15
+msgid ""
+"It is your responsibility to ensure the security of your customer's "
+"information. Transmitting credit card or other sensitive information should "
+"only be done using a secure connnection. For more information please visit "
+"<a "
+"href=\"http://woopos.com.au/docs/security\">http://woopos.com.au/docs/"
+"security</a>"
+msgstr ""
+
+#: includes/admin/settings/views/general.php:7
+msgid "General Options"
+msgstr ""
+
+#: includes/admin/views/settings.php:19
+msgid ""
+"There has been an error loading the settings, please contact <a "
+"href=\"mailto:support@woopos.com.au\">support</a>"
+msgstr ""
+
+#: includes/admin/views/settings.php:25
+msgid "Save changes"
+msgstr ""
+
+#: includes/class-wc-pos-ajax.php:156
+msgid "Guest"
+msgstr ""
+
+#: includes/class-wc-pos-gateways.php:71
+msgid "Enabled"
+msgstr ""
+
+#: includes/gateways/class-wc-pos-card.php:24
+#: includes/gateways/class-wc-pos-card.php:52
+msgid "Card"
+msgstr ""
+
+#: includes/gateways/class-wc-pos-card.php:25
+msgid "Debit & Credit Card sales using an external EFTPOS machine."
+msgstr ""
+
+#: includes/gateways/class-wc-pos-card.php:49
+#: includes/gateways/class-wc-pos-cash.php:48
+msgid "Title"
+msgstr ""
+
+#: includes/gateways/class-wc-pos-card.php:51
+#: includes/gateways/class-wc-pos-cash.php:50
+msgid "Payment method title."
+msgstr ""
+
+#: includes/gateways/class-wc-pos-card.php:56
+#: includes/gateways/class-wc-pos-cash.php:55
+msgid "Description"
+msgstr ""
+
+#: includes/gateways/class-wc-pos-card.php:58
+#: includes/gateways/class-wc-pos-cash.php:57
+msgid "Payment method description that will be shown in the POS."
+msgstr ""
+
+#: includes/gateways/class-wc-pos-card.php:86
+#: includes/gateways/class-wc-pos-card.php:89
+#: includes/gateways/class-wc-pos-card.php:112
+#: includes/gateways/class-wc-pos-card.php:146
+msgid "Cashback"
+msgstr ""
+
+#: includes/gateways/class-wc-pos-cash.php:24
+#: includes/gateways/class-wc-pos-cash.php:51
+msgid "Cash"
+msgstr ""
+
+#: includes/gateways/class-wc-pos-cash.php:25
+msgid "Cash sales at the Point of Sale."
+msgstr ""
+
+#: includes/gateways/class-wc-pos-cash.php:86
+#: includes/gateways/class-wc-pos-cash.php:89
+#: includes/gateways/class-wc-pos-cash.php:134
+msgid "Amount Tendered"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -52,4 +160,29 @@ msgstr ""
 
 #. Author URI of the plugin/theme
 msgid "http://www.kilbot.com.au"
+msgstr ""
+
+#: includes/admin/settings/class-wc-pos-checkout.php:16
+msgctxt "Settings tab label"
+msgid "Checkout"
+msgstr ""
+
+#: includes/admin/settings/class-wc-pos-general.php:19
+msgctxt "settings tab label"
+msgid "General"
+msgstr ""
+
+#: includes/class-wc-pos-gateways.php:53
+msgctxt "Payment gateway status"
+msgid "Online Store"
+msgstr ""
+
+#: includes/class-wc-pos-gateways.php:54
+msgctxt "Payment gateway status"
+msgid "POS"
+msgstr ""
+
+#: includes/gateways/class-wc-pos-cash.php:136
+msgctxt "Money returned from cash sale"
+msgid "Change"
 msgstr ""

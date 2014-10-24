@@ -20,21 +20,28 @@ class WC_POS_Gateways {
 		add_filter( 'woocommerce_payment_gateways_setting_columns', array( $this, 'woocommerce_payment_gateways_setting_columns' ), 10, 1 );
 		add_action( 'woocommerce_payment_gateways_setting_column_pos_status', array( $this, 'pos_status' ), 10, 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
-
 	}
 
 	/**
+	 * Add POS gateways
+	 * hide gateways on the woocommerce settings page
 	 *
 	 * @param $gateways
 	 * @return array
 	 */
 	public function load_gateways( $gateways ) {
-		array_push( $gateways, 'WC_POS_Gateways_Cash', 'WC_POS_Gateways_Card');
-		return $gateways;
+		$screen = get_current_screen();
+		if( !empty($screen) && $screen->id == 'woocommerce_page_wc-settings' ) {
+			return $gateways;
+		} else {
+			array_push( $gateways, 'WC_POS_Gateways_Cash', 'WC_POS_Gateways_Card');
+			return $gateways;
+		}
 	}
 
 	/**
 	 * Add POS Status column
+	 *
 	 * @param  array $columns
 	 * @return array $new_columns
 	 */
@@ -52,6 +59,7 @@ class WC_POS_Gateways {
 
 	/**
 	 * POS Status for each gateway
+	 *
 	 * @param  object $gateway
 	 */
 	public function pos_status( $gateway ) {

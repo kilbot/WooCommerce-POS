@@ -19,7 +19,7 @@
 
 	<tr valign="top">
 		<th scope="row">Another example:</th>
-		<td><input name="<?= $this->get_option_key('example'); ?>" type="text" value="<?= $this->options['example'] ?>" /></td>
+		<td><input name="<?= $this->get_setting_name('example'); ?>" type="text" value="<?= $this->get_setting_value('example') ?>" /></td>
 	</tr>
 
 </table>
