@@ -10,7 +10,7 @@
 
 <div class="wrap">
 	<h2 id="wc-pos-settings-tabs" class="nav-tab-wrapper">
-		<?php foreach( self::$settings as $setting ): error_log(print_r($setting, true)); ?>
+		<?php foreach( self::$settings as $setting ): ?>
 			<a href="#" class="nav-tab" data-tab="<?= $setting->id ?>"><?= $setting->label ?></a>
 		<?php endforeach; ?>
 	</h2>

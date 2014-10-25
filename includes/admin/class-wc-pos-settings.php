@@ -69,11 +69,20 @@ class WC_POS_Admin_Settings {
 			);
 		}
 
-		return $response;
+		return array( 'response' => $response );
 	}
 
 	public function enqueue_admin_styles() {
+		$screen = get_current_screen();
 
+		if( $screen->id == WC_POS_Admin_Menu::$settings_screen_id ) {
+			wp_enqueue_style(
+				WC_POS_PLUGIN_NAME . '-admin',
+				WC_POS_PLUGIN_URL . 'assets/css/admin.min.css',
+				null,
+				WC_POS_VERSION
+			);
+		}
 	}
 
 	public function enqueue_admin_scripts() {
@@ -103,6 +112,26 @@ class WC_POS_Admin_Settings {
 				WC_POS_VERSION,
 				true
 			);
+
+			wp_enqueue_script(
+				WC_POS_PLUGIN_NAME . '-admin-components',
+				WC_POS_PLUGIN_URL . 'assets/js/admin_components.min.js',
+				array( WC_POS_PLUGIN_NAME . '-admin-app' ),
+				WC_POS_VERSION,
+				true
+			);
+
+			define('WPLANG', 'es_ES');
+			$locale_js = WC_POS_i18n::get_locale_js();
+			if( $locale_js ) {
+				wp_enqueue_script(
+					WC_POS_PLUGIN_NAME . '-js-locale',
+					$locale_js,
+					array( WC_POS_PLUGIN_NAME . '-admin-components' ),
+					WC_POS_VERSION,
+					true
+				);
+			}
 		}
 	}
 

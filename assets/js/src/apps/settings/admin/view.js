@@ -28,40 +28,60 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
     App.SettingsApp.Views.Settings = Marionette.ItemView.extend({
         tagName: 'form',
-        saving: false,
 
         initialize: function( options ) {
             this.settingsCollection = options.col || {};
             this.template = _.template( $('#tmpl-wc-pos-settings-' + options.tab ).html() );
         },
 
+        ui: {
+            submit  : 'input[type="submit"]',
+            key     : 'input[name="key"]'
+        },
+
+        events: {
+            'click @ui.submit': 'onSubmit'
+        },
+
+        behaviors: {
+            Select2: {}
+        },
+
         onBeforeShow: function() {
-            var id = this.$('input[name="key"]').val();
-            var model = this.settingsCollection.get(id);
-            if( model ) {
-                Backbone.Syphon.deserialize( this, model.toJSON() );
+            var id = this.ui.key.val();
+            this.model = this.settingsCollection.get(id);
+            if( _.isUndefined( this.model ) ) {
+                this.model = this.storeState();
             } else {
-                this.storeState();
+                Backbone.Syphon.deserialize( this, this.model.toJSON() );
             }
+
+            this.listenTo( this.model, 'request change:response', this.saving );
         },
 
         onBeforeDestroy: function() {
             this.storeState();
         },
 
-        events: {
-            'click input[type=submit]': 'onSubmit'
-        },
-
-        onSubmit: function() {
-            var data = this.storeState();
-            this.trigger( 'settings:form:submit', data );
+        onSubmit: function(e) {
+            e.preventDefault();
+            this.trigger( 'settings:form:submit', this.storeState() );
         },
 
         storeState: function() {
             var data = Backbone.Syphon.serialize( this );
-            this.settingsCollection.add( data, { merge: true } );
-            return data;
+            return this.settingsCollection.add( data, { merge: true } );
+        },
+
+        saving: function(e) {
+            if( _( e.changed ).isEmpty() ) {
+                this.ui.submit.prop( 'disabled', true )
+                    .after('<span class="spinner"></span>"');
+
+            } else {
+                this.ui.submit.prop( 'disabled', false );
+            }
+            this.model.unset( 'response', { silent: true } );
         }
 
     });

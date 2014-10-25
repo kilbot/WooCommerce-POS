@@ -9,8 +9,14 @@ var POS = (function(App, Backbone, Marionette, $, _) {
             });
 
             // store form state
-            var settingsModel = Backbone.Model.extend({ idAttribute: "key" });
-            var settingsCollection = Backbone.Collection.extend({ model: settingsModel });
+            var settingsModel = Backbone.Model.extend({
+                url: ajaxurl,
+                idAttribute: "key",
+                defaults: { action: 'wc_pos_save_admin_settings' }
+            });
+            var settingsCollection = Backbone.Collection.extend({
+                model: settingsModel
+            });
             this.settingsCollection = new settingsCollection();
 
             this._showTabs();
@@ -33,23 +39,16 @@ var POS = (function(App, Backbone, Marionette, $, _) {
             var view = new App.SettingsApp.Views.Settings(options);
 
             // tab clicked
-            this.listenTo(view, 'settings:form:submit', function (data) {
-                this._saveSettings(data);
+            this.listenTo(view, 'settings:form:submit', function (model) {
+                this._saveSettings(model);
             });
 
             this.settingsRegion.show(view);
 
         },
 
-        _saveSettings: function (data) {
-            console.log(data);
-            data.action = 'wc_pos_save_admin_settings';
-
-            /* global ajaxurl */
-            $.post(ajaxurl, data, function (resp) {
-                console.log(resp);
-            });
-
+        _saveSettings: function (model) {
+            model.save( [], { data: model.toJSON(), emulateHTTP: true, emulateJSON: true } );
         }
 
     });

@@ -29,10 +29,25 @@ class WC_POS_i18n {
 	}
 
 	/**
+	 * Load translations for js plugins
+	 * @return string
+	 */
+	public static function get_locale_js() {
+		$locale = get_locale();
+		list( $country ) = explode( '_', $locale );
+
+		if( is_readable( WC_POS_PLUGIN_PATH . 'languages/js/' . $locale . '.js' ) ) {
+			return WC_POS_PLUGIN_URL . 'languages/js/' . $locale . '.js';
+		} elseif( is_readable( WC_POS_PLUGIN_PATH . 'languages/js/' . $country . '.js' ) ) {
+			return WC_POS_PLUGIN_URL . 'languages/js/' . $country . '.js';
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Return currency denomination for a given country code
-	 *
 	 * @param string $code
-	 *
 	 * @return array
 	 */
 	public static function currency_denominations( $code = '' ) {

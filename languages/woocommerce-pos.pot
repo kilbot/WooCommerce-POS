@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-10-24 00:20:11+00:00\n"
+"POT-Creation-Date: 2014-10-25 00:06:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -70,13 +70,13 @@ msgstr ""
 msgid "General Options"
 msgstr ""
 
-#: includes/admin/views/settings.php:19
+#: includes/admin/views/settings.php:18
 msgid ""
 "There has been an error loading the settings, please contact <a "
 "href=\"mailto:support@woopos.com.au\">support</a>"
 msgstr ""
 
-#: includes/admin/views/settings.php:25
+#: includes/admin/views/settings.php:23
 msgid "Save changes"
 msgstr ""
 

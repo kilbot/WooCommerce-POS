@@ -112,18 +112,25 @@ module.exports = function(grunt) {
 
                         // backbone extras
                         'bower_components/backbone.syphon/lib/backbone.syphon.js',
-
-                        // plugins
-                        'bower_components/select2/select2.min.js'
                     ]
                 }
             },
-            settings: {
+            settings_app: {
                 files: {
                     'assets/js/settings_app.min.js': [
                         'assets/js/src/apps/settings/settings_app.js',
                         'assets/js/src/apps/settings/admin/controller.js',
                         'assets/js/src/apps/settings/admin/view.js',
+                    ]
+                }
+            },
+            admin_components: {
+                files: {
+                    'assets/js/admin_components.min.js': [
+
+                        // select2
+                        'bower_components/select2/select2.min.js',
+                        'assets/js/src/lib/components/select2/behavior.js',
                     ]
                 }
             },
@@ -163,9 +170,27 @@ module.exports = function(grunt) {
             }
         }
 
+
+
     });
 
     // register tasks
     grunt.registerTask('default', ['makepot', 'compass', 'cssmin', 'jshint', 'uglify', 'watch']);
+
+    grunt.registerTask('js_locales', 'Combine locales.json files', function() {
+        var locales = grunt.file.readJSON('locales.json');
+        var _ = grunt.util._;
+        var files = {};
+
+        _(locales).each(function(locale, key){
+            if( !_.isEmpty(locale) ) {
+                var target = 'languages/js/' + key + '.js';
+                files[target] = locale;
+            }
+        });
+
+        grunt.config('uglify.js_locales', { 'files': files } );
+        grunt.task.run('uglify:js_locales');
+    });
 
 };
