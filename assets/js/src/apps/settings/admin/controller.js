@@ -9,15 +9,13 @@ var POS = (function(App, Backbone, Marionette, $, _) {
             });
 
             // store form state
-            var settingsModel = Backbone.Model.extend({
+            var SettingsModel = Backbone.Model.extend({
                 url: ajaxurl,
-                idAttribute: "key",
                 defaults: { action: 'wc_pos_save_admin_settings' }
             });
-            var settingsCollection = Backbone.Collection.extend({
-                model: settingsModel
+            this.settingsCollection = new Backbone.Collection( App.bootstrap, {
+                model: SettingsModel
             });
-            this.settingsCollection = new settingsCollection();
 
             this._showTabs();
             this._showSettings({ tab: 'general' });

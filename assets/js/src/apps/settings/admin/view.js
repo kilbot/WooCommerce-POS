@@ -36,7 +36,7 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
         ui: {
             submit  : 'input[type="submit"]',
-            key     : 'input[name="key"]'
+            id      : 'input[name="id"]'
         },
 
         events: {
@@ -48,11 +48,9 @@ var POS = (function(App, Backbone, Marionette, $, _) {
         },
 
         onBeforeShow: function() {
-            var id = this.ui.key.val();
+            var id = this.ui.id.val();
             this.model = this.settingsCollection.get(id);
-            if( _.isUndefined( this.model ) ) {
-                this.model = this.storeState();
-            } else {
+            if( !_.isUndefined( this.model ) ) {
                 Backbone.Syphon.deserialize( this, this.model.toJSON() );
             }
 

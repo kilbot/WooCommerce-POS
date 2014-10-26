@@ -77,10 +77,6 @@
 }
 
 /**
- * Alerts & Notices
+ * POS ADMIN
  */
-.woocommerce-pos-warning {
-  background-color: #fff;
-  padding: 1px 12px;
-  border-left: 4px solid #ffba00;
-}
+@import "partials/select2";

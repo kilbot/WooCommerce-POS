@@ -4461,7 +4461,7 @@ html, body {
 }
 
 /*
-Version: 3.5.0 Timestamp: Mon Jun 16 19:29:44 EDT 2014
+Version: 3.5.1 Timestamp: Tue Jul 22 18:58:56 EDT 2014
 */
 /* line 4, scss/partials/_select2.scss */
 .select2-container {
@@ -4927,9 +4927,10 @@ html[dir="rtl"] .select2-results {
   color: #000;
 }
 
-/* line 426, scss/partials/_select2.scss */
+/* line 425, scss/partials/_select2.scss */
 .select2-results .select2-no-results,
 .select2-results .select2-searching,
+.select2-results .select2-ajax-error,
 .select2-results .select2-selection-limit {
   background: #f4f4f4;
   display: list-item;
@@ -4965,13 +4966,18 @@ disabled look for disabled choices in the results dropdown
 }
 
 /* line 457, scss/partials/_select2.scss */
+.select2-results .select2-ajax-error {
+  background: rgba(255, 50, 50, 0.2);
+}
+
+/* line 461, scss/partials/_select2.scss */
 .select2-more-results {
   background: #f4f4f4;
   display: list-item;
 }
 
 /* disabled styles */
-/* line 464, scss/partials/_select2.scss */
+/* line 468, scss/partials/_select2.scss */
 .select2-container.select2-container-disabled .select2-choice {
   background-color: #f4f4f4;
   background-image: none;
@@ -4979,20 +4985,20 @@ disabled look for disabled choices in the results dropdown
   cursor: default;
 }
 
-/* line 471, scss/partials/_select2.scss */
+/* line 475, scss/partials/_select2.scss */
 .select2-container.select2-container-disabled .select2-choice .select2-arrow {
   background-color: #f4f4f4;
   background-image: none;
   border-left: 0;
 }
 
-/* line 477, scss/partials/_select2.scss */
+/* line 481, scss/partials/_select2.scss */
 .select2-container.select2-container-disabled .select2-choice abbr {
   display: none;
 }
 
 /* multiselect */
-/* line 484, scss/partials/_select2.scss */
+/* line 488, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices {
   height: auto !important;
   height: 1%;
@@ -5009,22 +5015,22 @@ disabled look for disabled choices in the results dropdown
   background-image: linear-gradient(to bottom, #eeeeee 1%, #ffffff 15%);
 }
 
-/* line 502, scss/partials/_select2.scss */
+/* line 506, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-choices {
   padding: 0 0 0 5px;
 }
 
-/* line 506, scss/partials/_select2.scss */
+/* line 510, scss/partials/_select2.scss */
 .select2-locked {
   padding: 3px 5px 3px 5px !important;
 }
 
-/* line 510, scss/partials/_select2.scss */
+/* line 514, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices {
   min-height: 26px;
 }
 
-/* line 514, scss/partials/_select2.scss */
+/* line 518, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-active .select2-choices {
   border: 1px solid #5897fb;
   outline: none;
@@ -5032,25 +5038,25 @@ html[dir="rtl"] .select2-container-multi .select2-choices {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
-/* line 521, scss/partials/_select2.scss */
+/* line 525, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li {
   float: left;
   list-style: none;
 }
 
-/* line 525, scss/partials/_select2.scss */
+/* line 529, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-choices li {
   float: right;
 }
 
-/* line 529, scss/partials/_select2.scss */
+/* line 533, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices .select2-search-field {
   margin: 0;
   padding: 0;
   white-space: nowrap;
 }
 
-/* line 535, scss/partials/_select2.scss */
+/* line 539, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices .select2-search-field input {
   padding: 5px;
   margin: 1px 0;
@@ -5064,17 +5070,17 @@ html[dir="rtl"] .select2-container-multi .select2-choices li {
   background: transparent !important;
 }
 
-/* line 549, scss/partials/_select2.scss */
+/* line 553, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices .select2-search-field input.select2-active {
   background: white url("select2-spinner.gif") no-repeat 100% !important;
 }
 
-/* line 553, scss/partials/_select2.scss */
+/* line 557, scss/partials/_select2.scss */
 .select2-default {
   color: #999 !important;
 }
 
-/* line 557, scss/partials/_select2.scss */
+/* line 561, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices .select2-search-choice {
   padding: 3px 5px 3px 18px;
   margin: 3px 0 3px 5px;
@@ -5100,23 +5106,23 @@ html[dir="rtl"] .select2-container-multi .select2-choices li {
   background-image: linear-gradient(to top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
 }
 
-/* line 587, scss/partials/_select2.scss */
+/* line 591, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice {
   margin: 3px 5px 3px 0;
   padding: 3px 18px 3px 5px;
 }
 
-/* line 592, scss/partials/_select2.scss */
+/* line 596, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices .select2-search-choice .select2-chosen {
   cursor: default;
 }
 
-/* line 595, scss/partials/_select2.scss */
+/* line 599, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices .select2-search-choice-focus {
   background: #d4d4d4;
 }
 
-/* line 599, scss/partials/_select2.scss */
+/* line 603, scss/partials/_select2.scss */
 .select2-search-choice-close {
   display: block;
   width: 12px;
@@ -5129,35 +5135,35 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
   background: url("select2.png") right top no-repeat;
 }
 
-/* line 611, scss/partials/_select2.scss */
+/* line 615, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-search-choice-close {
   right: auto;
   left: 3px;
 }
 
-/* line 616, scss/partials/_select2.scss */
+/* line 620, scss/partials/_select2.scss */
 .select2-container-multi .select2-search-choice-close {
   left: 3px;
 }
 
-/* line 620, scss/partials/_select2.scss */
+/* line 624, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   left: auto;
   right: 2px;
 }
 
-/* line 625, scss/partials/_select2.scss */
+/* line 629, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices .select2-search-choice .select2-search-choice-close:hover {
   background-position: right -11px;
 }
 
-/* line 628, scss/partials/_select2.scss */
+/* line 632, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices .select2-search-choice-focus .select2-search-choice-close {
   background-position: right -11px;
 }
 
 /* disabled styles */
-/* line 633, scss/partials/_select2.scss */
+/* line 637, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-disabled .select2-choices {
   background-color: #f4f4f4;
   background-image: none;
@@ -5165,7 +5171,7 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   cursor: default;
 }
 
-/* line 640, scss/partials/_select2.scss */
+/* line 644, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice {
   padding: 3px 5px 3px 5px;
   border: 1px solid #ddd;
@@ -5173,20 +5179,20 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   background-color: #f4f4f4;
 }
 
-/* line 647, scss/partials/_select2.scss */
+/* line 651, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice .select2-search-choice-close {
   display: none;
   background: none;
 }
 
 /* end multiselect */
-/* line 653, scss/partials/_select2.scss */
+/* line 657, scss/partials/_select2.scss */
 .select2-result-selectable .select2-match,
 .select2-result-unselectable .select2-match {
   text-decoration: underline;
 }
 
-/* line 658, scss/partials/_select2.scss */
+/* line 662, scss/partials/_select2.scss */
 .select2-offscreen, .select2-offscreen:focus {
   clip: rect(0 0 0 0) !important;
   width: 1px !important;
@@ -5201,12 +5207,12 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   top: 0px !important;
 }
 
-/* line 672, scss/partials/_select2.scss */
+/* line 676, scss/partials/_select2.scss */
 .select2-display-none {
   display: none;
 }
 
-/* line 676, scss/partials/_select2.scss */
+/* line 680, scss/partials/_select2.scss */
 .select2-measure-scrollbar {
   position: absolute;
   top: -10000px;
@@ -5218,7 +5224,7 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
 
 /* Retina-ize icons */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 2dppx) {
-  /* line 688, scss/partials/_select2.scss */
+  /* line 692, scss/partials/_select2.scss */
   .select2-search input,
   .select2-search-choice-close,
   .select2-container .select2-choice abbr,
@@ -5228,7 +5234,7 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
     background-size: 60px 40px !important;
   }
 
-  /* line 697, scss/partials/_select2.scss */
+  /* line 701, scss/partials/_select2.scss */
   .select2-search input {
     background-position: 100% -21px !important;
   }

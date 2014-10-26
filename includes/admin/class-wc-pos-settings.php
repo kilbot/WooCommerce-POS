@@ -11,6 +11,10 @@
 
 class WC_POS_Admin_Settings {
 
+	/* @var string The db prefix for WP Options table */
+	static public $prefix = 'woocommerce_pos_settings_';
+
+	/* @var array Array of the Settings Page objects */
 	static public $settings = array();
 
 	/**
@@ -39,25 +43,22 @@ class WC_POS_Admin_Settings {
 	}
 
 	static public function save_settings() {
+		$data = $_POST;
 
-		// get db_key
-		if( empty( $_REQUEST['key'] ) )
-			wp_die('There is no option key');
+		// validate
+		if( !isset( $data['id'] ) )
+			wp_die('There is no option id');
 
-		// get data
-		if( empty( $_REQUEST[$_REQUEST['key']] ) )
-			wp_die('There is no option data');
+		// reserved option names
+		if( isset( $data['response'] ) )
+			wp_die('Data name "response" is reserved');
 
-		$key = $_REQUEST['key'];
-		$value = $_REQUEST[$_REQUEST['key']];
+		$id = $data['id'];
 
-		// save timestamp
-		if( isset( $data['updated'] ) )
-			wp_die('Reserved field name: updated');
-		else
-			$value['updated'] = current_time( 'timestamp' );
+		// remove ajax only $_POST data
+		unset( $data['id'], $data['action'], $data['security'] );
 
-		if( update_option( $key, $value ) ) {
+		if( update_option( self::$prefix . $id, $data ) ) {
 			$response = array(
 				'result' => 'success',
 				'notice' => __( 'Settings saved!', 'woocommerce-pos' )
@@ -69,7 +70,8 @@ class WC_POS_Admin_Settings {
 			);
 		}
 
-		return array( 'response' => $response );
+		$return['response'] = $response;
+		return $return;
 	}
 
 	public function enqueue_admin_styles() {
@@ -121,7 +123,6 @@ class WC_POS_Admin_Settings {
 				true
 			);
 
-			define('WPLANG', 'es_ES');
 			$locale_js = WC_POS_i18n::get_locale_js();
 			if( $locale_js ) {
 				wp_enqueue_script(

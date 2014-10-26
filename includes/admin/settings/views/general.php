@@ -9,19 +9,25 @@
 <table class="form-table">
 
 	<tr valign="top">
-		<th scope="row"><label for="">Example:</label></th>
-		<td><input type="text" name="<?= $this->get_setting_name('example'); ?>" value="<?= $this->get_setting_value('example') ?>" /></td>
-	</tr>
-
-	<tr valign="top">
-		<th scope="row"><label for="">Checkbox:</label></th>
-		<td><input type="checkbox" name="<?= $this->get_setting_name('checkbox'); ?>" value="<?= $this->get_setting_value('checkbox') ?>" /></td>
-	</tr>
-
-	<tr valign="top">
-		<th scope="row"><label for="">Select:</label></th>
+		<th scope="row"><label for="grant_access"><?= __( 'Grant POS Access', 'woocommerce-pos' ); ?></label></th>
 		<td>
-			<select name="<?= $this->get_setting_name( 'select' ); ?>" class="select2">
+			<select multiple name="grant_access" id="grant_access" class="select2">
+				<?php global $wp_roles; if( $roles = $wp_roles->roles ): foreach( $roles as $slug => $role ):  ?>
+					<option value="<?= $slug ?>"><?= $role['name'] ?></option>
+				<?php endforeach; endif; ?>
+			</select>
+		</td>
+	</tr>
+
+	<tr valign="top">
+		<th scope="row"><label for="checkbox">Checkbox:</label></th>
+		<td><input type="checkbox" name="checkbox" /></td>
+	</tr>
+
+	<tr valign="top">
+		<th scope="row"><label for="select">Select:</label></th>
+		<td>
+			<select name="select" class="select2">
 				<option value="888">Option 1</option>
 				<option value="999">Option 2</option>
 				<option value="000">Option 3</option>

@@ -1,7 +1,7 @@
 var POS = (function(App, Backbone, Marionette, $, _) {
 
     // init Marionette app
-    var App = new Marionette.Application();
+    var App = new Marionette.Application({ bootstrap: App.bootstrap });
     App.debug = false;
     App.Behaviors = {};
 

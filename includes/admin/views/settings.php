@@ -18,11 +18,18 @@
 		<p><?= __( 'There has been an error loading the settings, please contact <a href="mailto:support@woopos.com.au">support</a>', 'woocommerce-pos' ); ?></p>
 	</div>
 	<?php foreach( self::$settings as $setting ): ?>
+		<script type="text/javascript">
+			var POS = (function(App) {
+				if( !_.isArray( App.bootstrap ) ) App.bootstrap = [];
+				App.bootstrap.push( <?= $setting->get_settings() ?> );
+				return App;
+			})(POS || {});
+		</script>
 		<script id='tmpl-wc-pos-settings-<?= $setting->id ?>' type='text/html'>
 			<?= $setting->output(); ?>
 			<input class="button-primary" type="submit" value="<?= __( 'Save changes', 'woocommerce-pos' ); ?>" />
-			<input type="hidden" name="key" value="<?= $setting->option_name ?>" />
-			<?php wp_nonce_field( 'wc-pos-settings', 'security', false ); ?>
+			<input type="hidden" name="id" value="<?= $setting->id ?>" />
+			<input type="hidden" name="security" />
 		</script>
 	<?php endforeach; ?>
 </div>

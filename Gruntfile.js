@@ -131,6 +131,9 @@ module.exports = function(grunt) {
                         // select2
                         'bower_components/select2/select2.min.js',
                         'assets/js/src/lib/components/select2/behavior.js',
+
+                        // moment
+                        'bower_components/moment/moment.js',
                     ]
                 }
             },
