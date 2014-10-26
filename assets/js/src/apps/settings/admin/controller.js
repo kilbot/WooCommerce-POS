@@ -11,7 +11,7 @@ var POS = (function(App, Backbone, Marionette, $, _) {
             // store form state
             var SettingsModel = Backbone.Model.extend({
                 url: ajaxurl,
-                defaults: { action: 'wc_pos_save_admin_settings' }
+                sync: this._sync
             });
             this.settingsCollection = new Backbone.Collection( App.bootstrap, {
                 model: SettingsModel
@@ -37,7 +37,7 @@ var POS = (function(App, Backbone, Marionette, $, _) {
             _.defaults( options, { col: this.settingsCollection } );
             var view = new App.SettingsApp.Views.Settings(options);
 
-            // tab clicked
+            // form submit
             this.listenTo(view, 'settings:form:submit', function (model) {
                 this._saveSettings(model);
             });
@@ -47,7 +47,13 @@ var POS = (function(App, Backbone, Marionette, $, _) {
         },
 
         _saveSettings: function (model) {
-            model.save( [], { data: model.toJSON(), emulateHTTP: true, emulateJSON: true } );
+            model.save( [], { emulateHTTP: true } );
+        },
+
+        _sync: function (method, model, options) {
+            options.url = model.url + '?action=wc_pos_save_admin_settings&security=' + model.get('security');
+            model.unset('security');
+            return Backbone.sync(method, model, options);
         }
 
     });

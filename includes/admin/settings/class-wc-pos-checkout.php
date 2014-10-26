@@ -19,4 +19,8 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Page {
 		$this->label = _x( 'Checkout', 'Settings tab label', 'woocommerce-pos' );
 	}
 
+	protected function available( $gateway ) {
+		return true;
+	}
+
 }

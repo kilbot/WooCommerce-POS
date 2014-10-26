@@ -43,7 +43,7 @@ class WC_POS_Admin_Settings {
 	}
 
 	static public function save_settings() {
-		$data = $_POST;
+		$data = json_decode(trim(file_get_contents('php://input')), true);
 
 		// validate
 		if( !isset( $data['id'] ) )
@@ -53,14 +53,11 @@ class WC_POS_Admin_Settings {
 		if( isset( $data['response'] ) )
 			wp_die('Data name "response" is reserved');
 
-		// remove ajax only $_POST data
-		unset( $data['id'], $data['action'], $data['security'] );
-
 		// add timestamp to force update
 		$data['updated'] = current_time( 'timestamp' );
 
 		// update settings
-		if( update_option( self::$prefix . $_POST['id'], $data ) ) {
+		if( update_option( self::$prefix . $data['id'], $data ) ) {
 			$response = array(
 				'result' => 'success',
 				'notice' => __( 'Settings saved', 'woocommerce-pos' )

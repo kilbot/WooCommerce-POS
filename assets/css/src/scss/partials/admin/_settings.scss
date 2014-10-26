@@ -44,14 +44,36 @@
         margin:0;
         text-indent:0;
         font-size: 20px;
-//        position:absolute;
-//        top:0;
-//        left:0;
-//        width:100%;
-//        height:100%;
-//        text-align: center;
         content:"\e015";
         color:#ad74a2
+      }
+      .status-enabled:before {
+        font-family:WooCommerce;
+        speak:none;
+        font-weight:400;
+        font-variant:normal;
+        text-transform:none;
+        line-height:1;
+        -webkit-font-smoothing:antialiased;
+        margin:0;
+        text-indent:0;
+        font-size: 20px;
+        content:"\e015";
+        color:#ad74a2
+      }
+      .status-disabled:before {
+        font-family:WooCommerce;
+        speak:none; font-weight:400;
+        font-variant:normal;
+        text-transform:none;
+        line-height:1;
+        -webkit-font-smoothing:antialiased;
+        margin:0;
+        text-indent:0;
+        font-size: 20px;
+        text-align:center;
+        content: "\e602";
+        color:#E0E0E0;
       }
     }
   }

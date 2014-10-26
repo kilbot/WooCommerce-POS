@@ -11,10 +11,13 @@
 
 class WC_POS_Gateways {
 
+	static public $available = array();
+
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		self::$available = array( 'pos_cash', 'pos_card', 'paypal' );
 
 		add_action( 'woocommerce_payment_gateways', array( $this, 'load_gateways' ) );
 		add_filter( 'woocommerce_payment_gateways_setting_columns', array( $this, 'woocommerce_payment_gateways_setting_columns' ), 10, 1 );

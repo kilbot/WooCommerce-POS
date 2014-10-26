@@ -947,19 +947,50 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   content: "\e015";
   color: #ad74a2;
 }
-/* line 58, scss/partials/admin/_settings.scss */
+/* line 50, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways tbody .status-enabled:before {
+  font-family: WooCommerce;
+  speak: none;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  text-indent: 0;
+  font-size: 20px;
+  content: "\e015";
+  color: #ad74a2;
+}
+/* line 64, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways tbody .status-disabled:before {
+  font-family: WooCommerce;
+  speak: none;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  text-indent: 0;
+  font-size: 20px;
+  text-align: center;
+  content: "\e602";
+  color: #E0E0E0;
+}
+/* line 80, scss/partials/admin/_settings.scss */
 #wc-pos-settings p.response {
   display: inline-block;
   margin: 0 0 0 10px;
   line-height: 20px;
 }
-/* line 62, scss/partials/admin/_settings.scss */
+/* line 84, scss/partials/admin/_settings.scss */
 #wc-pos-settings p.response .spinner {
   display: inline-block;
   float: none;
   margin: 0;
 }
-/* line 67, scss/partials/admin/_settings.scss */
+/* line 89, scss/partials/admin/_settings.scss */
 #wc-pos-settings p.response i {
   margin-right: 5px;
   vertical-align: middle;

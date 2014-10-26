@@ -42,10 +42,16 @@
 							<td class="gateway-id"><?= esc_html( $gateway->id ) ?></td>
 							<td>
 								<?php if ( $gateway->enabled == 'yes' ): ?>
-								<span class="status-enabled" data-toggle="tooltip" title="<?= __ ( 'Enabled', 'woocommerce-pos' ); ?>"></span>
+									<span class="status-enabled" data-toggle="tooltip" title="<?= __ ( 'Enabled', 'woocommerce-pos' ); ?>"></span>
 								<?php else: echo '-'; endif; ?>
 							</td>
-							<td></td>
+							<td>
+								<?php if ( $this->available( $gateway->id ) ): ?>
+									<input type="checkbox" name="enabled[<?= $gateway->id ?>]" />
+								<?php else: ?>
+									<span class="status-disabled" data-toggle="tooltip" title="<?= __ ( 'Upgrade to Pro', 'woocommerce-pos' ); ?>"></span>
+								<?php endif; ?>
+							</td>
 							<td><a class="button" href="<?= admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . strtolower( get_class( $gateway ) ) ) ?>"><?= __( 'Settings', 'woocommerce-pos' ) ?></a></td>
 						</tr>
 					<?php endforeach; ?>
