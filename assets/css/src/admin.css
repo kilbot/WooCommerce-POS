@@ -1,108 +1,121 @@
-/**
- * Upgrade to Pro
- */
-/* line 4, scss/admin.scss */
-.woocommerce-pos-upgrade p {
-  font-size: 14px;
-}
-
-/* line 7, scss/admin.scss */
-.woocommerce-pos-upgrade h4 {
-  font-size: 18px;
-}
-
-/* line 10, scss/admin.scss */
-.woocommerce-pos-upgrade h3 {
-  font-size: 24px;
-}
-
-/* line 13, scss/admin.scss */
-.woocommerce-pos-upgrade h2 {
-  font-size: 28px;
-  line-height: 1.5em;
-}
-
-/* line 17, scss/admin.scss */
-.woocommerce-pos-upgrade a.btn {
-  color: #fff;
-  background-color: #cd2f19;
-  border: 1px solid #b62a16;
-  padding: 10px 16px;
-  font-size: 18px;
-  line-height: 1.33;
-  border-radius: 6px;
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-/* line 32, scss/admin.scss */
-.woocommerce-pos-upgrade a.btn:hover {
-  background-color: #a02513;
-  border-color: #801d10;
-}
-
-/* line 36, scss/admin.scss */
-.woocommerce-pos-upgrade .textcenter {
-  text-align: center;
-}
-
-/* line 39, scss/admin.scss */
-.woocommerce-pos-upgrade article.page {
-  float: left;
-  width: 70%;
-}
-
-/* line 43, scss/admin.scss */
-.woocommerce-pos-upgrade .sidebar {
-  margin-left: 75%;
-}
-
-/* line 46, scss/admin.scss */
-.woocommerce-pos-upgrade section.row {
-  padding: 20px 0;
-  clear: both;
-}
-
-/* line 50, scss/admin.scss */
-.woocommerce-pos-upgrade section.row:after {
-  content: " ";
-  visibility: hidden;
+/* line 7, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip {
+  position: absolute;
+  z-index: 1070;
   display: block;
-  height: 0;
-  clear: both;
+  visibility: visible;
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+/* line 16, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.in {
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+}
+/* line 17, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.top {
+  margin-top: -3px;
+  padding: 5px 0;
+}
+/* line 18, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.right {
+  margin-left: 3px;
+  padding: 0 5px;
+}
+/* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.bottom {
+  margin-top: 3px;
+  padding: 5px 0;
+}
+/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.left {
+  margin-left: -3px;
+  padding: 0 5px;
 }
 
-/* line 57, scss/admin.scss */
-.woocommerce-pos-upgrade section.row article {
-  width: 29%;
-  margin: 0 2%;
+/* line 24, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip-inner {
+  max-width: 200px;
+  padding: 3px 8px;
+  color: white;
   text-align: center;
-  float: left;
+  text-decoration: none;
+  background-color: black;
+  border-radius: 4px;
 }
 
-@media only screen and (max-width: 799px) {
-  /* line 65, scss/admin.scss */
-  .woocommerce-pos-upgrade article.page {
-    float: none;
-    width: auto;
-  }
-
-  /* line 69, scss/admin.scss */
-  .woocommerce-pos-upgrade .sidebar {
-    margin: 0;
-  }
-
-  /* line 72, scss/admin.scss */
-  .woocommerce-pos-upgrade section.row article {
-    float: none;
-    width: auto;
-    margin: 0;
-  }
+/* line 35, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
 }
+
+/* line 43, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.top .tooltip-arrow {
+  bottom: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: black;
+}
+/* line 50, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.top-left .tooltip-arrow {
+  bottom: 0;
+  left: 5px;
+  border-width: 5px 5px 0;
+  border-top-color: black;
+}
+/* line 56, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.top-right .tooltip-arrow {
+  bottom: 0;
+  right: 5px;
+  border-width: 5px 5px 0;
+  border-top-color: black;
+}
+/* line 62, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.right .tooltip-arrow {
+  top: 50%;
+  left: 0;
+  margin-top: -5px;
+  border-width: 5px 5px 5px 0;
+  border-right-color: black;
+}
+/* line 69, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.left .tooltip-arrow {
+  top: 50%;
+  right: 0;
+  margin-top: -5px;
+  border-width: 5px 0 5px 5px;
+  border-left-color: black;
+}
+/* line 76, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.bottom .tooltip-arrow {
+  top: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: black;
+}
+/* line 83, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.bottom-left .tooltip-arrow {
+  top: 0;
+  left: 5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: black;
+}
+/* line 89, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.bottom-right .tooltip-arrow {
+  top: 0;
+  right: 5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: black;
+}
+
 /**
  * POS ADMIN
  */
@@ -883,5 +896,177 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   /* line 701, scss/partials/_select2.scss */
   .select2-search input {
     background-position: 100% -21px !important;
+  }
+}
+/* line 2, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.form-table {
+  vertical-align: middle;
+  margin-bottom: 20px;
+  line-height: 1;
+}
+/* line 7, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.form-table th img {
+  margin: 2px -10px 0 0;
+  float: right;
+}
+/* line 14, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways th:first-of-type {
+  width: 1%;
+}
+/* line 17, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways th, #wc-pos-settings table.wc-gateways td {
+  text-align: center;
+  padding: 9px 7px;
+}
+/* line 21, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways th.gateway-name, #wc-pos-settings table.wc-gateways th.gateway-id,
+#wc-pos-settings table.wc-gateways td.gateway-name, #wc-pos-settings table.wc-gateways td.gateway-id {
+  text-align: left;
+}
+/* line 29, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways tbody td {
+  cursor: move;
+  padding: 7px;
+}
+/* line 33, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways tbody td.gateway-name {
+  font-weight: 700;
+}
+/* line 36, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways tbody .status-enabled:before {
+  font-family: WooCommerce;
+  speak: none;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  text-indent: 0;
+  font-size: 20px;
+  content: "\e015";
+  color: #ad74a2;
+}
+/* line 58, scss/partials/admin/_settings.scss */
+#wc-pos-settings p.response {
+  display: inline-block;
+  margin: 0 0 0 10px;
+  line-height: 20px;
+}
+/* line 62, scss/partials/admin/_settings.scss */
+#wc-pos-settings p.response .spinner {
+  display: inline-block;
+  float: none;
+  margin: 0;
+}
+/* line 67, scss/partials/admin/_settings.scss */
+#wc-pos-settings p.response i {
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+/**
+ * Upgrade to Pro
+ */
+/* line 4, scss/partials/admin/_upgrade.scss */
+.woocommerce-pos-upgrade p {
+  font-size: 14px;
+}
+
+/* line 7, scss/partials/admin/_upgrade.scss */
+.woocommerce-pos-upgrade h4 {
+  font-size: 18px;
+}
+
+/* line 10, scss/partials/admin/_upgrade.scss */
+.woocommerce-pos-upgrade h3 {
+  font-size: 24px;
+}
+
+/* line 13, scss/partials/admin/_upgrade.scss */
+.woocommerce-pos-upgrade h2 {
+  font-size: 28px;
+  line-height: 1.5em;
+}
+
+/* line 17, scss/partials/admin/_upgrade.scss */
+.woocommerce-pos-upgrade a.btn {
+  color: #fff;
+  background-color: #cd2f19;
+  border: 1px solid #b62a16;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 6px;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* line 32, scss/partials/admin/_upgrade.scss */
+.woocommerce-pos-upgrade a.btn:hover {
+  background-color: #a02513;
+  border-color: #801d10;
+}
+
+/* line 36, scss/partials/admin/_upgrade.scss */
+.woocommerce-pos-upgrade .textcenter {
+  text-align: center;
+}
+
+/* line 39, scss/partials/admin/_upgrade.scss */
+.woocommerce-pos-upgrade article.page {
+  float: left;
+  width: 70%;
+}
+
+/* line 43, scss/partials/admin/_upgrade.scss */
+.woocommerce-pos-upgrade .sidebar {
+  margin-left: 75%;
+}
+
+/* line 46, scss/partials/admin/_upgrade.scss */
+.woocommerce-pos-upgrade section.row {
+  padding: 20px 0;
+  clear: both;
+}
+
+/* line 50, scss/partials/admin/_upgrade.scss */
+.woocommerce-pos-upgrade section.row:after {
+  content: " ";
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+/* line 57, scss/partials/admin/_upgrade.scss */
+.woocommerce-pos-upgrade section.row article {
+  width: 29%;
+  margin: 0 2%;
+  text-align: center;
+  float: left;
+}
+
+@media only screen and (max-width: 799px) {
+  /* line 65, scss/partials/admin/_upgrade.scss */
+  .woocommerce-pos-upgrade article.page {
+    float: none;
+    width: auto;
+  }
+
+  /* line 69, scss/partials/admin/_upgrade.scss */
+  .woocommerce-pos-upgrade .sidebar {
+    margin: 0;
+  }
+
+  /* line 72, scss/partials/admin/_upgrade.scss */
+  .woocommerce-pos-upgrade section.row article {
+    float: none;
+    width: auto;
+    margin: 0;
   }
 }

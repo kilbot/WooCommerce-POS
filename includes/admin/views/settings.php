@@ -27,7 +27,7 @@
 		</script>
 		<script id='tmpl-wc-pos-settings-<?= $setting->id ?>' type='text/html'>
 			<?= $setting->output(); ?>
-			<input class="button-primary" type="submit" value="<?= __( 'Save changes', 'woocommerce-pos' ); ?>" />
+			<input class="button-primary" type="submit" value="<?= __( 'Save changes', 'woocommerce-pos' ); ?>" /><p class="response"></p>
 			<input type="hidden" name="id" value="<?= $setting->id ?>" />
 			<input type="hidden" name="security" />
 		</script>

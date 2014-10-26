@@ -8,7 +8,7 @@
 
 <table class="form-table">
 
-	<tr valign="top">
+	<tr>
 		<th scope="row"><label for="grant_access"><?= __( 'Grant POS Access', 'woocommerce-pos' ); ?></label></th>
 		<td>
 			<select multiple name="grant_access" id="grant_access" class="select2">
@@ -19,12 +19,15 @@
 		</td>
 	</tr>
 
-	<tr valign="top">
-		<th scope="row"><label for="checkbox">Checkbox:</label></th>
+	<tr>
+		<th scope="row">
+			<label for="checkbox">Checkbox:</label>
+			<img data-toggle="tooltip" title="<?= __( 'Help tip', 'woocommerce-pos' ); ?>" src="<?= esc_url( WC()->plugin_url() ); ?>/assets/images/help.png" height="16" width="16" />
+		</th>
 		<td><input type="checkbox" name="checkbox" /></td>
 	</tr>
 
-	<tr valign="top">
+	<tr>
 		<th scope="row"><label for="select">Select:</label></th>
 		<td>
 			<select name="select" class="select2">

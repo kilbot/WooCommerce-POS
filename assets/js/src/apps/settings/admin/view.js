@@ -5,8 +5,8 @@ var POS = (function(App, Backbone, Marionette, $, _) {
     App.SettingsApp.Views.Tabs = Marionette.ItemView.extend({
         el: '#wc-pos-settings-tabs',
 
-        initialize: function() {
-            this.$('a.nav-tab').first().addClass('nav-tab-active');
+        initialize: function( options ) {
+            this.$('a[data-tab="' + options.tab + '"]').addClass('nav-tab-active');
         },
 
         events: {
@@ -44,7 +44,9 @@ var POS = (function(App, Backbone, Marionette, $, _) {
         },
 
         behaviors: {
-            Select2: {}
+            Select2: {},
+            Tooltip: {},
+            Sortable: {}
         },
 
         onBeforeShow: function() {
@@ -73,11 +75,17 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
         saving: function(e) {
             if( _( e.changed ).isEmpty() ) {
-                this.ui.submit.prop( 'disabled', true )
-                    .after('<span class="spinner"></span>"');
-
+                this.ui.submit
+                    .prop( 'disabled', true )
+                    .next( 'p.response' )
+                    .html( '<i class="spinner"></i>' );
             } else {
-                this.ui.submit.prop( 'disabled', false );
+                var response = this.model.get('response');
+                var success = response.result == 'success' ? 'yes' : 'no';
+                this.ui.submit
+                    .prop( 'disabled', false)
+                    .next( 'p.response' )
+                    .html( '<i class="dashicons dashicons-' + success + '"></i>' + response.notice );
             }
             this.model.unset( 'response', { silent: true } );
         }

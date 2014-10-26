@@ -2,7 +2,7 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
     App.SettingsApp.Controller = Marionette.Controller.extend({
 
-        initialize: function () {
+        initialize: function (options) {
 
             this.settingsRegion = new Marionette.Region({
                 el: '#wc-pos-settings'
@@ -17,16 +17,17 @@ var POS = (function(App, Backbone, Marionette, $, _) {
                 model: SettingsModel
             });
 
-            this._showTabs();
-            this._showSettings({ tab: 'general' });
+            this._showTabs({ tab: options.tab });
+            this._showSettings({ tab: options.tab });
 
         },
 
-        _showTabs: function () {
-            var view = new App.SettingsApp.Views.Tabs();
+        _showTabs: function ( options ) {
+            var view = new App.SettingsApp.Views.Tabs( options );
 
             // tab clicked
             this.listenTo(view, 'settings:tab:clicked', function (tab) {
+                App.navigate( tab );
                 this._showSettings({ tab: tab });
             }, this);
 

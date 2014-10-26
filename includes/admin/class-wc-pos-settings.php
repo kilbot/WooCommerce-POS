@@ -53,20 +53,22 @@ class WC_POS_Admin_Settings {
 		if( isset( $data['response'] ) )
 			wp_die('Data name "response" is reserved');
 
-		$id = $data['id'];
-
 		// remove ajax only $_POST data
 		unset( $data['id'], $data['action'], $data['security'] );
 
-		if( update_option( self::$prefix . $id, $data ) ) {
+		// add timestamp to force update
+		$data['updated'] = current_time( 'timestamp' );
+
+		// update settings
+		if( update_option( self::$prefix . $_POST['id'], $data ) ) {
 			$response = array(
 				'result' => 'success',
-				'notice' => __( 'Settings saved!', 'woocommerce-pos' )
+				'notice' => __( 'Settings saved', 'woocommerce-pos' )
 			);
 		} else {
 			$response = array(
 				'result' => 'error',
-				'notice' => __( 'Settings not saved!', 'woocommerce-pos' )
+				'notice' => __( 'Settings not saved', 'woocommerce-pos' )
 			);
 		}
 
@@ -91,6 +93,9 @@ class WC_POS_Admin_Settings {
 		$screen = get_current_screen();
 
 		if( $screen->id == WC_POS_Admin_Menu::$settings_screen_id ) {
+
+			wp_enqueue_script( 'jquery-ui-sortable' );
+
 			wp_enqueue_script(
 				WC_POS_PLUGIN_NAME . '-core',
 				WC_POS_PLUGIN_URL . 'assets/js/core.min.js',

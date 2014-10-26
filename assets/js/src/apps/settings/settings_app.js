@@ -9,7 +9,8 @@ var POS = (function(App) {
 
         SettingsApp.onStart = function(){
             if( App.debug ) console.log('POS Settings Module started');
-            new SettingsApp.Controller();
+            var tab = App.getCurrentRoute() || 'general';
+            new SettingsApp.Controller({ tab: tab });
         };
 
     });

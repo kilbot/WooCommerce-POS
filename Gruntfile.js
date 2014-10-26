@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         // watch for changes and trigger sass, jshint, uglify and livereload
         watch: {
             compass: {
-                files: ['assets/css/src/scss/{,*/}*.{scss,sass}' ],
+                files: ['assets/css/src/scss/**/*.scss' ],
                 tasks: ['compass:dev']
             },
             cssmin: {
@@ -101,6 +101,10 @@ module.exports = function(grunt) {
         // minify js
         uglify: {
             core: {
+                options: {
+                    sourceMap: true,
+                    sourceMapName: 'assets/js/maps/core.map'
+                },
                 files: {
                     'assets/js/core.min.js': [
 
@@ -116,6 +120,10 @@ module.exports = function(grunt) {
                 }
             },
             settings_app: {
+                options: {
+                    sourceMap: true,
+                    sourceMapName: 'assets/js/maps/settings_app.map'
+                },
                 files: {
                     'assets/js/settings_app.min.js': [
                         'assets/js/src/apps/settings/settings_app.js',
@@ -125,12 +133,26 @@ module.exports = function(grunt) {
                 }
             },
             admin_components: {
+                options: {
+                    sourceMap: true,
+                    sourceMapName: 'assets/js/maps/admin_components.map'
+                },
                 files: {
                     'assets/js/admin_components.min.js': [
+
+                        //'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js',
+                        //'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js',
+
+                        // tooltip
+                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js',
+                        'assets/js/src/lib/components/tooltip/behavior.js',
 
                         // select2
                         'bower_components/select2/select2.min.js',
                         'assets/js/src/lib/components/select2/behavior.js',
+
+                        // sortable
+                        'assets/js/src/lib/components/sortable/behavior.js',
 
                         // moment
                         'bower_components/moment/moment.js',

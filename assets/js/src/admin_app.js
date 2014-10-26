@@ -11,6 +11,21 @@ var POS = (function(App, Backbone, Marionette, $, _) {
         return App.Behaviors[key];
     };
 
+    // helper functions
+    App.navigate = function(route, options){
+        options || (options = {});
+        Backbone.history.navigate(route, options);
+    };
+    App.getCurrentRoute = function(){
+        var frag = Backbone.history.fragment;
+        return _.isEmpty(frag) ? null : frag ;
+    };
+    App.startHistory = function() {
+        if( Backbone.history ) {
+            return Backbone.history.start();
+        }
+    };
+
     // on start, set up and start modules
     App.on('start', function() {
 
@@ -24,6 +39,9 @@ var POS = (function(App, Backbone, Marionette, $, _) {
         }
 
         if( App.debug ) console.log('POS Admin App started');
+
+        //
+        App.startHistory();
 
         /* global adminpage */
         if( adminpage === 'pos_page_wc_pos_settings' ) {
