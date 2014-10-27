@@ -14,7 +14,7 @@ class WC_POS_Admin_Settings {
 	/* @var string The db prefix for WP Options table */
 	static public $prefix = 'woocommerce_pos_settings_';
 
-	/* @var array Array of the Settings Page objects */
+	/* @var array Array of Settings Page classes */
 	static public $settings = array();
 
 	/**

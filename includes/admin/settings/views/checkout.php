@@ -28,15 +28,16 @@
 						<th class="gateway-id" scope="col"><?= __( 'Gateway ID', 'woocommerce-pos' ) ?></th>
 						<th scope="col"><?= __( 'Online Status', 'woocommerce-pos' ) ?></th>
 						<th scope="col"><?= __( 'POS Status', 'woocommerce-pos' ) ?></th>
+						<th scope="col"><?= __( 'POS Settings', 'woocommerce-pos' ) ?></th>
 						<th scope="col"><?= __( 'Settings', 'woocommerce-pos' ) ?></th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ( WC()->payment_gateways->payment_gateways() as $gateway ) : ?>
+					<?php foreach ( $this->load_gateways() as $gateway ) : ?>
 						<tr>
 							<td>
 								<input type="radio" name="default_gateway" value="<?= esc_attr( $gateway->id ) ?>" />
-								<input type="hidden" name="gateway_order[<?= $gateway->id ?>]" />
+								<input type="hidden" name="gateway_order[<?= $gateway->id ?>]" class="gateway_order" />
 							</td>
 							<td class="gateway-name"><?= $gateway->get_title() ?></td>
 							<td class="gateway-id"><?= esc_html( $gateway->id ) ?></td>
@@ -46,13 +47,22 @@
 								<?php else: echo '-'; endif; ?>
 							</td>
 							<td>
-								<?php if ( $this->available( $gateway->id ) ): ?>
+								<?php if ( $gateway->pos ): ?>
 									<input type="checkbox" name="enabled[<?= $gateway->id ?>]" />
 								<?php else: ?>
 									<span class="status-disabled" data-toggle="tooltip" title="<?= __ ( 'Upgrade to Pro', 'woocommerce-pos' ); ?>"></span>
 								<?php endif; ?>
 							</td>
-							<td><a class="button" href="<?= admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . strtolower( get_class( $gateway ) ) ) ?>"><?= __( 'Settings', 'woocommerce-pos' ) ?></a></td>
+							<td>
+								<?php if ( $gateway->pos ): ?>
+									<a class="button wc-pos-modal" href="#"><?= __( 'Settings', 'woocommerce-pos' ) ?></a>
+								<?php endif; ?>
+							</td>
+							<td>
+								<?php if( !in_array( $gateway->id, array( 'pos_cash', 'pos_card' ) ) ): ?>
+									<a class="button" href="<?= admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . strtolower( get_class( $gateway ) ) ) ?>"><?= __( 'Settings', 'woocommerce-pos' ) ?></a>
+								<?php endif; ?>
+							</td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>

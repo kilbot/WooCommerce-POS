@@ -29,9 +29,10 @@ var POS = (function(App, Backbone, Marionette, $, _) {
     App.SettingsApp.Views.Settings = Marionette.ItemView.extend({
         tagName: 'form',
 
-        initialize: function( options ) {
-            this.settingsCollection = options.col || {};
-            this.template = _.template( $('#tmpl-wc-pos-settings-' + options.tab ).html() );
+        initialize: function() {
+            this.template = _.template( $('#tmpl-wc-pos-settings-' + this.model.id ).html() );
+            this.listenTo( this.model, 'request', this.saving );
+            this.listenTo( this.model, 'change:response', this.saved );
         },
 
         ui: {
@@ -40,7 +41,8 @@ var POS = (function(App, Backbone, Marionette, $, _) {
         },
 
         events: {
-            'click @ui.submit': 'onSubmit'
+            'click @ui.submit': 'onSubmit',
+            'click a.wc-pos-modal': 'openModal'
         },
 
         behaviors: {
@@ -50,13 +52,7 @@ var POS = (function(App, Backbone, Marionette, $, _) {
         },
 
         onBeforeShow: function() {
-            var id = this.ui.id.val();
-            this.model = this.settingsCollection.get(id);
-            if( !_.isUndefined( this.model ) ) {
-                Backbone.Syphon.deserialize( this, this.model.toJSON() );
-            }
-
-            this.listenTo( this.model, 'request change:response', this.saving );
+            Backbone.Syphon.deserialize( this, this.model.toJSON() );
         },
 
         onBeforeDestroy: function() {
@@ -70,24 +66,57 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
         storeState: function() {
             var data = Backbone.Syphon.serialize( this );
-            return this.settingsCollection.add( data, { merge: true } );
+            return this.model.set( data );
         },
 
-        saving: function(e) {
-            if( _( e.changed ).isEmpty() ) {
-                this.ui.submit
-                    .prop( 'disabled', true )
-                    .next( 'p.response' )
-                    .html( '<i class="spinner"></i>' );
-            } else {
-                var response = this.model.get('response');
-                var success = response.result == 'success' ? 'yes' : 'no';
-                this.ui.submit
-                    .prop( 'disabled', false)
-                    .next( 'p.response' )
-                    .html( '<i class="dashicons dashicons-' + success + '"></i>' + response.notice );
-            }
+        saving: function() {
+            this.ui.submit
+                .prop( 'disabled', true )
+                .next( 'p.response' )
+                .html( '<i class="spinner"></i>' );
+        },
+
+        saved: function() {
+            var response = this.model.get('response');
+            var success = response.result == 'success' ? 'yes' : 'no';
+            this.ui.submit
+                .prop( 'disabled', false)
+                .next( 'p.response' )
+                .html( '<i class="dashicons dashicons-' + success + '"></i>' + response.notice );
+
             this.model.unset( 'response', { silent: true } );
+        },
+
+        openModal: function(e) {
+            e.preventDefault();
+            new App.SettingsApp.Views.Modal();
+        }
+
+    });
+
+    App.SettingsApp.Views.Modal =  Marionette.ItemView.extend({
+        template: _.template( $('#tmpl-wc-pos-modal').html() ),
+
+        behaviors: {
+            Modal: {}
+        },
+
+        initialize: function (options) {
+            this.trigger('modal:open');
+        },
+
+        events: {
+            'click .btn-primary' : 'confirm',
+            'click .btn-default' : 'cancel',
+            'click .close' : 'cancel'
+        },
+
+        confirm: function () {
+            this.trigger('modal:close');
+        },
+
+        cancel: function () {
+            this.trigger('modal:close');
         }
 
     });

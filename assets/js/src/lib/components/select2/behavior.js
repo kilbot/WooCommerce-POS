@@ -24,7 +24,7 @@ var POS = (function(App) {
             select: '.select2'
         },
 
-        onRender: function() {
+        onShow: function() {
             this.ui.select.select2( this.options );
         },
 
@@ -34,6 +34,6 @@ var POS = (function(App) {
 
     });
 
-    return POS;
+    return App;
 
 })(POS || {});

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-10-25 07:32:48+00:00\n"
+"POT-Creation-Date: 2014-10-27 13:02:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,10 +20,14 @@ msgstr ""
 
 #: includes/admin/class-wc-pos-menu.php:48
 #: includes/admin/class-wc-pos-menu.php:49
+#: includes/admin/settings/views/checkout.php:32
+#: includes/admin/settings/views/checkout.php:58
+#: includes/admin/settings/views/checkout.php:63
 msgid "Settings"
 msgstr ""
 
 #: includes/admin/class-wc-pos-menu.php:55
+#: includes/admin/settings/views/checkout.php:53
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -32,11 +36,11 @@ msgid "View POS"
 msgstr ""
 
 #: includes/admin/class-wc-pos-settings.php:63
-msgid "Settings saved!"
+msgid "Settings saved"
 msgstr ""
 
 #: includes/admin/class-wc-pos-settings.php:68
-msgid "Settings not saved!"
+msgid "Settings not saved"
 msgstr ""
 
 #: includes/admin/settings/views/checkout.php:7
@@ -66,8 +70,49 @@ msgid ""
 "security</a>"
 msgstr ""
 
+#: includes/admin/settings/views/checkout.php:21
+msgid "Gateway Display"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:26
+msgid "Default"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:27
+msgid "Gateway"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:28
+msgid "Gateway ID"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:29
+msgid "Online Status"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:30
+msgid "POS Status"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:31
+msgid "POS Settings"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:46
+#: includes/class-wc-pos-gateways.php:79
+msgid "Enabled"
+msgstr ""
+
 #: includes/admin/settings/views/general.php:7
 msgid "General Options"
+msgstr ""
+
+#: includes/admin/settings/views/general.php:12
+msgid "Grant POS Access"
+msgstr ""
+
+#: includes/admin/settings/views/general.php:25
+msgid "Help tip"
 msgstr ""
 
 #: includes/admin/views/settings.php:18
@@ -76,16 +121,12 @@ msgid ""
 "href=\"mailto:support@woopos.com.au\">support</a>"
 msgstr ""
 
-#: includes/admin/views/settings.php:23
+#: includes/admin/views/settings.php:30
 msgid "Save changes"
 msgstr ""
 
 #: includes/class-wc-pos-ajax.php:156
 msgid "Guest"
-msgstr ""
-
-#: includes/class-wc-pos-gateways.php:71
-msgid "Enabled"
 msgstr ""
 
 #: includes/gateways/class-wc-pos-card.php:24
@@ -162,7 +203,7 @@ msgstr ""
 msgid "http://www.kilbot.com.au"
 msgstr ""
 
-#: includes/admin/settings/class-wc-pos-checkout.php:16
+#: includes/admin/settings/class-wc-pos-checkout.php:19
 msgctxt "Settings tab label"
 msgid "Checkout"
 msgstr ""
@@ -172,12 +213,12 @@ msgctxt "settings tab label"
 msgid "General"
 msgstr ""
 
-#: includes/class-wc-pos-gateways.php:53
+#: includes/class-wc-pos-gateways.php:61
 msgctxt "Payment gateway status"
 msgid "Online Store"
 msgstr ""
 
-#: includes/class-wc-pos-gateways.php:54
+#: includes/class-wc-pos-gateways.php:62
 msgctxt "Payment gateway status"
 msgid "POS"
 msgstr ""

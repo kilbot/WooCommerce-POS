@@ -3,13 +3,15 @@ var POS = (function(App, Backbone, Marionette, $, _) {
     // init Marionette app
     var App = new Marionette.Application({ bootstrap: App.bootstrap });
     App.debug = false;
-    App.Behaviors = {};
 
     // behaviors
     App.Behaviors = {};
     Marionette.Behaviors.getBehaviorClass = function(options, key) {
         return App.Behaviors[key];
     };
+
+    // components
+    App.Components = {};
 
     // helper functions
     App.navigate = function(route, options){

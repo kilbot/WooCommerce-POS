@@ -21,15 +21,30 @@
 		<script type="text/javascript">
 			var POS = (function(App) {
 				if( !_.isArray( App.bootstrap ) ) App.bootstrap = [];
-				App.bootstrap.push( <?= $setting->get_settings() ?> );
+				App.bootstrap.push( <?= $setting->bootstrap_data() ?> );
 				return App;
 			})(POS || {});
 		</script>
-		<script id='tmpl-wc-pos-settings-<?= $setting->id ?>' type='text/html'>
+		<script id="tmpl-wc-pos-settings-<?= $setting->id ?>" type="text/html">
 			<?= $setting->output(); ?>
 			<input class="button-primary" type="submit" value="<?= __( 'Save changes', 'woocommerce-pos' ); ?>" /><p class="response"></p>
 			<input type="hidden" name="id" value="<?= $setting->id ?>" />
-			<input type="hidden" name="security" />
 		</script>
 	<?php endforeach; ?>
 </div>
+<div id="wc-pos-modal"></div>
+<script id="tmpl-wc-pos-modal" type="text/html">
+	<div class="modal-header">
+	<button type="button" class="close" aria-hidden="true">&times;</button>
+	<h4 class="modal-title">Confirm Action</h4>
+	</div>
+
+	<div class="modal-body">
+	<p>Are you sure you want to do this?</p>
+	</div>
+
+	<div class="modal-footer">
+	<button type="button" class="btn btn-default">Cancel</button>
+	<button type="button" class="btn btn-primary">Affirmative</button>
+	</div>
+</script>

@@ -8,6 +8,13 @@ var POS = (function(App, Backbone, Marionette, $, _) {
                 el: '#wc-pos-settings'
             });
 
+            this.modalRegion = new Marionette.Region({
+                el: '#wc-pos-modal'
+            });
+            App.Components.Modal.controller = new App.Components.Modal.Controller({
+                container: this.modalRegion
+            });
+
             // store form state
             var SettingsModel = Backbone.Model.extend({
                 url: ajaxurl,
@@ -17,8 +24,8 @@ var POS = (function(App, Backbone, Marionette, $, _) {
                 model: SettingsModel
             });
 
-            this._showTabs({ tab: options.tab });
-            this._showSettings({ tab: options.tab });
+            this._showTabs( options );
+            this._showSettings( options );
 
         },
 
@@ -33,9 +40,10 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
         },
 
-        _showSettings: function (options) {
-            _.defaults( options, { col: this.settingsCollection } );
-            var view = new App.SettingsApp.Views.Settings(options);
+        _showSettings: function ( options ) {
+            var view = new App.SettingsApp.Views.Settings({
+                model: this.settingsCollection.get( options.tab )
+            });
 
             // form submit
             this.listenTo(view, 'settings:form:submit', function (model) {

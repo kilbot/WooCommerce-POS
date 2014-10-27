@@ -11,15 +11,12 @@
 
 class WC_POS_Gateways {
 
-	static public $available = array();
-
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		self::$available = array( 'pos_cash', 'pos_card', 'paypal' );
-
-		add_action( 'woocommerce_payment_gateways', array( $this, 'load_gateways' ) );
+		add_action( 'woocommerce_payment_gateways', array( $this, 'payment_gateways' ) );
+		add_action( 'woocommerce_pos_payment_gateways', array( $this, 'pos_gateways' ) );
 		add_filter( 'woocommerce_payment_gateways_setting_columns', array( $this, 'woocommerce_payment_gateways_setting_columns' ), 10, 1 );
 		add_action( 'woocommerce_payment_gateways_setting_column_pos_status', array( $this, 'pos_status' ), 10, 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
@@ -28,11 +25,10 @@ class WC_POS_Gateways {
 	/**
 	 * Add POS gateways
 	 * hide gateways on the woocommerce settings page
-	 *
 	 * @param $gateways
 	 * @return array
 	 */
-	public function load_gateways( $gateways ) {
+	public function payment_gateways( $gateways ) {
 		$screen = get_current_screen();
 		if( !empty($screen) && $screen->id == 'woocommerce_page_wc-settings' ) {
 			return $gateways;
@@ -40,6 +36,15 @@ class WC_POS_Gateways {
 			array_push( $gateways, 'WC_POS_Gateways_Cash', 'WC_POS_Gateways_Card');
 			return $gateways;
 		}
+	}
+
+	/**
+	 * Enable POS gateways
+	 * @param $gateway
+	 */
+	public function pos_gateways( $gateway ) {
+		if( in_array( $gateway->id, array( 'pos_cash', 'pos_card', 'paypal' ) ) )
+			$gateway->pos = true;
 	}
 
 	/**

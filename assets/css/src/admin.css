@@ -1,3 +1,169 @@
+/* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-open {
+  overflow: hidden;
+}
+
+/* line 16, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal {
+  display: none;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+/* line 32, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal.fade .modal-dialog {
+  -webkit-transform: translate3d(0, -25%, 0);
+  transform: translate3d(0, -25%, 0);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -moz-transition: -moz-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+}
+/* line 36, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal.in .modal-dialog {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+/* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* line 44, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 10px;
+}
+
+/* line 51, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-content {
+  position: relative;
+  background-color: white;
+  border: 1px solid #999999;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  background-clip: padding-box;
+  outline: 0;
+}
+
+/* line 64, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: black;
+}
+/* line 73, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-backdrop.fade {
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+/* line 74, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-backdrop.in {
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+
+/* line 79, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+  min-height: 16.428571429px;
+}
+
+/* line 85, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-header .close {
+  margin-top: -2px;
+}
+
+/* line 90, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-title {
+  margin: 0;
+  line-height: 1.428571429;
+}
+
+/* line 97, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-body {
+  position: relative;
+  padding: 15px;
+}
+
+/* line 103, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+/* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+.modal-footer:before, .modal-footer:after {
+  content: " ";
+  display: table;
+}
+/* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+.modal-footer:after {
+  clear: both;
+}
+/* line 110, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-footer .btn + .btn {
+  margin-left: 5px;
+  margin-bottom: 0;
+}
+/* line 115, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-footer .btn-group .btn + .btn {
+  margin-left: -1px;
+}
+/* line 119, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-footer .btn-block + .btn-block {
+  margin-left: 0;
+}
+
+/* line 125, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-scrollbar-measure {
+  position: absolute;
+  top: -9999px;
+  width: 50px;
+  height: 50px;
+  overflow: scroll;
+}
+
+@media (min-width: 768px) {
+  /* line 136, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+  .modal-dialog {
+    width: 600px;
+    margin: 30px auto;
+  }
+
+  /* line 140, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+  .modal-content {
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  }
+
+  /* line 145, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+  .modal-sm {
+    width: 300px;
+  }
+}
+@media (min-width: 992px) {
+  /* line 149, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+  .modal-lg {
+    width: 900px;
+  }
+}
 /* line 7, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip {
   position: absolute;
@@ -909,30 +1075,34 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   margin: 2px -10px 0 0;
   float: right;
 }
-/* line 14, scss/partials/admin/_settings.scss */
+/* line 12, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.form-table td {
+  padding-right: 0;
+}
+/* line 17, scss/partials/admin/_settings.scss */
 #wc-pos-settings table.wc-gateways th:first-of-type {
   width: 1%;
 }
-/* line 17, scss/partials/admin/_settings.scss */
+/* line 20, scss/partials/admin/_settings.scss */
 #wc-pos-settings table.wc-gateways th, #wc-pos-settings table.wc-gateways td {
   text-align: center;
   padding: 9px 7px;
 }
-/* line 21, scss/partials/admin/_settings.scss */
+/* line 24, scss/partials/admin/_settings.scss */
 #wc-pos-settings table.wc-gateways th.gateway-name, #wc-pos-settings table.wc-gateways th.gateway-id,
 #wc-pos-settings table.wc-gateways td.gateway-name, #wc-pos-settings table.wc-gateways td.gateway-id {
   text-align: left;
 }
-/* line 29, scss/partials/admin/_settings.scss */
+/* line 32, scss/partials/admin/_settings.scss */
 #wc-pos-settings table.wc-gateways tbody td {
   cursor: move;
   padding: 7px;
 }
-/* line 33, scss/partials/admin/_settings.scss */
+/* line 36, scss/partials/admin/_settings.scss */
 #wc-pos-settings table.wc-gateways tbody td.gateway-name {
   font-weight: 700;
 }
-/* line 36, scss/partials/admin/_settings.scss */
+/* line 39, scss/partials/admin/_settings.scss */
 #wc-pos-settings table.wc-gateways tbody .status-enabled:before {
   font-family: WooCommerce;
   speak: none;
@@ -947,7 +1117,7 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   content: "\e015";
   color: #ad74a2;
 }
-/* line 50, scss/partials/admin/_settings.scss */
+/* line 53, scss/partials/admin/_settings.scss */
 #wc-pos-settings table.wc-gateways tbody .status-enabled:before {
   font-family: WooCommerce;
   speak: none;
@@ -962,7 +1132,7 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   content: "\e015";
   color: #ad74a2;
 }
-/* line 64, scss/partials/admin/_settings.scss */
+/* line 67, scss/partials/admin/_settings.scss */
 #wc-pos-settings table.wc-gateways tbody .status-disabled:before {
   font-family: WooCommerce;
   speak: none;
@@ -978,19 +1148,19 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   content: "\e602";
   color: #E0E0E0;
 }
-/* line 80, scss/partials/admin/_settings.scss */
+/* line 83, scss/partials/admin/_settings.scss */
 #wc-pos-settings p.response {
   display: inline-block;
   margin: 0 0 0 10px;
   line-height: 20px;
 }
-/* line 84, scss/partials/admin/_settings.scss */
+/* line 87, scss/partials/admin/_settings.scss */
 #wc-pos-settings p.response .spinner {
   display: inline-block;
   float: none;
   margin: 0;
 }
-/* line 89, scss/partials/admin/_settings.scss */
+/* line 92, scss/partials/admin/_settings.scss */
 #wc-pos-settings p.response i {
   margin-right: 5px;
   vertical-align: middle;

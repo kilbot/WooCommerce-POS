@@ -21,6 +21,9 @@ var POS = (function(App, $) {
                 },
                 stop:function(event,ui){
                     ui.item.removeAttr('style');
+                    $('input.gateway_order', this).each(function(idx) {
+                        $(this).val(idx);
+                    });
                 }
             });
 
@@ -30,12 +33,27 @@ var POS = (function(App, $) {
             sortable: '.sortable'
         },
 
-        onRender: function() {
-            this.ui.sortable.sortable( this.options );
+        onShow: function() {
+            if( this.ui.sortable.length > 0 ) {
+
+                // Custom sorting for checkout settings table
+                // TODO: move this to view callback
+                var table = this.ui.sortable;
+                var rows = table.find('tbody tr').get();
+
+                // sort according to input
+                table.append(rows.sort(function(a, b) {
+                    return parseInt($(a).find('input.gateway_order').val(), 10)
+                    - parseInt($(b).find('input.gateway_order').val(), 10);
+                }));
+
+                table.sortable( this.options );
+            }
+
         }
 
     });
 
-    return POS;
+    return App;
 
 })(POS || {}, jQuery);

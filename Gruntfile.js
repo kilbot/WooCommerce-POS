@@ -143,6 +143,9 @@ module.exports = function(grunt) {
                         //'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js',
                         //'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js',
 
+                        // transition, required for tooltip, popover, modal
+                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js',
+
                         // tooltip
                         'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js',
                         'assets/js/src/lib/components/tooltip/behavior.js',
@@ -156,6 +159,12 @@ module.exports = function(grunt) {
 
                         // moment
                         'bower_components/moment/moment.js',
+
+                        // modal
+                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js',
+                        'assets/js/src/lib/components/modal/controller.js',
+                        'assets/js/src/lib/components/modal/view.js',
+                        'assets/js/src/lib/components/modal/behavior.js',
                     ]
                 }
             },
