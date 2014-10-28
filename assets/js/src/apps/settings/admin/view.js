@@ -98,21 +98,26 @@ var POS = (function(App, Backbone, Marionette, $, _) {
         template: _.template( $('#tmpl-wc-pos-modal').html() ),
 
         behaviors: {
-            Modal: {}
+            Modal: {},
+            Tooltip: {}
         },
 
         initialize: function (options) {
             this.trigger('modal:open');
         },
 
+        serializeData: function() {
+            var data = { title: 'Hello World' };
+            return data;
+        },
+
         events: {
-            'click .btn-primary' : 'confirm',
-            'click .btn-default' : 'cancel',
+            'click .save' : 'save',
             'click .close' : 'cancel'
         },
 
-        confirm: function () {
-            this.trigger('modal:close');
+        save: function() {
+
         },
 
         cancel: function () {

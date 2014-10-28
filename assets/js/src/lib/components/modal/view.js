@@ -1,8 +1,8 @@
-var POS = (function(App, $, Marionette) {
+var POS = (function(App, $, Marionette, _) {
 
     App.Components.Modal.View = Marionette.LayoutView.extend({
         template: _.template('<div class="modal-dialog"><div class="modal-content"></div></div>'),
-        className: 'modal fade',
+        className: 'modal',
         attributes: {
             'tabindex' : -1,
             'role' : 'dialog'
@@ -51,4 +51,4 @@ var POS = (function(App, $, Marionette) {
 
     return App;
 
-})(POS || {}, jQuery, Marionette);
+})(POS || {}, jQuery, Marionette, _);

@@ -24,6 +24,7 @@ class WC_POS_Admin_Settings {
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		add_action( 'admin_print_footer_scripts', array( $this, 'admin_inline_js' ) );
 
 		$this->init();
 	}
@@ -38,10 +39,17 @@ class WC_POS_Admin_Settings {
 		self::$settings = apply_filters( 'woocommerce_pos_settings_tabs_array', $settings );
 	}
 
+	/**
+	 * Output the settings template
+	 */
 	static public function display_settings_page() {
 		include_once 'views/settings.php';
 	}
 
+	/**
+	 * Save the settings data
+	 * @return array
+	 */
 	static public function save_settings() {
 		$data = json_decode(trim(file_get_contents('php://input')), true);
 
@@ -73,6 +81,9 @@ class WC_POS_Admin_Settings {
 		return $return;
 	}
 
+	/**
+	 * Settings styles
+	 */
 	public function enqueue_admin_styles() {
 		$screen = get_current_screen();
 
@@ -86,6 +97,9 @@ class WC_POS_Admin_Settings {
 		}
 	}
 
+	/**
+	 * Settings scripts
+	 */
 	public function enqueue_admin_scripts() {
 		$screen = get_current_screen();
 
@@ -136,6 +150,18 @@ class WC_POS_Admin_Settings {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Start the Settings App
+	 */
+	public function admin_inline_js() {
+		$screen = get_current_screen();
+
+		if( $screen->id == WC_POS_Admin_Menu::$settings_screen_id ) {
+			echo '<script type="text/javascript">POS.start();</script>';
+		}
+
 	}
 
 }

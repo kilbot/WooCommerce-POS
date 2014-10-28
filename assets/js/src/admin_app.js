@@ -52,9 +52,6 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
     });
 
-    // start the app when DOM is ready
-    $( function(){ App.start(); } );
-
     return App;
 
 })(POS || {}, Backbone, Marionette, jQuery, _);

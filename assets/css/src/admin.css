@@ -50,7 +50,7 @@
   background-color: white;
   border: 1px solid #999999;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
+  border-radius: 0;
   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   background-clip: padding-box;
@@ -1065,45 +1065,45 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   }
 }
 /* line 2, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.form-table {
+.wc-pos-settings table.form-table {
   vertical-align: middle;
   margin-bottom: 20px;
   line-height: 1;
 }
 /* line 7, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.form-table th img {
+.wc-pos-settings table.form-table th img {
   margin: 2px -10px 0 0;
   float: right;
 }
 /* line 12, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.form-table td {
+.wc-pos-settings table.form-table td {
   padding-right: 0;
 }
 /* line 17, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways th:first-of-type {
+.wc-pos-settings table.wc-gateways th:first-of-type {
   width: 1%;
 }
 /* line 20, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways th, #wc-pos-settings table.wc-gateways td {
+.wc-pos-settings table.wc-gateways th, .wc-pos-settings table.wc-gateways td {
   text-align: center;
   padding: 9px 7px;
 }
 /* line 24, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways th.gateway-name, #wc-pos-settings table.wc-gateways th.gateway-id,
-#wc-pos-settings table.wc-gateways td.gateway-name, #wc-pos-settings table.wc-gateways td.gateway-id {
+.wc-pos-settings table.wc-gateways th.gateway-name, .wc-pos-settings table.wc-gateways th.gateway-id,
+.wc-pos-settings table.wc-gateways td.gateway-name, .wc-pos-settings table.wc-gateways td.gateway-id {
   text-align: left;
 }
 /* line 32, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways tbody td {
+.wc-pos-settings table.wc-gateways tbody td {
   cursor: move;
   padding: 7px;
 }
 /* line 36, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways tbody td.gateway-name {
+.wc-pos-settings table.wc-gateways tbody td.gateway-name {
   font-weight: 700;
 }
 /* line 39, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways tbody .status-enabled:before {
+.wc-pos-settings table.wc-gateways tbody .status-enabled:before {
   font-family: WooCommerce;
   speak: none;
   font-weight: 400;
@@ -1118,7 +1118,7 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   color: #ad74a2;
 }
 /* line 53, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways tbody .status-enabled:before {
+.wc-pos-settings table.wc-gateways tbody .status-enabled:before {
   font-family: WooCommerce;
   speak: none;
   font-weight: 400;
@@ -1133,7 +1133,7 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   color: #ad74a2;
 }
 /* line 67, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways tbody .status-disabled:before {
+.wc-pos-settings table.wc-gateways tbody .status-disabled:before {
   font-family: WooCommerce;
   speak: none;
   font-weight: 400;
@@ -1149,19 +1149,19 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   color: #E0E0E0;
 }
 /* line 83, scss/partials/admin/_settings.scss */
-#wc-pos-settings p.response {
+.wc-pos-settings p.response {
   display: inline-block;
   margin: 0 0 0 10px;
   line-height: 20px;
 }
 /* line 87, scss/partials/admin/_settings.scss */
-#wc-pos-settings p.response .spinner {
+.wc-pos-settings p.response .spinner {
   display: inline-block;
   float: none;
   margin: 0;
 }
 /* line 92, scss/partials/admin/_settings.scss */
-#wc-pos-settings p.response i {
+.wc-pos-settings p.response i {
   margin-right: 5px;
   vertical-align: middle;
 }
@@ -1270,4 +1270,96 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
     width: auto;
     margin: 0;
   }
+}
+/* line 2, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-header {
+  padding: 0;
+  position: relative;
+  background-color: #fcfcfc;
+}
+/* line 6, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-header h1 {
+  padding: 0 16px;
+  font-size: 22px;
+  line-height: 50px;
+  margin: 0;
+}
+/* line 12, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-header .close {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  cursor: pointer;
+  color: #777;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  border-left: 1px solid #ddd;
+  line-height: 50px;
+  background: transparent;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-timing-function: ease-in-out;
+  transition-timing-function: ease-in-out;
+}
+/* line 28, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-header .close:hover {
+  color: #000;
+  border-color: #ccc;
+  background: #ddd;
+  outline: 0;
+}
+/* line 35, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-body {
+  font-size: 14px;
+  line-height: 1.4;
+}
+/* line 39, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-body th {
+  font-weight: 600;
+  width: 150px;
+  text-align: left;
+  padding: 10px 10px 10px 0;
+}
+/* line 44, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-body th img {
+  margin: 2px -10px 0 0;
+  float: right;
+}
+/* line 49, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-body td {
+  padding: 10px 0 10px 10px;
+}
+/* line 52, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-body input[type="text"] {
+  width: 100%;
+}
+/* line 55, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-body textarea {
+  width: 100%;
+  height: 50px;
+}
+/* line 61, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-footer {
+  padding: 11px;
+}
+/* line 63, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-footer p.response {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  text-align: right;
+  line-height: 20px;
+}
+/* line 68, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-footer p.response .spinner {
+  display: inline-block;
+  float: none;
+  margin: 0;
+}
+/* line 73, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-footer p.response i {
+  margin-right: 5px;
+  vertical-align: middle;
 }
