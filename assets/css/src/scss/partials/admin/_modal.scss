@@ -35,7 +35,8 @@
   .modal-body {
     font-size: 14px;
     line-height: 1.4;
-//    table.form-table {
+    table.form-table {
+      width: 100%;
       th {
         font-weight: 600;
         width: 150px;
@@ -56,7 +57,7 @@
         width: 100%;
         height: 50px;
       }
-//    }
+    }
   }
   .modal-footer {
     padding: 11px;

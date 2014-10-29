@@ -4,6 +4,10 @@ var POS = (function(App, Backbone, Marionette, $, _) {
     var App = new Marionette.Application({ bootstrap: App.bootstrap });
     App.debug = false;
 
+    // entities
+    App.Entities = {};
+    App.Entities.channel = Backbone.Radio.channel('entities');
+
     // behaviors
     App.Behaviors = {};
     Marionette.Behaviors.getBehaviorClass = function(options, key) {

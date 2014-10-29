@@ -119,6 +119,18 @@ module.exports = function(grunt) {
                     ]
                 }
             },
+            admin_app: {
+                options: {
+                    sourceMap: true,
+                    sourceMapName: 'assets/js/maps/admin_app.map'
+                },
+                files: {
+                    'assets/js/admin_app.min.js': [
+                        'assets/js/src/admin_app.js',
+                        'assets/js/src/entities/options.js',
+                    ]
+                }
+            },
             settings_app: {
                 options: {
                     sourceMap: true,
@@ -180,7 +192,6 @@ module.exports = function(grunt) {
             },
             admin: {
                 files: {
-                    'assets/js/admin_app.min.js': 'assets/js/src/admin_app.js',
                     'assets/js/products.min.js': 'assets/js/src/products.js'
                 }
             }

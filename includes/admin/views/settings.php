@@ -40,7 +40,7 @@
 	</div>
 
 	<form class="modal-body">
-		<table class=form-table">
+		<table class="form-table">
 			<tr>
 				<th scope="row">
 					<label for="title"><?= __( 'Title', 'woocommerce-pos' ); ?></label>
@@ -71,7 +71,7 @@
 				<td>
 					<input name="card-reader" type="checkbox" />
 					<?= _x( 'Enable card reader input field.', 'POS checkout settings', 'woocommerce-pos' ); ?><br />
-					<em><?= sprintf( __( 'Please <a href="%s">read the docs</a> for more information on card readers.', 'woocommerce-pos' ), 'http://woopos.com.au/docs/card-readers/' ); ?></em>
+					<em><?= sprintf( __( 'Please <a href="%s" target="_blank">read the docs</a> for more information on card readers.', 'woocommerce-pos' ), 'http://woopos.com.au/docs/card-readers/' ); ?></em>
 				</td>
 			</tr>
 		</table>
@@ -79,6 +79,6 @@
 
 	<div class="modal-footer">
 		<p class="response"></p>
-		<button type="button" class="button-primary"><?= __( 'Save changes', 'woocommerce-pos' ); ?></button>
+		<button type="button" class="button-primary save"><?= __( 'Save changes', 'woocommerce-pos' ); ?></button>
 	</div>
 </script>

@@ -28,9 +28,16 @@ class WC_POS_Admin {
 	 */
 	private function init() {
 
-		new WC_POS_Admin_Menu();    // add menu items
-		new WC_POS_Gateways();      // pos payment gateways
-		new WC_POS_Admin_Settings();      // add settings pages
+		// ajax
+		if( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			new WC_POS_AJAX();      // classes only needed for ajax requests
+
+		// wp admin
+		} else {
+			new WC_POS_Admin_Menu();      // add menu items
+			new WC_POS_Admin_Settings();  // add settings pages
+		}
+
 	}
 
 	public function enqueue_admin_styles() {

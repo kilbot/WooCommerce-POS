@@ -37,4 +37,29 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Page {
 		return $ordered_gateways;
 	}
 
+	static public function default_gateway_settings( $gateway_id ) {
+		$gateways = WC_Payment_Gateways::instance()->payment_gateways;
+		$settings = false;
+		$gateway = null;
+
+		// get gateway by id
+		foreach( $gateways as $object ) {
+			if ( $gateway_id == $object->id ) {
+				$gateway = $object;
+				break;
+			}
+		}
+
+		if( $gateway ) {
+			$settings['title'] = $gateway->title;
+			$settings['description'] = $gateway->description;
+			$settings['icon'] = 'true';
+
+			// update settings so we don't have to do this again
+			update_option( WC_POS_Admin_Settings::$prefix . 'gateway_' . $gateway_id, $settings );
+		}
+
+		return $settings;
+	}
+
 }

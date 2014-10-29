@@ -55,7 +55,7 @@
 							</td>
 							<td>
 								<?php if ( $gateway->pos ): ?>
-									<a class="button wc-pos-modal" href="#"><?= __( 'Settings', 'woocommerce-pos' ) ?></a>
+									<a class="button wc-pos-modal" data-gateway="<?= $gateway->id ?>" href="#"><?= __( 'Settings', 'woocommerce-pos' ) ?></a>
 								<?php endif; ?>
 							</td>
 							<td>

@@ -47,6 +47,30 @@ class WC_POS_Admin_Settings {
 	}
 
 	/**
+	 * Get the settings data
+	 * @return array
+	 */
+	static public function get_settings() {
+
+		// validate
+		if( !isset( $_GET['id'] ) )
+			wp_die('There is no option id');
+
+		// get settings
+		$settings = get_option( self::$prefix . $_GET['id'] );
+
+		// default settings for gateways
+		if( !$settings ) {
+			$gateway_id = preg_replace( '/^gateway_/', '', $_GET['id'], 1, $count );
+			if( $count ) {
+				$settings = WC_POS_Admin_Settings_Checkout::default_gateway_settings( $gateway_id );
+			}
+		}
+
+		return $settings;
+	}
+
+	/**
 	 * Save the settings data
 	 * @return array
 	 */
@@ -63,6 +87,9 @@ class WC_POS_Admin_Settings {
 
 		// add timestamp to force update
 		$data['updated'] = current_time( 'timestamp' );
+
+		// remove the security attribute
+		unset( $data['security'] );
 
 		// update settings
 		if( update_option( self::$prefix . $data['id'], $data ) ) {

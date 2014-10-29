@@ -15,14 +15,9 @@ var POS = (function(App, Backbone, Marionette, $, _) {
                 container: this.modalRegion
             });
 
-            // store form state
-            var SettingsModel = Backbone.Model.extend({
-                url: ajaxurl,
-                sync: this._sync
-            });
-            this.settingsCollection = new Backbone.Collection( App.bootstrap, {
-                model: SettingsModel
-            });
+            // get settings collection and bootstrap with inline json data
+            this.settingsCollection = App.Entities.channel.request('wp_option:entities');
+            this.settingsCollection.add( App.bootstrap );
 
             this._showTabs( options );
             this._showSettings( options );
@@ -42,6 +37,7 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
         _showSettings: function ( options ) {
             var view = new App.SettingsApp.Views.Settings({
+                collection: this.settingsCollection,
                 model: this.settingsCollection.get( options.tab )
             });
 
@@ -55,13 +51,7 @@ var POS = (function(App, Backbone, Marionette, $, _) {
         },
 
         _saveSettings: function (model) {
-            model.save( [], { emulateHTTP: true } );
-        },
-
-        _sync: function (method, model, options) {
-            options.url = model.url + '?action=wc_pos_save_admin_settings&security=' + model.get('security');
-            model.unset('security');
-            return Backbone.sync(method, model, options);
+            model.save();
         }
 
     });

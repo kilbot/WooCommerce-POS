@@ -61,7 +61,7 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
         onSubmit: function(e) {
             e.preventDefault();
-            this.trigger( 'settings:form:submit', this.storeState() );
+            this.storeState().save();
         },
 
         storeState: function() {
@@ -89,7 +89,19 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
         openModal: function(e) {
             e.preventDefault();
-            new App.SettingsApp.Views.Modal();
+            var btn = $(e.target);
+
+            var modalModel = this.collection.add({
+                id: 'gateway_' + btn.data('gateway'),
+                security: this.model.get('security')
+            });
+
+            // lazy load modal data
+            modalModel.fetch({
+                success: function() {
+                    new App.SettingsApp.Views.Modal({ model: modalModel });
+                }
+            });
         }
 
     });
@@ -106,18 +118,19 @@ var POS = (function(App, Backbone, Marionette, $, _) {
             this.trigger('modal:open');
         },
 
-        serializeData: function() {
-            var data = { title: 'Hello World' };
-            return data;
-        },
-
         events: {
             'click .save' : 'save',
             'click .close' : 'cancel'
         },
 
-        save: function() {
+        onBeforeShow: function() {
+            Backbone.Syphon.deserialize( this, this.model.toJSON() );
+        },
 
+        save: function() {
+            var data = Backbone.Syphon.serialize( this );
+            return this.model.set( data );
+            this.model.save();
         },
 
         cancel: function () {

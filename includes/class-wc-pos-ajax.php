@@ -27,7 +27,7 @@ class WC_POS_AJAX {
 			'set_product_visibilty' 	=> false,
 			'email_receipt' 			=> false,
 			'get_print_template' 		=> false,
-			'save_admin_settings'       => false
+			'admin_settings'            => false
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -238,12 +238,21 @@ class WC_POS_AJAX {
 		die();
 	}
 
-	public function save_admin_settings() {
+	/**
+	 * POS Settings stored in options table
+	 */
+	public function admin_settings() {
+		$response = '';
 
 		// security
 		check_ajax_referer( 'wc-pos-settings', 'security' );
 
-		$response = WC_POS_Admin_Settings::save_settings();
+		$method = $_SERVER['REQUEST_METHOD'];
+		if( $method === 'POST' ) {
+			$response = WC_POS_Admin_Settings::save_settings();
+		} elseif( $method === 'GET' ) {
+			$response = WC_POS_Admin_Settings::get_settings();
+		}
 
 		$this->json_headers();
 		echo json_encode( $response );

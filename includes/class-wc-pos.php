@@ -55,15 +55,11 @@ class WC_POS {
 
 		new WC_POS_i18n();          // internationalization
 		new WC_POS_Products();      // products
+		new WC_POS_Gateways();      // pos payment gateways
 
 		// admin
-		if  ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
+		if ( is_admin() ) {
 			new WC_POS_Admin();
-		}
-
-		// ajax
-		if  ( is_admin() && defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			new WC_POS_AJAX();
 		}
 
 	}
