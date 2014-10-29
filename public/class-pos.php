@@ -204,6 +204,9 @@ class WooCommerce_POS {
 		if( !$this->is_pos ) 
 			return;
 
+		// disable W3 Total Cache minify
+		define('DONOTMINIFY', true);
+
 		// set up $current_user for use in includes
 		global $current_user;
 		get_currentuserinfo();
