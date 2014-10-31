@@ -12,7 +12,7 @@
 class WC_POS {
 
 	/**
-	 *
+	 * Constructor
 	 */
 	public function __construct() {
 
@@ -22,6 +22,9 @@ class WC_POS {
 		}
 
 		$this->init();
+
+		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ) );
+		do_action( 'woocommerce_pos_loaded' );
 
 	}
 
@@ -54,14 +57,40 @@ class WC_POS {
 		require_once WC_POS_PLUGIN_PATH . 'includes/wc-pos-functions.php';
 
 		new WC_POS_i18n();          // internationalization
+		new WC_POS_Template();      // POS front end
 		new WC_POS_Products();      // products
 		new WC_POS_Gateways();      // pos payment gateways
 
-		// admin
+		// front-end only
+		if( ! is_admin() ) {
+
+		}
+
+		// admin only
 		if ( is_admin() ) {
 			new WC_POS_Admin();
 		}
 
+	}
+
+	/**
+	 * Bypass authentication for WC REST API
+	 *
+	 * @param $user
+	 *
+	 * @return WP_User object
+	 */
+	public function wc_api_authentication( $user ) {
+
+		if( is_pos() ) {
+			global $current_user;
+			$user = $current_user;
+
+			if( ! user_can( $user->ID, 'manage_woocommerce_pos' ) )
+				$user = new WP_Error( 'woocommerce_pos_authentication_error', __( 'User not authorized to manage WooCommerce POS', 'woocommerce-pos' ), array( 'code' => 500 ) );
+		}
+
+		return $user;
 	}
 
 }

@@ -15,7 +15,7 @@ abstract class WC_POS_Admin_Settings_Page {
 	 * Output the view file
 	 */
 	public function output(){
-		include_once 'views/' . $this->id . '.php';
+		include 'views/' . $this->id . '.php';
 	}
 
 	/**
@@ -23,11 +23,10 @@ abstract class WC_POS_Admin_Settings_Page {
 	 * @return mixed|string|void
 	 */
 	public function bootstrap_data() {
-		$defaults = array(
-			'id' => $this->id,
-			'security' => wp_create_nonce( 'wc-pos-settings' )
-		);
-		return json_encode( array_merge( $defaults, $this->data ) );
+		$data = get_option( WC_POS_Admin_Settings::DB_PREFIX . $this->id );
+		$data['id'] = $this->id;
+		$data['security'] = wp_create_nonce( 'wc-pos-settings' );
+		return json_encode( $data );
 	}
 
 }

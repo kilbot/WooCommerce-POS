@@ -21,10 +21,16 @@
 
 	<tr>
 		<th scope="row">
-			<label for="checkbox">Checkbox:</label>
-			<img data-toggle="tooltip" title="<?= __( 'Help tip', 'woocommerce-pos' ); ?>" src="<?= esc_url( WC()->plugin_url() ); ?>/assets/images/help.png" height="16" width="16" />
+			<label for="enable_pos_visibility"><?= __( 'Product Visibility', 'woocommerce-pos' ) ?>:</label>
 		</th>
-		<td><input type="checkbox" name="checkbox" /></td>
+		<td>
+			<input type="checkbox" name="enable_pos_visibility" />
+			<?= __( 'Enable product visibility options.', 'woocommerce-pos' ) ?><br>
+			<em>
+				<?= __( 'For example, POS Only or Online Only products', 'woocommerce-pos' ) ?>.
+				<?= sprintf( __( 'For more information please <a href="%s">read the docs</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/pos-only-products/' )?>.
+			</em>
+		</td>
 	</tr>
 
 	<tr>

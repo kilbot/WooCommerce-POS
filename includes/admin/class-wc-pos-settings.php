@@ -12,42 +12,60 @@
 class WC_POS_Admin_Settings {
 
 	/* @var string The db prefix for WP Options table */
-	static public $prefix = 'woocommerce_pos_settings_';
+	const DB_PREFIX = 'woocommerce_pos_settings_';
 
-	/* @var array Array of Settings Page classes */
-	static public $settings = array();
+	/* @var string The settings screen id */
+	private $screen_id;
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
-
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-		add_action( 'admin_print_footer_scripts', array( $this, 'admin_inline_js' ) );
-
-		$this->init();
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'current_screen', array( $this, 'conditional_init' ) );
 	}
 
 	/**
-	 * Load settings subclasses
+	 * Add Settings page to admin menu
 	 */
-	private function init() {
-		$settings = array();
-		$settings[] = new WC_POS_Admin_Settings_General();
-		$settings[] = new WC_POS_Admin_Settings_Checkout();
-		self::$settings = apply_filters( 'woocommerce_pos_settings_tabs_array', $settings );
+	public function admin_menu() {
+		$this->screen_id = add_submenu_page(
+			WC_POS_PLUGIN_NAME,
+			__( 'Settings', 'woocommerce-pos' ),
+			__( 'Settings', 'woocommerce-pos' ),
+			'manage_woocommerce_pos',
+			'wc_pos_settings',
+			array( $this, 'display_settings_page' )
+		);
 	}
 
 	/**
-	 * Output the settings template
+	 * Enqueue scripts for the settings page
+	 *
+	 * @param $current_screen
 	 */
-	static public function display_settings_page() {
-		include_once 'views/settings.php';
+	public function conditional_init( $current_screen ) {
+		if( $current_screen->id == $this->screen_id ) {
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+			add_action( 'admin_print_footer_scripts', array( $this, 'admin_inline_js' ) );
+		}
 	}
 
 	/**
-	 * Get the settings data
+	 * Output the settings pages
+	 */
+	public function display_settings_page() {
+		$settings = apply_filters( 'woocommerce_pos_settings_tabs_array', array(
+			new WC_POS_Admin_Settings_General(),
+			new WC_POS_Admin_Settings_Checkout()
+		));
+
+		include 'views/settings.php';
+	}
+
+	/**
+	 * Get settings data
 	 * @return array
 	 */
 	static public function get_settings() {
@@ -57,13 +75,13 @@ class WC_POS_Admin_Settings {
 			wp_die('There is no option id');
 
 		// get settings
-		$settings = get_option( self::$prefix . $_GET['id'] );
+		$settings = get_option( self::DB_PREFIX . $_GET['id'] );
 
 		// default settings for gateways
 		if( !$settings ) {
 			$gateway_id = preg_replace( '/^gateway_/', '', $_GET['id'], 1, $count );
 			if( $count ) {
-				$settings = WC_POS_Admin_Settings_Checkout::default_gateway_settings( $gateway_id );
+				$settings = get_option( self::DB_PREFIX . $_GET['id'] );
 			}
 		}
 
@@ -71,7 +89,7 @@ class WC_POS_Admin_Settings {
 	}
 
 	/**
-	 * Save the settings data
+	 * Save settings data
 	 * @return array
 	 */
 	static public function save_settings() {
@@ -92,7 +110,7 @@ class WC_POS_Admin_Settings {
 		unset( $data['security'] );
 
 		// update settings
-		if( update_option( self::$prefix . $data['id'], $data ) ) {
+		if( update_option( self::DB_PREFIX . $data['id'], $data ) ) {
 			$response = array(
 				'result' => 'success',
 				'notice' => __( 'Settings saved', 'woocommerce-pos' )
@@ -112,70 +130,62 @@ class WC_POS_Admin_Settings {
 	 * Settings styles
 	 */
 	public function enqueue_admin_styles() {
-		$screen = get_current_screen();
-
-		if( $screen->id == WC_POS_Admin_Menu::$settings_screen_id ) {
-			wp_enqueue_style(
-				WC_POS_PLUGIN_NAME . '-admin',
-				WC_POS_PLUGIN_URL . 'assets/css/admin.min.css',
-				null,
-				WC_POS_VERSION
-			);
-		}
+		wp_enqueue_style(
+			WC_POS_PLUGIN_NAME . '-admin',
+			WC_POS_PLUGIN_URL . 'assets/css/admin.min.css',
+			null,
+			WC_POS_VERSION
+		);
 	}
 
 	/**
 	 * Settings scripts
 	 */
 	public function enqueue_admin_scripts() {
-		$screen = get_current_screen();
 
-		if( $screen->id == WC_POS_Admin_Menu::$settings_screen_id ) {
+		wp_enqueue_script( 'jquery-ui-sortable' );
 
-			wp_enqueue_script( 'jquery-ui-sortable' );
+		wp_enqueue_script(
+			WC_POS_PLUGIN_NAME . '-core',
+			WC_POS_PLUGIN_URL . 'assets/js/core.min.js',
+			array( 'jquery', 'backbone', 'underscore' ),
+			WC_POS_VERSION,
+			true
+		);
 
+		wp_enqueue_script(
+			WC_POS_PLUGIN_NAME . '-admin-app',
+			WC_POS_PLUGIN_URL . 'assets/js/admin_app.min.js',
+			array( WC_POS_PLUGIN_NAME . '-core' ),
+			WC_POS_VERSION,
+			true
+		);
+
+		wp_enqueue_script(
+			WC_POS_PLUGIN_NAME . '-settings-app',
+			WC_POS_PLUGIN_URL . 'assets/js/settings_app.min.js',
+			array( WC_POS_PLUGIN_NAME . '-admin-app' ),
+			WC_POS_VERSION,
+			true
+		);
+
+		wp_enqueue_script(
+			WC_POS_PLUGIN_NAME . '-admin-components',
+			WC_POS_PLUGIN_URL . 'assets/js/admin_components.min.js',
+			array( WC_POS_PLUGIN_NAME . '-admin-app' ),
+			WC_POS_VERSION,
+			true
+		);
+
+		$locale_js = WC_POS_i18n::get_locale_js();
+		if( $locale_js ) {
 			wp_enqueue_script(
-				WC_POS_PLUGIN_NAME . '-core',
-				WC_POS_PLUGIN_URL . 'assets/js/core.min.js',
-				array( 'jquery', 'backbone', 'underscore' ),
+				WC_POS_PLUGIN_NAME . '-js-locale',
+				$locale_js,
+				array( WC_POS_PLUGIN_NAME . '-admin-components' ),
 				WC_POS_VERSION,
 				true
 			);
-
-			wp_enqueue_script(
-				WC_POS_PLUGIN_NAME . '-admin-app',
-				WC_POS_PLUGIN_URL . 'assets/js/admin_app.min.js',
-				array( WC_POS_PLUGIN_NAME . '-core' ),
-				WC_POS_VERSION,
-				true
-			);
-
-			wp_enqueue_script(
-				WC_POS_PLUGIN_NAME . '-settings-app',
-				WC_POS_PLUGIN_URL . 'assets/js/settings_app.min.js',
-				array( WC_POS_PLUGIN_NAME . '-admin-app' ),
-				WC_POS_VERSION,
-				true
-			);
-
-			wp_enqueue_script(
-				WC_POS_PLUGIN_NAME . '-admin-components',
-				WC_POS_PLUGIN_URL . 'assets/js/admin_components.min.js',
-				array( WC_POS_PLUGIN_NAME . '-admin-app' ),
-				WC_POS_VERSION,
-				true
-			);
-
-			$locale_js = WC_POS_i18n::get_locale_js();
-			if( $locale_js ) {
-				wp_enqueue_script(
-					WC_POS_PLUGIN_NAME . '-js-locale',
-					$locale_js,
-					array( WC_POS_PLUGIN_NAME . '-admin-components' ),
-					WC_POS_VERSION,
-					true
-				);
-			}
 		}
 	}
 
@@ -183,12 +193,7 @@ class WC_POS_Admin_Settings {
 	 * Start the Settings App
 	 */
 	public function admin_inline_js() {
-		$screen = get_current_screen();
-
-		if( $screen->id == WC_POS_Admin_Menu::$settings_screen_id ) {
-			echo '<script type="text/javascript">POS.start();</script>';
-		}
-
+		echo '<script type="text/javascript">POS.start();</script>';
 	}
 
 }

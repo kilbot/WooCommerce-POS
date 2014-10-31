@@ -38,3 +38,8 @@ rmdir($directory);
 $GLOBALS['wpdb']->query("DROP TABLE `".$GLOBALS['wpdb']->prefix."TABLE_NAME`");
 $GLOBALS['wpdb']->query("OPTIMIZE TABLE `" .$GLOBALS['wpdb']->prefix."options`");
  */
+
+
+
+//global $wpdb;
+//$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE 'cpt_%'" );

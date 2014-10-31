@@ -17,18 +17,23 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Page {
 	public function __construct() {
 		$this->id    = 'checkout';
 		$this->label = _x( 'Checkout', 'Settings tab label', 'woocommerce-pos' );
-		$this->data  = get_option( WC_POS_Admin_Settings::$prefix . $this->id );
 	}
 
 	protected function load_gateways() {
 		$gateways = WC_Payment_Gateways::instance()->payment_gateways;
+		$settings = get_option( WC_POS_Admin_Settings::DB_PREFIX . $this->id );
 
-		$order = $this->data['gateway_order'];
-		asort( $order, SORT_NUMERIC );
+		if( $settings && isset( $settings['gateway_order'] ) ) {
+			$order = $settings['gateway_order'];
+		}
 
 		// reorder
 		foreach( $gateways as $gateway ) {
-			$ordered_gateways[ $order[$gateway->id] ] = $gateway;
+			if( isset( $order[$gateway->id] ) ) {
+				$ordered_gateways[ $order[$gateway->id] ] = $gateway;
+			} else {
+				$ordered_gateways[] = $gateway;
+			}
 			$gateway->pos = false;
 			apply_filters( 'woocommerce_pos_payment_gateways', $gateway );
 		}
@@ -56,7 +61,7 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Page {
 			$settings['icon'] = 'true';
 
 			// update settings so we don't have to do this again
-			update_option( WC_POS_Admin_Settings::$prefix . 'gateway_' . $gateway_id, $settings );
+			update_option( WC_POS_Admin_Settings::DB_PREFIX . 'gateway_' . $gateway_id, $settings );
 		}
 
 		return $settings;

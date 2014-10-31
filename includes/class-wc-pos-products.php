@@ -20,11 +20,15 @@ class WC_POS_Products {
 	}
 
 	/**
-	 * Load admin subclasses
+	 * Load Product subclasses
 	 */
 	private function init() {
 
 		// pos only products
+		$settings = get_option( WC_POS_Admin_Settings::DB_PREFIX . 'general' );
+		if( isset( $settings['enable_pos_visibility'] ) && $settings['enable_pos_visibility'] ) {
+			new WC_POS_Products_Visibility();
+		}
 	}
 
 }

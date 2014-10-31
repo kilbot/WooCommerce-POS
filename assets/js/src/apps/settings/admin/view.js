@@ -42,6 +42,7 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
         events: {
             'click @ui.submit': 'onSubmit',
+            'mouseenter a.wc-pos-modal': 'proLoadSettings',
             'click a.wc-pos-modal': 'openModal'
         },
 
@@ -87,20 +88,25 @@ var POS = (function(App, Backbone, Marionette, $, _) {
             this.model.unset( 'response', { silent: true } );
         },
 
+        proLoadSettings: function(e) {
+            var id = 'gateway_' + $(e.target).data('gateway');
+
+            if( _.isUndefined( this.collection.get( id ) ) ) {
+                var modalModel = this.collection.add({
+                    id: id,
+                    security: this.model.get('security'),
+                    title: 'Loading ...'
+                });
+                modalModel.fetch();
+            }
+        },
+
         openModal: function(e) {
             e.preventDefault();
-            var btn = $(e.target);
+            var id = 'gateway_' + $(e.target).data('gateway');
 
-            var modalModel = this.collection.add({
-                id: 'gateway_' + btn.data('gateway'),
-                security: this.model.get('security')
-            });
-
-            // lazy load modal data
-            modalModel.fetch({
-                success: function() {
-                    new App.SettingsApp.Views.Modal({ model: modalModel });
-                }
+            new App.SettingsApp.Views.Modal({
+                model: this.collection.get( id )
             });
         }
 
@@ -116,6 +122,7 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
         initialize: function (options) {
             this.trigger('modal:open');
+            this.listenTo( this.model, 'change', this.render );
         },
 
         events: {

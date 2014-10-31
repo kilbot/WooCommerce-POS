@@ -82,6 +82,9 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.4 =
+* New: set custom permalink for POS front-end, eg: http://yourstore.com/custom-slug/
+
 = 0.3.4 =
 * Urgent Fix: performance issue downloading products
 * Fix: potential clash for admin menu position

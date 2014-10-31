@@ -51,4 +51,7 @@ require_once WC_POS_PLUGIN_PATH . 'includes/class-wc-pos.php';
 /**
  * Begins execution of the plugin.
  */
-new WC_POS();
+add_action( 'woocommerce_loaded', 'run_woocommerce_pos' );
+function run_woocommerce_pos() {
+	new WC_POS();
+}

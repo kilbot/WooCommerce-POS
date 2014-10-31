@@ -16,17 +16,18 @@ class WC_POS_Admin {
 	 */
 	public function __construct() {
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-		add_action( 'admin_print_footer_scripts', array( $this, 'admin_print_footer_scripts' ) );
+//		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
+//		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+//		add_action( 'admin_print_footer_scripts', array( $this, 'admin_print_footer_scripts' ) );
 
 		$this->init();
+		add_action( 'current_screen', array( $this, 'conditional_init' ) );
 	}
 
 	/**
 	 * Load admin subclasses
 	 */
-	private function init() {
+	public function init() {
 
 		// ajax
 		if( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
@@ -34,9 +35,17 @@ class WC_POS_Admin {
 
 		// wp admin
 		} else {
-			new WC_POS_Admin_Menu();      // add menu items
-			new WC_POS_Admin_Settings();  // add settings pages
+			new WC_POS_Admin_Menu();    // add menu items
+			new WC_POS_Admin_Settings;  // Settings pages
 		}
+
+	}
+
+	public function conditional_init( $current_screen ) {
+
+		// Add setting to permalink page
+		if( $current_screen->id == 'options-permalink' )
+			new WC_POS_Admin_Permalink();
 
 	}
 
