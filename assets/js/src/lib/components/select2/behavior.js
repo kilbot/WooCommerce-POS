@@ -1,6 +1,6 @@
-var POS = (function(App) {
+POS.module('Components.Select2', function(Select2, POS, Backbone, Marionette, $, _) {
 
-    App.Behaviors.Select2 = Marionette.Behavior.extend({
+    Select2.Behavior = Marionette.Behavior.extend({
 
         initialize: function(options){
 
@@ -34,6 +34,4 @@ var POS = (function(App) {
 
     });
 
-    return App;
-
-})(POS || {});
+});

@@ -1,13 +1,13 @@
-var POS = (function(App, $, Marionette) {
+POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) {
 
-    App.Behaviors.Modal = Marionette.Behavior.extend({
+    Modal.Behavior = Marionette.Behavior.extend({
 
         initialize: function () {
             this.listenToOnce(this.view, 'modal:open', this.openModal);
         },
 
         openModal: function (callback) {
-            App.Components.Modal.channel.command('open', {
+            Modal.channel.command('open', {
                 view: this.view,
                 callback: callback
             });
@@ -16,13 +16,11 @@ var POS = (function(App, $, Marionette) {
         },
 
         closeModal: function (callback) {
-            App.Components.Modal.channel.command('close', {
+            Modal.channel.command('close', {
                 callback: callback
             });
         }
 
     });
 
-    return App;
-
-})(POS || {}, jQuery, Marionette);
+});

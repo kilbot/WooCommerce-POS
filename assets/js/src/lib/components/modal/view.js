@@ -1,6 +1,6 @@
-var POS = (function(App, $, Marionette, _) {
+POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) {
 
-    App.Components.Modal.View = Marionette.LayoutView.extend({
+    Modal.View = Marionette.LayoutView.extend({
         template: _.template('<div class="modal-dialog"><div class="modal-content"></div></div>'),
         className: 'modal',
         attributes: {
@@ -36,19 +36,21 @@ var POS = (function(App, $, Marionette, _) {
         },
 
         setupModal: function (options) {
-            if (this.isShown) this.teardownModal();
+            if (this.isShown) {
+                this.teardownModal();
+            }
             this.content.show(options.view);
             this.isShown = true;
         },
 
         teardownModal: function () {
-            if (!this.isShown) return;
+            if (!this.isShown) {
+                return;
+            }
             this.content.empty();
             this.isShown = false;
         }
 
     });
 
-    return App;
-
-})(POS || {}, jQuery, Marionette, _);
+});

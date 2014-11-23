@@ -6,7 +6,6 @@
     font-style: normal;
 }
 .icon {
-    vertical-align: -6%;
     display: inline-block;
     font-family: WooCommercePOS;
     speak: none;
@@ -14,14 +13,12 @@
     font-weight: normal;
     font-variant: normal;
     text-transform: none;
-    line-height: 1;
+    vertical-align: bottom;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 .icon-lg {
     font-size: 1.33333333em;
-    line-height: 0.75em;
-    vertical-align: -15%;
 }
 .icon-2x {
     font-size: 2em;
@@ -115,8 +112,8 @@
     -o-transform: scale(1, -1);
     transform: scale(1, -1);
 }
-.icon-barcode:before {
-    content: "\f02a";
+.icon-barcode:before, .icon-products:before {
+    content: "\e603";
 }
 .icon-bars:before {
     content: "\f0c9";
@@ -145,17 +142,26 @@
 .icon-globe:before {
     content: "\f0ac";
 }
+.icon-minus:before {
+    content: "\f068";
+}
 .icon-plus:before {
     content: "\f067";
 }
-.icon-minus:before {
-    content: "\f068";
+.icon-qrcode:before {
+    content: "\e604";
+}
+.icon-receipt:before, .icon-orders:before {
+    content: "\e602";
+}
+.icon-scissors:before, .icon-coupons:before {
+    content: "\e607";
 }
 .icon-search:before {
     content: "\f002";
 }
 .icon-support:before {
-    content: "\f1cd";
+    content: "\e605";
 }
 .icon-times:before {
     content: "\f00d";
@@ -163,7 +169,10 @@
 .icon-times-circle:before {
     content: "\f057";
 }
-.icon-woocommerce-pos:before {
+.icon-user:before, .icon-customers:before {
+    content: "\e606";
+}
+.icon-woocommerce-pos:before, .icon-pos:before {
     content: "\e600";
 }
 .icon-delete:before {

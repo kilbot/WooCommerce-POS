@@ -58,8 +58,8 @@ class WC_POS_Gateways {
 		foreach ( $columns as $key => $column ) {
 			$new_columns[$key] = $column;
 			if( $key == 'status' ) {
-				$new_columns['status'] = _x( 'Online Store', 'Payment gateway status', 'woocommerce-pos' );
-				$new_columns['pos_status'] = _x( 'POS', 'Payment gateway status', 'woocommerce-pos' );
+				$new_columns['status'] = __( 'Online Store', 'woocommerce-pos' );
+				$new_columns['pos_status'] = __( 'POS', 'woocommerce-pos' );
 			}
 		}
 		return $new_columns;
@@ -76,7 +76,8 @@ class WC_POS_Gateways {
 
 		echo '<td class="pos_status">';
 		if ( in_array( $gateway->id, $enabled_gateways ) )
-			echo '<span class="status-enabled tips" data-tip="' . __ ( 'Enabled', 'woocommerce-pos' ) . '">' . __ ( 'Enabled', 'woocommerce-pos' ) . '</span>';
+			/* translators: woocommerce-admin */
+			echo '<span class="status-enabled tips" data-tip="' . __ ( 'Enabled', 'woocommerce-admin' ) . '">' . __ ( 'Enabled', 'woocommerce-pos' ) . '</span>';
 		else
 			echo '-';
 		echo '</td>';

@@ -100,7 +100,7 @@ class WC_POS_Activator {
 
 		// Add rewrite rules, $this->generate_rewrite_rules not called on activation
 		global $wp_rewrite;
-		$permalink = get_option( WC_POS_Admin_Settings::DB_PREFIX . 'permalink' );
+		$permalink = get_option( 'woocommerce_pos_settings_permalink' );
 		$slug = $permalink && $permalink != '' ? $permalink : 'pos' ;
 		add_rewrite_rule('^'. $slug .'/?$','index.php?pos=1','top');
 		flush_rewrite_rules( false ); // false will not overwrite .htaccess

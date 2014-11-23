@@ -83,7 +83,34 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.4 =
+* TODO: floating point numbers as qty
+* TODO: Multi-stores
+* TODO: store widgets and shortcodes
+* TODO: hotkeys
+* TODO: custom receipts
+* TODO: add Cash and Card to order drop down
+* TODO: custom barcode field
+* TODO: fix customer serach for network blogs
+* TODO: coupons?
+* TODO: fix product attribute display
+* TODO: https support
+* TODO: non variable attributes??
+* TODO: WooCommerce 2.2 compatibility order status
+* TODO: check email template, customer name
+* TODO: check stock reduction
+* TODO: percentage bug
+* TODO: support for Simplify Commerce by MasterCard
+* TODO: look at POS Only issue with caetgories
+* TODO: POS orders in trash
+* TODO: pos only where called twice?
+* TODO: change change bug 1,000+
+* TODO: make image src protocol-relative
+* TODO: strip script tags from checkout template
+* TODO: remove 0.00 discount from receipt
+* TODO: two windows open, remove database, both try to update
 * New: set custom permalink for POS front-end, eg: http://yourstore.com/custom-slug/
+* Fix: conflict with W3 Total Cache js minify
+* Fix: removed all cases of php echo shorthand for short_open_tag=off
 
 = 0.3.4 =
 * Urgent Fix: performance issue downloading products

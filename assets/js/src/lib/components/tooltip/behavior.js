@@ -1,6 +1,6 @@
-var POS = (function(App) {
+POS.module('Components.Tooltip', function(Tooltip, POS, Backbone, Marionette, $, _) {
 
-    App.Behaviors.Tooltip = Marionette.Behavior.extend({
+    Tooltip.Behavior = Marionette.Behavior.extend({
 
         initialize: function(options){
 
@@ -24,6 +24,4 @@ var POS = (function(App) {
 
     });
 
-    return POS;
-
-})(POS || {});
+});

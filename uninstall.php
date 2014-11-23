@@ -42,4 +42,4 @@ $GLOBALS['wpdb']->query("OPTIMIZE TABLE `" .$GLOBALS['wpdb']->prefix."options`")
 
 
 //global $wpdb;
-//$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE 'cpt_%'" );
+//$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE 'woocommerce_pos_%'" );

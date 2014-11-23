@@ -1,37 +1,71 @@
 /* Header =================================================== */
 header {
-	color: $navbar-inverse-color;
-	background-color: $navbar-inverse-bg;
-	@include clearfix();
-	h1 {
-		font-size: 14px;
-		text-align: center;
-		clear: none;
-		line-height: 1;
-		margin: 0;
-		padding: $spacing/2;
-	}
-	a {
-		color: $navbar-inverse-color;
-		text-decoration: none;
-		font-size: 14px;
-		line-height: 1;
-		@include hoverActiveFocus {
-			color: darken( $link-color, 5% );
-		}
-		&.btn-header {
-			color: $navbar-inverse-color;
-			background-color: $navbar-inverse-bg;
-			padding: $spacing/2;
-			height: auto;
-			display: block;
-			@include hoverActiveFocus {
-				background-color: darken( $link-color, 5% );
-				text-decoration: none;
-			}
-			span {
-				display: none;
-			}
-		}
-	}
+  color: $navbar-inverse-color;
+  background-color: $navbar-inverse-bg;
+  h1 {
+    font-size: 14px;
+    text-align: center;
+    line-height: 38px;
+    margin: 0;
+    padding: 0;
+  }
+  a {
+    color: $navbar-inverse-color;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 38px;
+    outline: 0;
+    &:hover {
+      color: darken($link-color, 5%);
+    }
+    &.btn-header {
+      color: $navbar-inverse-color;
+      background-color: $navbar-inverse-bg;
+      padding: 0 $spacing/2;
+      height: auto;
+      display: block;
+      &:hover {
+        background-color: darken($link-color, 5%);
+        text-decoration: none;
+      }
+      img {
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+      }
+      span {
+        display: none;
+      }
+      @include breakpoint($tablet) {
+        span {
+          display: inline-block;
+        }
+      }
+    }
+  }
+  #user-btn {
+    img {
+      margin: 9px 0;
+    }
+    span {
+      margin-left: 2px;
+    }
+  }
+}
+
+header .dropdown-menu {
+  margin: 0;
+  padding: 0;
+  background-color: $navbar-inverse-bg;
+  border: none;
+  @include border-radius(0);
+  a {
+    color: $navbar-inverse-color;
+    padding: 0 $spacing/2;
+    line-height: 38px;
+  }
+  a:hover {
+    background-color: darken($link-color, 5%);
+    color: $navbar-inverse-color;
+  }
 }

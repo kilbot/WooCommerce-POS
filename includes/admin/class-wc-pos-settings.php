@@ -17,6 +17,9 @@ class WC_POS_Admin_Settings {
 	/* @var string The settings screen id */
 	private $screen_id;
 
+	/* @var array An array of settings objects */
+	private $settings = array();
+
 	/**
 	 * Constructor
 	 */
@@ -31,8 +34,10 @@ class WC_POS_Admin_Settings {
 	public function admin_menu() {
 		$this->screen_id = add_submenu_page(
 			WC_POS_PLUGIN_NAME,
-			__( 'Settings', 'woocommerce-pos' ),
-			__( 'Settings', 'woocommerce-pos' ),
+			/* translators: woocommerce */
+			__( 'Settings', 'woocommerce' ),
+			/* translators: woocommerce */
+			__( 'Settings', 'woocommerce' ),
 			'manage_woocommerce_pos',
 			'wc_pos_settings',
 			array( $this, 'display_settings_page' )
@@ -58,8 +63,11 @@ class WC_POS_Admin_Settings {
 	public function display_settings_page() {
 		$settings = apply_filters( 'woocommerce_pos_settings_tabs_array', array(
 			new WC_POS_Admin_Settings_General(),
-			new WC_POS_Admin_Settings_Checkout()
+			new WC_POS_Admin_Settings_Checkout(),
+			new WC_POS_Admin_Settings_Hotkeys(),
+			new WC_POS_Admin_Settings_Tools()
 		));
+		$this->settings = $settings;
 
 		include 'views/settings.php';
 	}
@@ -113,12 +121,14 @@ class WC_POS_Admin_Settings {
 		if( update_option( self::DB_PREFIX . $data['id'], $data ) ) {
 			$response = array(
 				'result' => 'success',
-				'notice' => __( 'Settings saved', 'woocommerce-pos' )
+				/* translators: woocommerce */
+				'notice' => __( 'Your settings have been saved.', 'woocommerce' )
 			);
 		} else {
 			$response = array(
 				'result' => 'error',
-				'notice' => __( 'Settings not saved', 'woocommerce-pos' )
+				/* translators: woocommerce */
+				'notice' => __( 'Action failed. Please refresh the page and retry.', 'woocommerce' )
 			);
 		}
 
@@ -146,6 +156,38 @@ class WC_POS_Admin_Settings {
 		wp_enqueue_script( 'jquery-ui-sortable' );
 
 		wp_enqueue_script(
+			'handlebars',
+			'//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js',
+			array( 'jquery', 'backbone', 'underscore' ),
+			false,
+			true
+		);
+
+		wp_enqueue_script(
+			'select2',
+			'//cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js',
+			array( 'jquery' ),
+			false,
+			true
+		);
+
+		wp_enqueue_script(
+			'moment',
+			'//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js',
+			array( 'jquery' ),
+			false,
+			true
+		);
+
+		wp_enqueue_script(
+			'accounting',
+			'//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
+			array( 'jquery' ),
+			false,
+			true
+		);
+
+		wp_enqueue_script(
 			WC_POS_PLUGIN_NAME . '-core',
 			WC_POS_PLUGIN_URL . 'assets/js/core.min.js',
 			array( 'jquery', 'backbone', 'underscore' ),
@@ -162,27 +204,19 @@ class WC_POS_Admin_Settings {
 		);
 
 		wp_enqueue_script(
-			WC_POS_PLUGIN_NAME . '-settings-app',
-			WC_POS_PLUGIN_URL . 'assets/js/settings_app.min.js',
-			array( WC_POS_PLUGIN_NAME . '-admin-app' ),
-			WC_POS_VERSION,
+			'eventsource-polyfill',
+			WC_POS_PLUGIN_URL . 'assets/js/vendor/eventsource.min.js',
+			array(),
+			false,
 			true
 		);
 
-		wp_enqueue_script(
-			WC_POS_PLUGIN_NAME . '-admin-components',
-			WC_POS_PLUGIN_URL . 'assets/js/admin_components.min.js',
-			array( WC_POS_PLUGIN_NAME . '-admin-app' ),
-			WC_POS_VERSION,
-			true
-		);
-
-		$locale_js = WC_POS_i18n::get_locale_js();
+		$locale_js = WC_POS_i18n::locale_js();
 		if( $locale_js ) {
 			wp_enqueue_script(
 				WC_POS_PLUGIN_NAME . '-js-locale',
 				$locale_js,
-				array( WC_POS_PLUGIN_NAME . '-admin-components' ),
+				array( WC_POS_PLUGIN_NAME . '-core' ),
 				WC_POS_VERSION,
 				true
 			);
@@ -193,7 +227,19 @@ class WC_POS_Admin_Settings {
 	 * Start the Settings App
 	 */
 	public function admin_inline_js() {
-		echo '<script type="text/javascript">POS.start();</script>';
+		$registry = WC_POS_Registry::instance();
+		$params = $registry->get('params');
+
+		echo '<script type="text/javascript">POS.start('. json_encode( $params->admin() ) .');</script>';
+	}
+
+	/**
+	 * Params for the Settings App
+	 *
+	 * @return mixed|void
+	 */
+	public function admin_params() {
+
 	}
 
 }

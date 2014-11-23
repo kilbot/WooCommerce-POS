@@ -11,6 +11,8 @@
 
 abstract class WC_POS_Admin_Settings_Page {
 
+	public $button = true;
+
 	/**
 	 * Output the view file
 	 */

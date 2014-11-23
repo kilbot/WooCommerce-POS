@@ -84,14 +84,17 @@
     display: inline-block;
     margin: 0 0 0 10px;
     line-height: 20px;
-    .spinner {
-      display: inline-block;
-      float: none;
-      margin: 0;
-    }
     i {
       margin-right: 5px;
       vertical-align: middle;
     }
   }
+}
+.wc-pos-settings i.spinner, #wc-pos-modal i.spinner {
+  display: inline-block;
+  float: none;
+  margin: 0;
+}
+#wc-pos-modal p {
+  margin-top: 0;
 }

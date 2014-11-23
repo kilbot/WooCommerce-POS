@@ -27,7 +27,10 @@ class WC_POS_AJAX {
 			'set_product_visibilty' 	=> false,
 			'email_receipt' 			=> false,
 			'get_print_template' 		=> false,
-			'admin_settings'            => false
+			'admin_settings'            => false,
+			'system_status'             => false,
+			'send_support_email'        => false,
+			'update_translations'       => false
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -47,7 +50,7 @@ class WC_POS_AJAX {
 	public function process_order() {
 
 		// security
-		check_ajax_referer( 'woocommerce-pos', 'security' );
+		check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
 
 		// if there is no cart, there is nothing to process!
 		if( empty( $_REQUEST['line_items'] ) )
@@ -83,7 +86,7 @@ class WC_POS_AJAX {
 	public function get_product_ids() {
 
 		// security
-		check_ajax_referer( 'woocommerce-pos', 'security' );
+		check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
 
 		$args = array(
 			'post_type' 	=> array('product'),
@@ -103,7 +106,7 @@ class WC_POS_AJAX {
 	public function get_modal() {
 
 		// security
-		check_ajax_referer( 'woocommerce-pos', 'security' );
+		check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
 
 		if( isset( $_REQUEST['data']) )
 			extract( $_REQUEST['data'] );
@@ -115,7 +118,7 @@ class WC_POS_AJAX {
 	public function get_print_template() {
 
 		// security
-		check_ajax_referer( 'woocommerce-pos', 'security' );
+		check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
 
 		// check for custom template
 		$template_path_theme = '/woocommerce-pos/';
@@ -134,7 +137,7 @@ class WC_POS_AJAX {
 	public function json_search_customers() {
 
 		// security
-		check_ajax_referer( 'json-search-customers', 'security' );
+		check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
 
 		$term = wc_clean( stripslashes( $_GET['term'] ) );
 
@@ -245,7 +248,7 @@ class WC_POS_AJAX {
 		$response = '';
 
 		// security
-		check_ajax_referer( 'wc-pos-settings', 'security' );
+		check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
 
 		$method = $_SERVER['REQUEST_METHOD'];
 		if( $method === 'POST' ) {
@@ -256,6 +259,51 @@ class WC_POS_AJAX {
 
 		$this->json_headers();
 		echo json_encode( $response );
+		die();
+	}
+
+	public function system_status() {
+
+		// security
+		check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
+
+		$status = new WC_POS_Status();
+		$response = $status->getTestResults();
+
+		$this->json_headers();
+		echo json_encode( $response );
+		die();
+	}
+
+	public function send_support_email() {
+
+		// security
+		check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
+
+		$headers[] = 'From: '. $_POST['payload']['name'] .' <'. $_POST['payload']['email'] .'>';
+		$message = print_r( $_POST['payload'], true );
+		if( wp_mail( 'support@woopos.com.au', 'WooCommerce POS Support', $message, $headers ) ) {
+			$response = 'success';
+		} else {
+			$response = 'error';
+		}
+
+		$this->json_headers();
+		echo json_encode( $response );
+		die();
+	}
+
+	public function update_translations(){
+		header("Content-Type: text/event-stream");
+		header("Cache-Control: no-cache");
+		header("Access-Control-Allow-Origin: *");
+
+		echo ":" . str_repeat(" ", 2048) . PHP_EOL; // 2 kB padding for IE
+
+		$registry = WC_POS_Registry::instance();
+		$i18n = $registry->get('i18n');
+		$i18n->manual_update();
+
 		die();
 	}
 

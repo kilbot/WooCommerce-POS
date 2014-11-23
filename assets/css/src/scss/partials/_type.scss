@@ -1,0 +1,75 @@
+#page, #menu {
+  font-size: 0.8em;
+}
+
+@include breakpoint($mobile) {
+  #page, #menu {
+    font-size: 0.9em;
+  }
+}
+
+@include breakpoint($mobile-horizontal) {
+  #page, #menu {
+    font-size: 1em;
+  }
+}
+
+// Headings
+// -------------------------
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: $headings-font-family;
+  font-weight: $headings-font-weight;
+  line-height: $headings-line-height;
+}
+
+// Links
+// -------------------------
+
+a {
+  color: $link-color;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: $link-hover-color;
+    text-decoration: none;
+  }
+
+//  &:focus {
+//    @include tab-focus;
+//  }
+}
+
+// Emphasis & misc
+// -------------------------
+
+// Ex: (12px small font / 14px base font) * 100% = about 85%
+small,
+.small {
+  font-size: floor((100% * $font-size-small / $font-size-base));
+}
+
+mark,
+.mark {
+  background-color: $state-warning-bg;
+  padding: .2em;
+}
+
+// Alignment
+.text-left           { text-align: left; }
+.text-right          { text-align: right; }
+.text-center         { text-align: center; }
+.text-justify        { text-align: justify; }
+.text-nowrap         { white-space: nowrap; }
+
+// Transformation
+.text-lowercase      { text-transform: lowercase; }
+.text-uppercase      { text-transform: uppercase; }
+.text-capitalize     { text-transform: capitalize; }
+
+// Contextual colors
+.text-muted {
+  color: $text-muted;
+}

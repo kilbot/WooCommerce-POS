@@ -28,7 +28,9 @@ class WC_POS_Admin_Menu {
 	public function admin_menu() {
 
 		$this->toplevel_screen_id = add_menu_page(
+			/* translators: woocommerce-pos */
 			__( 'POS', 'woocommerce-pos' ),
+			/* translators: woocommerce-pos */
 			__( 'POS', 'woocommerce-pos' ),
 			'manage_woocommerce_pos',
 			WC_POS_PLUGIN_NAME,
@@ -72,7 +74,7 @@ class WC_POS_Admin_Menu {
 			$pos_submenu[500] = $pos_submenu[1];
 			unset( $pos_submenu[1] );
 		};
-		error_log(print_r($menu_order, true));
+
 		return $menu_order;
 	}
 

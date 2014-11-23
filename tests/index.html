@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>WooCommerce POS Tests</title>
+    <link rel="stylesheet" media="all" href="../bower_components/mocha/mocha.css">
+</head>
+<body>
+<div id="mocha"><p><a href=".">Index</a></p></div>
+<div id="messages"></div>
+<div id="fixtures"></div>
+
+<script src="../bower_components/mocha/mocha.js"></script>
+<script src="../bower_components/chai/chai.js"></script>
+<script src="../bower_components/sinon/lib/sinon.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.underscore.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+<script src="../assets/js/core.min.js"></script>
+<script src="../assets/js/app.min.js"></script>
+
+
+<script>
+    mocha.setup('bdd');
+    var expect = chai.expect;
+</script>
+<script src="spec/syncSpec.js"></script>
+<script>mocha.run();</script>
+</body>
+</html>

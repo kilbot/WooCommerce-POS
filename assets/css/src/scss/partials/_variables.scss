@@ -2,20 +2,40 @@
 $font-family-sans-serif: 'Open Sans', Sans-Serif;
 
 // Colors
-$brand-primary:			#00A1CB;
-$brand-success:			#7db500;
-$brand-info:			#5bc0de;
-$brand-warning:			#f0ad4e;
-$brand-danger:			#E54028;
+$brand-primary        :	#00A1CB;
+$brand-success        :	#7db500;
+$brand-info           :	#5bc0de;
+$brand-warning        :	#f0ad4e;
+$brand-danger         :	#E54028;
 
-$body-bg: 				#f1f1f1;
-$content-background: 	#FFF;
-$navbar-inverse-color: 	#eee;
+$body-bg              : #f1f1f1;
+$content-background   : #fff;
+$navbar-inverse-bg    : #222 !default;
+$navbar-inverse-color : #eee;
 
-$border-color: 			#eee;	
-$table-border-color:    $border-color;
-$dark-border-color: 	darken($border-color, 6%);   
+$link-color           : $brand-primary !default;
 
-// Widths & Spacing 
-$spacing: 				24px;
-$menu-panel-width: 		200px;
+$border-color         : #eee;
+$table-border-color   : $border-color;
+$dark-border-color    : darken($border-color, 6%);
+$input-border-color   : darken($border-color, 6%);
+
+// Widths & Spacing
+$font-size-base       : 14px !default;
+
+$spacing              : 24px;
+$menu-panel-width     : 200px;
+
+$mobile 			  : 320px;
+$mobile-horizontal 	  : 480px;
+$tablet 			  : 768px;
+$tablet-horizontal 	  : 1024px;
+$desktop 			  : 1280px;
+$desktop-wide 		  : 1500px;
+
+// Rounded corners
+$border-radius-base   : 3px !default;
+$border-radius-large  : 10px !default;
+$border-radius-small  : 3px !default;
+
+$cursor-disabled:       not-allowed !default;

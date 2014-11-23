@@ -56,15 +56,13 @@ class WC_POS {
 		// global helper functions
 		require_once WC_POS_PLUGIN_PATH . 'includes/wc-pos-functions.php';
 
-		new WC_POS_i18n();          // internationalization
+		$registry = WC_POS_Registry::instance();
+
+		$registry->add( 'i18n',     new WC_POS_i18n() );      // internationalization
+		$registry->add( 'params',   new WC_POS_Params() );    //
 		new WC_POS_Template();      // POS front end
 		new WC_POS_Products();      // products
 		new WC_POS_Gateways();      // pos payment gateways
-
-		// front-end only
-		if( ! is_admin() ) {
-
-		}
 
 		// admin only
 		if ( is_admin() ) {

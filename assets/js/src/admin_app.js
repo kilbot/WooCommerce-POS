@@ -1,61 +1,58 @@
-var POS = (function(App, Backbone, Marionette, $, _) {
+// init Marionette app
+var POS = new Marionette.Application();
 
-    // init Marionette app
-    var App = new Marionette.Application({ bootstrap: App.bootstrap });
-    App.debug = false;
+// behaviors
+Marionette.Behaviors.getBehaviorClass = function(options, key) {
+    return POS.Components[key].Behavior;
+};
 
-    // entities
-    App.Entities = {};
-    App.Entities.channel = Backbone.Radio.channel('entities');
+// global channel
+POS.channel.reply('default:region', function() {
+    return POS.mainRegion;
+});
 
-    // behaviors
-    App.Behaviors = {};
-    Marionette.Behaviors.getBehaviorClass = function(options, key) {
-        return App.Behaviors[key];
-    };
+POS.channel.comply('register:instance', function(instance, id) {
+    return POS.register(instance, id);
+});
 
-    // components
-    App.Components = {};
+POS.channel.comply('unregister:instance', function(instance, id) {
+    return POS.unregister(instance, id);
+});
 
-    // helper functions
-    App.navigate = function(route, options){
-        options || (options = {});
-        Backbone.history.navigate(route, options);
-    };
-    App.getCurrentRoute = function(){
-        var frag = Backbone.history.fragment;
-        return _.isEmpty(frag) ? null : frag ;
-    };
-    App.startHistory = function() {
-        if( Backbone.history ) {
-            return Backbone.history.start();
+// add Entities modules & channel
+POS.module( 'Entities', function( Entities ) {
+    Entities.channel = Backbone.Radio.channel('entities');
+});
+
+// app set up
+POS.addInitializer(function(options) {
+    /* global ajaxurl */
+    POS.ajaxurl = ajaxurl;
+
+    // attach params
+    var params = [ 'nonce' ];
+    _( params ).each( function(key) {
+        if( !_.isUndefined( options[key] ) ) {
+            POS[key] = options[key];
         }
-    };
-
-    // on start, set up and start modules
-    App.on('start', function() {
-
-        // debugging
-        if( localStorage.getItem('wc_pos_debug') ) {
-            App.debug = true;
-            Backbone.Radio.DEBUG = true;
-            console.info('Debugging is on, visit http://woopos.com.au/docs/debugging');
-        } else {
-            console.info('Debugging is off, visit http://woopos.com.au/docs/debugging');
-        }
-
-        if( App.debug ) console.log('POS Admin App started');
-
-        //
-        App.startHistory();
-
-        /* global adminpage */
-        if( adminpage === 'pos_page_wc_pos_settings' ) {
-            App.module('SettingsApp').start();
-        }
-
     });
 
-    return App;
+    /* global adminpage */
+    if( options.page === 'settings' ) {
+        // regions
+        POS.addRegions({
+            modalRegion	: '#wc-pos-modal'
+        });
+    }
+});
 
-})(POS || {}, Backbone, Marionette, jQuery, _);
+// on start
+POS.on('start', function(options) {
+    POS.debugLog( 'log', 'POS Admin App started' );
+    POS.startHistory();
+
+    /* global adminpage */
+    if( options.page === 'settings' ) {
+        POS.module('SettingsApp').start();
+    }
+});

@@ -1,0 +1,162 @@
+# Copyright (C) 2014 kilbot
+# This file is distributed under the GPL-2.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce POS 0.4\n"
+"Report-Msgid-Bugs-To: "
+"https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
+"POT-Creation-Date: 2014-11-22 06:12:46+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Team Name <team@example.com>\n"
+"X-Generator: grunt-wp-i18n 0.4.9\n"
+
+#: includes/admin/class-wc-pos-menu.php:43
+#: includes/admin/class-wc-pos-menu.php:44
+msgid "View POS"
+msgstr ""
+
+#: includes/admin/class-wc-pos-menu.php:52
+#: includes/admin/settings/views/checkout.php:54
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: includes/admin/settings/class-wc-pos-hotkeys.php:19
+#: includes/admin/settings/views/hotkeys.php:9
+msgid "Hotkeys"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:11
+msgid ""
+"Installed gateways are listed below. Drag and drop gateways to control "
+"their display order at the Point of Sale. "
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:12
+msgid ""
+"Payment Gateways enabled here will be available at the Point of Sale. "
+"Payment Gateways enabled on the settings page will be available in your "
+"Online Store. "
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:16
+msgid ""
+"It is your responsibility to ensure the security of your customer's "
+"information. Transmitting credit card or other sensitive information should "
+"only be done using a secure connnection. For more information please visit "
+"<a "
+"href=\"http://woopos.com.au/docs/security\">http://woopos.com.au/docs/"
+"security</a>"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:22
+msgid "Gateway Display"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:30
+msgid "Online Status"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:31
+msgid "POS Status"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:32
+msgid "POS Settings"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:90
+msgid "Payment method title."
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:97
+msgid "Payment method description that will be shown in the POS."
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:103
+msgid "Icon"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:112
+msgid "Card Reader"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:117
+msgid ""
+"Please <a href=\"%s\" target=\"_blank\">read the docs</a> for more "
+"information on card readers."
+msgstr ""
+
+#: includes/admin/settings/views/general.php:13
+msgid "Grant POS Access"
+msgstr ""
+
+#: includes/admin/settings/views/general.php:25
+msgid "Product Visibility"
+msgstr ""
+
+#: includes/admin/settings/views/general.php:29
+msgid "Enable product visibility options, eg: <a href=\"%s\">POS Only products</a>"
+msgstr ""
+
+#: includes/admin/settings/views/tools.php:14
+msgid "Translation Upgrade"
+msgstr ""
+
+#: includes/admin/settings/views/tools.php:16
+msgid "Force Translation Upgrade"
+msgstr ""
+
+#: includes/admin/settings/views/tools.php:17
+msgid ""
+"<strong class=\"red\">Note:</strong> This option will force the translation "
+"upgrade for your language if a translation is available."
+msgstr ""
+
+#: includes/admin/views/settings.php:18
+msgid ""
+"There has been an error loading the settings, please contact <a "
+"href=\"mailto:support@woopos.com.au\">support</a>"
+msgstr ""
+
+#: includes/class-wc-pos-activator.php:143
+msgid ""
+"<strong>WooCommerce POS</strong> requires <a href=\"%s\">WooCommerce</a>. "
+"Please <a href=\"%s\">install and activate WooCommerce</a>"
+msgstr ""
+
+#: includes/class-wc-pos-activator.php:175
+msgid ""
+"<strong>WooCommerce POS</strong> requires the WooCommerce REST API. Please "
+"<a href=\"%s\">enable the REST API</a>"
+msgstr ""
+
+#: includes/class-wc-pos-activator.php:192
+msgid ""
+"<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks "
+"to work correctly. Please <a href=\"%s\">enable permalinks</a>."
+msgstr ""
+
+#: includes/admin/class-wc-pos-permalink.php:28
+msgctxt "Permalink setting, eg: /pos"
+msgid "POS base"
+msgstr ""
+
+#: includes/admin/settings/class-wc-pos-checkout.php:20
+#. translators: woocommerce
+msgctxt "Settings group label"
+msgid "Checkout"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:107
+msgctxt "POS checkout settings"
+msgid "Show payment gateway icon."
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:116
+msgctxt "POS checkout settings"
+msgid "Enable card reader input field."
+msgstr ""

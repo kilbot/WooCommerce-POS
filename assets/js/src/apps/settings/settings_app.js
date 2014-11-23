@@ -1,20 +1,14 @@
-var POS = (function(App) {
+POS.module('SettingsApp', function(SettingsApp, POS, Backbone, Marionette, $, _){
 
-    App.module('SettingsApp', function(SettingsApp, App, Backbone, Marionette, $, _){
+    /**
+     * Settings Module
+     */
+    SettingsApp.startWithParent = false;
 
-        /**
-         * Settings Module
-         */
-        SettingsApp.startWithParent = false;
+    SettingsApp.onStart = function(){
+        POS.debugLog( 'log', 'POS Settings Module started' );
+        var tab = POS.getCurrentRoute() || 'general';
+        new SettingsApp.Show.Controller({ tab: tab });
+    };
 
-        SettingsApp.onStart = function(){
-            if( App.debug ) console.log('POS Settings Module started');
-            var tab = App.getCurrentRoute() || 'general';
-            new SettingsApp.Controller({ tab: tab });
-        };
-
-    });
-
-    return App;
-
-})(POS || {});
+});

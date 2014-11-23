@@ -1,0 +1,167 @@
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+  font-size: 10px;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $text-color;
+  background-color: $body-bg;
+}
+
+#header {
+  @include display-flex;
+  h1 {
+    @include flex(1);
+  }
+}
+
+#main:not(.two-column), #main.two-column > div {
+  position: absolute;
+  top: 38px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: $spacing/3;
+  @include display-flex;
+  #left, #right {
+    @include display-flex;
+    @include flex(1);
+  }
+  #left {
+    margin-right: $spacing/3;
+  }
+}
+
+.module {
+  width: 100%;
+  @include display-flex;
+  @include flex-direction(column);
+  background: $content-background;
+  border: 1px solid $border-color;
+  @include box-shadow(0 1px 1px rgba(black, 0.04));
+  .list-actions {
+    > div {
+      padding: $spacing/3;
+      border-bottom: 1px solid $dark-border-color;
+      > .btn {
+        float: right;
+        margin-left: $spacing/3;
+      }
+      > .input-group {
+        @include display-flex;
+        .form-control, .input-group-addon, .input-group-btn {
+          border: 1px solid $input-border-color;
+          padding: 0.5em 0.75em;
+          &:first-child {
+            @include border-radius($border-radius-small 0 0 $border-radius-small);
+          }
+          &:last-child {
+            @include border-radius(0 $border-radius-small $border-radius-small 0);
+          }
+        }
+        .input-group-btn {
+          padding: 0;
+          > a {
+            display: inline-block;
+            padding: 0.5em 0.75em;
+          }
+        }
+        .form-control {
+          outline: 0;
+          @include flex(1);
+          &:not(:first-child) {
+            border-left: 0;
+          }
+          &:not(:last-child) {
+            border-right: 0;
+          }
+        }
+        .clear {
+          display: none;
+          color: $text-color;
+          padding: 0.5em 0.75em;
+          line-height: 20px;
+          border-top: 1px solid $input-border-color;
+          border-bottom: 1px solid $input-border-color;
+          i {
+            @include opacity(0.5);
+          }
+          &:hover i {
+            @include opacity(1);
+          }
+        }
+      }
+    }
+  }
+  .list-header {
+    @include display-flex;
+    background-color: #ccc;
+    padding-right: 16px;
+    > div {
+      padding: $spacing/3;
+      @include flex(1);
+    }
+  }
+  .list {
+    @include display-flex;
+    @include flex(1);
+    overflow: auto;
+      ul {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        li {
+          border-bottom: 1px solid $border-color;
+          @include display-flex;
+          @include align-items(center);
+          &:nth-of-type(even) {
+            background-color: #f9f9f9;
+          }
+          > div {
+            padding: $spacing/3;
+            @include flex(1);
+          }
+        }
+      }
+  }
+  .list-totals {
+    ul {
+      width: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      li {
+        border-bottom: 1px solid $border-color;
+        @include display-flex;
+        @include align-items(center);
+        > div {
+          padding: $spacing/3;
+          &:first-of-type {
+            font-weight: bold;
+            text-align: right;
+            @include flex(1);
+          }
+        }
+        &:first-of-type {
+          border-top: 1px solid $dark-border-color;
+        }
+        &:last-of-type {
+          border-bottom: 1px solid $dark-border-color;
+        }
+      }
+    }
+  }
+  .list-footer {
+    background-color: #ccc;
+    padding: $spacing/3;
+  }
+}

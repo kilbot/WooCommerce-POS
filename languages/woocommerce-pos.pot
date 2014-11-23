@@ -3,8 +3,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
-"Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-10-28 07:11:12+00:00\n"
+"Report-Msgid-Bugs-To: "
+"https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
+"POT-Creation-Date: 2014-11-22 06:12:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,179 +14,173 @@ msgstr ""
 "Language-Team: Team Name <team@example.com>\n"
 "X-Generator: grunt-wp-i18n 0.4.9\n"
 
-#: includes/admin/class-wc-pos-menu.php:37
-#: includes/admin/class-wc-pos-menu.php:38
+#: includes/class-wc-pos-gateways.php:61
+msgid "Online Store"
+msgstr ""
+
+#: includes/class-wc-pos-gateways.php:62 includes/class-wc-pos-template.php:145
 msgid "POS"
 msgstr ""
 
-#: includes/admin/class-wc-pos-menu.php:48
-#: includes/admin/class-wc-pos-menu.php:49
-#: includes/admin/settings/views/checkout.php:32
-#: includes/admin/settings/views/checkout.php:58
-#: includes/admin/settings/views/checkout.php:63
-msgid "Settings"
+#: includes/class-wc-pos-params.php:84
+msgid "Help screen"
 msgstr ""
 
-#: includes/admin/class-wc-pos-menu.php:55
-#: includes/admin/settings/views/checkout.php:53
-msgid "Upgrade to Pro"
+#: includes/class-wc-pos-params.php:89
+msgid "Barcode mode"
 msgstr ""
 
-#: includes/admin/class-wc-pos-menu.php:56
-msgid "View POS"
+#: includes/class-wc-pos-params.php:94
+msgid "Sync with server"
 msgstr ""
 
-#: includes/admin/class-wc-pos-settings.php:64
-msgid "Settings saved"
+#: includes/class-wc-pos-status.php:19
+msgid "WooCommerce Version"
 msgstr ""
 
-#: includes/admin/class-wc-pos-settings.php:69
-msgid "Settings not saved"
+#: includes/class-wc-pos-status.php:22
+msgid "WooCommerce >= 2.2 required"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:7
-msgid "Payment Gateways"
+#: includes/class-wc-pos-status.php:28
+msgid "WC REST API"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:10
-msgid ""
-"Installed gateways are listed below. Drag and drop gateways to control "
-"their display order at the Point of Sale. "
+#: includes/class-wc-pos-status.php:30
+msgid "API is active"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:11
-msgid ""
-"Payment Gateways enabled here will be available at the Point of Sale. "
-"Payment Gateways enabled on the settings page will be available in your "
-"Online Store. "
+#: includes/class-wc-pos-status.php:31
+msgid "Access to the REST API is required"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:15
-msgid ""
-"It is your responsibility to ensure the security of your customer's "
-"information. Transmitting credit card or other sensitive information should "
-"only be done using a secure connnection. For more information please visit "
-"<a "
-"href=\"http://woopos.com.au/docs/security\">http://woopos.com.au/docs/"
-"security</a>"
+#: includes/class-wc-pos-status.php:37
+msgid "API Authentication"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:21
-msgid "Gateway Display"
+#: includes/class-wc-pos-status.php:39
+msgid "Authentication Passed"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:26
-msgid "Default"
+#: includes/class-wc-pos-status.php:40
+msgid "Authentication Failed"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:27
-msgid "Gateway"
+#: includes/class-wc-pos.php:88
+msgid "User not authorized to manage WooCommerce POS"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:28
-msgid "Gateway ID"
-msgstr ""
-
-#: includes/admin/settings/views/checkout.php:29
-msgid "Online Status"
-msgstr ""
-
-#: includes/admin/settings/views/checkout.php:30
-msgid "POS Status"
-msgstr ""
-
-#: includes/admin/settings/views/checkout.php:31
-msgid "POS Settings"
-msgstr ""
-
-#: includes/admin/settings/views/checkout.php:46
-#: includes/class-wc-pos-gateways.php:79
-msgid "Enabled"
-msgstr ""
-
-#: includes/admin/settings/views/general.php:7
-msgid "General Options"
-msgstr ""
-
-#: includes/admin/settings/views/general.php:12
-msgid "Grant POS Access"
-msgstr ""
-
-#: includes/admin/settings/views/general.php:25
-msgid "Help tip"
-msgstr ""
-
-#: includes/admin/views/settings.php:18
-msgid ""
-"There has been an error loading the settings, please contact <a "
-"href=\"mailto:support@woopos.com.au\">support</a>"
-msgstr ""
-
-#: includes/admin/views/settings.php:30
-msgid "Save changes"
-msgstr ""
-
-#: includes/class-wc-pos-ajax.php:156
-msgid "Guest"
-msgstr ""
-
-#: includes/gateways/class-wc-pos-card.php:24
-#: includes/gateways/class-wc-pos-card.php:52
+#: includes/gateways/class-wc-pos-card.php:23
 msgid "Card"
 msgstr ""
 
-#: includes/gateways/class-wc-pos-card.php:25
-msgid "Debit & Credit Card sales using an external EFTPOS machine."
-msgstr ""
-
-#: includes/gateways/class-wc-pos-card.php:49
-#: includes/gateways/class-wc-pos-cash.php:48
-msgid "Title"
-msgstr ""
-
-#: includes/gateways/class-wc-pos-card.php:51
-#: includes/gateways/class-wc-pos-cash.php:50
-msgid "Payment method title."
-msgstr ""
-
-#: includes/gateways/class-wc-pos-card.php:56
-#: includes/gateways/class-wc-pos-cash.php:55
-msgid "Description"
-msgstr ""
-
-#: includes/gateways/class-wc-pos-card.php:58
-#: includes/gateways/class-wc-pos-cash.php:57
-msgid "Payment method description that will be shown in the POS."
-msgstr ""
-
-#: includes/gateways/class-wc-pos-card.php:86
-#: includes/gateways/class-wc-pos-card.php:89
-#: includes/gateways/class-wc-pos-card.php:112
-#: includes/gateways/class-wc-pos-card.php:146
+#: includes/gateways/class-wc-pos-card.php:54
+#: includes/gateways/class-wc-pos-card.php:57
+#: includes/gateways/class-wc-pos-card.php:80
+#: includes/gateways/class-wc-pos-card.php:114
 msgid "Cashback"
 msgstr ""
 
-#: includes/gateways/class-wc-pos-cash.php:24
-#: includes/gateways/class-wc-pos-cash.php:51
+#: includes/gateways/class-wc-pos-cash.php:23
 msgid "Cash"
 msgstr ""
 
-#: includes/gateways/class-wc-pos-cash.php:25
-msgid "Cash sales at the Point of Sale."
-msgstr ""
-
-#: includes/gateways/class-wc-pos-cash.php:86
-#: includes/gateways/class-wc-pos-cash.php:89
-#: includes/gateways/class-wc-pos-cash.php:134
+#: includes/gateways/class-wc-pos-cash.php:55
+#: includes/gateways/class-wc-pos-cash.php:58
+#: includes/gateways/class-wc-pos-cash.php:103
 msgid "Amount Tendered"
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-msgid "WooCommerce POS"
+#: includes/products/class-wc-pos-visibility.php:70
+msgid "POS Only"
 msgstr ""
 
-#. Plugin URI of the plugin/theme
-msgid "https://woopos.com.au"
+#: includes/products/class-wc-pos-visibility.php:71
+msgid "Online Only"
+msgstr ""
+
+#: includes/views/pos/cart.php:23
+msgid "Quantity"
+msgstr ""
+
+#: includes/views/pos/cart.php:35
+msgid "Item Price"
+msgstr ""
+
+#: includes/views/pos/cart.php:82 includes/views/pos/cart.php:105
+msgid "Discount"
+msgstr ""
+
+#: includes/views/pos/cart.php:99
+msgid "Void"
+msgstr ""
+
+#: includes/views/pos/checkout.php:11 includes/views/pos/receipt.php:14
+msgid "To Pay"
+msgstr ""
+
+#: includes/views/pos/checkout.php:49
+msgid "No payment gateways enabled."
+msgstr ""
+
+#: includes/views/pos/checkout.php:61
+msgid "Return to Sale"
+msgstr ""
+
+#: includes/views/pos/checkout.php:62
+msgid "Process Payment"
+msgstr ""
+
+#: includes/views/pos/products.php:13 includes/views/pos/products.php:17
+msgid "Scan Barcode"
+msgstr ""
+
+#: includes/views/pos/products.php:74
+msgid "Page %s of %s"
+msgstr ""
+
+#: includes/views/pos/products.php:75
+msgid "Showing %s of %s products"
+msgstr ""
+
+#: includes/views/pos/products.php:78
+msgid "sync"
+msgstr ""
+
+#: includes/views/pos/products.php:78
+msgid "clear"
+msgstr ""
+
+#: includes/views/pos/products.php:80
+msgid "Your browser does not support indexeddb"
+msgstr ""
+
+#: includes/views/pos/receipt.php:12
+msgid "Paid"
+msgstr ""
+
+#: includes/views/support.php:12
+msgid "Support Form"
+msgstr ""
+
+#: includes/views/support.php:22
+msgid "Your name"
+msgstr ""
+
+#: includes/views/support.php:26
+msgid "Your email"
+msgstr ""
+
+#: includes/views/support.php:30
+msgid "Describe your problem here ..."
+msgstr ""
+
+#: includes/views/support.php:33
+msgid "Append POS system report"
+msgstr ""
+
+#: includes/views/template.php:12
+msgid "Point of Sale"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -195,35 +190,23 @@ msgid ""
 "href=\"http://wordpress.org/plugins/woocommerce/\">WooCommerce</a>."
 msgstr ""
 
-#. Author of the plugin/theme
-msgid "kilbot"
+#: includes/class-wc-pos-params.php:66
+msgctxt "Product tab: 'On Sale' products"
+msgid "On Sale"
 msgstr ""
 
-#. Author URI of the plugin/theme
-msgid "http://www.kilbot.com.au"
-msgstr ""
-
-#: includes/admin/settings/class-wc-pos-checkout.php:19
-msgctxt "Settings tab label"
-msgid "Checkout"
-msgstr ""
-
-#: includes/admin/settings/class-wc-pos-general.php:19
-msgctxt "settings tab label"
-msgid "General"
-msgstr ""
-
-#: includes/class-wc-pos-gateways.php:61
-msgctxt "Payment gateway status"
-msgid "Online Store"
-msgstr ""
-
-#: includes/class-wc-pos-gateways.php:62
-msgctxt "Payment gateway status"
-msgid "POS"
-msgstr ""
-
-#: includes/gateways/class-wc-pos-cash.php:136
+#: includes/gateways/class-wc-pos-cash.php:105
 msgctxt "Money returned from cash sale"
 msgid "Change"
+msgstr ""
+
+#: includes/views/help.php:9
+msgctxt "keyboard shortcuts"
+msgid "Hotkeys"
+msgstr ""
+
+#: includes/views/pos/cart.php:63 includes/views/pos/cart.php:72
+#: includes/views/pos/receipt.php:84 includes/views/pos/receipt.php:93
+msgctxt "abbreviation for includes (tax)"
+msgid "incl."
 msgstr ""

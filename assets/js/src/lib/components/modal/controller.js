@@ -1,25 +1,26 @@
-var POS = (function(App, Backbone, Marionette, $, _) {
+POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) {
 
-    App.Components.Modal = {};
+    // init modal component on start
+    POS.addInitializer(function() {
+        new Modal.Controller({
+            container: POS.modalRegion
+        });
+    });
 
-    /**
-     * API
-     */
-    App.Components.Modal.channel = Backbone.Radio.channel('modal');
+    // API
+    Modal.channel = Backbone.Radio.channel('modal');
 
-    /**
-     * Controller
-     */
-    App.Components.Modal.Controller = Marionette.Controller.extend({
+    // Controller
+    Modal.Controller = Marionette.Controller.extend({
 
         initialize: function (options) {
             this.container = options.container;
-            this.view = new App.Components.Modal.View();
+            this.view = new Modal.View();
             this.container.show(this.view);
 
             _.bindAll(this, 'openModal', 'closeModal');
-            App.Components.Modal.channel.comply('open', this.openModal);
-            App.Components.Modal.channel.comply('close', this.closeModal);
+            Modal.channel.comply('open', this.openModal);
+            Modal.channel.comply('close', this.closeModal);
         },
 
         openModal: function (options) {
@@ -32,6 +33,4 @@ var POS = (function(App, Backbone, Marionette, $, _) {
 
     });
 
-    return App;
-
-})(POS || {}, Backbone, Marionette, jQuery, _);
+});

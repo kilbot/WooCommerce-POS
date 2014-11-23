@@ -16,12 +16,13 @@ class WC_POS_Admin {
 	 */
 	public function __construct() {
 
+		$this->init();
+		add_action( 'current_screen', array( $this, 'conditional_init' ) );
+
 //		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 //		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 //		add_action( 'admin_print_footer_scripts', array( $this, 'admin_print_footer_scripts' ) );
 
-		$this->init();
-		add_action( 'current_screen', array( $this, 'conditional_init' ) );
 	}
 
 	/**

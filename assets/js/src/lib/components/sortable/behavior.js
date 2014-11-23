@@ -1,6 +1,6 @@
-var POS = (function(App, $) {
+POS.module('Components.Sortable', function(Sortable, POS, Backbone, Marionette, $, _) {
 
-    App.Behaviors.Sortable = Marionette.Behavior.extend({
+    Sortable.Behavior = Marionette.Behavior.extend({
 
         initialize: function(options){
 
@@ -54,6 +54,4 @@ var POS = (function(App, $) {
 
     });
 
-    return App;
-
-})(POS || {}, jQuery);
+});

@@ -1,0 +1,15 @@
+CACHE MANIFEST
+# version 0.4.0
+
+CACHE:
+//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js
+//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js
+//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js
+//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js
+//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js
+//cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js
+//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js
+//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js
+
+NETWORK:
+*

@@ -77,13 +77,17 @@ module.exports = function(grunt) {
                 'sub' : true,
                 'trailing': true,
                 'undef' : true,
-                'unused' : true,
+                'unused' : false,
                 'globals': {
                     'define': true,
                     'alert': true,
-                    'pos_params': true,
                     'Modernizr': true,
-                    '_': true
+                    '$': true,
+                    '_': true,
+                    'Backbone': true,
+                    'Marionette': true,
+                    'Handlebars': true,
+                    'POS': true
                 },
                 'strict': false,
                 'force': true
@@ -91,7 +95,7 @@ module.exports = function(grunt) {
             all: [
                 'Gruntfile.js',
                 'assets/js/src/**/*.js',
-                '!assets/js/src/vendor/**/*.js',
+                '!assets/js/vendor/**/*.js',
                 //'tests/data/**/*.json',
                 //'tests/specs/**/*.js',
                 //'tests/main.js',
@@ -115,7 +119,96 @@ module.exports = function(grunt) {
                         'assets/js/src/lib/utilities/radio.shim.js',
 
                         // backbone extras
+                        'assets/js/src/lib/config/sync.js',
                         'bower_components/backbone.syphon/lib/backbone.syphon.js',
+                        'bower_components/backbone-poller/backbone.poller.min.js',
+                        //'bower_components/backbone.paginator/lib/backbone.paginator.min.js',
+                        'bower_components/idb-wrapper/idbstore.js',
+                        'bower_components/backbone-idb/backbone-idb.js',
+                        'bower_components/backbone-dualStorage/backbone.dualstorage.js',
+                        'bower_components/backbone-filtered-collection/backbone-filtered-collection.js',
+
+                        // templating
+                        //'bower_components/handlebars/handlebars.min.js', // cndjs
+                        'assets/js/src/lib/utilities/handlebars-helpers.js',
+
+                        // bootstrap js
+                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js',
+                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js',
+                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js',
+                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js',
+                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js',
+
+                        // other vendor plugins
+                        //'bower_components/select2/select2.min.js', // cndjs
+                        //'bower_components/moment/moment.js', // cndjs
+                        //'bower_components/accounting/accounting.min.js', // cndjs
+                        'bower_components/jquery.hotkeys/jquery.hotkeys.js'
+
+                    ]
+                }
+            },
+            app: {
+                options: {
+                    sourceMap: true,
+                    sourceMapName: 'assets/js/maps/app.map'
+                },
+                files: {
+                    'assets/js/app.min.js': [
+
+                        // main app & config
+                        'assets/js/src/lib/config/application.js',
+                        'assets/js/src/app.js',
+                        'assets/js/src/lib/config/ajax.js',
+                        'assets/js/src/lib/config/controller_base.js',
+
+                        // entities
+                        'assets/js/src/entities/db.js',
+                        'assets/js/src/entities/products.js',
+                        'assets/js/src/entities/orders.js',
+                        'assets/js/src/entities/orders/model.js',
+                        'assets/js/src/entities/orders/collection.js',
+                        'assets/js/src/entities/customers.js',
+                        'assets/js/src/entities/coupons.js',
+                        'assets/js/src/entities/cart.js',
+                        'assets/js/src/entities/cart/model.js',
+                        'assets/js/src/entities/cart/collection.js',
+
+                        'assets/js/src/entities/settings.js',
+                        //'assets/js/src/entities/settings/user.js',
+
+                        // components
+                        'assets/js/src/lib/components/hotkeys/behavior.js',
+                        'assets/js/src/lib/components/loading/controller.js',
+                        'assets/js/src/lib/components/loading/view.js',
+                        'assets/js/src/lib/components/modal/controller.js',
+                        'assets/js/src/lib/components/modal/view.js',
+                        'assets/js/src/lib/components/modal/behavior.js',
+                        'assets/js/src/lib/components/tooltip/behavior.js',
+                        'assets/js/src/lib/components/filter/behavior.js',
+                        'assets/js/src/lib/components/pulse/behavior.js',
+                        'assets/js/src/lib/components/autogrow/behavior.js',
+                        'assets/js/src/lib/components/tabs/controller.js',
+                        'assets/js/src/lib/components/tabs/view.js',
+                        'assets/js/src/lib/components/tabs/entities.js',
+
+                        // sub apps
+                        'assets/js/src/apps/header/header_app.js',
+
+                        'assets/js/src/apps/pos/pos_app.js',
+                        'assets/js/src/apps/pos/products/controller.js',
+                        'assets/js/src/apps/pos/products/view.js',
+                        'assets/js/src/apps/pos/cart/controller.js',
+                        'assets/js/src/apps/pos/cart/view.js',
+                        'assets/js/src/apps/pos/checkout/controller.js',
+                        'assets/js/src/apps/pos/checkout/view.js',
+                        'assets/js/src/apps/pos/receipt/controller.js',
+                        'assets/js/src/apps/pos/receipt/view.js',
+
+                        'assets/js/src/apps/support/support_app.js',
+                        'assets/js/src/apps/support/show/controller.js',
+                        'assets/js/src/apps/support/show/view.js',
+
                     ]
                 }
             },
@@ -126,57 +219,30 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'assets/js/admin_app.min.js': [
+
+                        // main app & config
+                        'assets/js/src/lib/config/application.js',
                         'assets/js/src/admin_app.js',
-                        'assets/js/src/entities/options.js',
-                    ]
-                }
-            },
-            settings_app: {
-                options: {
-                    sourceMap: true,
-                    sourceMapName: 'assets/js/maps/settings_app.map'
-                },
-                files: {
-                    'assets/js/settings_app.min.js': [
-                        'assets/js/src/apps/settings/settings_app.js',
-                        'assets/js/src/apps/settings/admin/controller.js',
-                        'assets/js/src/apps/settings/admin/view.js',
-                    ]
-                }
-            },
-            admin_components: {
-                options: {
-                    sourceMap: true,
-                    sourceMapName: 'assets/js/maps/admin_components.map'
-                },
-                files: {
-                    'assets/js/admin_components.min.js': [
+                        'assets/js/src/lib/config/ajax.js',
+                        'assets/js/src/lib/config/controller_base.js',
 
-                        //'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js',
-                        //'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js',
+                        // entities
+                        'assets/js/src/entities/settings.js',
 
-                        // transition, required for tooltip, popover, modal
-                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js',
-
-                        // tooltip
-                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js',
+                        // components
                         'assets/js/src/lib/components/tooltip/behavior.js',
-
-                        // select2
-                        'bower_components/select2/select2.min.js',
                         'assets/js/src/lib/components/select2/behavior.js',
-
-                        // sortable
                         'assets/js/src/lib/components/sortable/behavior.js',
-
-                        // moment
-                        'bower_components/moment/moment.js',
-
-                        // modal
-                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js',
                         'assets/js/src/lib/components/modal/controller.js',
                         'assets/js/src/lib/components/modal/view.js',
                         'assets/js/src/lib/components/modal/behavior.js',
+                        'assets/js/src/lib/components/loading/controller.js',
+                        'assets/js/src/lib/components/loading/view.js',
+
+                        // subapps
+                        'assets/js/src/apps/settings/settings_app.js',
+                        'assets/js/src/apps/settings/show/controller.js',
+                        'assets/js/src/apps/settings/show/view.js',
                     ]
                 }
             },
@@ -199,23 +265,82 @@ module.exports = function(grunt) {
 
         // make .pot file
         makepot: {
-            target: {
+            options: {
+                type: 'wp-plugin',
+                potHeaders: {
+                    'report-msgid-bugs-to': 'https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues',
+                    'language-team': 'Team Name <team@example.com>'
+                }
+            },
+            frontend: {
                 options: {
-                    cwd: '',
-                    domainPath: '/languages',
-                    mainFile: 'woocommerce-pos.php',
                     potFilename: 'woocommerce-pos.pot',
+                    exclude: [
+                        'includes/admin/.*',
+                        'includes/class-wc-pos-activator.php',
+                        'includes/class-wc-pos-deactivator.php'
+                    ],
                     processPot: function( pot ) {
-                        pot.headers['report-msgid-bugs-to'] = 'https://github.com/kilbot/WooCommerce-POS/issues';
-                        pot.headers['language-team'] = 'Team Name <team@example.com>';
+                        var translation,
+                            excluded_meta = [
+                                'Plugin Name of the plugin/theme',
+                                'Plugin URI of the plugin/theme',
+                                'Author of the plugin/theme',
+                                'Author URI of the plugin/theme',
+                                'translators: woocommerce',
+                                'translators: woocommerce-admin',
+                                'translators: wordpress'
+                            ];
+
+                        for ( translation in pot.translations[''] ) {
+                            if ( 'undefined' !== typeof pot.translations[''][ translation ].comments.extracted ) {
+                                if ( excluded_meta.indexOf( pot.translations[''][ translation ].comments.extracted ) >= 0 ) {
+                                    //console.log( 'Excluded meta: ' + pot.translations[''][ translation ].comments.extracted );
+                                    delete pot.translations[''][ translation ];
+                                }
+                            }
+                        }
+
                         return pot;
-                    },
-                    type: 'wp-plugin'
+                    }
+                }
+            },
+            admin: {
+                options: {
+                    potFilename: 'woocommerce-pos-admin.pot',
+                    include: [
+                        'includes/admin/.*',
+                        'includes/class-wc-pos-activator.php',
+                        'includes/class-wc-pos-deactivator.php'
+                    ],
+                    processPot: function( pot ) {
+                        var translation,
+                            excluded_meta = [
+                                'Plugin Name of the plugin/theme',
+                                'Plugin URI of the plugin/theme',
+                                'Author of the plugin/theme',
+                                'Author URI of the plugin/theme',
+                                'Description of the plugin/theme',
+                                'translators: woocommerce-pos',
+                                'translators: woocommerce',
+                                'translators: woocommerce-admin',
+                                'translators: wordpress'
+                            ];
+
+                        for ( translation in pot.translations[''] ) {
+                            if ( 'undefined' !== typeof pot.translations[''][ translation ].comments.extracted ) {
+                                if ( excluded_meta.indexOf( pot.translations[''][ translation ].comments.extracted ) >= 0 ) {
+                                    //console.log( 'Excluded meta: ' + pot.translations[''][ translation ].comments.extracted );
+                                    delete pot.translations[''][ translation ];
+                                }
+                            }
+                        }
+
+                        return pot;
+                    }
                 }
             }
         }
-
-
 
     });
 
