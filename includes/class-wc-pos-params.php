@@ -23,7 +23,7 @@ class WC_POS_Params {
 		$param['nonce'] 		= wp_create_nonce( WC_POS_PLUGIN_NAME );
 		$param['tabs'] 		    = $this->product_tabs();
 		$param['tax'] 		    = $this->wc_settings();
-		$param['tax_rates']     = '';
+		$param['tax_rates']     = $this->tax_rates();
 		$param['user'] 		    = $this->user();
 		$param['wc_api']        = get_woocommerce_api_url( '' );
 		$param['worker'] 	    = WC_POS_PLUGIN_URL .'public/assets/js/worker.min.js?ver='. WC_POS_VERSION;
@@ -209,6 +209,23 @@ class WC_POS_Params {
 		);
 
 		return $settings;
+	}
+
+	public function tax_rates() {
+		$rates = array();
+
+		$classes = array_filter( array_map( 'sanitize_title', explode( "\n", get_option('woocommerce_tax_classes' ) ) ) );
+		array_unshift( $classes, '' ); // add 'standard'
+
+		// get_shop_base_rate depreciated in 2.3
+		$get_rates = method_exists( 'WC_Tax','get_base_tax_rates' ) ? 'get_base_tax_rates' : 'get_shop_base_rate';
+
+		foreach( $classes as $class ) {
+			if( $rate = WC_Tax::$get_rates( $class ) )
+				$rates[$class] = $rate;
+		}
+
+		return $rates;
 	}
 
 }

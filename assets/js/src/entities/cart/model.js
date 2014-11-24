@@ -44,9 +44,9 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             this.save({
                 'item_subtotal' 	: regular_price,
                 'item_subtotal_tax' : item_subtotal_tax,
+                'item_tax'			: POS.round( item_tax, 4 ),
                 'subtotal' 	        : POS.round( regular_price * qty, 4 ),
                 'subtotal_tax'      : POS.round( item_subtotal_tax * qty, 4 ),
-                'item_tax'			: POS.round( item_tax, 4 ),
                 'total_tax'			: POS.round( item_tax * qty, 4 ),
                 'total'		        : POS.round( item_price * qty, 4 )
             });
@@ -60,12 +60,14 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         calcTax: function( price, qty ) {
             var item_tax = 0;
 
-            if( this.get('taxable') && POS.tax.calc_taxes === 'yes' ) {
+            var rates = POS.tax_rates[ this.get('tax_class') ];
+
+            if( POS.tax.calc_taxes === 'yes' && this.get('taxable') && rates ) {
                 if( POS.tax.prices_include_tax === 'yes' ) {
-                    item_tax = this.calcInclusiveTax( price, qty );
+                    item_tax = this.calcInclusiveTax( price, rates, qty );
                 }
                 else {
-                    item_tax = this.calcExclusiveTax( price, qty );
+                    item_tax = this.calcExclusiveTax( price, rates, qty );
                 }
             }
 
@@ -77,9 +79,8 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
          * Calculate the line item tax total
          * based on the calc_inclusive_tax function in woocommerce/includes/class-wc-tax.php
          */
-        calcInclusiveTax: function( price, qty ) {
-            var rates = this.get('tax_rates'),
-                regular_tax_rates = 0,
+        calcInclusiveTax: function( price, rates, qty ) {
+            var regular_tax_rates = 0,
                 compound_tax_rates = 0,
                 non_compound_price = 0,
                 tax_amount = 0,
@@ -147,9 +148,8 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
          * Calculate the line item tax total
          * based on the calc_exclusive_tax function in woocommerce/includes/class-wc-tax.php
          */
-        calcExclusiveTax: function( price, qty ) {
-            var rates = this.get('tax_rates'),
-                taxes = [],
+        calcExclusiveTax: function( price, rates, qty ) {
+            var taxes = [],
                 pre_compound_total = 0,
                 tax_amount = 0,
                 item_tax = 0,

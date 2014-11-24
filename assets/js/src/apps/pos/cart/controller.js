@@ -77,10 +77,9 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 if( row ) {
                     row.quantity('increase');
                 } else {
-                    //row = this.cart.create( model.attributes );
                     row = this.cart.add( model.attributes );
                 }
-                row.trigger( 'pulse:item' );
+                row.trigger('pulse' );
             }, this);
 
             // maybe show totals, actions

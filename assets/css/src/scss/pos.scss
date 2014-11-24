@@ -1,7 +1,6 @@
 @import "compass";
 @import "breakpoint";
 @import "partials/variables";
-@import "partials/mixins";
 
 // Vendor
 @import "partials/normalize";
@@ -11,6 +10,9 @@
 @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins";
 @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/print";
 @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/dropdowns";
+
+//
+@import "partials/mixins";
 
 // POS front-end
 @import "partials/scaffolding";

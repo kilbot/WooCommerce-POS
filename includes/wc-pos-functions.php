@@ -34,6 +34,7 @@ function wc_pos_url( $page = '' ) {
 function is_pos( $type = false ) {
 
 	// test for template requests, ie: matched rewrite rule
+	// also matches $_GET & $_POST for pos=1
 	if( $type == 'template' || !$type ){
 		global $wp;
 		if( isset( $wp->query_vars['pos'] ) && $wp->query_vars['pos'] == 1 )

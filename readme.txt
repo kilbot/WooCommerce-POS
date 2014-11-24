@@ -83,6 +83,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.4 =
+* TODO: capitalized search
 * TODO: floating point numbers as qty
 * TODO: Multi-stores
 * TODO: store widgets and shortcodes

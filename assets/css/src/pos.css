@@ -859,7 +859,6 @@ body {
   display: -webkit-flex;
   display: flex;
   background-color: #ccc;
-  padding-right: 16px;
 }
 /* line 109, scss/partials/_scaffolding.scss */
 .module .list-header > div {
@@ -890,23 +889,23 @@ body {
   align-items: center;
 }
 /* line 126, scss/partials/_scaffolding.scss */
-.module .list ul li:nth-of-type(even) {
-  background-color: #f9f9f9;
-}
-/* line 129, scss/partials/_scaffolding.scss */
 .module .list ul li > div {
   padding: 8px;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 137, scss/partials/_scaffolding.scss */
+/* line 133, scss/partials/_scaffolding.scss */
+.module .list ul.striped li:nth-of-type(even) {
+  background-color: #f9f9f9;
+}
+/* line 139, scss/partials/_scaffolding.scss */
 .module .list-totals ul {
   width: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
 }
-/* line 142, scss/partials/_scaffolding.scss */
+/* line 144, scss/partials/_scaffolding.scss */
 .module .list-totals ul li {
   border-bottom: 1px solid #eeeeee;
   display: -webkit-flex;
@@ -914,26 +913,26 @@ body {
   -webkit-align-items: center;
   align-items: center;
 }
-/* line 146, scss/partials/_scaffolding.scss */
+/* line 148, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div {
   padding: 8px;
 }
-/* line 148, scss/partials/_scaffolding.scss */
+/* line 150, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div:first-of-type {
   font-weight: bold;
   text-align: right;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 154, scss/partials/_scaffolding.scss */
+/* line 156, scss/partials/_scaffolding.scss */
 .module .list-totals ul li:first-of-type {
   border-top: 1px solid #dfdfdf;
 }
-/* line 157, scss/partials/_scaffolding.scss */
+/* line 159, scss/partials/_scaffolding.scss */
 .module .list-totals ul li:last-of-type {
   border-bottom: 1px solid #dfdfdf;
 }
-/* line 163, scss/partials/_scaffolding.scss */
+/* line 165, scss/partials/_scaffolding.scss */
 .module .list-footer {
   background-color: #ccc;
   padding: 8px;
@@ -947,6 +946,61 @@ body {
 /* line 3, scss/partials/_common.scss */
 .pull-right {
   float: right;
+}
+
+/* line 5, scss/partials/_common.scss */
+.bg-primary {
+  color: #fff;
+}
+
+/* line 5, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+.bg-primary {
+  background-color: #00a1cb;
+}
+
+/* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+a.bg-primary:hover {
+  background-color: #007998;
+}
+
+/* line 5, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+.bg-success {
+  background-color: #dff0d8;
+}
+
+/* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+a.bg-success:hover {
+  background-color: #c1e2b3;
+}
+
+/* line 5, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+.bg-info {
+  background-color: #d9edf7;
+}
+
+/* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+a.bg-info:hover {
+  background-color: #afd9ee;
+}
+
+/* line 5, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+.bg-warning {
+  background-color: #fcf8e3;
+}
+
+/* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+a.bg-warning:hover {
+  background-color: #f7ecb5;
+}
+
+/* line 5, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+.bg-danger {
+  background-color: #f2dede;
+}
+
+/* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+a.bg-danger:hover {
+  background-color: #e4b9b9;
 }
 
 /* line 1, scss/partials/_type.scss */
@@ -1531,8 +1585,37 @@ header .dropdown-menu a:hover {
   flex: 0 1 52px;
 }
 
-/* line 2, scss/partials/_cart.scss */
-.cart-actions {
+/* line 5, scss/partials/_cart.scss */
+.cart-module .list ul.animating li.empty {
+  display: none;
+}
+/* line 11, scss/partials/_cart.scss */
+.cart-module .cart-actions {
   text-align: right;
   padding: 8px;
+}
+/* line 16, scss/partials/_cart.scss */
+.cart-module .list input, .cart-module .list-totals input {
+  text-align: center;
+  max-width: 7em;
+  background-color: #f9f9f9;
+  border: 1px solid #dfdfdf;
+  -moz-appearance: textfield;
+  -moz-border-radius: 16px;
+  -webkit-border-radius: 16px;
+  border-radius: 16px;
+}
+/* line 24, scss/partials/_cart.scss */
+.cart-module .list input::-webkit-inner-spin-button, .cart-module .list-totals input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* line 28, scss/partials/_cart.scss */
+.cart-module .list input::-webkit-outer-spin-button, .cart-module .list-totals input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* line 32, scss/partials/_cart.scss */
+.cart-module .list input:hover, .cart-module .list-totals input:hover {
+  cursor: pointer;
 }

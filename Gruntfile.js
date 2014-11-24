@@ -121,7 +121,7 @@ module.exports = function(grunt) {
                         // backbone extras
                         'assets/js/src/lib/config/sync.js',
                         'bower_components/backbone.syphon/lib/backbone.syphon.js',
-                        'bower_components/backbone-poller/backbone.poller.min.js',
+                        //'bower_components/backbone-poller/backbone.poller.min.js',
                         //'bower_components/backbone.paginator/lib/backbone.paginator.min.js',
                         'bower_components/idb-wrapper/idbstore.js',
                         'bower_components/backbone-idb/backbone-idb.js',
@@ -186,7 +186,6 @@ module.exports = function(grunt) {
                         'assets/js/src/lib/components/modal/behavior.js',
                         'assets/js/src/lib/components/tooltip/behavior.js',
                         'assets/js/src/lib/components/filter/behavior.js',
-                        'assets/js/src/lib/components/pulse/behavior.js',
                         'assets/js/src/lib/components/autogrow/behavior.js',
                         'assets/js/src/lib/components/tabs/controller.js',
                         'assets/js/src/lib/components/tabs/view.js',

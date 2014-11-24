@@ -115,6 +115,7 @@ class WC_POS_Template {
 			'select2'           => '<script src="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js"></script>',
 			'moment'            => '<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"></script>',
 			'accounting'        => '<script src="//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>',
+			'jquery.color'      => '<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js"></script>',
 			'core-js'           => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/core.min.js?ver='. WC_POS_VERSION .'"></script>',
 			'app-js'            => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/app.min.js?ver='. WC_POS_VERSION .'"></script>'
 		);

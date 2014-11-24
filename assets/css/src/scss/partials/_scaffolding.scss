@@ -105,7 +105,7 @@ body {
   .list-header {
     @include display-flex;
     background-color: #ccc;
-    padding-right: 16px;
+//    padding-right: 16px;
     > div {
       padding: $spacing/3;
       @include flex(1);
@@ -123,15 +123,17 @@ body {
           border-bottom: 1px solid $border-color;
           @include display-flex;
           @include align-items(center);
-          &:nth-of-type(even) {
-            background-color: #f9f9f9;
-          }
           > div {
             padding: $spacing/3;
             @include flex(1);
           }
         }
       }
+    ul.striped {
+      li:nth-of-type(even) {
+        background-color: #f9f9f9;
+      }
+    }
   }
   .list-totals {
     ul {

@@ -76,11 +76,13 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
      */
     Products.Empty = Marionette.ItemView.extend({
         tagName: 'li',
+        className: 'empty',
         template: '#tmpl-products-empty'
     });
 
     Products.List = Marionette.CollectionView.extend({
         tagName: 'ul',
+        className: 'striped',
         childView: Products.Item,
         emptyView: Products.Empty,
 

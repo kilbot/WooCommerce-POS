@@ -20,17 +20,17 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         tagName: 'li',
 
         initialize: function() {
-            this.template = Handlebars.compile( $('#tmpl-cart-item').html() )
+            this.template = Handlebars.compile( $('#tmpl-cart-item').html() );
         },
 
         behaviors: {
             AutoGrow: {},
-            Pulse: {},
             //Numpad: {}
         },
 
         modelEvents: {
-            'change': 'render'
+            'change': 'render',
+            'pulse' : 'pulse'
         },
 
         events: {
@@ -39,9 +39,16 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             'blur input'      		: 'onBlur'
         },
 
+        pulse: function() {
+            this.$el.addClass('bg-success').animate({
+                backgroundColor: 'transparent'
+            }, 500, function() {
+                $(this).removeClass('bg-success').removeAttr('style');
+            });
+        },
+
         remove: function() {
-            this.$el.parent('ul').addClass('animating');
-            this.$('li').addClass('bg-danger');
+            this.$el.addClass('bg-danger').parent('ul').addClass('animating');
             this.$el.fadeOut( 500, function() {
                 this.$el.parent('ul').removeClass('animating');
                 Marionette.ItemView.prototype.remove.call(this);
@@ -59,6 +66,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
      */
     Cart.EmptyView = Marionette.ItemView.extend({
         tagName: 'li',
+        className: 'empty',
         template: '#tmpl-cart-empty'
     });
 

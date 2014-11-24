@@ -6,7 +6,7 @@
 
 <script type="text/template" id="tmpl-cart">
 	<div class="list-header">
-		<div><?php /* translators: woocommerce */ _e( 'Qty', 'woocommerce' ); ?></div>
+		<div><?php /* translators: woocommerce */ _ex( 'Qty', 'Abbreviation of Quantity', 'woocommerce-pos' ); ?></div>
 		<div><?php /* translators: woocommerce */ _e( 'Product', 'woocommerce' ); ?></div>
 		<div><?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?></div>
 		<div><?php /* translators: woocommerce */ _e( 'Total', 'woocommerce' ); ?></div>
@@ -37,10 +37,10 @@
 	<div class="price"><input type="text" value="{{number item_price}}" size="10" data-id="item_price" data-original="{{regular_price}}" data-title="<?php _e( 'Item Price', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="item_price" class="autogrow"></div>
 	<div class="total">
 		{{#if show_line_discount}}
-		<del>{{{money line_subtotal}}}</del>
-		<ins>{{{money line_total}}}</ins>
+		<del>{{{money subtotal}}}</del>
+		<ins>{{{money total}}}</ins>
 		{{else}}
-		{{{money line_total}}}
+		{{{money total}}}
 		{{/if}}
 	</div>
 	<div class="action"><a class="btn btn-circle btn-danger action-remove" href="#"><i class="icon icon-times"></i></a></div>
