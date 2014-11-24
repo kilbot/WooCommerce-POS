@@ -1,0 +1,4 @@
+<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="{{min}}" aria-valuemax="{{max}}" style="width: {{percentage}}%">
+	{{#is display 'percentage'}}{{percentage}}%{{/is}}
+	{{#is display 'fraction'}}{{progress}} / {{max}}{{/is}}
+</div>

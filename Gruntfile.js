@@ -21,7 +21,7 @@ module.exports = function(grunt) {
             },
             js: {
                 files: '<%= jshint.all %>',
-                tasks: ['jshint', 'uglify']
+                tasks: ['jshint', 'handlebars', 'uglify']
             }
         },
 
@@ -54,6 +54,42 @@ module.exports = function(grunt) {
                     'assets/css/pos.min.css': ['assets/css/src/pos.css'],
                     'assets/css/admin.min.css':['assets/css/src/admin.css'],
                     'assets/css/icons.min.css':['assets/css/src/icons.css']
+                }
+            }
+        },
+
+        handlebars: {
+            compilerOptions: {
+                knownHelpers: {
+                    'number': true,
+                    'money': true,
+                    'is': true,
+                    'compare': true
+                },
+                knownHelpersOnly: true
+            },
+            compile: {
+                options: {
+                    namespace: function(filename) {
+                        var names = filename.replace(/assets\/js\/src\/lib\/(.*)(\/\w+\.hbs)/, '$1').split('/');
+                        var array = names.map( function(name) {
+                            return name.charAt(0).toUpperCase() + name.slice(1);
+                        });
+                        return 'POS.' + array.join('.');
+                    },
+                    processName: function(filePath) {
+                        var pieces = filePath.split("/");
+                        var filename = pieces[pieces.length - 1];
+                        var name = filename.replace('.hbs', 'Tmpl');
+                        return name.charAt(0).toUpperCase() + name.slice(1);
+                    }
+                },
+                files: {
+                    'assets/js/src/lib/components/numpad/templates.js':
+                        [
+                            'assets/js/src/lib/components/numpad/header.hbs',
+                            'assets/js/src/lib/components/numpad/numkeys.hbs',
+                        ]
                 }
             }
         },
@@ -184,12 +220,20 @@ module.exports = function(grunt) {
                         'assets/js/src/lib/components/modal/controller.js',
                         'assets/js/src/lib/components/modal/view.js',
                         'assets/js/src/lib/components/modal/behavior.js',
+                        'assets/js/src/lib/components/popover/controller.js',
+                        'assets/js/src/lib/components/popover/view.js',
+                        'assets/js/src/lib/components/popover/behavior.js',
                         'assets/js/src/lib/components/tooltip/behavior.js',
                         'assets/js/src/lib/components/filter/behavior.js',
                         'assets/js/src/lib/components/autogrow/behavior.js',
                         'assets/js/src/lib/components/tabs/controller.js',
                         'assets/js/src/lib/components/tabs/view.js',
                         'assets/js/src/lib/components/tabs/entities.js',
+                        'assets/js/src/lib/components/numpad/controller.js',
+                        'assets/js/src/lib/components/numpad/view.js',
+                        'assets/js/src/lib/components/numpad/entities.js',
+                        'assets/js/src/lib/components/numpad/behavior.js',
+                        'assets/js/src/lib/components/numpad/templates.js',
 
                         // sub apps
                         'assets/js/src/apps/header/header_app.js',
@@ -344,7 +388,7 @@ module.exports = function(grunt) {
     });
 
     // register tasks
-    grunt.registerTask('default', ['makepot', 'compass', 'cssmin', 'jshint', 'uglify', 'watch']);
+    grunt.registerTask('default', ['makepot', 'compass', 'cssmin', 'handlebars', 'jshint', 'uglify', 'watch']);
 
     grunt.registerTask('js_locales', 'Combine locales.json files', function() {
         var locales = grunt.file.readJSON('locales.json');

@@ -25,7 +25,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
         behaviors: {
             AutoGrow: {},
-            //Numpad: {}
+            Numpad: {}
         },
 
         modelEvents: {
@@ -88,6 +88,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
         initialize: function() {
             this.template = Handlebars.compile($('#tmpl-cart-totals').html());
+            console.log(this.template);
         },
 
         modelEvents: {

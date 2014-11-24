@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2014-11-24 01:44:10+00:00\n"
+"POT-Creation-Date: 2014-11-24 11:48:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,7 +18,7 @@ msgstr ""
 msgid "Online Store"
 msgstr ""
 
-#: includes/class-wc-pos-gateways.php:62 includes/class-wc-pos-template.php:145
+#: includes/class-wc-pos-gateways.php:62 includes/class-wc-pos-template.php:146
 msgid "POS"
 msgstr ""
 
@@ -203,6 +203,12 @@ msgstr ""
 #: includes/views/help.php:9
 msgctxt "keyboard shortcuts"
 msgid "Hotkeys"
+msgstr ""
+
+#: includes/views/pos/cart.php:9
+#. translators: woocommerce
+msgctxt "Abbreviation of Quantity"
+msgid "Qty"
 msgstr ""
 
 #: includes/views/pos/cart.php:65 includes/views/pos/cart.php:74

@@ -712,6 +712,149 @@ th {
     right: auto;
   }
 }
+/* line 6, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1060;
+  display: none;
+  max-width: 276px;
+  padding: 1px;
+  text-align: left;
+  background-color: white;
+  background-clip: padding-box;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  white-space: normal;
+}
+/* line 26, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.top {
+  margin-top: -10px;
+}
+/* line 27, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.right {
+  margin-left: 10px;
+}
+/* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.bottom {
+  margin-top: 10px;
+}
+/* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.left {
+  margin-left: -10px;
+}
+
+/* line 32, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover-title {
+  margin: 0;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 18px;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #ebebeb;
+  border-radius: 9px 9px 0 0;
+}
+
+/* line 43, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover-content {
+  padding: 9px 14px;
+}
+
+/* line 52, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover > .arrow, .popover > .arrow:after {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+
+/* line 62, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover > .arrow {
+  border-width: 11px;
+}
+
+/* line 65, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover > .arrow:after {
+  border-width: 10px;
+  content: "";
+}
+
+/* line 71, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.top > .arrow {
+  left: 50%;
+  margin-left: -11px;
+  border-bottom-width: 0;
+  border-top-color: #999999;
+  border-top-color: rgba(0, 0, 0, 0.25);
+  bottom: -11px;
+}
+/* line 78, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.top > .arrow:after {
+  content: " ";
+  bottom: 1px;
+  margin-left: -10px;
+  border-bottom-width: 0;
+  border-top-color: white;
+}
+/* line 86, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.right > .arrow {
+  top: 50%;
+  left: -11px;
+  margin-top: -11px;
+  border-left-width: 0;
+  border-right-color: #999999;
+  border-right-color: rgba(0, 0, 0, 0.25);
+}
+/* line 93, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.right > .arrow:after {
+  content: " ";
+  left: 1px;
+  bottom: -10px;
+  border-left-width: 0;
+  border-right-color: white;
+}
+/* line 101, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.bottom > .arrow {
+  left: 50%;
+  margin-left: -11px;
+  border-top-width: 0;
+  border-bottom-color: #999999;
+  border-bottom-color: rgba(0, 0, 0, 0.25);
+  top: -11px;
+}
+/* line 108, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.bottom > .arrow:after {
+  content: " ";
+  top: 1px;
+  margin-left: -10px;
+  border-top-width: 0;
+  border-bottom-color: white;
+}
+/* line 117, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.left > .arrow {
+  top: 50%;
+  right: -11px;
+  margin-top: -11px;
+  border-right-width: 0;
+  border-left-color: #999999;
+  border-left-color: rgba(0, 0, 0, 0.25);
+}
+/* line 124, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.left > .arrow:after {
+  content: " ";
+  right: 1px;
+  border-right-width: 0;
+  border-left-color: white;
+  bottom: -10px;
+}
+
 /* apply a natural box layout model to all elements, but allowing components to change */
 /* line 2, scss/partials/_scaffolding.scss */
 html {
@@ -1618,4 +1761,137 @@ header .dropdown-menu a:hover {
 /* line 32, scss/partials/_cart.scss */
 .cart-module .list input:hover, .cart-module .list-totals input:hover {
   cursor: pointer;
+}
+
+/* line 3, scss/partials/_numpad.scss */
+.numpad-popover {
+  background-color: #dfdfdf;
+}
+/* line 5, scss/partials/_numpad.scss */
+.numpad-popover.top > .arrow {
+  border-top-color: #dfdfdf;
+}
+/* line 7, scss/partials/_numpad.scss */
+.numpad-popover.top > .arrow:after {
+  border-top-color: #dfdfdf;
+}
+/* line 11, scss/partials/_numpad.scss */
+.numpad-popover.right > .arrow {
+  border-right-color: #dfdfdf;
+}
+/* line 13, scss/partials/_numpad.scss */
+.numpad-popover.right > .arrow:after {
+  border-right-color: #dfdfdf;
+}
+/* line 17, scss/partials/_numpad.scss */
+.numpad-popover.bottom > .arrow {
+  border-bottom-color: #dfdfdf;
+}
+/* line 19, scss/partials/_numpad.scss */
+.numpad-popover.bottom > .arrow:after {
+  border-bottom-color: #dfdfdf;
+}
+/* line 24, scss/partials/_numpad.scss */
+.numpad-popover.left > .arrow {
+  border-left-color: #dfdfdf;
+}
+/* line 26, scss/partials/_numpad.scss */
+.numpad-popover.left > .arrow:after {
+  border-left-color: #dfdfdf;
+}
+/* line 30, scss/partials/_numpad.scss */
+.numpad-popover .popover-content {
+  padding: 0;
+}
+
+/* line 35, scss/partials/_numpad.scss */
+.numpad-header {
+  padding: 6px;
+  background-color: transparent;
+  border-bottom: 1px solid #ebebeb;
+}
+/* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+.numpad-header:before, .numpad-header:after {
+  content: " ";
+  display: table;
+}
+/* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+.numpad-header:after {
+  clear: both;
+}
+/* line 40, scss/partials/_numpad.scss */
+.numpad-header input {
+  text-align: center;
+  padding: 6px 0;
+  max-width: 7em;
+}
+/* line 45, scss/partials/_numpad.scss */
+.numpad-header .input-group {
+  width: 86px;
+}
+/* line 48, scss/partials/_numpad.scss */
+.numpad-header .title {
+  line-height: 34px;
+}
+/* line 51, scss/partials/_numpad.scss */
+.numpad-header .input-alt {
+  display: inline-block;
+  line-height: 34px;
+  margin-right: 6px;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+}
+
+/* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+.numpad-keys:before, .numpad-keys:after {
+  content: " ";
+  display: table;
+}
+/* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+.numpad-keys:after {
+  clear: both;
+}
+/* line 61, scss/partials/_numpad.scss */
+.numpad-keys table {
+  width: auto;
+  border-collapse: separate;
+  border-spacing: 6px;
+}
+/* line 66, scss/partials/_numpad.scss */
+.numpad-keys table tr td {
+  border: 0;
+}
+/* line 68, scss/partials/_numpad.scss */
+.numpad-keys table tr td button {
+  display: table-cell;
+  height: 50px;
+  width: 50px;
+  font-size: 18px;
+  padding: 0;
+  outline: 0;
+}
+/* line 75, scss/partials/_numpad.scss */
+.numpad-keys table tr td button small {
+  font-size: 13px;
+  display: block;
+}
+/* line 79, scss/partials/_numpad.scss */
+.numpad-keys table tr td button.return {
+  height: 105px;
+}
+/* line 82, scss/partials/_numpad.scss */
+.numpad-keys table tr td button:active {
+  background-color: #ccc;
+}
+/* line 90, scss/partials/_numpad.scss */
+.numpad-keys table.cash {
+  border-left: 1px solid #ebebeb;
+}
+/* line 92, scss/partials/_numpad.scss */
+.numpad-keys table.cash button {
+  width: 100px;
+}
+/* line 97, scss/partials/_numpad.scss */
+.numpad-keys table.discount {
+  border-left: 1px solid #ebebeb;
 }
