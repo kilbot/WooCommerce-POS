@@ -36,12 +36,12 @@
 	</div>
 	<div class="price"><input type="text" value="{{number item_price}}" size="10" data-id="item_price" data-original="{{regular_price}}" data-title="<?php _e( 'Item Price', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="item_price" class="autogrow"></div>
 	<div class="total">
-		{{#if show_line_discount}}
-		<del>{{{money subtotal}}}</del>
-		<ins>{{{money total}}}</ins>
+		{{#compare total '!=' subtotal}}
+			<del>{{{money subtotal}}}</del>
+			<ins>{{{money total}}}</ins>
 		{{else}}
-		{{{money total}}}
-		{{/if}}
+			{{{money total}}}
+		{{/compare}}
 	</div>
 	<div class="action"><a class="btn btn-circle btn-danger action-remove" href="#"><i class="icon icon-times"></i></a></div>
 </script>

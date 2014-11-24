@@ -23,6 +23,17 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             this.template = Handlebars.compile( $('#tmpl-cart-item').html() );
         },
 
+        serializeData: function() {
+            var data = this.model.toJSON();
+
+            if( POS.tax.tax_display_cart === 'incl' ) {
+                data.subtotal += data.subtotal_tax;
+                data.total += data.total_tax;
+            }
+
+            return data;
+        },
+
         behaviors: {
             AutoGrow: {},
             Numpad: {}
@@ -57,6 +68,53 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
         removeItem: function() {
             this.model.destroy();
+        },
+
+        save: function(e) {
+            var input 	= $(e.target),
+                key 	= input.data('id'),
+                value 	= input.val();
+
+            // check for sensible input
+            if( _.isNaN( parseFloat( value ) ) ) {
+                input.select();
+                return;
+            }
+
+            // always store numbers as float
+            if( value ){
+                value = POS.unformat( value );
+                value = parseFloat( value );
+            }
+
+            // if qty is 0, delete the item
+            if( key === 'qty' && value === 0 ) {
+                this.removeItem();
+                return;
+            }
+
+            // save
+            var data = {};
+            data[key] = value;
+            this.model.save(data);
+
+        },
+
+        saveOnEnter: function(e) {
+
+            // enter key triggers blur as well?
+            if ( e.which === 13 ) {
+                this.save(e);
+                this.model.trigger('change');
+            }
+
+        },
+
+        onBlur: function(e) {
+            if( $(e.target).attr('aria-describedby') === undefined ) {
+                this.save(e);
+                this.model.trigger('change');
+            }
         }
 
     });
