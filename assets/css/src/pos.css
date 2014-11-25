@@ -1728,16 +1728,36 @@ header .dropdown-menu a:hover {
   flex: 0 1 52px;
 }
 
-/* line 5, scss/partials/_cart.scss */
+/* line 3, scss/partials/_cart.scss */
+.cart-module .list-header .qty, .cart-module .list .qty, .cart-module .list-totals .qty {
+  -webkit-flex: 0 1 15%;
+  flex: 0 1 15%;
+}
+/* line 6, scss/partials/_cart.scss */
+.cart-module .list-header .price, .cart-module .list .price, .cart-module .list-totals .price {
+  -webkit-flex: 0 1 20%;
+  flex: 0 1 20%;
+}
+/* line 9, scss/partials/_cart.scss */
+.cart-module .list-header .total, .cart-module .list .total, .cart-module .list-totals .total {
+  -webkit-flex: 0 1 20%;
+  flex: 0 1 20%;
+}
+/* line 12, scss/partials/_cart.scss */
+.cart-module .list-header .action, .cart-module .list .action, .cart-module .list-totals .action {
+  -webkit-flex: 0 1 52px;
+  flex: 0 1 52px;
+}
+/* line 19, scss/partials/_cart.scss */
 .cart-module .list ul.animating li.empty {
   display: none;
 }
-/* line 11, scss/partials/_cart.scss */
+/* line 25, scss/partials/_cart.scss */
 .cart-module .cart-actions {
   text-align: right;
   padding: 8px;
 }
-/* line 16, scss/partials/_cart.scss */
+/* line 30, scss/partials/_cart.scss */
 .cart-module .list input, .cart-module .list-totals input {
   text-align: center;
   max-width: 7em;
@@ -1748,17 +1768,17 @@ header .dropdown-menu a:hover {
   -webkit-border-radius: 16px;
   border-radius: 16px;
 }
-/* line 24, scss/partials/_cart.scss */
+/* line 38, scss/partials/_cart.scss */
 .cart-module .list input::-webkit-inner-spin-button, .cart-module .list-totals input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-/* line 28, scss/partials/_cart.scss */
+/* line 42, scss/partials/_cart.scss */
 .cart-module .list input::-webkit-outer-spin-button, .cart-module .list-totals input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-/* line 32, scss/partials/_cart.scss */
+/* line 46, scss/partials/_cart.scss */
 .cart-module .list input:hover, .cart-module .list-totals input:hover {
   cursor: pointer;
 }

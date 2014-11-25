@@ -1,4 +1,18 @@
 .cart-module {
+  .list-header, .list, .list-totals {
+    .qty {
+      @include flex(0 1 15%);
+    }
+    .price {
+      @include flex(0 1 20%);
+    }
+    .total {
+      @include flex(0 1 20%);
+    }
+    .action {
+      @include flex(0 1 52px);
+    }
+  }
   .list {
     ul {
       &.animating {

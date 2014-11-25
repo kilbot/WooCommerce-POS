@@ -6,11 +6,11 @@
 
 <script type="text/template" id="tmpl-cart">
 	<div class="list-header">
-		<div><?php /* translators: woocommerce */ _ex( 'Qty', 'Abbreviation of Quantity', 'woocommerce-pos' ); ?></div>
-		<div><?php /* translators: woocommerce */ _e( 'Product', 'woocommerce' ); ?></div>
-		<div><?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?></div>
-		<div><?php /* translators: woocommerce */ _e( 'Total', 'woocommerce' ); ?></div>
-		<div>&nbsp;</div>
+		<div class="qty"><?php /* translators: woocommerce */ _ex( 'Qty', 'Abbreviation of Quantity', 'woocommerce-pos' ); ?></div>
+		<div class="title"><?php /* translators: woocommerce */ _e( 'Product', 'woocommerce' ); ?></div>
+		<div class="price"><?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?></div>
+		<div class="total"><?php /* translators: woocommerce */ _e( 'Total', 'woocommerce' ); ?></div>
+		<div class="action">&nbsp;</div>
 	</div>
 	<div class="list"></div>
 	<div class="list-totals"></div>
@@ -23,7 +23,7 @@
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item">
 	<div class="qty"><input type="text" value="{{number qty precision='auto'}}" size="10" step="any" data-id="qty" data-title="<?php _e( 'Quantity', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="quantity" class="autogrow"></div>
-	<div class="name">
+	<div class="title">
 		{{title}}
 		{{#with attributes}}
 		<dl>
@@ -49,12 +49,14 @@
 <script type="text/x-handlebars-template" id="tmpl-cart-totals">
 	<li class="subtotal">
 		<div><?php /* translators: woocommerce */ _e( 'Cart Subtotal', 'woocommerce' ); ?>:</div>
-		<div>{{{money subtotal}}}</div>
+		<div class="total">{{{money subtotal}}}</div>
+		<div class="action"></div>
 	</li>
 	{{#if show_cart_discount}}
 	<li class="cart-discount">
 		<div><?php /* translators: woocommerce */ _e( 'Cart Discount', 'woocommerce' ); ?>:</div>
-		<div>{{{money cart_discount negative=true}}}</div>
+		<div class="total">{{{money cart_discount negative=true}}}</div>
+		<div class="action"></div>
 	</li>
 	{{/if}}
 	{{#if show_tax}}
@@ -65,7 +67,8 @@
 			{{#if ../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
 			{{label}}:
 		</div>
-		<div>{{{money total}}}</div>
+		<div class="total">{{{money total}}}</div>
+		<div class="action"></div>
 	</li>
 	{{/each}}
 	{{else}}
@@ -74,20 +77,23 @@
 			{{#if incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
 			<?php echo esc_html( WC()->countries->tax_or_vat() ); ?>:
 		</div>
-		<div>{{{money total_tax}}}</div>
+		<div class="total">{{{money total_tax}}}</div>
+		<div class="action"></div>
 	</li>
 	{{/if}}
 	{{/if}}
 	<li class="order-discount" {{#unless show_order_discount}}style="display:none"{{/unless}}>
 		<div><?php /* translators: woocommerce-admin */ _e( 'Order Discount', 'woocommerce-admin' ); ?>:</div>
-		<div>
+		<div class="total">
 			<input type="text" value="{{number order_discount}}" size="10" data-id="order_discount" data-original="{{original}}" data-title="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-placement="left" data-numpad="discount" class="autogrow">
 			<span class="amount">{{{money order_discount negative=true}}}</span>
 		</div>
+		<div class="action"></div>
 	</li>
 	<li class="order-total">
 		<div><?php /* translators: woocommerce */ _e( 'Order Total', 'woocommerce' ); ?>:</div>
-		<div>{{{money total}}}</div>
+		<div class="total">{{{money total}}}</div>
+		<div class="action"></div>
 	</li>
 </script>
 

@@ -36,24 +36,7 @@
 		"type" : "simple",
 		"updated_at" : "2013-06-07T11:38:12Z",
 		"virtual" : false,
-		"visible" : true,
-
-		"_added" : "The following have been added by POS - parent_id & variation_html also added for variations",
-		"featured_src" : "http:\/\/woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_6_angle-90x90.jpg",
-		"tax_rates": {
-			"2": {
-				"rate": "9.0000",
-				"label": "Tax 1",
-				"shipping": "yes",
-				"compound": "yes"
-			},
-			"3": {
-				"rate": "5.0000",
-				"label": "Tax 2",
-				"shipping": "yes",
-				"compound": "yes"
-			}
-		}
+		"visible" : true
 	},
 	{
 		"_comment" : "This is dummy data for a single product as produced by the WC REST API: http://woothemes.github.io/woocommerce/rest-api/#get-products WooCommerce POS filters the product output to remove unnecessary properties. It also adds some tax info which is needed by the POS.",
@@ -92,18 +75,7 @@
 		"type" : "simple",
 		"updated_at" : "2013-06-07T11:38:12Z",
 		"virtual" : false,
-		"visible" : true,
-
-		"_added" : "The following have been added by POS - parent_id & variation_html also added for variations",
-		"featured_src" : "http:\/\/woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_5_front-90x90.jpg",
-		"tax_rates": {
-            "6": {
-                "rate": "3.0000",
-                "label": "Low Tax",
-                "shipping": "yes",
-				"compound": "yes"
-            }
-		}
+		"visible" : true
 	},
 	{
 		"_comment" : "This is dummy data for a single product as produced by the WC REST API: http://woothemes.github.io/woocommerce/rest-api/#get-products WooCommerce POS filters the product output to remove unnecessary properties. It also adds some tax info which is needed by the POS.",
@@ -142,17 +114,6 @@
 		"type" : "simple",
 		"updated_at" : "2013-06-07T11:38:12Z",
 		"virtual" : false,
-		"visible" : true,
-
-		"_added" : "The following have been added by POS - parent_id & variation_html also added for variations",
-		"featured_src" : "http:\/\/woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_5_angle-90x90.jpg",
-		"tax_rates": {
-            "5": {
-                "rate": "0.0000",
-                "label": "Tax Free",
-                "shipping": "yes",
-				"compound": "yes"
-            }
-		}
+		"visible" : true
 	}]
 }

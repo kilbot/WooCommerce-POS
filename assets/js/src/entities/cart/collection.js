@@ -5,6 +5,8 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         local: true,
 
         initialize: function (models, options) {
+            options = options || {};
+
             this.indexedDB = new Backbone.IndexedDB({
                 storeName: 'cart',
                 storePrefix: 'wc_pos_',
@@ -19,7 +21,8 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 ]
             }, this);
 
-            if (options.order) {
+            // if no order?
+            if ( options.order ) {
                 this.order = options.order;
             }
 
@@ -54,8 +57,10 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 //'itemized_tax'	: itemized_tax
             };
 
-            this.order.save( totals );
-
+            // if no order?
+            if( this.order ) {
+                this.order.save( totals );
+            }
         },
 
         fetchOrder: function (order_id) {

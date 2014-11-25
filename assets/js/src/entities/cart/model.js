@@ -15,7 +15,8 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         },
 
         initialize: function( options ) {
-            if( this.collection.order ) {
+
+            if( this.collection && this.collection.order ) {
                 this.set({ order: this.collection.order.id });
             }
 
@@ -32,6 +33,7 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             var qty 			= this.get('qty'),
                 item_price 		= this.get('item_price'),
                 regular_price 	= parseFloat( this.get('regular_price') ),
+                // calc tax on every change?
                 item_subtotal_tax = this.calcTax( regular_price ),
                 item_tax 		= this.calcTax( item_price, qty );
 
@@ -60,7 +62,9 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         calcTax: function( price, qty ) {
             var item_tax = 0;
 
-            var rates = POS.tax_rates[ this.get('tax_class') ];
+            if( ! _( POS.tax_rates ).isEmpty() ) {
+                var rates = POS.tax_rates[ this.get('tax_class') ];
+            }
 
             if( POS.tax.calc_taxes === 'yes' && this.get('taxable') && rates ) {
                 if( POS.tax.prices_include_tax === 'yes' ) {
