@@ -65,11 +65,11 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         showCart: function() {
 
             // show cart
-            var view = new Cart.List({
+            var view = new Cart.Products({
                 collection: this.cart
             });
 
-            this.layout.listRegion.show( view );
+            this.layout.productRegion.show( view );
 
             // add products to cart
             POS.POSApp.channel.comply( 'cart:add', function( model ) {
@@ -84,9 +84,30 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
             // maybe show totals, actions
             if( true ) {
+                this.showFees();
+                this.showShipping();
                 this.showTotals();
                 this.showActions();
+                this.showNotes();
             }
+        },
+
+        showFees: function() {
+            var view = new Cart.Fees({
+                //model: this.order
+                collection: this.cart
+            });
+
+            this.layout.feeRegion.show( view );
+        },
+
+        showShipping: function() {
+            var view = new Cart.Shipping({
+                //model: this.order
+                collection: this.cart
+            });
+
+            this.layout.shippingRegion.show( view );
         },
 
         showTotals: function() {
@@ -95,17 +116,56 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 model: this.order
             });
 
+            // toggle discount row
+            this.on( 'discount:clicked', function() {
+                view.showDiscountRow();
+            });
+
             this.layout.totalsRegion.show( view );
 
         },
 
         showActions: function() {
 
-            var view = new Cart.Actions({
+            var view = new Cart.Actions();
 
+            // void cart
+            this.listenTo( view, 'void:clicked', function() {
+                //_.invoke( this.items.toArray(), 'destroy' );
+            });
+
+            // add note
+            this.listenTo( view, 'note:clicked', function() {
+                this.trigger('note:clicked');
+            });
+
+            // cart discount
+            this.listenTo( view, 'discount:clicked', function() {
+                this.trigger('discount:clicked');
+            });
+
+            // checkout
+            this.listenTo( view, 'checkout:clicked', function() {
+                POS.POSApp.channel.command('show:checkout');
             });
 
             this.layout.actionsRegion.show( view );
+        },
+
+        showNotes: function() {
+
+            var view = new Cart.Notes({
+                model: this.order
+            });
+
+            // toggle note div
+            this.on( 'note:clicked', function() {
+                view.showNoteField();
+            });
+
+            // show
+            this.layout.notesRegion.show( view );
+
         }
 
     });

@@ -3,7 +3,6 @@ POS.module('Entities.Settings', function(Settings, POS, Backbone, Marionette, $,
     // bootstrap settings
     POS.addInitializer(function( options ) {
         Settings.hotkeys = new Settings.Usermeta( options.hotkeys, { id: 'hotkeys' });
-        Settings.tabs = new Settings.Usermeta( options.tabs, { id: 'tabs' });
     });
 
     // Data from wpdb->usermeta
@@ -72,10 +71,6 @@ POS.module('Entities.Settings', function(Settings, POS, Backbone, Marionette, $,
     // API
     POS.Entities.channel.reply('hotkeys', function() {
         return Settings.hotkeys;
-    });
-
-    POS.Entities.channel.reply('tabs', function() {
-        return Settings.tabs;
     });
 
     POS.Entities.channel.reply('options', function( options ) {

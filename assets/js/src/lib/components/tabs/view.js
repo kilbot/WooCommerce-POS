@@ -8,7 +8,7 @@ POS.module('Components.Tabs', function(Tabs, POS, Backbone, Marionette, $, _){
                 '{{#unless fixed}}' +
                 '<a href="#"><i class="icon icon-times-circle action-remove"></i></a>' +
                 '{{/unless}}' +
-                '{{ label }}'
+                '{{{ label }}}'
             );
         },
 

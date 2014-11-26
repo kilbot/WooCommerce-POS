@@ -5,7 +5,9 @@ POS.module('Components.Tabs', function(Tabs, POS, Backbone, Marionette, $, _){
      */
     Tabs.channel = Backbone.Radio.channel('tabs');
 
-    Tabs.channel.reply( 'get:tabs', function( collection ) {
+    Tabs.channel.reply( 'get:tabs', function( tabs ) {
+
+        var collection = new Tabs.Collection( tabs );
 
         var view = new Tabs.View({
             collection: collection

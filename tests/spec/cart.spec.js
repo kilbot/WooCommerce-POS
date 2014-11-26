@@ -46,6 +46,22 @@ describe('Cart', function () {
                     "shipping": "yes",
                     "compound": "yes"
                 }
+            },
+            "reduced-rate": {
+                "4": {
+                    "rate": "2.0000",
+                    "label": "Reduced 1",
+                    "shipping": "yes",
+                    "compound": "yes"
+                }
+            },
+            "zero-rate": {
+                "5": {
+                    "rate": "0.0000",
+                    "label": "No Tax",
+                    "shipping": "yes",
+                    "compound": "yes"
+                }
             }
         }
 
@@ -303,6 +319,12 @@ describe('Cart', function () {
 
                 this.products = window.dummy_data.products;
 
+                // let's change the product quantities
+                this.products[0].qty = 3;
+                this.products[0].taxable = true;
+                this.products[1].qty = 4;
+                this.products[2].qty = 5;
+
                 // reset pos_params
                 POS.tax = {
                     calc_taxes: 'no',
@@ -311,7 +333,6 @@ describe('Cart', function () {
                     tax_round_at_subtotal: 'no',
                     tax_total_display: 'single'
                 };
-
 
                 var Order = Backbone.Model.extend({
                     defaults: {
@@ -334,12 +355,49 @@ describe('Cart', function () {
             });
 
             it('should be in a valid state', function () {
-
                 this.cart.add(this.products);
                 expect(this.cart.length).equal(3);
-
             });
 
+            it('should sum the subtotals', function () {
+                this.cart.add(this.products);
+                expect(this.order.get('subtotal')).equal(182);
+            });
+
+            it('should sum the totals', function () {
+                this.cart.add(this.products);
+                expect(this.order.get('total')).equal(179);
+            });
+
+            it('should calculate the cart discount', function () {
+                this.cart.add(this.products);
+                expect(this.order.get('cart_discount')).equal(3);
+            });
+
+            it('should calculate the total tax', function () {
+
+                // pos params
+                POS.tax = {
+                    calc_taxes: 'yes',
+                    prices_include_tax: 'no'
+                };
+
+                this.cart.add(this.products);
+                expect(this.order.get('total_tax')).equal(3.4);
+            });
+
+            //it('should calculate itemized tax', function () {
+            //
+            //    // pos params
+            //    POS.tax = {
+            //        calc_taxes: 'yes',
+            //        prices_include_tax: 'no',
+            //        tax_total_display: 'itemized'
+            //    };
+            //
+            //    this.cart.add(this.products);
+            //
+            //});
 
         });
 

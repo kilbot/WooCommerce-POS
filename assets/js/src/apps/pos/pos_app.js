@@ -13,7 +13,8 @@ POS.module('POSApp', function(POSApp, POS, Backbone, Marionette, $, _) {
         },
         cart: function(id) {
             this.init();
-            new POSApp.Cart.Controller({ id: id });
+            var controller = new POSApp.Cart.Controller({ id: id });
+            POSApp.channel.trigger('init:cart', controller);
         },
         checkout: function() {
             this.init();

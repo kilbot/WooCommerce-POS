@@ -16,7 +16,7 @@ POS.module('Components.AutoGrow', function(AutoGrow, POS, Backbone, Marionette, 
                         top         : -9999,
                         left        : -9999,
                         position    : 'absolute',
-                        whiteSpace  : 'nowrap',
+                        whiteSpace  : 'nowrap'
                     });
                 $('body').append(this.tester);
             }
@@ -28,7 +28,7 @@ POS.module('Components.AutoGrow', function(AutoGrow, POS, Backbone, Marionette, 
         },
 
         events: {
-            'input @ui.input' : 'onInputEvent',
+            'input @ui.input' : 'onInputEvent'
         },
 
         onRender: function() {

@@ -4,9 +4,12 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         template: _.template( $('#tmpl-cart').html() ),
         tagName: 'section',
         regions: {
-            listRegion: '.list',
+            productRegion: '.product-list',
+            feeRegion: '.fee-list',
+            shippingRegion: '.shipping-list',
             totalsRegion: '.list-totals',
-            actionsRegion: '.cart-actions'
+            actionsRegion: '.cart-actions',
+            notesRegion: '.cart-notes'
         },
         attributes: {
             class: 'module cart-module'
@@ -14,13 +17,13 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
     });
 
     /**
-     * Single Cart Item
+     * Cart Products
      */
-    Cart.Item = Marionette.ItemView.extend({
+    Cart.Product = Marionette.ItemView.extend({
         tagName: 'li',
 
         initialize: function() {
-            this.template = Handlebars.compile( $('#tmpl-cart-item').html() );
+            this.template = Handlebars.compile( $('#tmpl-cart-product').html() );
         },
 
         serializeData: function() {
@@ -128,13 +131,49 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         template: '#tmpl-cart-empty'
     });
 
-    Cart.List = Marionette.CollectionView.extend({
+    Cart.Products = Marionette.CollectionView.extend({
         tagName: 'ul',
-        childView: Cart.Item,
-        emptyView: Cart.EmptyView,
+        childView: Cart.Product,
+        emptyView: Cart.EmptyView
+    });
 
-        serializeData: function(data) {
-            console.log(data);
+    /**
+     * Fees
+     */
+    Cart.Fee = Marionette.ItemView.extend({
+        tagName: 'li',
+
+        initialize: function () {
+            this.template = Handlebars.compile($('#tmpl-cart-fee').html());
+        }
+    });
+
+    Cart.Fees = Marionette.CollectionView.extend({
+        tagName: 'ul',
+        childView: Cart.Fee,
+
+        initialize: function() {
+            //this.collection = new Backbone.Collection([{ id: 1 }, { id: 2 }]);
+        }
+    });
+
+    /**
+     * Shipping
+     */
+    Cart.Ship = Marionette.ItemView.extend({
+        tagName: 'li',
+
+        initialize: function () {
+            this.template = Handlebars.compile($('#tmpl-cart-shipping').html());
+        }
+    });
+
+    Cart.Shipping = Marionette.CollectionView.extend({
+        tagName: 'ul',
+        childView: Cart.Ship,
+
+        initialize: function() {
+            //this.collection = new Backbone.Collection([{ id: 1 }, { id: 2 }]);
         }
     });
 
@@ -148,9 +187,84 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             this.template = Handlebars.compile($('#tmpl-cart-totals').html());
         },
 
+        behaviors: {
+            AutoGrow: {},
+            Numpad: {}
+        },
+
         modelEvents: {
             'change': 'render'
+        },
+
+        ui: {
+            discount: '.order-discount'
+        },
+
+        events: {
+            'click @ui.discount .total' 	: 'edit',
+            'keypress @ui.discount input'   : 'saveOnEnter',
+            'blur @ui.discount input'	    : 'onBlur'
+        },
+
+        serializeData: function() {
+            var data = this.model.toJSON();
+
+            // prices include tax?
+            if( POS.tax.tax_display_cart === 'incl' ) {
+                data.subtotal += data.subtotal_tax;
+                data.cart_discount = data.subtotal - data.total;
+                data.incl_tax = true;
+            }
+
+            // orginal total for calculating percentage discount
+            data.original = data.total + data.order_discount;
+
+            return data;
+        },
+
+        edit: function(e) {
+            $(e.currentTarget).addClass('editing').children('input').trigger('show:numpad');
+        },
+
+        save: function(e) {
+            var input 	= $(e.target),
+                value 	= input.val();
+
+            // check for sensible input
+            if( _.isNaN( parseFloat( value ) ) ) {
+                input.select();
+                return;
+            }
+
+            // always store numbers as float
+            if( value ){
+                value = POS.unformat( value );
+                value = parseFloat( value );
+            }
+
+            // save
+            this.model.save({ order_discount: value });
+
+        },
+
+        saveOnEnter: function(e) {
+            if (e.which === 13) {
+                this.save(e);
+                this.model.trigger('change');
+            }
+        },
+
+        showDiscountRow: function() {
+            this.$('.order-discount').show().children('.total').trigger('click');
+        },
+
+        onBlur: function(e) {
+            if( $(e.target).attr('aria-describedby') === undefined ) {
+                this.save(e);
+                this.model.trigger('change');
+            }
         }
+
     });
 
     /**
@@ -160,12 +274,67 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         template: _.template( $('#tmpl-cart-actions').html() ),
 
         triggers: {
-            'click .action-void' 	: 'cart:void:clicked',
-            'click .action-note' 	: 'cart:note:clicked',
-            'click .action-discount': 'cart:discount:clicked',
-            'click .action-checkout': 'cart:checkout:clicked'
+            'click .action-void' 	: 'void:clicked',
+            'click .action-note' 	: 'note:clicked',
+            'click .action-discount': 'discount:clicked',
+            'click .action-checkout': 'checkout:clicked'
         }
 
+    });
+
+    /**
+     * Cart Notes
+     */
+
+    Cart.Notes = Marionette.ItemView.extend({
+        template: _.template( '<%= note %>' ),
+
+        modelEvents: {
+            'change:note': 'render'
+        },
+
+        events: {
+            'click' 	: 'edit',
+            'keypress'	: 'saveOnEnter',
+            'blur'		: 'save'
+        },
+
+        onShow: function() {
+            this.showOrHide();
+        },
+
+        showOrHide: function() {
+            if( this.model.get('note') === '' ) {
+                this.$el.parent('.cart-notes').hide();
+            }
+        },
+
+        edit: function(e) {
+            this.$el.attr('contenteditable','true').focus();
+        },
+
+        save: function(e) {
+            var value = this.$el.text();
+
+            // validate and save
+            this.model.save({ note: value });
+            this.$el.attr('contenteditable','false');
+            this.showOrHide();
+        },
+
+        saveOnEnter: function(e) {
+            // save note on enter
+            if (e.which === 13) {
+                e.preventDefault();
+                this.$el.blur();
+            }
+        },
+
+        showNoteField: function() {
+            console.log('show note');
+            this.$el.parent('.cart-notes').show();
+            this.$el.attr('contenteditable','true').focus();
+        }
     });
 
 });

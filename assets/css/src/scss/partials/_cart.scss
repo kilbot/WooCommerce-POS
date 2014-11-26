@@ -7,6 +7,7 @@
       @include flex(0 1 20%);
     }
     .total {
+      text-align: right;
       @include flex(0 1 20%);
     }
     .action {
@@ -22,9 +23,25 @@
       }
     }
   }
-  .cart-actions {
+  .list-totals {
     text-align: right;
-    padding: $spacing/3;
+    .order-total {
+      font-size: 1.4em;
+    }
+    .total {
+      @include flex-basis(28%);
+    }
+    input {
+      display: none;
+    }
+    .editing {
+      span {
+        display: none;
+      }
+      input {
+        display: block;
+      }
+    }
   }
   .list, .list-totals {
     input {
@@ -47,6 +64,13 @@
         cursor: pointer;
       }
     }
+  }
+  .cart-actions {
+    text-align: right;
+    padding: $spacing/3;
+  }
+  .cart-notes {
+    padding: $spacing/3;
   }
 }
 

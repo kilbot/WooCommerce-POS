@@ -33,7 +33,6 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             var qty 			= this.get('qty'),
                 item_price 		= this.get('item_price'),
                 regular_price 	= parseFloat( this.get('regular_price') ),
-                // calc tax on every change?
                 item_subtotal_tax = this.calcTax( regular_price ),
                 item_tax 		= this.calcTax( item_price, qty );
 

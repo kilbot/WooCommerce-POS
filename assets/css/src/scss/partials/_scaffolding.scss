@@ -34,6 +34,7 @@ body {
   @include display-flex;
   #left, #right {
     @include display-flex;
+    @include flex-direction(column);
     @include flex(1);
   }
   #left {
@@ -149,7 +150,6 @@ body {
           padding: $spacing/3;
           &:first-of-type {
             font-weight: bold;
-            text-align: right;
             @include flex(1);
           }
         }
