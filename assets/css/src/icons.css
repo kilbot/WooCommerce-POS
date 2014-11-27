@@ -137,7 +137,7 @@
     content: "\f013";
 }
 .icon-refresh:before {
-    content: "\f021";
+    content: "\f01e";
 }
 .icon-globe:before {
     content: "\f0ac";
@@ -180,4 +180,10 @@
 }
 .icon-info-circle:before {
     content: "\f05a";
+}
+.icon-more-horiz:before {
+    content: "\e608";
+}
+.icon-more-vert:before {
+    content: "\e609";
 }

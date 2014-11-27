@@ -57,9 +57,9 @@
 		{{/is}}
 	</div>
 	{{#is type 'variable'}}
-	<div class="action"><a class="btn btn-success btn-circle action-variations" href="#"><i class="icon icon-chevron-right"></i></a></div>
+	<div class="action"><a class="btn btn-success btn-circle action-variations" href="#"><i class="icon icon-chevron-right icon-lg"></i></a></div>
 	{{else}}
-	<div class="action"><a class="btn btn-success btn-circle action-add" href="#"><i class="icon icon-plus"></i></a></div>
+	<div class="action"><a class="btn btn-success btn-circle action-add" href="#"><i class="icon icon-plus icon-lg"></i></a></div>
 	{{/is}}
 </script>
 

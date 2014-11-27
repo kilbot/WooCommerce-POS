@@ -20,6 +20,12 @@ $table-border-color   : $border-color;
 $dark-border-color    : darken($border-color, 6%);
 $input-border-color   : darken($border-color, 6%);
 
+$input-bg-color       : #f9f9f9;
+
+$btn-default-color    : #333;
+$btn-default-bg       : #f9f9f9;
+$btn-default-border   : #ccc;
+
 // Widths & Spacing
 $font-size-base       : 14px !default;
 

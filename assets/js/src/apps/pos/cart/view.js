@@ -4,9 +4,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         template: _.template( $('#tmpl-cart').html() ),
         tagName: 'section',
         regions: {
-            productRegion: '.product-list',
-            feeRegion: '.fee-list',
-            shippingRegion: '.shipping-list',
+            listRegion: '.list',
             totalsRegion: '.list-totals',
             actionsRegion: '.cart-actions',
             notesRegion: '.cart-notes'
@@ -19,11 +17,14 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
     /**
      * Cart Products
      */
-    Cart.Product = Marionette.ItemView.extend({
+    Cart.Item = Marionette.ItemView.extend({
         tagName: 'li',
+        className: function() {
+            return this.model.get('type');
+        },
 
         initialize: function() {
-            this.template = Handlebars.compile( $('#tmpl-cart-product').html() );
+            this.template = Handlebars.compile( $('#tmpl-cart-item').html() );
         },
 
         serializeData: function() {
@@ -54,10 +55,15 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         },
 
         pulse: function() {
-            this.$el.addClass('bg-success').animate({
-                backgroundColor: 'transparent'
-            }, 500, function() {
-                $(this).removeClass('bg-success').removeAttr('style');
+            var self = this;
+            this.$el.addClass('bg-success').closest('.list').animate({
+                scrollTop: this.$el.position().top
+            }, 'fast', function() {
+                self.$el.animate({
+                    backgroundColor: 'transparent'
+                }, 500, function() {
+                    $(this).removeClass('bg-success').removeAttr('style');
+                });
             });
         },
 
@@ -131,50 +137,10 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         template: '#tmpl-cart-empty'
     });
 
-    Cart.Products = Marionette.CollectionView.extend({
+    Cart.Items = Marionette.CollectionView.extend({
         tagName: 'ul',
-        childView: Cart.Product,
+        childView: Cart.Item,
         emptyView: Cart.EmptyView
-    });
-
-    /**
-     * Fees
-     */
-    Cart.Fee = Marionette.ItemView.extend({
-        tagName: 'li',
-
-        initialize: function () {
-            this.template = Handlebars.compile($('#tmpl-cart-fee').html());
-        }
-    });
-
-    Cart.Fees = Marionette.CollectionView.extend({
-        tagName: 'ul',
-        childView: Cart.Fee,
-
-        initialize: function() {
-            //this.collection = new Backbone.Collection([{ id: 1 }, { id: 2 }]);
-        }
-    });
-
-    /**
-     * Shipping
-     */
-    Cart.Ship = Marionette.ItemView.extend({
-        tagName: 'li',
-
-        initialize: function () {
-            this.template = Handlebars.compile($('#tmpl-cart-shipping').html());
-        }
-    });
-
-    Cart.Shipping = Marionette.CollectionView.extend({
-        tagName: 'ul',
-        childView: Cart.Ship,
-
-        initialize: function() {
-            //this.collection = new Backbone.Collection([{ id: 1 }, { id: 2 }]);
-        }
     });
 
     /**
@@ -277,6 +243,8 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             'click .action-void' 	: 'void:clicked',
             'click .action-note' 	: 'note:clicked',
             'click .action-discount': 'discount:clicked',
+            'click .action-fee'     : 'fee:clicked',
+            'click .action-shipping': 'shipping:clicked',
             'click .action-checkout': 'checkout:clicked'
         }
 

@@ -3,6 +3,13 @@
     .qty {
       @include flex(0 1 15%);
     }
+    .more {
+      @include flex(0 1 22px);
+      text-align: right;
+      a {
+        color: $text-color;
+      }
+    }
     .price {
       @include flex(0 1 20%);
     }
@@ -20,6 +27,12 @@
         li.empty {
           display: none;
         }
+      }
+      > li.shipping, > li.fee {
+        border-top: 3px solid $border-color;
+      }
+      > li.shipping ~ li.shipping, > li.fee ~ li.fee {
+        border-top: none;
       }
     }
   }
@@ -45,10 +58,14 @@
   }
   .list, .list-totals {
     input {
+      @include transition-property(background-color);
+      @include transition-duration(.1s);
+      @include transition-timing-function(ease-in-out);
+      @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+      border: 1px solid $btn-default-border;
+
       text-align: center;
       max-width: 7em;
-      background-color: $table-bg-accent;
-      border: 1px solid $dark-border-color;
       -moz-appearance: textfield;
       // outline: none;
       @include border-radius(16px);
@@ -73,95 +90,3 @@
     padding: $spacing/3;
   }
 }
-
-//#cart {
-//    table {
-//        tbody {
-//            &.animating {
-//                tr.empty {
-//                    display: none;
-//                }
-//            }
-//        }
-//        tr {
-//            &.order-discount {
-//                td {
-//                    input {
-//                        display: none;
-//                    }
-//                    &.editing {
-//                        span {
-//                            display: none;
-//                        }
-//                        input {
-//                            display: block;
-//                        }
-//                    }
-//                }
-//            }
-//            &:last-of-type th, &:last-of-type td {
-//                border-bottom: 1px solid $dark-border-color;
-//            }
-//        }
-//        th, td {
-//            vertical-align: middle;
-//        }
-//        dl {
-//            @include clearfix();
-//            width: 100%;
-//            font-size: $font-size-small;
-//            margin: 0;
-//            dt {
-//                font-weight: normal;
-//                float: left;
-//                padding-right: 5px;
-//                clear: left;
-//            }
-//            dd {
-//                float: left;
-//                margin: 0;
-//            }
-//        }
-//        input {
-//            text-align: center;
-//            max-width: 7em;
-//            background-color: $table-bg-accent;
-//            border: 1px solid $dark-border-color;
-//            -moz-appearance: textfield;
-//            // outline: none;
-//            @include border-radius(16px);
-//            &::-webkit-inner-spin-button {
-//                -webkit-appearance: none;
-//                margin: 0;
-//            }
-//            &::-webkit-outer-spin-button {
-//                -webkit-appearance: none;
-//                margin: 0;
-//            }
-//            &:hover {
-//                cursor: pointer;
-//            }
-//        }
-//    }
-//}
-//
-//#cart-totals {
-//    th {
-//        text-align: right;
-//    }
-//}
-//
-//#cart-customer, #cart-actions, #cart-notes {
-//    padding: $spacing/2;
-//    border-bottom: 1px solid $dark-border-color;
-//}
-//
-//#cart-actions {
-//    text-align: right;
-//    border: 0;
-//}
-//
-//#cart-notes {
-//    border: 0;
-//    border-top: 1px solid $dark-border-color;
-//}

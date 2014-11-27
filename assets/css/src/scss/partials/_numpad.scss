@@ -1,6 +1,7 @@
 $numpad-bg: $dark-border-color;
 
 .numpad-popover {
+  max-width: none;
   background-color: $numpad-bg;
   &.top > .arrow {
     border-top-color: $numpad-bg;

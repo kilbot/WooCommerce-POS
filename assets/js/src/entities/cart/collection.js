@@ -4,6 +4,13 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         model: Cart.Model,
         local: true,
 
+        comparator: function( model ){
+            var type = model.get( 'type' );
+            if( type === 'fee' ) { return 2 };
+            if( type === 'shipping' ) { return 1 };
+            return 0;
+        },
+
         initialize: function (models, options) {
             options = options || {};
 
@@ -32,7 +39,6 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         calcTotals: function() {
             var subtotal,
                 subtotal_tax,
-                cart_discount,
                 total_tax = 0,
                 total,
                 itemized_tax 	= [],

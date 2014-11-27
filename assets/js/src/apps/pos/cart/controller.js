@@ -17,6 +17,9 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 }
             });
 
+            // listen for cart:add commands
+            POS.POSApp.channel.comply( 'cart:add', this.addToCart, this);
+
         },
 
         initCart: function( options ) {
@@ -62,52 +65,41 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             return promise;
         },
 
+        addToCart: function( item ) {
+            var attributes = item instanceof Backbone.Model ? item.attributes : item;
+
+            if( _.isUndefined( this.cart ) ) {
+                POS.debugLog('error', 'There is no cart');
+            }
+
+            if( attributes.id ) {
+                var row = this.cart.findWhere({ id: attributes.id });
+            }
+
+            if( row ) {
+                row.quantity('increase');
+            } else {
+                row = this.cart.add( attributes );
+            }
+
+            row.trigger('pulse' );
+        },
+
         showCart: function() {
 
             // show cart
-            var view = new Cart.Products({
+            var view = new Cart.Items({
                 collection: this.cart
             });
 
-            this.layout.productRegion.show( view );
-
-            // add products to cart
-            POS.POSApp.channel.comply( 'cart:add', function( model ) {
-                var row = this.cart.findWhere({ id: model.attributes.id });
-                if( row ) {
-                    row.quantity('increase');
-                } else {
-                    row = this.cart.add( model.attributes );
-                }
-                row.trigger('pulse' );
-            }, this);
+            this.layout.listRegion.show( view );
 
             // maybe show totals, actions
             if( true ) {
-                this.showFees();
-                this.showShipping();
                 this.showTotals();
                 this.showActions();
                 this.showNotes();
             }
-        },
-
-        showFees: function() {
-            var view = new Cart.Fees({
-                //model: this.order
-                collection: this.cart
-            });
-
-            this.layout.feeRegion.show( view );
-        },
-
-        showShipping: function() {
-            var view = new Cart.Shipping({
-                //model: this.order
-                collection: this.cart
-            });
-
-            this.layout.shippingRegion.show( view );
         },
 
         showTotals: function() {
@@ -142,6 +134,16 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             // cart discount
             this.listenTo( view, 'discount:clicked', function() {
                 this.trigger('discount:clicked');
+            });
+
+            // add fee
+            this.listenTo( view, 'fee:clicked', function() {
+                POS.POSApp.channel.command( 'cart:add', { title: 'Fee', type: 'fee' } );
+            });
+
+            // add shipping
+            this.listenTo( view, 'shipping:clicked', function() {
+                POS.POSApp.channel.command( 'cart:add', { title: 'Shipping', type: 'shipping' } );
             });
 
             // checkout
