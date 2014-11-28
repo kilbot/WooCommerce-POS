@@ -11,7 +11,9 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             'total'		    : 0,
             'item_price'	: 0,
             'item_tax' 		: 0,
-            'qty'			: 1
+            'qty'			: 1,
+            'taxable'       : true,
+            'tax_class'     : ''
         },
 
         initialize: function( options ) {
@@ -21,7 +23,7 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }
 
             // update on change to qty or item_price
-            this.on( 'change:qty change:item_price', this.updateLineTotals );
+            this.on( 'change:qty change:item_price change:taxation', this.updateLineTotals );
 
             // set item price on init, this will trigger updateLineTotals()
             if( this.get('item_price') === 0 ) {
@@ -32,9 +34,15 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         updateLineTotals: function() {
             var qty 			= this.get('qty'),
                 item_price 		= this.get('item_price'),
+                type            = this.get('type'),
                 regular_price 	= parseFloat( this.get('regular_price') ),
                 item_subtotal_tax = this.calcTax( regular_price ),
                 item_tax 		= this.calcTax( item_price, qty );
+
+            // if shipping or fee
+            if( type === 'shipping' || type === 'fee' ) {
+                regular_price = item_price;
+            }
 
             // if price does not include tax
             if( POS.tax.prices_include_tax === 'yes' ) {

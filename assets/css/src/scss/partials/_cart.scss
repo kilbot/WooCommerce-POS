@@ -4,13 +4,14 @@
       @include flex(0 1 15%);
     }
     .more {
-      @include flex(0 1 22px);
+      @include flex(0 1 38px);
       text-align: right;
       a {
         color: $text-color;
       }
     }
     .price {
+      text-align: right;
       @include flex(0 1 20%);
     }
     .total {
@@ -34,6 +35,9 @@
       > li.shipping ~ li.shipping, > li.fee ~ li.fee {
         border-top: none;
       }
+      .drawer {
+        background-color: #ccc;
+      }
     }
   }
   .list-totals {
@@ -41,9 +45,9 @@
     .order-total {
       font-size: 1.4em;
     }
-    .total {
-      @include flex-basis(28%);
-    }
+//    .total {
+//      @include flex-basis(28%);
+//    }
     input {
       display: none;
     }

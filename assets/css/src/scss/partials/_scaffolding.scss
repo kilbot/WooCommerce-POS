@@ -122,8 +122,7 @@ body {
         padding: 0;
         li {
           border-bottom: 1px solid $border-color;
-          @include display-flex;
-          @include align-items(center);
+          @include flexbox(( display: flex, flex-wrap: wrap, align-items: center ));
           > div {
             padding: $spacing/3;
             @include flex(1);

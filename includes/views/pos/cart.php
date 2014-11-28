@@ -49,6 +49,19 @@
 	<div class="action"><a class="btn btn-circle btn-danger action-remove" href="#"><i class="icon icon-times icon-lg"></i></a></div>
 </script>
 
+<script type="text/x-handlebars-template" id="tmpl-cart-item-drawer">
+	<div>
+		<input type="checkbox" name="taxable" id="taxable" {{#if taxable}}checked{{/if}} /> <label for="taxable"><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?></label>
+	</div>
+	<div>
+		<label for="tax_class"><?php /* translators: woocommerce */ _e( 'Tax Class', 'woocommerce' ); ?></label>
+		<select name="tax_class" id="tax_class">
+			<option value=""><?php /* translators: woocommerce */ _e( 'Standard', 'woocommerce' ); ?></option>
+			<option value="another">Another</option>
+		</select>
+	</div>
+</script>
+
 <script type="text/x-handlebars-template" id="tmpl-cart-totals">
 	<li class="subtotal">
 		<div><?php /* translators: woocommerce */ _e( 'Cart Subtotal', 'woocommerce' ); ?>:</div>
@@ -107,9 +120,10 @@
 
 <script type="text/template" id="tmpl-cart-actions">
 	<a href="#" class="btn btn-danger action-void pull-left"><?php _e( 'Void', 'woocommerce-pos' ); ?></a>
-	<a href="#" class="btn btn-primary action-note"><?php /* translators: woocommerce */ _e( 'Note', 'woocommerce' ); ?></a>
+	<a href="#" class="btn btn-primary action-fee" data-title="<?php /* translators: woocommerce */ _e( 'Fee Name', 'woocommerce' ); ?>"><?php /* translators: woocommerce */ _e( 'Fee', 'woocommerce' ); ?></a>
+	<a href="#" class="btn btn-primary action-shipping" data-title="<?php /* translators: woocommerce */ _e( 'Shipping Name', 'woocommerce' ); ?>"><?php /* translators: woocommerce */ _e( 'Shipping', 'woocommerce' ); ?></a>
+	<a href="#" class="btn btn-primary action-coupon"><?php /* translators: woocommerce */ _e( 'Coupon', 'woocommerce' ); ?></a>
 	<a href="#" class="btn btn-primary action-discount"><?php _e( 'Discount', 'woocommerce-pos' ); ?></a>
-	<a href="#" class="btn btn-primary action-fee"><?php /* translators: woocommerce */ _e( 'Fee', 'woocommerce' ); ?></a>
-	<a href="#" class="btn btn-primary action-shipping"><?php /* translators: woocommerce */ _e( 'Shipping', 'woocommerce' ); ?></a>
+	<a href="#" class="btn btn-primary action-note"><?php /* translators: woocommerce */ _e( 'Note', 'woocommerce' ); ?></a>
 	<a href="#" class="btn btn-success action-checkout"><?php /* translators: woocommerce */ _e( 'Checkout', 'woocommerce' ); ?></a>
 </script>

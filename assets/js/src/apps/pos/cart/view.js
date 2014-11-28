@@ -44,30 +44,52 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         },
 
         modelEvents: {
-            'change': 'render',
-            'pulse' : 'pulse'
+            'change'   : 'render',
+            'focus:row': 'focusRow'
         },
 
         events: {
-            'click .action-remove' 	: 'removeItem',
-            'keypress input'  		: 'saveOnEnter',
-            'blur input'      		: 'onBlur'
+            'click .action-remove' 	     : 'removeItem',
+            'click .action-more'         : 'toggleDrawer',
+            'keypress input[type="text"]': 'saveOnEnter',
+            'blur input[type="text"]'    : 'onBlur',
+            'click .title'               : 'editTitle',
+            'blur .title'                : 'onBlur',
+            'keypress .title'            : 'saveOnEnter'
         },
 
-        pulse: function() {
+        focusRow: function() {
             var self = this;
+
+            // scroll to row
             this.$el.addClass('bg-success').closest('.list').animate({
                 scrollTop: this.$el.position().top
             }, 'fast', function() {
+                // focus title if shipping or fee
+                if( self.model.get( 'type' ) === 'fee' || self.model.get( 'type' ) === 'shipping' ) {
+                    self.editTitle();
+                }
+
+                // pulse
                 self.$el.animate({
                     backgroundColor: 'transparent'
                 }, 500, function() {
-                    $(this).removeClass('bg-success').removeAttr('style');
+                    self.$el.removeClass('bg-success').removeAttr('style');
                 });
             });
+
         },
 
         remove: function() {
+            // disable button
+            this.$('.action-remove').attr( 'disabled', 'true' );
+
+            // close drawer (if open)
+            if( this.drawer && this.drawer.$el.is(':visible') ) {
+                this.drawer.$el.slideUp( 'fast' );
+            }
+
+            // add bg colour and fade out
             this.$el.addClass('bg-danger').parent('ul').addClass('animating');
             this.$el.fadeOut( 500, function() {
                 this.$el.parent('ul').removeClass('animating');
@@ -79,10 +101,23 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             this.model.destroy();
         },
 
+        editTitle: function() {
+            this.$('.title').attr( 'contenteditable', 'true' ).focus();
+        },
+
         save: function(e) {
             var input 	= $(e.target),
                 key 	= input.data('id'),
                 value 	= input.val();
+
+            // if no key, check for title
+            if( _.isUndefined( key ) ) {
+                if( $(e.target).hasClass('title') ){
+                    value = $(e.target).text();
+                    this.model.save({ title: value });
+                }
+                return;
+            }
 
             // check for sensible input
             if( _.isNaN( parseFloat( value ) ) ) {
@@ -110,13 +145,11 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         },
 
         saveOnEnter: function(e) {
-
             // enter key triggers blur as well?
             if ( e.which === 13 ) {
                 this.save(e);
                 this.model.trigger('change');
             }
-
         },
 
         onBlur: function(e) {
@@ -124,8 +157,44 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 this.save(e);
                 this.model.trigger('change');
             }
+        },
+
+        toggleDrawer: function(e) {
+            e.preventDefault();
+
+            if( _.isUndefined( this.drawer ) ) {
+                var el = $('<li />').addClass('drawer').hide();
+                this.drawer = new Cart.Drawer({ el: el, model: this.model });
+                this.drawer.render();
+                this.$el.after( this.drawer.$el );
+            }
+
+            this.drawer.$el.slideToggle( 'fast' );
         }
 
+    });
+
+    Cart.Drawer = Marionette.ItemView.extend({
+        initialize: function() {
+            this.template = Handlebars.compile($('#tmpl-cart-item-drawer').html());
+        },
+
+        events: {
+            'change input[type=checkbox]': 'checkboxChanged',
+            'change select'              : 'selectChanged'
+        },
+
+        checkboxChanged: function(e) {
+            var data = {};
+            data[ e.target.name ] = e.target.checked;
+            this.model.save(data);
+        },
+
+        selectChanged: function(e) {
+            var data = {};
+            data[ e.target.name ] = e.target.value;
+            this.model.save(data);
+        }
     });
 
     /**

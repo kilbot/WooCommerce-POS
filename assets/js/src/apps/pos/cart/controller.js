@@ -82,7 +82,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 row = this.cart.add( attributes );
             }
 
-            row.trigger('pulse' );
+            row.trigger( 'focus:row' );
         },
 
         showCart: function() {
@@ -117,6 +117,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
         },
 
+        // TODO: abstract as a collection of button models?
         showActions: function() {
 
             var view = new Cart.Actions();
@@ -137,13 +138,15 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             });
 
             // add fee
-            this.listenTo( view, 'fee:clicked', function() {
-                POS.POSApp.channel.command( 'cart:add', { title: 'Fee', type: 'fee' } );
+            this.listenTo( view, 'fee:clicked', function(args) {
+                var title = args.view.$('.action-fee').data('title');
+                POS.POSApp.channel.command( 'cart:add', { title: title, type: 'fee' } );
             });
 
             // add shipping
-            this.listenTo( view, 'shipping:clicked', function() {
-                POS.POSApp.channel.command( 'cart:add', { title: 'Shipping', type: 'shipping' } );
+            this.listenTo( view, 'shipping:clicked', function(args) {
+                var title = args.view.$('.action-shipping').data('title');
+                POS.POSApp.channel.command( 'cart:add', { title: title, type: 'shipping' } );
             });
 
             // checkout

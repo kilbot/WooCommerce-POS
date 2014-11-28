@@ -1029,28 +1029,30 @@ body {
 .module .list ul li {
   border-bottom: 1px solid #eeeeee;
   display: -webkit-flex;
-  display: flex;
+  -webkit-flex-wrap: wrap;
   -webkit-align-items: center;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
-/* line 127, scss/partials/_scaffolding.scss */
+/* line 126, scss/partials/_scaffolding.scss */
 .module .list ul li > div {
   padding: 8px;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 134, scss/partials/_scaffolding.scss */
+/* line 133, scss/partials/_scaffolding.scss */
 .module .list ul.striped li:nth-of-type(even) {
   background-color: #f9f9f9;
 }
-/* line 140, scss/partials/_scaffolding.scss */
+/* line 139, scss/partials/_scaffolding.scss */
 .module .list-totals ul {
   width: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
 }
-/* line 145, scss/partials/_scaffolding.scss */
+/* line 144, scss/partials/_scaffolding.scss */
 .module .list-totals ul li {
   border-bottom: 1px solid #eeeeee;
   display: -webkit-flex;
@@ -1058,25 +1060,25 @@ body {
   -webkit-align-items: center;
   align-items: center;
 }
-/* line 149, scss/partials/_scaffolding.scss */
+/* line 148, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div {
   padding: 8px;
 }
-/* line 151, scss/partials/_scaffolding.scss */
+/* line 150, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div:first-of-type {
   font-weight: bold;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 156, scss/partials/_scaffolding.scss */
+/* line 155, scss/partials/_scaffolding.scss */
 .module .list-totals ul li:first-of-type {
   border-top: 1px solid #dfdfdf;
 }
-/* line 159, scss/partials/_scaffolding.scss */
+/* line 158, scss/partials/_scaffolding.scss */
 .module .list-totals ul li:last-of-type {
   border-bottom: 1px solid #dfdfdf;
 }
-/* line 165, scss/partials/_scaffolding.scss */
+/* line 164, scss/partials/_scaffolding.scss */
 .module .list-footer {
   background-color: #ccc;
   padding: 8px;
@@ -1746,8 +1748,8 @@ header .dropdown-menu a:hover {
 }
 /* line 6, scss/partials/_cart.scss */
 .cart-module .list-header .more, .cart-module .list .more, .cart-module .list-totals .more {
-  -webkit-flex: 0 1 22px;
-  flex: 0 1 22px;
+  -webkit-flex: 0 1 38px;
+  flex: 0 1 38px;
   text-align: right;
 }
 /* line 9, scss/partials/_cart.scss */
@@ -1756,58 +1758,58 @@ header .dropdown-menu a:hover {
 }
 /* line 13, scss/partials/_cart.scss */
 .cart-module .list-header .price, .cart-module .list .price, .cart-module .list-totals .price {
+  text-align: right;
   -webkit-flex: 0 1 20%;
   flex: 0 1 20%;
 }
-/* line 16, scss/partials/_cart.scss */
+/* line 17, scss/partials/_cart.scss */
 .cart-module .list-header .total, .cart-module .list .total, .cart-module .list-totals .total {
   text-align: right;
   -webkit-flex: 0 1 20%;
   flex: 0 1 20%;
 }
-/* line 20, scss/partials/_cart.scss */
+/* line 21, scss/partials/_cart.scss */
 .cart-module .list-header .action, .cart-module .list .action, .cart-module .list-totals .action {
   -webkit-flex: 0 1 52px;
   flex: 0 1 52px;
 }
-/* line 27, scss/partials/_cart.scss */
+/* line 28, scss/partials/_cart.scss */
 .cart-module .list ul.animating li.empty {
   display: none;
 }
-/* line 31, scss/partials/_cart.scss */
+/* line 32, scss/partials/_cart.scss */
 .cart-module .list ul > li.shipping, .cart-module .list ul > li.fee {
   border-top: 3px solid #eeeeee;
 }
-/* line 34, scss/partials/_cart.scss */
+/* line 35, scss/partials/_cart.scss */
 .cart-module .list ul > li.shipping ~ li.shipping, .cart-module .list ul > li.fee ~ li.fee {
   border-top: none;
 }
-/* line 39, scss/partials/_cart.scss */
+/* line 38, scss/partials/_cart.scss */
+.cart-module .list ul .drawer {
+  background-color: #ccc;
+}
+/* line 43, scss/partials/_cart.scss */
 .cart-module .list-totals {
   text-align: right;
 }
-/* line 41, scss/partials/_cart.scss */
+/* line 45, scss/partials/_cart.scss */
 .cart-module .list-totals .order-total {
   font-size: 1.4em;
 }
-/* line 44, scss/partials/_cart.scss */
-.cart-module .list-totals .total {
-  -webkit-flex-basis: 28%;
-  flex-basis: 28%;
-}
-/* line 47, scss/partials/_cart.scss */
+/* line 51, scss/partials/_cart.scss */
 .cart-module .list-totals input {
   display: none;
 }
-/* line 51, scss/partials/_cart.scss */
+/* line 55, scss/partials/_cart.scss */
 .cart-module .list-totals .editing span {
   display: none;
 }
-/* line 54, scss/partials/_cart.scss */
+/* line 58, scss/partials/_cart.scss */
 .cart-module .list-totals .editing input {
   display: block;
 }
-/* line 60, scss/partials/_cart.scss */
+/* line 64, scss/partials/_cart.scss */
 .cart-module .list input, .cart-module .list-totals input {
   -webkit-transition-property: background-color;
   transition-property: background-color;
@@ -1846,26 +1848,26 @@ header .dropdown-menu a:hover {
   color: #f9f9f9;
   background-color: #333333;
 }
-/* line 72, scss/partials/_cart.scss */
+/* line 76, scss/partials/_cart.scss */
 .cart-module .list input::-webkit-inner-spin-button, .cart-module .list-totals input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-/* line 76, scss/partials/_cart.scss */
+/* line 80, scss/partials/_cart.scss */
 .cart-module .list input::-webkit-outer-spin-button, .cart-module .list-totals input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-/* line 80, scss/partials/_cart.scss */
+/* line 84, scss/partials/_cart.scss */
 .cart-module .list input:hover, .cart-module .list-totals input:hover {
   cursor: pointer;
 }
-/* line 85, scss/partials/_cart.scss */
+/* line 89, scss/partials/_cart.scss */
 .cart-module .cart-actions {
   text-align: right;
   padding: 8px;
 }
-/* line 89, scss/partials/_cart.scss */
+/* line 93, scss/partials/_cart.scss */
 .cart-module .cart-notes {
   padding: 8px;
 }
