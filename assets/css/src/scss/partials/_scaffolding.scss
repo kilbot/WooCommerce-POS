@@ -24,30 +24,50 @@ body {
   }
 }
 
-@include breakpoint($tablet) {
-  .column-tabs {
-    display: none;
-  }
-}
-
 #main:not(.two-column), #main.two-column > div {
   position: absolute;
-  top: 72px;
-  @include breakpoint($tablet) {
-    top: 38px;
-  }
+  top: 38px;
   bottom: 0;
   left: 0;
   right: 0;
   padding: $spacing/3;
   @include display-flex;
-  #left, #right {
-    @include display-flex;
-    @include flex-direction(column);
-    @include flex(1);
+}
+
+#main.two-column {
+  > div {
+    top: 72px;
+    padding: $spacing/3 0 0 $spacing/3;
+    #left, #right {
+      @include display-flex;
+      @include flex-direction(column);
+      @include flex(1);
+      padding: 0 $spacing/3 $spacing/3 0;
+    }
   }
-  #left {
-    margin-right: $spacing/3;
+  &.left-active {
+    #right {
+      display: none;
+    }
+  }
+  &.right-active {
+    #left {
+      display: none;
+    }
+  }
+}
+
+@include breakpoint($tablet) {
+  .column-tabs {
+    display: none;
+  }
+  #main.two-column {
+    > div {
+      top: 38px;
+    }
+    &.left-active #right, &.right-active #left {
+      @include display-flex;
+    }
   }
 }
 

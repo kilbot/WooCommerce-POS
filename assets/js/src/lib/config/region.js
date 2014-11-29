@@ -2,8 +2,11 @@ _.extend( Marionette.Region.prototype, {
 
     twoColumns: function( controller ) {
 
-        this.$el.addClass('two-column');
+        // faux tab region
+        this.tabsRegion = $('<div/>').addClass('column-tabs tabs').insertBefore(this.$el);
 
+        // create the two column scaffold
+        this.$el.addClass('two-column');
         var Layout = Marionette.LayoutView.extend({
             template: _.template('' +
                 '<div id="left"></div>' +
@@ -15,62 +18,41 @@ _.extend( Marionette.Region.prototype, {
             }
         });
 
+        // attach regions to mainRegion
         var layout = new Layout();
         this.leftRegion = layout.leftRegion;
         this.rightRegion = layout.rightRegion;
 
+        // create tabs on show
         layout.on( 'show', function() {
             console.log('two column show');
             this.addTabs( layout );
         }, this);
 
+        // show
         controller.show( layout, { region: this } )
 
     },
 
     addTabs: function() {
 
-        var leftTab = $('<li />');
-        var rightTab = $('<li />');
-        $('<div />')
-            .addClass('tabs column-tabs')
-            .append( $('<ul />').append(leftTab, rightTab) )
-            .insertBefore(this.$el);
+        // get tabs component
+        var view = POS.Components.Tabs.channel.request( 'get:tabs', [
+            {value: 'left', label: 'Left'}, {value: 'right', label: 'Right'}
+        ]);
 
-        // note: there will be two 'shows':
-        // - the loading view (title = undefined)
-        // - the actual module (title = data-title)
-        this.leftRegion.on( 'show', function() {
-            console.log('left column show');
-            var title = this.$el.children('.module').data('title');
-            if( title ) {
-                leftTab.text( title );
-            }
-        });
+        // add listeners
+        view.collection.on( 'change:active', function( tab ){
+            this.$el
+                .removeClass('left-active right-active')
+                .addClass( tab.id + '-active' );
+        }, this);
 
-        this.rightRegion.on( 'show', function() {
-            console.log('right column show');
-            var title = this.$el.children('.module').data('title');
-            if( title ) {
-                rightTab.text( title );
-            }
-        });
+        // render tabs and add to the dom
+        view.render();
+        this.tabsRegion.html(view.$el);
+        view.collection.get('left').set({ active: true });
 
-        leftTab.on( 'all', function(e) {
-            console.log(e);
-        });
-
-        leftTab.on( 'click', function( e ) {
-            $(e.target).addClass('active').siblings().removeClass('active');
-            this.leftRegion.$el.show();
-            this.rightRegion.$el.hide();
-        }.bind(this));
-
-        rightTab.on( 'click', function( e ) {
-            $(e.target).addClass('active').siblings().removeClass('active');
-            this.leftRegion.$el.hide();
-            this.rightRegion.$el.show();
-        }.bind(this));
     }
 
 });

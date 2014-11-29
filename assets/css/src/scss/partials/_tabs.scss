@@ -28,3 +28,16 @@
 .infinite-tabs {
 	overflow-x: hidden;
 }
+.column-tabs {
+  ul {
+    li {
+      background-color: darken($border-color, 5%);
+      width: 50%;
+      margin: 0;
+      text-align: center;
+      &.active {
+        background-color: $body-bg;
+      }
+    }
+  }
+}
