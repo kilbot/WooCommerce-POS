@@ -11,7 +11,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             });
 
             this.show( this.layout, {
-                region: POS.POSApp.layout.rightRegion,
+                region: POS.mainRegion.rightRegion,
                 loading: {
                     entities: this.initCart( options )
                 }

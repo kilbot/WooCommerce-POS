@@ -1,17 +1,5 @@
 POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _, Handlebars) {
 
-    // global pos layout
-    POS.POSApp.Layout = Marionette.LayoutView.extend({
-        template: _.template('' +
-            '<div id="left"></div>' +
-            '<div id="right"></div>'
-        ),
-        regions: {
-            leftRegion: '#left',
-            rightRegion: '#right'
-        }
-    });
-
     // products module layout
     Products.Layout = Marionette.LayoutView.extend({
         template: _.template('' +
@@ -22,12 +10,13 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
         ),
         tagName: 'section',
         regions: {
-            actionsRegion: '.list-actions',
-            tabsRegion: '.list-tabs',
-            listRegion: '.list'
+            actionsRegion   : '.list-actions',
+            tabsRegion      : '.list-tabs',
+            listRegion      : '.list'
         },
         attributes: {
-            class: 'module products-module'
+            'class'         : 'module products-module',
+            'data-title'    : 'Products'
         }
     });
 

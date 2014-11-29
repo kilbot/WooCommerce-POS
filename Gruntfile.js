@@ -194,9 +194,11 @@ module.exports = function(grunt) {
 
                         // main app & config
                         'assets/js/src/lib/config/application.js',
+                        'assets/js/src/lib/config/region.js',
                         'assets/js/src/app.js',
                         'assets/js/src/lib/config/ajax.js',
                         'assets/js/src/lib/config/controller_base.js',
+
 
                         // entities
                         'assets/js/src/entities/db.js',

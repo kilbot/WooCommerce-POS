@@ -23,7 +23,7 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }
 
             // update on change to qty or item_price
-            this.on( 'change:qty change:item_price change:taxation', this.updateLineTotals );
+            this.on( 'change:qty change:item_price change:taxable change:tax_class', this.updateLineTotals );
 
             // set item price on init, this will trigger updateLineTotals()
             if( this.get('item_price') === 0 ) {
@@ -32,6 +32,7 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         },
 
         updateLineTotals: function() {
+            console.log('recalc');
             var qty 			= this.get('qty'),
                 item_price 		= this.get('item_price'),
                 type            = this.get('type'),

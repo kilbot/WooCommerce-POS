@@ -5,9 +5,7 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
         initialize: function (options) {
 
             // init two column POS layout
-            POS.POSApp.layout = new POS.POSApp.Layout();
-            POS.mainRegion.$el.addClass('two-column');
-            this.show( POS.POSApp.layout, { region: POS.mainRegion });
+            POS.mainRegion.twoColumns( this );
 
             // get product collection
             var products = POS.Entities.channel.request('products');
@@ -25,15 +23,14 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
             // make sure idb is ready
             products.once('idb:ready', function() {
 
-                POS.Components.Loading.channel.command( 'show:loading', this.layout, {
-                    region: POS.POSApp.layout.leftRegion,
+                this.show( this.layout, {
+                    region: POS.mainRegion.leftRegion,
                     loading: {
                         entities: products.fetch()
                     }
                 });
 
             }, this);
-
 
         },
 

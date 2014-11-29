@@ -888,10 +888,16 @@ body {
   flex: 1;
 }
 
-/* line 27, scss/partials/_scaffolding.scss */
+@media (min-width: 769px) {
+  /* line 28, scss/partials/_scaffolding.scss */
+  .column-tabs {
+    display: none;
+  }
+}
+/* line 33, scss/partials/_scaffolding.scss */
 #main:not(.two-column), #main.two-column > div {
   position: absolute;
-  top: 38px;
+  top: 72px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -899,7 +905,13 @@ body {
   display: -webkit-flex;
   display: flex;
 }
-/* line 35, scss/partials/_scaffolding.scss */
+@media (min-width: 769px) {
+  /* line 33, scss/partials/_scaffolding.scss */
+  #main:not(.two-column), #main.two-column > div {
+    top: 38px;
+  }
+}
+/* line 44, scss/partials/_scaffolding.scss */
 #main:not(.two-column) #left, #main:not(.two-column) #right, #main.two-column > div #left, #main.two-column > div #right {
   display: -webkit-flex;
   display: flex;
@@ -908,12 +920,12 @@ body {
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 40, scss/partials/_scaffolding.scss */
+/* line 49, scss/partials/_scaffolding.scss */
 #main:not(.two-column) #left, #main.two-column > div #left {
   margin-right: 8px;
 }
 
-/* line 45, scss/partials/_scaffolding.scss */
+/* line 54, scss/partials/_scaffolding.scss */
 .module {
   width: 100%;
   display: -webkit-flex;
@@ -925,62 +937,62 @@ body {
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
-/* line 53, scss/partials/_scaffolding.scss */
+/* line 62, scss/partials/_scaffolding.scss */
 .module .list-actions > div {
   padding: 8px;
   border-bottom: 1px solid #dfdfdf;
 }
-/* line 56, scss/partials/_scaffolding.scss */
+/* line 65, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .btn {
   float: right;
   margin-left: 8px;
 }
-/* line 60, scss/partials/_scaffolding.scss */
+/* line 69, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group {
   display: -webkit-flex;
   display: flex;
 }
-/* line 62, scss/partials/_scaffolding.scss */
+/* line 71, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control, .module .list-actions > div > .input-group .input-group-addon, .module .list-actions > div > .input-group .input-group-btn {
   border: 1px solid #dfdfdf;
   padding: 0.5em 0.75em;
 }
-/* line 65, scss/partials/_scaffolding.scss */
+/* line 74, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control:first-child, .module .list-actions > div > .input-group .input-group-addon:first-child, .module .list-actions > div > .input-group .input-group-btn:first-child {
   -moz-border-radius: 3px 0 0 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px 0 0 3px;
 }
-/* line 68, scss/partials/_scaffolding.scss */
+/* line 77, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control:last-child, .module .list-actions > div > .input-group .input-group-addon:last-child, .module .list-actions > div > .input-group .input-group-btn:last-child {
   -moz-border-radius: 0 3px 3px 0;
   -webkit-border-radius: 0;
   border-radius: 0 3px 3px 0;
 }
-/* line 72, scss/partials/_scaffolding.scss */
+/* line 81, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .input-group-btn {
   padding: 0;
 }
-/* line 74, scss/partials/_scaffolding.scss */
+/* line 83, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .input-group-btn > a {
   display: inline-block;
   padding: 0.5em 0.75em;
 }
-/* line 79, scss/partials/_scaffolding.scss */
+/* line 88, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control {
   outline: 0;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 82, scss/partials/_scaffolding.scss */
+/* line 91, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control:not(:first-child) {
   border-left: 0;
 }
-/* line 85, scss/partials/_scaffolding.scss */
+/* line 94, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control:not(:last-child) {
   border-right: 0;
 }
-/* line 89, scss/partials/_scaffolding.scss */
+/* line 98, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .clear {
   display: none;
   color: #333333;
@@ -989,29 +1001,29 @@ body {
   border-top: 1px solid #dfdfdf;
   border-bottom: 1px solid #dfdfdf;
 }
-/* line 96, scss/partials/_scaffolding.scss */
+/* line 105, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .clear i {
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
-/* line 99, scss/partials/_scaffolding.scss */
+/* line 108, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .clear:hover i {
   opacity: 1;
   filter: alpha(opacity=100);
 }
-/* line 106, scss/partials/_scaffolding.scss */
+/* line 115, scss/partials/_scaffolding.scss */
 .module .list-header {
   display: -webkit-flex;
   display: flex;
   background-color: #ccc;
 }
-/* line 110, scss/partials/_scaffolding.scss */
+/* line 119, scss/partials/_scaffolding.scss */
 .module .list-header > div {
   padding: 8px;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 115, scss/partials/_scaffolding.scss */
+/* line 124, scss/partials/_scaffolding.scss */
 .module .list {
   display: -webkit-flex;
   display: flex;
@@ -1019,13 +1031,13 @@ body {
   flex: 1;
   overflow: auto;
 }
-/* line 119, scss/partials/_scaffolding.scss */
+/* line 128, scss/partials/_scaffolding.scss */
 .module .list ul {
   width: 100%;
   margin: 0;
   padding: 0;
 }
-/* line 123, scss/partials/_scaffolding.scss */
+/* line 132, scss/partials/_scaffolding.scss */
 .module .list ul li {
   border-bottom: 1px solid #eeeeee;
   display: -webkit-flex;
@@ -1035,24 +1047,24 @@ body {
   flex-wrap: wrap;
   align-items: center;
 }
-/* line 126, scss/partials/_scaffolding.scss */
+/* line 135, scss/partials/_scaffolding.scss */
 .module .list ul li > div {
   padding: 8px;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 133, scss/partials/_scaffolding.scss */
+/* line 142, scss/partials/_scaffolding.scss */
 .module .list ul.striped li:nth-of-type(even) {
   background-color: #f9f9f9;
 }
-/* line 139, scss/partials/_scaffolding.scss */
+/* line 148, scss/partials/_scaffolding.scss */
 .module .list-totals ul {
   width: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
 }
-/* line 144, scss/partials/_scaffolding.scss */
+/* line 153, scss/partials/_scaffolding.scss */
 .module .list-totals ul li {
   border-bottom: 1px solid #eeeeee;
   display: -webkit-flex;
@@ -1060,25 +1072,25 @@ body {
   -webkit-align-items: center;
   align-items: center;
 }
-/* line 148, scss/partials/_scaffolding.scss */
+/* line 157, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div {
   padding: 8px;
 }
-/* line 150, scss/partials/_scaffolding.scss */
+/* line 159, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div:first-of-type {
   font-weight: bold;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 155, scss/partials/_scaffolding.scss */
+/* line 164, scss/partials/_scaffolding.scss */
 .module .list-totals ul li:first-of-type {
   border-top: 1px solid #dfdfdf;
 }
-/* line 158, scss/partials/_scaffolding.scss */
+/* line 167, scss/partials/_scaffolding.scss */
 .module .list-totals ul li:last-of-type {
   border-bottom: 1px solid #dfdfdf;
 }
-/* line 164, scss/partials/_scaffolding.scss */
+/* line 173, scss/partials/_scaffolding.scss */
 .module .list-footer {
   background-color: #ccc;
   padding: 8px;
@@ -1292,7 +1304,7 @@ header a.btn-header img {
 header a.btn-header span {
   display: none;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   /* line 40, scss/partials/_header.scss */
   header a.btn-header span {
     display: inline-block;

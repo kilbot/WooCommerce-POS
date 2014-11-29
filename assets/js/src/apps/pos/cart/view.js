@@ -4,13 +4,14 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         template: _.template( $('#tmpl-cart').html() ),
         tagName: 'section',
         regions: {
-            listRegion: '.list',
-            totalsRegion: '.list-totals',
-            actionsRegion: '.cart-actions',
-            notesRegion: '.cart-notes'
+            listRegion      : '.list',
+            totalsRegion    : '.list-totals',
+            actionsRegion   : '.cart-actions',
+            notesRegion     : '.cart-notes'
         },
         attributes: {
-            class: 'module cart-module'
+            'class'         : 'module cart-module',
+            'data-title'    : 'Cart'
         }
     });
 
@@ -84,10 +85,8 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             // disable button
             this.$('.action-remove').attr( 'disabled', 'true' );
 
-            // close drawer (if open)
-            if( this.drawer && this.drawer.$el.is(':visible') ) {
-                this.drawer.$el.slideUp( 'fast' );
-            }
+            // remove drawer
+            if( this.drawer ) { this.drawer.remove(); }
 
             // add bg colour and fade out
             this.$el.addClass('bg-danger').parent('ul').addClass('animating');
@@ -182,6 +181,12 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         events: {
             'change input[type=checkbox]': 'checkboxChanged',
             'change select'              : 'selectChanged'
+        },
+
+        remove: function() {
+            this.$el.slideUp( 'fast', function() {
+                Marionette.ItemView.prototype.remove.call(this);
+            }.bind(this));
         },
 
         checkboxChanged: function(e) {

@@ -24,9 +24,18 @@ body {
   }
 }
 
+@include breakpoint($tablet) {
+  .column-tabs {
+    display: none;
+  }
+}
+
 #main:not(.two-column), #main.two-column > div {
   position: absolute;
-  top: 38px;
+  top: 72px;
+  @include breakpoint($tablet) {
+    top: 38px;
+  }
   bottom: 0;
   left: 0;
   right: 0;
