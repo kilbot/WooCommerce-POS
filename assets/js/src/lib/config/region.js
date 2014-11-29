@@ -2,9 +2,6 @@ _.extend( Marionette.Region.prototype, {
 
     twoColumns: function( controller ) {
 
-        // faux tab region
-        this.tabsRegion = $('<div/>').addClass('column-tabs tabs').insertBefore(this.$el);
-
         // create the two column scaffold
         this.$el.addClass('two-column');
         var Layout = Marionette.LayoutView.extend({
@@ -26,7 +23,7 @@ _.extend( Marionette.Region.prototype, {
         // create tabs on show
         layout.on( 'show', function() {
             console.log('two column show');
-            this.addTabs( layout );
+            this.addTabs();
         }, this);
 
         // show
@@ -38,7 +35,7 @@ _.extend( Marionette.Region.prototype, {
 
         // get tabs component
         var view = POS.Components.Tabs.channel.request( 'get:tabs', [
-            {value: 'left', label: 'Left'}, {value: 'right', label: 'Right'}
+            { value: 'left' }, { value: 'right' }
         ]);
 
         // add listeners
@@ -48,10 +45,21 @@ _.extend( Marionette.Region.prototype, {
                 .addClass( tab.id + '-active' );
         }, this);
 
+        this.leftRegion.on( 'update:title', function( label ){
+            view.collection.get('left').set({ label: label });
+        });
+
+        this.rightRegion.on( 'update:title', function( label ){
+            view.collection.get('right').set({ label: label });
+        });
+
         // render tabs and add to the dom
         view.render();
-        this.tabsRegion.html(view.$el);
+        $('<div/>').addClass('column-tabs tabs').html(view.$el).insertBefore(this.$el);
         view.collection.get('left').set({ active: true });
+
+        // attach tabsView to mainRegion
+        this.tabsView = view;
 
     }
 

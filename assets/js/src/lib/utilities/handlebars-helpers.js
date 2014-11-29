@@ -55,7 +55,7 @@ Handlebars.registerHelper('money', function(num, options){
     }
 
     // round the number to even
-    num = POS.round(num, precision);
+    num = POS.Utils.round(num, precision);
 
     if(options.hash.negative) {
         num = num * -1;

@@ -38,7 +38,7 @@ POS.module('Components.Tabs', function(Tabs, POS, Backbone, Marionette, $, _){
         },
 
         collectionEvents: {
-            'change:active'	: 'render',
+            'change:active change:label' : 'render'
         },
 
         initialize: function() {

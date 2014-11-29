@@ -18,6 +18,9 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
                 this.showFilter();
                 this.showTabs();
                 this.showProducts( products );
+
+                // add title to tab
+                this.region.leftRegion.trigger('update:title', 'Products');
             });
 
             // make sure idb is ready

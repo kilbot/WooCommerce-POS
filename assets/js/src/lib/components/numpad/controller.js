@@ -50,9 +50,9 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
             });
 
             if( options.target.val() ) {
-                this.model.set({ value: POS.unformat( options.target.val() ) });
+                this.model.set({ value: POS.Utils.unformat( options.target.val() ) });
             } else {
-                this.model.set({ value: POS.unformat( options.target.data('value') )});
+                this.model.set({ value: POS.Utils.unformat( options.target.data('value') )});
             }
 
             POS.Components.Popover.channel.command( 'open', {
@@ -72,7 +72,7 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
 
             this.listenTo( view, 'enter:keypress', function(e) {
                 var value = this.model.get('value');
-                value = POS.formatNumber(value, 'auto');
+                value = POS.Utils.formatNumber(value, 'auto');
                 options.target.trigger( 'numpad:return', value, this );
             });
 
@@ -84,7 +84,7 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
 
             this.listenTo( view, 'return:keypress', function() {
                 var value = this.model.get('value');
-                value = POS.formatNumber(value, 'auto');
+                value = POS.Utils.formatNumber(value, 'auto');
                 options.target.trigger( 'numpad:return', value, this );
             });
 

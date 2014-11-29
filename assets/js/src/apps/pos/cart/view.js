@@ -126,7 +126,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
             // always store numbers as float
             if( value ){
-                value = POS.unformat( value );
+                value = POS.Utils.unformat( value );
                 value = parseFloat( value );
             }
 
@@ -278,7 +278,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
             // always store numbers as float
             if( value ){
-                value = POS.unformat( value );
+                value = POS.Utils.unformat( value );
                 value = parseFloat( value );
             }
 

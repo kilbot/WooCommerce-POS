@@ -94,7 +94,7 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
 
             if( !_.isFinite( percentage ) || _.isNaN( percentage ) ) percentage = 0;
 
-            percentage = parseFloat( POS.round( percentage, 0 ) );
+            percentage = parseFloat( POS.Utils.round( percentage, 0 ) );
             this.model.set({ percentage: percentage }, { silent: true });
 
         },
@@ -112,7 +112,7 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
                 value = original * ( percentage / 100 );
             }
 
-            value = parseFloat( POS.round( value ) );
+            value = parseFloat( POS.Utils.round( value ) );
             this.model.set({ value: value }, { silent: true });
         }
 

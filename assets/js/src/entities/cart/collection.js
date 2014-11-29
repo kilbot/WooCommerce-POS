@@ -55,11 +55,11 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
             // create totals object
             var totals = {
-                'total'		    : POS.round( total, 4 ),
-                'subtotal'		: POS.round( subtotal, 4 ),
-                'subtotal_tax'	: POS.round( subtotal_tax, 4 ),
-                'cart_discount'	: POS.round( subtotal - total, 4 ),
-                'total_tax'		: POS.round( total_tax, 4 ),
+                'total'		    : POS.Utils.round( total, 4 ),
+                'subtotal'		: POS.Utils.round( subtotal, 4 ),
+                'subtotal_tax'	: POS.Utils.round( subtotal_tax, 4 ),
+                'cart_discount'	: POS.Utils.round( subtotal - total, 4 ),
+                'total_tax'		: POS.Utils.round( total_tax, 4 ),
                 //'itemized_tax'	: itemized_tax
             };
 

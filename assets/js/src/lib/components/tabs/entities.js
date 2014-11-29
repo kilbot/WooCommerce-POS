@@ -2,7 +2,7 @@ POS.module('Components.Tabs', function(Tabs, POS, Backbone, Marionette, $, _){
 
     Tabs.Model = Backbone.Model.extend({
         defaults: {
-            label: '',
+            label: '&nbsp;',
             value: '',
             active: false,
             fixed: true

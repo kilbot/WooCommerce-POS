@@ -54,11 +54,11 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             this.save({
                 'item_subtotal' 	: regular_price,
                 'item_subtotal_tax' : item_subtotal_tax,
-                'item_tax'			: POS.round( item_tax, 4 ),
-                'subtotal' 	        : POS.round( regular_price * qty, 4 ),
-                'subtotal_tax'      : POS.round( item_subtotal_tax * qty, 4 ),
-                'total_tax'			: POS.round( item_tax * qty, 4 ),
-                'total'		        : POS.round( item_price * qty, 4 )
+                'item_tax'			: POS.Utils.round( item_tax, 4 ),
+                'subtotal' 	        : POS.Utils.round( regular_price * qty, 4 ),
+                'subtotal_tax'      : POS.Utils.round( item_subtotal_tax * qty, 4 ),
+                'total_tax'			: POS.Utils.round( item_tax * qty, 4 ),
+                'total'		        : POS.Utils.round( item_price * qty, 4 )
             });
 
         },
@@ -134,8 +134,8 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 tax_amount = price - net_price;
 
                 // do the rounding now if required
-                var item_tax_ = POS.round( tax_amount, 4 );
-                var line_tax_ = POS.round( tax_amount * qty, 4 );
+                var item_tax_ = POS.Utils.round( tax_amount, 4 );
+                var line_tax_ = POS.Utils.round( tax_amount * qty, 4 );
 
                 // set the itemized taxes
                 this.set( 'item_tax_' + key, item_tax_ );
@@ -153,7 +153,7 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }, this);
 
             // return the item tax
-            return POS.round( item_tax, 4 );
+            return POS.Utils.round( item_tax, 4 );
         },
 
         /**
@@ -193,8 +193,8 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 }
 
                 // do the rounding now if required
-                var item_tax_ = POS.round( taxes[ key ], 4 );
-                var line_tax_ = POS.round( taxes[ key ] * qty, 4 );
+                var item_tax_ = POS.Utils.round( taxes[ key ], 4 );
+                var line_tax_ = POS.Utils.round( taxes[ key ] * qty, 4 );
 
                 // set the itemized taxes
                 this.set( 'item_tax_' + key, item_tax_ );
@@ -212,7 +212,7 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }, this);
 
             // return the item tax
-            return POS.round( item_tax, 4 );
+            return POS.Utils.round( item_tax, 4 );
         },
 
         // Convenience method to increase or decrease qty

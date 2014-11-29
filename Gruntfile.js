@@ -152,7 +152,7 @@ module.exports = function(grunt) {
                         'bower_components/backbone.radio/build/backbone.radio.js',
                         'bower_components/backbone.babysitter/lib/backbone.babysitter.js',
                         'bower_components/marionette/lib/core/backbone.marionette.js',
-                        'assets/js/src/lib/utilities/radio.shim.js',
+                        'assets/js/src/lib/config/radio.shim.js',
 
                         // backbone extras
                         'assets/js/src/lib/config/sync.js',
@@ -196,8 +196,9 @@ module.exports = function(grunt) {
                         'assets/js/src/lib/config/application.js',
                         'assets/js/src/lib/config/region.js',
                         'assets/js/src/app.js',
-                        'assets/js/src/lib/config/ajax.js',
+                        'assets/js/src/lib/utilities/ajax.js',
                         'assets/js/src/lib/config/controller_base.js',
+                        'assets/js/src/lib/utilities/utils.js',
 
 
                         // entities

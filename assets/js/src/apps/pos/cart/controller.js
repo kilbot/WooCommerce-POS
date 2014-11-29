@@ -36,6 +36,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                     } else {
                         order = orders.add();
                     }
+                    this.updateTabLabel( order );
                     this.getCartItems( order ).done( function( cart ) {
 
                         // attach local orders,
@@ -50,6 +51,13 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }, this);
 
             return promise;
+        },
+
+        updateTabLabel: function( order ) {
+            order.on( 'change:total', function() {
+                var totals = order.get('total');
+                this.region.rightRegion.trigger('update:title', 'Cart (' + totals + ')');
+            }.bind(this));
         },
 
         getCartItems: function( order ) {
