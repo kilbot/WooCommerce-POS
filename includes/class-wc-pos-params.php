@@ -23,6 +23,7 @@ class WC_POS_Params {
 		$param['nonce'] 		= wp_create_nonce( WC_POS_PLUGIN_NAME );
 		$param['tabs'] 		    = $this->product_tabs();
 		$param['tax'] 		    = $this->wc_settings();
+		$param['tax_labels']    = $this->tax_labels();
 		$param['tax_rates']     = $this->tax_rates();
 		$param['user'] 		    = $this->user();
 		$param['wc_api']        = get_woocommerce_api_url( '' );
@@ -226,6 +227,20 @@ class WC_POS_Params {
 		}
 
 		return $rates;
+	}
+
+	public function tax_labels() {
+		$labels = array_reduce( explode( "\n", get_option('woocommerce_tax_classes' ) ), function ($result, $label) {
+			if( $label = trim($label) ) {
+				$result[ sanitize_title($label) ] = $label;
+			}
+			return $result;
+		}, array());
+
+		/* translators: woocommerce */
+		$standard[''] = __( 'Standard', 'woocommerce' );
+
+		return $standard + $labels;
 	}
 
 }

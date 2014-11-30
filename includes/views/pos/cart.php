@@ -52,13 +52,22 @@
 <script type="text/x-handlebars-template" id="tmpl-cart-item-drawer">
 	<div>
 		<input type="checkbox" name="taxable" id="taxable" {{#if taxable}}checked{{/if}} /> <label for="taxable"><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?></label>
-	</div>
-	<div>
+<hr>
 		<label for="tax_class"><?php /* translators: woocommerce */ _e( 'Tax Class', 'woocommerce' ); ?></label>
 		<select name="tax_class" id="tax_class">
-			<option value=""><?php /* translators: woocommerce */ _e( 'Standard', 'woocommerce' ); ?></option>
-			<option value="another">Another</option>
+			{{#each tax_labels}}
+			<option value="{{@key}}">{{this}}</option>
+			{{/each}}
 		</select>
+<hr>
+		<?php /* translators: woocommerce */ _e( 'Add meta', 'woocommerce' ); ?>
+		{{#each meta}}
+		<input name="meta.{{@index}}.label" value="{{label}}" class="autogrow" type="text"/>: <textarea name="meta.{{@index}}.value" class="autogrow">{{value}}</textarea><a href="#"><i class="icon icon-times-circle"></i></a>
+		{{/each}}
+		<br><a href="#"><i class="icon icon-plus"></i></a>
+<hr>
+		<?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>
+		<input name="regular_price" class="autogrow" type="text" value="{{number regular_price}}" data-numpad="regular_price" />
 	</div>
 </script>
 

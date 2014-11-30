@@ -7,7 +7,11 @@ POS.module('POSApp', function(POSApp, POS, Backbone, Marionette, $, _) {
     // API
     var API = {
         init: function(){
-            if( _.isUndefined( POSApp.layout ) ) {
+            // check registry for products controller
+            var productsExists = _(POS._registry).any( function( controller ){
+                return controller instanceof POSApp.Products.Controller;
+            });
+            if( ! productsExists ) {
                 new POSApp.Products.Controller();
             }
         },

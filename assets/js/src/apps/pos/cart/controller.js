@@ -55,8 +55,9 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
         updateTabLabel: function( order ) {
             order.on( 'change:total', function() {
-                var totals = order.get('total');
-                this.region.rightRegion.trigger('update:title', 'Cart (' + totals + ')');
+                var totals = accounting.formatMoney(order.get('total'));
+
+                this.region.rightRegion.trigger('update:title', 'Cart - ' + totals);
             }.bind(this));
         },
 

@@ -52,7 +52,6 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         events: {
             'click .action-remove' 	     : 'removeItem',
             'click .action-more'         : 'toggleDrawer',
-            'keypress input[type="text"]': 'saveOnEnter',
             'blur input[type="text"]'    : 'onBlur',
             'click .title'               : 'editTitle',
             'blur .title'                : 'onBlur',
@@ -143,8 +142,8 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
         },
 
+        // note: enter will trigger blur on inputs
         saveOnEnter: function(e) {
-            // enter key triggers blur as well?
             if ( e.which === 13 ) {
                 this.save(e);
                 this.model.trigger('change');
@@ -178,9 +177,33 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             this.template = Handlebars.compile($('#tmpl-cart-item-drawer').html());
         },
 
+        serializeData: function() {
+            var data = this.model.toJSON();
+            data.tax_labels = POS.tax_labels;
+            return data;
+        },
+
+        behaviors: {
+            AutoGrow: {},
+            Numpad: {}
+        },
+
         events: {
-            'change input[type=checkbox]': 'checkboxChanged',
-            'change select'              : 'selectChanged'
+            //'change input[type=checkbox]': 'checkboxChanged',
+            //'change select'              : 'selectChanged',
+            //'blur input'                 : 'save',
+            //'keypress input[type="text"]': 'saveOnEnter'
+            'change input'      : 'save',
+            'change select'     : 'save',
+            'change textarea'   : 'save'
+        },
+
+        open: function( callback ) {
+            this.$el.slideDown('fast', callback );
+        },
+
+        close: function( callback ) {
+            this.$el.slideUp('fast', callback );
         },
 
         remove: function() {
@@ -199,7 +222,45 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             var data = {};
             data[ e.target.name ] = e.target.value;
             this.model.save(data);
+        },
+
+        save: function(e) {
+            var el 	    = $(e.target),
+                name    = el.attr('name').split('.'),
+                key     = name[0],
+                value   = el.val(),
+                data    = {};
+
+            if( el.is('input') && el.attr('type') === 'checkbox' ) {
+                value = el.prop('checked');
+            }
+
+            // special case numpad
+            if( el.data('numpad') ){
+                // do number check?
+            }
+
+            // special case product meta
+            if( name.length > 1 && key === 'meta' ) {
+                var meta = this.model.get('meta');
+                if( ! _.isArray( meta ) ) {
+                    meta = [];
+                    meta[ name[1]  ] = {};
+                }
+                meta[ name[1] ][ name[2] ] = value;
+                value = meta;
+                console.log(value);
+            }
+
+            data[ key ] = value;
+
+            this.model.save(data);
+        },
+
+        onBlur: function(e) {
+            console.log(e);
         }
+
     });
 
     /**
@@ -256,7 +317,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 data.incl_tax = true;
             }
 
-            // orginal total for calculating percentage discount
+            // original total for calculating percentage discount
             data.original = data.total + data.order_discount;
 
             return data;

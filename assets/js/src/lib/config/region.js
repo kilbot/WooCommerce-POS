@@ -2,8 +2,10 @@ _.extend( Marionette.Region.prototype, {
 
     twoColumns: function( controller ) {
 
+        // log
+        POS.debugLog('log', 'Init two column layout');
+
         // create the two column scaffold
-        this.$el.addClass('two-column');
         var Layout = Marionette.LayoutView.extend({
             template: _.template('' +
                 '<div id="left"></div>' +
@@ -21,13 +23,13 @@ _.extend( Marionette.Region.prototype, {
         this.rightRegion = layout.rightRegion;
 
         // create tabs on show
-        layout.on( 'show', function() {
-            console.log('two column show');
+        this.listenTo( layout, 'show', function() {
+            this.$el.addClass('two-column');
             this.addTabs();
-        }, this);
+        });
 
         // show
-        controller.show( layout, { region: this } )
+        controller.show( layout, { region: this } );
 
     },
 
@@ -39,11 +41,11 @@ _.extend( Marionette.Region.prototype, {
         ]);
 
         // add listeners
-        view.collection.on( 'change:active', function( tab ){
+        this.listenTo( view.collection, 'change:active', function( tab ){
             this.$el
                 .removeClass('left-active right-active')
                 .addClass( tab.id + '-active' );
-        }, this);
+        });
 
         this.leftRegion.on( 'update:title', function( label ){
             view.collection.get('left').set({ label: label });
@@ -55,11 +57,19 @@ _.extend( Marionette.Region.prototype, {
 
         // render tabs and add to the dom
         view.render();
-        $('<div/>').addClass('column-tabs tabs').html(view.$el).insertBefore(this.$el);
+        var tabsRegion = $('<div/>').addClass('column-tabs tabs');
+        tabsRegion.html(view.$el).insertBefore(this.$el);
         view.collection.get('left').set({ active: true });
 
         // attach tabsView to mainRegion
         this.tabsView = view;
+
+        // teardown
+        this.on( 'empty', function() {
+            this.$el.removeClass('two-column left-active right-active');
+            this.tabsView.destroy();
+            tabsRegion.remove();
+        });
 
     }
 

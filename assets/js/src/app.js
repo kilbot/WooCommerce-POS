@@ -36,7 +36,8 @@ POS.module( 'Entities', function( Entities ) {
 POS.addInitializer(function(options) {
 
     // attach params
-    var params = [ 'ajaxurl', 'denominations', 'nonce', 'wc_api', 'tabs', 'tax', 'tax_rates', 'worker' ];
+    // TODO: save to local db
+    var params = [ 'ajaxurl', 'denominations', 'nonce', 'wc_api', 'tabs', 'tax', 'tax_labels', 'tax_rates', 'worker' ];
     _( params ).each( function(key) {
         if( !_.isUndefined( options[key] ) ) {
             POS[key] = options[key];

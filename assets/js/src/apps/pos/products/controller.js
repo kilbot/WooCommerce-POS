@@ -79,12 +79,6 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
             // show
             this.layout.listRegion.show( view );
 
-        },
-
-        onDestroy: function() {
-            // remove the POS layout
-            delete POS.POSApp.layout;
-            POS.mainRegion.$el.removeClass('two-column');
         }
 
     });
