@@ -186,6 +186,8 @@ body {
       width: 100%;
       margin: 0;
       padding: 0;
+      border-top: 2px solid darken($list-border-color, 6%);
+      border-bottom: 2px solid darken($list-border-color, 6%);
       li {
         border-bottom: 1px solid $list-border-color;
         @include display-flex;
@@ -197,11 +199,8 @@ body {
             @include flex(1);
           }
         }
-        &:first-of-type {
-          border-top: 1px solid darken($list-border-color, 5%);
-        }
         &:last-of-type {
-          border-bottom: 1px solid darken($list-border-color, 5%);
+          border-bottom: none;
         }
       }
     }

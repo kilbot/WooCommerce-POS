@@ -24,7 +24,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item">
-	<div class="qty"><input type="text" value="{{number qty precision='auto'}}" size="10" step="any" data-id="qty" data-title="<?php _e( 'Quantity', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="quantity" class="autogrow"></div>
+	<div class="qty"><input type="text" value="{{number qty precision='auto'}}" size="10" step="any" data-id="qty" data-title="<?php _e( 'Quantity', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="quantity" class="btn autogrow"></div>
 	<div class="title">
 		{{title}}
 		{{#with attributes}}
@@ -37,7 +37,7 @@
 		{{/with}}
 	</div>
 	<div class="more"><a href="#" class="btn btn-default btn-circle-sm action-more"><i class="icon icon-angle-down"></i></a></div>
-	<div class="price"><input type="text" value="{{number item_price}}" size="10" data-id="item_price" data-original="{{regular_price}}" data-title="<?php _e( 'Item Price', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="item_price" class="autogrow"></div>
+	<div class="price"><input type="text" value="{{number item_price}}" size="10" data-id="item_price" data-original="{{regular_price}}" data-title="<?php _e( 'Item Price', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="item_price" class="btn autogrow"></div>
 	<div class="total">
 		{{#compare total '!=' subtotal}}
 			<del>{{{money subtotal}}}</del>
@@ -50,16 +50,17 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item-drawer">
-	<div class="col-1"><label for="regular_price"><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?></label></div>
+	<div class="col-1"><label for="regular_price"><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
-		<input name="regular_price" id="regular_price" class="autogrow" type="text" value="{{number regular_price}}" data-numpad="regular_price" />
+		<input name="regular_price" id="regular_price" class="autogrow btn" type="text" value="{{number regular_price}}" data-numpad="regular_price" />
 	</div>
 	<hr>
-	<div class="col-1"><label for="taxable"><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?></label></div>
+
+	<div class="col-1"><label for="taxable"><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
 		<input type="checkbox" name="taxable" id="taxable" {{#if taxable}}checked{{/if}} />
 	</div>
-	<div class="col-1"><label for="tax_class"><?php /* translators: woocommerce */ _e( 'Tax Class', 'woocommerce' ); ?></label></div>
+	<div class="col-1"><label for="tax_class"><?php /* translators: woocommerce */ _e( 'Tax Class', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
 		<select name="tax_class" id="tax_class">
 			{{#each tax_labels}}
@@ -68,12 +69,17 @@
 		</select>
 	</div>
 	<hr>
-	<div class="col-1"><?php /* translators: woocommerce */ _e( 'Add&nbsp;meta', 'woocommerce' ); ?></div>
+
+	<div class="col-1"><?php /* translators: woocommerce */ _e( 'Add&nbsp;meta', 'woocommerce' ); ?>:</div>
 	<div class="col-2">
 		{{#each meta}}
-		<input name="meta.{{@index}}.label" value="{{label}}" class="autogrow" type="text"/>: <textarea name="meta.{{@index}}.value" class="autogrow">{{value}}</textarea><a href="#"><i class="icon icon-times-circle"></i></a>
+		<span data-key="{{key}}">
+			<input name="meta.label" value="{{label}}" type="text"/>
+			<textarea name="meta.value">{{value}}</textarea>
+			<a href="#" class="action-remove-meta"><i class="icon icon-times"></i></a>
+		</span>
 		{{/each}}
-		<br><a href="#"><i class="icon icon-plus"></i></a>
+		<a href="#" class="action-add-meta"><i class="icon icon-plus"></i></a>
 	</div>
 </script>
 

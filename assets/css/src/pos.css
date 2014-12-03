@@ -1104,8 +1104,10 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
+  border-top: 2px solid #d9d9d9;
+  border-bottom: 2px solid #d9d9d9;
 }
-/* line 189, scss/partials/_scaffolding.scss */
+/* line 191, scss/partials/_scaffolding.scss */
 .module .list-totals ul li {
   border-bottom: 1px solid #e8e8e8;
   display: -webkit-flex;
@@ -1113,25 +1115,21 @@ body {
   -webkit-align-items: center;
   align-items: center;
 }
-/* line 193, scss/partials/_scaffolding.scss */
+/* line 195, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div {
   padding: 8px;
 }
-/* line 195, scss/partials/_scaffolding.scss */
+/* line 197, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div:first-of-type {
   font-weight: bold;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 200, scss/partials/_scaffolding.scss */
-.module .list-totals ul li:first-of-type {
-  border-top: 1px solid #dbdbdb;
-}
-/* line 203, scss/partials/_scaffolding.scss */
+/* line 202, scss/partials/_scaffolding.scss */
 .module .list-totals ul li:last-of-type {
-  border-bottom: 1px solid #dbdbdb;
+  border-bottom: none;
 }
-/* line 209, scss/partials/_scaffolding.scss */
+/* line 208, scss/partials/_scaffolding.scss */
 .module .list-footer {
   background: #cfd8dc;
   padding: 8px;
@@ -1522,7 +1520,31 @@ header .dropdown-menu a:hover {
   box-shadow: none;
 }
 
-/* line 56, scss/partials/_buttons.scss */
+/* line 53, scss/partials/_buttons.scss */
+input.btn {
+  padding: 1px 0;
+  font-size: 14px;
+  line-height: 1.428571429;
+  border-radius: 16px;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+/* line 58, scss/partials/_buttons.scss */
+input.btn::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* line 62, scss/partials/_buttons.scss */
+input.btn::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* line 66, scss/partials/_buttons.scss */
+input.btn:hover {
+  cursor: pointer;
+}
+
+/* line 74, scss/partials/_buttons.scss */
 .btn-default {
   color: #333333;
   background-color: #f3f3f3;
@@ -1549,7 +1571,7 @@ header .dropdown-menu a:hover {
   background-color: #333333;
 }
 
-/* line 59, scss/partials/_buttons.scss */
+/* line 77, scss/partials/_buttons.scss */
 .btn-primary {
   color: white;
   background-color: #607d8b;
@@ -1576,7 +1598,7 @@ header .dropdown-menu a:hover {
   background-color: white;
 }
 
-/* line 63, scss/partials/_buttons.scss */
+/* line 81, scss/partials/_buttons.scss */
 .btn-success {
   color: white;
   background-color: #4caf50;
@@ -1603,7 +1625,7 @@ header .dropdown-menu a:hover {
   background-color: white;
 }
 
-/* line 67, scss/partials/_buttons.scss */
+/* line 85, scss/partials/_buttons.scss */
 .btn-info {
   color: white;
   background-color: #03a9f4;
@@ -1630,7 +1652,7 @@ header .dropdown-menu a:hover {
   background-color: white;
 }
 
-/* line 71, scss/partials/_buttons.scss */
+/* line 89, scss/partials/_buttons.scss */
 .btn-warning {
   color: white;
   background-color: #ff5722;
@@ -1657,7 +1679,7 @@ header .dropdown-menu a:hover {
   background-color: white;
 }
 
-/* line 75, scss/partials/_buttons.scss */
+/* line 93, scss/partials/_buttons.scss */
 .btn-danger {
   color: white;
   background-color: #f44336;
@@ -1684,7 +1706,7 @@ header .dropdown-menu a:hover {
   background-color: white;
 }
 
-/* line 81, scss/partials/_buttons.scss */
+/* line 99, scss/partials/_buttons.scss */
 .btn-circle {
   -moz-border-radius: 18px;
   -webkit-border-radius: 18px;
@@ -1695,7 +1717,7 @@ header .dropdown-menu a:hover {
   line-height: 34px;
 }
 
-/* line 89, scss/partials/_buttons.scss */
+/* line 107, scss/partials/_buttons.scss */
 .btn-circle-sm {
   -moz-border-radius: 11px;
   -webkit-border-radius: 11px;
@@ -1853,108 +1875,86 @@ header .dropdown-menu a:hover {
 }
 /* line 32, scss/partials/_cart.scss */
 .cart-module .list ul > li.shipping, .cart-module .list ul > li.fee {
-  border-top: 3px solid #e8e8e8;
+  border-top: 1px solid #e8e8e8;
 }
-/* line 35, scss/partials/_cart.scss */
+/* line 36, scss/partials/_cart.scss */
 .cart-module .list ul > li.shipping ~ li.shipping, .cart-module .list ul > li.fee ~ li.fee {
   border-top: none;
 }
-/* line 38, scss/partials/_cart.scss */
+/* line 39, scss/partials/_cart.scss */
 .cart-module .list ul .drawer {
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
   background: #e8e8e8;
   box-shadow: inset 0 0 8px 0 rgba(0, 0, 0, 0.1);
 }
-/* line 42, scss/partials/_cart.scss */
+/* line 44, scss/partials/_cart.scss */
 .cart-module .list ul .drawer .col-1 {
   text-align: right;
   -webkit-flex-basis: 30%;
   flex-basis: 30%;
 }
-/* line 46, scss/partials/_cart.scss */
+/* line 48, scss/partials/_cart.scss */
 .cart-module .list ul .drawer .col-2 {
   -webkit-flex-basis: 70%;
   flex-basis: 70%;
 }
-/* line 49, scss/partials/_cart.scss */
+/* line 50, scss/partials/_cart.scss */
+.cart-module .list ul .drawer .col-2 > span {
+  display: block;
+}
+/* line 52, scss/partials/_cart.scss */
+.cart-module .list ul .drawer .col-2 > span input {
+  vertical-align: top;
+  max-width: 7em;
+}
+/* line 56, scss/partials/_cart.scss */
+.cart-module .list ul .drawer .col-2 > span a {
+  color: #ff5722;
+}
+/* line 58, scss/partials/_cart.scss */
+.cart-module .list ul .drawer .col-2 > span a:hover {
+  color: #f32c1e;
+}
+/* line 62, scss/partials/_cart.scss */
+.cart-module .list ul .drawer .col-2 > span i {
+  vertical-align: top;
+}
+/* line 65, scss/partials/_cart.scss */
+.cart-module .list ul .drawer .col-2 > span textarea {
+  margin: 0 8px 8px;
+}
+/* line 70, scss/partials/_cart.scss */
 .cart-module .list ul .drawer hr {
   -webkit-flex: 0 100%;
   flex: 0 100%;
   margin: 0;
 }
-/* line 56, scss/partials/_cart.scss */
+/* line 78, scss/partials/_cart.scss */
+.cart-module .list input.btn, .cart-module .list-totals input.btn {
+  max-width: 7em;
+}
+/* line 82, scss/partials/_cart.scss */
 .cart-module .list-totals {
   text-align: right;
 }
-/* line 58, scss/partials/_cart.scss */
+/* line 84, scss/partials/_cart.scss */
 .cart-module .list-totals .order-total {
   font-size: 1.4em;
 }
-/* line 64, scss/partials/_cart.scss */
+/* line 90, scss/partials/_cart.scss */
 .cart-module .list-totals input {
   display: none;
 }
-/* line 68, scss/partials/_cart.scss */
+/* line 94, scss/partials/_cart.scss */
 .cart-module .list-totals .editing span {
   display: none;
 }
-/* line 71, scss/partials/_cart.scss */
+/* line 97, scss/partials/_cart.scss */
 .cart-module .list-totals .editing input {
   display: block;
-}
-/* line 77, scss/partials/_cart.scss */
-.cart-module .list input, .cart-module .list-totals input {
-  -webkit-transition-property: background-color;
-  transition-property: background-color;
-  -webkit-transition-duration: 0.1s;
-  transition-duration: 0.1s;
-  -webkit-transition-timing-function: ease-in-out;
-  transition-timing-function: ease-in-out;
-  color: #333333;
-  background-color: #f3f3f3;
-  border-color: #dbdbdb;
-  border: 1px solid #dbdbdb;
-  text-align: center;
-  max-width: 7em;
-  -moz-appearance: textfield;
-  -moz-border-radius: 16px;
-  -webkit-border-radius: 16px;
-  border-radius: 16px;
-}
-/* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.cart-module .list input:hover, .cart-module .list input:focus, .cart-module .list input:active, .cart-module .list input.active, .open > .cart-module .list input.dropdown-toggle, .cart-module .list-totals input:hover, .cart-module .list-totals input:focus, .cart-module .list-totals input:active, .cart-module .list-totals input.active, .open > .cart-module .list-totals input.dropdown-toggle {
-  color: #333333;
-  background-color: #d9d9d9;
-  border-color: #bdbdbd;
-}
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.cart-module .list input:active, .cart-module .list input.active, .open > .cart-module .list input.dropdown-toggle, .cart-module .list-totals input:active, .cart-module .list-totals input.active, .open > .cart-module .list-totals input.dropdown-toggle {
-  background-image: none;
-}
-/* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.cart-module .list input.disabled, .cart-module .list input.disabled:hover, .cart-module .list input.disabled:focus, .cart-module .list input.disabled:active, .cart-module .list input.disabled.active, .cart-module .list input[disabled], .cart-module .list input[disabled]:hover, .cart-module .list input[disabled]:focus, .cart-module .list input[disabled]:active, .cart-module .list input[disabled].active, fieldset[disabled] .cart-module .list input, fieldset[disabled] .cart-module .list input:hover, fieldset[disabled] .cart-module .list input:focus, fieldset[disabled] .cart-module .list input:active, fieldset[disabled] .cart-module .list input.active, .cart-module .list-totals input.disabled, .cart-module .list-totals input.disabled:hover, .cart-module .list-totals input.disabled:focus, .cart-module .list-totals input.disabled:active, .cart-module .list-totals input.disabled.active, .cart-module .list-totals input[disabled], .cart-module .list-totals input[disabled]:hover, .cart-module .list-totals input[disabled]:focus, .cart-module .list-totals input[disabled]:active, .cart-module .list-totals input[disabled].active, fieldset[disabled] .cart-module .list-totals input, fieldset[disabled] .cart-module .list-totals input:hover, fieldset[disabled] .cart-module .list-totals input:focus, fieldset[disabled] .cart-module .list-totals input:active, fieldset[disabled] .cart-module .list-totals input.active {
-  background-color: #f3f3f3;
-  border-color: #dbdbdb;
-}
-/* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.cart-module .list input .badge, .cart-module .list-totals input .badge {
-  color: #f3f3f3;
-  background-color: #333333;
-}
-/* line 89, scss/partials/_cart.scss */
-.cart-module .list input::-webkit-inner-spin-button, .cart-module .list-totals input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* line 93, scss/partials/_cart.scss */
-.cart-module .list input::-webkit-outer-spin-button, .cart-module .list-totals input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* line 97, scss/partials/_cart.scss */
-.cart-module .list input:hover, .cart-module .list-totals input:hover {
-  cursor: pointer;
 }
 /* line 102, scss/partials/_cart.scss */
 .cart-module .cart-actions {

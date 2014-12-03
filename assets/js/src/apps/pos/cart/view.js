@@ -217,7 +217,9 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             //'keypress input[type="text"]': 'saveOnEnter'
             'change input'      : 'save',
             'change select'     : 'save',
-            'change textarea'   : 'save'
+            'change textarea'   : 'save',
+            'click .action-add-meta': 'addMetaFields',
+            'click .action-remove-meta': 'removeMetaFields'
         },
 
         open: function( callback ) {
@@ -247,11 +249,11 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         },
 
         save: function(e) {
-            var el 	    = $(e.target),
-                name    = el.attr('name').split('.'),
-                key     = name[0],
-                value   = el.val(),
-                data    = {};
+            var el 	      = $(e.target),
+                name      = el.attr('name').split('.'),
+                attribute = name[0],
+                value     = el.val(),
+                data      = {};
 
             if( el.is('input') && el.attr('type') === 'checkbox' ) {
                 value = el.prop('checked');
@@ -263,24 +265,57 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }
 
             // special case product meta
-            if( name.length > 1 && key === 'meta' ) {
-                var meta = this.model.get('meta');
-                if( ! _.isArray( meta ) ) {
-                    meta = [];
-                    meta[ name[1] ] = {};
-                }
-                meta[ name[1] ][ name[2] ] = value;
-                value = meta;
-                console.log(value);
+            if( name.length > 1 && attribute === 'meta' ) {
+                var key = el.parent('span').data('key');
+                var meta = ( this.model.get('meta') || [] );
+
+                // select row (or create new one)
+                var row = _.where( meta, { 'key': key } );
+                row = row.length > 0 ? row[0] : { 'key': key };
+                row[ name[1] ] = value;
+
+                // add the change row and make unique on key
+                meta.push(row);
+                value = _.uniq( meta, 'key' );
             }
 
-            data[ key ] = value;
+            data[ attribute ] = value;
 
             this.model.save(data);
         },
 
         onBlur: function(e) {
             console.log(e);
+        },
+
+        addMetaFields: function(e){
+            e.preventDefault();
+
+            var row = $(e.currentTarget).prev('span').data('key');
+            var i = row ? row + 1 : 1 ;
+
+            var label = '<input type="text" name="meta.label">';
+            var value = '<textarea name="meta.value"></textarea>';
+            var btn = '<a href="#" class="action-remove-meta"><i class="icon icon-times"></i></a>';
+
+            $('<span data-key="'+ i +'" />')
+                .append( label + value + btn )
+                .insertBefore( $(e.currentTarget) );
+        },
+
+        removeMetaFields: function(e){
+            e.preventDefault();
+
+            var row = $(e.currentTarget).parent('span');
+            var meta = ( this.model.get('meta') || [] );
+            var index = _.findIndex( meta, { 'key': row.data('key') } );
+            if( index >= 0 ){
+                meta.splice( index, 1 );
+                this.model.save({ 'meta': meta });
+            }
+            
+            row.remove();
+
         }
 
     });
