@@ -91,7 +91,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * TODO: custom receipts
 * TODO: add Cash and Card to order drop down
 * TODO: custom barcode field
-* TODO: fix customer serach for network blogs
+* TODO: fix customer search for network blogs
 * TODO: coupons?
 * TODO: fix product attribute display
 * TODO: https support
@@ -101,14 +101,15 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * TODO: check stock reduction
 * TODO: percentage bug
 * TODO: support for Simplify Commerce by MasterCard
-* TODO: look at POS Only issue with caetgories
+* TODO: look at POS Only issue with categories
 * TODO: POS orders in trash
 * TODO: pos only where called twice?
 * TODO: change change bug 1,000+
 * TODO: make image src protocol-relative
 * TODO: strip script tags from checkout template
 * TODO: remove 0.00 discount from receipt
-* TODO: two windows open, remove database, both try to update
+* TODO: two tabs open, remove database, both try to update
+* TODO: harden against CORS w/ relative urls
 * New: set custom permalink for POS front-end, eg: http://yourstore.com/custom-slug/
 * Fix: conflict with W3 Total Cache js minify
 * Fix: removed all cases of php echo shorthand for short_open_tag=off

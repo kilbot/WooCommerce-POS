@@ -5,12 +5,21 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
         initialize: function (options) {
 
             // init two column POS layout
-            POS.mainRegion.twoColumns( this );
+            this.columnsLayout = POS.mainRegion.twoColumns( this );
 
-            // get product collection
+            this.listenTo( this.columnsLayout, 'show', function() {
+                this.initProducts();
+            });
+
+            // show
+            this.show( this.columnsLayout, { region: POS.mainRegion } );
+
+        },
+
+        initProducts: function() {
+
             var products = POS.Entities.channel.request('products');
 
-            // init products page layout
             this.layout = new Products.Layout();
 
             // wait for products to load
@@ -20,21 +29,20 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
                 this.showProducts( products );
 
                 // add title to tab
-                this.region.leftRegion.trigger('update:title', 'Products');
+                this.columnsLayout.leftRegion.trigger('update:title', 'Products');
             });
 
             // make sure idb is ready
             products.once('idb:ready', function() {
 
-                this.show( this.layout, {
-                    region: POS.mainRegion.leftRegion,
+                POS.Components.Loading.channel.command( 'show:loading', this.layout, {
+                    region: this.columnsLayout.leftRegion,
                     loading: {
                         entities: products.fetch()
                     }
                 });
 
             }, this);
-
         },
 
         showFilter: function() {

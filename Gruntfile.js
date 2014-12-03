@@ -246,6 +246,7 @@ module.exports = function(grunt) {
                         'assets/js/src/apps/pos/products/view.js',
                         'assets/js/src/apps/pos/cart/controller.js',
                         'assets/js/src/apps/pos/cart/view.js',
+
                         'assets/js/src/apps/pos/checkout/controller.js',
                         'assets/js/src/apps/pos/checkout/view.js',
                         'assets/js/src/apps/pos/receipt/controller.js',

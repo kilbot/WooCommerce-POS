@@ -3,7 +3,9 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
     Cart.Controller = POS.Controller.Base.extend({
 
         initialize: function( options ) {
+            this.id = options.id;
 
+            // load the cart
             this.layout = new Cart.Layout();
 
             this.listenTo( this.layout, 'show', function() {
@@ -11,69 +13,94 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             });
 
             this.show( this.layout, {
-                region: POS.mainRegion.rightRegion,
+                region: options.region,
                 loading: {
-                    entities: this.initCart( options )
+                    entities: this.getOrders()
                 }
             });
 
             // listen for cart:add commands
             POS.POSApp.channel.comply( 'cart:add', this.addToCart, this);
 
+            // listen for changes to tab label
+            this.on( 'update:title', function(title) {
+                options.region.trigger( 'update:title', title )
+            });
+
         },
 
-        initCart: function( options ) {
-            var promise = $.Deferred(),
-                orders = POS.Entities.channel.request('orders'),
-                order;
+        /**
+         *
+         */
+        getOrders: function() {
+            var promise = $.Deferred();
 
-            orders.once('idb:ready', function() {
-                orders.fetchLocal().done( function(){
-                    if( options.id ) {
-                        order = orders.findWhere({ local_id: options.id });
-                    } else if( orders.length > 0 ) {
-                        order = orders.at(0);
-                    } else {
-                        order = orders.add();
-                    }
-                    this.updateTabLabel( order );
-                    this.getCartItems( order ).done( function( cart ) {
+            // init orders collection
+            this.orders = POS.Entities.channel.request('orders');
 
-                        // attach local orders,
-                        // this order and cart items
-                        this.orders = orders;
-                        this.order = order;
-                        this.cart = cart;
-                        promise.resolve();
-
-                    }.bind(this));
-                }.bind(this));
+            // fetch collection of local orders
+            this.orders.once('idb:ready', function() {
+                this.orders.fetchLocalOrders();
             }, this);
 
-            return promise;
-        },
+            // fetch order
+            this.orders.once('orders:ready', function(){
+                this.getOrder( this.id );
+            }, this);
 
-        updateTabLabel: function( order ) {
-            order.on( 'change:total', function() {
-                var totals = accounting.formatMoney(order.get('total'));
-
-                this.region.rightRegion.trigger('update:title', 'Cart - ' + totals);
-            }.bind(this));
-        },
-
-        getCartItems: function( order ) {
-            var promise = $.Deferred(),
-                cart = POS.Entities.channel.request('cart', { order: order });
-
-            cart.once('idb:ready', function() {
-                cart.fetchOrder( order.id ).done( function(){
-                    promise.resolve( cart );
-                });
+            // finished setting up cart
+            this.on('cart:ready', function(){
+                promise.resolve();
             });
 
             return promise;
         },
 
+        getOrder: function( id ) {
+
+            if( id ) {
+                // get order by id
+                this.order = this.orders.findWhere({ local_id: this.id });
+            } else if( this.orders.length > 0 ) {
+                // get first order
+                this.order = this.orders.at(0);
+            } else {
+                // new order
+                this.order = this.orders.add({ local_id: '' });
+            }
+
+            this.getCart( this.order )
+        },
+
+        /**
+         *
+         */
+        getCart: function( order ) {
+            this.cart = POS.Entities.channel.request('cart', { order: order });
+
+            this.cart.once('idb:ready', function() {
+                this.cart.fetchOrder();
+            }, this);
+
+            this.listenTo( this.cart, 'cart:ready', function() {
+                this.trigger('cart:ready');
+                this.updateTabLabel( order );
+            });
+        },
+
+        /**
+         *
+         */
+        updateTabLabel: function( order ) {
+            this.listenTo( order, 'change:total', function() {
+                var totals = accounting.formatMoney(order.get('total'));
+                this.trigger('update:title', 'Cart - ' + totals);
+            });
+        },
+
+        /**
+         *
+         */
         addToCart: function( item ) {
             var attributes = item instanceof Backbone.Model ? item.attributes : item;
 
@@ -94,6 +121,9 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             row.trigger( 'focus:row' );
         },
 
+        /**
+         *
+         */
         showCart: function() {
 
             // show cart
@@ -111,6 +141,9 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }
         },
 
+        /**
+         *
+         */
         showTotals: function() {
 
             var view = new Cart.Totals({
@@ -126,14 +159,16 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
         },
 
-        // TODO: abstract as a collection of button models?
+        /**
+         * TODO: abstract as a collection of button models?
+         */
         showActions: function() {
 
             var view = new Cart.Actions();
 
             // void cart
             this.listenTo( view, 'void:clicked', function() {
-                //_.invoke( this.items.toArray(), 'destroy' );
+                _.invoke( this.cart.toArray(), 'destroy' );
             });
 
             // add note
@@ -166,6 +201,9 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             this.layout.actionsRegion.show( view );
         },
 
+        /**
+         *
+         */
         showNotes: function() {
 
             var view = new Cart.Notes({

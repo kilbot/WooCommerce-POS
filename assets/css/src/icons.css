@@ -112,6 +112,12 @@
     -o-transform: scale(1, -1);
     transform: scale(1, -1);
 }
+.icon-angle-down:before {
+    content: "\f107";
+}
+.icon-angle-up:before {
+    content: "\f106";
+}
 .icon-barcode:before, .icon-products:before {
     content: "\e603";
 }

@@ -2,6 +2,10 @@
 // Styling the product display
 // --------------------------------------------------
 
+#left .products-module .list-actions > div {
+    background-color: nth( $primaryPalette, 6 );
+}
+
 .products-module {
   .list {
     .img {

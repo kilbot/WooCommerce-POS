@@ -13,7 +13,7 @@
   height: 100%;
   top: 0;
   z-index: 9999;
-  background: $navbar-inverse-bg;
+  background: $menu-bg;
   @include box-shadow(inset -10px 0 6px -9px rgba(0, 0, 0, .7));
   overflow: auto;
   -webkit-overflow-scrolling: touch; /* enables momentum scrolling in iOS overflow elements */
@@ -25,29 +25,29 @@
     li a {
       line-height: 38px;
       display: block;
-      color: $navbar-inverse-color;
+      color: $menu-text-color;
       padding: 0 $spacing/2;
-      // border-bottom: 1px solid rgba(0, 0, 0, .1);
+//      border-bottom: 1px solid rgba(0, 0, 0, .1);
       border-top: 1px solid rgba(255, 255, 255, .1);
       text-decoration: none;
 
       &:hover {
         background-color: darken($link-color, 5%);
-        color: $navbar-inverse-color;
+        color: $menu-text-color;
       }
     }
     li i {
       margin-right: $spacing/2;
-      font-size: 1.2em;
+//      font-size: 1.2em;
     }
     li:first-child a {
       border-top: 0;
     }
     li.support a {
-      color: $brand-danger;
+      color: nth( $accentPalette, 8 );
       &:hover {
-        color: $navbar-inverse-color;
-        background-color: $brand-danger;
+        color: $menu-text-color;
+        background-color: nth( $accentPalette, 8 );
       }
     }
   }

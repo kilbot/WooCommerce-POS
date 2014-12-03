@@ -36,7 +36,7 @@
 		</dl>
 		{{/with}}
 	</div>
-	<div class="more"><a href="#" class="btn btn-default btn-circle-sm action-more"><i class="icon icon-more-horiz"></i></a></div>
+	<div class="more"><a href="#" class="btn btn-default btn-circle-sm action-more"><i class="icon icon-angle-down"></i></a></div>
 	<div class="price"><input type="text" value="{{number item_price}}" size="10" data-id="item_price" data-original="{{regular_price}}" data-title="<?php _e( 'Item Price', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="item_price" class="autogrow"></div>
 	<div class="total">
 		{{#compare total '!=' subtotal}}
@@ -50,24 +50,30 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item-drawer">
-	<div>
-		<input type="checkbox" name="taxable" id="taxable" {{#if taxable}}checked{{/if}} /> <label for="taxable"><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?></label>
-<hr>
-		<label for="tax_class"><?php /* translators: woocommerce */ _e( 'Tax Class', 'woocommerce' ); ?></label>
+	<div class="col-1"><label for="regular_price"><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?></label></div>
+	<div class="col-2">
+		<input name="regular_price" id="regular_price" class="autogrow" type="text" value="{{number regular_price}}" data-numpad="regular_price" />
+	</div>
+	<hr>
+	<div class="col-1"><label for="taxable"><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?></label></div>
+	<div class="col-2">
+		<input type="checkbox" name="taxable" id="taxable" {{#if taxable}}checked{{/if}} />
+	</div>
+	<div class="col-1"><label for="tax_class"><?php /* translators: woocommerce */ _e( 'Tax Class', 'woocommerce' ); ?></label></div>
+	<div class="col-2">
 		<select name="tax_class" id="tax_class">
 			{{#each tax_labels}}
 			<option value="{{@key}}">{{this}}</option>
 			{{/each}}
 		</select>
-<hr>
-		<?php /* translators: woocommerce */ _e( 'Add meta', 'woocommerce' ); ?>
+	</div>
+	<hr>
+	<div class="col-1"><?php /* translators: woocommerce */ _e( 'Add&nbsp;meta', 'woocommerce' ); ?></div>
+	<div class="col-2">
 		{{#each meta}}
 		<input name="meta.{{@index}}.label" value="{{label}}" class="autogrow" type="text"/>: <textarea name="meta.{{@index}}.value" class="autogrow">{{value}}</textarea><a href="#"><i class="icon icon-times-circle"></i></a>
 		{{/each}}
 		<br><a href="#"><i class="icon icon-plus"></i></a>
-<hr>
-		<?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>
-		<input name="regular_price" class="autogrow" type="text" value="{{number regular_price}}" data-numpad="regular_price" />
 	</div>
 </script>
 

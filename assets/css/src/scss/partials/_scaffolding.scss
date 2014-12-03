@@ -19,7 +19,8 @@ body {
 
 #header {
   @include display-flex;
-  h1 {
+  @include box-shadow(0 2px 5px rgba(0, 0, 0, 0.26));
+  > div, > h1 {
     @include flex(1);
   }
 }
@@ -30,19 +31,18 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: $spacing/3;
+  padding: $spacing/2;
   @include display-flex;
 }
 
 #main.two-column {
   > div {
-    top: 72px;
-    padding: $spacing/3 0 0 $spacing/3;
+    top: 70px;
+    padding: $spacing/2 0 0 $spacing/2;
     #left, #right {
       @include display-flex;
-      @include flex-direction(column);
       @include flex(1);
-      padding: 0 $spacing/3 $spacing/3 0;
+      padding: 0 $spacing/2 $spacing/2 0;
     }
   }
   &.left-active {
@@ -75,13 +75,15 @@ body {
   width: 100%;
   @include display-flex;
   @include flex-direction(column);
-  background: $content-background;
-  border: 1px solid $border-color;
-  @include box-shadow(0 1px 1px rgba(black, 0.04));
+  > div {
+    background: white; /* default module background */
+    @include flex-shrink(0); /* default don't shrink */
+  }
   .list-actions {
     > div {
+      background: nth( $primaryPalette, 8 );
       padding: $spacing/3;
-      border-bottom: 1px solid $dark-border-color;
+//      border-bottom: 1px solid $list-border-color;
       > .btn {
         float: right;
         margin-left: $spacing/3;
@@ -98,11 +100,20 @@ body {
             @include border-radius(0 $border-radius-small $border-radius-small 0);
           }
         }
+        .input-group-addon {
+          color: $secondary-text-color;
+          background: $input-border-color;
+        }
         .input-group-btn {
           padding: 0;
           > a {
+            color: nth( $primaryPalette, 6 );
+            background: $input-border-color;
             display: inline-block;
             padding: 0.5em 0.75em;
+            &:hover {
+              color: nth( $primaryPalette, 10 );
+            }
           }
         }
         .form-control {
@@ -134,7 +145,8 @@ body {
   }
   .list-header {
     @include display-flex;
-    background-color: #ccc;
+    background-color: nth( $primaryPalette, 6 );
+    color: $inverse-text-color;
 //    padding-right: 16px;
     > div {
       padding: $spacing/3;
@@ -142,25 +154,29 @@ body {
     }
   }
   .list {
-    @include display-flex;
-    @include flex(1);
+    @include flex-shrink(1);
     overflow: auto;
+    @include display-flex;
       ul {
         width: 100%;
         margin: 0;
         padding: 0;
         li {
-          border-bottom: 1px solid $border-color;
-          @include flexbox(( display: flex, flex-wrap: wrap, align-items: center ));
+          border-bottom: 1px solid $list-border-color;
+          @include display-flex;
+          @include align-items(center);
           > div {
             padding: $spacing/3;
             @include flex(1);
+          }
+          &:last-of-type {
+            border-bottom: none;
           }
         }
       }
     ul.striped {
       li:nth-of-type(even) {
-        background-color: #f9f9f9;
+        background: $alternate-bg;
       }
     }
   }
@@ -171,7 +187,7 @@ body {
       margin: 0;
       padding: 0;
       li {
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid $list-border-color;
         @include display-flex;
         @include align-items(center);
         > div {
@@ -182,16 +198,16 @@ body {
           }
         }
         &:first-of-type {
-          border-top: 1px solid $dark-border-color;
+          border-top: 1px solid darken($list-border-color, 5%);
         }
         &:last-of-type {
-          border-bottom: 1px solid $dark-border-color;
+          border-bottom: 1px solid darken($list-border-color, 5%);
         }
       }
     }
   }
   .list-footer {
-    background-color: #ccc;
+    background: nth( $primaryPalette, 2 );
     padding: $spacing/3;
   }
 }

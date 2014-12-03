@@ -1,6 +1,6 @@
 _.extend( Marionette.Region.prototype, {
 
-    twoColumns: function( controller ) {
+    twoColumns: function() {
 
         // log
         POS.debugLog('log', 'Init two column layout');
@@ -17,23 +17,20 @@ _.extend( Marionette.Region.prototype, {
             }
         });
 
-        // attach regions to mainRegion
+        // attach layout to controller
         var layout = new Layout();
-        this.leftRegion = layout.leftRegion;
-        this.rightRegion = layout.rightRegion;
 
         // create tabs on show
         this.listenTo( layout, 'show', function() {
             this.$el.addClass('two-column');
-            this.addTabs();
+            this.addTabs( layout );
         });
 
-        // show
-        controller.show( layout, { region: this } );
+        return layout;
 
     },
 
-    addTabs: function() {
+    addTabs: function( layout ) {
 
         // get tabs component
         var view = POS.Components.Tabs.channel.request( 'get:tabs', [
@@ -47,11 +44,11 @@ _.extend( Marionette.Region.prototype, {
                 .addClass( tab.id + '-active' );
         });
 
-        this.leftRegion.on( 'update:title', function( label ){
+        layout.leftRegion.on( 'update:title', function( label ){
             view.collection.get('left').set({ label: label });
         });
 
-        this.rightRegion.on( 'update:title', function( label ){
+        layout.rightRegion.on( 'update:title', function( label ){
             view.collection.get('right').set({ label: label });
         });
 

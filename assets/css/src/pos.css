@@ -1,3 +1,11 @@
+/**
+*
+* Material design color palettes.
+* @see http://www.google.com/design/spec/style/color.html
+*
+**/
+/* ==========  Color Palettes  ========== */
+/* ==========  Used Palettes  ========== */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
@@ -621,7 +629,7 @@ th {
   color: white;
   text-decoration: none;
   outline: 0;
-  background-color: #00a1cb;
+  background-color: #607d8b;
 }
 
 /* line 101, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
@@ -873,47 +881,47 @@ body {
   font-family: "Open Sans", Sans-Serif;
   font-size: 14px;
   line-height: 1.428571429;
-  color: #333333;
-  background-color: #f1f1f1;
+  color: #212121;
+  background-color: #e8e5df;
 }
 
 /* line 20, scss/partials/_scaffolding.scss */
 #header {
   display: -webkit-flex;
   display: flex;
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
 }
-/* line 22, scss/partials/_scaffolding.scss */
-#header h1 {
+/* line 23, scss/partials/_scaffolding.scss */
+#header > div, #header > h1 {
   -webkit-flex: 1;
   flex: 1;
 }
 
-/* line 27, scss/partials/_scaffolding.scss */
+/* line 28, scss/partials/_scaffolding.scss */
 #main:not(.two-column), #main.two-column > div {
   position: absolute;
   top: 38px;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 8px;
+  padding: 12px;
   display: -webkit-flex;
   display: flex;
 }
 
-/* line 38, scss/partials/_scaffolding.scss */
+/* line 39, scss/partials/_scaffolding.scss */
 #main.two-column > div {
-  top: 72px;
-  padding: 8px 0 0 8px;
+  top: 70px;
+  padding: 12px 0 0 12px;
 }
-/* line 41, scss/partials/_scaffolding.scss */
+/* line 42, scss/partials/_scaffolding.scss */
 #main.two-column > div #left, #main.two-column > div #right {
   display: -webkit-flex;
   display: flex;
-  -webkit-flex-direction: column;
-  flex-direction: column;
   -webkit-flex: 1;
   flex: 1;
-  padding: 0 8px 8px 0;
+  padding: 0 12px 12px 0;
 }
 /* line 49, scss/partials/_scaffolding.scss */
 #main.two-column.left-active #right {
@@ -947,168 +955,194 @@ body {
   display: flex;
   -webkit-flex-direction: column;
   flex-direction: column;
+}
+/* line 78, scss/partials/_scaffolding.scss */
+.module > div {
   background: white;
-  border: 1px solid #eeeeee;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  /* default module background */
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  /* default don't shrink */
 }
-/* line 82, scss/partials/_scaffolding.scss */
+/* line 83, scss/partials/_scaffolding.scss */
 .module .list-actions > div {
+  background: #455a64;
   padding: 8px;
-  border-bottom: 1px solid #dfdfdf;
 }
-/* line 85, scss/partials/_scaffolding.scss */
+/* line 87, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .btn {
   float: right;
   margin-left: 8px;
 }
-/* line 89, scss/partials/_scaffolding.scss */
+/* line 91, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group {
   display: -webkit-flex;
   display: flex;
 }
-/* line 91, scss/partials/_scaffolding.scss */
+/* line 93, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control, .module .list-actions > div > .input-group .input-group-addon, .module .list-actions > div > .input-group .input-group-btn {
-  border: 1px solid #dfdfdf;
+  border: 1px solid #dbdbdb;
   padding: 0.5em 0.75em;
 }
-/* line 94, scss/partials/_scaffolding.scss */
+/* line 96, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control:first-child, .module .list-actions > div > .input-group .input-group-addon:first-child, .module .list-actions > div > .input-group .input-group-btn:first-child {
   -moz-border-radius: 3px 0 0 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px 0 0 3px;
 }
-/* line 97, scss/partials/_scaffolding.scss */
+/* line 99, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control:last-child, .module .list-actions > div > .input-group .input-group-addon:last-child, .module .list-actions > div > .input-group .input-group-btn:last-child {
   -moz-border-radius: 0 3px 3px 0;
   -webkit-border-radius: 0;
   border-radius: 0 3px 3px 0;
 }
-/* line 101, scss/partials/_scaffolding.scss */
+/* line 103, scss/partials/_scaffolding.scss */
+.module .list-actions > div > .input-group .input-group-addon {
+  color: #757575;
+  background: #dbdbdb;
+}
+/* line 107, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .input-group-btn {
   padding: 0;
 }
-/* line 103, scss/partials/_scaffolding.scss */
+/* line 109, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .input-group-btn > a {
+  color: #607d8b;
+  background: #dbdbdb;
   display: inline-block;
   padding: 0.5em 0.75em;
 }
-/* line 108, scss/partials/_scaffolding.scss */
+/* line 114, scss/partials/_scaffolding.scss */
+.module .list-actions > div > .input-group .input-group-btn > a:hover {
+  color: #263238;
+}
+/* line 119, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control {
   outline: 0;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 111, scss/partials/_scaffolding.scss */
+/* line 122, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control:not(:first-child) {
   border-left: 0;
 }
-/* line 114, scss/partials/_scaffolding.scss */
+/* line 125, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control:not(:last-child) {
   border-right: 0;
 }
-/* line 118, scss/partials/_scaffolding.scss */
+/* line 129, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .clear {
   display: none;
-  color: #333333;
+  color: #212121;
   padding: 0.5em 0.75em;
   line-height: 20px;
-  border-top: 1px solid #dfdfdf;
-  border-bottom: 1px solid #dfdfdf;
+  border-top: 1px solid #dbdbdb;
+  border-bottom: 1px solid #dbdbdb;
 }
-/* line 125, scss/partials/_scaffolding.scss */
+/* line 136, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .clear i {
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
-/* line 128, scss/partials/_scaffolding.scss */
+/* line 139, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .clear:hover i {
   opacity: 1;
   filter: alpha(opacity=100);
 }
-/* line 135, scss/partials/_scaffolding.scss */
+/* line 146, scss/partials/_scaffolding.scss */
 .module .list-header {
   display: -webkit-flex;
   display: flex;
-  background-color: #ccc;
+  background-color: #607d8b;
+  color: rgba(255, 255, 255, 0.9);
 }
-/* line 139, scss/partials/_scaffolding.scss */
+/* line 151, scss/partials/_scaffolding.scss */
 .module .list-header > div {
   padding: 8px;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 144, scss/partials/_scaffolding.scss */
+/* line 156, scss/partials/_scaffolding.scss */
 .module .list {
+  -webkit-flex-shrink: 1;
+  flex-shrink: 1;
+  overflow: auto;
   display: -webkit-flex;
   display: flex;
-  -webkit-flex: 1;
-  flex: 1;
-  overflow: auto;
 }
-/* line 148, scss/partials/_scaffolding.scss */
+/* line 160, scss/partials/_scaffolding.scss */
 .module .list ul {
   width: 100%;
   margin: 0;
   padding: 0;
 }
-/* line 152, scss/partials/_scaffolding.scss */
+/* line 164, scss/partials/_scaffolding.scss */
 .module .list ul li {
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #e8e8e8;
   display: -webkit-flex;
-  -webkit-flex-wrap: wrap;
-  -webkit-align-items: center;
   display: flex;
-  flex-wrap: wrap;
+  -webkit-align-items: center;
   align-items: center;
 }
-/* line 155, scss/partials/_scaffolding.scss */
+/* line 168, scss/partials/_scaffolding.scss */
 .module .list ul li > div {
   padding: 8px;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 162, scss/partials/_scaffolding.scss */
-.module .list ul.striped li:nth-of-type(even) {
-  background-color: #f9f9f9;
+/* line 172, scss/partials/_scaffolding.scss */
+.module .list ul li:last-of-type {
+  border-bottom: none;
 }
-/* line 168, scss/partials/_scaffolding.scss */
+/* line 178, scss/partials/_scaffolding.scss */
+.module .list ul.striped li:nth-of-type(even) {
+  background: #f3f3f3;
+}
+/* line 184, scss/partials/_scaffolding.scss */
 .module .list-totals ul {
   width: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
 }
-/* line 173, scss/partials/_scaffolding.scss */
+/* line 189, scss/partials/_scaffolding.scss */
 .module .list-totals ul li {
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #e8e8e8;
   display: -webkit-flex;
   display: flex;
   -webkit-align-items: center;
   align-items: center;
 }
-/* line 177, scss/partials/_scaffolding.scss */
+/* line 193, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div {
   padding: 8px;
 }
-/* line 179, scss/partials/_scaffolding.scss */
+/* line 195, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div:first-of-type {
   font-weight: bold;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 184, scss/partials/_scaffolding.scss */
+/* line 200, scss/partials/_scaffolding.scss */
 .module .list-totals ul li:first-of-type {
-  border-top: 1px solid #dfdfdf;
+  border-top: 1px solid #dbdbdb;
 }
-/* line 187, scss/partials/_scaffolding.scss */
+/* line 203, scss/partials/_scaffolding.scss */
 .module .list-totals ul li:last-of-type {
-  border-bottom: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dbdbdb;
 }
-/* line 193, scss/partials/_scaffolding.scss */
+/* line 209, scss/partials/_scaffolding.scss */
 .module .list-footer {
-  background-color: #ccc;
+  background: #cfd8dc;
   padding: 8px;
+}
+
+/* line 1, scss/partials/_loading.scss */
+.loading {
+  background: white url(../loader.gif) no-repeat center center;
+  height: 40px;
+  width: 100%;
+  padding: 40px 0;
 }
 
 /* line 2, scss/partials/_common.scss */
@@ -1128,12 +1162,12 @@ body {
 
 /* line 5, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
 .bg-primary {
-  background-color: #00a1cb;
+  background-color: #607d8b;
 }
 
 /* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
 a.bg-primary:hover {
-  background-color: #007998;
+  background-color: #4b626d;
 }
 
 /* line 5, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
@@ -1176,24 +1210,7 @@ a.bg-danger:hover {
   background-color: #e4b9b9;
 }
 
-/* line 1, scss/partials/_type.scss */
-#page, #menu {
-  font-size: 0.8em;
-}
-
-@media (min-width: 320px) {
-  /* line 6, scss/partials/_type.scss */
-  #page, #menu {
-    font-size: 0.9em;
-  }
-}
-@media (min-width: 480px) {
-  /* line 12, scss/partials/_type.scss */
-  #page, #menu {
-    font-size: 1em;
-  }
-}
-/* line 20, scss/partials/_type.scss */
+/* line 4, scss/partials/_type.scss */
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: inherit;
@@ -1201,80 +1218,88 @@ h1, h2, h3, h4, h5, h6,
   line-height: 1.1;
 }
 
-/* line 30, scss/partials/_type.scss */
+/* line 14, scss/partials/_type.scss */
 a {
-  color: #00a1cb;
+  color: #607d8b;
   text-decoration: none;
 }
-/* line 34, scss/partials/_type.scss */
+/* line 18, scss/partials/_type.scss */
 a:hover, a:focus {
-  color: #00647f;
+  color: #41545e;
   text-decoration: none;
 }
 
-/* line 49, scss/partials/_type.scss */
+/* line 33, scss/partials/_type.scss */
 small,
 .small {
   font-size: 85%;
 }
 
-/* line 54, scss/partials/_type.scss */
+/* line 38, scss/partials/_type.scss */
 mark,
 .mark {
   background-color: #fcf8e3;
   padding: .2em;
 }
 
-/* line 61, scss/partials/_type.scss */
+/* line 45, scss/partials/_type.scss */
 .text-left {
   text-align: left;
 }
 
-/* line 62, scss/partials/_type.scss */
+/* line 46, scss/partials/_type.scss */
 .text-right {
   text-align: right;
 }
 
-/* line 63, scss/partials/_type.scss */
+/* line 47, scss/partials/_type.scss */
 .text-center {
   text-align: center;
 }
 
-/* line 64, scss/partials/_type.scss */
+/* line 48, scss/partials/_type.scss */
 .text-justify {
   text-align: justify;
 }
 
-/* line 65, scss/partials/_type.scss */
+/* line 49, scss/partials/_type.scss */
 .text-nowrap {
   white-space: nowrap;
 }
 
-/* line 68, scss/partials/_type.scss */
+/* line 52, scss/partials/_type.scss */
 .text-lowercase {
   text-transform: lowercase;
 }
 
-/* line 69, scss/partials/_type.scss */
+/* line 53, scss/partials/_type.scss */
 .text-uppercase {
   text-transform: uppercase;
 }
 
-/* line 70, scss/partials/_type.scss */
+/* line 54, scss/partials/_type.scss */
 .text-capitalize {
   text-transform: capitalize;
 }
 
-/* line 73, scss/partials/_type.scss */
+/* line 57, scss/partials/_type.scss */
 .text-muted {
   color: #777777;
+}
+
+/* line 63, scss/partials/_type.scss */
+hr {
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 /* Header =================================================== */
 /* line 2, scss/partials/_header.scss */
 header {
-  color: #eeeeee;
-  background-color: #222222;
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #263238;
 }
 /* line 5, scss/partials/_header.scss */
 header h1 {
@@ -1285,75 +1310,78 @@ header h1 {
   padding: 0;
 }
 /* line 12, scss/partials/_header.scss */
+header > div:last-of-type {
+  text-align: right;
+}
+/* line 15, scss/partials/_header.scss */
 header a {
-  color: #eeeeee;
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   font-size: 14px;
   line-height: 38px;
   outline: 0;
 }
-/* line 18, scss/partials/_header.scss */
-header a:hover {
-  color: #008db2;
-}
 /* line 21, scss/partials/_header.scss */
-header a.btn-header {
-  color: #eeeeee;
-  background-color: #222222;
-  padding: 0 12px;
-  height: auto;
-  display: block;
+header a:hover {
+  color: #566f7c;
 }
-/* line 27, scss/partials/_header.scss */
+/* line 24, scss/partials/_header.scss */
+header a.btn-header {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #263238;
+  padding: 0 12px;
+  display: inline-block;
+}
+/* line 29, scss/partials/_header.scss */
 header a.btn-header:hover {
-  background-color: #008db2;
+  background-color: #566f7c;
   text-decoration: none;
 }
-/* line 31, scss/partials/_header.scss */
+/* line 33, scss/partials/_header.scss */
 header a.btn-header img {
   width: 20px;
   height: 20px;
-  vertical-align: middle;
+  vertical-align: bottom;
 }
-/* line 36, scss/partials/_header.scss */
+/* line 38, scss/partials/_header.scss */
 header a.btn-header span {
   display: none;
 }
 @media (min-width: 769px) {
-  /* line 40, scss/partials/_header.scss */
+  /* line 42, scss/partials/_header.scss */
   header a.btn-header span {
     display: inline-block;
   }
 }
-/* line 47, scss/partials/_header.scss */
+/* line 49, scss/partials/_header.scss */
 header #user-btn img {
   margin: 9px 0;
 }
-/* line 50, scss/partials/_header.scss */
+/* line 52, scss/partials/_header.scss */
 header #user-btn span {
   margin-left: 2px;
 }
 
-/* line 56, scss/partials/_header.scss */
+/* line 58, scss/partials/_header.scss */
 header .dropdown-menu {
   margin: 0;
   padding: 0;
-  background-color: #222222;
+  background-color: #263238;
   border: none;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   border-radius: 0;
 }
-/* line 62, scss/partials/_header.scss */
+/* line 64, scss/partials/_header.scss */
 header .dropdown-menu a {
-  color: #eeeeee;
+  color: rgba(255, 255, 255, 0.9);
   padding: 0 12px;
   line-height: 38px;
 }
-/* line 67, scss/partials/_header.scss */
+/* line 69, scss/partials/_header.scss */
 header .dropdown-menu a:hover {
-  background-color: #008db2;
-  color: #eeeeee;
+  background-color: #566f7c;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* Menu =================================================== */
@@ -1366,7 +1394,7 @@ header .dropdown-menu a:hover {
   height: 100%;
   top: 0;
   z-index: 9999;
-  background: #222222;
+  background: #263238;
   -webkit-box-shadow: inset -10px 0 6px -9px rgba(0, 0, 0, 0.7);
   box-shadow: inset -10px 0 6px -9px rgba(0, 0, 0, 0.7);
   overflow: auto;
@@ -1383,20 +1411,19 @@ header .dropdown-menu a:hover {
 #menu ul li a {
   line-height: 38px;
   display: block;
-  color: #eeeeee;
+  color: rgba(255, 255, 255, 0.9);
   padding: 0 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   text-decoration: none;
 }
 /* line 34, scss/partials/_menu.scss */
 #menu ul li a:hover {
-  background-color: #008db2;
-  color: #eeeeee;
+  background-color: #566f7c;
+  color: rgba(255, 255, 255, 0.9);
 }
 /* line 39, scss/partials/_menu.scss */
 #menu ul li i {
   margin-right: 12px;
-  font-size: 1.2em;
 }
 /* line 43, scss/partials/_menu.scss */
 #menu ul li:first-child a {
@@ -1404,12 +1431,12 @@ header .dropdown-menu a:hover {
 }
 /* line 46, scss/partials/_menu.scss */
 #menu ul li.support a {
-  color: #e54028;
+  color: #e64a19;
 }
 /* line 48, scss/partials/_menu.scss */
 #menu ul li.support a:hover {
-  color: #eeeeee;
-  background-color: #e54028;
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #e64a19;
 }
 
 /* Movement =================================================== */
@@ -1456,7 +1483,7 @@ header .dropdown-menu a:hover {
   cursor: pointer;
   background-image: none;
   background-color: #f9f9f9;
-  border: 1px solid #dfdfdf;
+  border: 1px solid #dbdbdb;
   white-space: nowrap;
   padding: 6px 12px;
   font-size: 14px;
@@ -1498,14 +1525,14 @@ header .dropdown-menu a:hover {
 /* line 56, scss/partials/_buttons.scss */
 .btn-default {
   color: #333333;
-  background-color: #f9f9f9;
-  border-color: #cccccc;
+  background-color: #f3f3f3;
+  border-color: #dbdbdb;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .btn-default.dropdown-toggle {
   color: #333333;
-  background-color: #e0e0e0;
-  border-color: #adadad;
+  background-color: #d9d9d9;
+  border-color: #bdbdbd;
 }
 /* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-default:active, .btn-default.active, .open > .btn-default.dropdown-toggle {
@@ -1513,26 +1540,26 @@ header .dropdown-menu a:hover {
 }
 /* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-default.disabled, .btn-default.disabled:hover, .btn-default.disabled:focus, .btn-default.disabled:active, .btn-default.disabled.active, .btn-default[disabled], .btn-default[disabled]:hover, .btn-default[disabled]:focus, .btn-default[disabled]:active, .btn-default[disabled].active, fieldset[disabled] .btn-default, fieldset[disabled] .btn-default:hover, fieldset[disabled] .btn-default:focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .btn-default.active {
-  background-color: #f9f9f9;
-  border-color: #cccccc;
+  background-color: #f3f3f3;
+  border-color: #dbdbdb;
 }
 /* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-default .badge {
-  color: #f9f9f9;
+  color: #f3f3f3;
   background-color: #333333;
 }
 
 /* line 59, scss/partials/_buttons.scss */
 .btn-primary {
   color: white;
-  background-color: #00a1cb;
-  border-color: #008db2;
+  background-color: #607d8b;
+  border-color: #566f7c;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
   color: white;
-  background-color: #007998;
-  border-color: #005c74;
+  background-color: #4b626d;
+  border-color: #3d4f58;
 }
 /* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
@@ -1540,26 +1567,26 @@ header .dropdown-menu a:hover {
 }
 /* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled]:active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active {
-  background-color: #00a1cb;
-  border-color: #008db2;
+  background-color: #607d8b;
+  border-color: #566f7c;
 }
 /* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-primary .badge {
-  color: #00a1cb;
+  color: #607d8b;
   background-color: white;
 }
 
 /* line 63, scss/partials/_buttons.scss */
 .btn-success {
   color: white;
-  background-color: #7db500;
-  border-color: #6b9c00;
+  background-color: #4caf50;
+  border-color: #449d48;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
   color: white;
-  background-color: #5a8200;
-  border-color: #415e00;
+  background-color: #3d8b40;
+  border-color: #327334;
 }
 /* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
@@ -1567,26 +1594,26 @@ header .dropdown-menu a:hover {
 }
 /* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-success.disabled, .btn-success.disabled:hover, .btn-success.disabled:focus, .btn-success.disabled:active, .btn-success.disabled.active, .btn-success[disabled], .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled]:active, .btn-success[disabled].active, fieldset[disabled] .btn-success, fieldset[disabled] .btn-success:hover, fieldset[disabled] .btn-success:focus, fieldset[disabled] .btn-success:active, fieldset[disabled] .btn-success.active {
-  background-color: #7db500;
-  border-color: #6b9c00;
+  background-color: #4caf50;
+  border-color: #449d48;
 }
 /* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-success .badge {
-  color: #7db500;
+  color: #4caf50;
   background-color: white;
 }
 
 /* line 67, scss/partials/_buttons.scss */
 .btn-info {
   color: white;
-  background-color: #5bc0de;
-  border-color: #46b8da;
+  background-color: #03a9f4;
+  border-color: #0398db;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
   color: white;
-  background-color: #31b0d5;
-  border-color: #269abc;
+  background-color: #0286c2;
+  border-color: #026e9e;
 }
 /* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
@@ -1594,26 +1621,26 @@ header .dropdown-menu a:hover {
 }
 /* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-info.disabled, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled:active, .btn-info.disabled.active, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled]:active, .btn-info[disabled].active, fieldset[disabled] .btn-info, fieldset[disabled] .btn-info:hover, fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info:active, fieldset[disabled] .btn-info.active {
-  background-color: #5bc0de;
-  border-color: #46b8da;
+  background-color: #03a9f4;
+  border-color: #0398db;
 }
 /* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-info .badge {
-  color: #5bc0de;
+  color: #03a9f4;
   background-color: white;
 }
 
 /* line 71, scss/partials/_buttons.scss */
 .btn-warning {
   color: white;
-  background-color: #f0ad4e;
-  border-color: #eea236;
+  background-color: #ff5722;
+  border-color: #ff4408;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open > .btn-warning.dropdown-toggle {
   color: white;
-  background-color: #ec971f;
-  border-color: #d58512;
+  background-color: #ee3900;
+  border-color: #ca3100;
 }
 /* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-warning:active, .btn-warning.active, .open > .btn-warning.dropdown-toggle {
@@ -1621,26 +1648,26 @@ header .dropdown-menu a:hover {
 }
 /* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-warning.disabled, .btn-warning.disabled:hover, .btn-warning.disabled:focus, .btn-warning.disabled:active, .btn-warning.disabled.active, .btn-warning[disabled], .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled]:active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning, fieldset[disabled] .btn-warning:hover, fieldset[disabled] .btn-warning:focus, fieldset[disabled] .btn-warning:active, fieldset[disabled] .btn-warning.active {
-  background-color: #f0ad4e;
-  border-color: #eea236;
+  background-color: #ff5722;
+  border-color: #ff4408;
 }
 /* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-warning .badge {
-  color: #f0ad4e;
+  color: #ff5722;
   background-color: white;
 }
 
 /* line 75, scss/partials/_buttons.scss */
 .btn-danger {
   color: white;
-  background-color: #e54028;
-  border-color: #d9331a;
+  background-color: #f44336;
+  border-color: #f32c1e;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
   color: white;
-  background-color: #c22d18;
-  border-color: #a32614;
+  background-color: #ea1c0d;
+  border-color: #c8180b;
 }
 /* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
@@ -1648,12 +1675,12 @@ header .dropdown-menu a:hover {
 }
 /* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-danger.disabled, .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled:active, .btn-danger.disabled.active, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled]:active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger, fieldset[disabled] .btn-danger:hover, fieldset[disabled] .btn-danger:focus, fieldset[disabled] .btn-danger:active, fieldset[disabled] .btn-danger.active {
-  background-color: #e54028;
-  border-color: #d9331a;
+  background-color: #f44336;
+  border-color: #f32c1e;
 }
 /* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-danger .badge {
-  color: #e54028;
+  color: #f44336;
   background-color: white;
 }
 
@@ -1679,12 +1706,9 @@ header .dropdown-menu a:hover {
   line-height: 20px;
 }
 
-/* line 1, scss/partials/_tabs.scss */
-.tabs {
-  background-color: #e1e1e1;
-}
-/* line 3, scss/partials/_tabs.scss */
+/* line 2, scss/partials/_tabs.scss */
 .tabs ul {
+  background: #cfd8dc;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1692,22 +1716,22 @@ header .dropdown-menu a:hover {
 /* line 7, scss/partials/_tabs.scss */
 .tabs ul li {
   display: inline-block;
-  background-color: #eeeeee;
+  background: #f3f3f3;
   padding: 6px 12px;
   margin: 0 1px 0 0;
   cursor: pointer;
 }
 /* line 13, scss/partials/_tabs.scss */
 .tabs ul li a {
-  color: #333333;
+  color: #212121;
 }
 /* line 15, scss/partials/_tabs.scss */
 .tabs ul li a:hover {
-  color: #e54028;
+  color: #f44336;
 }
 /* line 19, scss/partials/_tabs.scss */
 .tabs ul li.active {
-  background-color: white;
+  background: white;
 }
 
 /* line 28, scss/partials/_tabs.scss */
@@ -1717,32 +1741,43 @@ header .dropdown-menu a:hover {
 
 /* line 33, scss/partials/_tabs.scss */
 .column-tabs ul li {
-  background-color: #e1e1e1;
+  background: #d3cdc1;
   width: 50%;
   margin: 0;
   text-align: center;
 }
 /* line 38, scss/partials/_tabs.scss */
 .column-tabs ul li.active {
-  background-color: #f1f1f1;
+  background: #e8e5df;
 }
 
-/* line 7, scss/partials/_products.scss */
+/* line 46, scss/partials/_tabs.scss */
+.cart-tabs ul li {
+  vertical-align: top;
+  /* hack? */
+}
+
+/* line 5, scss/partials/_products.scss */
+#left .products-module .list-actions > div {
+  background-color: #607d8b;
+}
+
+/* line 11, scss/partials/_products.scss */
 .products-module .list .img {
   -webkit-flex: 0 1 20%;
   flex: 0 1 20%;
 }
-/* line 9, scss/partials/_products.scss */
+/* line 13, scss/partials/_products.scss */
 .products-module .list .img img {
   width: 100%;
   max-width: 90px;
 }
-/* line 14, scss/partials/_products.scss */
+/* line 18, scss/partials/_products.scss */
 .products-module .list .title {
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 16, scss/partials/_products.scss */
+/* line 20, scss/partials/_products.scss */
 .products-module .list .title dl {
   width: 100%;
   font-size: 12px;
@@ -1757,24 +1792,24 @@ header .dropdown-menu a:hover {
 .products-module .list .title dl:after {
   clear: both;
 }
-/* line 21, scss/partials/_products.scss */
+/* line 25, scss/partials/_products.scss */
 .products-module .list .title dl dt {
   font-weight: normal;
   float: left;
   padding-right: 5px;
   clear: left;
 }
-/* line 27, scss/partials/_products.scss */
+/* line 31, scss/partials/_products.scss */
 .products-module .list .title dl dd {
   float: left;
   margin: 0;
 }
-/* line 33, scss/partials/_products.scss */
+/* line 37, scss/partials/_products.scss */
 .products-module .list .price {
   -webkit-flex: 0 1 20%;
   flex: 0 1 20%;
 }
-/* line 36, scss/partials/_products.scss */
+/* line 40, scss/partials/_products.scss */
 .products-module .list .action {
   -webkit-flex: 0 1 52px;
   flex: 0 1 52px;
@@ -1793,7 +1828,7 @@ header .dropdown-menu a:hover {
 }
 /* line 9, scss/partials/_cart.scss */
 .cart-module .list-header .more a, .cart-module .list .more a, .cart-module .list-totals .more a {
-  color: #333333;
+  color: #212121;
 }
 /* line 13, scss/partials/_cart.scss */
 .cart-module .list-header .price, .cart-module .list .price, .cart-module .list-totals .price {
@@ -1818,7 +1853,7 @@ header .dropdown-menu a:hover {
 }
 /* line 32, scss/partials/_cart.scss */
 .cart-module .list ul > li.shipping, .cart-module .list ul > li.fee {
-  border-top: 3px solid #eeeeee;
+  border-top: 3px solid #e8e8e8;
 }
 /* line 35, scss/partials/_cart.scss */
 .cart-module .list ul > li.shipping ~ li.shipping, .cart-module .list ul > li.fee ~ li.fee {
@@ -1826,29 +1861,49 @@ header .dropdown-menu a:hover {
 }
 /* line 38, scss/partials/_cart.scss */
 .cart-module .list ul .drawer {
-  background-color: #ccc;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  background: #e8e8e8;
+  box-shadow: inset 0 0 8px 0 rgba(0, 0, 0, 0.1);
 }
-/* line 43, scss/partials/_cart.scss */
+/* line 42, scss/partials/_cart.scss */
+.cart-module .list ul .drawer .col-1 {
+  text-align: right;
+  -webkit-flex-basis: 30%;
+  flex-basis: 30%;
+}
+/* line 46, scss/partials/_cart.scss */
+.cart-module .list ul .drawer .col-2 {
+  -webkit-flex-basis: 70%;
+  flex-basis: 70%;
+}
+/* line 49, scss/partials/_cart.scss */
+.cart-module .list ul .drawer hr {
+  -webkit-flex: 0 100%;
+  flex: 0 100%;
+  margin: 0;
+}
+/* line 56, scss/partials/_cart.scss */
 .cart-module .list-totals {
   text-align: right;
 }
-/* line 45, scss/partials/_cart.scss */
+/* line 58, scss/partials/_cart.scss */
 .cart-module .list-totals .order-total {
   font-size: 1.4em;
 }
-/* line 51, scss/partials/_cart.scss */
+/* line 64, scss/partials/_cart.scss */
 .cart-module .list-totals input {
   display: none;
 }
-/* line 55, scss/partials/_cart.scss */
+/* line 68, scss/partials/_cart.scss */
 .cart-module .list-totals .editing span {
   display: none;
 }
-/* line 58, scss/partials/_cart.scss */
+/* line 71, scss/partials/_cart.scss */
 .cart-module .list-totals .editing input {
   display: block;
 }
-/* line 64, scss/partials/_cart.scss */
+/* line 77, scss/partials/_cart.scss */
 .cart-module .list input, .cart-module .list-totals input {
   -webkit-transition-property: background-color;
   transition-property: background-color;
@@ -1857,9 +1912,9 @@ header .dropdown-menu a:hover {
   -webkit-transition-timing-function: ease-in-out;
   transition-timing-function: ease-in-out;
   color: #333333;
-  background-color: #f9f9f9;
-  border-color: #cccccc;
-  border: 1px solid #cccccc;
+  background-color: #f3f3f3;
+  border-color: #dbdbdb;
+  border: 1px solid #dbdbdb;
   text-align: center;
   max-width: 7em;
   -moz-appearance: textfield;
@@ -1870,8 +1925,8 @@ header .dropdown-menu a:hover {
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .cart-module .list input:hover, .cart-module .list input:focus, .cart-module .list input:active, .cart-module .list input.active, .open > .cart-module .list input.dropdown-toggle, .cart-module .list-totals input:hover, .cart-module .list-totals input:focus, .cart-module .list-totals input:active, .cart-module .list-totals input.active, .open > .cart-module .list-totals input.dropdown-toggle {
   color: #333333;
-  background-color: #e0e0e0;
-  border-color: #adadad;
+  background-color: #d9d9d9;
+  border-color: #bdbdbd;
 }
 /* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .cart-module .list input:active, .cart-module .list input.active, .open > .cart-module .list input.dropdown-toggle, .cart-module .list-totals input:active, .cart-module .list-totals input.active, .open > .cart-module .list-totals input.dropdown-toggle {
@@ -1879,85 +1934,91 @@ header .dropdown-menu a:hover {
 }
 /* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .cart-module .list input.disabled, .cart-module .list input.disabled:hover, .cart-module .list input.disabled:focus, .cart-module .list input.disabled:active, .cart-module .list input.disabled.active, .cart-module .list input[disabled], .cart-module .list input[disabled]:hover, .cart-module .list input[disabled]:focus, .cart-module .list input[disabled]:active, .cart-module .list input[disabled].active, fieldset[disabled] .cart-module .list input, fieldset[disabled] .cart-module .list input:hover, fieldset[disabled] .cart-module .list input:focus, fieldset[disabled] .cart-module .list input:active, fieldset[disabled] .cart-module .list input.active, .cart-module .list-totals input.disabled, .cart-module .list-totals input.disabled:hover, .cart-module .list-totals input.disabled:focus, .cart-module .list-totals input.disabled:active, .cart-module .list-totals input.disabled.active, .cart-module .list-totals input[disabled], .cart-module .list-totals input[disabled]:hover, .cart-module .list-totals input[disabled]:focus, .cart-module .list-totals input[disabled]:active, .cart-module .list-totals input[disabled].active, fieldset[disabled] .cart-module .list-totals input, fieldset[disabled] .cart-module .list-totals input:hover, fieldset[disabled] .cart-module .list-totals input:focus, fieldset[disabled] .cart-module .list-totals input:active, fieldset[disabled] .cart-module .list-totals input.active {
-  background-color: #f9f9f9;
-  border-color: #cccccc;
+  background-color: #f3f3f3;
+  border-color: #dbdbdb;
 }
 /* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .cart-module .list input .badge, .cart-module .list-totals input .badge {
-  color: #f9f9f9;
+  color: #f3f3f3;
   background-color: #333333;
 }
-/* line 76, scss/partials/_cart.scss */
+/* line 89, scss/partials/_cart.scss */
 .cart-module .list input::-webkit-inner-spin-button, .cart-module .list-totals input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-/* line 80, scss/partials/_cart.scss */
+/* line 93, scss/partials/_cart.scss */
 .cart-module .list input::-webkit-outer-spin-button, .cart-module .list-totals input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-/* line 84, scss/partials/_cart.scss */
+/* line 97, scss/partials/_cart.scss */
 .cart-module .list input:hover, .cart-module .list-totals input:hover {
   cursor: pointer;
 }
-/* line 89, scss/partials/_cart.scss */
+/* line 102, scss/partials/_cart.scss */
 .cart-module .cart-actions {
   text-align: right;
   padding: 8px;
+  padding-bottom: 0;
 }
-/* line 93, scss/partials/_cart.scss */
+/* line 106, scss/partials/_cart.scss */
+.cart-module .cart-actions a {
+  margin-bottom: 8px;
+}
+/* line 110, scss/partials/_cart.scss */
 .cart-module .cart-notes {
   padding: 8px;
+  border-top: 1px solid #dbdbdb;
 }
 
-/* line 3, scss/partials/_numpad.scss */
+/* line 1, scss/partials/_numpad.scss */
 .numpad-popover {
   max-width: none;
-  background-color: #dfdfdf;
+  background-color: #e0e0e0;
+}
+/* line 4, scss/partials/_numpad.scss */
+.numpad-popover.top > .arrow {
+  border-top-color: #e0e0e0;
 }
 /* line 6, scss/partials/_numpad.scss */
-.numpad-popover.top > .arrow {
-  border-top-color: #dfdfdf;
-}
-/* line 8, scss/partials/_numpad.scss */
 .numpad-popover.top > .arrow:after {
-  border-top-color: #dfdfdf;
+  border-top-color: #e0e0e0;
+}
+/* line 10, scss/partials/_numpad.scss */
+.numpad-popover.right > .arrow {
+  border-right-color: #e0e0e0;
 }
 /* line 12, scss/partials/_numpad.scss */
-.numpad-popover.right > .arrow {
-  border-right-color: #dfdfdf;
-}
-/* line 14, scss/partials/_numpad.scss */
 .numpad-popover.right > .arrow:after {
-  border-right-color: #dfdfdf;
+  border-right-color: #e0e0e0;
+}
+/* line 16, scss/partials/_numpad.scss */
+.numpad-popover.bottom > .arrow {
+  border-bottom-color: #e0e0e0;
 }
 /* line 18, scss/partials/_numpad.scss */
-.numpad-popover.bottom > .arrow {
-  border-bottom-color: #dfdfdf;
-}
-/* line 20, scss/partials/_numpad.scss */
 .numpad-popover.bottom > .arrow:after {
-  border-bottom-color: #dfdfdf;
+  border-bottom-color: #e0e0e0;
+}
+/* line 23, scss/partials/_numpad.scss */
+.numpad-popover.left > .arrow {
+  border-left-color: #e0e0e0;
 }
 /* line 25, scss/partials/_numpad.scss */
-.numpad-popover.left > .arrow {
-  border-left-color: #dfdfdf;
-}
-/* line 27, scss/partials/_numpad.scss */
 .numpad-popover.left > .arrow:after {
-  border-left-color: #dfdfdf;
+  border-left-color: #e0e0e0;
 }
-/* line 31, scss/partials/_numpad.scss */
+/* line 29, scss/partials/_numpad.scss */
 .numpad-popover .popover-content {
   padding: 0;
 }
 
-/* line 36, scss/partials/_numpad.scss */
+/* line 34, scss/partials/_numpad.scss */
 .numpad-header {
   padding: 6px;
   background-color: transparent;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid #ededed;
 }
 /* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
 .numpad-header:before, .numpad-header:after {
@@ -1968,21 +2029,21 @@ header .dropdown-menu a:hover {
 .numpad-header:after {
   clear: both;
 }
-/* line 41, scss/partials/_numpad.scss */
+/* line 39, scss/partials/_numpad.scss */
 .numpad-header input {
   text-align: center;
   padding: 6px 0;
   max-width: 7em;
 }
-/* line 46, scss/partials/_numpad.scss */
+/* line 44, scss/partials/_numpad.scss */
 .numpad-header .input-group {
   width: 86px;
 }
-/* line 49, scss/partials/_numpad.scss */
+/* line 47, scss/partials/_numpad.scss */
 .numpad-header .title {
   line-height: 34px;
 }
-/* line 52, scss/partials/_numpad.scss */
+/* line 50, scss/partials/_numpad.scss */
 .numpad-header .input-alt {
   display: inline-block;
   line-height: 34px;
@@ -2000,17 +2061,17 @@ header .dropdown-menu a:hover {
 .numpad-keys:after {
   clear: both;
 }
-/* line 62, scss/partials/_numpad.scss */
+/* line 60, scss/partials/_numpad.scss */
 .numpad-keys table {
   width: auto;
   border-collapse: separate;
   border-spacing: 6px;
 }
-/* line 67, scss/partials/_numpad.scss */
+/* line 65, scss/partials/_numpad.scss */
 .numpad-keys table tr td {
   border: 0;
 }
-/* line 69, scss/partials/_numpad.scss */
+/* line 67, scss/partials/_numpad.scss */
 .numpad-keys table tr td button {
   display: table-cell;
   height: 50px;
@@ -2019,28 +2080,28 @@ header .dropdown-menu a:hover {
   padding: 0;
   outline: 0;
 }
-/* line 76, scss/partials/_numpad.scss */
+/* line 74, scss/partials/_numpad.scss */
 .numpad-keys table tr td button small {
   font-size: 13px;
   display: block;
 }
-/* line 80, scss/partials/_numpad.scss */
+/* line 78, scss/partials/_numpad.scss */
 .numpad-keys table tr td button.return {
   height: 105px;
 }
-/* line 83, scss/partials/_numpad.scss */
+/* line 81, scss/partials/_numpad.scss */
 .numpad-keys table tr td button:active {
   background-color: #ccc;
 }
-/* line 91, scss/partials/_numpad.scss */
+/* line 89, scss/partials/_numpad.scss */
 .numpad-keys table.cash {
-  border-left: 1px solid #ebebeb;
+  border-left: 1px solid #ededed;
 }
-/* line 93, scss/partials/_numpad.scss */
+/* line 91, scss/partials/_numpad.scss */
 .numpad-keys table.cash button {
   width: 100px;
 }
-/* line 98, scss/partials/_numpad.scss */
+/* line 96, scss/partials/_numpad.scss */
 .numpad-keys table.discount {
-  border-left: 1px solid #ebebeb;
+  border-left: 1px solid #ededed;
 }

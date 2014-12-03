@@ -8,16 +8,24 @@ POS.module('POSApp', function(POSApp, POS, Backbone, Marionette, $, _) {
     var API = {
         init: function(){
             // check registry for products controller
-            var productsExists = _(POS._registry).any( function( controller ){
-                return controller instanceof POSApp.Products.Controller;
+            _(POS._registry).any( function( controller ){
+                if ( controller instanceof POSApp.Products.Controller ){
+                    return controller;
+                };
             });
-            if( ! productsExists ) {
-                new POSApp.Products.Controller();
-            }
+
+            return new POSApp.Products.Controller();
         },
         cart: function(id) {
-            this.init();
-            var controller = new POSApp.Cart.Controller({ id: id });
+
+            // the products controller has the two column layout
+            var productsController = this.init();
+            var region = productsController.columnsLayout.rightRegion;
+
+            // init cart
+            var controller = new POSApp.Cart.Controller({ id: id, region: region });
+
+            //
             POSApp.channel.trigger('init:cart', controller);
         },
         checkout: function() {

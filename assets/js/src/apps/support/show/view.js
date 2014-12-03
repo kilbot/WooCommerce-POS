@@ -14,6 +14,10 @@ POS.module('SupportApp.Show', function(Show, POS, Backbone, Marionette, $, _, Ha
     Show.Form = Marionette.ItemView.extend({
         template: '#tmpl-support-form',
         tagName: 'form',
+        attributes: {
+            'class'         : 'module support-module',
+            'data-title'    : 'Support Form'
+        },
 
         events: {
             'submit': 'send'
@@ -27,10 +31,17 @@ POS.module('SupportApp.Show', function(Show, POS, Backbone, Marionette, $, _, Ha
     });
 
     Show.Status = Marionette.ItemView.extend({
+        tagName: 'section',
+        attributes: {
+            'class'         : 'module status-module',
+            'data-title'    : 'System Status'
+        },
+
         initialize: function(options) {
             this.template = Handlebars.compile( $('#tmpl-pos-status').html() );
             this.results = options;
         },
+
         serializeData: function() {
             return this.results.responseJSON;
         }

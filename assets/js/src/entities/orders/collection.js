@@ -25,23 +25,21 @@ POS.module('Entities.Orders', function(Orders, POS, Backbone, Marionette, $, _){
             return resp.orders ? resp.orders : resp ;
         },
 
-        fetchLocal: function(){
-            var self = this,
-                promise = $.Deferred();
+        fetchLocalOrders: function(){
+            var self = this;
             var onItem = function(item) {
                 if( ! _( item).has('id') ) {
                     self.add(item);
                 }
             }
             var onEnd = function() {
-                promise.resolve();
+                self.trigger('orders:ready');
             };
             self.indexedDB.iterate(onItem, {
                 index: 'local_id',
                 order: 'ASC',
                 onEnd: onEnd
             });
-            return promise;
         }
 
     });

@@ -17,16 +17,20 @@ global $current_user;
 
 <div id="page" class="site">
 	<header id="header">
-		<a href="#" id="menu-btn" class="btn-header pull-left"><i class="icon icon-bars"></i> <span><?php /* translators: wordpress */ _e( 'Menu' ); ?></span></a>
+		<div>
+			<a href="#" id="menu-btn" class="btn-header"><i class="icon icon-bars"></i> <span><?php /* translators: wordpress */ _e( 'Menu' ); ?></span></a>
+		</div>
 		<h1 class="center-block"><?php $this->title(); ?></h1>
-		<div class="dropdown pull-right">
-			<a href="#" id="user-btn" class="btn-header" data-toggle="dropdown">
-				<?php echo get_avatar( $current_user->ID, 26 ); ?>
-				<span><?php echo $current_user->display_name ?></span>
-			</a>
-			<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-				<li><a href="<?php echo wp_logout_url( home_url() ); ?>"><?php /* translators: wordpress */ _e( 'Log Out' ); ?></a></li>
-			</ul>
+		<div>
+			<div class="dropdown">
+				<a href="#" id="user-btn" class="btn-header" data-toggle="dropdown">
+					<?php echo get_avatar( $current_user->ID, 26 ); ?>
+					<span><?php echo $current_user->display_name ?></span>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
+					<li><a href="<?php echo wp_logout_url( home_url() ); ?>"><?php /* translators: wordpress */ _e( 'Log Out' ); ?></a></li>
+				</ul>
+			</div>
 		</div>
 	</header>
 	<main id="main"></main>
@@ -34,7 +38,7 @@ global $current_user;
 <div id="menu">
 	<ul>
 		<?php $menu = $this->menu(); foreach( $menu as $key => $item ): ?>
-		<li class="<?php echo $key ?>"><a href="<?php echo $item['href'] ?>"><i class="icon icon-<?php echo $key ?>"></i><?php echo $item['label'] ?></a></li>
+		<li class="<?php echo $key ?>"><a href="<?php echo $item['href'] ?>"><i class="icon icon-<?php echo $key ?> icon-lg"></i><?php echo $item['label'] ?></a></li>
 		<?php endforeach; ?>
 	</ul>
 </div>

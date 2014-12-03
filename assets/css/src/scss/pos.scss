@@ -1,5 +1,6 @@
 @import "compass";
 @import "breakpoint";
+@import "partials/palette";
 @import "partials/variables";
 
 // Vendor
@@ -17,6 +18,7 @@
 
 // POS front-end
 @import "partials/scaffolding";
+@import "partials/loading";
 @import "partials/common";
 @import "partials/type";
 @import "partials/header";

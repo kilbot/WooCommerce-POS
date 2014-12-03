@@ -5,16 +5,15 @@ POS.module('SupportApp.Show', function(Show, POS, Backbone, Marionette, $, _) {
         initialize: function (options) {
 
             // init two column layout
-            this.layout = new Show.Layout();
+            this.layout = POS.mainRegion.twoColumns();
 
             this.listenTo( this.layout, 'show', function() {
                 this._showForm();
                 this._showStatus();
             });
 
-            this.show( this.layout, {
-                region: POS.mainRegion
-            });
+            // show
+            this.show( this.layout, { region: POS.mainRegion } );
 
         },
 
@@ -47,7 +46,7 @@ POS.module('SupportApp.Show', function(Show, POS, Backbone, Marionette, $, _) {
 
            POS.Components.Loading.channel.command( 'show:loading', view, {
                region: this.layout.rightRegion,
-               loading: {
+                   loading: {
                    entities: results
                }
            });

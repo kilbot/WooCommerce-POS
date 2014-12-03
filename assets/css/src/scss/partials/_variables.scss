@@ -2,29 +2,39 @@
 $font-family-sans-serif: 'Open Sans', Sans-Serif;
 
 // Colors
-$brand-primary        :	#00A1CB;
-$brand-success        :	#7db500;
-$brand-info           :	#5bc0de;
-$brand-warning        :	#f0ad4e;
-$brand-danger         :	#E54028;
+$brand-primary        :	nth( $paletteBlueGrey, 6 );
+$brand-success        :	nth( $paletteGreen, 6 );
+$brand-info           :	nth( $paletteLightBlue, 6 );
+$brand-warning        :	nth( $paletteDeepOrange, 6 );
+$brand-danger         :	nth( $paletteRed, 6 );
 
-$body-bg              : #f1f1f1;
-$content-background   : #fff;
-$navbar-inverse-bg    : #222 !default;
-$navbar-inverse-color : #eee;
+$base-text-color      : black;
+$text-color           : lighten($base-text-color, 13%);
+$secondary-text-color : lighten($base-text-color, 46%);
+$tertiary-text-color  : lighten($base-text-color, 74%);
+$header-text-color    : rgba(255,255,255,0.9);
+$menu-text-color      : $header-text-color;
+$inverse-text-color   : $header-text-color;
 
 $link-color           : $brand-primary !default;
 
-$border-color         : #eee;
+$border-color         : lighten($base-text-color, 91%);
+$list-border-color    : $border-color;
 $table-border-color   : $border-color;
-$dark-border-color    : darken($border-color, 6%);
-$input-border-color   : darken($border-color, 6%);
+$input-border-color   : darken($border-color, 5%);
 
-$input-bg-color       : #f9f9f9;
+$body-bg              : #e8e5df;
+$numpad-bg            : lighten(black, 88%);
+$header-bg            : nth( $primaryPalette, 10 );
+$menu-bg              : $header-bg;
+$input-bg             : #f9f9f9;
+$drawer-bg            : $list-border-color;
 
 $btn-default-color    : #333;
-$btn-default-bg       : #f9f9f9;
-$btn-default-border   : #ccc;
+$btn-default-bg       : #f3f3f3;
+$btn-default-border   : $input-border-color;
+
+$alternate-bg         : $btn-default-bg;
 
 // Widths & Spacing
 $font-size-base       : 14px !default;

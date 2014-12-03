@@ -69,23 +69,21 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }
         },
 
-        fetchOrder: function (order_id) {
-            var self = this,
-                promise = $.Deferred();
+        fetchOrder: function () {
+            var self = this;
             var onItem = function (item) {
-                if (item.order === order_id) {
+                if (item.order === self.order.id) {
                     self.add(item);
                 }
             }
             var onEnd = function () {
-                promise.resolve();
+                self.trigger('cart:ready');
             };
             self.indexedDB.iterate(onItem, {
                 index: 'order',
                 order: 'ASC',
                 onEnd: onEnd
             });
-            return promise;
         }
     });
 

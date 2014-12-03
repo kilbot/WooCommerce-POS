@@ -61,9 +61,24 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         focusRow: function() {
             var self = this;
 
+            var list        = this.$el.closest('.list');
+            var scrollTop   = list.scrollTop();
+            var listTop     = list.position().top;
+            var listBottom  = list.height() + listTop;
+            var itemTop     = this.$el.position().top;
+            var itemBottom  = this.$el.height() + itemTop;
+
+            if( itemTop < listTop ) {
+                scrollTop -= ( listTop - itemTop );
+            }
+
+            if( itemBottom > listBottom ) {
+                scrollTop += ( itemTop - list.height() );
+            }
+
             // scroll to row
             this.$el.addClass('bg-success').closest('.list').animate({
-                scrollTop: this.$el.position().top
+                scrollTop: scrollTop
             }, 'fast', function() {
                 // focus title if shipping or fee
                 if( self.model.get( 'type' ) === 'fee' || self.model.get( 'type' ) === 'shipping' ) {
@@ -167,6 +182,13 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 this.$el.after( this.drawer.$el );
             }
 
+            if( this.drawer.$el.is(':hidden') ) {
+                this.trigger('opening:drawer');
+                $(e.currentTarget).addClass('icon-rotate-180').blur();
+            } else {
+                $(e.currentTarget).removeClass('icon-rotate-180').blur();
+            }
+
             this.drawer.$el.slideToggle( 'fast' );
         }
 
@@ -245,7 +267,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 var meta = this.model.get('meta');
                 if( ! _.isArray( meta ) ) {
                     meta = [];
-                    meta[ name[1]  ] = {};
+                    meta[ name[1] ] = {};
                 }
                 meta[ name[1] ][ name[2] ] = value;
                 value = meta;
@@ -275,7 +297,18 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
     Cart.Items = Marionette.CollectionView.extend({
         tagName: 'ul',
         childView: Cart.Item,
-        emptyView: Cart.EmptyView
+        emptyView: Cart.EmptyView,
+
+        childEvents: {
+            'opening:drawer': function(e) {
+                this.children.each( function(view) {
+                    if( _(view).has('drawer') ) {
+                        view.drawer.close();
+                        view.$('.action-more').removeClass('icon-rotate-180');
+                    }
+                });
+            }
+        }
     });
 
     /**

@@ -1,7 +1,7 @@
 /* Header =================================================== */
 header {
-  color: $navbar-inverse-color;
-  background-color: $navbar-inverse-bg;
+  color: $header-text-color;
+  background-color: $header-bg;
   h1 {
     font-size: 14px;
     text-align: center;
@@ -9,8 +9,11 @@ header {
     margin: 0;
     padding: 0;
   }
+  >div:last-of-type {
+    text-align: right;
+  }
   a {
-    color: $navbar-inverse-color;
+    color: $header-text-color;
     text-decoration: none;
     font-size: 14px;
     line-height: 38px;
@@ -19,11 +22,10 @@ header {
       color: darken($link-color, 5%);
     }
     &.btn-header {
-      color: $navbar-inverse-color;
-      background-color: $navbar-inverse-bg;
+      color: $header-text-color;
+      background-color: $header-bg;
       padding: 0 $spacing/2;
-      height: auto;
-      display: block;
+      display: inline-block;
       &:hover {
         background-color: darken($link-color, 5%);
         text-decoration: none;
@@ -31,7 +33,7 @@ header {
       img {
         width: 20px;
         height: 20px;
-        vertical-align: middle;
+        vertical-align: bottom;
       }
       span {
         display: none;
@@ -56,16 +58,16 @@ header {
 header .dropdown-menu {
   margin: 0;
   padding: 0;
-  background-color: $navbar-inverse-bg;
+  background-color: $header-bg;
   border: none;
   @include border-radius(0);
   a {
-    color: $navbar-inverse-color;
+    color: $header-text-color;
     padding: 0 $spacing/2;
     line-height: 38px;
   }
   a:hover {
     background-color: darken($link-color, 5%);
-    color: $navbar-inverse-color;
+    color: $header-text-color;
   }
 }
