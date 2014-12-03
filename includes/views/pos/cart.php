@@ -50,26 +50,38 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item-drawer">
+
+	{{#if id}}
 	<div class="col-1"><label for="regular_price"><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
 		<input name="regular_price" id="regular_price" class="autogrow btn" type="text" value="{{number regular_price}}" data-numpad="regular_price" />
 	</div>
-	<hr>
+	{{/if}}
 
+	{{#is type 'shipping'}}
+	<div class="col-1"><label for="shipping_method"><?php /* translators: woocommerce */ _e( 'Shipping Method', 'woocommerce' ); ?>:</label></div>
+	<div class="col-2">
+		<select name="shipping_method" id="shipping_method">
+		{{#each shipping_labels}}
+		<option value="{{@key}}" {{#is @key ../shipping_method}}selected{{/is}}>{{this}}</option>
+		{{/each}}
+		</select>
+	</div>
+	{{/is}}
+
+	<hr>
 	<div class="col-1"><label for="taxable"><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
 		<input type="checkbox" name="taxable" id="taxable" {{#if taxable}}checked{{/if}} />
-	</div>
-	<div class="col-1"><label for="tax_class"><?php /* translators: woocommerce */ _e( 'Tax Class', 'woocommerce' ); ?>:</label></div>
-	<div class="col-2">
-		<select name="tax_class" id="tax_class">
+		<select name="tax_class" id="tax_class" {{#unless taxable}}disabled{{/unless}}>
 			{{#each tax_labels}}
-			<option value="{{@key}}">{{this}}</option>
+				<option value="{{@key}}" {{#is @key ../tax_class}}selected{{/is}}>{{this}}</option>
 			{{/each}}
 		</select>
 	</div>
-	<hr>
 
+	{{#if id}}
+	<hr>
 	<div class="col-1"><?php /* translators: woocommerce */ _e( 'Add&nbsp;meta', 'woocommerce' ); ?>:</div>
 	<div class="col-2">
 		{{#each meta}}
@@ -81,6 +93,7 @@
 		{{/each}}
 		<a href="#" class="action-add-meta"><i class="icon icon-plus"></i></a>
 	</div>
+	{{/if}}
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-totals">

@@ -21,6 +21,7 @@ class WC_POS_Params {
 		$param['denominations'] = WC_POS_i18n::currency_denominations( get_option('woocommerce_currency') );
 		$param['hotkeys'] 	    = $this->hotkeys();
 		$param['nonce'] 		= wp_create_nonce( WC_POS_PLUGIN_NAME );
+		$param['shipping']      = $this->shipping_labels();
 		$param['tabs'] 		    = $this->product_tabs();
 		$param['tax'] 		    = $this->wc_settings();
 		$param['tax_labels']    = $this->tax_labels();
@@ -241,6 +242,23 @@ class WC_POS_Params {
 		$standard[''] = __( 'Standard', 'woocommerce' );
 
 		return $standard + $labels;
+	}
+
+	public function shipping_labels() {
+
+		/* translators: woocommerce */
+		$labels = array( '' => __( 'N/A', 'woocommerce' ) );
+
+		$shipping_methods = WC()->shipping() ? WC()->shipping->load_shipping_methods() : array();
+
+		foreach( $shipping_methods as $method ){
+			$labels[$method->id] = $method->get_title();
+		}
+
+		/* translators: woocommerce */
+		$labels['other'] = __( 'Other', 'woocommerce' );
+
+		return $labels;
 	}
 
 }

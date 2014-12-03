@@ -202,12 +202,17 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         serializeData: function() {
             var data = this.model.toJSON();
             data.tax_labels = POS.tax_labels;
+            data.shipping_labels = POS.shipping;
             return data;
         },
 
         behaviors: {
             AutoGrow: {},
             Numpad: {}
+        },
+
+        modelEvents: {
+            'change'   : 'render'
         },
 
         events: {
@@ -313,7 +318,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 meta.splice( index, 1 );
                 this.model.save({ 'meta': meta });
             }
-            
+
             row.remove();
 
         }
