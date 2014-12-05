@@ -6,6 +6,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         regions: {
             listRegion      : '.list',
             totalsRegion    : '.list-totals',
+            customerRegion  : '.cart-customer',
             actionsRegion   : '.cart-actions',
             notesRegion     : '.cart-notes'
         },

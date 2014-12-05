@@ -35,11 +35,6 @@ POS.module('SettingsApp.Show', function(Show, POS, Backbone, Marionette, $, _) {
                 model: model
             });
 
-            // form submit
-            this.listenTo(view, 'settings:form:submit', function (model) {
-                this._saveSettings(model);
-            });
-
             // if model is empty we need to load the settings
             if( _.isEmpty( model.previousAttributes() ) && options.tab !== 'tools' ){
                 POS.Components.Loading.channel.command( 'show:loading', view, {
@@ -54,10 +49,6 @@ POS.module('SettingsApp.Show', function(Show, POS, Backbone, Marionette, $, _) {
                 this.settingsRegion.show(view);
             }
 
-        },
-
-        _saveSettings: function (model) {
-            model.save();
         }
 
     });

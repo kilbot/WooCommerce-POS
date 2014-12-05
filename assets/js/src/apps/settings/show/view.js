@@ -71,7 +71,6 @@ POS.module('SettingsApp.Show', function(Show, POS, Backbone, Marionette, $, _) {
         },
 
         saving: function() {
-            console.log(this.ui.submit);
             this.ui.submit
                 .prop( 'disabled', true )
                 .next( 'p.response' )

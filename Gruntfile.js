@@ -237,6 +237,7 @@ module.exports = function(grunt) {
                         'assets/js/src/lib/components/numpad/entities.js',
                         'assets/js/src/lib/components/numpad/behavior.js',
                         'assets/js/src/lib/components/numpad/templates.js',
+                        'assets/js/src/lib/components/select2/behavior.js',
 
                         // sub apps
                         'assets/js/src/apps/header/header_app.js',
@@ -246,11 +247,14 @@ module.exports = function(grunt) {
                         'assets/js/src/apps/pos/products/view.js',
                         'assets/js/src/apps/pos/cart/controller.js',
                         'assets/js/src/apps/pos/cart/view.js',
-
                         'assets/js/src/apps/pos/checkout/controller.js',
                         'assets/js/src/apps/pos/checkout/view.js',
                         'assets/js/src/apps/pos/receipt/controller.js',
                         'assets/js/src/apps/pos/receipt/view.js',
+
+                        'assets/js/src/apps/customer/customer_app.js',
+                        'assets/js/src/apps/customer/select/controller.js',
+                        'assets/js/src/apps/customer/select/view.js',
 
                         'assets/js/src/apps/support/support_app.js',
                         'assets/js/src/apps/support/show/controller.js',

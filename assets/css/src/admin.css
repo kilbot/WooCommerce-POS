@@ -1,3 +1,868 @@
+/**
+*
+* Material design color palettes.
+* @see http://www.google.com/design/spec/style/color.html
+*
+**/
+/* ==========  Color Palettes  ========== */
+/* ==========  Used Palettes  ========== */
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+/* line 9, scss/partials/_normalize.scss */
+html {
+  font-family: sans-serif;
+  /* 1 */
+  -ms-text-size-adjust: 100%;
+  /* 2 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */
+}
+
+/**
+ * Remove default margin.
+ */
+/* line 19, scss/partials/_normalize.scss */
+body {
+  margin: 0;
+}
+
+/* HTML5 display definitions
+   ========================================================================== */
+/**
+ * Correct `block` display not defined for any HTML5 element in IE 8/9.
+ * Correct `block` display not defined for `details` or `summary` in IE 10/11
+ * and Firefox.
+ * Correct `block` display not defined for `main` in IE 11.
+ */
+/* line 33, scss/partials/_normalize.scss */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+/**
+ * 1. Correct `inline-block` display not defined in IE 8/9.
+ * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
+ */
+/* line 54, scss/partials/_normalize.scss */
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  /* 1 */
+  vertical-align: baseline;
+  /* 2 */
+}
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+/* line 67, scss/partials/_normalize.scss */
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+/**
+ * Address `[hidden]` styling not present in IE 8/9/10.
+ * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22.
+ */
+/* line 77, scss/partials/_normalize.scss */
+[hidden],
+template {
+  display: none;
+}
+
+/* Links
+   ========================================================================== */
+/**
+ * Remove the gray background color from active links in IE 10.
+ */
+/* line 89, scss/partials/_normalize.scss */
+a {
+  background-color: transparent;
+}
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+/* line 97, scss/partials/_normalize.scss */
+a:active,
+a:hover {
+  outline: 0;
+}
+
+/* Text-level semantics
+   ========================================================================== */
+/**
+ * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
+ */
+/* line 109, scss/partials/_normalize.scss */
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+
+/**
+ * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
+ */
+/* line 117, scss/partials/_normalize.scss */
+b,
+strong {
+  font-weight: bold;
+}
+
+/**
+ * Address styling not present in Safari and Chrome.
+ */
+/* line 126, scss/partials/_normalize.scss */
+dfn {
+  font-style: italic;
+}
+
+/**
+ * Address variable `h1` font-size and margin within `section` and `article`
+ * contexts in Firefox 4+, Safari, and Chrome.
+ */
+/* line 135, scss/partials/_normalize.scss */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+/* line 144, scss/partials/_normalize.scss */
+mark {
+  background: #ff0;
+  color: #000;
+}
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+/* line 153, scss/partials/_normalize.scss */
+small {
+  font-size: 80%;
+}
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+/* line 161, scss/partials/_normalize.scss */
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+/* line 169, scss/partials/_normalize.scss */
+sup {
+  top: -0.5em;
+}
+
+/* line 173, scss/partials/_normalize.scss */
+sub {
+  bottom: -0.25em;
+}
+
+/* Embedded content
+   ========================================================================== */
+/**
+ * Remove border when inside `a` element in IE 8/9/10.
+ */
+/* line 184, scss/partials/_normalize.scss */
+img {
+  border: 0;
+}
+
+/**
+ * Correct overflow not hidden in IE 9/10/11.
+ */
+/* line 192, scss/partials/_normalize.scss */
+svg:not(:root) {
+  overflow: hidden;
+}
+
+/* Grouping content
+   ========================================================================== */
+/**
+ * Address margin not present in IE 8/9 and Safari.
+ */
+/* line 203, scss/partials/_normalize.scss */
+figure {
+  margin: 1em 40px;
+}
+
+/**
+ * Address differences between Firefox and other browsers.
+ */
+/* line 211, scss/partials/_normalize.scss */
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+/**
+ * Contain overflow in all browsers.
+ */
+/* line 221, scss/partials/_normalize.scss */
+pre {
+  overflow: auto;
+}
+
+/**
+ * Address odd `em`-unit font size rendering in all browsers.
+ */
+/* line 229, scss/partials/_normalize.scss */
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+/* Forms
+   ========================================================================== */
+/**
+ * Known limitation: by default, Chrome and Safari on OS X allow very limited
+ * styling of `select`, unless a `border` property is set.
+ */
+/**
+ * 1. Correct color not being inherited.
+ *    Known issue: affects color of disabled elements.
+ * 2. Correct font properties not being inherited.
+ * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
+ */
+/* line 252, scss/partials/_normalize.scss */
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+  margin: 0;
+  /* 3 */
+}
+
+/**
+ * Address `overflow` set to `hidden` in IE 8/9/10/11.
+ */
+/* line 266, scss/partials/_normalize.scss */
+button {
+  overflow: visible;
+}
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
+ * Correct `select` style inheritance in Firefox.
+ */
+/* line 277, scss/partials/_normalize.scss */
+button,
+select {
+  text-transform: none;
+}
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+/* line 290, scss/partials/_normalize.scss */
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */
+}
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+/* line 302, scss/partials/_normalize.scss */
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+
+/**
+ * Remove inner padding and border in Firefox 4+.
+ */
+/* line 311, scss/partials/_normalize.scss */
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+/* line 322, scss/partials/_normalize.scss */
+input {
+  line-height: normal;
+}
+
+/**
+ * It's recommended that you don't attempt to style these elements.
+ * Firefox's implementation doesn't respect box-sizing, padding, or width.
+ *
+ * 1. Address box sizing set to `content-box` in IE 8/9/10.
+ * 2. Remove excess padding in IE 8/9/10.
+ */
+/* line 334, scss/partials/_normalize.scss */
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  /* 1 */
+  padding: 0;
+  /* 2 */
+}
+
+/**
+ * Fix the cursor style for Chrome's increment/decrement buttons. For certain
+ * `font-size` values of the `input`, it causes the cursor style of the
+ * decrement button to change from `default` to `text`.
+ */
+/* line 346, scss/partials/_normalize.scss */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari and Chrome
+ *    (include `-moz` to future-proof).
+ */
+/* line 357, scss/partials/_normalize.scss */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  /* 2 */
+  box-sizing: content-box;
+}
+
+/**
+ * Remove inner padding and search cancel button in Safari and Chrome on OS X.
+ * Safari (but not Chrome) clips the cancel button when the search input has
+ * padding (and `textfield` appearance).
+ */
+/* line 370, scss/partials/_normalize.scss */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+/* line 379, scss/partials/_normalize.scss */
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+/**
+ * 1. Correct `color` not being inherited in IE 8/9/10/11.
+ * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+ */
+/* line 390, scss/partials/_normalize.scss */
+legend {
+  border: 0;
+  /* 1 */
+  padding: 0;
+  /* 2 */
+}
+
+/**
+ * Remove default vertical scrollbar in IE 8/9/10/11.
+ */
+/* line 399, scss/partials/_normalize.scss */
+textarea {
+  overflow: auto;
+}
+
+/**
+ * Don't inherit the `font-weight` (applied by a rule above).
+ * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
+ */
+/* line 408, scss/partials/_normalize.scss */
+optgroup {
+  font-weight: bold;
+}
+
+/* Tables
+   ========================================================================== */
+/**
+ * Remove most spacing between table cells.
+ */
+/* line 419, scss/partials/_normalize.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 424, scss/partials/_normalize.scss */
+td,
+th {
+  padding: 0;
+}
+
+@media print {
+  /* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  * {
+    text-shadow: none !important;
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* line 15, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  /* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  /* line 24, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  /* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  a[href^="javascript:"]:after,
+  a[href^="#"]:after {
+    content: "";
+  }
+
+  /* line 34, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+
+  /* line 40, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  thead {
+    display: table-header-group;
+  }
+
+  /* line 44, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+
+  /* line 49, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  img {
+    max-width: 100% !important;
+  }
+
+  /* line 53, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* line 60, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+
+  /* line 67, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  select {
+    background: #fff !important;
+  }
+
+  /* line 72, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  .navbar {
+    display: none;
+  }
+
+  /* line 76, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  .table td,
+  .table th {
+    background-color: #fff !important;
+  }
+
+  /* line 83, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  .btn > .caret,
+  .dropup > .btn > .caret {
+    border-top-color: #000 !important;
+  }
+
+  /* line 87, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  .label {
+    border: 1px solid #000;
+  }
+
+  /* line 91, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  .table {
+    border-collapse: collapse !important;
+  }
+
+  /* line 95, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  .table-bordered th,
+  .table-bordered td {
+    border: 1px solid #ddd !important;
+  }
+}
+/* line 7, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+
+/* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown {
+  position: relative;
+}
+
+/* line 24, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-toggle:focus {
+  outline: 0;
+}
+
+/* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 14px;
+  text-align: left;
+  background-color: white;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-clip: padding-box;
+}
+/* line 52, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-menu.pull-right {
+  right: 0;
+  left: auto;
+}
+/* line 58, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-menu .divider {
+  height: 1px;
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
+/* line 63, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-menu > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.428571429;
+  color: #333333;
+  white-space: nowrap;
+}
+
+/* line 76, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+  text-decoration: none;
+  color: #262626;
+  background-color: whitesmoke;
+}
+
+/* line 86, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+  color: white;
+  text-decoration: none;
+  outline: 0;
+  background-color: #607d8b;
+}
+
+/* line 101, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
+  color: #777777;
+}
+
+/* line 109, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
+  text-decoration: none;
+  background-color: transparent;
+  background-image: none;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  cursor: not-allowed;
+}
+
+/* line 122, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.open > .dropdown-menu {
+  display: block;
+}
+/* line 127, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.open > a {
+  outline: 0;
+}
+
+/* line 136, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-menu-right {
+  left: auto;
+  right: 0;
+}
+
+/* line 146, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-menu-left {
+  left: 0;
+  right: auto;
+}
+
+/* line 152, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-header {
+  display: block;
+  padding: 3px 20px;
+  font-size: 12px;
+  line-height: 1.428571429;
+  color: #777777;
+  white-space: nowrap;
+}
+
+/* line 162, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropdown-backdrop {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 990;
+}
+
+/* line 172, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.pull-right > .dropdown-menu {
+  right: 0;
+  left: auto;
+}
+
+/* line 185, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropup .caret,
+.navbar-fixed-bottom .dropdown .caret {
+  border-top: 0;
+  border-bottom: 4px solid;
+  content: "";
+}
+/* line 191, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropup .dropdown-menu,
+.navbar-fixed-bottom .dropdown .dropdown-menu {
+  top: auto;
+  bottom: 100%;
+  margin-bottom: 1px;
+}
+
+@media (min-width: 768px) {
+  /* line 205, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+  .navbar-right .dropdown-menu {
+    right: 0;
+    left: auto;
+  }
+  /* line 210, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+  .navbar-right .dropdown-menu-left {
+    left: 0;
+    right: auto;
+  }
+}
+/* line 6, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1060;
+  display: none;
+  max-width: 276px;
+  padding: 1px;
+  text-align: left;
+  background-color: white;
+  background-clip: padding-box;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  white-space: normal;
+}
+/* line 26, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.top {
+  margin-top: -10px;
+}
+/* line 27, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.right {
+  margin-left: 10px;
+}
+/* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.bottom {
+  margin-top: 10px;
+}
+/* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.left {
+  margin-left: -10px;
+}
+
+/* line 32, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover-title {
+  margin: 0;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 18px;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #ebebeb;
+  border-radius: 9px 9px 0 0;
+}
+
+/* line 43, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover-content {
+  padding: 9px 14px;
+}
+
+/* line 52, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover > .arrow, .popover > .arrow:after {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+
+/* line 62, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover > .arrow {
+  border-width: 11px;
+}
+
+/* line 65, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover > .arrow:after {
+  border-width: 10px;
+  content: "";
+}
+
+/* line 71, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.top > .arrow {
+  left: 50%;
+  margin-left: -11px;
+  border-bottom-width: 0;
+  border-top-color: #999999;
+  border-top-color: rgba(0, 0, 0, 0.25);
+  bottom: -11px;
+}
+/* line 78, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.top > .arrow:after {
+  content: " ";
+  bottom: 1px;
+  margin-left: -10px;
+  border-bottom-width: 0;
+  border-top-color: white;
+}
+/* line 86, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.right > .arrow {
+  top: 50%;
+  left: -11px;
+  margin-top: -11px;
+  border-left-width: 0;
+  border-right-color: #999999;
+  border-right-color: rgba(0, 0, 0, 0.25);
+}
+/* line 93, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.right > .arrow:after {
+  content: " ";
+  left: 1px;
+  bottom: -10px;
+  border-left-width: 0;
+  border-right-color: white;
+}
+/* line 101, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.bottom > .arrow {
+  left: 50%;
+  margin-left: -11px;
+  border-top-width: 0;
+  border-bottom-color: #999999;
+  border-bottom-color: rgba(0, 0, 0, 0.25);
+  top: -11px;
+}
+/* line 108, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.bottom > .arrow:after {
+  content: " ";
+  top: 1px;
+  margin-left: -10px;
+  border-top-width: 0;
+  border-bottom-color: white;
+}
+/* line 117, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.left > .arrow {
+  top: 50%;
+  right: -11px;
+  margin-top: -11px;
+  border-right-width: 0;
+  border-left-color: #999999;
+  border-left-color: rgba(0, 0, 0, 0.25);
+}
+/* line 124, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+.popover.left > .arrow:after {
+  content: " ";
+  right: 1px;
+  border-right-width: 0;
+  border-left-color: white;
+  bottom: -10px;
+}
+
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-open {
   overflow: hidden;
@@ -50,7 +915,7 @@
   background-color: white;
   border: 1px solid #999999;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0;
+  border-radius: 10px;
   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   background-clip: padding-box;
@@ -209,7 +1074,7 @@
   text-align: center;
   text-decoration: none;
   background-color: black;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 /* line 35, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
@@ -285,131 +1150,107 @@
 /**
  * POS ADMIN
  */
-/*
-Version: 3.5.1 Timestamp: Tue Jul 22 18:58:56 EDT 2014
-*/
-/* line 4, scss/partials/_select2.scss */
+/* line 1, scss/partials/_select2.scss */
 .select2-container {
   margin: 0;
   position: relative;
   display: inline-block;
-  /* inline-block for ie7 */
-  zoom: 1;
-  *display: inline;
   vertical-align: middle;
+  min-width: 200px;
+  /* faux select input */
+  /* above */
+  /* disabled styles */
 }
-
-/* line 14, scss/partials/_select2.scss */
-.select2-container,
-.select2-drop,
-.select2-search,
-.select2-search input {
-  /*
-    Force border-box so that % widths fit the parent
-    container without overlap because of margin/padding.
-    More Info : http://www.quirksmode.org/css/box.html
-  */
-  -webkit-box-sizing: border-box;
-  /* webkit */
-  -moz-box-sizing: border-box;
-  /* firefox */
-  box-sizing: border-box;
-  /* css3 */
-}
-
-/* line 28, scss/partials/_select2.scss */
+/* line 9, scss/partials/_select2.scss */
 .select2-container .select2-choice {
-  display: block;
-  height: 26px;
-  padding: 0 0 0 8px;
-  overflow: hidden;
-  position: relative;
-  border: 1px solid #aaa;
-  white-space: nowrap;
-  line-height: 26px;
-  color: #444;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  color: #212121;
   text-decoration: none;
-  border-radius: 4px;
-  background-clip: padding-box;
+  border: 1px solid #cfcfcf;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-color: #fff;
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.5, white));
-  background-image: -webkit-linear-gradient(center bottom, #eeeeee 0%, white 50%);
-  background-image: -moz-linear-gradient(center bottom, #eeeeee 0%, white 50%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#ffffff', endColorstr = '#eeeeee', GradientType = 0);
-  background-image: linear-gradient(to top, #eeeeee 0%, white 50%);
+  /* selection */
+  /* arrow */
+  /* close */
 }
-
-/* line 59, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-container .select2-choice {
-  padding: 0 8px 0 0;
-}
-
-/* line 63, scss/partials/_select2.scss */
-.select2-container.select2-drop-above .select2-choice {
-  border-bottom-color: #aaa;
-  border-radius: 0 0 4px 4px;
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.9, white));
-  background-image: -webkit-linear-gradient(center bottom, #eeeeee 0%, white 90%);
-  background-image: -moz-linear-gradient(center bottom, #eeeeee 0%, white 90%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#eeeeee', GradientType=0);
-  background-image: linear-gradient(to bottom, #eeeeee 0%, white 90%);
-}
-
-/* line 75, scss/partials/_select2.scss */
-.select2-container.select2-allowclear .select2-choice .select2-chosen {
-  margin-right: 42px;
-}
-
-/* line 79, scss/partials/_select2.scss */
+/* line 22, scss/partials/_select2.scss */
 .select2-container .select2-choice > .select2-chosen {
-  margin-right: 26px;
-  display: block;
+  background: white;
+  -webkit-flex: 1;
+  flex: 1;
+  padding: 3px 6px;
+  -moz-border-radius: 3px 0 0 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px 0 0 3px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  float: none;
-  width: auto;
 }
-
-/* line 91, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-container .select2-choice > .select2-chosen {
-  margin-left: 26px;
-  margin-right: 0;
+/* line 34, scss/partials/_select2.scss */
+.select2-container .select2-choice .select2-arrow {
+  background: white;
+  border-left: 1px solid #cfcfcf;
+  -moz-border-radius: 0 3px 3px 0;
+  -webkit-border-radius: 0;
+  border-radius: 0 3px 3px 0;
+  padding: 3px 6px;
+  font-family: WooCommercePOS;
 }
-
-/* line 96, scss/partials/_select2.scss */
+/* line 42, scss/partials/_select2.scss */
+.select2-container .select2-choice .select2-arrow b:before {
+  content: "\f107";
+}
+/* line 49, scss/partials/_select2.scss */
 .select2-container .select2-choice abbr {
   display: none;
-  width: 12px;
-  height: 12px;
-  position: absolute;
-  right: 24px;
-  top: 8px;
-  font-size: 1px;
-  text-decoration: none;
-  border: 0;
-  background: url("select2.png") right top no-repeat;
   cursor: pointer;
   outline: 0;
+  padding: 3px 6px;
+  font-family: WooCommercePOS;
+  color: #757575;
+  background: white;
+}
+/* line 58, scss/partials/_select2.scss */
+.select2-container .select2-choice abbr:before {
+  content: "\f057";
+}
+/* line 62, scss/partials/_select2.scss */
+.select2-container .select2-choice abbr.select2-search-choice-close {
+  display: block;
+}
+/* line 71, scss/partials/_select2.scss */
+.select2-container.select2-drop-above .select2-choice {
+  border-bottom-color: #cfcfcf;
+  -moz-border-radius: 0 0 3px 3px;
+  -webkit-border-radius: 0;
+  border-radius: 0 0 3px 3px;
+}
+/* line 78, scss/partials/_select2.scss */
+.select2-container.select2-container-disabled .select2-choice {
+  background-color: #f4f4f4;
+  border: 1px solid #cfcfcf;
+  cursor: default;
+}
+/* line 84, scss/partials/_select2.scss */
+.select2-container.select2-container-disabled .select2-choice .select2-arrow {
+  background-color: #f4f4f4;
+  border-left: 0;
+}
+/* line 89, scss/partials/_select2.scss */
+.select2-container.select2-container-disabled .select2-choice abbr {
+  display: none;
 }
 
-/* line 113, scss/partials/_select2.scss */
-.select2-container.select2-allowclear .select2-choice abbr {
-  display: inline-block;
-}
-
-/* line 117, scss/partials/_select2.scss */
-.select2-container .select2-choice abbr:hover {
-  background-position: right -11px;
-  cursor: pointer;
-}
-
-/* line 122, scss/partials/_select2.scss */
+/* line 94, scss/partials/_select2.scss */
 .select2-drop-mask {
   border: 0;
   margin: 0;
@@ -428,212 +1269,73 @@ html[dir="rtl"] .select2-container .select2-choice > .select2-chosen {
   filter: alpha(opacity=0);
 }
 
-/* line 140, scss/partials/_select2.scss */
+/* line 112, scss/partials/_select2.scss */
 .select2-drop {
   width: 100%;
   margin-top: -1px;
   position: absolute;
   z-index: 9999;
   top: 100%;
-  background: #fff;
-  color: #000;
-  border: 1px solid #aaa;
-  border-top: 0;
-  border-radius: 0 0 4px 4px;
-  -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+  background: white;
+  border: 1px solid #cfcfcf;
+  -moz-border-radius: 0 0 3px 3px;
+  -webkit-border-radius: 0;
+  border-radius: 0 0 3px 3px;
 }
-
-/* line 158, scss/partials/_select2.scss */
+/* line 124, scss/partials/_select2.scss */
 .select2-drop.select2-drop-above {
+  -moz-border-radius: 3px 3px 0 0;
+  -webkit-border-radius: 3px;
+  border-radius: 3px 3px 0 0;
   margin-top: 1px;
-  border-top: 1px solid #aaa;
-  border-bottom: 0;
-  border-radius: 4px 4px 0 0;
-  -webkit-box-shadow: 0 -4px 5px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 -4px 5px rgba(0, 0, 0, 0.15);
 }
 
-/* line 169, scss/partials/_select2.scss */
-.select2-drop-active {
-  border: 1px solid #5897fb;
-  border-top: none;
-}
-
-/* line 174, scss/partials/_select2.scss */
-.select2-drop.select2-drop-above.select2-drop-active {
-  border-top: 1px solid #5897fb;
-}
-
-/* line 178, scss/partials/_select2.scss */
+/* line 131, scss/partials/_select2.scss */
 .select2-drop-auto-width {
-  border-top: 1px solid #aaa;
+  border-top: 1px solid #cfcfcf;
   width: auto;
 }
 
-/* line 183, scss/partials/_select2.scss */
-.select2-drop-auto-width .select2-search {
-  padding-top: 4px;
-}
-
-/* line 187, scss/partials/_select2.scss */
-.select2-container .select2-choice .select2-arrow {
-  display: inline-block;
-  width: 18px;
-  height: 100%;
-  position: absolute;
-  right: 0;
-  top: 0;
-  border-left: 1px solid #aaa;
-  border-radius: 0 4px 4px 0;
-  background-clip: padding-box;
-  background: #ccc;
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #cccccc), color-stop(0.6, #eeeeee));
-  background-image: -webkit-linear-gradient(center bottom, #cccccc 0%, #eeeeee 60%);
-  background-image: -moz-linear-gradient(center bottom, #cccccc 0%, #eeeeee 60%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#eeeeee', endColorstr = '#cccccc', GradientType = 0);
-  background-image: linear-gradient(to top, #cccccc 0%, #eeeeee 60%);
-}
-
-/* line 208, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-container .select2-choice .select2-arrow {
-  left: 0;
-  right: auto;
-  border-left: none;
-  border-right: 1px solid #aaa;
-  border-radius: 4px 0 0 4px;
-}
-
-/* line 217, scss/partials/_select2.scss */
-.select2-container .select2-choice .select2-arrow b {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: url("select2.png") no-repeat 0 1px;
-}
-
-/* line 224, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-container .select2-choice .select2-arrow b {
-  background-position: 2px 1px;
-}
-
-/* line 228, scss/partials/_select2.scss */
+/* line 136, scss/partials/_select2.scss */
 .select2-search {
   display: inline-block;
   width: 100%;
-  min-height: 26px;
-  margin: 0;
-  padding-left: 4px;
-  padding-right: 4px;
   position: relative;
   z-index: 10000;
   white-space: nowrap;
+  padding: 3px;
 }
-
-/* line 242, scss/partials/_select2.scss */
+/* line 144, scss/partials/_select2.scss */
 .select2-search input {
-  width: 100%;
-  height: auto !important;
-  min-height: 26px;
-  padding: 4px 20px 4px 5px;
-  margin: 0;
+  border: 1px solid #cfcfcf;
+  padding: 3px 6px;
   outline: 0;
-  font-family: sans-serif;
-  font-size: 1em;
-  border: 1px solid #aaa;
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  background: white url("select2.png") no-repeat 100% -22px;
-  background: url("select2.png") no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
-  background: url("select2.png") no-repeat 100% -22px, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-  background: url("select2.png") no-repeat 100% -22px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-  background: url("select2.png") no-repeat 100% -22px, linear-gradient(to bottom, white 85%, #eeeeee 99%) 0 0;
+  width: 100%;
 }
 
-/* line 266, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-search input {
-  padding: 4px 5px 4px 20px;
-  background: white url("select2.png") no-repeat -37px -22px;
-  background: url("select2.png") no-repeat -37px -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
-  background: url("select2.png") no-repeat -37px -22px, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-  background: url("select2.png") no-repeat -37px -22px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-  background: url("select2.png") no-repeat -37px -22px, linear-gradient(to bottom, white 85%, #eeeeee 99%) 0 0;
-}
-
-/* line 276, scss/partials/_select2.scss */
-.select2-drop.select2-drop-above .select2-search input {
-  margin-top: 4px;
-}
-
-/* line 280, scss/partials/_select2.scss */
-.select2-search input.select2-active {
-  background: white url("select2-spinner.gif") no-repeat 100%;
-  background: url("select2-spinner.gif") no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
-  background: url("select2-spinner.gif") no-repeat 100%, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-  background: url("select2-spinner.gif") no-repeat 100%, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-  background: url("select2-spinner.gif") no-repeat 100%, linear-gradient(to bottom, white 85%, #eeeeee 99%) 0 0;
-}
-
-/* line 288, scss/partials/_select2.scss */
+/* line 153, scss/partials/_select2.scss */
 .select2-container-active .select2-choice,
 .select2-container-active .select2-choices {
-  border: 1px solid #5897fb;
   outline: none;
-  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
-/* line 297, scss/partials/_select2.scss */
+/* line 160, scss/partials/_select2.scss */
 .select2-dropdown-open .select2-choice {
-  border-bottom-color: transparent;
-  -webkit-box-shadow: 0 1px 0 #fff inset;
-  box-shadow: 0 1px 0 #fff inset;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background-color: #eee;
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, white), color-stop(0.5, #eeeeee));
-  background-image: -webkit-linear-gradient(center bottom, white 0%, #eeeeee 50%);
-  background-image: -moz-linear-gradient(center bottom, white 0%, #eeeeee 50%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#ffffff', GradientType=0);
-  background-image: linear-gradient(to top, white 0%, #eeeeee 50%);
 }
-
-/* line 313, scss/partials/_select2.scss */
+/* line 166, scss/partials/_select2.scss */
+.select2-dropdown-open .select2-choice .select2-arrow b:before {
+  content: "\f106";
+}
+/* line 174, scss/partials/_select2.scss */
 .select2-dropdown-open.select2-drop-above .select2-choice,
 .select2-dropdown-open.select2-drop-above .select2-choices {
-  border: 1px solid #5897fb;
-  border-top-color: transparent;
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(0.5, #eeeeee));
-  background-image: -webkit-linear-gradient(center top, white 0%, #eeeeee 50%);
-  background-image: -moz-linear-gradient(center top, white 0%, #eeeeee 50%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#ffffff', GradientType=0);
-  background-image: linear-gradient(to bottom, white 0%, #eeeeee 50%);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
-/* line 325, scss/partials/_select2.scss */
-.select2-dropdown-open .select2-choice .select2-arrow {
-  background: transparent;
-  border-left: none;
-  filter: none;
-}
-
-/* line 330, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-dropdown-open .select2-choice .select2-arrow {
-  border-right: none;
-}
-
-/* line 334, scss/partials/_select2.scss */
-.select2-dropdown-open .select2-choice .select2-arrow b {
-  background-position: -18px 1px;
-}
-
-/* line 338, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-dropdown-open .select2-choice .select2-arrow b {
-  background-position: -16px 1px;
-}
-
-/* line 342, scss/partials/_select2.scss */
+/* line 182, scss/partials/_select2.scss */
 .select2-hidden-accessible {
   border: 0;
   clip: rect(0 0 0 0);
@@ -646,42 +1348,37 @@ html[dir="rtl"] .select2-dropdown-open .select2-choice .select2-arrow b {
 }
 
 /* results */
-/* line 354, scss/partials/_select2.scss */
+/* line 194, scss/partials/_select2.scss */
 .select2-results {
   max-height: 200px;
-  padding: 0 0 0 4px;
-  margin: 4px 4px 4px 0;
+  padding: 0 0 0 3px;
+  margin: 3px;
+  margin-left: 0;
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-tap-highlight-color: transparent;
 }
-
-/* line 364, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-results {
-  padding: 0 4px 0 0;
-  margin: 4px 0 4px 4px;
-}
-
-/* line 369, scss/partials/_select2.scss */
+/* line 204, scss/partials/_select2.scss */
 .select2-results ul.select2-result-sub {
   margin: 0;
   padding-left: 0;
 }
-
-/* line 374, scss/partials/_select2.scss */
-.select2-results li {
+/* line 208, scss/partials/_select2.scss */
+.select2-results ul.select2-result-sub li {
   list-style: none;
   display: list-item;
   background-image: none;
 }
-
-/* line 380, scss/partials/_select2.scss */
-.select2-results li.select2-result-with-children > .select2-result-label {
+/* line 213, scss/partials/_select2.scss */
+.select2-results ul.select2-result-sub li.select2-result-with-children > .select2-result-label {
   font-weight: bold;
 }
-
-/* line 384, scss/partials/_select2.scss */
+/* line 218, scss/partials/_select2.scss */
+.select2-results ul.select2-result-sub em {
+  font-style: normal;
+}
+/* line 223, scss/partials/_select2.scss */
 .select2-results .select2-result-label {
   padding: 3px 7px 4px;
   margin: 0;
@@ -693,331 +1390,102 @@ html[dir="rtl"] .select2-results {
   -ms-user-select: none;
   user-select: none;
 }
-
-/* line 398, scss/partials/_select2.scss */
-.select2-results-dept-1 .select2-result-label {
-  padding-left: 20px;
-}
-
-/* line 399, scss/partials/_select2.scss */
-.select2-results-dept-2 .select2-result-label {
-  padding-left: 40px;
-}
-
-/* line 400, scss/partials/_select2.scss */
-.select2-results-dept-3 .select2-result-label {
-  padding-left: 60px;
-}
-
-/* line 401, scss/partials/_select2.scss */
-.select2-results-dept-4 .select2-result-label {
-  padding-left: 80px;
-}
-
-/* line 402, scss/partials/_select2.scss */
-.select2-results-dept-5 .select2-result-label {
-  padding-left: 100px;
-}
-
-/* line 403, scss/partials/_select2.scss */
-.select2-results-dept-6 .select2-result-label {
-  padding-left: 110px;
-}
-
-/* line 404, scss/partials/_select2.scss */
-.select2-results-dept-7 .select2-result-label {
-  padding-left: 120px;
-}
-
-/* line 406, scss/partials/_select2.scss */
+/* line 234, scss/partials/_select2.scss */
 .select2-results .select2-highlighted {
   background: #3875d7;
   color: #fff;
 }
-
-/* line 411, scss/partials/_select2.scss */
-.select2-results li em {
-  background: #feffde;
-  font-style: normal;
-}
-
-/* line 416, scss/partials/_select2.scss */
+/* line 238, scss/partials/_select2.scss */
 .select2-results .select2-highlighted em {
   background: transparent;
 }
-
-/* line 420, scss/partials/_select2.scss */
+/* line 242, scss/partials/_select2.scss */
 .select2-results .select2-highlighted ul {
   background: #fff;
   color: #000;
 }
-
-/* line 425, scss/partials/_select2.scss */
+/* line 248, scss/partials/_select2.scss */
 .select2-results .select2-no-results,
 .select2-results .select2-searching,
 .select2-results .select2-ajax-error,
 .select2-results .select2-selection-limit {
-  background: #f4f4f4;
   display: list-item;
   padding-left: 5px;
 }
-
-/*
-disabled look for disabled choices in the results dropdown
-*/
-/* line 437, scss/partials/_select2.scss */
+/* line 256, scss/partials/_select2.scss */
+.select2-results .select2-disabled {
+  background: #f4f4f4;
+  display: list-item;
+  cursor: default;
+}
+/* line 261, scss/partials/_select2.scss */
 .select2-results .select2-disabled.select2-highlighted {
   color: #666;
   background: #f4f4f4;
   display: list-item;
   cursor: default;
 }
-
-/* line 443, scss/partials/_select2.scss */
-.select2-results .select2-disabled {
-  background: #f4f4f4;
-  display: list-item;
-  cursor: default;
-}
-
-/* line 449, scss/partials/_select2.scss */
+/* line 269, scss/partials/_select2.scss */
 .select2-results .select2-selected {
   display: none;
 }
-
-/* line 453, scss/partials/_select2.scss */
-.select2-more-results.select2-active {
-  background: #f4f4f4 url("select2-spinner.gif") no-repeat 100%;
-}
-
-/* line 457, scss/partials/_select2.scss */
+/* line 273, scss/partials/_select2.scss */
 .select2-results .select2-ajax-error {
-  background: rgba(255, 50, 50, 0.2);
+  color: #a94442;
 }
 
-/* line 461, scss/partials/_select2.scss */
+/* line 278, scss/partials/_select2.scss */
+.select2-results-dept-1 .select2-result-label {
+  padding-left: 20px;
+}
+
+/* line 279, scss/partials/_select2.scss */
+.select2-results-dept-2 .select2-result-label {
+  padding-left: 40px;
+}
+
+/* line 280, scss/partials/_select2.scss */
+.select2-results-dept-3 .select2-result-label {
+  padding-left: 60px;
+}
+
+/* line 281, scss/partials/_select2.scss */
+.select2-results-dept-4 .select2-result-label {
+  padding-left: 80px;
+}
+
+/* line 282, scss/partials/_select2.scss */
+.select2-results-dept-5 .select2-result-label {
+  padding-left: 100px;
+}
+
+/* line 283, scss/partials/_select2.scss */
+.select2-results-dept-6 .select2-result-label {
+  padding-left: 110px;
+}
+
+/* line 284, scss/partials/_select2.scss */
+.select2-results-dept-7 .select2-result-label {
+  padding-left: 120px;
+}
+
+/* line 286, scss/partials/_select2.scss */
 .select2-more-results {
   background: #f4f4f4;
   display: list-item;
 }
-
-/* disabled styles */
-/* line 468, scss/partials/_select2.scss */
-.select2-container.select2-container-disabled .select2-choice {
-  background-color: #f4f4f4;
-  background-image: none;
-  border: 1px solid #ddd;
-  cursor: default;
+/* line 289, scss/partials/_select2.scss */
+.select2-more-results.select2-active {
+  background: #f4f4f4 url("select2-spinner.gif") no-repeat 100%;
 }
 
-/* line 475, scss/partials/_select2.scss */
-.select2-container.select2-container-disabled .select2-choice .select2-arrow {
-  background-color: #f4f4f4;
-  background-image: none;
-  border-left: 0;
-}
-
-/* line 481, scss/partials/_select2.scss */
-.select2-container.select2-container-disabled .select2-choice abbr {
-  display: none;
-}
-
-/* multiselect */
-/* line 488, scss/partials/_select2.scss */
-.select2-container-multi .select2-choices {
-  height: auto !important;
-  height: 1%;
-  margin: 0;
-  padding: 0 5px 0 0;
-  position: relative;
-  border: 1px solid #aaa;
-  cursor: text;
-  overflow: hidden;
-  background-color: #fff;
-  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eeeeee), color-stop(15%, white));
-  background-image: -webkit-linear-gradient(top, #eeeeee 1%, white 15%);
-  background-image: -moz-linear-gradient(top, #eeeeee 1%, white 15%);
-  background-image: linear-gradient(to bottom, #eeeeee 1%, white 15%);
-}
-
-/* line 506, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-container-multi .select2-choices {
-  padding: 0 0 0 5px;
-}
-
-/* line 510, scss/partials/_select2.scss */
-.select2-locked {
-  padding: 3px 5px 3px 5px !important;
-}
-
-/* line 514, scss/partials/_select2.scss */
-.select2-container-multi .select2-choices {
-  min-height: 26px;
-}
-
-/* line 518, scss/partials/_select2.scss */
-.select2-container-multi.select2-container-active .select2-choices {
-  border: 1px solid #5897fb;
-  outline: none;
-  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
-
-/* line 525, scss/partials/_select2.scss */
-.select2-container-multi .select2-choices li {
-  float: left;
-  list-style: none;
-}
-
-/* line 529, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-container-multi .select2-choices li {
-  float: right;
-}
-
-/* line 533, scss/partials/_select2.scss */
-.select2-container-multi .select2-choices .select2-search-field {
-  margin: 0;
-  padding: 0;
-  white-space: nowrap;
-}
-
-/* line 539, scss/partials/_select2.scss */
-.select2-container-multi .select2-choices .select2-search-field input {
-  padding: 5px;
-  margin: 1px 0;
-  font-family: sans-serif;
-  font-size: 100%;
-  color: #666;
-  outline: 0;
-  border: 0;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  background: transparent !important;
-}
-
-/* line 553, scss/partials/_select2.scss */
-.select2-container-multi .select2-choices .select2-search-field input.select2-active {
-  background: white url("select2-spinner.gif") no-repeat 100% !important;
-}
-
-/* line 557, scss/partials/_select2.scss */
-.select2-default {
-  color: #999 !important;
-}
-
-/* line 561, scss/partials/_select2.scss */
-.select2-container-multi .select2-choices .select2-search-choice {
-  padding: 3px 5px 3px 18px;
-  margin: 3px 0 3px 5px;
-  position: relative;
-  line-height: 13px;
-  color: #333;
-  cursor: default;
-  border: 1px solid #aaaaaa;
-  border-radius: 3px;
-  -webkit-box-shadow: 0 0 2px white inset, 0 1px 0 rgba(0, 0, 0, 0.05);
-  box-shadow: 0 0 2px white inset, 0 1px 0 rgba(0, 0, 0, 0.05);
-  background-clip: padding-box;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background-color: #e4e4e4;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#f4f4f4', GradientType=0);
-  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #f4f4f4), color-stop(50%, #f0f0f0), color-stop(52%, #e8e8e8), color-stop(100%, #eeeeee));
-  background-image: -webkit-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
-  background-image: -moz-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
-  background-image: linear-gradient(to top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
-}
-
-/* line 591, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice {
-  margin: 3px 5px 3px 0;
-  padding: 3px 18px 3px 5px;
-}
-
-/* line 596, scss/partials/_select2.scss */
-.select2-container-multi .select2-choices .select2-search-choice .select2-chosen {
-  cursor: default;
-}
-
-/* line 599, scss/partials/_select2.scss */
-.select2-container-multi .select2-choices .select2-search-choice-focus {
-  background: #d4d4d4;
-}
-
-/* line 603, scss/partials/_select2.scss */
-.select2-search-choice-close {
-  display: block;
-  width: 12px;
-  height: 13px;
-  position: absolute;
-  right: 3px;
-  top: 4px;
-  font-size: 1px;
-  outline: none;
-  background: url("select2.png") right top no-repeat;
-}
-
-/* line 615, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-search-choice-close {
-  right: auto;
-  left: 3px;
-}
-
-/* line 620, scss/partials/_select2.scss */
-.select2-container-multi .select2-search-choice-close {
-  left: 3px;
-}
-
-/* line 624, scss/partials/_select2.scss */
-html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
-  left: auto;
-  right: 2px;
-}
-
-/* line 629, scss/partials/_select2.scss */
-.select2-container-multi .select2-choices .select2-search-choice .select2-search-choice-close:hover {
-  background-position: right -11px;
-}
-
-/* line 632, scss/partials/_select2.scss */
-.select2-container-multi .select2-choices .select2-search-choice-focus .select2-search-choice-close {
-  background-position: right -11px;
-}
-
-/* disabled styles */
-/* line 637, scss/partials/_select2.scss */
-.select2-container-multi.select2-container-disabled .select2-choices {
-  background-color: #f4f4f4;
-  background-image: none;
-  border: 1px solid #ddd;
-  cursor: default;
-}
-
-/* line 644, scss/partials/_select2.scss */
-.select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice {
-  padding: 3px 5px 3px 5px;
-  border: 1px solid #ddd;
-  background-image: none;
-  background-color: #f4f4f4;
-}
-
-/* line 651, scss/partials/_select2.scss */
-.select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice .select2-search-choice-close {
-  display: none;
-  background: none;
-}
-
-/* end multiselect */
-/* line 657, scss/partials/_select2.scss */
+/* line 294, scss/partials/_select2.scss */
 .select2-result-selectable .select2-match,
 .select2-result-unselectable .select2-match {
   text-decoration: underline;
 }
 
-/* line 662, scss/partials/_select2.scss */
+/* line 299, scss/partials/_select2.scss */
 .select2-offscreen, .select2-offscreen:focus {
   clip: rect(0 0 0 0) !important;
   width: 1px !important;
@@ -1032,12 +1500,12 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   top: 0px !important;
 }
 
-/* line 676, scss/partials/_select2.scss */
+/* line 313, scss/partials/_select2.scss */
 .select2-display-none {
   display: none;
 }
 
-/* line 680, scss/partials/_select2.scss */
+/* line 317, scss/partials/_select2.scss */
 .select2-measure-scrollbar {
   position: absolute;
   top: -10000px;
@@ -1047,29 +1515,168 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
   overflow: scroll;
 }
 
-/* Retina-ize icons */
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 2dppx) {
-  /* line 692, scss/partials/_select2.scss */
-  .select2-search input,
-  .select2-search-choice-close,
-  .select2-container .select2-choice abbr,
-  .select2-container .select2-choice .select2-arrow b {
-    background-image: url("select2x2.png") !important;
-    background-repeat: no-repeat !important;
-    background-size: 60px 40px !important;
-  }
-
-  /* line 701, scss/partials/_select2.scss */
-  .select2-search input {
-    background-position: 100% -21px !important;
-  }
+/* multiselect */
+/* line 327, scss/partials/_select2.scss */
+.select2-container-multi {
+  /* multiselect list */
+  /* active styles */
+  /* disabled styles */
 }
+/* line 330, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices {
+  background: white;
+  border: 1px solid #cfcfcf;
+  padding: 0 5px 0 0;
+  cursor: text;
+  overflow: hidden;
+  margin: 0;
+  /* multiselect items */
+  /* multiselect search item */
+  /* multiselect chosen item */
+}
+/* line 339, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li {
+  padding: 3px 6px;
+  margin: 3px;
+  margin-right: 0;
+  float: left;
+  list-style: none;
+}
+/* line 348, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li.select2-search-field {
+  padding-left: 0;
+  margin-left: 0;
+  white-space: nowrap;
+  margin: 0;
+  max-width: 100px !important;
+}
+/* line 354, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li.select2-search-field input {
+  margin-left: 0;
+  outline: 0;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  background: transparent !important;
+}
+/* line 364, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li.select2-search-choice {
+  cursor: default;
+  border: 1px solid #cfcfcf;
+  background: white;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* close */
+}
+/* line 374, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li.select2-search-choice > div {
+  float: right;
+}
+/* line 379, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li.select2-search-choice .select2-search-choice-close {
+  font-family: WooCommercePOS;
+  text-decoration: none;
+  color: #757575;
+  margin-right: 3px;
+}
+/* line 384, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li.select2-search-choice .select2-search-choice-close:before {
+  content: "\f057";
+}
+/* line 390, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices .select2-search-choice-focus {
+  background: #d4d4d4;
+}
+/* line 397, scss/partials/_select2.scss */
+.select2-container-multi.select2-container-active .select2-choices {
+  outline: none;
+}
+/* line 405, scss/partials/_select2.scss */
+.select2-container-multi.select2-container-disabled .select2-choices {
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  cursor: default;
+}
+/* line 410, scss/partials/_select2.scss */
+.select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice {
+  padding: 3px 5px 3px 5px;
+  border: 1px solid #ddd;
+  background-color: #f4f4f4;
+}
+/* line 415, scss/partials/_select2.scss */
+.select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice .select2-search-choice-close {
+  display: none;
+  background: none;
+}
+
+/* line 424, scss/partials/_select2.scss */
+.select2-locked {
+  padding: 3px 5px 3px 5px !important;
+}
+
+/* line 428, scss/partials/_select2.scss */
+.select2-default {
+  color: #999 !important;
+}
+
+/* rtl */
+/* line 434, scss/partials/_select2.scss */
+html[dir="rtl"] .select2-container .select2-choice .select2-arrow {
+  border-left: none;
+  border-right: 1px solid #cfcfcf;
+}
+/* line 438, scss/partials/_select2.scss */
+html[dir="rtl"] .select2-results {
+  padding: 0 4px 0 0;
+  margin: 4px 0 4px 4px;
+}
+/* line 442, scss/partials/_select2.scss */
+html[dir="rtl"] .select2-container-multi .select2-choices {
+  padding: 0 0 0 5px;
+}
+/* line 444, scss/partials/_select2.scss */
+html[dir="rtl"] .select2-container-multi .select2-choices li {
+  float: right;
+}
+/* line 448, scss/partials/_select2.scss */
+html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice {
+  margin: 3px 5px 3px 0;
+  padding: 3px 18px 3px 5px;
+}
+
 /* line 1, scss/partials/_loading.scss */
 .loading {
-  background: white url(../loader.gif) no-repeat center center;
-  height: 40px;
   width: 100%;
-  padding: 40px 0;
+}
+/* line 3, scss/partials/_loading.scss */
+.loading p {
+  text-align: center;
+  margin: 0;
+  padding: 24px;
+  color: #757575;
+}
+/* line 8, scss/partials/_loading.scss */
+.loading p:not(:first-child) {
+  padding-top: 0;
+}
+/* line 11, scss/partials/_loading.scss */
+.loading p:not(:last-child) {
+  padding-bottom: 0;
+}
+/* line 14, scss/partials/_loading.scss */
+.loading p .icon-fail {
+  font-size: 40px;
+}
+
+/* line 21, scss/partials/_loading.scss */
+.module .loading p {
+  background: white;
 }
 
 /* line 2, scss/partials/admin/_settings.scss */

@@ -129,6 +129,7 @@ body {
         .clear {
           display: none;
           color: $text-color;
+          background: white;
           padding: 0.5em 0.75em;
           line-height: 20px;
           border-top: 1px solid $input-border-color;

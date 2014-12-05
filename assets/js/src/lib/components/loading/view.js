@@ -1,8 +1,21 @@
 POS.module('Components.Loading', function(Loading, POS, Backbone, Marionette, $, _){
 
     Loading.Spinner = Marionette.ItemView.extend({
-        template: false,
-        className: 'loading'
+        className: 'loading',
+
+        initialize: function( options ){
+            this.on( 'update:message', this.render );
+        },
+
+        render: function() {
+            var message = '';
+            if( !_.isEmpty( this.options.message ) ) {
+                message = '<p>' + this.options.message + '</p>';
+            };
+            this.$el.html( '<p><i class="icon icon-spinner"></i></p>' + message );
+            return this;
+        }
+
     });
 
 });

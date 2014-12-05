@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2014-12-03 01:26:24+00:00\n"
+"POT-Creation-Date: 2014-12-05 02:26:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,15 +22,15 @@ msgstr ""
 msgid "POS"
 msgstr ""
 
-#: includes/class-wc-pos-params.php:85
+#: includes/class-wc-pos-params.php:86
 msgid "Help screen"
 msgstr ""
 
-#: includes/class-wc-pos-params.php:90
+#: includes/class-wc-pos-params.php:91
 msgid "Barcode mode"
 msgstr ""
 
-#: includes/class-wc-pos-params.php:95
+#: includes/class-wc-pos-params.php:96
 msgid "Sync with server"
 msgstr ""
 
@@ -99,19 +99,19 @@ msgstr ""
 msgid "Online Only"
 msgstr ""
 
-#: includes/views/pos/cart.php:27
+#: includes/views/pos/cart.php:28
 msgid "Quantity"
 msgstr ""
 
-#: includes/views/pos/cart.php:40
+#: includes/views/pos/cart.php:41
 msgid "Item Price"
 msgstr ""
 
-#: includes/views/pos/cart.php:119 includes/views/pos/cart.php:141
+#: includes/views/pos/cart.php:139 includes/views/pos/cart.php:161
 msgid "Discount"
 msgstr ""
 
-#: includes/views/pos/cart.php:137
+#: includes/views/pos/cart.php:157
 msgid "Void"
 msgstr ""
 
@@ -190,7 +190,7 @@ msgid ""
 "href=\"http://wordpress.org/plugins/woocommerce/\">WooCommerce</a>."
 msgstr ""
 
-#: includes/class-wc-pos-params.php:67
+#: includes/class-wc-pos-params.php:68
 msgctxt "Product tab: 'On Sale' products"
 msgid "On Sale"
 msgstr ""
@@ -206,12 +206,11 @@ msgid "Hotkeys"
 msgstr ""
 
 #: includes/views/pos/cart.php:9
-#. translators: woocommerce
 msgctxt "Abbreviation of Quantity"
 msgid "Qty"
 msgstr ""
 
-#: includes/views/pos/cart.php:98 includes/views/pos/cart.php:108
+#: includes/views/pos/cart.php:118 includes/views/pos/cart.php:128
 #: includes/views/pos/receipt.php:84 includes/views/pos/receipt.php:93
 msgctxt "abbreviation for includes (tax)"
 msgid "incl."

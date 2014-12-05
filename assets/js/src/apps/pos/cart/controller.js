@@ -136,6 +136,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             // maybe show totals, actions
             if( true ) {
                 this.showTotals();
+                this.showCustomer();
                 this.showActions();
                 this.showNotes();
             }
@@ -157,6 +158,22 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
             this.layout.totalsRegion.show( view );
 
+        },
+
+        /**
+         *
+         */
+        showCustomer: function(){
+            var view = POS.CustomerApp.channel.request('customer:select');
+
+            this.listenTo( view, 'customer:select', function( id, name ) {
+                this.order.save({
+                    customer_id: id,
+                    customer_name: name
+                });
+            }, this);
+
+            this.layout.customerRegion.show( view );
         },
 
         /**

@@ -1034,35 +1034,36 @@ body {
 .module .list-actions > div > .input-group .clear {
   display: none;
   color: #212121;
+  background: white;
   padding: 0.5em 0.75em;
   line-height: 20px;
   border-top: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
 }
-/* line 136, scss/partials/_scaffolding.scss */
+/* line 137, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .clear i {
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
-/* line 139, scss/partials/_scaffolding.scss */
+/* line 140, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .clear:hover i {
   opacity: 1;
   filter: alpha(opacity=100);
 }
-/* line 146, scss/partials/_scaffolding.scss */
+/* line 147, scss/partials/_scaffolding.scss */
 .module .list-header {
   display: -webkit-flex;
   display: flex;
   background-color: #607d8b;
   color: rgba(255, 255, 255, 0.9);
 }
-/* line 151, scss/partials/_scaffolding.scss */
+/* line 152, scss/partials/_scaffolding.scss */
 .module .list-header > div {
   padding: 8px;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 156, scss/partials/_scaffolding.scss */
+/* line 157, scss/partials/_scaffolding.scss */
 .module .list {
   -webkit-flex-shrink: 1;
   flex-shrink: 1;
@@ -1070,13 +1071,13 @@ body {
   display: -webkit-flex;
   display: flex;
 }
-/* line 160, scss/partials/_scaffolding.scss */
+/* line 161, scss/partials/_scaffolding.scss */
 .module .list ul {
   width: 100%;
   margin: 0;
   padding: 0;
 }
-/* line 164, scss/partials/_scaffolding.scss */
+/* line 165, scss/partials/_scaffolding.scss */
 .module .list ul li {
   border-bottom: 1px solid #e8e8e8;
   display: -webkit-flex;
@@ -1084,21 +1085,21 @@ body {
   -webkit-align-items: center;
   align-items: center;
 }
-/* line 168, scss/partials/_scaffolding.scss */
+/* line 169, scss/partials/_scaffolding.scss */
 .module .list ul li > div {
   padding: 8px;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 172, scss/partials/_scaffolding.scss */
+/* line 173, scss/partials/_scaffolding.scss */
 .module .list ul li:last-of-type {
   border-bottom: none;
 }
-/* line 178, scss/partials/_scaffolding.scss */
+/* line 179, scss/partials/_scaffolding.scss */
 .module .list ul.striped li:nth-of-type(even) {
   background: #f3f3f3;
 }
-/* line 184, scss/partials/_scaffolding.scss */
+/* line 185, scss/partials/_scaffolding.scss */
 .module .list-totals ul {
   width: 100%;
   width: 100%;
@@ -1107,7 +1108,7 @@ body {
   border-top: 2px solid #d9d9d9;
   border-bottom: 2px solid #d9d9d9;
 }
-/* line 191, scss/partials/_scaffolding.scss */
+/* line 192, scss/partials/_scaffolding.scss */
 .module .list-totals ul li {
   border-bottom: 1px solid #e8e8e8;
   display: -webkit-flex;
@@ -1115,21 +1116,21 @@ body {
   -webkit-align-items: center;
   align-items: center;
 }
-/* line 195, scss/partials/_scaffolding.scss */
+/* line 196, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div {
   padding: 8px;
 }
-/* line 197, scss/partials/_scaffolding.scss */
+/* line 198, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div:first-of-type {
   font-weight: bold;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 202, scss/partials/_scaffolding.scss */
+/* line 203, scss/partials/_scaffolding.scss */
 .module .list-totals ul li:last-of-type {
   border-bottom: none;
 }
-/* line 208, scss/partials/_scaffolding.scss */
+/* line 209, scss/partials/_scaffolding.scss */
 .module .list-footer {
   background: #cfd8dc;
   padding: 8px;
@@ -1137,10 +1138,31 @@ body {
 
 /* line 1, scss/partials/_loading.scss */
 .loading {
-  background: white url(../loader.gif) no-repeat center center;
-  height: 40px;
   width: 100%;
-  padding: 40px 0;
+}
+/* line 3, scss/partials/_loading.scss */
+.loading p {
+  text-align: center;
+  margin: 0;
+  padding: 24px;
+  color: #757575;
+}
+/* line 8, scss/partials/_loading.scss */
+.loading p:not(:first-child) {
+  padding-top: 0;
+}
+/* line 11, scss/partials/_loading.scss */
+.loading p:not(:last-child) {
+  padding-bottom: 0;
+}
+/* line 14, scss/partials/_loading.scss */
+.loading p .icon-fail {
+  font-size: 40px;
+}
+
+/* line 21, scss/partials/_loading.scss */
+.module .loading p {
+  background: white;
 }
 
 /* line 2, scss/partials/_common.scss */
@@ -1957,16 +1979,21 @@ input.btn:hover {
   display: block;
 }
 /* line 102, scss/partials/_cart.scss */
+.cart-module .cart-customer {
+  padding: 8px;
+  border-bottom: 2px solid #dbdbdb;
+}
+/* line 106, scss/partials/_cart.scss */
 .cart-module .cart-actions {
   text-align: right;
   padding: 8px;
   padding-bottom: 0;
 }
-/* line 106, scss/partials/_cart.scss */
+/* line 110, scss/partials/_cart.scss */
 .cart-module .cart-actions a {
   margin-bottom: 8px;
 }
-/* line 110, scss/partials/_cart.scss */
+/* line 114, scss/partials/_cart.scss */
 .cart-module .cart-notes {
   padding: 8px;
   border-top: 1px solid #dbdbdb;
@@ -2104,4 +2131,504 @@ input.btn:hover {
 /* line 96, scss/partials/_numpad.scss */
 .numpad-keys table.discount {
   border-left: 1px solid #ededed;
+}
+
+/* line 1, scss/partials/_select2.scss */
+.select2-container {
+  margin: 0;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  min-width: 200px;
+  /* faux select input */
+  /* above */
+  /* disabled styles */
+}
+/* line 9, scss/partials/_select2.scss */
+.select2-container .select2-choice {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  color: #212121;
+  text-decoration: none;
+  border: 1px solid #cfcfcf;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* selection */
+  /* arrow */
+  /* close */
+}
+/* line 22, scss/partials/_select2.scss */
+.select2-container .select2-choice > .select2-chosen {
+  background: #f3f3f3;
+  -webkit-flex: 1;
+  flex: 1;
+  padding: 3px 6px;
+  -moz-border-radius: 3px 0 0 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px 0 0 3px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* line 34, scss/partials/_select2.scss */
+.select2-container .select2-choice .select2-arrow {
+  background: #e8e8e8;
+  border-left: 1px solid #cfcfcf;
+  -moz-border-radius: 0 3px 3px 0;
+  -webkit-border-radius: 0;
+  border-radius: 0 3px 3px 0;
+  padding: 3px 6px;
+  font-family: WooCommercePOS;
+}
+/* line 42, scss/partials/_select2.scss */
+.select2-container .select2-choice .select2-arrow b:before {
+  content: "\f107";
+}
+/* line 49, scss/partials/_select2.scss */
+.select2-container .select2-choice abbr {
+  display: none;
+  cursor: pointer;
+  outline: 0;
+  padding: 3px 6px;
+  font-family: WooCommercePOS;
+  color: #757575;
+  background: #f3f3f3;
+}
+/* line 58, scss/partials/_select2.scss */
+.select2-container .select2-choice abbr:before {
+  content: "\f057";
+}
+/* line 62, scss/partials/_select2.scss */
+.select2-container .select2-choice abbr.select2-search-choice-close {
+  display: block;
+}
+/* line 71, scss/partials/_select2.scss */
+.select2-container.select2-drop-above .select2-choice {
+  border-bottom-color: #cfcfcf;
+  -moz-border-radius: 0 0 3px 3px;
+  -webkit-border-radius: 0;
+  border-radius: 0 0 3px 3px;
+}
+/* line 78, scss/partials/_select2.scss */
+.select2-container.select2-container-disabled .select2-choice {
+  background-color: #f4f4f4;
+  border: 1px solid #cfcfcf;
+  cursor: default;
+}
+/* line 84, scss/partials/_select2.scss */
+.select2-container.select2-container-disabled .select2-choice .select2-arrow {
+  background-color: #f4f4f4;
+  border-left: 0;
+}
+/* line 89, scss/partials/_select2.scss */
+.select2-container.select2-container-disabled .select2-choice abbr {
+  display: none;
+}
+
+/* line 94, scss/partials/_select2.scss */
+.select2-drop-mask {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  min-height: 100%;
+  min-width: 100%;
+  height: auto;
+  width: auto;
+  opacity: 0;
+  z-index: 9998;
+  /* styles required for IE to work */
+  background-color: #fff;
+  filter: alpha(opacity=0);
+}
+
+/* line 112, scss/partials/_select2.scss */
+.select2-drop {
+  width: 100%;
+  margin-top: -1px;
+  position: absolute;
+  z-index: 9999;
+  top: 100%;
+  background: #e8e8e8;
+  border: 1px solid #cfcfcf;
+  -moz-border-radius: 0 0 3px 3px;
+  -webkit-border-radius: 0;
+  border-radius: 0 0 3px 3px;
+}
+/* line 124, scss/partials/_select2.scss */
+.select2-drop.select2-drop-above {
+  -moz-border-radius: 3px 3px 0 0;
+  -webkit-border-radius: 3px;
+  border-radius: 3px 3px 0 0;
+  margin-top: 1px;
+}
+
+/* line 131, scss/partials/_select2.scss */
+.select2-drop-auto-width {
+  border-top: 1px solid #cfcfcf;
+  width: auto;
+}
+
+/* line 136, scss/partials/_select2.scss */
+.select2-search {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  z-index: 10000;
+  white-space: nowrap;
+  padding: 3px;
+}
+/* line 144, scss/partials/_select2.scss */
+.select2-search input {
+  border: 1px solid #cfcfcf;
+  padding: 3px 6px;
+  outline: 0;
+  width: 100%;
+}
+
+/* line 153, scss/partials/_select2.scss */
+.select2-container-active .select2-choice,
+.select2-container-active .select2-choices {
+  outline: none;
+}
+
+/* line 160, scss/partials/_select2.scss */
+.select2-dropdown-open .select2-choice {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+/* line 166, scss/partials/_select2.scss */
+.select2-dropdown-open .select2-choice .select2-arrow b:before {
+  content: "\f106";
+}
+/* line 174, scss/partials/_select2.scss */
+.select2-dropdown-open.select2-drop-above .select2-choice,
+.select2-dropdown-open.select2-drop-above .select2-choices {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* line 182, scss/partials/_select2.scss */
+.select2-hidden-accessible {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+/* results */
+/* line 194, scss/partials/_select2.scss */
+.select2-results {
+  max-height: 200px;
+  padding: 0 0 0 3px;
+  margin: 3px;
+  margin-left: 0;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+/* line 204, scss/partials/_select2.scss */
+.select2-results ul.select2-result-sub {
+  margin: 0;
+  padding-left: 0;
+}
+/* line 208, scss/partials/_select2.scss */
+.select2-results ul.select2-result-sub li {
+  list-style: none;
+  display: list-item;
+  background-image: none;
+}
+/* line 213, scss/partials/_select2.scss */
+.select2-results ul.select2-result-sub li.select2-result-with-children > .select2-result-label {
+  font-weight: bold;
+}
+/* line 218, scss/partials/_select2.scss */
+.select2-results ul.select2-result-sub em {
+  font-style: normal;
+}
+/* line 223, scss/partials/_select2.scss */
+.select2-results .select2-result-label {
+  padding: 3px 7px 4px;
+  margin: 0;
+  cursor: pointer;
+  min-height: 1em;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* line 234, scss/partials/_select2.scss */
+.select2-results .select2-highlighted {
+  background: #3875d7;
+  color: #fff;
+}
+/* line 238, scss/partials/_select2.scss */
+.select2-results .select2-highlighted em {
+  background: transparent;
+}
+/* line 242, scss/partials/_select2.scss */
+.select2-results .select2-highlighted ul {
+  background: #fff;
+  color: #000;
+}
+/* line 248, scss/partials/_select2.scss */
+.select2-results .select2-no-results,
+.select2-results .select2-searching,
+.select2-results .select2-ajax-error,
+.select2-results .select2-selection-limit {
+  display: list-item;
+  padding-left: 5px;
+}
+/* line 256, scss/partials/_select2.scss */
+.select2-results .select2-disabled {
+  background: #f4f4f4;
+  display: list-item;
+  cursor: default;
+}
+/* line 261, scss/partials/_select2.scss */
+.select2-results .select2-disabled.select2-highlighted {
+  color: #666;
+  background: #f4f4f4;
+  display: list-item;
+  cursor: default;
+}
+/* line 269, scss/partials/_select2.scss */
+.select2-results .select2-selected {
+  display: none;
+}
+/* line 273, scss/partials/_select2.scss */
+.select2-results .select2-ajax-error {
+  color: #a94442;
+}
+
+/* line 278, scss/partials/_select2.scss */
+.select2-results-dept-1 .select2-result-label {
+  padding-left: 20px;
+}
+
+/* line 279, scss/partials/_select2.scss */
+.select2-results-dept-2 .select2-result-label {
+  padding-left: 40px;
+}
+
+/* line 280, scss/partials/_select2.scss */
+.select2-results-dept-3 .select2-result-label {
+  padding-left: 60px;
+}
+
+/* line 281, scss/partials/_select2.scss */
+.select2-results-dept-4 .select2-result-label {
+  padding-left: 80px;
+}
+
+/* line 282, scss/partials/_select2.scss */
+.select2-results-dept-5 .select2-result-label {
+  padding-left: 100px;
+}
+
+/* line 283, scss/partials/_select2.scss */
+.select2-results-dept-6 .select2-result-label {
+  padding-left: 110px;
+}
+
+/* line 284, scss/partials/_select2.scss */
+.select2-results-dept-7 .select2-result-label {
+  padding-left: 120px;
+}
+
+/* line 286, scss/partials/_select2.scss */
+.select2-more-results {
+  background: #f4f4f4;
+  display: list-item;
+}
+/* line 289, scss/partials/_select2.scss */
+.select2-more-results.select2-active {
+  background: #f4f4f4 url("select2-spinner.gif") no-repeat 100%;
+}
+
+/* line 294, scss/partials/_select2.scss */
+.select2-result-selectable .select2-match,
+.select2-result-unselectable .select2-match {
+  text-decoration: underline;
+}
+
+/* line 299, scss/partials/_select2.scss */
+.select2-offscreen, .select2-offscreen:focus {
+  clip: rect(0 0 0 0) !important;
+  width: 1px !important;
+  height: 1px !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  outline: 0 !important;
+  left: 0px !important;
+  top: 0px !important;
+}
+
+/* line 313, scss/partials/_select2.scss */
+.select2-display-none {
+  display: none;
+}
+
+/* line 317, scss/partials/_select2.scss */
+.select2-measure-scrollbar {
+  position: absolute;
+  top: -10000px;
+  left: -10000px;
+  width: 100px;
+  height: 100px;
+  overflow: scroll;
+}
+
+/* multiselect */
+/* line 327, scss/partials/_select2.scss */
+.select2-container-multi {
+  /* multiselect list */
+  /* active styles */
+  /* disabled styles */
+}
+/* line 330, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices {
+  background: #f3f3f3;
+  border: 1px solid #cfcfcf;
+  padding: 0 5px 0 0;
+  cursor: text;
+  overflow: hidden;
+  margin: 0;
+  /* multiselect items */
+  /* multiselect search item */
+  /* multiselect chosen item */
+}
+/* line 339, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li {
+  padding: 3px 6px;
+  margin: 3px;
+  margin-right: 0;
+  float: left;
+  list-style: none;
+}
+/* line 348, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li.select2-search-field {
+  padding-left: 0;
+  margin-left: 0;
+  white-space: nowrap;
+  margin: 0;
+  max-width: 100px !important;
+}
+/* line 354, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li.select2-search-field input {
+  margin-left: 0;
+  outline: 0;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  background: transparent !important;
+}
+/* line 364, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li.select2-search-choice {
+  cursor: default;
+  border: 1px solid #cfcfcf;
+  background: #f3f3f3;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* close */
+}
+/* line 374, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li.select2-search-choice > div {
+  float: right;
+}
+/* line 379, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li.select2-search-choice .select2-search-choice-close {
+  font-family: WooCommercePOS;
+  text-decoration: none;
+  color: #757575;
+  margin-right: 3px;
+}
+/* line 384, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices li.select2-search-choice .select2-search-choice-close:before {
+  content: "\f057";
+}
+/* line 390, scss/partials/_select2.scss */
+.select2-container-multi .select2-choices .select2-search-choice-focus {
+  background: #d4d4d4;
+}
+/* line 397, scss/partials/_select2.scss */
+.select2-container-multi.select2-container-active .select2-choices {
+  outline: none;
+}
+/* line 405, scss/partials/_select2.scss */
+.select2-container-multi.select2-container-disabled .select2-choices {
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  cursor: default;
+}
+/* line 410, scss/partials/_select2.scss */
+.select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice {
+  padding: 3px 5px 3px 5px;
+  border: 1px solid #ddd;
+  background-color: #f4f4f4;
+}
+/* line 415, scss/partials/_select2.scss */
+.select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice .select2-search-choice-close {
+  display: none;
+  background: none;
+}
+
+/* line 424, scss/partials/_select2.scss */
+.select2-locked {
+  padding: 3px 5px 3px 5px !important;
+}
+
+/* line 428, scss/partials/_select2.scss */
+.select2-default {
+  color: #999 !important;
+}
+
+/* rtl */
+/* line 434, scss/partials/_select2.scss */
+html[dir="rtl"] .select2-container .select2-choice .select2-arrow {
+  border-left: none;
+  border-right: 1px solid #cfcfcf;
+}
+/* line 438, scss/partials/_select2.scss */
+html[dir="rtl"] .select2-results {
+  padding: 0 4px 0 0;
+  margin: 4px 0 4px 4px;
+}
+/* line 442, scss/partials/_select2.scss */
+html[dir="rtl"] .select2-container-multi .select2-choices {
+  padding: 0 0 0 5px;
+}
+/* line 444, scss/partials/_select2.scss */
+html[dir="rtl"] .select2-container-multi .select2-choices li {
+  float: right;
+}
+/* line 448, scss/partials/_select2.scss */
+html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice {
+  margin: 3px 5px 3px 0;
+  padding: 3px 18px 3px 5px;
 }

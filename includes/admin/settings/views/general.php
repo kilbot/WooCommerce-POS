@@ -10,9 +10,9 @@
 	<table class="form-table">
 
 		<tr>
-			<th scope="row"><label for="grant_access"><?php _e( 'Grant POS Access', 'woocommerce-pos' ); ?></label></th>
+			<th scope="row"><label for="grant_access[]"><?php _e( 'Grant POS Access', 'woocommerce-pos' ); ?></label></th>
 			<td>
-				<select multiple name="grant_access" id="grant_access" class="select2">
+				<select multiple name="grant_access[]" id="grant_access[]" class="select2">
 					<?php global $wp_roles; if( $roles = $wp_roles->roles ): foreach( $roles as $slug => $role ):  ?>
 						<option value="<?php echo $slug ?>"><?php echo $role['name'] ?></option>
 					<?php endforeach; endif; ?>

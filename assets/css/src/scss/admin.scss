@@ -1,10 +1,17 @@
-@import "partials/admin/variables"; // overrides bootstrap
+@import "compass";
+@import "partials/palette";
+@import "partials/variables";
+@import "partials/admin/variables";
 
-// Core variables and mixins
+// Vendor
+@import "partials/normalize";
+
+// Bootstrap
 @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
 @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins";
-
-// Components w/ JavaScript
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/print";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/dropdowns";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/popovers";
 @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/modals";
 @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/tooltip";
 

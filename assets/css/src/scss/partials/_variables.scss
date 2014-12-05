@@ -75,3 +75,16 @@ $state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%) 
 $state-danger-text:              #a94442 !default;
 $state-danger-bg:                #f2dede !default;
 $state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%) !default;
+
+// Select 2
+$select2-spacing      : 3px;
+$select2-text-color   : $text-color;
+$select2-border-color : darken($border-color, 10%);
+$select2-border-radius: $border-radius-base;
+$select2-input-bg     : $alternate-bg;
+$select2-arrow-bg     : $border-color;
+$select2-drop-bg      : $border-color;
+$select2-disabled-text: $secondary-text-color;
+$select2-disabled-bg  : #f4f4f4;
+$select2-error-text-color: $state-danger-text;
+$select2-close-color  : $secondary-text-color;

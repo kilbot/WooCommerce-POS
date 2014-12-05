@@ -5,7 +5,7 @@ POS.module('Components.Select2', function(Select2, POS, Backbone, Marionette, $,
         initialize: function(options){
 
             this.options = _.defaults(options, {
-                minimumInputLength	: 2,
+                //minimumInputLength	: 2,
                 //formatResult		: this.view.formatResult,
                 //formatSelection 	: this.view.formatSelection,
 

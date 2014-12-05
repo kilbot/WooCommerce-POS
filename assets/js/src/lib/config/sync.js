@@ -7,3 +7,8 @@ Backbone.sync = _.wrap(Backbone.sync, function(fn, method, model, options) {
     });
     return fn.call(this, method, model, options);
 });
+
+/**
+ * Set global timeout 50sec
+ */
+Backbone.$.ajaxSetup({timeout:50000});

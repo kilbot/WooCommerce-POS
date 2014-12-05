@@ -99,6 +99,10 @@
       }
     }
   }
+  .cart-customer {
+    padding: $spacing/3;
+    border-bottom: 2px solid darken( $list-border-color, 5% );
+  }
   .cart-actions {
     text-align: right;
     padding: $spacing/3;

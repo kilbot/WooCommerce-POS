@@ -6,7 +6,7 @@
 
 <script type="text/template" id="tmpl-cart">
 	<div class="list-header">
-		<div class="qty"><?php /* translators: woocommerce */ _ex( 'Qty', 'Abbreviation of Quantity', 'woocommerce-pos' ); ?></div>
+		<div class="qty"><?php _ex( 'Qty', 'Abbreviation of Quantity', 'woocommerce-pos' ); ?></div>
 		<div class="title"><?php /* translators: woocommerce */ _e( 'Product', 'woocommerce' ); ?></div>
 		<div class="more">&nbsp;</div>
 		<div class="price"><?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?></div>
@@ -15,6 +15,7 @@
 	</div>
 	<div class="list"></div>
 	<div class="list-totals"></div>
+	<div class="cart-customer"></div>
 	<div class="cart-actions"></div>
 	<div class="cart-notes"></div>
 </script>

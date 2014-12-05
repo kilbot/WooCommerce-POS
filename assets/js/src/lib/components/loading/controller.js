@@ -29,14 +29,15 @@ POS.module('Components.Loading', function(Loading, POS, Backbone, Marionette, $,
             config = _.isBoolean(config) ? {} : config;
 
             _.defaults(config, {
-                loadingType : 'spinner'
+                loadingType : 'spinner',
+                loadingMessage : ''
                 // entities 	: this.getEntities(view),
                 // debug 		: false
             });
 
             switch (config.loadingType) {
                 case 'spinner':
-                    var loadingView = new Loading.Spinner();
+                    var loadingView = new Loading.Spinner({ message: config.loadingMessage });
                     this.show(loadingView);
                 break;
                 case 'opacity':
@@ -58,7 +59,7 @@ POS.module('Components.Loading', function(Loading, POS, Backbone, Marionette, $,
                 array = [config.entities];
             }
 
-            $.when.apply( $, array ).always( function(){
+            $.when.apply( $, array ).done( function( data, textStatus, jqXHR ){
                 switch (config.loadingType) {
                     case 'spinner':
                         if(self.region.currentView !== loadingView) {
@@ -70,9 +71,15 @@ POS.module('Components.Loading', function(Loading, POS, Backbone, Marionette, $,
                     break;
                 }
                 self.show(realView);
+            }).fail( function( jqXHR, textStatus, errorThrown ){
+                POS.debugLog('error', errorThrown);
+
+                loadingView.options.message = textStatus;
+                loadingView.trigger('update:message');
+                loadingView.$('.icon').removeClass('icon-spinner').addClass('icon-fail');
             });
 
-        },
+        }
 
         // getEntities: function(view) {
         // 	_.chain(view).pick('model', 'collection').toArray().compact().value();
