@@ -49,7 +49,7 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             subtotal_tax  = _( this.pluck('subtotal_tax') ).reduce( function(memo, num){ return memo + num; }, 0 );
             total 		  = _( this.pluck('total') ).reduce( function(memo, num){ return memo + num; }, 0 );
 
-            if( POS.tax.calc_taxes === 'yes' ) {
+            if( POS.getOption('tax').calc_taxes === 'yes' ) {
                 total_tax = _( this.pluck('total_tax') ).reduce( function(memo, num){ return memo + num; }, 0 );
             }
 

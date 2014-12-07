@@ -863,6 +863,290 @@ th {
   bottom: -10px;
 }
 
+/* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-open {
+  overflow: hidden;
+}
+
+/* line 16, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal {
+  display: none;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+/* line 32, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal.fade .modal-dialog {
+  -webkit-transform: translate3d(0, -25%, 0);
+  transform: translate3d(0, -25%, 0);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -moz-transition: -moz-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+}
+/* line 36, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal.in .modal-dialog {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+/* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* line 44, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 10px;
+}
+
+/* line 51, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-content {
+  position: relative;
+  background-color: white;
+  border: 1px solid #999999;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  background-clip: padding-box;
+  outline: 0;
+}
+
+/* line 64, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: black;
+}
+/* line 73, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-backdrop.fade {
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+/* line 74, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-backdrop.in {
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+
+/* line 79, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+  min-height: 16.428571429px;
+}
+
+/* line 85, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-header .close {
+  margin-top: -2px;
+}
+
+/* line 90, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-title {
+  margin: 0;
+  line-height: 1.428571429;
+}
+
+/* line 97, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-body {
+  position: relative;
+  padding: 15px;
+}
+
+/* line 103, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+/* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+.modal-footer:before, .modal-footer:after {
+  content: " ";
+  display: table;
+}
+/* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+.modal-footer:after {
+  clear: both;
+}
+/* line 110, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-footer .btn + .btn {
+  margin-left: 5px;
+  margin-bottom: 0;
+}
+/* line 115, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-footer .btn-group .btn + .btn {
+  margin-left: -1px;
+}
+/* line 119, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-footer .btn-block + .btn-block {
+  margin-left: 0;
+}
+
+/* line 125, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+.modal-scrollbar-measure {
+  position: absolute;
+  top: -9999px;
+  width: 50px;
+  height: 50px;
+  overflow: scroll;
+}
+
+@media (min-width: 768px) {
+  /* line 136, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+  .modal-dialog {
+    width: 600px;
+    margin: 30px auto;
+  }
+
+  /* line 140, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+  .modal-content {
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  }
+
+  /* line 145, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+  .modal-sm {
+    width: 300px;
+  }
+}
+@media (min-width: 992px) {
+  /* line 149, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+  .modal-lg {
+    width: 900px;
+  }
+}
+/* line 7, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip {
+  position: absolute;
+  z-index: 1070;
+  display: block;
+  visibility: visible;
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+/* line 16, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.in {
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+}
+/* line 17, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.top {
+  margin-top: -3px;
+  padding: 5px 0;
+}
+/* line 18, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.right {
+  margin-left: 3px;
+  padding: 0 5px;
+}
+/* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.bottom {
+  margin-top: 3px;
+  padding: 5px 0;
+}
+/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.left {
+  margin-left: -3px;
+  padding: 0 5px;
+}
+
+/* line 24, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip-inner {
+  max-width: 200px;
+  padding: 3px 8px;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  background-color: black;
+  border-radius: 3px;
+}
+
+/* line 35, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+
+/* line 43, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.top .tooltip-arrow {
+  bottom: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: black;
+}
+/* line 50, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.top-left .tooltip-arrow {
+  bottom: 0;
+  left: 5px;
+  border-width: 5px 5px 0;
+  border-top-color: black;
+}
+/* line 56, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.top-right .tooltip-arrow {
+  bottom: 0;
+  right: 5px;
+  border-width: 5px 5px 0;
+  border-top-color: black;
+}
+/* line 62, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.right .tooltip-arrow {
+  top: 50%;
+  left: 0;
+  margin-top: -5px;
+  border-width: 5px 5px 5px 0;
+  border-right-color: black;
+}
+/* line 69, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.left .tooltip-arrow {
+  top: 50%;
+  right: 0;
+  margin-top: -5px;
+  border-width: 5px 0 5px 5px;
+  border-left-color: black;
+}
+/* line 76, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.bottom .tooltip-arrow {
+  top: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: black;
+}
+/* line 83, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.bottom-left .tooltip-arrow {
+  top: 0;
+  left: 5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: black;
+}
+/* line 89, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+.tooltip.bottom-right .tooltip-arrow {
+  top: 0;
+  right: 5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: black;
+}
+
 /* apply a natural box layout model to all elements, but allowing components to change */
 /* line 2, scss/partials/_scaffolding.scss */
 html {
@@ -2134,6 +2418,16 @@ input.btn:hover {
 }
 
 /* line 1, scss/partials/_select2.scss */
+.select2-container,
+.select2-drop,
+.select2-search,
+.select2-search input {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 8, scss/partials/_select2.scss */
 .select2-container {
   margin: 0;
   position: relative;
@@ -2141,10 +2435,11 @@ input.btn:hover {
   vertical-align: middle;
   min-width: 200px;
   /* faux select input */
+  /* allow close */
   /* above */
   /* disabled styles */
 }
-/* line 9, scss/partials/_select2.scss */
+/* line 16, scss/partials/_select2.scss */
 .select2-container .select2-choice {
   display: -webkit-flex;
   display: flex;
@@ -2165,7 +2460,7 @@ input.btn:hover {
   /* arrow */
   /* close */
 }
-/* line 22, scss/partials/_select2.scss */
+/* line 29, scss/partials/_select2.scss */
 .select2-container .select2-choice > .select2-chosen {
   background: #f3f3f3;
   -webkit-flex: 1;
@@ -2178,7 +2473,7 @@ input.btn:hover {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-/* line 34, scss/partials/_select2.scss */
+/* line 41, scss/partials/_select2.scss */
 .select2-container .select2-choice .select2-arrow {
   background: #e8e8e8;
   border-left: 1px solid #cfcfcf;
@@ -2188,13 +2483,12 @@ input.btn:hover {
   padding: 3px 6px;
   font-family: WooCommercePOS;
 }
-/* line 42, scss/partials/_select2.scss */
+/* line 49, scss/partials/_select2.scss */
 .select2-container .select2-choice .select2-arrow b:before {
   content: "\f107";
 }
-/* line 49, scss/partials/_select2.scss */
+/* line 56, scss/partials/_select2.scss */
 .select2-container .select2-choice abbr {
-  display: none;
   cursor: pointer;
   outline: 0;
   padding: 3px 6px;
@@ -2202,38 +2496,42 @@ input.btn:hover {
   color: #757575;
   background: #f3f3f3;
 }
-/* line 58, scss/partials/_select2.scss */
+/* line 65, scss/partials/_select2.scss */
 .select2-container .select2-choice abbr:before {
   content: "\f057";
 }
-/* line 62, scss/partials/_select2.scss */
+/* line 69, scss/partials/_select2.scss */
 .select2-container .select2-choice abbr.select2-search-choice-close {
+  display: none;
+}
+/* line 78, scss/partials/_select2.scss */
+.select2-container.select2-allowclear .select2-choice abbr.select2-search-choice-close {
   display: block;
 }
-/* line 71, scss/partials/_select2.scss */
+/* line 85, scss/partials/_select2.scss */
 .select2-container.select2-drop-above .select2-choice {
   border-bottom-color: #cfcfcf;
   -moz-border-radius: 0 0 3px 3px;
   -webkit-border-radius: 0;
   border-radius: 0 0 3px 3px;
 }
-/* line 78, scss/partials/_select2.scss */
+/* line 92, scss/partials/_select2.scss */
 .select2-container.select2-container-disabled .select2-choice {
   background-color: #f4f4f4;
   border: 1px solid #cfcfcf;
   cursor: default;
 }
-/* line 84, scss/partials/_select2.scss */
+/* line 98, scss/partials/_select2.scss */
 .select2-container.select2-container-disabled .select2-choice .select2-arrow {
   background-color: #f4f4f4;
   border-left: 0;
 }
-/* line 89, scss/partials/_select2.scss */
+/* line 103, scss/partials/_select2.scss */
 .select2-container.select2-container-disabled .select2-choice abbr {
   display: none;
 }
 
-/* line 94, scss/partials/_select2.scss */
+/* line 108, scss/partials/_select2.scss */
 .select2-drop-mask {
   border: 0;
   margin: 0;
@@ -2252,7 +2550,8 @@ input.btn:hover {
   filter: alpha(opacity=0);
 }
 
-/* line 112, scss/partials/_select2.scss */
+/* select search */
+/* line 127, scss/partials/_select2.scss */
 .select2-drop {
   width: 100%;
   margin-top: -1px;
@@ -2264,23 +2563,19 @@ input.btn:hover {
   -moz-border-radius: 0 0 3px 3px;
   -webkit-border-radius: 0;
   border-radius: 0 0 3px 3px;
+  /* select search */
+  /* hide search box */
+  /* results */
 }
-/* line 124, scss/partials/_select2.scss */
+/* line 139, scss/partials/_select2.scss */
 .select2-drop.select2-drop-above {
   -moz-border-radius: 3px 3px 0 0;
   -webkit-border-radius: 3px;
   border-radius: 3px 3px 0 0;
   margin-top: 1px;
 }
-
-/* line 131, scss/partials/_select2.scss */
-.select2-drop-auto-width {
-  border-top: 1px solid #cfcfcf;
-  width: auto;
-}
-
-/* line 136, scss/partials/_select2.scss */
-.select2-search {
+/* line 145, scss/partials/_select2.scss */
+.select2-drop .select2-search {
   display: inline-block;
   width: 100%;
   position: relative;
@@ -2288,37 +2583,132 @@ input.btn:hover {
   white-space: nowrap;
   padding: 3px;
 }
-/* line 144, scss/partials/_select2.scss */
-.select2-search input {
+/* line 153, scss/partials/_select2.scss */
+.select2-drop .select2-search input {
   border: 1px solid #cfcfcf;
   padding: 3px 6px;
   outline: 0;
   width: 100%;
 }
+/* line 163, scss/partials/_select2.scss */
+.select2-drop.no-search .select2-search {
+  display: none;
+}
+/* line 169, scss/partials/_select2.scss */
+.select2-drop .select2-results {
+  max-height: 200px;
+  padding: 0 0 0 3px;
+  margin: 3px;
+  margin-left: 0;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+/* line 179, scss/partials/_select2.scss */
+.select2-drop .select2-results ul.select2-result-sub {
+  margin: 0;
+  padding-left: 0;
+}
+/* line 183, scss/partials/_select2.scss */
+.select2-drop .select2-results ul.select2-result-sub li {
+  list-style: none;
+  display: list-item;
+  background-image: none;
+}
+/* line 188, scss/partials/_select2.scss */
+.select2-drop .select2-results ul.select2-result-sub li.select2-result-with-children > .select2-result-label {
+  font-weight: bold;
+}
+/* line 193, scss/partials/_select2.scss */
+.select2-drop .select2-results ul.select2-result-sub em {
+  font-style: normal;
+}
+/* line 198, scss/partials/_select2.scss */
+.select2-drop .select2-results .select2-result-label {
+  padding: 3px 7px 4px;
+  margin: 0;
+  cursor: pointer;
+  min-height: 1em;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* line 209, scss/partials/_select2.scss */
+.select2-drop .select2-results .select2-highlighted {
+  background: #3875d7;
+  color: #fff;
+}
+/* line 213, scss/partials/_select2.scss */
+.select2-drop .select2-results .select2-highlighted em {
+  background: transparent;
+}
+/* line 217, scss/partials/_select2.scss */
+.select2-drop .select2-results .select2-highlighted ul {
+  background: #fff;
+  color: #000;
+}
+/* line 223, scss/partials/_select2.scss */
+.select2-drop .select2-results .select2-no-results,
+.select2-drop .select2-results .select2-searching,
+.select2-drop .select2-results .select2-ajax-error,
+.select2-drop .select2-results .select2-selection-limit {
+  display: list-item;
+  padding-left: 5px;
+}
+/* line 231, scss/partials/_select2.scss */
+.select2-drop .select2-results .select2-disabled {
+  background: #f4f4f4;
+  display: list-item;
+  cursor: default;
+}
+/* line 236, scss/partials/_select2.scss */
+.select2-drop .select2-results .select2-disabled.select2-highlighted {
+  color: #666;
+  background: #f4f4f4;
+  display: list-item;
+  cursor: default;
+}
+/* line 244, scss/partials/_select2.scss */
+.select2-drop .select2-results .select2-selected {
+  display: none;
+}
+/* line 248, scss/partials/_select2.scss */
+.select2-drop .select2-results .select2-ajax-error {
+  color: #a94442;
+}
 
-/* line 153, scss/partials/_select2.scss */
+/* line 255, scss/partials/_select2.scss */
+.select2-drop-auto-width {
+  border-top: 1px solid #cfcfcf;
+  width: auto;
+}
+
+/* line 261, scss/partials/_select2.scss */
 .select2-container-active .select2-choice,
 .select2-container-active .select2-choices {
   outline: none;
 }
 
-/* line 160, scss/partials/_select2.scss */
+/* line 268, scss/partials/_select2.scss */
 .select2-dropdown-open .select2-choice {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-/* line 166, scss/partials/_select2.scss */
+/* line 274, scss/partials/_select2.scss */
 .select2-dropdown-open .select2-choice .select2-arrow b:before {
   content: "\f106";
 }
-/* line 174, scss/partials/_select2.scss */
+/* line 282, scss/partials/_select2.scss */
 .select2-dropdown-open.select2-drop-above .select2-choice,
 .select2-dropdown-open.select2-drop-above .select2-choices {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
-/* line 182, scss/partials/_select2.scss */
+/* line 290, scss/partials/_select2.scss */
 .select2-hidden-accessible {
   border: 0;
   clip: rect(0 0 0 0);
@@ -2330,145 +2720,58 @@ input.btn:hover {
   width: 1px;
 }
 
-/* results */
-/* line 194, scss/partials/_select2.scss */
-.select2-results {
-  max-height: 200px;
-  padding: 0 0 0 3px;
-  margin: 3px;
-  margin-left: 0;
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-tap-highlight-color: transparent;
-}
-/* line 204, scss/partials/_select2.scss */
-.select2-results ul.select2-result-sub {
-  margin: 0;
-  padding-left: 0;
-}
-/* line 208, scss/partials/_select2.scss */
-.select2-results ul.select2-result-sub li {
-  list-style: none;
-  display: list-item;
-  background-image: none;
-}
-/* line 213, scss/partials/_select2.scss */
-.select2-results ul.select2-result-sub li.select2-result-with-children > .select2-result-label {
-  font-weight: bold;
-}
-/* line 218, scss/partials/_select2.scss */
-.select2-results ul.select2-result-sub em {
-  font-style: normal;
-}
-/* line 223, scss/partials/_select2.scss */
-.select2-results .select2-result-label {
-  padding: 3px 7px 4px;
-  margin: 0;
-  cursor: pointer;
-  min-height: 1em;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-/* line 234, scss/partials/_select2.scss */
-.select2-results .select2-highlighted {
-  background: #3875d7;
-  color: #fff;
-}
-/* line 238, scss/partials/_select2.scss */
-.select2-results .select2-highlighted em {
-  background: transparent;
-}
-/* line 242, scss/partials/_select2.scss */
-.select2-results .select2-highlighted ul {
-  background: #fff;
-  color: #000;
-}
-/* line 248, scss/partials/_select2.scss */
-.select2-results .select2-no-results,
-.select2-results .select2-searching,
-.select2-results .select2-ajax-error,
-.select2-results .select2-selection-limit {
-  display: list-item;
-  padding-left: 5px;
-}
-/* line 256, scss/partials/_select2.scss */
-.select2-results .select2-disabled {
-  background: #f4f4f4;
-  display: list-item;
-  cursor: default;
-}
-/* line 261, scss/partials/_select2.scss */
-.select2-results .select2-disabled.select2-highlighted {
-  color: #666;
-  background: #f4f4f4;
-  display: list-item;
-  cursor: default;
-}
-/* line 269, scss/partials/_select2.scss */
-.select2-results .select2-selected {
-  display: none;
-}
-/* line 273, scss/partials/_select2.scss */
-.select2-results .select2-ajax-error {
-  color: #a94442;
-}
-
-/* line 278, scss/partials/_select2.scss */
+/* line 301, scss/partials/_select2.scss */
 .select2-results-dept-1 .select2-result-label {
   padding-left: 20px;
 }
 
-/* line 279, scss/partials/_select2.scss */
+/* line 302, scss/partials/_select2.scss */
 .select2-results-dept-2 .select2-result-label {
   padding-left: 40px;
 }
 
-/* line 280, scss/partials/_select2.scss */
+/* line 303, scss/partials/_select2.scss */
 .select2-results-dept-3 .select2-result-label {
   padding-left: 60px;
 }
 
-/* line 281, scss/partials/_select2.scss */
+/* line 304, scss/partials/_select2.scss */
 .select2-results-dept-4 .select2-result-label {
   padding-left: 80px;
 }
 
-/* line 282, scss/partials/_select2.scss */
+/* line 305, scss/partials/_select2.scss */
 .select2-results-dept-5 .select2-result-label {
   padding-left: 100px;
 }
 
-/* line 283, scss/partials/_select2.scss */
+/* line 306, scss/partials/_select2.scss */
 .select2-results-dept-6 .select2-result-label {
   padding-left: 110px;
 }
 
-/* line 284, scss/partials/_select2.scss */
+/* line 307, scss/partials/_select2.scss */
 .select2-results-dept-7 .select2-result-label {
   padding-left: 120px;
 }
 
-/* line 286, scss/partials/_select2.scss */
+/* line 309, scss/partials/_select2.scss */
 .select2-more-results {
   background: #f4f4f4;
   display: list-item;
 }
-/* line 289, scss/partials/_select2.scss */
+/* line 312, scss/partials/_select2.scss */
 .select2-more-results.select2-active {
   background: #f4f4f4 url("select2-spinner.gif") no-repeat 100%;
 }
 
-/* line 294, scss/partials/_select2.scss */
+/* line 317, scss/partials/_select2.scss */
 .select2-result-selectable .select2-match,
 .select2-result-unselectable .select2-match {
   text-decoration: underline;
 }
 
-/* line 299, scss/partials/_select2.scss */
+/* line 322, scss/partials/_select2.scss */
 .select2-offscreen, .select2-offscreen:focus {
   clip: rect(0 0 0 0) !important;
   width: 1px !important;
@@ -2483,12 +2786,12 @@ input.btn:hover {
   top: 0px !important;
 }
 
-/* line 313, scss/partials/_select2.scss */
+/* line 336, scss/partials/_select2.scss */
 .select2-display-none {
   display: none;
 }
 
-/* line 317, scss/partials/_select2.scss */
+/* line 340, scss/partials/_select2.scss */
 .select2-measure-scrollbar {
   position: absolute;
   top: -10000px;
@@ -2499,13 +2802,13 @@ input.btn:hover {
 }
 
 /* multiselect */
-/* line 327, scss/partials/_select2.scss */
+/* line 350, scss/partials/_select2.scss */
 .select2-container-multi {
   /* multiselect list */
   /* active styles */
   /* disabled styles */
 }
-/* line 330, scss/partials/_select2.scss */
+/* line 353, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices {
   background: #f3f3f3;
   border: 1px solid #cfcfcf;
@@ -2517,15 +2820,15 @@ input.btn:hover {
   /* multiselect search item */
   /* multiselect chosen item */
 }
-/* line 339, scss/partials/_select2.scss */
+/* line 362, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li {
-  padding: 3px 6px;
+  padding: 1px 6px;
   margin: 3px;
   margin-right: 0;
   float: left;
   list-style: none;
 }
-/* line 348, scss/partials/_select2.scss */
+/* line 371, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-field {
   padding-left: 0;
   margin-left: 0;
@@ -2533,7 +2836,7 @@ input.btn:hover {
   margin: 0;
   max-width: 100px !important;
 }
-/* line 354, scss/partials/_select2.scss */
+/* line 377, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-field input {
   margin-left: 0;
   outline: 0;
@@ -2542,11 +2845,11 @@ input.btn:hover {
   box-shadow: none;
   background: transparent !important;
 }
-/* line 364, scss/partials/_select2.scss */
+/* line 387, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-choice {
   cursor: default;
   border: 1px solid #cfcfcf;
-  background: #f3f3f3;
+  background: #f4f4f4;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -2557,78 +2860,198 @@ input.btn:hover {
   user-select: none;
   /* close */
 }
-/* line 374, scss/partials/_select2.scss */
+/* line 397, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-choice > div {
   float: right;
 }
-/* line 379, scss/partials/_select2.scss */
+/* line 402, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-choice .select2-search-choice-close {
   font-family: WooCommercePOS;
   text-decoration: none;
   color: #757575;
   margin-right: 3px;
 }
-/* line 384, scss/partials/_select2.scss */
+/* line 407, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-choice .select2-search-choice-close:before {
   content: "\f057";
 }
-/* line 390, scss/partials/_select2.scss */
+/* line 413, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices .select2-search-choice-focus {
   background: #d4d4d4;
 }
-/* line 397, scss/partials/_select2.scss */
+/* line 420, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-active .select2-choices {
   outline: none;
 }
-/* line 405, scss/partials/_select2.scss */
+/* line 428, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-disabled .select2-choices {
   background-color: #f4f4f4;
   border: 1px solid #ddd;
   cursor: default;
 }
-/* line 410, scss/partials/_select2.scss */
+/* line 433, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice {
   padding: 3px 5px 3px 5px;
   border: 1px solid #ddd;
   background-color: #f4f4f4;
 }
-/* line 415, scss/partials/_select2.scss */
+/* line 438, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice .select2-search-choice-close {
   display: none;
-  background: none;
 }
 
-/* line 424, scss/partials/_select2.scss */
+/* line 446, scss/partials/_select2.scss */
 .select2-locked {
   padding: 3px 5px 3px 5px !important;
 }
 
-/* line 428, scss/partials/_select2.scss */
+/* line 450, scss/partials/_select2.scss */
 .select2-default {
   color: #999 !important;
 }
 
 /* rtl */
-/* line 434, scss/partials/_select2.scss */
+/* line 456, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container .select2-choice .select2-arrow {
   border-left: none;
   border-right: 1px solid #cfcfcf;
 }
-/* line 438, scss/partials/_select2.scss */
+/* line 460, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-results {
   padding: 0 4px 0 0;
   margin: 4px 0 4px 4px;
 }
-/* line 442, scss/partials/_select2.scss */
+/* line 464, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-choices {
   padding: 0 0 0 5px;
 }
-/* line 444, scss/partials/_select2.scss */
+/* line 466, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-choices li {
   float: right;
 }
-/* line 448, scss/partials/_select2.scss */
+/* line 470, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice {
   margin: 3px 5px 3px 0;
   padding: 3px 18px 3px 5px;
+}
+
+/* line 2, scss/partials/_modal.scss */
+#modal .modal-content {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+/* line 5, scss/partials/_modal.scss */
+#modal .modal-header {
+  padding: 0;
+  position: relative;
+  background-color: #fcfcfc;
+}
+/* line 9, scss/partials/_modal.scss */
+#modal .modal-header h1 {
+  padding: 0 16px;
+  font-size: 22px;
+  line-height: 50px;
+  margin: 0;
+}
+/* line 15, scss/partials/_modal.scss */
+#modal .modal-header .close {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  cursor: pointer;
+  color: #777;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  border-left: 1px solid #ddd;
+  line-height: 50px;
+  background: transparent;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-timing-function: ease-in-out;
+  transition-timing-function: ease-in-out;
+}
+/* line 31, scss/partials/_modal.scss */
+#modal .modal-header .close:hover {
+  color: #000;
+  border-color: #ccc;
+  background: #ddd;
+  outline: 0;
+}
+/* line 38, scss/partials/_modal.scss */
+#modal .modal-body {
+  font-size: 14px;
+  line-height: 1.4;
+}
+/* line 41, scss/partials/_modal.scss */
+#modal .modal-body table.form-table {
+  width: 100%;
+}
+/* line 43, scss/partials/_modal.scss */
+#modal .modal-body table.form-table th {
+  font-weight: 600;
+  width: 150px;
+  text-align: left;
+  padding: 10px 10px 10px 0;
+}
+/* line 48, scss/partials/_modal.scss */
+#modal .modal-body table.form-table th img {
+  margin: 2px -10px 0 0;
+  float: right;
+}
+/* line 53, scss/partials/_modal.scss */
+#modal .modal-body table.form-table td {
+  padding: 10px 0 10px 10px;
+}
+/* line 56, scss/partials/_modal.scss */
+#modal .modal-body table.form-table input[type="text"] {
+  width: 100%;
+}
+/* line 59, scss/partials/_modal.scss */
+#modal .modal-body table.form-table textarea {
+  width: 100%;
+  height: 50px;
+}
+/* line 65, scss/partials/_modal.scss */
+#modal .modal-footer {
+  padding: 11px;
+}
+/* line 67, scss/partials/_modal.scss */
+#modal .modal-footer p.response {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  text-align: right;
+  line-height: 20px;
+}
+/* line 72, scss/partials/_modal.scss */
+#modal .modal-footer p.response .spinner {
+  display: inline-block;
+  float: none;
+  margin: 0;
+}
+/* line 77, scss/partials/_modal.scss */
+#modal .modal-footer p.response i {
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+/* line 86, scss/partials/_modal.scss */
+ul.hotkeys {
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+  column-count: 2;
+  padding: 0;
+  margin: 0;
+}
+/* line 90, scss/partials/_modal.scss */
+ul.hotkeys li {
+  padding: 6px 0;
+}
+/* line 92, scss/partials/_modal.scss */
+ul.hotkeys li input {
+  max-width: 80px;
+  margin-right: 12px;
 }

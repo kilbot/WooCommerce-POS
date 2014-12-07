@@ -10,11 +10,14 @@
 	<table class="form-table">
 
 		<tr>
-			<th scope="row"><label for="grant_access[]"><?php _e( 'Grant POS Access', 'woocommerce-pos' ); ?></label></th>
+			<th scope="row">
+				<label for="grant_access[]"><?php _e( 'Grant POS Access', 'woocommerce-pos' ); ?></label>
+				<img title="<?php _e( 'Select which user roles have access to the POS.', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="tooltip">
+			</th>
 			<td>
 				<select multiple name="grant_access[]" id="grant_access[]" class="select2">
 					<?php global $wp_roles; if( $roles = $wp_roles->roles ): foreach( $roles as $slug => $role ):  ?>
-						<option value="<?php echo $slug ?>"><?php echo $role['name'] ?></option>
+						<option value="<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( $role['name'] ); ?></option>
 					<?php endforeach; endif; ?>
 				</select>
 			</td>
@@ -22,22 +25,21 @@
 
 		<tr>
 			<th scope="row">
-				<label for="enable_pos_visibility"><?php _e( 'Product Visibility', 'woocommerce-pos' ) ?>:</label>
+				<label for="enable_pos_only_products"><?php _e( 'Product Visibility', 'woocommerce-pos' ) ?></label>
 			</th>
 			<td>
-				<input type="checkbox" name="enable_pos_visibility" />
-				<?php printf( __( 'Enable product visibility options, eg: <a href="%s">POS Only products</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/pos-only-products/' )?>.
+				<input type="checkbox" name="enable_pos_only_products" id="enable_pos_only_products" />
+				<?php printf( __( 'Enable <a href="%s">POS Only products</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/pos-only-products/' )?>.
 			</td>
 		</tr>
 
-		<tr>
-			<th scope="row"><label for="select">Select:</label></th>
+		<tr class="default_customer">
+			<th scope="row">
+				<label for="default_customer"><?php _e( 'Default POS Customer', 'woocommerce-pos' ); ?></label>
+				<img title="<?php _e( 'The default customer for POS orders, eg: Guest or create a new customer.', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="tooltip">
+			</th>
 			<td>
-				<select name="select" class="select2">
-					<option value="888">Option 1</option>
-					<option value="999">Option 2</option>
-					<option value="000">Option 3</option>
-				</select>
+				<!-- Customer Select Component -->
 			</td>
 		</tr>
 

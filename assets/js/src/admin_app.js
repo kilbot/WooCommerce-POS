@@ -26,6 +26,11 @@ POS.module( 'Entities', function( Entities ) {
 
 // app set up
 POS.addInitializer(function(options) {
+
+    // app settings
+    this.options = options;
+
+    // TODO: remove param
     /* global ajaxurl */
     POS.ajaxurl = ajaxurl;
 

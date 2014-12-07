@@ -74,22 +74,20 @@ class WC_POS_Admin_Settings {
 
 	/**
 	 * Get settings data
+	 * @param $id
+	 * @param mixed $key
 	 * @return array
 	 */
-	static public function get_settings() {
-
-		// validate
-		if( !isset( $_GET['id'] ) )
-			wp_die('There is no option id');
+	static public function get_settings( $id, $key = false ) {
 
 		// get settings
-		$settings = get_option( self::DB_PREFIX . $_GET['id'] );
+		$settings = get_option( self::DB_PREFIX . $id );
 
 		// default settings for gateways
-		if( !$settings ) {
-			$gateway_id = preg_replace( '/^gateway_/', '', $_GET['id'], 1, $count );
+		if( ! $settings ) {
+			preg_replace( '/^gateway_/', '', $id, 1, $count );
 			if( $count ) {
-				$settings = get_option( self::DB_PREFIX . $_GET['id'] );
+				$settings = get_option( self::DB_PREFIX . $id );
 			}
 		}
 

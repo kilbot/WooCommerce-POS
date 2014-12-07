@@ -1,7 +1,15 @@
-POS.module('CustomerApp.Select', function(Select, POS, Backbone, Marionette, $, _){
+POS.module('Components.Customer', function(Customer, POS, Backbone, Marionette, $, _){
 
-    Select.View = Marionette.ItemView.extend({
-        template: Handlebars.compile( $('#tmpl-cart-customer').html() ),
+    // API
+    Customer.channel = Backbone.Radio.channel('customer');
+
+    Customer.channel.reply( 'customer:select', function(options) {
+        return new Customer.Select(options);
+    });
+
+    // Select view
+    Customer.Select = Marionette.ItemView.extend({
+        template: _.template('<input name="customer" type="hidden" class="select2">'),
 
         initialize: function(options) {
 
@@ -9,14 +17,18 @@ POS.module('CustomerApp.Select', function(Select, POS, Backbone, Marionette, $, 
 
         behaviors: {
             Select2: {
+                minimumInputLength: 2,
                 ajax: {
-                    url: POS.ajax_url,
+                    url: function() {
+                        return POS.getOption('ajaxurl')
+                    },
                     dataType: 'json',
+                    quietMillis: 250,
                     data: function( term ) {
                         return {
                             term: term,
-                            action: 'pos_json_search_customers',
-                            security: this.data('nonce')
+                            action: 'wc_pos_json_search_customers',
+                            security: POS.getOption('nonce')
                         };
                     },
                     results: function( data ) {
@@ -28,8 +40,8 @@ POS.module('CustomerApp.Select', function(Select, POS, Backbone, Marionette, $, 
                     }
                 },
                 initSelection: function( element, callback ) {
-                    var data = { id: element.val(), display_name: element.data('customer') };
-                    callback( data );
+                    var customer = POS.getOption('default_customer');
+                    callback( customer );
                 }
             }
         },

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2014-12-05 02:26:20+00:00\n"
+"POT-Creation-Date: 2014-12-07 02:37:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -107,11 +107,11 @@ msgstr ""
 msgid "Item Price"
 msgstr ""
 
-#: includes/views/pos/cart.php:139 includes/views/pos/cart.php:161
+#: includes/views/pos/cart.php:139 includes/views/pos/cart.php:156
 msgid "Discount"
 msgstr ""
 
-#: includes/views/pos/cart.php:157
+#: includes/views/pos/cart.php:152
 msgid "Void"
 msgstr ""
 

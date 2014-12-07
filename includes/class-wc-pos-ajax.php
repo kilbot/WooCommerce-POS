@@ -250,11 +250,15 @@ class WC_POS_AJAX {
 		// security
 		check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
 
+		// validate
+		if( ! isset( $_GET['id'] ) )
+			wp_die('There is no option id');
+
 		$method = $_SERVER['REQUEST_METHOD'];
 		if( $method === 'POST' ) {
 			$response = WC_POS_Admin_Settings::save_settings();
 		} elseif( $method === 'GET' ) {
-			$response = WC_POS_Admin_Settings::get_settings();
+			$response = WC_POS_Admin_Settings::get_settings( $_GET['id'] );
 		}
 
 		$this->json_headers();

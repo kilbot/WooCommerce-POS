@@ -46,7 +46,7 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }
 
             // if price does not include tax
-            if( POS.tax.prices_include_tax === 'yes' ) {
+            if( POS.getOption('tax').prices_include_tax === 'yes' ) {
                 regular_price -= item_subtotal_tax;
                 item_price -= item_tax;
             }
@@ -68,14 +68,15 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
          * based on the calc_tax function in woocommerce/includes/class-wc-tax.php
          */
         calcTax: function( price, qty ) {
-            var item_tax = 0;
+            var item_tax = 0,
+                tax_class = this.get('tax_class');
 
-            if( ! _( POS.tax_rates ).isEmpty() ) {
-                var rates = POS.tax_rates[ this.get('tax_class') ];
+            if( _( POS.getOptions('tax_rates') ).has( tax_class ) ) {
+                var rates = POS.getOptions('tax_rates').tax_class;
             }
 
-            if( POS.tax.calc_taxes === 'yes' && this.get('taxable') && rates ) {
-                if( POS.tax.prices_include_tax === 'yes' ) {
+            if( POS.getOptions('tax').calc_taxes === 'yes' && this.get('taxable') && rates ) {
+                if( POS.getOptions('tax').prices_include_tax === 'yes' ) {
                     item_tax = this.calcInclusiveTax( price, rates, qty );
                 }
                 else {

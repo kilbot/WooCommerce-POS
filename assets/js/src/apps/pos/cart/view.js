@@ -32,7 +32,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         serializeData: function() {
             var data = this.model.toJSON();
 
-            if( POS.tax.tax_display_cart === 'incl' ) {
+            if( POS.getOption('tax').tax_display_cart === 'incl' ) {
                 data.subtotal += data.subtotal_tax;
                 data.total += data.total_tax;
             }
@@ -202,8 +202,8 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
         serializeData: function() {
             var data = this.model.toJSON();
-            data.tax_labels = POS.tax_labels;
-            data.shipping_labels = POS.shipping;
+            data.tax_labels = POS.getOption('tax_labels');
+            data.shipping_labels = POS.getOption('shipping');
             return data;
         },
 
@@ -385,7 +385,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             var data = this.model.toJSON();
 
             // prices include tax?
-            if( POS.tax.tax_display_cart === 'incl' ) {
+            if( POS.getOption('tax').tax_display_cart === 'incl' ) {
                 data.subtotal += data.subtotal_tax;
                 data.cart_discount = data.subtotal - data.total;
                 data.incl_tax = true;

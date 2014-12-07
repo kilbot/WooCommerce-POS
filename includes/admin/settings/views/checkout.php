@@ -5,6 +5,37 @@
 ?>
 <script id="tmpl-wc-pos-settings-checkout" type="text/html">
 
+	<h3><?php /* translators: woocommerce */ _e( 'Checkout Process', 'woocommerce' ); ?></h3>
+
+	<table class="form-table">
+
+		<tr class="order_status">
+			<th scope="row">
+				<label for="order_status"><?php _e( 'Completed Order Status', 'woocommerce-pos' ); ?></label>
+				<img title="<?php _e( 'Change the default order status for POS sales', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="tooltip">
+			</th>
+			<td>
+				<select name="order_status" id="order_status">
+					<?php $statuses = wc_get_order_statuses(); if( $statuses ): foreach( $statuses as $status => $status_name ):  ?>
+						<option value="<?php echo esc_attr( $status ); ?>"><?php echo esc_html( $status_name ); ?></option>
+					<?php endforeach; endif; ?>
+				</select>
+			</td>
+		</tr>
+
+		<tr class="order_emails">
+			<th scope="row">
+				<?php _e( 'Order Emails', 'woocommerce-pos' ); ?>
+				<img title="<?php _e( 'blah', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="tooltip">
+			</th>
+			<td>
+				<input type="checkbox" name="order_emails" id="order_emails" />
+				<label for="order_emails">Send notification emails to admin@getaddress</label>
+			</td>
+		</tr>
+
+	</table>
+
 	<h3><?php /* translators: woocommerce */ _e( 'Payment Gateways', 'woocommerce' ); ?></h3>
 
 	<p>

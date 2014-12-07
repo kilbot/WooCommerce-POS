@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2014-12-05 02:26:21+00:00\n"
+"POT-Creation-Date: 2014-12-07 02:37:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,7 +20,7 @@ msgid "View POS"
 msgstr ""
 
 #: includes/admin/class-wc-pos-menu.php:52
-#: includes/admin/settings/views/checkout.php:54
+#: includes/admin/settings/views/checkout.php:85
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -29,20 +29,36 @@ msgstr ""
 msgid "Hotkeys"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:11
+#: includes/admin/settings/views/checkout.php:14
+msgid "Completed Order Status"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:15
+msgid "Change the default order status for POS sales"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:28
+msgid "Order Emails"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:29
+msgid "blah"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:42
 msgid ""
 "Installed gateways are listed below. Drag and drop gateways to control "
 "their display order at the Point of Sale. "
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:12
+#: includes/admin/settings/views/checkout.php:43
 msgid ""
 "Payment Gateways enabled here will be available at the Point of Sale. "
 "Payment Gateways enabled on the settings page will be available in your "
 "Online Store. "
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:16
+#: includes/admin/settings/views/checkout.php:47
 msgid ""
 "It is your responsibility to ensure the security of your customer's "
 "information. Transmitting credit card or other sensitive information should "
@@ -52,54 +68,66 @@ msgid ""
 "security</a>"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:22
+#: includes/admin/settings/views/checkout.php:53
 msgid "Gateway Display"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:30
+#: includes/admin/settings/views/checkout.php:61
 msgid "Online Status"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:31
+#: includes/admin/settings/views/checkout.php:62
 msgid "POS Status"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:32
+#: includes/admin/settings/views/checkout.php:63
 msgid "POS Settings"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:90
+#: includes/admin/settings/views/checkout.php:121
 msgid "Payment method title."
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:97
+#: includes/admin/settings/views/checkout.php:128
 msgid "Payment method description that will be shown in the POS."
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:103
+#: includes/admin/settings/views/checkout.php:134
 msgid "Icon"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:112
+#: includes/admin/settings/views/checkout.php:143
 msgid "Card Reader"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:117
+#: includes/admin/settings/views/checkout.php:148
 msgid ""
 "Please <a href=\"%s\" target=\"_blank\">read the docs</a> for more "
 "information on card readers."
 msgstr ""
 
-#: includes/admin/settings/views/general.php:13
+#: includes/admin/settings/views/general.php:14
 msgid "Grant POS Access"
 msgstr ""
 
-#: includes/admin/settings/views/general.php:25
+#: includes/admin/settings/views/general.php:15
+msgid "Select which user roles have access to the POS."
+msgstr ""
+
+#: includes/admin/settings/views/general.php:28
 msgid "Product Visibility"
 msgstr ""
 
-#: includes/admin/settings/views/general.php:29
-msgid "Enable product visibility options, eg: <a href=\"%s\">POS Only products</a>"
+#: includes/admin/settings/views/general.php:32
+msgid "Enable <a href=\"%s\">POS Only products</a>"
+msgstr ""
+
+#: includes/admin/settings/views/general.php:38
+msgid "Default POS Customer"
+msgstr ""
+
+#: includes/admin/settings/views/general.php:39
+msgid "The default customer for POS orders, eg: Guest or create a new customer."
 msgstr ""
 
 #: includes/admin/settings/views/tools.php:14
@@ -151,12 +179,12 @@ msgctxt "Settings group label"
 msgid "Checkout"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:107
+#: includes/admin/settings/views/checkout.php:138
 msgctxt "POS checkout settings"
 msgid "Show payment gateway icon."
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:116
+#: includes/admin/settings/views/checkout.php:147
 msgctxt "POS checkout settings"
 msgid "Enable card reader input field."
 msgstr ""

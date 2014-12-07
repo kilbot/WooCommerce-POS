@@ -1,3 +1,10 @@
+.select2-container,
+.select2-drop,
+.select2-search,
+.select2-search input {
+  @include box-sizing(border-box);
+}
+
 .select2-container {
   margin: 0;
   position: relative;
@@ -47,7 +54,7 @@
 
     /* close */
     abbr {
-      display: none;
+
       cursor: pointer;
       outline: 0;
       padding: $select2-spacing $select2-spacing*2;
@@ -60,10 +67,17 @@
       }
 
       &.select2-search-choice-close {
-        display: block;
+        display: none;
       }
     }
 
+  }
+
+  /* allow close */
+  &.select2-allowclear {
+    .select2-choice  abbr.select2-search-choice-close {
+      display: block;
+    }
   }
 
   /* above */
@@ -109,6 +123,7 @@
   filter: alpha(opacity=0);
 }
 
+/* select search */
 .select2-drop {
   width: 100%;
   margin-top: -1px;
@@ -126,27 +141,120 @@
     margin-top: 1px;
   }
 
+  /* select search */
+  .select2-search {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    z-index: 10000;
+    white-space: nowrap;
+    padding: $select2-spacing;
+
+    input {
+      border: 1px solid $select2-border-color;
+      padding: $select2-spacing $select2-spacing*2;
+      outline: 0;
+      width: 100%;
+    }
+  }
+
+  /* hide search box */
+  &.no-search {
+    .select2-search {
+      display: none;
+    }
+  }
+
+  /* results */
+  .select2-results {
+    max-height: 200px;
+    padding: 0 0 0 $select2-spacing;
+    margin: $select2-spacing;
+    margin-left: 0;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+    ul.select2-result-sub {
+      margin: 0;
+      padding-left: 0;
+
+      li {
+        list-style: none;
+        display: list-item;
+        background-image: none;
+
+        &.select2-result-with-children > .select2-result-label {
+          font-weight: bold;
+        }
+      }
+
+      em {
+        font-style: normal;
+      }
+    }
+
+    .select2-result-label {
+      padding: 3px 7px 4px;
+      margin: 0;
+      cursor: pointer;
+
+      min-height: 1em;
+
+      -webkit-touch-callout: none;
+      @include user-select(none);
+    }
+
+    .select2-highlighted {
+      background: #3875d7;
+      color: #fff;
+
+      em {
+        background: transparent;
+      }
+
+      ul {
+        background: #fff;
+        color: #000;
+      }
+    }
+
+    .select2-no-results,
+    .select2-searching,
+    .select2-ajax-error,
+    .select2-selection-limit {
+      display: list-item;
+      padding-left: 5px;
+    }
+
+    .select2-disabled {
+      background: $select2-disabled-bg;
+      display: list-item;
+      cursor: default;
+
+      &.select2-highlighted {
+        color: #666;
+        background: $select2-disabled-bg;
+        display: list-item;
+        cursor: default;
+      }
+    }
+
+    .select2-selected {
+      display: none;
+    }
+
+    .select2-ajax-error {
+      color: $select2-error-text-color;
+    }
+  }
+
 }
 
 .select2-drop-auto-width {
   border-top: 1px solid $select2-border-color;
   width: auto;
-}
-
-.select2-search {
-  display: inline-block;
-  width: 100%;
-  position: relative;
-  z-index: 10000;
-  white-space: nowrap;
-  padding: $select2-spacing;
-
-  input {
-    border: 1px solid $select2-border-color;
-    padding: $select2-spacing $select2-spacing*2;
-    outline: 0;
-    width: 100%;
-  }
 }
 
 .select2-container-active{
@@ -188,91 +296,6 @@
   padding: 0;
   position: absolute;
   width: 1px;
-}
-
-/* results */
-.select2-results {
-  max-height: 200px;
-  padding: 0 0 0 $select2-spacing;
-  margin: $select2-spacing;
-  margin-left: 0;
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-
-  ul.select2-result-sub {
-    margin: 0;
-    padding-left: 0;
-
-    li {
-      list-style: none;
-      display: list-item;
-      background-image: none;
-
-      &.select2-result-with-children > .select2-result-label {
-        font-weight: bold;
-      }
-    }
-
-    em {
-      font-style: normal;
-    }
-  }
-
-  .select2-result-label {
-    padding: 3px 7px 4px;
-    margin: 0;
-    cursor: pointer;
-
-    min-height: 1em;
-
-    -webkit-touch-callout: none;
-    @include user-select(none);
-  }
-
-  .select2-highlighted {
-    background: #3875d7;
-    color: #fff;
-
-    em {
-      background: transparent;
-    }
-
-    ul {
-      background: #fff;
-      color: #000;
-    }
-  }
-
-  .select2-no-results,
-  .select2-searching,
-  .select2-ajax-error,
-  .select2-selection-limit {
-    display: list-item;
-    padding-left: 5px;
-  }
-
-  .select2-disabled {
-    background: $select2-disabled-bg;
-    display: list-item;
-    cursor: default;
-
-    &.select2-highlighted {
-      color: #666;
-      background: $select2-disabled-bg;
-      display: list-item;
-      cursor: default;
-    }
-  }
-
-  .select2-selected {
-    display: none;
-  }
-
-  .select2-ajax-error {
-    color: $select2-error-text-color;
-  }
 }
 
 .select2-results-dept-1 .select2-result-label { padding-left: 20px }
@@ -337,7 +360,7 @@
 
     /* multiselect items */
     li {
-      padding: $select2-spacing $select2-spacing*2;
+      padding: 1px $select2-spacing*2;
       margin: $select2-spacing;
       margin-right: 0;
       float: left;
@@ -364,7 +387,7 @@
     li.select2-search-choice {
       cursor: default;
       border: 1px solid $select2-border-color;
-      background: $select2-input-bg;
+      background: $select2-disabled-bg;
 
       @include border-radius($select2-border-radius);
 
@@ -414,7 +437,6 @@
 
         .select2-search-choice-close {
           display: none;
-          background: none;
         }
       }
     }

@@ -17,7 +17,7 @@ class WC_POS_Params {
 
 		$param['accounting'] 	= $this->accounting_settings();
 		$param['ajaxurl'] 	    = admin_url( 'admin-ajax.php', 'relative' );
-		$param['customer'] 	    = $this->get_default_customer();
+		$param['default_customer']= $this->get_default_customer();
 		$param['denominations'] = WC_POS_i18n::currency_denominations( get_option('woocommerce_currency') );
 		$param['hotkeys'] 	    = $this->hotkeys();
 		$param['nonce'] 		= wp_create_nonce( WC_POS_PLUGIN_NAME );
@@ -39,6 +39,7 @@ class WC_POS_Params {
 	 */
 	public function admin() {
 
+		$param['default_customer']= $this->get_default_customer();
 		$param['nonce'] = wp_create_nonce( WC_POS_PLUGIN_NAME );
 		$param['page']  = 'settings';
 
@@ -162,7 +163,9 @@ class WC_POS_Params {
 	 * @return object $customer
 	 */
 	public function get_default_customer() {
-		$id 	= get_option( 'woocommerce_pos_default_customer', 0 );
+		$settings 	= WC_POS_Admin_Settings::get_settings( 'general' );
+		$id = isset( $settings['customer'] ) ? $settings['customer'] : 0 ;
+
 		$user 	= get_userdata( $id );
 		if( $user ) {
 			$first_name = esc_html( $user->first_name );
@@ -174,8 +177,8 @@ class WC_POS_Params {
 			$name = __( 'Guest', 'woocommerce' );
 		}
 		$customer = array(
-			'default_id' => $id,
-			'default_name' => $name
+			'id' => $id,
+			'display_name' => $name
 		);
 		return $customer;
 	}

@@ -238,6 +238,7 @@ module.exports = function(grunt) {
                         'assets/js/src/lib/components/numpad/behavior.js',
                         'assets/js/src/lib/components/numpad/templates.js',
                         'assets/js/src/lib/components/select2/behavior.js',
+                        'assets/js/src/lib/components/customer_select/view.js',
 
                         // sub apps
                         'assets/js/src/apps/header/header_app.js',
@@ -289,6 +290,7 @@ module.exports = function(grunt) {
                         'assets/js/src/lib/components/modal/behavior.js',
                         'assets/js/src/lib/components/loading/controller.js',
                         'assets/js/src/lib/components/loading/view.js',
+                        'assets/js/src/lib/components/customer_select/view.js',
 
                         // subapps
                         'assets/js/src/apps/settings/settings_app.js',

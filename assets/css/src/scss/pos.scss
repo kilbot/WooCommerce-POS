@@ -12,6 +12,8 @@
 @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/print";
 @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/dropdowns";
 @import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/popovers";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/modals";
+@import "../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/tooltip";
 
 //
 @import "partials/mixins";
@@ -31,3 +33,4 @@
 
 @import "partials/numpad";
 @import "partials/select2";
+@import "partials/modal";

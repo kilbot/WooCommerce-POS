@@ -15,7 +15,7 @@
 	</div>
 	<div class="list"></div>
 	<div class="list-totals"></div>
-	<div class="cart-customer"></div>
+	<div class="cart-customer"><?php /* translators: woocommerce */ _e( 'Customer', 'woocommerce' ); ?>: </div>
 	<div class="cart-actions"></div>
 	<div class="cart-notes"></div>
 </script>
@@ -146,11 +146,6 @@
 		<div class="total">{{{money total}}}</div>
 		<div class="action"></div>
 	</li>
-</script>
-
-<script type="text/x-handlebars-template" id="tmpl-cart-customer">
-	<?php /* translators: woocommerce */ _e( 'Customer', 'woocommerce' ); ?>:
-	<input type="hidden" id="select-customer" class="select2" style="width:200px" value="{{ customer_id }}" data-customer="{{ customer_name }}" data-nonce="<?php echo wp_create_nonce( 'json-search-customers' ) ?>">
 </script>
 
 <script type="text/template" id="tmpl-cart-actions">

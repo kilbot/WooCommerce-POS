@@ -164,7 +164,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
          *
          */
         showCustomer: function(){
-            var view = POS.CustomerApp.channel.request('customer:select');
+            var view = POS.Components.Customer.channel.request('customer:select');
 
             this.listenTo( view, 'customer:select', function( id, name ) {
                 this.order.save({
@@ -172,6 +172,13 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                     customer_name: name
                 });
             }, this);
+
+            // bit of a hack
+            // get the "Customer:" translation and add it to the view
+            this.layout.customerRegion.on( 'before:show', function(view){
+                var label = this.$el.html();
+                view.$el.prepend( label );
+            });
 
             this.layout.customerRegion.show( view );
         },

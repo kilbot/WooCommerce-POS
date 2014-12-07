@@ -35,14 +35,8 @@ POS.module( 'Entities', function( Entities ) {
 // app set up
 POS.addInitializer(function(options) {
 
-    // attach params
-    // TODO: save to local db
-    var params = [ 'ajaxurl', 'denominations', 'nonce', 'wc_api', 'shipping', 'tabs', 'tax', 'tax_labels', 'tax_rates', 'worker' ];
-    _( params ).each( function(key) {
-        if( !_.isUndefined( options[key] ) ) {
-            POS[key] = options[key];
-        }
-    });
+    // app settings
+    this.options = options;
 
     /* global accounting */
     accounting.settings = options.accounting;
@@ -50,7 +44,7 @@ POS.addInitializer(function(options) {
 });
 
 // on start
-POS.on('start', function() {
+POS.on('start', function(options) {
     POS.debugLog( 'log', 'POS App started' );
     POS.startHistory();
 

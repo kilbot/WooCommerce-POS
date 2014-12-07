@@ -1,4 +1,7 @@
 #modal {
+  .modal-content {
+    @include border-radius(0);
+  }
   .modal-header {
     padding: 0;
     position: relative;
