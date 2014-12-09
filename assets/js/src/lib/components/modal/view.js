@@ -1,7 +1,7 @@
 POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) {
 
     Modal.View = Marionette.LayoutView.extend({
-        template: _.template('<div class="modal-dialog"><div class="modal-content"></div></div>'),
+        template: '#tmpl-modal',
         className: 'modal',
         attributes: {
             'tabindex' : -1,
@@ -9,11 +9,21 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
         },
 
         regions: {
-            content: '.modal-content'
+            content: '.modal-body'
         },
 
-        initialize: function (options) {
+        events: {
+            'click .action-close': 'closeModal',
+            'click .modal-footer a': 'onButtonClick'
+        },
+
+        initialize: function () {
             this.$el.modal({ show: false });
+        },
+
+        onButtonClick: function(e) {
+            e.preventDefault();
+            this.content.currentView.trigger('button:clicked', e);
         },
 
         triggers: {
@@ -38,6 +48,11 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
         setupModal: function (options) {
             if (this.isShown) {
                 this.teardownModal();
+            }
+
+            // get title from the view
+            if( options.view.title ) {
+                this.$('.modal-header h1').html( options.view.title );
             }
             this.content.show(options.view);
             this.isShown = true;

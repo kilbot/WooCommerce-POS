@@ -92,7 +92,7 @@ body {
         @include display-flex;
         .form-control, .input-group-addon, .input-group-btn {
           border: 1px solid $input-border-color;
-          padding: 0.5em 0.75em;
+          padding: $spacing/4 $spacing/2.4;
           &:first-child {
             @include border-radius($border-radius-small 0 0 $border-radius-small);
           }
@@ -110,7 +110,7 @@ body {
             color: nth( $primaryPalette, 6 );
             background: $input-border-color;
             display: inline-block;
-            padding: 0.5em 0.75em;
+            padding: $spacing/4 $spacing/2.4;
             &:hover {
               color: nth( $primaryPalette, 10 );
             }
@@ -130,7 +130,7 @@ body {
           display: none;
           color: $text-color;
           background: white;
-          padding: 0.5em 0.75em;
+          padding: $spacing/4 $spacing/2.4;
           line-height: 20px;
           border-top: 1px solid $input-border-color;
           border-bottom: 1px solid $input-border-color;

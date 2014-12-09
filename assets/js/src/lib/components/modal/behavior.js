@@ -2,7 +2,7 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
 
     Modal.Behavior = Marionette.Behavior.extend({
 
-        initialize: function () {
+        initialize: function (options) {
             this.listenToOnce(this.view, 'modal:open', this.openModal);
         },
 

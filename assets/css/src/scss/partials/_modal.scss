@@ -12,9 +12,9 @@
       line-height: 50px;
       margin: 0;
     }
-    .close {
+    .action-close {
       position: absolute;
-      top: 2px;
+      top: 0;
       right: 0;
       cursor: pointer;
       color: #777;
@@ -28,7 +28,7 @@
       @include transition-duration(.1s);
       @include transition-timing-function(ease-in-out);
     }
-    .close:hover {
+    .action-close:hover {
       color: #000;
       border-color: #ccc;
       background: #ddd;

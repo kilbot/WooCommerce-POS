@@ -264,4 +264,18 @@ class WC_POS_Params {
 		return $labels;
 	}
 
+	public function modals() {
+		$modals = array(
+			'titles' => array(
+				'hotkeys' => __( 'HotKeys', 'woocommerce-pos' ),
+				'receipt' => '',
+			),
+			'buttons' => array(
+				'save' => '',
+				'print' => ''
+			)
+		);
+		return $modals;
+	}
+
 }

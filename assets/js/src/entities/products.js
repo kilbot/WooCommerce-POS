@@ -2,7 +2,7 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
     Entities.Product = Backbone.DualModel.extend({
         urlRoot: function(){
-            return POS.wc_api + 'products';
+            return POS.getOption('wc_api') + 'products';
         },
 
         parse: function (resp, options) {
@@ -13,7 +13,7 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
     Entities.Products = Backbone.DualCollection.extend({
         model: Entities.Product,
         url: function(){
-            return POS.wc_api + 'products';
+            return POS.getOption('wc_api') + 'products';
         },
 
         initialize: function(){

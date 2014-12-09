@@ -3,7 +3,7 @@ POS.module('Entities.Orders', function(Orders, POS, Backbone, Marionette, $, _){
     Orders.Collection = Backbone.DualCollection.extend({
         model: Orders.Model,
         url: function(){
-            return POS.wc_api + 'orders';
+            return POS.getOption('wc_api') + 'orders';
         },
 
         initialize: function( models, options ) {

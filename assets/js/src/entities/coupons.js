@@ -2,7 +2,7 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
     Entities.Coupon = Backbone.DualModel.extend({
         urlRoot: function(){
-            return POS.wc_api + 'coupons';
+            return POS.getOption('wc_api') + 'coupons';
         },
 
         parse: function (resp, options) {
@@ -13,12 +13,13 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
     Entities.Coupons = Backbone.DualCollection.extend({
         model: Entities.Order,
         url: function(){
-            return POS.wc_api + 'coupons';
+            return POS.getOption('wc_api') + 'coupons';
         },
 
         initialize: function(){
             this.indexedDB = new Backbone.IndexedDB({
-                storeName: 'wc_pos_coupons',
+                storeName: 'coupons',
+                storePrefix: 'wc_pos_',
                 dbVersion: 1,
                 keyPath: 'id',
                 //autoIncrement: true,
@@ -41,7 +42,7 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
             return {totalRecords: totalRecords, totalPages: totalPages};
         },
 
-        parseRecords: function (resp, options) {
+        parse: function (resp, options) {
             return resp.coupons ? resp.coupons : resp ;
         }
     });

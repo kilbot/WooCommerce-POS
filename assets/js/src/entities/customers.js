@@ -2,7 +2,7 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
     Entities.Customer = Backbone.DualModel.extend({
         urlRoot: function(){
-            return POS.wc_api + 'customers';
+            return POS.getOption('wc_api') + 'customers';
         },
 
         parse: function (resp, options) {
@@ -13,19 +13,20 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
     Entities.Customers = Backbone.DualCollection.extend({
         model: Entities.Customer,
         url: function(){
-            return POS.wc_api + 'customers';
+            return POS.getOption('wc_api') + 'customers';
         },
 
         initialize: function(){
             this.indexedDB = new Backbone.IndexedDB({
-                storeName: 'wc_pos_customers',
+                storeName: 'customers',
+                storePrefix: 'wc_pos_',
                 dbVersion: 1,
                 keyPath: 'id',
-                //autoIncrement: true,
+                autoIncrement: true,
                 indexes: [
-                    //{name: 'local_id', keyPath: 'local_id', unique: true},  // same as idAttribute
-                    //{name: 'id', keyPath: 'id', unique: true},  // same as remoteIdAttribute
-                    //{name: 'status', keyPath: 'status', unique: false}  // required
+                    {name: 'local_id', keyPath: 'local_id', unique: true},  // same as idAttribute
+                    {name: 'id', keyPath: 'id', unique: true},  // same as remoteIdAttribute
+                    {name: 'status', keyPath: 'status', unique: false}  // required
                 ]
             }, this);
         },
@@ -41,7 +42,7 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
             return {totalRecords: totalRecords, totalPages: totalPages};
         },
 
-        parseRecords: function (resp, options) {
+        parse: function (resp, options) {
             return resp.customers ? resp.customers : resp ;
         }
     });

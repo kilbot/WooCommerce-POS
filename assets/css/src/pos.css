@@ -1266,7 +1266,7 @@ body {
 /* line 93, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control, .module .list-actions > div > .input-group .input-group-addon, .module .list-actions > div > .input-group .input-group-btn {
   border: 1px solid #dbdbdb;
-  padding: 0.5em 0.75em;
+  padding: 6px 10px;
 }
 /* line 96, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .form-control:first-child, .module .list-actions > div > .input-group .input-group-addon:first-child, .module .list-actions > div > .input-group .input-group-btn:first-child {
@@ -1294,7 +1294,7 @@ body {
   color: #607d8b;
   background: #dbdbdb;
   display: inline-block;
-  padding: 0.5em 0.75em;
+  padding: 6px 10px;
 }
 /* line 114, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .input-group .input-group-btn > a:hover {
@@ -1319,7 +1319,7 @@ body {
   display: none;
   color: #212121;
   background: white;
-  padding: 0.5em 0.75em;
+  padding: 6px 10px;
   line-height: 20px;
   border-top: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
@@ -2955,9 +2955,9 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
   margin: 0;
 }
 /* line 15, scss/partials/_modal.scss */
-#modal .modal-header .close {
+#modal .modal-header .action-close {
   position: absolute;
-  top: 2px;
+  top: 0;
   right: 0;
   cursor: pointer;
   color: #777;
@@ -2975,7 +2975,7 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
   transition-timing-function: ease-in-out;
 }
 /* line 31, scss/partials/_modal.scss */
-#modal .modal-header .close:hover {
+#modal .modal-header .action-close:hover {
   color: #000;
   border-color: #ccc;
   background: #ddd;

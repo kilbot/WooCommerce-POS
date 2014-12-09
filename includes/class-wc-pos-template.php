@@ -68,6 +68,9 @@ class WC_POS_Template {
 		// disable cache plugins
 		$this->no_cache();
 
+		// last chance before template is rendered
+		do_action( 'woocommerce_pos_template_redirect' );
+
 		// now show the page
 		include 'views/template.php';
 		exit;
