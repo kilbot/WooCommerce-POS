@@ -9,7 +9,8 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
         openModal: function (callback) {
             Modal.channel.command('open', {
                 view: this.view,
-                callback: callback
+                callback: callback,
+                attributes: this.options
             });
 
             this.listenToOnce(this.view, 'modal:close', this.closeModal);

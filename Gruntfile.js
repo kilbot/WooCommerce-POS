@@ -207,8 +207,6 @@ module.exports = function(grunt) {
                         'assets/js/src/entities/orders.js',
                         'assets/js/src/entities/orders/model.js',
                         'assets/js/src/entities/orders/collection.js',
-                        'assets/js/src/entities/customers.js',
-                        'assets/js/src/entities/coupons.js',
                         'assets/js/src/entities/cart.js',
                         'assets/js/src/entities/cart/model.js',
                         'assets/js/src/entities/cart/collection.js',

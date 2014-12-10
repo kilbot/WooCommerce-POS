@@ -133,7 +133,10 @@ POS.module('SettingsApp.Show', function(Show, POS, Backbone, Marionette, $, _) {
 
         initialize: function (options) {
             this.trigger('modal:open');
-            this.listenTo( this.model, 'change', this.render );
+        },
+
+        modelEvents: {
+            'change': 'render'
         },
 
         events: {

@@ -2034,6 +2034,32 @@ input.btn:hover {
   line-height: 20px;
 }
 
+/* line 1, scss/partials/_tables.scss */
+table {
+  font-size: 14px;
+  margin-bottom: 24px;
+  width: 100%;
+}
+/* line 5, scss/partials/_tables.scss */
+table td {
+  padding: 8px;
+}
+
+/* line 2, scss/partials/_forms.scss */
+table.form-table label {
+  color: #757575;
+  margin-bottom: 4px;
+}
+/* line 5, scss/partials/_forms.scss */
+table.form-table label:not(:last-child) {
+  display: block;
+}
+/* line 9, scss/partials/_forms.scss */
+table.form-table input[type="text"] {
+  width: 100%;
+  padding: 6px 10px;
+}
+
 /* line 2, scss/partials/_tabs.scss */
 .tabs ul {
   background: #cfd8dc;
@@ -2981,64 +3007,39 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
   background: #ddd;
   outline: 0;
 }
-/* line 38, scss/partials/_modal.scss */
-#modal .modal-body {
-  font-size: 14px;
-  line-height: 1.4;
+/* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+#modal .modal-body:before, #modal .modal-body:after {
+  content: " ";
+  display: table;
+}
+/* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+#modal .modal-body:after {
+  clear: both;
 }
 /* line 41, scss/partials/_modal.scss */
-#modal .modal-body table.form-table {
-  width: 100%;
-}
-/* line 43, scss/partials/_modal.scss */
-#modal .modal-body table.form-table th {
-  font-weight: 600;
-  width: 150px;
-  text-align: left;
-  padding: 10px 10px 10px 0;
-}
-/* line 48, scss/partials/_modal.scss */
-#modal .modal-body table.form-table th img {
-  margin: 2px -10px 0 0;
-  float: right;
-}
-/* line 53, scss/partials/_modal.scss */
-#modal .modal-body table.form-table td {
-  padding: 10px 0 10px 10px;
-}
-/* line 56, scss/partials/_modal.scss */
-#modal .modal-body table.form-table input[type="text"] {
-  width: 100%;
-}
-/* line 59, scss/partials/_modal.scss */
-#modal .modal-body table.form-table textarea {
-  width: 100%;
-  height: 50px;
-}
-/* line 65, scss/partials/_modal.scss */
 #modal .modal-footer {
   padding: 11px;
 }
-/* line 67, scss/partials/_modal.scss */
+/* line 43, scss/partials/_modal.scss */
 #modal .modal-footer p.response {
   display: inline-block;
   margin: 0 10px 0 0;
   text-align: right;
   line-height: 20px;
 }
-/* line 72, scss/partials/_modal.scss */
+/* line 48, scss/partials/_modal.scss */
 #modal .modal-footer p.response .spinner {
   display: inline-block;
   float: none;
   margin: 0;
 }
-/* line 77, scss/partials/_modal.scss */
+/* line 53, scss/partials/_modal.scss */
 #modal .modal-footer p.response i {
   margin-right: 5px;
   vertical-align: middle;
 }
 
-/* line 86, scss/partials/_modal.scss */
+/* line 62, scss/partials/_modal.scss */
 ul.hotkeys {
   -moz-column-count: 2;
   -webkit-column-count: 2;
@@ -3046,11 +3047,11 @@ ul.hotkeys {
   padding: 0;
   margin: 0;
 }
-/* line 90, scss/partials/_modal.scss */
+/* line 66, scss/partials/_modal.scss */
 ul.hotkeys li {
   padding: 6px 0;
 }
-/* line 92, scss/partials/_modal.scss */
+/* line 68, scss/partials/_modal.scss */
 ul.hotkeys li input {
   max-width: 80px;
   margin-right: 12px;

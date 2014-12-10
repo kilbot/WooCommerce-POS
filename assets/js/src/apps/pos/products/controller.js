@@ -55,7 +55,7 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
         showTabs: function() {
 
             // tabs component
-            var view = POS.Components.Tabs.channel.request( 'get:tabs', POS.tabs );
+            var view = POS.Components.Tabs.channel.request( 'get:tabs', POS.getOption('tabs') );
 
             // show tabs component
             this.layout.tabsRegion.show( view );

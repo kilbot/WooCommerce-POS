@@ -289,16 +289,23 @@
  */
 /* line 201, scss/icons.scss */
 .icon-spinner {
-  width: 40px;
-  height: 40px;
-  background: transparent url(../loader.gif) no-repeat center center;
+  width: 20px;
+  height: 20px;
+  background: url(../loader.gif);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+/* line 207, scss/icons.scss */
+.icon-spinner.icon-lg {
+  width: 32px;
+  height: 32px;
 }
 
-/* line 207, scss/icons.scss */
+/* line 213, scss/icons.scss */
 .icon-fail {
   font-family: monospace;
 }
-/* line 209, scss/icons.scss */
+/* line 215, scss/icons.scss */
 .icon-fail:before {
   content: "⊙﹏⊙";
 }

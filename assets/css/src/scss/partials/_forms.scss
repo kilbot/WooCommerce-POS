@@ -1,0 +1,13 @@
+table.form-table {
+  label {
+    color: $secondary-text-color;
+    margin-bottom: $spacing/6;
+    &:not(:last-child) {
+      display: block;
+    }
+  }
+  input[type="text"] {
+    width: 100%;
+    padding: $spacing/4 $spacing/2.4;
+  }
+}

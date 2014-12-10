@@ -13,8 +13,9 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
         },
 
         events: {
-            'click .action-close': 'closeModal',
-            'click .modal-footer a': 'onButtonClick'
+            'click .action-close'   : 'closeModal',
+            'click .modal-footer a' : 'onButtonClick',
+            'click .action-save'    : 'saving'
         },
 
         initialize: function () {
@@ -50,10 +51,20 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
                 this.teardownModal();
             }
 
-            // get title from the view
-            if( options.view.title ) {
-                this.$('.modal-header h1').html( options.view.title );
+            // pass on attributes
+            if( options.attributes ){
+
+                // modal class
+                if( options.attributes.class ){
+                    this.$('.modal-dialog').addClass( options.attributes.class );
+                }
+
+                // modal title
+                if( options.attributes.title ) {
+                    this.$('.modal-header h1').html( options.attributes.title );
+                }
             }
+
             this.content.show(options.view);
             this.isShown = true;
         },
@@ -63,7 +74,13 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
                 return;
             }
             this.content.empty();
+            this.render(); // re-render to reset attributes
             this.isShown = false;
+        },
+
+        saving: function(){
+            this.$('.modal-footer .action-save').addClass( 'disabled' );
+            this.$('.modal-footer p.response').html( '<i class="icon icon-spinner"></i>' );
         }
 
     });
