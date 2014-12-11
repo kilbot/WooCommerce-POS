@@ -8,33 +8,30 @@ POS.module('POSApp', function(POSApp, POS, Backbone, Marionette, $, _) {
     var API = {
         init: function(){
             // check registry for products controller
-            _(POS._registry).any( function( controller ){
-                if ( controller instanceof POSApp.Products.Controller ){
-                    return controller;
-                };
+            var controller = _( POS._registry ).find( function( controller ){
+                return controller instanceof POSApp.Products.Controller;
             });
 
-            return new POSApp.Products.Controller();
+            // init products if required
+            if( ! controller ){
+                controller = new POSApp.Products.Controller();
+                POSApp.channel.trigger('init:products', controller);
+            }
+
+            // return the right region
+            return controller.columnsLayout.rightRegion;
         },
         cart: function(id) {
-
-            // the products controller has the two column layout
-            var productsController = this.init();
-            var region = productsController.columnsLayout.rightRegion;
-
-            // init cart
-            var controller = new POSApp.Cart.Controller({ id: id, region: region });
-
-            //
+            var controller = new POSApp.Cart.Controller({ id: id, region: this.init() });
             POSApp.channel.trigger('init:cart', controller);
         },
-        checkout: function() {
-            this.init();
-            new POSApp.Checkout.Controller();
+        checkout: function(id) {
+            var controller = new POSApp.Checkout.Controller({ id: id, region: this.init() });
+            POSApp.channel.trigger('init:checkout', controller);
         },
-        receipt: function() {
-            this.init();
-            new POSApp.Receipt.Controller();
+        receipt: function(id) {
+            var controller = new POSApp.Receipt.Controller({ id: id, region: this.init() });
+            POSApp.channel.trigger('init:receipt', controller);
         }
     };
 

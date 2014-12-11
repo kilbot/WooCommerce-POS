@@ -15,7 +15,7 @@ POS.module('POSApp.Checkout', function(Checkout, POS, Backbone, Marionette, $, _
             orders.once('idb:ready', function() {
 
                 this.show( this.layout, {
-                    region: POS.mainRegion.rightRegion,
+                    region: options.region,
                     loading: {
                         entities: orders.fetch({ cart: true })
                     }
