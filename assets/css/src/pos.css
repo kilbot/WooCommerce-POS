@@ -2037,24 +2037,27 @@ input.btn:hover {
 /* line 1, scss/partials/_tables.scss */
 table {
   font-size: 14px;
-  margin-bottom: 24px;
   width: 100%;
 }
-/* line 5, scss/partials/_tables.scss */
-table td {
+
+/* line 1, scss/partials/_forms.scss */
+table.form-table {
+  margin-bottom: 24px;
+}
+/* line 3, scss/partials/_forms.scss */
+table.form-table td {
   padding: 8px;
 }
-
-/* line 2, scss/partials/_forms.scss */
+/* line 6, scss/partials/_forms.scss */
 table.form-table label {
   color: #757575;
   margin-bottom: 4px;
 }
-/* line 5, scss/partials/_forms.scss */
+/* line 9, scss/partials/_forms.scss */
 table.form-table label:not(:last-child) {
   display: block;
 }
-/* line 9, scss/partials/_forms.scss */
+/* line 13, scss/partials/_forms.scss */
 table.form-table input[type="text"] {
   width: 100%;
   padding: 6px 10px;
@@ -2312,39 +2315,39 @@ table.form-table input[type="text"] {
 /* line 1, scss/partials/_numpad.scss */
 .numpad-popover {
   max-width: none;
-  background-color: #e0e0e0;
+  background-color: #455a64;
 }
 /* line 4, scss/partials/_numpad.scss */
 .numpad-popover.top > .arrow {
-  border-top-color: #e0e0e0;
+  border-top-color: #455a64;
 }
 /* line 6, scss/partials/_numpad.scss */
 .numpad-popover.top > .arrow:after {
-  border-top-color: #e0e0e0;
+  border-top-color: #455a64;
 }
 /* line 10, scss/partials/_numpad.scss */
 .numpad-popover.right > .arrow {
-  border-right-color: #e0e0e0;
+  border-right-color: #455a64;
 }
 /* line 12, scss/partials/_numpad.scss */
 .numpad-popover.right > .arrow:after {
-  border-right-color: #e0e0e0;
+  border-right-color: #455a64;
 }
 /* line 16, scss/partials/_numpad.scss */
 .numpad-popover.bottom > .arrow {
-  border-bottom-color: #e0e0e0;
+  border-bottom-color: #455a64;
 }
 /* line 18, scss/partials/_numpad.scss */
 .numpad-popover.bottom > .arrow:after {
-  border-bottom-color: #e0e0e0;
+  border-bottom-color: #455a64;
 }
 /* line 23, scss/partials/_numpad.scss */
 .numpad-popover.left > .arrow {
-  border-left-color: #e0e0e0;
+  border-left-color: #455a64;
 }
 /* line 25, scss/partials/_numpad.scss */
 .numpad-popover.left > .arrow:after {
-  border-left-color: #e0e0e0;
+  border-left-color: #455a64;
 }
 /* line 29, scss/partials/_numpad.scss */
 .numpad-popover .popover-content {
@@ -2355,7 +2358,7 @@ table.form-table input[type="text"] {
 .numpad-header {
   padding: 6px;
   background-color: transparent;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #5a7582;
 }
 /* line 14, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
 .numpad-header:before, .numpad-header:after {
@@ -2378,9 +2381,10 @@ table.form-table input[type="text"] {
 }
 /* line 47, scss/partials/_numpad.scss */
 .numpad-header .title {
+  color: rgba(255, 255, 255, 0.9);
   line-height: 34px;
 }
-/* line 50, scss/partials/_numpad.scss */
+/* line 51, scss/partials/_numpad.scss */
 .numpad-header .input-alt {
   display: inline-block;
   line-height: 34px;
@@ -2398,17 +2402,17 @@ table.form-table input[type="text"] {
 .numpad-keys:after {
   clear: both;
 }
-/* line 60, scss/partials/_numpad.scss */
+/* line 61, scss/partials/_numpad.scss */
 .numpad-keys table {
   width: auto;
   border-collapse: separate;
   border-spacing: 6px;
 }
-/* line 65, scss/partials/_numpad.scss */
+/* line 66, scss/partials/_numpad.scss */
 .numpad-keys table tr td {
   border: 0;
 }
-/* line 67, scss/partials/_numpad.scss */
+/* line 68, scss/partials/_numpad.scss */
 .numpad-keys table tr td button {
   display: table-cell;
   height: 50px;
@@ -2417,30 +2421,30 @@ table.form-table input[type="text"] {
   padding: 0;
   outline: 0;
 }
-/* line 74, scss/partials/_numpad.scss */
+/* line 75, scss/partials/_numpad.scss */
 .numpad-keys table tr td button small {
   font-size: 13px;
   display: block;
 }
-/* line 78, scss/partials/_numpad.scss */
+/* line 79, scss/partials/_numpad.scss */
 .numpad-keys table tr td button.return {
   height: 105px;
 }
-/* line 81, scss/partials/_numpad.scss */
+/* line 82, scss/partials/_numpad.scss */
 .numpad-keys table tr td button:active {
   background-color: #ccc;
 }
-/* line 89, scss/partials/_numpad.scss */
+/* line 90, scss/partials/_numpad.scss */
 .numpad-keys table.cash {
-  border-left: 1px solid #ededed;
+  border-left: 1px solid #4f6873;
 }
-/* line 91, scss/partials/_numpad.scss */
+/* line 92, scss/partials/_numpad.scss */
 .numpad-keys table.cash button {
   width: 100px;
 }
-/* line 96, scss/partials/_numpad.scss */
+/* line 97, scss/partials/_numpad.scss */
 .numpad-keys table.discount {
-  border-left: 1px solid #ededed;
+  border-left: 1px solid #4f6873;
 }
 
 /* line 1, scss/partials/_select2.scss */

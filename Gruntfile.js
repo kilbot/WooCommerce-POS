@@ -135,6 +135,7 @@ module.exports = function(grunt) {
                 //'tests/data/**/*.json',
                 //'tests/specs/**/*.js',
                 //'tests/main.js',
+                'bower_components/backbone-dualStorage/backbone.dualstorage.js'
             ]
         },
 

@@ -1,13 +1,8 @@
 POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
     Entities.Product = Backbone.DualModel.extend({
-        urlRoot: function(){
-            return POS.getOption('wc_api') + 'products';
-        },
-
-        parse: function (resp, options) {
-            return resp.product ? resp.product : resp ;
-        }
+        idAttribute: 'local_id',
+        remoteIdAttribute: 'id'
     });
 
     Entities.Products = Backbone.DualCollection.extend({
@@ -21,7 +16,13 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
                 storeName: 'products',
                 storePrefix: 'wc_pos_',
                 dbVersion: 1,
-                keyPath: 'id'
+                keyPath: 'local_id',
+                autoIncrement: true,
+                indexes: [
+                    {name: 'local_id', keyPath: 'local_id', unique: true},  // same as idAttribute
+                    {name: 'id', keyPath: 'id', unique: true},  // same as remoteIdAttribute
+                    {name: 'status', keyPath: 'status', unique: false}  // required
+                ]
             }, this);
         },
 
@@ -40,13 +41,6 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
             return resp.products ? resp.products : resp ;
         }
 
-        //parseRecords: function (resp, options) {
-        //    return resp.products ? resp.products : resp ;
-        //}
-    });
-
-    Entities.channel.reply('product', function(id) {
-        return new Entities.Product(id);
     });
 
     Entities.channel.reply('products', function() {

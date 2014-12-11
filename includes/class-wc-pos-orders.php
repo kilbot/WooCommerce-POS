@@ -16,15 +16,6 @@ class WC_POS_Orders {
 	 */
 	public function __construct() {
 
-		$this->init();
-	}
-
-	/**
-	 * Load Order subclasses
-	 */
-	private function init() {
-
-
 	}
 
 }

@@ -24,7 +24,7 @@ $table-border-color   : $border-color;
 $input-border-color   : darken($border-color, 5%);
 
 $body-bg              : #e8e5df;
-$numpad-bg            : lighten(black, 88%);
+$numpad-bg            : nth( $primaryPalette, 8 );
 $header-bg            : nth( $primaryPalette, 10 );
 $menu-bg              : $header-bg;
 $input-bg             : #f9f9f9;

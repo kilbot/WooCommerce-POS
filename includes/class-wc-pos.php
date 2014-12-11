@@ -61,8 +61,9 @@ class WC_POS {
 		$registry->add( 'i18n',     new WC_POS_i18n() );      // internationalization
 		$registry->add( 'params',   new WC_POS_Params() );    //
 		new WC_POS_Template();      // POS front end
-		new WC_POS_Products();      // products
-		new WC_POS_Gateways();      // pos payment gateways
+		new WC_POS_Products();
+//		new WC_POS_Orders();
+		new WC_POS_Gateways();
 
 		// admin only
 		if ( is_admin() ) {

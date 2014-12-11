@@ -1,4 +1,8 @@
 table.form-table {
+  margin-bottom: $spacing;
+  td {
+    padding: $spacing/3;
+  }
   label {
     color: $secondary-text-color;
     margin-bottom: $spacing/6;
