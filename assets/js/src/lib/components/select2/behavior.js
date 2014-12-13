@@ -5,7 +5,7 @@ POS.module('Components.Select2', function(Select2, POS, Backbone, Marionette, $,
         initialize: function(options){
 
             this.options = _.defaults(options, {
-                query               : this.view.query,
+                query               : _.bind( this.view.query, this.view ),
                 formatResult		: this.view.formatResult,
                 formatSelection 	: this.view.formatSelection
             });

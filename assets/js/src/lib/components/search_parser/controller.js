@@ -1,125 +1,98 @@
 /**
- * Used to extract keywords and facets from the search query.
- * based on https://github.com/documentcloud/visualsearch/
- */
+* Used to extract keywords and facets from the search query.
+* based on https://github.com/documentcloud/visualsearch/
+*/
 
-define(['app', 'lib/components/search_parser/entities'], function(POS) {
+POS.module('Components.SearchParser', function(SearchParser, POS, Backbone, Marionette, $, _){
 
-	POS.module('Components.SearchParser', function(SearchParser, POS, Backbone, Marionette, $, _){
+    var QUOTES_RE   = "('[^']+'|\"[^\"]+\")";
+    var FREETEXT_RE = "('[^']+'|\"[^\"]+\"|[^'\"\\s]\\S*)";
+    var CATEGORY_RE = FREETEXT_RE +                     ':\\s*';
+    var FREETEXT_CAT = '';
 
-		/**
-		 * API
-		 */
-		SearchParser.channel = Backbone.Radio.channel('search_parser');
+    var Parser = {
+        ALL_FIELDS : new RegExp(CATEGORY_RE + FREETEXT_RE, 'g'),
+        CATEGORY   : new RegExp(CATEGORY_RE),
 
-		SearchParser.channel.reply('search:entities', function() {
-			return new SearchParser.Query();
-		});
+        parse : function(query) {
+            var searchFacets = this._extractAllFacets(query);
+            return searchFacets;
+        },
 
-		SearchParser.channel.reply('search:facets', function(query) {
-			var searchParser = new SearchParser.Controller();
-			return searchParser.parse(query);
-		});
+        // Walks the query and extracts facets, categories, and free text.
+        _extractAllFacets : function(query) {
+            var facets = {};
+            var originalQuery = query;
+            while (query) {
+                var key, value;
+                originalQuery = query;
+                var field = this._extractNextField(query);
+                if (!field) {
+                    key     = FREETEXT_CAT;
+                    value   = this._extractSearchText(query);
+                    query   = query.replace(value, '').trim();
+                } else if (field.indexOf(':') != -1) {
+                    key     = field.match(this.CATEGORY)[1].replace(/(^['"]|['"]$)/g, '');
+                    value   = field.replace(this.CATEGORY, '').replace(/(^['"]|['"]$)/g, '');
+                    query   = query.replace(field, '').trim();
+                } else if (field.indexOf(':') == -1) {
+                    key     = FREETEXT_CAT;
+                    value   = field;
+                    query   = query.replace(value, '').trim();
+                }
 
-		/**
-		 * Variables
-		 */
-		var QUOTES_RE   = "('[^']+'|\"[^\"]+\")";
-		var FREETEXT_RE = "('[^']+'|\"[^\"]+\"|[^'\"\\s]\\S*)";
-		var CATEGORY_RE = FREETEXT_RE +                     ':\\s*';
-		var FREETEXT_CAT = 'text';
+                if ( value ) {
+                    _( value.split('|') ).each(function( value ){
+                        var val = value.trim().toLowerCase();
+                        if( val ) {
+                            facets[key] ? facets[key].push(val) : facets[key] = [val];
+                        }
+                    });
+                }
+                if (originalQuery == query) break;
+            }
+            return facets;
+        },
 
-		/**
-		 * Controller
-		 */
-		SearchParser.Controller = Marionette.Controller.extend({
+        // Extracts the first field found, capturing any free text that comes
+        // before the category.
+        _extractNextField : function(query) {
+            var textRe = new RegExp('^\\s*(\\S+)\\s+(?=' + QUOTES_RE + FREETEXT_RE + ')');
+            var textMatch = query.match(textRe);
+            if (textMatch && textMatch.length >= 1) {
+                return textMatch[1];
+            } else {
+                return this._extractFirstField(query);
+            }
+        },
 
-  			ALL_FIELDS : new RegExp(CATEGORY_RE + FREETEXT_RE, 'g'),
-			CATEGORY   : new RegExp(CATEGORY_RE),
+        // If there is no free text before the facet, extract the category and value.
+        _extractFirstField : function(query) {
+            var fields = query.match(this.ALL_FIELDS);
+            return fields && fields.length && fields[0];
+        },
 
-			parse : function(query) {
-				var searchFacets = this._extractAllFacets(query);
-				return searchFacets;
-			},
+        // If the found match is not a category and facet, extract the trimmed free text.
+        _extractSearchText : function(query) {
+            query = query || '';
+            var text = query.replace(this.ALL_FIELDS, '').trim();
+            return text;
+        },
 
-			// Walks the query and extracts facets, categories, and free text.
-  			_extractAllFacets : function(query) {
-				var facets = [];
-				var originalQuery = query;
-				while (query) {
-					var category, value;
-					originalQuery = query;
-					var field = this._extractNextField(query);
-					if (!field) {
-						category = FREETEXT_CAT;
-						value    = this._extractSearchText(query);
-						query    = this.trim(query.replace(value, ''));
-					} else if (field.indexOf(':') != -1) {
-						category = field.match(this.CATEGORY)[1].replace(/(^['"]|['"]$)/g, '');
-						value    = field.replace(this.CATEGORY, '').replace(/(^['"]|['"]$)/g, '');
-						query    = this.trim(query.replace(field, ''));
-					} else if (field.indexOf(':') == -1) {
-						category = FREETEXT_CAT;
-						value    = field;
-						query    = this.trim(query.replace(value, ''));
-					}
+        // Escape strings that are going to be used in a regex. Escapes punctuation
+        // that would be incorrect in a regex.
+        escapeRegExp : function(s) {
+            return s.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
+        }
+    }
 
-					if (category && value) {
-						_( value.split('|') ).each(function( value ){
-							var val = this.trim( value );
-							if( val ) {
-								var searchFacet = new SearchParser.Facet({
-									category : category,
-									value    : val,
-								});
-								facets.push(searchFacet);
-							}
-						}, this);
-					}
-					if (originalQuery == query) break;
-				}
+    /**
+     * API
+     */
+    SearchParser.channel = Backbone.Radio.channel('search_parser');
 
-				return facets;
-  			},
-
-			// Extracts the first field found, capturing any free text that comes
-			// before the category.
-			_extractNextField : function(query) {
-				var textRe = new RegExp('^\\s*(\\S+)\\s+(?=' + QUOTES_RE + FREETEXT_RE + ')');
-				var textMatch = query.match(textRe);
-				if (textMatch && textMatch.length >= 1) {
-					return textMatch[1];
-				} else {
-					return this._extractFirstField(query);
-				}
-			},
-
-			// If there is no free text before the facet, extract the category and value.
-			_extractFirstField : function(query) {
-				var fields = query.match(this.ALL_FIELDS);
-				return fields && fields.length && fields[0];
-			},
-
-			// If the found match is not a category and facet, extract the trimmed free text.
-			_extractSearchText : function(query) {
-				query = query || '';
-				var text = this.trim(query.replace(this.ALL_FIELDS, ''));
-				return text;
-			},
-
-			// Delegate to the ECMA5 String.prototype.trim function, if available.
-			trim : function(s) {
-				return s.trim ? s.trim() : s.replace(/^\s+|\s+$/g, '');
-			},
-
-			// Escape strings that are going to be used in a regex. Escapes punctuation
-			// that would be incorrect in a regex.
-			escapeRegExp : function(s) {
-				return s.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
-			}
-
-		});
-
-	});
+    SearchParser.channel.reply('facets', function(query) {
+        return Parser.parse(query);
+    });
 
 });

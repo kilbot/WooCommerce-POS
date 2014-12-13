@@ -2,7 +2,11 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
     Entities.Product = Backbone.DualModel.extend({
         idAttribute: 'local_id',
-        remoteIdAttribute: 'id'
+        remoteIdAttribute: 'id',
+
+        parse: function (resp, options) {
+            return resp.product ? resp.product : resp ;
+        }
     });
 
     Entities.Products = Backbone.DualCollection.extend({

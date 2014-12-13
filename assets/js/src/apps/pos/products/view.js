@@ -23,13 +23,15 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
     /**
      * Filter
      */
-    Products.Filter = Marionette.ItemView.extend({
+    Products.Actions = Marionette.ItemView.extend({
         initialize: function() {
             this.template = Handlebars.compile( $('#tmpl-products-filter').html() );
         },
 
         behaviors: {
-            Filter: {}
+            Filter: {
+                fields: ['title']
+            }
         }
 
     });

@@ -11,10 +11,10 @@
 	<table class="widefat">
 		<tbody>
 			<tr>
-				<th><?php _e( 'Translation Upgrade', 'woocommerce' ); ?></th>
+				<th><?php /* translators: woocommerce */ _e( 'Translation Upgrade', 'woocommerce' ); ?></th>
 				<td>
-					<a href="#" class="button action-translation"><?php _e( 'Force Translation Upgrade', 'woocommerce' ); ?></a>
-					<?php _e( '<strong class="red">Note:</strong> This option will force the translation upgrade for your language if a translation is available.', 'woocommerce' ); ?>
+					<a href="#" class="button action-translation"><?php /* translators: woocommerce */ _e( 'Force Translation Upgrade', 'woocommerce' ); ?></a>
+					<?php /* translators: woocommerce */ _e( '<strong class="red">Note:</strong> This option will force the translation upgrade for your language if a translation is available.', 'woocommerce' ); ?>
 				</td>
 			</tr>
 		</tbody>

@@ -24,9 +24,11 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
 
             // wait for products to load
             this.listenTo( this.layout, 'show', function() {
-                this.showFilter();
-                this.showTabs();
-                this.showProducts( products );
+
+                var filtered = new FilteredCollection( products );
+                this.showActions( filtered );
+                this.showTabs( filtered );
+                this.showProducts( filtered );
 
                 // add title to tab
                 this.columnsLayout.leftRegion.trigger('update:title', 'Products');
@@ -45,29 +47,34 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
             }, this);
         },
 
-        showFilter: function() {
-            var view = new Products.Filter();
+        showActions: function( filtered ) {
+            var view = new Products.Actions({ collection: filtered });
+
+            this.listenTo( view, 'stuff', function(){
+
+            });
 
             // show
             this.layout.actionsRegion.show( view );
         },
 
-        showTabs: function() {
+        showTabs: function( filtered ) {
 
             // tabs component
             var view = POS.Components.Tabs.channel.request( 'get:tabs', POS.getOption('tabs') );
+
+            this.listenTo( view.collection, 'change:active', function( model ){
+                //var filter = model.get('value');
+                //filtered.filterBy();
+            });
 
             // show tabs component
             this.layout.tabsRegion.show( view );
         },
 
-        showProducts: function( products ) {
+        showProducts: function( filtered ) {
 
-            var filtered = new FilteredCollection( products );
-
-            var view = new Products.List({
-                collection: filtered
-            });
+            var view = new Products.List({ collection: filtered });
 
             // add to cart
             this.listenTo( view, 'childview:cart:add:clicked', function(childview, args) {

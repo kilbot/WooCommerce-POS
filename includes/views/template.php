@@ -48,7 +48,10 @@ global $current_user;
 	<div class="modal-dialog"><div class="modal-content">
 		<div class="modal-header"><h1><?php /* translators: wordpress */ _e( 'Title' ); ?></h1><i class="icon icon-times action-close" title="<?php /* translators: wordpress */ _e( 'Close' ); ?>"></i></div>
 		<div class="modal-body"></div>
-		<div class="modal-footer"><p class="response"></p><a href="#" class="btn btn-primary action-save"><?php /* translators: wordpress */ _e( 'Save Changes' ); ?></a></div>
+		<div class="modal-footer">
+			<p class="response"></p>
+			<a href="#" class="btn btn-primary action-save"><?php /* translators: wordpress */ _e( 'Save Changes' ); ?></a>
+		</div>
 	</div></div>
 </script>
 

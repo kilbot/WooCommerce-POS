@@ -7,6 +7,10 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
         },
 
         openModal: function (callback) {
+            if( this.view.title ){
+                this.options.title = this.view.title;
+            }
+
             Modal.channel.command('open', {
                 view: this.view,
                 callback: callback,

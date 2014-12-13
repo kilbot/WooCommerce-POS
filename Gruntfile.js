@@ -196,6 +196,7 @@ module.exports = function(grunt) {
                         // main app & config
                         'assets/js/src/lib/config/application.js',
                         'assets/js/src/lib/config/region.js',
+                        'assets/js/src/lib/config/filtered_collection.js',
                         'assets/js/src/app.js',
                         'assets/js/src/lib/utilities/ajax.js',
                         'assets/js/src/lib/config/controller_base.js',
@@ -238,6 +239,7 @@ module.exports = function(grunt) {
                         'assets/js/src/lib/components/numpad/templates.js',
                         'assets/js/src/lib/components/select2/behavior.js',
                         'assets/js/src/lib/components/customer_select/view.js',
+                        'assets/js/src/lib/components/search_parser/controller.js',
 
                         // sub apps
                         'assets/js/src/apps/header/header_app.js',

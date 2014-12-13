@@ -17,7 +17,7 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Page {
 	public function __construct() {
 		$this->id    = 'checkout';
 		/* translators: woocommerce */
-		$this->label = _x( 'Checkout', 'Settings group label', 'woocommerce' );
+		$this->label = __( 'Checkout', 'woocommerce' );
 	}
 
 	protected function load_gateways() {
