@@ -32,7 +32,8 @@ POS.module('Components.Filter', function(Filter, POS, Backbone, Marionette, $, _
             var criterion = POS.Components.SearchParser.channel.request( 'facets', query );
             var fields = this.getOption('fields');
             collection.filterBy( 'search',
-                _.bind( collection.matchMaker, collection, criterion, fields )
+                //_.bind( collection.matchMaker, collection, criterion, fields )
+                _.partial( collection.matchMaker, criterion, fields )
             );
         },
 

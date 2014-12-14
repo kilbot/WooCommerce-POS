@@ -2071,6 +2071,129 @@ table.form-table input[type="text"] {
   padding: 6px 10px;
 }
 
+/* line 9, scss/partials/_alerts.scss */
+.alert {
+  padding: 12px;
+  margin-bottom: 24px;
+  border: 1px solid transparent;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+/* line 16, scss/partials/_alerts.scss */
+.alert h4 {
+  margin-top: 0;
+  color: inherit;
+}
+/* line 23, scss/partials/_alerts.scss */
+.alert > p,
+.alert > ul {
+  margin-bottom: 0;
+}
+/* line 27, scss/partials/_alerts.scss */
+.alert > p + p {
+  margin-top: 5px;
+}
+
+/* line 36, scss/partials/_alerts.scss */
+.alert-dismissable,
+.alert-dismissible {
+  padding-right: 44px;
+}
+/* line 41, scss/partials/_alerts.scss */
+.alert-dismissable .close,
+.alert-dismissible .close {
+  position: relative;
+  top: -2px;
+  right: -21px;
+  color: inherit;
+}
+
+/* line 53, scss/partials/_alerts.scss */
+.alert-success {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+/* line 6, scss/partials/mixins/_alert-variant.scss */
+.alert-success hr {
+  border-top-color: #c9e2b3;
+}
+/* line 9, scss/partials/mixins/_alert-variant.scss */
+.alert-success .alert-link {
+  color: #2b542c;
+}
+
+/* line 56, scss/partials/_alerts.scss */
+.alert-info {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f;
+}
+/* line 6, scss/partials/mixins/_alert-variant.scss */
+.alert-info hr {
+  border-top-color: #a6e1ec;
+}
+/* line 9, scss/partials/mixins/_alert-variant.scss */
+.alert-info .alert-link {
+  color: #245269;
+}
+
+/* line 59, scss/partials/_alerts.scss */
+.alert-warning {
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  color: #8a6d3b;
+}
+/* line 6, scss/partials/mixins/_alert-variant.scss */
+.alert-warning hr {
+  border-top-color: #f7e1b5;
+}
+/* line 9, scss/partials/mixins/_alert-variant.scss */
+.alert-warning .alert-link {
+  color: #66512c;
+}
+
+/* line 62, scss/partials/_alerts.scss */
+.alert-danger {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+/* line 6, scss/partials/mixins/_alert-variant.scss */
+.alert-danger hr {
+  border-top-color: #e4b9c0;
+}
+/* line 9, scss/partials/mixins/_alert-variant.scss */
+.alert-danger .alert-link {
+  color: #843534;
+}
+
+/* line 67, scss/partials/_alerts.scss */
+.alert-popup {
+  position: fixed;
+  right: 0;
+  top: 0;
+  margin: 12px;
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  width: auto;
+}
+@media (min-width: 769px) {
+  /* line 67, scss/partials/_alerts.scss */
+  .alert-popup {
+    width: 600px;
+    right: 50%;
+    margin-right: -300px;
+  }
+}
+/* line 79, scss/partials/_alerts.scss */
+.alert-popup .action-close {
+  position: absolute;
+  top: 0;
+  right: 3px;
+}
+
 /* line 2, scss/partials/_tabs.scss */
 .tabs ul {
   background: #cfd8dc;

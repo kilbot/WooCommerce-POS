@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2014-12-11 14:46:41+00:00\n"
+"POT-Creation-Date: 2014-12-13 15:12:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -130,20 +130,6 @@ msgstr ""
 msgid "The default customer for POS orders, eg: Guest or create a new customer."
 msgstr ""
 
-#: includes/admin/settings/views/tools.php:14
-msgid "Translation Upgrade"
-msgstr ""
-
-#: includes/admin/settings/views/tools.php:16
-msgid "Force Translation Upgrade"
-msgstr ""
-
-#: includes/admin/settings/views/tools.php:17
-msgid ""
-"<strong class=\"red\">Note:</strong> This option will force the translation "
-"upgrade for your language if a translation is available."
-msgstr ""
-
 #: includes/admin/views/settings.php:18
 msgid ""
 "There has been an error loading the settings, please contact <a "
@@ -171,12 +157,6 @@ msgstr ""
 #: includes/admin/class-wc-pos-permalink.php:28
 msgctxt "Permalink setting, eg: /pos"
 msgid "POS base"
-msgstr ""
-
-#: includes/admin/settings/class-wc-pos-checkout.php:20
-#. translators: woocommerce
-msgctxt "Settings group label"
-msgid "Checkout"
 msgstr ""
 
 #: includes/admin/settings/views/checkout.php:138

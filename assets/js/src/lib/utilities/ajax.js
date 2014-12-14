@@ -11,4 +11,4 @@ Backbone.$.wc_pos_ajax = function(options) {
         beforeSend: function(xhr){xhr.setRequestHeader('X-WC-POS', 1);}
     });
     return Backbone.$.ajax(options);
-}
+};

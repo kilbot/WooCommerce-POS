@@ -18,7 +18,6 @@
     "marionette": "~2.2.2",
     "modernizr": "~2.8.3",
     "moment": "~2.8.4",
-    "pushy": "~0.9.1",
     "requirejs": "~2.1.14",
     "requirejs-plugins": "~1.0.2",
     "select2": "~3.5.2",
@@ -30,14 +29,18 @@
     "chai": "~1.9.2",
     "sinon": "~1.11.1",
     "idbwrapper": "~1.4.1",
-    "backbone-idb": "git@github.com:Crystalnix/backbone-idb",
+    "backbone-idb": "git@github.com:Crystalnix/backbone-idb#0.3.2",
     "backbone-filtered-collection": "~0.4.0",
     "event-source-polyfill": "~0.0.1",
-    "normalize.css": "~3.0.2"
+    "normalize.css": "~3.0.2",
+    "backbone-validation": "~0.9.1",
+    "backbone-dualStorage": "git@github.com:kilbot/backbone-dualStorage",
+    "backbone.stickit": "~0.8.0"
   },
   "devDependencies": {},
   "resolutions": {
     "jquery": "~2.1.1",
-    "backbone": "~1.1.2"
+    "backbone": "~1.1.2",
+    "backbone-idb": "0.3.2"
   }
 }

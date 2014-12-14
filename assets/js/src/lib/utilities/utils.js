@@ -27,6 +27,18 @@ POS.Utils = {
         } else {
             return String(n) === num && n > 0;
         }
+    },
+
+    /**
+     * Parse error messages from the server
+     */
+    parseErrorResponse: function( jqXHR ){
+        var resp = jqXHR.responseJSON;
+        if( resp.errors ){
+            return resp.errors[0].message;
+        }
+
+        return jqXHR.responseText;
     }
 
 };

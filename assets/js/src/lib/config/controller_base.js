@@ -1,4 +1,4 @@
-POS.Controller = {};
+POS.Controller = POS.Controller || {};
 
 POS.Controller.Base = Marionette.Controller.extend({
 

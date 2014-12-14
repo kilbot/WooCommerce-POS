@@ -64,8 +64,12 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
             var view = POS.Components.Tabs.channel.request( 'get:tabs', POS.getOption('tabs') );
 
             this.listenTo( view.collection, 'change:active', function( model ){
-                //var filter = model.get('value');
-                //filtered.filterBy();
+                var criterion = POS.Components.SearchParser.channel.request( 'facets', model.get('value') );
+                var fields = ['title'];
+                filtered.filterBy( 'tab',
+                    //_.bind( filtered.matchMaker, filtered, criterion, fields )
+                    _.partial( filtered.matchMaker, criterion, fields )
+                );
             });
 
             // show tabs component

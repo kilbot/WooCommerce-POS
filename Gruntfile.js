@@ -157,7 +157,9 @@ module.exports = function(grunt) {
 
                         // backbone extras
                         'assets/js/src/lib/config/sync.js',
+                        'bower_components/backbone.stickit/backbone.stickit.js',
                         'bower_components/backbone.syphon/lib/backbone.syphon.js',
+                        'bower_components/backbone-validation/dist/backbone-validation.js',
                         //'bower_components/backbone-poller/backbone.poller.min.js',
                         //'bower_components/backbone.paginator/lib/backbone.paginator.min.js',
                         'bower_components/idb-wrapper/idbstore.js',
@@ -200,8 +202,8 @@ module.exports = function(grunt) {
                         'assets/js/src/app.js',
                         'assets/js/src/lib/utilities/ajax.js',
                         'assets/js/src/lib/config/controller_base.js',
+                        'assets/js/src/lib/config/view_form.js',
                         'assets/js/src/lib/utilities/utils.js',
-
 
                         // entities
                         'assets/js/src/entities/db.js',
@@ -240,6 +242,9 @@ module.exports = function(grunt) {
                         'assets/js/src/lib/components/select2/behavior.js',
                         'assets/js/src/lib/components/customer_select/view.js',
                         'assets/js/src/lib/components/search_parser/controller.js',
+                        'assets/js/src/lib/components/alerts/controller.js',
+                        'assets/js/src/lib/components/alerts/view.js',
+                        'assets/js/src/lib/components/alerts/behavior.js',
 
                         // sub apps
                         'assets/js/src/apps/header/header_app.js',
