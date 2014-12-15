@@ -28,18 +28,18 @@ POS.module('Components.AutoGrow', function(AutoGrow, POS, Backbone, Marionette, 
         },
 
         events: {
-            'input @ui.input' : 'onInputEvent'
+            'input @ui.input' : 'autoGrow'
         },
 
-        onRender: function() {
+        onShow: function() {
             _.each( this.ui.input, function( input ) {
-                $(input).trigger('input');
+                this.autoGrow( $(input) );
             }, this);
         },
 
-        onInputEvent: function(e) {
-            var input  	= $(e.target);
-            var value 	= input.val();
+        autoGrow: function( e ) {
+            var input = e.target ? $(e.target) : e ;
+            var value = input.val();
 
             value = value.replace(/&/g, '&amp;')
                 .replace(/\s/g,'&nbsp;')

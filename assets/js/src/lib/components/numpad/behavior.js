@@ -42,8 +42,8 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
             // on numpad return, close numpad and update value
             $(e.target).on( 'numpad:return', function( e, value ) {
                 $(this).trigger( 'close:popover' );
-                var enter = $.Event( 'keypress', { which: 13 } );
-                $(this).val( value ).trigger(enter);
+                //var enter = $.Event( 'keypress', { which: 13 } );
+                $(this).val( value ).trigger( 'change' );
             });
 
         },

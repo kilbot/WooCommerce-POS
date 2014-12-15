@@ -16,6 +16,12 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             'tax_class'     : ''
         },
 
+        validation: {
+            sale_price: {
+                pattern: 'email'
+            }
+        },
+
         initialize: function( options ) {
 
             if( this.collection && this.collection.order ) {

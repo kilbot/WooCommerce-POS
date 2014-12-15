@@ -1422,7 +1422,6 @@ body {
 /* line 212, scss/partials/_scaffolding.scss */
 .module .list-footer {
   background: #cfd8dc;
-  padding: 8px;
 }
 
 /* line 1, scss/partials/_loading.scss */
@@ -2054,21 +2053,43 @@ table.form-table {
 }
 /* line 3, scss/partials/_forms.scss */
 table.form-table td {
+  vertical-align: top;
   padding: 8px;
 }
-/* line 6, scss/partials/_forms.scss */
+/* line 7, scss/partials/_forms.scss */
 table.form-table label {
   color: #757575;
   margin-bottom: 4px;
 }
-/* line 9, scss/partials/_forms.scss */
+/* line 10, scss/partials/_forms.scss */
 table.form-table label:not(:last-child) {
   display: block;
 }
-/* line 13, scss/partials/_forms.scss */
+/* line 14, scss/partials/_forms.scss */
 table.form-table input[type="text"] {
   width: 100%;
   padding: 6px 10px;
+}
+/* line 18, scss/partials/_forms.scss */
+table.form-table span.error-message {
+  display: none;
+}
+/* line 22, scss/partials/_forms.scss */
+table.form-table .error label {
+  color: #a94442;
+}
+/* line 25, scss/partials/_forms.scss */
+table.form-table .error input {
+  border: 1px solid #a94442;
+}
+/* line 28, scss/partials/_forms.scss */
+table.form-table .error span.error-message {
+  display: block;
+  width: 100%;
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #a94442;
+  font-size: 0.8em;
+  padding: 3px;
 }
 
 /* line 9, scss/partials/_alerts.scss */
@@ -2120,7 +2141,7 @@ table.form-table input[type="text"] {
   border-top-color: #c9e2b3;
 }
 /* line 9, scss/partials/mixins/_alert-variant.scss */
-.alert-success .alert-link {
+.alert-success a {
   color: #2b542c;
 }
 
@@ -2135,7 +2156,7 @@ table.form-table input[type="text"] {
   border-top-color: #a6e1ec;
 }
 /* line 9, scss/partials/mixins/_alert-variant.scss */
-.alert-info .alert-link {
+.alert-info a {
   color: #245269;
 }
 
@@ -2150,7 +2171,7 @@ table.form-table input[type="text"] {
   border-top-color: #f7e1b5;
 }
 /* line 9, scss/partials/mixins/_alert-variant.scss */
-.alert-warning .alert-link {
+.alert-warning a {
   color: #66512c;
 }
 
@@ -2165,7 +2186,7 @@ table.form-table input[type="text"] {
   border-top-color: #e4b9c0;
 }
 /* line 9, scss/partials/mixins/_alert-variant.scss */
-.alert-danger .alert-link {
+.alert-danger a {
   color: #843534;
 }
 
@@ -3173,8 +3194,16 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
   margin-right: 5px;
   vertical-align: middle;
 }
+/* line 57, scss/partials/_modal.scss */
+#modal .modal-footer p.response.success {
+  color: #3c763d;
+}
+/* line 60, scss/partials/_modal.scss */
+#modal .modal-footer p.response.error {
+  color: #a94442;
+}
 
-/* line 62, scss/partials/_modal.scss */
+/* line 68, scss/partials/_modal.scss */
 ul.hotkeys {
   -moz-column-count: 2;
   -webkit-column-count: 2;
@@ -3182,11 +3211,11 @@ ul.hotkeys {
   padding: 0;
   margin: 0;
 }
-/* line 66, scss/partials/_modal.scss */
+/* line 72, scss/partials/_modal.scss */
 ul.hotkeys li {
   padding: 6px 0;
 }
-/* line 68, scss/partials/_modal.scss */
+/* line 74, scss/partials/_modal.scss */
 ul.hotkeys li input {
   max-width: 80px;
   margin-right: 12px;

@@ -125,7 +125,7 @@
 .icon-bars:before {
   content: "\f0c9";
 }
-.icon-check:before {
+.icon-check:before, .icon-success:before {
   content: "\f00c";
 }
 .icon-chevron-left:before {
@@ -170,7 +170,7 @@
 .icon-support:before {
   content: "\e605";
 }
-.icon-times:before {
+.icon-times:before, .icon-error:before {
   content: "\f00d";
 }
 .icon-times-circle:before {

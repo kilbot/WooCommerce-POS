@@ -54,6 +54,12 @@
         margin-right: 5px;
         vertical-align: middle;
       }
+      &.success {
+        color: $state-success-text;
+      }
+      &.error {
+        color: $state-danger-text;
+      }
     }
   }
 }

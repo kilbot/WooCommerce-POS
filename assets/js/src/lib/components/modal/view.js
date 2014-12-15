@@ -14,8 +14,8 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
 
         events: {
             'click .action-close'   : 'closeModal',
-            'click .modal-footer a' : 'onButtonClick',
-            'click .action-save'    : 'saving'
+            'click .action-save'    : 'saving',
+            'click .modal-footer a' : 'onButtonClick'
         },
 
         initialize: function () {
@@ -67,6 +67,11 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
 
             this.content.show(options.view);
             this.isShown = true;
+
+            if( options.view.model ) {
+                this.listenTo( options.view.model, 'save:status', this.updateSaveStatus );
+            }
+
         },
 
         teardownModal: function () {
@@ -80,7 +85,16 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
 
         saving: function(){
             this.$('.modal-footer .action-save').addClass( 'disabled' );
-            this.$('.modal-footer p.response').html( '<i class="icon icon-spinner"></i>' );
+            this.$('.modal-footer p.response').removeClass('success error').html( '<i class="icon icon-spinner"></i>' );
+        },
+
+        updateSaveStatus: function( status, message ){
+            if( _.isUndefined(message) ){
+                message = this.$('.modal-footer p.response').data(status);
+            };
+
+            this.$('.modal-footer p.response').addClass(status).html( '<i class="icon icon-' + status + '"></i> ' + message );
+            this.$('.modal-footer .action-save').removeClass( 'disabled' );
         }
 
     });

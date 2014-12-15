@@ -6,6 +6,12 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
         parse: function (resp, options) {
             return resp.product ? resp.product : resp ;
+        },
+
+        validation: {
+            sale_price: {
+                pattern: 'email'
+            }
         }
     });
 
@@ -28,6 +34,9 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
                     {name: 'status', keyPath: 'status', unique: false}  // required
                 ]
             }, this);
+
+            //
+            this.on( 'remote:sync', this.remoteSync );
         },
 
         state: {
@@ -43,6 +52,22 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
         parse: function (resp, options) {
             return resp.products ? resp.products : resp ;
+        },
+
+        remoteSync: function(){
+            this.fullSync()
+                .done( function() {
+
+                })
+                .fail( function( item, jqXHR, textStatus, errorThrown ){
+                    // error alert
+                    var errors = POS.Utils.parseErrorResponse( jqXHR );
+                    POS.Components.Alerts.channel.command( 'open:alert', {
+                        type: 'danger',
+                        title: item.title,
+                        message: errors
+                    });
+                });
         }
 
     });

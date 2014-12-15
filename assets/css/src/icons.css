@@ -170,7 +170,7 @@
 }
 
 /* line 128, scss/icons.scss */
-.icon-check:before {
+.icon-check:before, .icon-success:before {
   content: "\f00c";
 }
 
@@ -245,7 +245,7 @@
 }
 
 /* line 173, scss/icons.scss */
-.icon-times:before {
+.icon-times:before, .icon-error:before {
   content: "\f00d";
 }
 
@@ -296,9 +296,9 @@
   background-size: 100% 100%;
 }
 /* line 207, scss/icons.scss */
-.icon-spinner.icon-lg {
-  width: 32px;
-  height: 32px;
+.icon-spinner.icon-2x {
+  width: 40px;
+  height: 40px;
 }
 
 /* line 213, scss/icons.scss */

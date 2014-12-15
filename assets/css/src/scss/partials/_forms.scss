@@ -1,6 +1,7 @@
 table.form-table {
   margin-bottom: $spacing;
   td {
+    vertical-align: top;
     padding: $spacing/3;
   }
   label {
@@ -13,5 +14,24 @@ table.form-table {
   input[type="text"] {
     width: 100%;
     padding: $spacing/4 $spacing/2.4;
+  }
+  span.error-message {
+    display: none;
+  }
+  .error {
+    label {
+      color: $state-danger-text;
+    }
+    input {
+      border: 1px solid $state-danger-text;
+    }
+    span.error-message {
+      display: block;
+      width: 100%;
+      color: $inverse-text-color;
+      background-color: $state-danger-text;
+      font-size: 0.8em;
+      padding: $spacing/8;
+    }
   }
 }
