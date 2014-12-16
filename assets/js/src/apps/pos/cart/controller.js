@@ -10,6 +10,10 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
             this.listenTo( this.layout, 'show', function() {
                 this.showCart();
+                this.showTotals();
+                this.showCustomer();
+                this.showActions();
+                this.showNotes();
             });
 
             this.show( this.layout, {
@@ -132,14 +136,6 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             });
 
             this.layout.listRegion.show( view );
-
-            // maybe show totals, actions
-            if( true ) {
-                this.showTotals();
-                this.showCustomer();
-                this.showActions();
-                this.showNotes();
-            }
         },
 
         /**

@@ -2,7 +2,6 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
     Cart.Collection = Backbone.Collection.extend({
         model: Cart.Model,
-        local: true,
 
         comparator: function( model ){
             var type = model.get( 'type' );
@@ -21,10 +20,8 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 keyPath: 'local_id',
                 autoIncrement: true,
                 indexes: [
-                    {name: 'local_id', keyPath: 'local_id', unique: true},
-                    {name: 'id', keyPath: 'id', unique: false},
                     {name: 'order', keyPath: 'order', unique: false},
-                    {name: 'status', keyPath: 'status', unique: false}
+                    {name: 'type', keyPath: 'type', unique: false}
                 ]
             }, this);
 

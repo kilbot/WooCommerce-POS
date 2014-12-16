@@ -6,13 +6,8 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
         parse: function (resp, options) {
             return resp.product ? resp.product : resp ;
-        },
-
-        validation: {
-            sale_price: {
-                pattern: 'email'
-            }
         }
+
     });
 
     Entities.Products = Backbone.DualCollection.extend({
@@ -25,6 +20,7 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
             this.indexedDB = new Backbone.IndexedDB({
                 storeName: 'products',
                 storePrefix: 'wc_pos_',
+                dualStorage: true,
                 dbVersion: 1,
                 keyPath: 'local_id',
                 autoIncrement: true,

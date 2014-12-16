@@ -1,8 +1,6 @@
 POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
     Cart.Model = Backbone.Model.extend({
-        idAttribute: 'local_id',
-        remoteIdAttribute: 'id',
 
         defaults : {
             'subtotal' 	    : 0,
@@ -14,12 +12,6 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             'qty'			: 1,
             'taxable'       : true,
             'tax_class'     : ''
-        },
-
-        validation: {
-            sale_price: {
-                pattern: 'email'
-            }
         },
 
         initialize: function( options ) {
@@ -75,14 +67,12 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
          */
         calcTax: function( price, qty ) {
             var item_tax = 0,
-                tax_class = this.get('tax_class');
+                tax_class = this.get('tax_class'),
+                tax_rates = POS.getOption('tax_rates'),
+                rates = tax_rates[tax_class];
 
-            if( _( POS.getOptions('tax_rates') ).has( tax_class ) ) {
-                var rates = POS.getOptions('tax_rates').tax_class;
-            }
-
-            if( POS.getOptions('tax').calc_taxes === 'yes' && this.get('taxable') && rates ) {
-                if( POS.getOptions('tax').prices_include_tax === 'yes' ) {
+            if( POS.getOption('tax').calc_taxes === 'yes' && this.get('taxable') && rates ) {
+                if( POS.getOption('tax').prices_include_tax === 'yes' ) {
                     item_tax = this.calcInclusiveTax( price, rates, qty );
                 }
                 else {

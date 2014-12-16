@@ -5,6 +5,7 @@
 		margin: 0;
 		padding: 0;
 		li {
+		  	vertical-align: bottom; /* hack for icon alignment */
 			display: inline-block;
 			background: $btn-default-bg;
 			padding: $spacing/4 $spacing/2;
@@ -40,11 +41,4 @@
       }
     }
   }
-}
-.cart-tabs {
- ul {
-   li {
-     vertical-align: top; /* hack? */
-   }
- }
 }

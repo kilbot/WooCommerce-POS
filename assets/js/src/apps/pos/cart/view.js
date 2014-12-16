@@ -8,7 +8,8 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             totalsRegion    : '.list-totals',
             customerRegion  : '.cart-customer',
             actionsRegion   : '.cart-actions',
-            notesRegion     : '.cart-notes'
+            notesRegion     : '.cart-notes',
+            footerRegion    : '.list-footer'
         },
         attributes: {
             'class'         : 'module cart-module',

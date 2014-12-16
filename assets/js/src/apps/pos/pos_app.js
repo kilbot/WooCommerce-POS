@@ -15,23 +15,19 @@ POS.module('POSApp', function(POSApp, POS, Backbone, Marionette, $, _) {
             // init products if required
             if( ! controller ){
                 controller = new POSApp.Products.Controller();
-                POSApp.channel.trigger('init:products', controller);
             }
 
             // return the right region
             return controller.columnsLayout.rightRegion;
         },
         cart: function(id) {
-            var controller = new POSApp.Cart.Controller({ id: id, region: this.init() });
-            POSApp.channel.trigger('init:cart', controller);
+            new POSApp.Cart.Controller({ id: id, region: this.init() });
         },
         checkout: function(id) {
-            var controller = new POSApp.Checkout.Controller({ id: id, region: this.init() });
-            POSApp.channel.trigger('init:checkout', controller);
+            new POSApp.Checkout.Controller({ id: id, region: this.init() });
         },
         receipt: function(id) {
-            var controller = new POSApp.Receipt.Controller({ id: id, region: this.init() });
-            POSApp.channel.trigger('init:receipt', controller);
+            new POSApp.Receipt.Controller({ id: id, region: this.init() });
         }
     };
 
@@ -51,19 +47,19 @@ POS.module('POSApp', function(POSApp, POS, Backbone, Marionette, $, _) {
     });
 
     // radio API
-    POSApp.channel.comply( 'show:cart', function(id) {
-        id ? POS.navigate('cart/' + id) : POS.navigate('') ;
-        API.cart(id);
-    });
-
-    POSApp.channel.comply( 'show:checkout', function(id) {
-        id ? POS.navigate('checkout/' + id) : POS.navigate('checkout') ;
-        API.checkout(id);
-    });
-
-    POSApp.channel.comply( 'show:receipt', function(id) {
-        id ? POS.navigate('receipt/' + id) : POS.navigate('receipt') ;
-        API.receipt(id);
+    POSApp.channel.comply({
+        'show:cart': function(id) {
+            id ? POS.navigate('cart/' + id) : POS.navigate('') ;
+            API.cart(id);
+        },
+        'show:checkout': function(id) {
+            id ? POS.navigate('checkout/' + id) : POS.navigate('checkout') ;
+            API.checkout(id);
+        },
+        'show:receipt': function(id) {
+            id ? POS.navigate('receipt/' + id) : POS.navigate('receipt') ;
+            API.receipt(id);
+        }
     });
 
 });

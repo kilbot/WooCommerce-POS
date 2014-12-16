@@ -10,6 +10,7 @@ POS.module('Entities.Orders', function(Orders, POS, Backbone, Marionette, $, _){
             this.indexedDB = new Backbone.IndexedDB({
                 storeName: 'orders',
                 storePrefix: 'wc_pos_',
+                dualStorage: true,
                 dbVersion: 1,
                 keyPath: 'local_id',
                 autoIncrement: true,

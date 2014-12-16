@@ -2224,46 +2224,42 @@ table.form-table .error span.error-message {
 }
 /* line 7, scss/partials/_tabs.scss */
 .tabs ul li {
+  vertical-align: bottom;
+  /* hack for icon alignment */
   display: inline-block;
   background: #f3f3f3;
   padding: 6px 12px;
   margin: 0 1px 0 0;
   cursor: pointer;
 }
-/* line 13, scss/partials/_tabs.scss */
+/* line 14, scss/partials/_tabs.scss */
 .tabs ul li a {
   color: #212121;
 }
-/* line 15, scss/partials/_tabs.scss */
+/* line 16, scss/partials/_tabs.scss */
 .tabs ul li a:hover {
   color: #f44336;
 }
-/* line 19, scss/partials/_tabs.scss */
+/* line 20, scss/partials/_tabs.scss */
 .tabs ul li.active {
   background: white;
 }
 
-/* line 28, scss/partials/_tabs.scss */
+/* line 29, scss/partials/_tabs.scss */
 .infinite-tabs {
   overflow-x: hidden;
 }
 
-/* line 33, scss/partials/_tabs.scss */
+/* line 34, scss/partials/_tabs.scss */
 .column-tabs ul li {
   background: #d3cdc1;
   width: 50%;
   margin: 0;
   text-align: center;
 }
-/* line 38, scss/partials/_tabs.scss */
+/* line 39, scss/partials/_tabs.scss */
 .column-tabs ul li.active {
   background: #e8e5df;
-}
-
-/* line 46, scss/partials/_tabs.scss */
-.cart-tabs ul li {
-  vertical-align: top;
-  /* hack? */
 }
 
 /* line 5, scss/partials/_products.scss */

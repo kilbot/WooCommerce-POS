@@ -18,6 +18,7 @@
 	<div class="cart-customer"><?php /* translators: woocommerce */ _e( 'Customer', 'woocommerce' ); ?>: </div>
 	<div class="cart-actions"></div>
 	<div class="cart-notes"></div>
+	<div class="list-footer"></div>
 </script>
 
 <script type="text/template" id="tmpl-cart-empty">
