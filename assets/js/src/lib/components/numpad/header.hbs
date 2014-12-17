@@ -1,42 +1,26 @@
 <strong class="title">{{title}}</strong>
 
-{{#is type 'standard'}}
-	<input type="text" value="{{value}}" class="form-control pull-right autogrow">
+{{#is type 'price|tendered'}}
+    <div class="input-group">
+    	<span class="input-group-addon">{{{getOption 'accounting.currency.symbol'}}}</span>
+		<input type="text" name="value" class="form-control autogrow">
+	</div>
 {{/is}}
 
-{{#if show_discount_input}}
-	<div class="input-group pull-right">
-		<span class="input-group-btn">
-			<button class="btn btn-default" type="button" data-modifier="amount" {{#is mode 'amount'}}disabled{{/is}}>{{{ currency_symbol }}}</button>
-		</span>
-		{{#is mode 'amount'}}
-		<input type="text" value="{{number value}}" class="form-control autogrow">
-		{{/is}}
-		{{#is mode 'percentage'}}
-		<input type="text" value="{{number percentage precision='auto'}}" class="form-control autogrow">
-		{{/is}}
-		<span class="input-group-btn">
-			<button class="btn btn-default" type="button" data-modifier="percentage" {{#is mode 'percentage'}}disabled{{/is}}>%</button>
-		</span>
+{{#is type 'discount'}}
+    <span></span>
+	<div class="input-group">
+		<span class="input-group-btn"><a class="disabled" href="#" data-modifier="value">{{{getOption 'accounting.currency.symbol'}}}</a></span>
+		<input type="text" name="value" class="form-control autogrow">
+		<input type="text" name="percentage" class="form-control autogrow" style="display:none">
+		<span class="input-group-btn"><a href="#" data-modifier="percentage">%</a></span>
 	</div>
-	<span class="input-alt pull-right">
-	{{#is mode 'amount'}}{{number percentage precision=0}}% off{{/is}}
-	{{#is mode 'percentage'}}{{{money value}}}{{/is}}
-	</span>
-{{/if}}
+{{/is}}
 
 {{#is type 'quantity'}}
-	<div class="input-group pull-right">
-		<span class="input-group-btn">
-			<button class="btn btn-default" type="button" data-qty="decrease"><i class="icon icon-minus"></i></button>
-		</span>
-		<input type="text" value="{{number value precision='auto'}}" class="form-control autogrow">
-		<span class="input-group-btn">
-			<button class="btn btn-default" type="button" data-qty="increase"><i class="icon icon-plus"></i></button>
-		</span>
+	<div class="input-group">
+		<span class="input-group-btn"><a href="#" data-modifier="decrease"><i class="icon icon-minus"></i></a></span>
+		<input type="text" name="value" class="form-control autogrow">
+		<span class="input-group-btn"><a href="#" data-modifier="increase"><i class="icon icon-plus"></i></a></span>
 	</div>
-{{/is}}
-
-{{#is type 'cash'}}
-	<input type="text" value="{{number value}}" class="form-control pull-right autogrow">
 {{/is}}

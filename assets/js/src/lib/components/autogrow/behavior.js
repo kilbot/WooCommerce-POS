@@ -21,6 +21,7 @@ POS.module('Components.AutoGrow', function(AutoGrow, POS, Backbone, Marionette, 
                 $('body').append(this.tester);
             }
 
+            //this.listenTo( this.view, 'show render', this.autoGrowEach );
         },
 
         ui: {
@@ -31,7 +32,7 @@ POS.module('Components.AutoGrow', function(AutoGrow, POS, Backbone, Marionette, 
             'input @ui.input' : 'autoGrow'
         },
 
-        onShow: function() {
+        onRender: function() {
             _.each( this.ui.input, function( input ) {
                 this.autoGrow( $(input) );
             }, this);

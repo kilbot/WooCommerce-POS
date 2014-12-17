@@ -169,7 +169,6 @@ module.exports = function(grunt) {
 
                         // templating
                         //'bower_components/handlebars/handlebars.min.js', // cndjs
-                        'assets/js/src/lib/utilities/handlebars-helpers.js',
 
                         // bootstrap js
                         'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js',
@@ -200,10 +199,14 @@ module.exports = function(grunt) {
                         'assets/js/src/lib/config/region.js',
                         'assets/js/src/lib/config/filtered_collection.js',
                         'assets/js/src/app.js',
-                        'assets/js/src/lib/utilities/ajax.js',
                         'assets/js/src/lib/config/controller_base.js',
                         'assets/js/src/lib/config/view_form.js',
+
+                        // utils
+                        'assets/js/src/lib/utilities/ajax.js',
                         'assets/js/src/lib/utilities/utils.js',
+                        'assets/js/src/lib/utilities/handlebars-helpers.js',
+                        'assets/js/src/lib/utilities/stickit-handlers.js',
 
                         // entities
                         'assets/js/src/entities/db.js',

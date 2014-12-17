@@ -42,19 +42,6 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
         },
 
         showNumpadPopover: function(options) {
-            this.model.set({
-                id: options.target.data('id'),
-                title: options.target.data('title'),
-                type: options.target.data('numpad'),
-                original: options.target.data('original')
-            });
-
-            if( options.target.val() ) {
-                this.model.set({ value: POS.Utils.unformat( options.target.val() ) });
-            } else {
-                this.model.set({ value: POS.Utils.unformat( options.target.data('value') )});
-            }
-
             POS.Components.Popover.channel.command( 'open', {
                 target 		: options.target,
                 className 	: 'popover numpad-popover',

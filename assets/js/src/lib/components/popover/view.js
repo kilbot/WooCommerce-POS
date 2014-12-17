@@ -45,6 +45,7 @@ POS.module('Components.Popover', function(Popover, POS, Backbone, Marionette, $,
             _.defaults(opts, {
                 html: true,
                 container: 'body',
+                placement: 'bottom',
                 trigger: 'manual',
                 template: this.el
             });

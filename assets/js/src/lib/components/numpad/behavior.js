@@ -43,7 +43,7 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
             $(e.target).on( 'numpad:return', function( e, value ) {
                 $(this).trigger( 'close:popover' );
                 //var enter = $.Event( 'keypress', { which: 13 } );
-                $(this).val( value ).trigger( 'change' );
+                $(this).val( value ).trigger( 'blur' );
             });
 
         },

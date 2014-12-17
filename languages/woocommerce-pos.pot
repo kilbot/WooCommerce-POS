@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2014-12-16 07:22:55+00:00\n"
+"POT-Creation-Date: 2014-12-17 12:07:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -103,19 +103,11 @@ msgstr ""
 msgid "Online Only"
 msgstr ""
 
-#: includes/views/pos/cart.php:29
-msgid "Quantity"
-msgstr ""
-
-#: includes/views/pos/cart.php:42
-msgid "Item Price"
-msgstr ""
-
-#: includes/views/pos/cart.php:140 includes/views/pos/cart.php:157
+#: includes/views/pos/cart.php:132 includes/views/pos/cart.php:149
 msgid "Discount"
 msgstr ""
 
-#: includes/views/pos/cart.php:153
+#: includes/views/pos/cart.php:145
 msgid "Void"
 msgstr ""
 
@@ -214,7 +206,7 @@ msgctxt "Abbreviation of Quantity"
 msgid "Qty"
 msgstr ""
 
-#: includes/views/pos/cart.php:119 includes/views/pos/cart.php:129
+#: includes/views/pos/cart.php:111 includes/views/pos/cart.php:121
 #: includes/views/pos/receipt.php:84 includes/views/pos/receipt.php:93
 msgctxt "abbreviation for includes (tax)"
 msgid "incl."

@@ -10,7 +10,26 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
 
     });
 
-    Numpad.Header = Marionette.ItemView.extend({
+    Numpad.Header = POS.View.Form.extend({
+        initialize: function() {
+            this.template = Numpad.HeaderTmpl;
+
+            //if( this.model.get('type') === 'discount' || this.model.get('type') === 'item_price' ){
+            //    this.model.set({
+            //        currency_symbol: accounting.settings.currency.symbol,
+            //        mode: 'amount'
+            //    });
+            //    this.calcPercentage();
+            //    this.model.on( 'change:value', this.calcPercentage, this );
+            //    this.model.on( 'change:percentage', this.calcValue, this );
+            //}
+        },
+
+        bindings: {
+            'input[name="value"]'       : 'value',
+            'input[name="percentage"]'  : 'percentage'
+        },
+
         ui: {
             inputField: 'input'
         },
@@ -19,102 +38,46 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
             AutoGrow: {}
         },
 
-        modelEvents: {
-            'change:value change:percentage change:mode': 'render'
-        },
-
         events: {
             'keyup @ui.inputField' 	: 'directInput',
-            'click *[data-qty]' 	: 'quantity',
-            'click *[data-modifier]': 'mode'
+            'click *[data-modifier]': 'modifier'
         },
 
-        initialize: function() {
-            this.template = Numpad.HeaderTmpl;
-
-            if( this.model.get('type') === 'discount' || this.model.get('type') === 'item_price' ){
-                this.model.set({
-                    currency_symbol: accounting.settings.currency.symbol,
-                    mode: 'amount'
-                });
-                this.calcPercentage();
-                this.model.on( 'change:value', this.calcPercentage, this );
-                this.model.on( 'change:percentage', this.calcValue, this );
-            }
+        modelEvents: {
+            'change:mode': 'onChangeMode'
         },
 
-        serializeData: function(){
-            var data = this.model.toJSON();
-
-            if( this.model.get('type') === 'discount' || this.model.get('type') === 'item_price' ){
-                data.show_discount_input = true;
-            }
-
-            return data;
-        },
-
-        onShow: function() {
-            if( this.model.get('select') ) {
-                this.ui.inputField.select();
-            }
-        },
-
-        directInput: function(e) {
-            var newValue = $(e.target).val();
-            this.model.set({ value: newValue.toString(), select: false }, { silent: true });
-            if( e.which === 13 ) {
-                this.trigger('enter:keypress');
-            }
-        },
-
-        quantity: function(e) {
-            var type = $(e.currentTarget).data('qty'),
+        modifier: function(e){
+            var modifier = $(e.currentTarget).data('modifier'),
                 value = this.model.get('value');
 
-            this.model.set('value', (type === 'increase' ? ++value : --value) );
-        },
-
-        mode: function(e) {
-            var mode = $(e.currentTarget).data('modifier');
-            this.model.set({ mode: mode });
-        },
-
-        calcPercentage: function() {
-            var original = this.model.get('original'),
-                value = this.model.get('value'),
-                percentage;
-
-            if( _.isNaN( value ) ) value = 0;
-
-            if( this.model.get('type') === 'item_price' ) {
-                percentage = 100 * ( 1 - ( value / original ) );
-            } else {
-                percentage = 100 * ( value / original );
+            if( this.model.get('type') === 'quantity' ) {
+                this.model.set('value', (modifier === 'increase' ? ++value : --value) );
             }
 
-            if( !_.isFinite( percentage ) || _.isNaN( percentage ) ) percentage = 0;
-
-            percentage = parseFloat( POS.Utils.round( percentage, 0 ) );
-            this.model.set({ percentage: percentage }, { silent: true });
-
+            if( this.model.get('type') === 'discount' ){
+                this.model.set({ mode: modifier });
+            }
         },
 
-        calcValue: function() {
-            var original = this.model.get('original'),
-                percentage = this.model.get('percentage'),
-                value;
+        onChangeMode: function(){
+            this.$('a[data-modifier]').toggleClass( 'disabled' );
+            this.$('input').toggle();
+        },
 
-            if( _.isNaN( percentage ) ) percentage = 0;
-
-            if( this.model.get('type') === 'item_price' ) {
-                value = original * ( 1 - ( percentage / 100 ) );
-            } else {
-                value = original * ( percentage / 100 );
-            }
-
-            value = parseFloat( POS.Utils.round( value ) );
-            this.model.set({ value: value }, { silent: true });
-        }
+        //onShow: function() {
+        //    if( this.model.get('select') ) {
+        //        this.ui.inputField.select();
+        //    }
+        //},
+        //
+        //directInput: function(e) {
+        //    var newValue = $(e.target).val();
+        //    this.model.set({ value: newValue.toString(), select: false }, { silent: true });
+        //    if( e.which === 13 ) {
+        //        this.trigger('enter:keypress');
+        //    }
+        //},
 
     });
 
@@ -124,84 +87,85 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
         },
 
         events: {
-            'click .standard button': 'standardKeyEvent',
-            'click .discount button': 'discountKeyEvent',
-            'click .cash button' 	: 'cashKeyEvent'
+            'click .keys a': 'onKeyClick'
         },
 
         serializeData: function(){
-            var data = {};
-            data.type = this.model.get('type');
-
-            if( data.type === 'discount' || data.type === 'item_price' ) {
-                data.show_discount_keys = true;
-            }
-
-            if( data.type === 'cash' ) {
-                data.show_cash_keys = true;
+            var data = this.model.toJSON();
+            if( data.type === 'tendered' ) {
                 data.quick_key = this.cashKeys( this.model.get('original') );
             }
-
-            data.decimal = accounting.settings.number.decimal;
-
             return data;
         },
 
-        standardKeyEvent: function(e){
-            var key = $(e.currentTarget).data('key'),
-                value,
-                newValue;
+        onKeyClick: function(e){
+            e.preventDefault();
+            var key = $(e.currentTarget),
+                parent = key.parent(),
+                keyValue = key.text();
 
-            if( this.model.get('mode') === 'percentage' ) {
-                value = this.model.get('percentage');
-            } else {
-                value = this.model.get('value');
+            // set decimal flag
+            if( key.hasClass('decimal') ){
+                this.decimal = true;
+                return;
             }
 
-            switch(key) {
-                case 'ret':
+            //
+            if( parent.hasClass('extra-keys discount') ) {
+                this.discountKeys(keyValue);
+                return;
+            }
+
+            //
+            if( parent.hasClass('extra-keys tendered') ) {
+                this.tenderedKeys(keyValue);
+                return;
+            }
+
+            this.standardKeys(keyValue);
+            this.decimal = false;
+        },
+
+        standardKeys: function(keyValue){
+            var data = {},
+                newValue,
+                decimal,
+                mode = this.model.get('mode'),
+                oldValue = mode === 'percentage' ? this.model.get('percentage') : this.model.get('value');
+
+            switch(keyValue) {
+                case 'return':
                     this.trigger('return:keypress');
-                break;
+                    break;
                 case 'del':
-                    value = value.toString();
-                    if( value.length === 1 ) {
-                        newValue = 0;
-                    } else {
-                        newValue = value.slice(0, -1);
-                    }
-                    newValue = parseFloat(newValue);
-                break;
+                    newValue = Math.abs( oldValue ) < 10 ? 0 : oldValue.toString().slice(0, -1);
+                    break;
                 case '+/-':
-                    newValue = value*-1;
-                break;
+                    newValue = oldValue*-1;
+                    break;
                 default:
-                    if( this.model.get('select') ) {
-                        newValue = key;
-                        this.model.set({ select: false });
-                    } else {
-                        newValue = '' + value + key; // concat as string
-                    }
+                    oldValue = oldValue.toString();
+                    decimal = this.decimal && oldValue.indexOf('.') === -1 ? '.' : '';
+                    newValue = oldValue + decimal + keyValue;
             }
 
-            if( this.model.get('mode') === 'percentage' ) {
-                this.model.set({ percentage: newValue });
-            } else {
-                this.model.set({ value: newValue });
+            if( newValue ) {
+                data[mode] = newValue;
+                this.model.set(data);
             }
 
         },
 
-        discountKeyEvent: function(e){
-            var discount = $(e.currentTarget).data('key');
+        discountKeys: function(keyValue){
+            var discount = keyValue.replace('%', '');
             this.model.set({
-                percentage: discount,
+                percentage: parseFloat(discount),
                 mode: 'percentage'
             });
         },
 
-        cashKeyEvent: function(e) {
-            var cash = $(e.currentTarget).data('key');
-            this.model.set({ value: cash });
+        tenderedKeys: function(keyValue) {
+            this.model.set({ value: parseFloat(keyValue) });
         },
 
         // create 4 quick keys based on amount

@@ -1,5 +1,5 @@
 Handlebars.registerHelper('is', function (value, test, options) {
-    if (value === test) {
+    if ( _( test.split('|') ).contains( value ) ) {
         return options.fn(this);
     } else {
         return options.inverse(this);
@@ -105,4 +105,13 @@ Handlebars.registerHelper('formatAddress', function(address, options){
 Handlebars.registerHelper('formatDate', function(date, options){
     var f = options.hash.format || '';
     return moment(date).format(f);
+});
+
+Handlebars.registerHelper('getOption', function(key){
+    var lookup = key.split('.');
+    var option = POS.getOption( lookup.shift() );
+    for(var i = 0; i < lookup.length; i++) {
+        option = option[lookup[i]];
+    }
+    return option;
 });

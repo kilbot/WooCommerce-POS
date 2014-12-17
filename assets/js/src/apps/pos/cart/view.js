@@ -20,7 +20,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
     /**
      * Cart Products
      */
-    Cart.Item = Marionette.ItemView.extend({
+    Cart.Item = POS.View.Form.extend({
         tagName: 'li',
         className: function() {
             return this.model.get('type');
@@ -28,6 +28,10 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
         initialize: function() {
             this.template = Handlebars.compile( $('#tmpl-cart-item').html() );
+
+            this.model.on('all', function(e){
+                console.log(e);
+            });
         },
 
         serializeData: function() {
@@ -53,11 +57,23 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
         events: {
             'click .action-remove' 	     : 'removeItem',
-            'click .action-more'         : 'toggleDrawer',
-            'blur input[type="text"]'    : 'onBlur',
-            'click .title'               : 'editTitle',
-            'blur .title'                : 'onBlur',
-            'keypress .title'            : 'saveOnEnter'
+            'click .action-more'         : 'toggleDrawer'
+        },
+
+        bindings: {
+            'input[name="qty"]'   : {
+                observe: 'qty',
+                onGet: function(value) {
+                    return POS.Utils.formatNumber(value, 'auto');
+                },
+                onSet: POS.Utils.unformat
+            },
+            'strong.action-edit-title': 'title',
+            'input[name="item_price"]'   : {
+                observe: 'item_price',
+                onGet: POS.Utils.formatNumber,
+                onSet: POS.Utils.unformat
+            }
         },
 
         focusRow: function() {
@@ -75,16 +91,16 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }
 
             if( itemBottom > listBottom ) {
-                scrollTop += ( itemTop - list.height() );
+                scrollTop += ( itemTop - list.height() + 4 );
             }
-
+s
             // scroll to row
             this.$el.addClass('bg-success').closest('.list').animate({
                 scrollTop: scrollTop
             }, 'fast', function() {
                 // focus title if shipping or fee
                 if( self.model.get( 'type' ) === 'fee' || self.model.get( 'type' ) === 'shipping' ) {
-                    self.editTitle();
+                    self.$('.title strong.action-edit-title').focus();
                 }
 
                 // pulse
@@ -98,6 +114,9 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         },
 
         remove: function() {
+            // Remove the validation binding
+            Backbone.Validation.unbind(this);
+
             // disable button
             this.$('.action-remove').attr( 'disabled', 'true' );
 
@@ -116,73 +135,9 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             this.model.destroy();
         },
 
-        editTitle: function() {
-            this.$('.title').attr( 'contenteditable', 'true' ).focus();
-        },
-
-        save: function(e) {
-            var input 	= $(e.target),
-                key 	= input.data('id'),
-                value 	= input.val();
-
-            // if no key, check for title
-            if( _.isUndefined( key ) ) {
-                if( $(e.target).hasClass('title') ){
-                    value = $(e.target).text();
-                    this.model.save({ title: value });
-                }
-                return;
-            }
-
-            // check for sensible input
-            if( _.isNaN( parseFloat( value ) ) ) {
-                input.select();
-                return;
-            }
-
-            // always store numbers as float
-            if( value ){
-                value = POS.Utils.unformat( value );
-                value = parseFloat( value );
-            }
-
-            // if qty is 0, delete the item
-            if( key === 'qty' && value === 0 ) {
-                this.removeItem();
-                return;
-            }
-
-            // save
-            var data = {};
-            data[key] = value;
-            this.model.save(data);
-
-        },
-
-        // note: enter will trigger blur on inputs
-        saveOnEnter: function(e) {
-            if ( e.which === 13 ) {
-                this.save(e);
-                this.model.trigger('change');
-            }
-        },
-
-        onBlur: function(e) {
-            if( $(e.target).attr('aria-describedby') === undefined ) {
-                this.save(e);
-                this.model.trigger('change');
-            }
-        },
-
         toggleDrawer: function(e) {
             e.preventDefault();
-
-            if( _.isUndefined( this.drawer ) ) {
-                var el = $('<li />').addClass('drawer').hide();
-                this.drawer = new Cart.Drawer({ el: el, model: this.model });
-                this.drawer.render();
-                this.$el.after( this.drawer.$el );
-            }
+            this.drawer || this.initDrawer();
 
             if( this.drawer.$el.is(':hidden') ) {
                 this.trigger('opening:drawer');
@@ -192,20 +147,23 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }
 
             this.drawer.$el.slideToggle( 'fast' );
+        },
+
+        initDrawer: function(){
+            var el = $('<li />').addClass('drawer').hide();
+            this.drawer = new Cart.Drawer({ el: el, model: this.model });
+            this.drawer.render();
+            this.$el.after( this.drawer.$el );
         }
 
     });
 
-    Cart.Drawer = Marionette.ItemView.extend({
+    /**
+     * Product drawer: extra line item settings
+     */
+    Cart.Drawer = POS.View.Form.extend({
         initialize: function() {
             this.template = Handlebars.compile($('#tmpl-cart-item-drawer').html());
-        },
-
-        serializeData: function() {
-            var data = this.model.toJSON();
-            data.tax_labels = POS.getOption('tax_labels');
-            data.shipping_labels = POS.getOption('shipping');
-            return data;
         },
 
         behaviors: {
@@ -218,15 +176,32 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         },
 
         events: {
-            //'change input[type=checkbox]': 'checkboxChanged',
-            //'change select'              : 'selectChanged',
-            //'blur input'                 : 'save',
-            //'keypress input[type="text"]': 'saveOnEnter'
-            'change input'      : 'save',
-            'change select'     : 'save',
-            'change textarea'   : 'save',
             'click .action-add-meta': 'addMetaFields',
-            'click .action-remove-meta': 'removeMetaFields'
+            'click .action-remove-meta': 'removeMetaFields',
+            'blur input[name="meta.label"]': 'updateMeta',
+            'blur textarea[name="meta.value"]': 'updateMeta'
+        },
+
+        bindings: {
+            'input[name="regular_price"]'   : 'regular_price',
+            'input[name="taxable"]'         : 'taxable',
+            'select[name="tax_class"]'      : {
+                observe: 'tax_class',
+                selectOptions: {
+                    collection: function(){
+                        return POS.getOption('tax_labels');
+                    }
+                }
+            },
+            'select[name="shipping_method"]': {
+                observe: 'shipping_method',
+                selectOptions: {
+                    collection: function(){
+                        return POS.getOption('shipping');
+                    },
+                    comparator: function(){}
+                }
+            }
         },
 
         open: function( callback ) {
@@ -243,33 +218,12 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }.bind(this));
         },
 
-        checkboxChanged: function(e) {
-            var data = {};
-            data[ e.target.name ] = e.target.checked;
-            this.model.save(data);
-        },
-
-        selectChanged: function(e) {
-            var data = {};
-            data[ e.target.name ] = e.target.value;
-            this.model.save(data);
-        },
-
-        save: function(e) {
+        updateMeta: function(e) {
             var el 	      = $(e.target),
                 name      = el.attr('name').split('.'),
                 attribute = name[0],
                 value     = el.val(),
                 data      = {};
-
-            if( el.is('input') && el.attr('type') === 'checkbox' ) {
-                value = el.prop('checked');
-            }
-
-            // special case numpad
-            if( el.data('numpad') ){
-                // do number check?
-            }
 
             // special case product meta
             if( name.length > 1 && attribute === 'meta' ) {
@@ -289,10 +243,6 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             data[ attribute ] = value;
 
             this.model.save(data);
-        },
-
-        onBlur: function(e) {
-            console.log(e);
         },
 
         addMetaFields: function(e){
@@ -342,13 +292,19 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         emptyView: Cart.EmptyView,
 
         childEvents: {
-            'opening:drawer': function(e) {
+            'opening:drawer': function() {
                 this.children.each( function(view) {
                     if( _(view).has('drawer') ) {
                         view.drawer.close();
                         view.$('.action-more').removeClass('icon-rotate-180');
                     }
                 });
+            },
+            'focus:row': function(a, b, c){
+                console.log(a);
+                console.log(b);
+                console.log(c);
+                console.log(this);
             }
         }
     });

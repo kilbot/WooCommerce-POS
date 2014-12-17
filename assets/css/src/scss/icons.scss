@@ -16,6 +16,9 @@
   vertical-align: bottom;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  span {
+    display: none;
+  }
 }
 .icon-lg {
   font-size: 1.33333333em;

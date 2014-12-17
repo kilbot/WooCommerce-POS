@@ -26,9 +26,9 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item">
-	<div class="qty"><input type="text" value="{{number qty precision='auto'}}" size="10" step="any" data-id="qty" data-title="<?php _e( 'Quantity', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="quantity" class="btn autogrow"></div>
+	<div class="qty"><input type="text" name="qty" data-title="<?php /* translators: woocommerce */ _e( 'Quantity', 'woocommerce' ); ?>" data-numpad="quantity" class="btn autogrow"></div>
 	<div class="title">
-		{{title}}
+		<strong class="action-edit-title" contenteditable="true">{{title}}</strong>
 		{{#with attributes}}
 		<dl>
 			{{#each this}}
@@ -39,7 +39,7 @@
 		{{/with}}
 	</div>
 	<div class="more"><a href="#" class="btn btn-default btn-circle-sm action-more"><i class="icon icon-angle-down"></i></a></div>
-	<div class="price"><input type="text" value="{{number item_price}}" size="10" data-id="item_price" data-original="{{regular_price}}" data-title="<?php _e( 'Item Price', 'woocommerce-pos' ); ?>" data-placement="bottom" data-numpad="item_price" class="btn autogrow"></div>
+	<div class="price"><input type="text" name="item_price" data-original="{{regular_price}}" data-title="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" class="btn autogrow"></div>
 	<div class="total">
 		{{#compare total '!=' subtotal}}
 			<del>{{{money subtotal}}}</del>
@@ -56,30 +56,22 @@
 	{{#if id}}
 	<div class="col-1"><label for="regular_price"><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
-		<input name="regular_price" id="regular_price" class="autogrow btn" type="text" value="{{number regular_price}}" data-numpad="regular_price" />
+		<input name="regular_price" id="regular_price" class="autogrow btn" type="text" data-numpad="money" data-title="<?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>" />
 	</div>
 	{{/if}}
 
 	{{#is type 'shipping'}}
 	<div class="col-1"><label for="shipping_method"><?php /* translators: woocommerce */ _e( 'Shipping Method', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
-		<select name="shipping_method" id="shipping_method">
-		{{#each shipping_labels}}
-		<option value="{{@key}}" {{#is @key ../shipping_method}}selected{{/is}}>{{this}}</option>
-		{{/each}}
-		</select>
+		<select name="shipping_method" id="shipping_method"></select>
 	</div>
 	{{/is}}
 
 	<hr>
 	<div class="col-1"><label for="taxable"><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
-		<input type="checkbox" name="taxable" id="taxable" {{#if taxable}}checked{{/if}} />
-		<select name="tax_class" id="tax_class" {{#unless taxable}}disabled{{/unless}}>
-			{{#each tax_labels}}
-				<option value="{{@key}}" {{#is @key ../tax_class}}selected{{/is}}>{{this}}</option>
-			{{/each}}
-		</select>
+		<input type="checkbox" name="taxable" id="taxable">
+		<select name="tax_class" id="tax_class" {{#unless taxable}}disabled{{/unless}}></select>
 	</div>
 
 	{{#if id}}
@@ -88,7 +80,7 @@
 	<div class="col-2">
 		{{#each meta}}
 		<span data-key="{{key}}">
-			<input name="meta.label" value="{{label}}" type="text"/>
+			<input name="meta.label" value="{{label}}" type="text">
 			<textarea name="meta.value">{{value}}</textarea>
 			<a href="#" class="action-remove-meta"><i class="icon icon-times"></i></a>
 		</span>
@@ -137,7 +129,7 @@
 	<li class="order-discount" {{#compare order_discount '===' 0}}style="display:none"{{/compare}}>
 		<div><?php /* translators: woocommerce-admin */ _e( 'Order Discount', 'woocommerce-admin' ); ?>:</div>
 		<div class="total">
-			<input type="text" value="{{number order_discount}}" size="10" data-id="order_discount" data-original="{{original}}" data-title="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-placement="left" data-numpad="discount" class="autogrow">
+			<input type="text" value="{{number order_discount}}" name="order_discount" data-original="{{original}}" data-title="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-placement="left" data-numpad="discount" class="autogrow">
 			<span class="amount">{{{money order_discount negative=true}}}</span>
 		</div>
 		<div class="action"></div>

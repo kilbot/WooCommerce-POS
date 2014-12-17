@@ -50,8 +50,12 @@
           > span {
             display: block;
             input {
+              margin: 0 $spacing/3 $spacing/3 0;
               vertical-align: top;
               max-width: 7em;
+            }
+            textarea {
+              margin: 0 $spacing/3 $spacing/3 0;
             }
             a {
               color: $brand-warning;
@@ -61,9 +65,6 @@
             }
             i {
               vertical-align: top;
-            }
-            textarea {
-              margin: 0 $spacing/3 $spacing/3;
             }
           }
         }
