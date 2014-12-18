@@ -26,7 +26,17 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
         },
 
         bindings: {
-            'input[name="value"]'       : 'value',
+            'input[name="value"]'       : {
+                observe: 'value',
+                //onGet: POS.Utils.formatNumber,
+                //onSet: function(val){
+                //    console.log(val);
+                //    return val;
+                //},
+                afterUpdate: function($el, val, options){
+                    $el.trigger('input');
+                }
+            },
             'input[name="percentage"]'  : 'percentage'
         },
 
@@ -136,7 +146,7 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
             switch(keyValue) {
                 case 'return':
                     this.trigger('return:keypress');
-                    break;
+                    return;
                 case 'del':
                     newValue = Math.abs( oldValue ) < 10 ? 0 : oldValue.toString().slice(0, -1);
                     break;
@@ -149,10 +159,8 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
                     newValue = oldValue + decimal + keyValue;
             }
 
-            if( newValue ) {
-                data[mode] = newValue;
-                this.model.set(data);
-            }
+            data[mode] = newValue;
+            this.model.set(data);
 
         },
 

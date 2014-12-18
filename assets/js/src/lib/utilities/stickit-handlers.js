@@ -3,17 +3,23 @@
  * Set float 2.55
  */
 Backbone.Stickit.addHandler({
-    selector: 'input[data-numpad="price"]',
+    selector: 'input[data-numpad="discount"]',
     onGet: POS.Utils.formatNumber,
     onSet: POS.Utils.unformat,
-    events: ['blur']
+    events: ['blur'],
+    afterUpdate: function($el, val, options){
+        $el.trigger('input');
+    }
 });
 
 Backbone.Stickit.addHandler({
     selector: 'input[data-numpad="quantity"]',
     onGet: POS.Utils.formatNumber,
     onSet: POS.Utils.unformat,
-    events: ['blur']
+    events: ['blur'],
+    afterUpdate: function($el, val, options){
+        $el.trigger('input');
+    }
 });
 
 /**

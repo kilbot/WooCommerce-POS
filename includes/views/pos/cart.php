@@ -8,7 +8,6 @@
 	<div class="list-header">
 		<div class="qty"><?php _ex( 'Qty', 'Abbreviation of Quantity', 'woocommerce-pos' ); ?></div>
 		<div class="title"><?php /* translators: woocommerce */ _e( 'Product', 'woocommerce' ); ?></div>
-		<div class="more">&nbsp;</div>
 		<div class="price"><?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?></div>
 		<div class="total"><?php /* translators: woocommerce */ _e( 'Total', 'woocommerce' ); ?></div>
 		<div class="action">&nbsp;</div>
@@ -37,8 +36,8 @@
 			{{/each}}
 		</dl>
 		{{/with}}
+		<a href="#" class="btn btn-default btn-circle-sm action-more"><i class="icon icon-angle-down"></i></a>
 	</div>
-	<div class="more"><a href="#" class="btn btn-default btn-circle-sm action-more"><i class="icon icon-angle-down"></i></a></div>
 	<div class="price"><input type="text" name="item_price" data-original="{{regular_price}}" data-title="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" class="btn autogrow"></div>
 	<div class="total">
 		{{#compare total '!=' subtotal}}
@@ -67,7 +66,6 @@
 	</div>
 	{{/is}}
 
-	<hr>
 	<div class="col-1"><label for="taxable"><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
 		<input type="checkbox" name="taxable" id="taxable">
@@ -75,7 +73,6 @@
 	</div>
 
 	{{#if id}}
-	<hr>
 	<div class="col-1"><?php /* translators: woocommerce */ _e( 'Add&nbsp;meta', 'woocommerce' ); ?>:</div>
 	<div class="col-2">
 		{{#each meta}}
@@ -88,6 +85,7 @@
 		<a href="#" class="action-add-meta"><i class="icon icon-plus"></i></a>
 	</div>
 	{{/if}}
+
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-totals">

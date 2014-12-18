@@ -47,9 +47,14 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
             this.template = Handlebars.compile( $('#tmpl-product').html() )
         },
 
+        ui: {
+            add: '.action-add',
+            variations: '.action-variations'
+        },
+
         triggers: {
-            'click .action-add' 		: 'cart:add:clicked',
-            'click .action-variations' 	: 'product:variations:clicked'
+            'click @ui.add' 		: 'cart:add:clicked',
+            'click @ui.variations' 	: 'product:variations:clicked'
         },
 
         onBeforeRender: function(){

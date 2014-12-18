@@ -18,62 +18,49 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
     });
 
     /**
-     * Cart Products
+     * Cart line item
      */
-    Cart.Item = POS.View.Form.extend({
+    Cart.Line = Marionette.LayoutView.extend({
         tagName: 'li',
-        className: function() {
-            return this.model.get('type');
-        },
-
-        initialize: function() {
-            this.template = Handlebars.compile( $('#tmpl-cart-item').html() );
-
-            this.model.on('all', function(e){
-                console.log(e);
-            });
-        },
-
-        serializeData: function() {
-            var data = this.model.toJSON();
-
-            if( POS.getOption('tax').tax_display_cart === 'incl' ) {
-                data.subtotal += data.subtotal_tax;
-                data.total += data.total_tax;
-            }
-
-            return data;
-        },
-
-        behaviors: {
-            AutoGrow: {},
-            Numpad: {}
+        className: function() { return this.model.get('type'); },
+        template: _.template('<div class="item"></div><div class="drawer"></div>'),
+        regions: {
+            itemRegion: '.item',
+            drawerRegion: '.drawer'
         },
 
         modelEvents: {
-            'change'   : 'render',
             'focus:row': 'focusRow'
         },
 
-        events: {
-            'click .action-remove' 	     : 'removeItem',
-            'click .action-more'         : 'toggleDrawer'
+        onRender: function(){
+            var view = new Cart.Line.Item({ model: this.model });
+
+            this.listenTo( view, 'drawer:open', this.openDrawer );
+            this.listenTo( view, 'drawer:close', this.closeDrawer );
+            this.listenTo( view, 'drawer:toggle', function(){
+                this.drawerRegion.hasView() ? this.closeDrawer() : this.openDrawer();
+            });
+
+            this.itemRegion.show(view);
+
+            this.listenToOnce( this.itemRegion.currentView, 'animation:finished', function(){
+                Marionette.ItemView.prototype.remove.call(this);
+            });
         },
 
-        bindings: {
-            'input[name="qty"]'   : {
-                observe: 'qty',
-                onGet: function(value) {
-                    return POS.Utils.formatNumber(value, 'auto');
-                },
-                onSet: POS.Utils.unformat
-            },
-            'strong.action-edit-title': 'title',
-            'input[name="item_price"]'   : {
-                observe: 'item_price',
-                onGet: POS.Utils.formatNumber,
-                onSet: POS.Utils.unformat
-            }
+        // remove is triggered once item has finished animating
+        remove: function(){},
+
+        openDrawer: function(){
+            var view = new Cart.Line.Drawer({ model: this.model });
+            this.drawerRegion.show(view);
+            this.$el.addClass('drawer-open');
+        },
+
+        closeDrawer: function(){
+            this.drawerRegion.empty();
+            this.$el.removeClass('drawer-open');
         },
 
         focusRow: function() {
@@ -93,7 +80,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             if( itemBottom > listBottom ) {
                 scrollTop += ( itemTop - list.height() + 4 );
             }
-s
+
             // scroll to row
             this.$el.addClass('bg-success').closest('.list').animate({
                 scrollTop: scrollTop
@@ -110,7 +97,69 @@ s
                     self.$el.removeClass('bg-success').removeAttr('style');
                 });
             });
+        }
+    });
 
+    /**
+     * Cart Products
+     */
+    Cart.Line.Item = POS.View.Form.extend({
+        initialize: function() {
+            this.template = Handlebars.compile( $('#tmpl-cart-item').html() );
+        },
+
+        //serializeData: function() {
+        //    var data = this.model.toJSON();
+        //
+        //    if( POS.getOption('tax').tax_display_cart === 'incl' ) {
+        //        data.subtotal += data.subtotal_tax;
+        //        data.total += data.total_tax;
+        //    }
+        //
+        //    return data;
+        //},
+
+        templateHelpers: function(){
+            if( POS.getOption('tax').tax_display_cart === 'incl' ) {
+                var data = {};
+                data.subtotal = this.model.get('subtotal') + this.model.get('subtotal_tax');
+                data.total = this.model.get('total') + this.model.get('total_tax');
+                return data;
+            }
+        },
+
+        behaviors: {
+            AutoGrow: {},
+            Numpad: {}
+        },
+
+        ui: {
+            remove: '.action-remove',
+            more: '.action-more'
+        },
+
+        events: {
+            'click @ui.remove' : 'removeItem'
+        },
+
+        triggers: {
+            'click @ui.more'   : 'drawer:toggle'
+        },
+
+        bindings: {
+            'input[name="qty"]'   : {
+                observe: 'qty',
+                onGet: function(value) {
+                    return POS.Utils.formatNumber(value, 'auto');
+                },
+                onSet: POS.Utils.unformat
+            },
+            'strong.action-edit-title': 'title',
+            'input[name="item_price"]'   : {
+                observe: 'item_price',
+                onGet: POS.Utils.formatNumber,
+                onSet: POS.Utils.unformat
+            }
         },
 
         remove: function() {
@@ -120,40 +169,17 @@ s
             // disable button
             this.$('.action-remove').attr( 'disabled', 'true' );
 
-            // remove drawer
-            if( this.drawer ) { this.drawer.remove(); }
-
             // add bg colour and fade out
             this.$el.addClass('bg-danger').parent('ul').addClass('animating');
             this.$el.fadeOut( 500, function() {
                 this.$el.parent('ul').removeClass('animating');
+                this.trigger('animation:finished');
                 Marionette.ItemView.prototype.remove.call(this);
             }.bind(this));
         },
 
         removeItem: function() {
             this.model.destroy();
-        },
-
-        toggleDrawer: function(e) {
-            e.preventDefault();
-            this.drawer || this.initDrawer();
-
-            if( this.drawer.$el.is(':hidden') ) {
-                this.trigger('opening:drawer');
-                $(e.currentTarget).addClass('icon-rotate-180').blur();
-            } else {
-                $(e.currentTarget).removeClass('icon-rotate-180').blur();
-            }
-
-            this.drawer.$el.slideToggle( 'fast' );
-        },
-
-        initDrawer: function(){
-            var el = $('<li />').addClass('drawer').hide();
-            this.drawer = new Cart.Drawer({ el: el, model: this.model });
-            this.drawer.render();
-            this.$el.after( this.drawer.$el );
         }
 
     });
@@ -161,7 +187,7 @@ s
     /**
      * Product drawer: extra line item settings
      */
-    Cart.Drawer = POS.View.Form.extend({
+    Cart.Line.Drawer = POS.View.Form.extend({
         initialize: function() {
             this.template = Handlebars.compile($('#tmpl-cart-item-drawer').html());
         },
@@ -169,10 +195,6 @@ s
         behaviors: {
             AutoGrow: {},
             Numpad: {}
-        },
-
-        modelEvents: {
-            'change'   : 'render'
         },
 
         events: {
@@ -204,16 +226,12 @@ s
             }
         },
 
-        open: function( callback ) {
-            this.$el.slideDown('fast', callback );
-        },
-
-        close: function( callback ) {
-            this.$el.slideUp('fast', callback );
+        onShow: function( callback ) {
+            this.$el.hide().slideDown(250, callback );
         },
 
         remove: function() {
-            this.$el.slideUp( 'fast', function() {
+            this.$el.slideUp( 250, function() {
                 Marionette.ItemView.prototype.remove.call(this);
             }.bind(this));
         },
@@ -272,7 +290,6 @@ s
             }
 
             row.remove();
-
         }
 
     });
@@ -288,25 +305,8 @@ s
 
     Cart.Items = Marionette.CollectionView.extend({
         tagName: 'ul',
-        childView: Cart.Item,
-        emptyView: Cart.EmptyView,
-
-        childEvents: {
-            'opening:drawer': function() {
-                this.children.each( function(view) {
-                    if( _(view).has('drawer') ) {
-                        view.drawer.close();
-                        view.$('.action-more').removeClass('icon-rotate-180');
-                    }
-                });
-            },
-            'focus:row': function(a, b, c){
-                console.log(a);
-                console.log(b);
-                console.log(c);
-                console.log(this);
-            }
-        }
+        childView: Cart.Line,
+        emptyView: Cart.EmptyView
     });
 
     /**
