@@ -58,7 +58,7 @@ body {
 }
 
 @include breakpoint($tablet) {
-  .column-tabs {
+  #tabs {
     display: none;
   }
   #main.two-column {

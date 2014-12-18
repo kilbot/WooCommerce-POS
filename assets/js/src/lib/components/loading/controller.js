@@ -73,12 +73,8 @@ POS.module('Components.Loading', function(Loading, POS, Backbone, Marionette, $,
                 self.show(realView);
             }).fail( function( jqXHR, textStatus, errorThrown ){
                 POS.debugLog('error', errorThrown);
-
-                loadingView.options.message = textStatus;
-                loadingView.trigger('update:message');
-                loadingView.$('.icon').removeClass('icon-spinner').addClass('icon-fail');
+                loadingView.fail(textStatus);
             });
-
         }
 
         // getEntities: function(view) {

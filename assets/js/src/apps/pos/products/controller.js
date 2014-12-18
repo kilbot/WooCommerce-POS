@@ -22,6 +22,11 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
 
             this.layout = new Products.Layout();
 
+            // add title to tab
+            // super hack, get the label from the menu
+            // TODO: put menu items into params, remove this hack
+            POS.channel.command( 'update:tab:label', $('#menu li.products').text(), 'left' );
+
             // wait for products to load
             this.listenTo( this.layout, 'show', function() {
 
@@ -29,9 +34,6 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
                 this.showActions( filtered );
                 this.showTabs( filtered );
                 this.showProducts( filtered );
-
-                // add title to tab
-                this.columnsLayout.leftRegion.trigger('update:title', 'Products');
             });
 
             // make sure idb is ready
@@ -70,6 +72,11 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
                     //_.bind( filtered.matchMaker, filtered, criterion, fields )
                     _.partial( filtered.matchMaker, criterion, fields )
                 );
+            });
+
+            // listen for new tabs
+            this.on( 'add:new:tab', function(tab) {
+                view.collection.add( tab ).set({ active: true });
             });
 
             // show tabs component

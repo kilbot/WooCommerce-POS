@@ -1218,7 +1218,7 @@ body {
 
 @media (min-width: 769px) {
   /* line 61, scss/partials/_scaffolding.scss */
-  .column-tabs {
+  #tabs {
     display: none;
   }
 
@@ -2240,30 +2240,32 @@ table.form-table .error span.error-message {
 /* line 14, scss/partials/_tabs.scss */
 .tabs ul li a {
   color: #212121;
+  margin-right: 6px;
 }
-/* line 16, scss/partials/_tabs.scss */
+/* line 17, scss/partials/_tabs.scss */
 .tabs ul li a:hover {
   color: #f44336;
 }
-/* line 20, scss/partials/_tabs.scss */
+/* line 21, scss/partials/_tabs.scss */
 .tabs ul li.active {
   background: white;
 }
 
-/* line 29, scss/partials/_tabs.scss */
+/* line 30, scss/partials/_tabs.scss */
 .infinite-tabs {
   overflow-x: hidden;
 }
 
-/* line 34, scss/partials/_tabs.scss */
-.column-tabs ul li {
+/* Page column tabs */
+/* line 37, scss/partials/_tabs.scss */
+#tabs ul li {
   background: #d3cdc1;
   width: 50%;
   margin: 0;
   text-align: center;
 }
-/* line 39, scss/partials/_tabs.scss */
-.column-tabs ul li.active {
+/* line 42, scss/partials/_tabs.scss */
+#tabs ul li.active {
   background: #e8e5df;
 }
 
@@ -2422,13 +2424,13 @@ table.form-table .error span.error-message {
 /* line 70, scss/partials/_cart.scss */
 .cart-module .list ul li > div.drawer > div .col-1 {
   text-align: right;
-  -webkit-flex-basis: 45%;
-  flex-basis: 45%;
+  -webkit-flex-basis: 40%;
+  flex-basis: 40%;
 }
 /* line 74, scss/partials/_cart.scss */
 .cart-module .list ul li > div.drawer > div .col-2 {
-  -webkit-flex-basis: 55%;
-  flex-basis: 55%;
+  -webkit-flex-basis: 60%;
+  flex-basis: 60%;
 }
 /* line 76, scss/partials/_cart.scss */
 .cart-module .list ul li > div.drawer > div .col-2 > span {

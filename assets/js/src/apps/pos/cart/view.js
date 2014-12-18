@@ -12,8 +12,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             footerRegion    : '.list-footer'
         },
         attributes: {
-            'class'         : 'module cart-module',
-            'data-title'    : 'Cart'
+            'class'         : 'module cart-module'
         }
     });
 
@@ -197,11 +196,18 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             Numpad: {}
         },
 
+        ui: {
+            addMeta     : '.action-add-meta',
+            removeMeta  : '.action-remove-meta',
+            metaLabel   : 'input[name="meta.label"]',
+            metaValue   : 'textarea[name="meta.value"]'
+        },
+
         events: {
-            'click .action-add-meta': 'addMetaFields',
-            'click .action-remove-meta': 'removeMetaFields',
-            'blur input[name="meta.label"]': 'updateMeta',
-            'blur textarea[name="meta.value"]': 'updateMeta'
+            'click @ui.addMeta'     : 'addMetaFields',
+            'click @ui.removeMeta'  : 'removeMetaFields',
+            'blur @ui.metaLabel'    : 'updateMeta',
+            'blur @ui.metaValue'    : 'updateMeta'
         },
 
         bindings: {

@@ -15,8 +15,7 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
             listRegion      : '.list'
         },
         attributes: {
-            'class'         : 'module products-module',
-            'data-title'    : 'Products'
+            'class'         : 'module products-module'
         }
     });
 
@@ -97,68 +96,68 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
         }
 
     });
-
-    /**
-     * Pagination
-     * TODO: store pagination and last update time in a viewModel?
-     */
-    Products.Pagination = Marionette.ItemView.extend({
-
-        initialize: function() {
-            this.template = Handlebars.compile( $('#tmpl-pagination').html() );
-        },
-
-        triggers: {
-            'click a.sync'		: 'pagination:sync:clicked',
-            'click a.destroy'	: 'pagination:clear:clicked'
-        },
-
-        events: {
-            'click a.prev'		: 'previous',
-            'click a.next'		: 'next'
-        },
-
-        collectionEvents: {
-            'sync reset': 'render'
-        },
-
-        serializeData: function(){
-            var state = _.clone(this.collection.state);
-
-            if(Modernizr.indexeddb) {
-                var last_update = new Date( parseInt( POS.Entities.channel.request('options:get', 'last_update') ) );
-                state.last_update = last_update.getTime() > 0 ? last_update.toLocaleTimeString() : ' - ' ;
-            }
-
-            // calculate number of items on a page
-            if(state.currentPage === state.lastPage) {
-                state.currentRecords = state.totalRecords - (state.pageSize * (state.currentPage - 1));
-            }
-            else {
-                state.currentRecords = state.pageSize;
-            }
-
-            // no results
-            state.totalPages 	= state.totalPages ? state.totalPages : 1 ;
-            state.totalRecords 	= state.totalRecords ? state.totalRecords : 0 ;
-
-            return state;
-        },
-
-        previous: function(e) {
-            e.preventDefault();
-            if(this.collection.hasPreviousPage()) {
-                this.collection.getPreviousPage();
-            }
-        },
-
-        next: function(e) {
-            e.preventDefault();
-            if(this.collection.hasNextPage()) {
-                this.collection.getNextPage();
-            }
-        }
-
-    });
+    //
+    ///**
+    // * Pagination
+    // * TODO: store pagination and last update time in a viewModel?
+    // */
+    //Products.Pagination = Marionette.ItemView.extend({
+    //
+    //    initialize: function() {
+    //        this.template = Handlebars.compile( $('#tmpl-pagination').html() );
+    //    },
+    //
+    //    triggers: {
+    //        'click a.sync'		: 'pagination:sync:clicked',
+    //        'click a.destroy'	: 'pagination:clear:clicked'
+    //    },
+    //
+    //    events: {
+    //        'click a.prev'		: 'previous',
+    //        'click a.next'		: 'next'
+    //    },
+    //
+    //    collectionEvents: {
+    //        'sync reset': 'render'
+    //    },
+    //
+    //    serializeData: function(){
+    //        var state = _.clone(this.collection.state);
+    //
+    //        if(Modernizr.indexeddb) {
+    //            var last_update = new Date( parseInt( POS.Entities.channel.request('options:get', 'last_update') ) );
+    //            state.last_update = last_update.getTime() > 0 ? last_update.toLocaleTimeString() : ' - ' ;
+    //        }
+    //
+    //        // calculate number of items on a page
+    //        if(state.currentPage === state.lastPage) {
+    //            state.currentRecords = state.totalRecords - (state.pageSize * (state.currentPage - 1));
+    //        }
+    //        else {
+    //            state.currentRecords = state.pageSize;
+    //        }
+    //
+    //        // no results
+    //        state.totalPages 	= state.totalPages ? state.totalPages : 1 ;
+    //        state.totalRecords 	= state.totalRecords ? state.totalRecords : 0 ;
+    //
+    //        return state;
+    //    },
+    //
+    //    previous: function(e) {
+    //        e.preventDefault();
+    //        if(this.collection.hasPreviousPage()) {
+    //            this.collection.getPreviousPage();
+    //        }
+    //    },
+    //
+    //    next: function(e) {
+    //        e.preventDefault();
+    //        if(this.collection.hasNextPage()) {
+    //            this.collection.getNextPage();
+    //        }
+    //    }
+    //
+    //});
 
 }, Handlebars);

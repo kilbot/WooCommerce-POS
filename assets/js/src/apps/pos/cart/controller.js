@@ -8,6 +8,9 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             // load the cart
             this.layout = new Cart.Layout();
 
+            // add title to tab
+            POS.channel.command( 'update:tab:label', $('#tmpl-cart').data('title'), 'right' );
+
             this.listenTo( this.layout, 'show', function() {
                 this.showCart();
                 this.showTotals();
@@ -73,6 +76,9 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 this.order = this.orders.add({ local_id: '' });
             }
 
+            // add listener to order to update tab label
+            this.listenTo( this.order, 'change:total', this.updateTabLabel );
+
             this.getCart( this.order )
         },
 
@@ -88,19 +94,21 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
             this.listenTo( this.cart, 'cart:ready', function() {
                 this.trigger('cart:ready');
-                this.updateTabLabel( order );
             });
         },
 
         /**
          *
          */
-        updateTabLabel: function( order ) {
-            this.listenTo( order, 'change:total', function() {
-                var totals = accounting.formatMoney(order.get('total'));
-                this.trigger('update:title', 'Cart - ' + totals);
-            });
-        },
+        updateTabLabel: _.debounce( function() {
+            var total = accounting.formatMoney( this.order.get('total') );
+            // add title to tab
+            POS.channel.command(
+                'update:tab:label',
+                this.layout.$el.data('title') + ' - ' + total,
+                'right'
+            );
+        }, 100),
 
         /**
          *

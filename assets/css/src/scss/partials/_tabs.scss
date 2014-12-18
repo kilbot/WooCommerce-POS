@@ -13,6 +13,7 @@
 			cursor: pointer;
 			a {
 				color: $text-color;
+			    margin-right: $spacing/4;
 				&:hover {
 					color: $brand-danger;
 				}
@@ -29,7 +30,9 @@
 .infinite-tabs {
 	overflow-x: hidden;
 }
-.column-tabs {
+
+/* Page column tabs */
+#tabs {
   ul {
     li {
       background: darken($body-bg, 10%);

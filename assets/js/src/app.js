@@ -5,6 +5,7 @@ var POS = new Marionette.Application();
 POS.addRegions({
     headerRegion: '#header',
     menuRegion  : '#menu',
+    tabsRegion  : '#tabs',
     mainRegion	: '#main',
     modalRegion	: '#modal'
 });

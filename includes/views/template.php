@@ -33,6 +33,7 @@ global $current_user;
 			</div>
 		</div>
 	</header>
+	<div id="tabs"></div>
 	<main id="main"></main>
 </div>
 <div id="menu">

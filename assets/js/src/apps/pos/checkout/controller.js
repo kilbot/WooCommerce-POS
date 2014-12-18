@@ -8,6 +8,9 @@ POS.module('POSApp.Checkout', function(Checkout, POS, Backbone, Marionette, $, _
 
             this.layout = new Checkout.Layout();
 
+            // add title to tab
+            POS.channel.command( 'update:tab:label', $('#tmpl-checkout').data('title'), 'right' );
+
             this.listenTo( this.layout, 'show', function() {
                 this.showCheckout();
             });

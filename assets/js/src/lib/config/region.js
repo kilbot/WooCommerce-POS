@@ -37,35 +37,27 @@ _.extend( Marionette.Region.prototype, {
             { value: 'left' }, { value: 'right' }
         ]);
 
-        // add listeners
+        // listen to tab changes
         this.listenTo( view.collection, 'change:active', function( tab ){
             this.$el
                 .removeClass('left-active right-active')
                 .addClass( tab.id + '-active' );
         });
 
-        layout.leftRegion.on( 'update:title', function( label ){
-            view.collection.get('left').set({ label: label });
+        // update tab labels
+        POS.channel.comply( 'update:tab:label', function( label, column ){
+            view.collection.get(column).set({ label: label });
         });
 
-        layout.rightRegion.on( 'update:title', function( label ){
-            view.collection.get('right').set({ label: label });
-        });
-
-        // render tabs and add to the dom
-        view.render();
-        var tabsRegion = $('<div/>').addClass('column-tabs tabs');
-        tabsRegion.html(view.$el).insertBefore(this.$el);
+        // init tabs
+        POS.tabsRegion.$el.addClass('tabs');
         view.collection.get('left').set({ active: true });
-
-        // attach tabsView to mainRegion
-        this.tabsView = view;
+        POS.tabsRegion.show(view);
 
         // teardown
         this.on( 'empty', function() {
             this.$el.removeClass('two-column left-active right-active');
-            this.tabsView.destroy();
-            tabsRegion.remove();
+            POS.tabsRegion.empty();
         });
 
     }

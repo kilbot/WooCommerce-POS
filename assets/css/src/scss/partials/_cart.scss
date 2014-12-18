@@ -69,10 +69,10 @@
               @include align-items(flex-start);
               .col-1 {
                 text-align: right;
-                @include flex-basis(45%);
+                @include flex-basis(40%);
               }
               .col-2 {
-                @include flex-basis(55%);
+                @include flex-basis(60%);
                 > span {
                   display: block;
                   input {

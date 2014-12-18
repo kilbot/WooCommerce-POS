@@ -4,7 +4,7 @@
  */
 ?>
 
-<script type="text/x-handlebars-template" id="tmpl-receipt" data-title="<?php /* translators: woocommerce */ _e('Order', 'woocommerce'); ?>">
+<script type="text/x-handlebars-template" id="tmpl-receipt" data-title="<?php /* translators: woocommerce */ _e('Receipt', 'woocommerce'); ?>">
 
 	<div id="receipt-status" class="status {{status}}">
 		<h4 class="text-center">
