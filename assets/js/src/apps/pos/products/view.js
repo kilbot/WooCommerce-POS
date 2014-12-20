@@ -28,9 +28,7 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
         },
 
         behaviors: {
-            Filter: {
-                fields: ['title']
-            }
+            Filter: {}
         }
 
     });
@@ -96,6 +94,7 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
         }
 
     });
+
     //
     ///**
     // * Pagination

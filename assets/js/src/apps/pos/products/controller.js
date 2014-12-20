@@ -18,7 +18,7 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
 
         initProducts: function() {
 
-            var products = POS.Entities.channel.request('products');
+            this.products = POS.Entities.channel.request('products');
 
             this.layout = new Products.Layout();
 
@@ -30,19 +30,21 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
             // wait for products to load
             this.listenTo( this.layout, 'show', function() {
 
-                var filtered = new FilteredCollection( products );
+                var filtered = new FilteredCollection( this.products );
+                filtered.hideVariations();
+
                 this.showActions( filtered );
                 this.showTabs( filtered );
                 this.showProducts( filtered );
             });
 
             // make sure idb is ready
-            products.once('idb:ready', function() {
+            this.products.once('idb:ready', function() {
 
                 POS.Components.Loading.channel.command( 'show:loading', this.layout, {
                     region: this.columnsLayout.leftRegion,
                     loading: {
-                        entities: products.fetch()
+                        entities: this.products.fetch()
                     }
                 });
 
@@ -52,8 +54,8 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
         showActions: function( filtered ) {
             var view = new Products.Actions({ collection: filtered });
 
-            this.listenTo( view, 'stuff', function(){
-
+            this.listenTo( view, 'search:query', function(query){
+                filtered.query( query );
             });
 
             // show
@@ -66,12 +68,7 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
             var view = POS.Components.Tabs.channel.request( 'get:tabs', POS.getOption('tabs') );
 
             this.listenTo( view.collection, 'change:active', function( model ){
-                var criterion = POS.Components.SearchParser.channel.request( 'facets', model.get('value') );
-                var fields = ['title'];
-                filtered.filterBy( 'tab',
-                    //_.bind( filtered.matchMaker, filtered, criterion, fields )
-                    _.partial( filtered.matchMaker, criterion, fields )
-                );
+                filtered.query( model.get('value'), 'tab' );
             });
 
             // listen for new tabs

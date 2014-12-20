@@ -53,6 +53,22 @@
                     @include single-transition(transform, 0.4s);
                   }
                 }
+                dl {
+                  @include clearfix();
+                  width: 100%;
+                  font-size: $font-size-small;
+                  margin: 0;
+                  dt {
+                    font-weight: normal;
+                    float: left;
+                    padding-right: 5px;
+                    clear: left;
+                  }
+                  dd {
+                    float: left;
+                    margin: 0;
+                  }
+                }
               }
             }
           }

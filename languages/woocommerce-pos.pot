@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2014-12-17 12:07:20+00:00\n"
+"POT-Creation-Date: 2014-12-20 01:33:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -103,27 +103,23 @@ msgstr ""
 msgid "Online Only"
 msgstr ""
 
-#: includes/views/pos/cart.php:132 includes/views/pos/cart.php:149
+#: includes/views/pos/cart.php:130 includes/views/pos/cart.php:147
 msgid "Discount"
 msgstr ""
 
-#: includes/views/pos/cart.php:145
+#: includes/views/pos/cart.php:143
 msgid "Void"
 msgstr ""
 
-#: includes/views/pos/checkout.php:11 includes/views/pos/receipt.php:14
+#: includes/views/pos/checkout.php:10 includes/views/pos/receipt.php:14
 msgid "To Pay"
 msgstr ""
 
-#: includes/views/pos/checkout.php:49
-msgid "No payment gateways enabled."
-msgstr ""
-
-#: includes/views/pos/checkout.php:61
+#: includes/views/pos/checkout.php:16
 msgid "Return to Sale"
 msgstr ""
 
-#: includes/views/pos/checkout.php:62
+#: includes/views/pos/checkout.php:17
 msgid "Process Payment"
 msgstr ""
 
@@ -206,7 +202,7 @@ msgctxt "Abbreviation of Quantity"
 msgid "Qty"
 msgstr ""
 
-#: includes/views/pos/cart.php:111 includes/views/pos/cart.php:121
+#: includes/views/pos/cart.php:109 includes/views/pos/cart.php:119
 #: includes/views/pos/receipt.php:84 includes/views/pos/receipt.php:93
 msgctxt "abbreviation for includes (tax)"
 msgid "incl."

@@ -34,10 +34,10 @@
 			<dt>{{name}}:</dt>
 			<dd>{{#csv options}}{{this}}{{/csv}}</dd>
 			{{/if}}
-			{{#unless variation}}
+			{{#if option}}
 			<dt>{{name}}:</dt>
 			<dd>{{option}}</dd>
-			{{/unless}}
+			{{/if}}
 			{{/each}}
 		</dl>
 		{{/with}}
