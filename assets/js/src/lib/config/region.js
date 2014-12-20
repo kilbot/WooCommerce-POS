@@ -7,10 +7,7 @@ _.extend( Marionette.Region.prototype, {
 
         // create the two column scaffold
         var Layout = Marionette.LayoutView.extend({
-            template: _.template('' +
-                '<div id="left"></div>' +
-                '<div id="right"></div>'
-            ),
+            template: _.template('<div id="left"></div><div id="right"></div>'),
             regions: {
                 leftRegion: '#left',
                 rightRegion: '#right'
@@ -50,14 +47,13 @@ _.extend( Marionette.Region.prototype, {
         });
 
         // init tabs
-        POS.tabsRegion.$el.addClass('tabs');
         view.collection.get('left').set({ active: true });
-        POS.tabsRegion.show(view);
+        POS.layout.tabsRegion.show(view);
 
         // teardown
         this.on( 'empty', function() {
             this.$el.removeClass('two-column left-active right-active');
-            POS.tabsRegion.empty();
+            POS.layout.tabsRegion.empty();
         });
 
     }

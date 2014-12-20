@@ -32,7 +32,7 @@ POS.module('POSApp', function(POSApp, POS, Backbone, Marionette, $, _) {
     };
 
     // add routes
-    POS.addInitializer( function(){
+    POS.on('before:start', function(options) {
         new Marionette.AppRouter({
             controller: API,
             appRoutes: {

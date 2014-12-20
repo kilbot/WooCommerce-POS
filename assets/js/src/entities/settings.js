@@ -1,10 +1,5 @@
 POS.module('Entities.Settings', function(Settings, POS, Backbone, Marionette, $, _) {
 
-    // bootstrap settings
-    POS.addInitializer(function( options ) {
-        Settings.hotkeys = new Settings.Usermeta( options.hotkeys, { id: 'hotkeys' });
-    });
-
     // Data from wpdb->usermeta
     Settings.Usermeta = Backbone.Collection.extend({
 
@@ -70,7 +65,7 @@ POS.module('Entities.Settings', function(Settings, POS, Backbone, Marionette, $,
 
     // API
     POS.Entities.channel.reply('hotkeys', function() {
-        return Settings.hotkeys;
+        return new Settings.Usermeta( POS.getOption('hotkeys'), { id: 'hotkeys' });
     });
 
     POS.Entities.channel.reply('options', function( options ) {

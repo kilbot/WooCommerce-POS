@@ -1,13 +1,21 @@
 // init Marionette app
-var POS = new Marionette.Application();
+var RootView = Marionette.LayoutView.extend({
+    el: '#page',
+    template: _.template( $('#page').html() ),
+    regions: {
+        headerRegion: '#header',
+        menuRegion  : '#menu',
+        tabsRegion  : '#tabs',
+        mainRegion	: '#main',
+        modalRegion	: '#modal'
+    }
+});
 
-// regions
-POS.addRegions({
-    headerRegion: '#header',
-    menuRegion  : '#menu',
-    tabsRegion  : '#tabs',
-    mainRegion	: '#main',
-    modalRegion	: '#modal'
+var POS = new Marionette.Application({
+    initialize: function() {
+        this.layout = new RootView();
+        this.layout.render();
+    }
 });
 
 // behaviors
@@ -17,7 +25,7 @@ Marionette.Behaviors.getBehaviorClass = function(options, key) {
 
 // global channel
 POS.channel.reply('default:region', function() {
-    return POS.mainRegion;
+    return POS.layout.mainRegion;
 });
 
 POS.channel.comply('register:instance', function(instance, id) {
@@ -33,20 +41,17 @@ POS.module( 'Entities', function( Entities ) {
     Entities.channel = Backbone.Radio.channel('entities');
 });
 
-// app set up
-POS.addInitializer(function(options) {
-
+// on before start
+POS.on('before:start', function(options) {
     // app settings
     this.options = options;
 
     /* global accounting */
-    accounting.settings = options.accounting;
-
+    accounting.settings = this.options.accounting;
 });
 
 // on start
 POS.on('start', function(options) {
-    POS.debugLog( 'log', 'POS App started' );
     POS.startHistory();
 
     // header app starts on all pages

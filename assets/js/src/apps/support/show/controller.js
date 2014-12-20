@@ -5,19 +5,19 @@ POS.module('SupportApp.Show', function(Show, POS, Backbone, Marionette, $, _) {
         initialize: function (options) {
 
             // init two column layout
-            this.layout = POS.mainRegion.twoColumns();
+            this.layout = POS.layout.mainRegion.twoColumns();
 
             this.listenTo( this.layout, 'show', function() {
-                this._showForm();
-                this._showStatus();
+                this.showForm();
+                this.showStatus();
             });
 
             // show
-            this.show( this.layout, { region: POS.mainRegion } );
+            this.show( this.layout, { region: POS.layout.mainRegion } );
 
         },
 
-       _showForm: function(){
+       showForm: function(){
            var view = new Show.Form();
 
            this.listenTo( view, 'send:email', function( data ){
@@ -33,7 +33,7 @@ POS.module('SupportApp.Show', function(Show, POS, Backbone, Marionette, $, _) {
            this.layout.leftRegion.show( view );
        },
 
-       _showStatus: function() {
+       showStatus: function() {
 
            var results = $.wc_pos_ajax({
                type: 'GET',
@@ -46,7 +46,7 @@ POS.module('SupportApp.Show', function(Show, POS, Backbone, Marionette, $, _) {
 
            POS.Components.Loading.channel.command( 'show:loading', view, {
                region: this.layout.rightRegion,
-                   loading: {
+               loading: {
                    entities: results
                }
            });

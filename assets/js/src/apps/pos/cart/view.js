@@ -232,8 +232,8 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             }
         },
 
-        onShow: function( callback ) {
-            this.$el.hide().slideDown(250, callback );
+        onShow: function() {
+            this.$el.hide().slideDown(250);
         },
 
         remove: function() {

@@ -444,61 +444,64 @@ th {
   padding: 0;
 }
 
+/*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 @media print {
-  /* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
-  * {
-    text-shadow: none !important;
-    color: #000 !important;
+  /* line 9, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  *,
+  *:before,
+  *:after {
     background: transparent !important;
+    color: #000 !important;
     box-shadow: none !important;
+    text-shadow: none !important;
   }
 
-  /* line 15, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  /* line 18, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
   a,
   a:visited {
     text-decoration: underline;
   }
 
-  /* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  /* line 23, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
   a[href]:after {
     content: " (" attr(href) ")";
   }
 
-  /* line 24, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  /* line 27, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
   abbr[title]:after {
     content: " (" attr(title) ")";
   }
 
-  /* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
-  a[href^="javascript:"]:after,
-  a[href^="#"]:after {
+  /* line 33, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
     content: "";
   }
 
-  /* line 34, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  /* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
   pre,
   blockquote {
     border: 1px solid #999;
     page-break-inside: avoid;
   }
 
-  /* line 40, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  /* line 44, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
   thead {
     display: table-header-group;
   }
 
-  /* line 44, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  /* line 48, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
   tr,
   img {
     page-break-inside: avoid;
   }
 
-  /* line 49, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  /* line 53, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
   img {
     max-width: 100% !important;
   }
 
-  /* line 53, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  /* line 57, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
   p,
   h2,
   h3 {
@@ -506,26 +509,20 @@ th {
     widows: 3;
   }
 
-  /* line 60, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  /* line 64, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
   h2,
   h3 {
     page-break-after: avoid;
   }
 
-  /* line 67, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  /* line 73, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
   select {
     background: #fff !important;
   }
 
-  /* line 72, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  /* line 78, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
   .navbar {
     display: none;
-  }
-
-  /* line 76, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
-  .table td,
-  .table th {
-    background-color: #fff !important;
   }
 
   /* line 83, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
@@ -543,8 +540,13 @@ th {
   .table {
     border-collapse: collapse !important;
   }
+  /* line 94, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  .table td,
+  .table th {
+    background-color: #fff !important;
+  }
 
-  /* line 95, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
+  /* line 100, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_print.scss */
   .table-bordered th,
   .table-bordered td {
     border: 1px solid #ddd !important;
@@ -636,8 +638,7 @@ th {
 .dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
   color: #777777;
 }
-
-/* line 109, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 108, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
   text-decoration: none;
   background-color: transparent;
@@ -646,28 +647,28 @@ th {
   cursor: not-allowed;
 }
 
-/* line 122, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 121, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
 .open > .dropdown-menu {
   display: block;
 }
-/* line 127, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 126, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
 .open > a {
   outline: 0;
 }
 
-/* line 136, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 135, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu-right {
   left: auto;
   right: 0;
 }
 
-/* line 146, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 145, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu-left {
   left: 0;
   right: auto;
 }
 
-/* line 152, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 151, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-header {
   display: block;
   padding: 3px 20px;
@@ -677,7 +678,7 @@ th {
   white-space: nowrap;
 }
 
-/* line 162, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 161, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-backdrop {
   position: fixed;
   left: 0;
@@ -687,20 +688,20 @@ th {
   z-index: 990;
 }
 
-/* line 172, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 171, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
 .pull-right > .dropdown-menu {
   right: 0;
   left: auto;
 }
 
-/* line 185, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 184, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropup .caret,
 .navbar-fixed-bottom .dropdown .caret {
   border-top: 0;
   border-bottom: 4px solid;
   content: "";
 }
-/* line 191, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 190, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropup .dropdown-menu,
 .navbar-fixed-bottom .dropdown .dropdown-menu {
   top: auto;
@@ -709,12 +710,12 @@ th {
 }
 
 @media (min-width: 768px) {
-  /* line 205, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+  /* line 204, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
   .navbar-right .dropdown-menu {
     right: 0;
     left: auto;
   }
-  /* line 210, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
+  /* line 209, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_dropdowns.scss */
   .navbar-right .dropdown-menu-left {
     left: 0;
     right: auto;
@@ -729,6 +730,10 @@ th {
   display: none;
   max-width: 276px;
   padding: 1px;
+  font-family: "Open Sans", Sans-Serif;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.428571429;
   text-align: left;
   background-color: white;
   background-clip: padding-box;
@@ -739,41 +744,39 @@ th {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   white-space: normal;
 }
-/* line 26, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 31, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover.top {
   margin-top: -10px;
 }
-/* line 27, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 32, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover.right {
   margin-left: 10px;
 }
-/* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 33, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover.bottom {
   margin-top: 10px;
 }
-/* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 34, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover.left {
   margin-left: -10px;
 }
 
-/* line 32, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 37, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover-title {
   margin: 0;
   padding: 8px 14px;
   font-size: 14px;
-  font-weight: normal;
-  line-height: 18px;
   background-color: #f7f7f7;
   border-bottom: 1px solid #ebebeb;
   border-radius: 9px 9px 0 0;
 }
 
-/* line 43, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 46, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover-content {
   padding: 9px 14px;
 }
 
-/* line 52, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 55, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover > .arrow, .popover > .arrow:after {
   position: absolute;
   display: block;
@@ -783,18 +786,18 @@ th {
   border-style: solid;
 }
 
-/* line 62, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 65, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover > .arrow {
   border-width: 11px;
 }
 
-/* line 65, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 68, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover > .arrow:after {
   border-width: 10px;
   content: "";
 }
 
-/* line 71, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 74, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover.top > .arrow {
   left: 50%;
   margin-left: -11px;
@@ -803,7 +806,7 @@ th {
   border-top-color: rgba(0, 0, 0, 0.25);
   bottom: -11px;
 }
-/* line 78, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 81, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover.top > .arrow:after {
   content: " ";
   bottom: 1px;
@@ -811,7 +814,7 @@ th {
   border-bottom-width: 0;
   border-top-color: white;
 }
-/* line 86, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 89, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover.right > .arrow {
   top: 50%;
   left: -11px;
@@ -820,7 +823,7 @@ th {
   border-right-color: #999999;
   border-right-color: rgba(0, 0, 0, 0.25);
 }
-/* line 93, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 96, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover.right > .arrow:after {
   content: " ";
   left: 1px;
@@ -828,7 +831,7 @@ th {
   border-left-width: 0;
   border-right-color: white;
 }
-/* line 101, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 104, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover.bottom > .arrow {
   left: 50%;
   margin-left: -11px;
@@ -837,7 +840,7 @@ th {
   border-bottom-color: rgba(0, 0, 0, 0.25);
   top: -11px;
 }
-/* line 108, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 111, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover.bottom > .arrow:after {
   content: " ";
   top: 1px;
@@ -845,7 +848,7 @@ th {
   border-top-width: 0;
   border-bottom-color: white;
 }
-/* line 117, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 120, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover.left > .arrow {
   top: 50%;
   right: -11px;
@@ -854,7 +857,7 @@ th {
   border-left-color: #999999;
   border-left-color: rgba(0, 0, 0, 0.25);
 }
-/* line 124, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
+/* line 127, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_popovers.scss */
 .popover.left > .arrow:after {
   content: " ";
   right: 1px;
@@ -877,14 +880,16 @@ th {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1050;
+  z-index: 1040;
   -webkit-overflow-scrolling: touch;
   outline: 0;
 }
 /* line 32, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal.fade .modal-dialog {
-  -webkit-transform: translate3d(0, -25%, 0);
-  transform: translate3d(0, -25%, 0);
+  -webkit-transform: translate(0, -25%);
+  -ms-transform: translate(0, -25%);
+  -o-transform: translate(0, -25%);
+  transform: translate(0, -25%);
   -webkit-transition: -webkit-transform 0.3s ease-out;
   -moz-transition: -moz-transform 0.3s ease-out;
   -o-transition: -o-transform 0.3s ease-out;
@@ -892,8 +897,10 @@ th {
 }
 /* line 36, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal.in .modal-dialog {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  transform: translate(0, 0);
 }
 
 /* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
@@ -924,50 +931,48 @@ th {
 
 /* line 64, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-backdrop {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
-  bottom: 0;
   left: 0;
-  z-index: 1040;
   background-color: black;
 }
-/* line 73, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+/* line 71, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-backdrop.fade {
   opacity: 0;
   filter: alpha(opacity=0);
 }
-/* line 74, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+/* line 72, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-backdrop.in {
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 
-/* line 79, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+/* line 77, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-header {
   padding: 15px;
   border-bottom: 1px solid #e5e5e5;
   min-height: 16.428571429px;
 }
 
-/* line 85, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+/* line 83, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-header .close {
   margin-top: -2px;
 }
 
-/* line 90, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+/* line 88, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-title {
   margin: 0;
   line-height: 1.428571429;
 }
 
-/* line 97, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+/* line 95, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-body {
   position: relative;
   padding: 15px;
 }
 
-/* line 103, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+/* line 101, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-footer {
   padding: 15px;
   text-align: right;
@@ -982,21 +987,21 @@ th {
 .modal-footer:after {
   clear: both;
 }
-/* line 110, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+/* line 108, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-footer .btn + .btn {
   margin-left: 5px;
   margin-bottom: 0;
 }
-/* line 115, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+/* line 113, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-footer .btn-group .btn + .btn {
   margin-left: -1px;
 }
-/* line 119, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+/* line 117, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-footer .btn-block + .btn-block {
   margin-left: 0;
 }
 
-/* line 125, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+/* line 123, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
 .modal-scrollbar-measure {
   position: absolute;
   top: -9999px;
@@ -1006,25 +1011,25 @@ th {
 }
 
 @media (min-width: 768px) {
-  /* line 136, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+  /* line 134, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
   .modal-dialog {
     width: 600px;
     margin: 30px auto;
   }
 
-  /* line 140, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+  /* line 138, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
   .modal-content {
     -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   }
 
-  /* line 145, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+  /* line 143, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
   .modal-sm {
     width: 300px;
   }
 }
 @media (min-width: 992px) {
-  /* line 149, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
+  /* line 147, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_modals.scss */
   .modal-lg {
     width: 900px;
   }
@@ -1035,38 +1040,40 @@ th {
   z-index: 1070;
   display: block;
   visibility: visible;
+  font-family: "Open Sans", Sans-Serif;
   font-size: 12px;
+  font-weight: normal;
   line-height: 1.4;
   opacity: 0;
   filter: alpha(opacity=0);
 }
-/* line 16, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.in {
   opacity: 0.9;
   filter: alpha(opacity=90);
 }
-/* line 17, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.top {
   margin-top: -3px;
   padding: 5px 0;
 }
-/* line 18, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 21, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.right {
   margin-left: 3px;
   padding: 0 5px;
 }
-/* line 19, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 22, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.bottom {
   margin-top: 3px;
   padding: 5px 0;
 }
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 23, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.left {
   margin-left: -3px;
   padding: 0 5px;
 }
 
-/* line 24, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 27, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip-inner {
   max-width: 200px;
   padding: 3px 8px;
@@ -1077,7 +1084,7 @@ th {
   border-radius: 3px;
 }
 
-/* line 35, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip-arrow {
   position: absolute;
   width: 0;
@@ -1086,7 +1093,7 @@ th {
   border-style: solid;
 }
 
-/* line 43, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 47, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.top .tooltip-arrow {
   bottom: 0;
   left: 50%;
@@ -1094,21 +1101,23 @@ th {
   border-width: 5px 5px 0;
   border-top-color: black;
 }
-/* line 50, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 54, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.top-left .tooltip-arrow {
   bottom: 0;
-  left: 5px;
+  right: 5px;
+  margin-bottom: -5px;
   border-width: 5px 5px 0;
   border-top-color: black;
 }
-/* line 56, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 61, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.top-right .tooltip-arrow {
   bottom: 0;
-  right: 5px;
+  left: 5px;
+  margin-bottom: -5px;
   border-width: 5px 5px 0;
   border-top-color: black;
 }
-/* line 62, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 68, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.right .tooltip-arrow {
   top: 50%;
   left: 0;
@@ -1116,7 +1125,7 @@ th {
   border-width: 5px 5px 5px 0;
   border-right-color: black;
 }
-/* line 69, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 75, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.left .tooltip-arrow {
   top: 50%;
   right: 0;
@@ -1124,7 +1133,7 @@ th {
   border-width: 5px 0 5px 5px;
   border-left-color: black;
 }
-/* line 76, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 82, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.bottom .tooltip-arrow {
   top: 0;
   left: 50%;
@@ -1132,17 +1141,19 @@ th {
   border-width: 0 5px 5px;
   border-bottom-color: black;
 }
-/* line 83, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 89, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.bottom-left .tooltip-arrow {
   top: 0;
-  left: 5px;
+  right: 5px;
+  margin-top: -5px;
   border-width: 0 5px 5px;
   border-bottom-color: black;
 }
-/* line 89, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
+/* line 96, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_tooltip.scss */
 .tooltip.bottom-right .tooltip-arrow {
   top: 0;
-  right: 5px;
+  left: 5px;
+  margin-top: -5px;
   border-width: 0 5px 5px;
   border-bottom-color: black;
 }
@@ -1454,76 +1465,106 @@ h1, h2, h3, h4, h5, h6,
   line-height: 1.1;
 }
 
+/* line 11, scss/partials/_type.scss */
+h1, .h1 {
+  font-size: 36px;
+}
+
+/* line 12, scss/partials/_type.scss */
+h2, .h2 {
+  font-size: 30px;
+}
+
+/* line 13, scss/partials/_type.scss */
+h3, .h3 {
+  font-size: 24px;
+}
+
 /* line 14, scss/partials/_type.scss */
+h4, .h4 {
+  font-size: 18px;
+}
+
+/* line 15, scss/partials/_type.scss */
+h5, .h5 {
+  font-size: 14px;
+}
+
+/* line 16, scss/partials/_type.scss */
+h6, .h6 {
+  font-size: 12px;
+}
+
+/* line 21, scss/partials/_type.scss */
 a {
   color: #607d8b;
   text-decoration: none;
 }
-/* line 18, scss/partials/_type.scss */
+/* line 25, scss/partials/_type.scss */
 a:hover, a:focus {
   color: #41545e;
   text-decoration: none;
 }
 
-/* line 33, scss/partials/_type.scss */
+/* line 40, scss/partials/_type.scss */
 small,
 .small {
   font-size: 85%;
 }
 
-/* line 38, scss/partials/_type.scss */
+/* line 45, scss/partials/_type.scss */
 mark,
 .mark {
   background-color: #fcf8e3;
   padding: .2em;
 }
 
-/* line 45, scss/partials/_type.scss */
+/* line 52, scss/partials/_type.scss */
 .text-left {
   text-align: left;
 }
 
-/* line 46, scss/partials/_type.scss */
+/* line 53, scss/partials/_type.scss */
 .text-right {
   text-align: right;
 }
 
-/* line 47, scss/partials/_type.scss */
+/* line 54, scss/partials/_type.scss */
 .text-center {
   text-align: center;
 }
 
-/* line 48, scss/partials/_type.scss */
+/* line 55, scss/partials/_type.scss */
 .text-justify {
   text-align: justify;
 }
 
-/* line 49, scss/partials/_type.scss */
+/* line 56, scss/partials/_type.scss */
 .text-nowrap {
   white-space: nowrap;
 }
 
-/* line 52, scss/partials/_type.scss */
+/* line 59, scss/partials/_type.scss */
 .text-lowercase {
   text-transform: lowercase;
 }
 
-/* line 53, scss/partials/_type.scss */
+/* line 60, scss/partials/_type.scss */
 .text-uppercase {
   text-transform: uppercase;
 }
 
-/* line 54, scss/partials/_type.scss */
+/* line 61, scss/partials/_type.scss */
 .text-capitalize {
   text-transform: capitalize;
 }
 
-/* line 57, scss/partials/_type.scss */
+/* line 64, scss/partials/_type.scss */
 .text-muted {
   color: #777777;
 }
 
-/* line 63, scss/partials/_type.scss */
+/* line 70, scss/partials/_type.scss */
 hr {
   border: 0;
   height: 0;
@@ -1792,21 +1833,21 @@ input.btn:hover {
   border-color: #dbdbdb;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .btn-default.dropdown-toggle {
+.btn-default:hover, .btn-default:focus, .btn-default.focus, .btn-default:active, .btn-default.active, .open > .btn-default.dropdown-toggle {
   color: #333333;
   background-color: #d9d9d9;
   border-color: #bdbdbd;
 }
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 21, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-default:active, .btn-default.active, .open > .btn-default.dropdown-toggle {
   background-image: none;
 }
-/* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.btn-default.disabled, .btn-default.disabled:hover, .btn-default.disabled:focus, .btn-default.disabled:active, .btn-default.disabled.active, .btn-default[disabled], .btn-default[disabled]:hover, .btn-default[disabled]:focus, .btn-default[disabled]:active, .btn-default[disabled].active, fieldset[disabled] .btn-default, fieldset[disabled] .btn-default:hover, fieldset[disabled] .btn-default:focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .btn-default.active {
+/* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+.btn-default.disabled, .btn-default.disabled:hover, .btn-default.disabled:focus, .btn-default.disabled.focus, .btn-default.disabled:active, .btn-default.disabled.active, .btn-default[disabled], .btn-default[disabled]:hover, .btn-default[disabled]:focus, .btn-default[disabled].focus, .btn-default[disabled]:active, .btn-default[disabled].active, fieldset[disabled] .btn-default, fieldset[disabled] .btn-default:hover, fieldset[disabled] .btn-default:focus, fieldset[disabled] .btn-default.focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .btn-default.active {
   background-color: #f3f3f3;
   border-color: #dbdbdb;
 }
-/* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 40, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-default .badge {
   color: #f3f3f3;
   background-color: #333333;
@@ -1819,21 +1860,21 @@ input.btn:hover {
   border-color: #566f7c;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
+.btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
   color: white;
   background-color: #4b626d;
   border-color: #3d4f58;
 }
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 21, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
   background-image: none;
 }
-/* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled]:active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active {
+/* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+.btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled.focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled].focus, .btn-primary[disabled]:active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary.focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active {
   background-color: #607d8b;
   border-color: #566f7c;
 }
-/* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 40, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-primary .badge {
   color: #607d8b;
   background-color: white;
@@ -1846,21 +1887,21 @@ input.btn:hover {
   border-color: #449d48;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
+.btn-success:hover, .btn-success:focus, .btn-success.focus, .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
   color: white;
   background-color: #3d8b40;
   border-color: #327334;
 }
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 21, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
   background-image: none;
 }
-/* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.btn-success.disabled, .btn-success.disabled:hover, .btn-success.disabled:focus, .btn-success.disabled:active, .btn-success.disabled.active, .btn-success[disabled], .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled]:active, .btn-success[disabled].active, fieldset[disabled] .btn-success, fieldset[disabled] .btn-success:hover, fieldset[disabled] .btn-success:focus, fieldset[disabled] .btn-success:active, fieldset[disabled] .btn-success.active {
+/* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+.btn-success.disabled, .btn-success.disabled:hover, .btn-success.disabled:focus, .btn-success.disabled.focus, .btn-success.disabled:active, .btn-success.disabled.active, .btn-success[disabled], .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled].focus, .btn-success[disabled]:active, .btn-success[disabled].active, fieldset[disabled] .btn-success, fieldset[disabled] .btn-success:hover, fieldset[disabled] .btn-success:focus, fieldset[disabled] .btn-success.focus, fieldset[disabled] .btn-success:active, fieldset[disabled] .btn-success.active {
   background-color: #4caf50;
   border-color: #449d48;
 }
-/* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 40, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-success .badge {
   color: #4caf50;
   background-color: white;
@@ -1873,21 +1914,21 @@ input.btn:hover {
   border-color: #0398db;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
+.btn-info:hover, .btn-info:focus, .btn-info.focus, .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
   color: white;
   background-color: #0286c2;
   border-color: #026e9e;
 }
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 21, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
   background-image: none;
 }
-/* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.btn-info.disabled, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled:active, .btn-info.disabled.active, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled]:active, .btn-info[disabled].active, fieldset[disabled] .btn-info, fieldset[disabled] .btn-info:hover, fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info:active, fieldset[disabled] .btn-info.active {
+/* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+.btn-info.disabled, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled.focus, .btn-info.disabled:active, .btn-info.disabled.active, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled].focus, .btn-info[disabled]:active, .btn-info[disabled].active, fieldset[disabled] .btn-info, fieldset[disabled] .btn-info:hover, fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info.focus, fieldset[disabled] .btn-info:active, fieldset[disabled] .btn-info.active {
   background-color: #03a9f4;
   border-color: #0398db;
 }
-/* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 40, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-info .badge {
   color: #03a9f4;
   background-color: white;
@@ -1900,21 +1941,21 @@ input.btn:hover {
   border-color: #ff4408;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open > .btn-warning.dropdown-toggle {
+.btn-warning:hover, .btn-warning:focus, .btn-warning.focus, .btn-warning:active, .btn-warning.active, .open > .btn-warning.dropdown-toggle {
   color: white;
   background-color: #ee3900;
   border-color: #ca3100;
 }
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 21, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-warning:active, .btn-warning.active, .open > .btn-warning.dropdown-toggle {
   background-image: none;
 }
-/* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.btn-warning.disabled, .btn-warning.disabled:hover, .btn-warning.disabled:focus, .btn-warning.disabled:active, .btn-warning.disabled.active, .btn-warning[disabled], .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled]:active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning, fieldset[disabled] .btn-warning:hover, fieldset[disabled] .btn-warning:focus, fieldset[disabled] .btn-warning:active, fieldset[disabled] .btn-warning.active {
+/* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+.btn-warning.disabled, .btn-warning.disabled:hover, .btn-warning.disabled:focus, .btn-warning.disabled.focus, .btn-warning.disabled:active, .btn-warning.disabled.active, .btn-warning[disabled], .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled].focus, .btn-warning[disabled]:active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning, fieldset[disabled] .btn-warning:hover, fieldset[disabled] .btn-warning:focus, fieldset[disabled] .btn-warning.focus, fieldset[disabled] .btn-warning:active, fieldset[disabled] .btn-warning.active {
   background-color: #ff5722;
   border-color: #ff4408;
 }
-/* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 40, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-warning .badge {
   color: #ff5722;
   background-color: white;
@@ -1927,21 +1968,21 @@ input.btn:hover {
   border-color: #f32c1e;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
+.btn-danger:hover, .btn-danger:focus, .btn-danger.focus, .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
   color: white;
   background-color: #ea1c0d;
   border-color: #c8180b;
 }
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 21, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
   background-image: none;
 }
-/* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.btn-danger.disabled, .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled:active, .btn-danger.disabled.active, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled]:active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger, fieldset[disabled] .btn-danger:hover, fieldset[disabled] .btn-danger:focus, fieldset[disabled] .btn-danger:active, fieldset[disabled] .btn-danger.active {
+/* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+.btn-danger.disabled, .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled.focus, .btn-danger.disabled:active, .btn-danger.disabled.active, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled].focus, .btn-danger[disabled]:active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger, fieldset[disabled] .btn-danger:hover, fieldset[disabled] .btn-danger:focus, fieldset[disabled] .btn-danger.focus, fieldset[disabled] .btn-danger:active, fieldset[disabled] .btn-danger.active {
   background-color: #f44336;
   border-color: #f32c1e;
 }
-/* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 40, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .btn-danger .badge {
   color: #f44336;
   background-color: white;
@@ -2642,21 +2683,21 @@ table.form-table .error span.error-message {
   border-color: #dbdbdb;
 }
 /* line 11, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.numpad-keys > div .keys a:hover, .numpad-keys > div .keys a:focus, .numpad-keys > div .keys a:active, .numpad-keys > div .keys a.active, .open > .numpad-keys > div .keys a.dropdown-toggle {
+.numpad-keys > div .keys a:hover, .numpad-keys > div .keys a:focus, .numpad-keys > div .keys a.focus, .numpad-keys > div .keys a:active, .numpad-keys > div .keys a.active, .open > .numpad-keys > div .keys a.dropdown-toggle {
   color: #333333;
   background-color: #d9d9d9;
   border-color: #bdbdbd;
 }
-/* line 20, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 21, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .numpad-keys > div .keys a:active, .numpad-keys > div .keys a.active, .open > .numpad-keys > div .keys a.dropdown-toggle {
   background-image: none;
 }
-/* line 28, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
-.numpad-keys > div .keys a.disabled, .numpad-keys > div .keys a.disabled:hover, .numpad-keys > div .keys a.disabled:focus, .numpad-keys > div .keys a.disabled:active, .numpad-keys > div .keys a.disabled.active, .numpad-keys > div .keys a[disabled], .numpad-keys > div .keys a[disabled]:hover, .numpad-keys > div .keys a[disabled]:focus, .numpad-keys > div .keys a[disabled]:active, .numpad-keys > div .keys a[disabled].active, fieldset[disabled] .numpad-keys > div .keys a, fieldset[disabled] .numpad-keys > div .keys a:hover, fieldset[disabled] .numpad-keys > div .keys a:focus, fieldset[disabled] .numpad-keys > div .keys a:active, fieldset[disabled] .numpad-keys > div .keys a.active {
+/* line 29, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+.numpad-keys > div .keys a.disabled, .numpad-keys > div .keys a.disabled:hover, .numpad-keys > div .keys a.disabled:focus, .numpad-keys > div .keys a.disabled.focus, .numpad-keys > div .keys a.disabled:active, .numpad-keys > div .keys a.disabled.active, .numpad-keys > div .keys a[disabled], .numpad-keys > div .keys a[disabled]:hover, .numpad-keys > div .keys a[disabled]:focus, .numpad-keys > div .keys a[disabled].focus, .numpad-keys > div .keys a[disabled]:active, .numpad-keys > div .keys a[disabled].active, fieldset[disabled] .numpad-keys > div .keys a, fieldset[disabled] .numpad-keys > div .keys a:hover, fieldset[disabled] .numpad-keys > div .keys a:focus, fieldset[disabled] .numpad-keys > div .keys a.focus, fieldset[disabled] .numpad-keys > div .keys a:active, fieldset[disabled] .numpad-keys > div .keys a.active {
   background-color: #f3f3f3;
   border-color: #dbdbdb;
 }
-/* line 38, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
+/* line 40, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_buttons.scss */
 .numpad-keys > div .keys a .badge {
   color: #f3f3f3;
   background-color: #333333;

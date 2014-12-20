@@ -3,7 +3,7 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
     // init modal component on start
     POS.addInitializer(function() {
         new Modal.Controller({
-            container: POS.modalRegion
+            container: POS.layout.modalRegion
         });
     });
 

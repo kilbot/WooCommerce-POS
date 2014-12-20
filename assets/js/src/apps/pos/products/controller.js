@@ -5,14 +5,14 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
         initialize: function (options) {
 
             // init two column POS layout
-            this.columnsLayout = POS.mainRegion.twoColumns( this );
+            this.columnsLayout = POS.layout.mainRegion.twoColumns( this );
 
             this.listenTo( this.columnsLayout, 'show', function() {
                 this.initProducts();
             });
 
             // show
-            this.show( this.columnsLayout, { region: POS.mainRegion } );
+            this.show( this.columnsLayout, { region: POS.layout.mainRegion } );
 
         },
 

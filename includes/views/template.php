@@ -33,17 +33,17 @@ global $current_user;
 			</div>
 		</div>
 	</header>
-	<div id="tabs"></div>
+	<div id="menu">
+		<ul>
+			<?php $menu = $this->menu(); foreach( $menu as $key => $item ): ?>
+				<li class="<?php echo $key ?>"><a href="<?php echo $item['href'] ?>"><i class="icon icon-<?php echo $key ?> icon-lg"></i><?php echo $item['label'] ?></a></li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+	<div id="tabs" class="tabs"></div>
 	<main id="main"></main>
+	<div id="modal"></div>
 </div>
-<div id="menu">
-	<ul>
-		<?php $menu = $this->menu(); foreach( $menu as $key => $item ): ?>
-		<li class="<?php echo $key ?>"><a href="<?php echo $item['href'] ?>"><i class="icon icon-<?php echo $key ?> icon-lg"></i><?php echo $item['label'] ?></a></li>
-		<?php endforeach; ?>
-	</ul>
-</div>
-<div id="modal"></div>
 
 <script type="text/template" id="tmpl-modal">
 	<div class="modal-dialog"><div class="modal-content">

@@ -38,6 +38,7 @@ POS.module('HeaderApp', function(HeaderApp, POS, Backbone, Marionette, $, _, Han
             // open menu & append backdrop
             $('body').addClass('menu-open');
             this.backdrop = $('<div class="modal-backdrop in"></div>');
+            this.backdrop.height('100%');
             $('body').append(this.backdrop);
 
             // listen for clicks on backdrop

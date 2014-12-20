@@ -9,7 +9,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             this.layout = new Cart.Layout();
 
             // add title to tab
-            POS.channel.command( 'update:tab:label', $('#tmpl-cart').data('title'), 'right' );
+            this.updateTabLabel();
 
             this.listenTo( this.layout, 'show', function() {
                 this.showCart();
@@ -28,11 +28,6 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
             // listen for cart:add commands
             POS.POSApp.channel.comply( 'cart:add', this.addToCart, this);
-
-            // listen for changes to tab label
-            this.on( 'update:title', function(title) {
-                options.region.trigger( 'update:title', title )
-            });
 
         },
 
@@ -98,16 +93,14 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         },
 
         /**
-         *
+         * Add/update tab label
          */
-        updateTabLabel: _.debounce( function() {
-            var total = accounting.formatMoney( this.order.get('total') );
-            // add title to tab
-            POS.channel.command(
-                'update:tab:label',
-                this.layout.$el.data('title') + ' - ' + total,
-                'right'
-            );
+        updateTabLabel: _.debounce( function( order ) {
+            var label = $('#tmpl-cart').data('title');
+            if( order ){
+                label += ' - ' + accounting.formatMoney( order.get('total') );
+            }
+            POS.channel.command( 'update:tab:label', label, 'right' );
         }, 100),
 
         /**

@@ -11,8 +11,8 @@ POS.module('SupportApp', function(SupportApp, App, Backbone, Marionette, $, _) {
         }
     }
 
-    // add routes to App at start
-    POS.addInitializer( function(){
+    // add routes
+    POS.on('before:start', function(options) {
         new Marionette.AppRouter({
             controller: API,
             appRoutes: {
