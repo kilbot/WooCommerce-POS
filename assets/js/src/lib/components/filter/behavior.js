@@ -13,8 +13,9 @@ POS.module('Components.Filter', function(Filter, POS, Backbone, Marionette, $, _
         },
 
         query: _.debounce( function(){
-            this.showClearButtonMaybe();
-            this.view.trigger( 'search:query', this.ui.searchField.val() );
+            var value = this.ui.searchField.val();
+            this.showClearButtonMaybe( value );
+            this.view.trigger( 'search:query', value );
         }, 149),
 
         // clear the filter
@@ -22,11 +23,15 @@ POS.module('Components.Filter', function(Filter, POS, Backbone, Marionette, $, _
             e.preventDefault();
             this.view.collection.removeFilter('search');
             this.ui.searchField.val('');
-            this.showClearButtonMaybe();
+            this.showClearButtonMaybe('');
         },
 
-        showClearButtonMaybe: function() {
-            _.isEmpty( this.ui.searchField.val() ) ? this.ui.clearBtn.hide() : this.ui.clearBtn.show() ;
+        showClearButtonMaybe: function( value ) {
+            if( _.isEmpty( value ) ) {
+                this.ui.clearBtn.hide();
+            } else {
+                this.ui.clearBtn.show();
+            }
         }
 
     });

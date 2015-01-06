@@ -39,7 +39,7 @@ Backbone.Stickit.addHandler({
     onSet: function( value, options ){
         var key = options.selector.match(/\w+\[(\w+)\]/)[1];
         var address = options.view.model.get( options.observe );
-        address || ( address = {} );
+        address = address || {};
         address[key] = value;
         return address;
     }

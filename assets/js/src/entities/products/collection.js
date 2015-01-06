@@ -1,28 +1,5 @@
 POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
-    Entities.Product = Backbone.DualModel.extend({
-        idAttribute: 'local_id',
-        remoteIdAttribute: 'id',
-
-        // this is an array of fields used by FilterCollection.matchmaker()
-        fields: ['title'],
-
-        parse: function (resp, options) {
-            resp.product && resp.product === 'variable' && this.serverResponse(resp);
-            return resp.product ? resp.product : resp ;
-        },
-
-        serverResponse: function(resp){
-            _.each( resp.product.variations, function( variation ){
-                variation.type      = 'variation';
-                variation.title     = resp.product.title;
-                variation.parent    = resp.product.id;
-                variation.categories= resp.product.categories;
-                resp.product.push( variation );
-            });
-        }
-    });
-
     Entities.Products = Backbone.DualCollection.extend({
         model: Entities.Product,
         url: function(){
@@ -60,8 +37,12 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
         },
 
         parse: function (resp, options) {
-            resp.products && this.serverResponse(resp);
-            return resp.products ? resp.products : resp ;
+            if( resp.products ){
+                this.serverResponse(resp);
+                return resp.products;
+            } else {
+                return resp;
+            }
         },
 
         serverResponse: function(resp){
@@ -93,10 +74,6 @@ POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
                 });
         }
 
-    });
-
-    Entities.channel.reply('products', function() {
-        return new Entities.Products();
     });
 
 });

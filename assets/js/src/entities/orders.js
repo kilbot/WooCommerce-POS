@@ -1,11 +1,12 @@
-POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
+POS.module('Entities', function(Entities){
 
-    Entities.channel.reply('order', function(id) {
-        return new Entities.Orders.Model(id);
-    });
-
-    Entities.channel.reply('orders', function() {
-        return new Entities.Orders.Collection();
+    this.channel.reply({
+        'order': function(id) {
+            return new Entities.Order(id);
+        },
+        'orders': function() {
+            return new Entities.Orders();
+        }
     });
 
 });

@@ -12,11 +12,11 @@ POS.module('Entities.Settings', function(Settings, POS, Backbone, Marionette, $,
             var payload = {
                 id: this.id,
                 action: 'wc_pos_user_settings',
-                security: POS.nonce,
+                security: POS.getOption('nonce'),
                 data: data[0]
             };
 
-            $.post( POS.ajaxurl, payload, function( response ) {
+            $.post( POS.getOption('ajaxurl'), payload, function( response ) {
                 console.log(response);
             });
         }
@@ -26,7 +26,7 @@ POS.module('Entities.Settings', function(Settings, POS, Backbone, Marionette, $,
     // Data from wpdb->options
     Settings.Option = Backbone.Model.extend({
         initialize: function( options ) {
-            this.url = POS.ajaxurl;
+            this.url = POS.getOption('ajaxurl');
             this._saving = false;
         },
         sync: function (method, model, options) {
@@ -46,7 +46,7 @@ POS.module('Entities.Settings', function(Settings, POS, Backbone, Marionette, $,
                     this.trigger('update:stop');
                     this._saving = false;
                 }
-            }
+            };
 
             if( !this._saving && method === 'update' ) {
                 _.defaults( options, {

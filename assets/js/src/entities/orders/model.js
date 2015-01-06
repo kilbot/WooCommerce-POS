@@ -1,6 +1,6 @@
-POS.module('Entities.Orders', function(Orders, POS, Backbone, Marionette, $, _){
+POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
-    Orders.Model = Backbone.DualModel.extend({
+    Entities.Order = Backbone.DualModel.extend({
         idAttribute: 'local_id',
         remoteIdAttribute: 'id',
 

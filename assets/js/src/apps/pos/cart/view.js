@@ -37,9 +37,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
             this.listenTo( view, 'drawer:open', this.openDrawer );
             this.listenTo( view, 'drawer:close', this.closeDrawer );
-            this.listenTo( view, 'drawer:toggle', function(){
-                this.drawerRegion.hasView() ? this.closeDrawer() : this.openDrawer();
-            });
+            this.listenTo( view, 'drawer:toggle', this.toggleDrawer );
 
             this.itemRegion.show(view);
 
@@ -60,6 +58,14 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         closeDrawer: function(){
             this.drawerRegion.empty();
             this.$el.removeClass('drawer-open');
+        },
+
+        toggleDrawer: function(){
+            if( this.drawerRegion.hasView() ){
+                this.closeDrawer();
+            } else {
+                this.openDrawer();
+            }
         },
 
         focusRow: function() {

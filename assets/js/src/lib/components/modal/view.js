@@ -91,7 +91,7 @@ POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) 
         updateSaveStatus: function( status, message ){
             if( _.isUndefined(message) ){
                 message = this.$('.modal-footer p.response').data(status);
-            };
+            }
 
             this.$('.modal-footer p.response').addClass(status).html( '<i class="icon icon-' + status + '"></i> ' + message );
             this.$('.modal-footer .action-save').removeClass( 'disabled' );

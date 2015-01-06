@@ -31,7 +31,9 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
             $(e.target).select();
 
             // bail if popover is already open
-            if( $(e.target).attr('aria-describedby') ) return;
+            if( $(e.target).attr('aria-describedby') ) {
+                return;
+            }
 
             // nuke any open numpads
             $('*[data-numpad]').trigger( 'close:popover' );

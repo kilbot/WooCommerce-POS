@@ -48,7 +48,9 @@ Handlebars.registerHelper('csv', function(items, options) {
 
 Handlebars.registerHelper('money', function(num, options){
     var precision = options.hash.precision;
-    if( precision === undefined ) precision = accounting.settings.currency.precision;
+    if( precision === undefined ) {
+        precision = accounting.settings.currency.precision;
+    }
 
     if( precision === 'auto' ) {
         precision = ((+num).toFixed(4)).replace(/^-?\d*\.?|0+$/g, '').length;
@@ -65,7 +67,9 @@ Handlebars.registerHelper('money', function(num, options){
 
 Handlebars.registerHelper('number', function(num, options){
     var precision = options.hash.precision;
-    if( precision === undefined ) precision = accounting.settings.number.precision;
+    if( precision === undefined ) {
+        precision = accounting.settings.number.precision;
+    }
 
     if( precision === 'auto' ) {
         precision = ((+num).toFixed(4)).replace(/^-?\d*\.?|0+$/g, '').length;
@@ -81,23 +85,29 @@ Handlebars.registerHelper('number', function(num, options){
 Handlebars.registerHelper('formatAddress', function(address, options){
     var addr = '';
 
-    if( address.first_name || address.last_name )
+    if( address.first_name || address.last_name ) {
         addr += address.first_name + ' ' + address.last_name + '<br>';
+    }
 
-    if( address.company )
+    if( address.company ) {
         addr += address.company + '<br>';
+    }
 
-    if( address.address_1 )
+    if( address.address_1 ) {
         addr += address.address_1 + '<br>';
+    }
 
-    if( address.address_2 )
+    if( address.address_2 ) {
         addr += address.address_2 + '<br>';
+    }
 
-    if( address.city || address.state || address.postcode )
+    if( address.city || address.state || address.postcode ) {
         addr += address.city + ' ' + address.state + ' ' + address.postcode;
+    }
 
-    if( addr && options.hash.title )
+    if( addr && options.hash.title ) {
         addr = '<h3>' + options.hash.title + '</h3>' + addr;
+    }
 
     return new Handlebars.SafeString(addr);
 });

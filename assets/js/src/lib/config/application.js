@@ -12,7 +12,7 @@ _.extend( Marionette.Application.prototype, {
     },
 
     navigate: function(route, options){
-        options || (options = {});
+        options = options || {};
         Backbone.history.navigate(route, options);
     },
 
@@ -28,7 +28,7 @@ _.extend( Marionette.Application.prototype, {
     },
 
     register: function(instance, id) {
-        this._registry || ( this._registry = {} );
+        this._registry = this._registry || {};
         return this._registry[id] = instance;
     },
 

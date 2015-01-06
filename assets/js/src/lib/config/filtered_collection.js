@@ -1,7 +1,7 @@
 _.extend( FilteredCollection.prototype, {
 
     query: function( query, label ){
-        label || ( label = 'search' );
+        label = label || 'search';
         var criterion = POS.Components.SearchParser.channel.request( 'facets', query );
 
         // syphon off special cases

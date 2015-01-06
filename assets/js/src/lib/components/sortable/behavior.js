@@ -43,8 +43,7 @@ POS.module('Components.Sortable', function(Sortable, POS, Backbone, Marionette, 
 
                 // sort according to input
                 table.append(rows.sort(function(a, b) {
-                    return parseInt($(a).find('input.gateway_order').val(), 10)
-                    - parseInt($(b).find('input.gateway_order').val(), 10);
+                    return parseInt($(a).find('input.gateway_order').val(), 10) - parseInt($(b).find('input.gateway_order').val(), 10);
                 }));
 
                 table.sortable( this.options );

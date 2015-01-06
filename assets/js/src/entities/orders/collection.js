@@ -1,7 +1,7 @@
-POS.module('Entities.Orders', function(Orders, POS, Backbone, Marionette, $, _){
+POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
-    Orders.Collection = Backbone.DualCollection.extend({
-        model: Orders.Model,
+    Entities.Orders = Backbone.DualCollection.extend({
+        model: Entities.Order,
         url: function(){
             return POS.getOption('wc_api') + 'orders';
         },
@@ -32,7 +32,7 @@ POS.module('Entities.Orders', function(Orders, POS, Backbone, Marionette, $, _){
                 if( ! _( item).has('id') ) {
                     self.add(item);
                 }
-            }
+            };
             var onEnd = function() {
                 self.trigger('orders:ready');
             };

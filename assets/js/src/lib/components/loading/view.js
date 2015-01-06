@@ -12,7 +12,7 @@ POS.module('Components.Loading', function(Loading, POS, Backbone, Marionette, $,
             var message = '';
             if( !_.isEmpty( this.options.message ) ) {
                 message = '<p>' + this.options.message + '</p>';
-            };
+            }
             this.$el.html( '<p><i class="icon icon-spinner icon-lg"></i></p>' + message );
             return this;
         },

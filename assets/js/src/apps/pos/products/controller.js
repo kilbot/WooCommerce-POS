@@ -12,7 +12,7 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
             });
 
             // show
-            this.show( this.columnsLayout, { region: POS.layout.mainRegion } );
+            this.show( this.columnsLayout );
 
         },
 

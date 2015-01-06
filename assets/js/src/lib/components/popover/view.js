@@ -24,7 +24,7 @@ POS.module('Components.Popover', function(Popover, POS, Backbone, Marionette, $,
 
             // kill switch
             options.target.on( 'close:popover', function(e) {
-                self.closePopover({ target: $(e.target) })
+                self.closePopover({ target: $(e.target) });
             });
         },
 
@@ -55,7 +55,9 @@ POS.module('Components.Popover', function(Popover, POS, Backbone, Marionette, $,
         },
 
         teardownPopover: function () {
-            if(this.content) this.content.empty();
+            if(this.content) {
+                this.content.empty();
+            }
             this.destroy();
         }
 

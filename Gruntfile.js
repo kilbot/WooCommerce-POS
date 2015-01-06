@@ -123,7 +123,10 @@ module.exports = function(grunt) {
                     'Backbone': true,
                     'Marionette': true,
                     'Handlebars': true,
-                    'POS': true
+                    'POS': true,
+                    'FilteredCollection': true,
+                    'accounting': true,
+                    'moment': true
                 },
                 'strict': false,
                 'force': true
@@ -138,6 +141,31 @@ module.exports = function(grunt) {
                 'bower_components/backbone-dualStorage/backbone.dualstorage.js'
             ]
         },
+
+        // bundle and compress js modules
+        browserify: {
+            options: {
+
+            },
+            dev: {
+                src: ['assets/js/src/main.js'],
+                dest: 'assets/js/main.js',
+                options: {
+                    watch: true,
+                    alias: [
+                        'backbone:Backbone',
+                    ]
+                    //bundleOptions: {
+                    //    debug: true
+                    //}
+                    //transform: ['browserify-global-shim']
+                }
+            }
+        },
+
+        //'browserify-global-shim': {
+        //    'backbone': 'Backbone'
+        //},
 
         // minify js
         uglify: {
@@ -211,6 +239,8 @@ module.exports = function(grunt) {
                         // entities
                         'assets/js/src/entities/db.js',
                         'assets/js/src/entities/products.js',
+                        'assets/js/src/entities/products/model.js',
+                        'assets/js/src/entities/products/collection.js',
                         'assets/js/src/entities/orders.js',
                         'assets/js/src/entities/orders/model.js',
                         'assets/js/src/entities/orders/collection.js',
@@ -302,7 +332,7 @@ module.exports = function(grunt) {
                         'assets/js/src/lib/components/customer_select/view.js',
 
                         // subapps
-                        'assets/js/src/apps/settings/settings_app.js',
+                        'assets/js/src/apps/settings/settings_POS.js',
                         'assets/js/src/apps/settings/show/controller.js',
                         'assets/js/src/apps/settings/show/view.js',
                     ]

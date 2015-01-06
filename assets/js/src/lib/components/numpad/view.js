@@ -103,7 +103,7 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
         serializeData: function(){
             var data = this.model.toJSON();
             if( data.type === 'tendered' ) {
-                data.quick_key = this.cashKeys( this.model.get('original') );
+                data.quick_key = this.cashKeys();
             }
             return data;
         },
@@ -177,14 +177,14 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
         },
 
         // create 4 quick keys based on amount
-        cashKeys: function( amount ){
+        cashKeys: function(){
             var coins = POS.denominations.coins,
                 notes = POS.denominations.notes,
-                amount = parseFloat( amount ),
+                amount = parseFloat( this.model.get('original') ),
                 keys = [],
                 x;
 
-            if(amount === 0) {
+            if( amount === 0 ) {
                 return notes.slice(-4);
             }
 

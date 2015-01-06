@@ -9,7 +9,7 @@ POS.module('SupportApp', function(SupportApp, App, Backbone, Marionette, $, _) {
         show: function() {
             new SupportApp.Show.Controller();
         }
-    }
+    };
 
     // add routes
     POS.on('before:start', function(options) {

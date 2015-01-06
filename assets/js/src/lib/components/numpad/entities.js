@@ -33,7 +33,9 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
                 value = this.get('value'),
                 percentage;
 
-            if( _.isNaN( value ) ) value = 0;
+            if( _.isNaN( value ) ) {
+                value = 0;
+            }
 
             if( this.get('type') === 'money_discount' ) {
                 percentage = 100 * ( 1 - ( value / original ) );
@@ -41,7 +43,9 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
                 percentage = 100 * ( value / original );
             }
 
-            if( !_.isFinite( percentage ) || _.isNaN( percentage ) ) percentage = 0;
+            if( !_.isFinite( percentage ) || _.isNaN( percentage ) ) {
+                percentage = 0;
+            }
 
             percentage = parseFloat( POS.Utils.round( percentage, 0 ) );
             this.set({ percentage: percentage }, { silent: true });
@@ -53,7 +57,9 @@ POS.module('Components.Numpad', function(Numpad, POS, Backbone, Marionette, $, _
                 percentage = this.get('percentage'),
                 value;
 
-            if( _.isNaN( percentage ) ) percentage = 0;
+            if( _.isNaN( percentage ) ) {
+                percentage = 0;
+            }
 
             if( this.get('type') === 'money_discount' ) {
                 value = original * ( 1 - ( percentage / 100 ) );

@@ -1,8 +1,14 @@
+POS.module('POSApp', {
+
+    startWithParent: false,
+
+    initialize: function() {
+        this.channel = Backbone.Radio.channel('pos');
+    }
+
+});
+
 POS.module('POSApp', function(POSApp, POS, Backbone, Marionette, $, _) {
-
-    POSApp.startWithParent = false;
-
-    POSApp.channel = Backbone.Radio.channel('pos');
 
     // API
     var API = {
@@ -47,19 +53,22 @@ POS.module('POSApp', function(POSApp, POS, Backbone, Marionette, $, _) {
     });
 
     // radio API
-    POSApp.channel.comply({
+    this.channel.comply({
         'show:cart': function(id) {
-            id ? POS.navigate('cart/' + id) : POS.navigate('') ;
+            var url = id ? 'cart/' + id : '';
+            this.POS.navigate( url );
             API.cart(id);
         },
         'show:checkout': function(id) {
-            id ? POS.navigate('checkout/' + id) : POS.navigate('checkout') ;
+            var url = id ? 'checkout/' + id : 'checkout';
+            this.POS.navigate( url );
             API.checkout(id);
         },
         'show:receipt': function(id) {
-            id ? POS.navigate('receipt/' + id) : POS.navigate('receipt') ;
+            var url = id ? 'receipt/' + id : 'receipt';
+            this.POS.navigate( url );
             API.receipt(id);
         }
-    });
+    }, this);
 
 });

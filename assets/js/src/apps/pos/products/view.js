@@ -38,10 +38,14 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
      */
     Products.Item = Marionette.ItemView.extend({
         tagName: 'li',
-        className: function(){ if( this.isVariable() ) return 'variable' },
+        className: function(){
+            if( this.model.get('type') === 'variable' ) {
+                return 'variable';
+            }
+        },
 
         initialize: function() {
-            this.template = Handlebars.compile( $('#tmpl-product').html() )
+            this.template = Handlebars.compile( $('#tmpl-product').html() );
         },
 
         ui: {
@@ -52,14 +56,6 @@ POS.module('POSApp.Products', function(Products, POS, Backbone, Marionette, $, _
         triggers: {
             'click @ui.add' 		: 'cart:add:clicked',
             'click @ui.variations' 	: 'product:variations:clicked'
-        },
-
-        onBeforeRender: function(){
-            if( this.isVariable() ) { this.model.set('isVariable', true); }
-        },
-
-        isVariable: function() {
-            if( this.model.get('type') === 'variable' ) { return true; }
         }
 
     });

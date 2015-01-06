@@ -31,11 +31,11 @@ POS.module('Components.SearchParser', function(SearchParser, POS, Backbone, Mari
                     key     = FREETEXT_CAT;
                     value   = this._extractSearchText(query);
                     query   = query.replace(value, '').trim();
-                } else if (field.indexOf(':') != -1) {
+                } else if (field.indexOf(':') !== -1) {
                     key     = field.match(this.CATEGORY)[1].replace(/(^['"]|['"]$)/g, '');
                     value   = field.replace(this.CATEGORY, '').replace(/(^['"]|['"]$)/g, '');
                     query   = query.replace(field, '').trim();
-                } else if (field.indexOf(':') == -1) {
+                } else if (field.indexOf(':') === -1) {
                     key     = FREETEXT_CAT;
                     value   = field;
                     query   = query.replace(value, '').trim();
@@ -45,11 +45,17 @@ POS.module('Components.SearchParser', function(SearchParser, POS, Backbone, Mari
                     _( value.split('|') ).each(function( value ){
                         var val = value.trim().toLowerCase();
                         if( val ) {
-                            facets[key] ? facets[key].push(val) : facets[key] = [val];
+                            if( facets[key] ) {
+                                facets[key].push(val);
+                            } else {
+                                facets[key] = [val];
+                            }
                         }
                     });
                 }
-                if (originalQuery == query) break;
+                if (originalQuery === query) {
+                    break;
+                }
             }
             return facets;
         },
@@ -84,7 +90,7 @@ POS.module('Components.SearchParser', function(SearchParser, POS, Backbone, Mari
         escapeRegExp : function(s) {
             return s.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
         }
-    }
+    };
 
     /**
      * API

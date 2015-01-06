@@ -3,7 +3,7 @@ POS.View = POS.View || {};
 POS.View.Form = Marionette.ItemView.extend({
 
     constructor: function(options) {
-        options || (options = {});
+        options = options || {};
         return Marionette.ItemView.prototype.constructor.apply(this, arguments);
     },
 

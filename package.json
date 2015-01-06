@@ -3,7 +3,9 @@
   "version": "0.4.0",
   "dependencies": {},
   "devDependencies": {
+    "browserify-global-shim": "^1.0.0",
     "grunt": "^0.4.5",
+    "grunt-browserify": "^3.2.1",
     "grunt-contrib-compass": "^1.0.1",
     "grunt-contrib-cssmin": "^0.10.0",
     "grunt-contrib-handlebars": "^0.9.1",

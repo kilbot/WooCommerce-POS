@@ -74,7 +74,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
             // add listener to order to update tab label
             this.listenTo( this.order, 'change:total', this.updateTabLabel );
 
-            this.getCart( this.order )
+            this.getCart( this.order );
         },
 
         /**
@@ -98,6 +98,7 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
         updateTabLabel: _.debounce( function( order ) {
             var label = $('#tmpl-cart').data('title');
             if( order ){
+                /* global accounting */
                 label += ' - ' + accounting.formatMoney( order.get('total') );
             }
             POS.channel.command( 'update:tab:label', label, 'right' );
@@ -108,16 +109,17 @@ POS.module('POSApp.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
          */
         addToCart: function( item ) {
             var attributes = item instanceof Backbone.Model ? item.attributes : item;
+            var row;
 
             if( _.isUndefined( this.cart ) ) {
                 POS.debugLog('error', 'There is no cart');
             }
 
             if( attributes.id ) {
-                var row = this.cart.findWhere({ id: attributes.id });
+                row = this.cart.findWhere({ id: attributes.id });
             }
 
-            if( row ) {
+            if( row instanceof Backbone.Model ) {
                 row.quantity('increase');
             } else {
                 row = this.cart.add( attributes );

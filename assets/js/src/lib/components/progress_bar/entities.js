@@ -17,7 +17,7 @@ define(['app'], function(POS){
 
 			_updatePercentage: function( progress ){
 				var percentage = ( progress / ( this.get( 'max' ) - this.get( 'min' ) ) ) * 100;
-				if(POS.debug) console.log('[notice] Progress: ' + percentage + '%' );
+				//if(POS.debug) console.log('[notice] Progress: ' + percentage + '%' );
 
 				this.set({
 					progress: progress,

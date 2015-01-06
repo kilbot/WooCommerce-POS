@@ -5,8 +5,8 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
 
         comparator: function( model ){
             var type = model.get( 'type' );
-            if( type === 'fee' ) { return 2 };
-            if( type === 'shipping' ) { return 1 };
+            if( type === 'fee' ) { return 2; }
+            if( type === 'shipping' ) { return 1; }
             return 0;
         },
 
@@ -72,7 +72,7 @@ POS.module('Entities.Cart', function(Cart, POS, Backbone, Marionette, $, _) {
                 if (item.order === self.order.id) {
                     self.add(item);
                 }
-            }
+            };
             var onEnd = function () {
                 self.trigger('cart:ready');
             };

@@ -20,7 +20,7 @@ POS.module('Components.Customer', function(Customer, POS, Backbone, Marionette, 
                 minimumInputLength: 2,
                 ajax: {
                     url: function() {
-                        return POS.getOption('ajaxurl')
+                        return POS.getOption('ajaxurl');
                     },
                     dataType: 'json',
                     quietMillis: 250,

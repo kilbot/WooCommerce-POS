@@ -3,7 +3,7 @@ POS.Controller = POS.Controller || {};
 POS.Controller.Base = Marionette.Controller.extend({
 
     constructor: function(options) {
-        options || (options = {});
+        options = options || {};
         this.region = options.region || POS.channel.request('default:region');
 
         this._instance_id = _.uniqueId('controller');
@@ -18,7 +18,7 @@ POS.Controller.Base = Marionette.Controller.extend({
     },
 
     show: function(view, options) {
-        options || (options = {});
+        options = options || {};
         _.defaults(options, {
             loading: false,
             region: this.region
@@ -29,7 +29,9 @@ POS.Controller.Base = Marionette.Controller.extend({
     },
 
     _setMainView: function(view) {
-        if( this._mainView ) return;
+        if( this._mainView ) {
+            return;
+        }
 
         this._mainView = view;
         this.listenTo( view, 'destroy', this.destroy );

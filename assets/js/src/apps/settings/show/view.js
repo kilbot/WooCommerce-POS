@@ -191,7 +191,7 @@ POS.module('SettingsApp.Show', function(Show, POS, Backbone, Marionette, $, _) {
                 } else {
                     view.$('.modal-body .spinner').before('<p>' + e.data + '</p>');
                 }
-            }
+            };
         }
 
     });
