@@ -194,7 +194,7 @@ class WC_POS_Admin_Settings {
 
 		wp_enqueue_script(
 			WC_POS_PLUGIN_NAME . '-core',
-			WC_POS_PLUGIN_URL . 'assets/js/core.min.js',
+			WC_POS_PLUGIN_URL . 'assets/js/core.build.js',
 			array( 'jquery', 'backbone', 'underscore' ),
 			WC_POS_VERSION,
 			true
@@ -202,7 +202,7 @@ class WC_POS_Admin_Settings {
 
 		wp_enqueue_script(
 			WC_POS_PLUGIN_NAME . '-admin-app',
-			WC_POS_PLUGIN_URL . 'assets/js/admin_app.min.js',
+			WC_POS_PLUGIN_URL . 'assets/js/admin.build.js',
 			array( WC_POS_PLUGIN_NAME . '-core' ),
 			WC_POS_VERSION,
 			true

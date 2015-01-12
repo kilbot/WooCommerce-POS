@@ -5,23 +5,62 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
 
-        // watch for changes and trigger sass, jshint, uglify and livereload
+        // file paths
+        app: {
+            css: {
+                src: 'assets/css/src',
+                sass: 'assets/css/src/scss'
+            },
+            js: {
+                src: 'assets/js/src',
+                build: 'assets/js'
+            },
+
+            // point to WordPress staging install
+            staging : '/Users/kilbot/Sites/staging.woopos.com.au/wp-content/plugins/woocommerce-pos',
+
+            // files to package for production
+            include: [
+                '**/*',
+                '!node_modules/**',
+                '!test/**',
+                '!Gruntfile.js',
+                '!package.json',
+                '!locales.json',
+                '!<%= app.css.src %>/**',
+                '!<%= app.js.src %>/**',
+                '!README.md'
+            ]
+        },
+
+        // watch for changes and trigger sass, jshint etc
         watch: {
+            grunt: {
+                files: ['Gruntfile.js']
+            },
             compass: {
-                files: ['assets/css/src/scss/**/*.scss' ],
-                tasks: ['compass:dev']
+                files: ['<%= app.css.src %>/scss/**/*.scss' ],
+                tasks: ['compass']
             },
             cssmin: {
                 files: [
-                    'assets/css/src/pos.css',
-                    'assets/css/src/admin.css',
-                    'assets/css/src/icons.css'
+                    '<%= app.css.src %>/pos.css',
+                    '<%= app.css.src %>/admin.css',
+                    '<%= app.css.src %>/icons.css'
                 ],
                 tasks: ['cssmin']
             },
             js: {
-                files: '<%= jshint.all %>',
-                tasks: ['jshint', 'handlebars', 'uglify']
+                files: ['<%= app.js.src %>/**/*.js'],
+                tasks: ['jshint:app', 'webpack:dev', 'simplemocha']
+            },
+            hbs: {
+                files: ['<%= app.js.src %>/**/*.hbs'],
+                tasks: ['jshint', 'handlebars']
+            },
+            test: {
+                files: ['./test/**/*.js'],
+                tasks: ['jshint:tests', 'simplemocha']
             }
         },
 
@@ -37,7 +76,7 @@ module.exports = function(grunt) {
                 relativeAssets: true,
                 raw: "Sass::Script::Number.precision = 10\n"
             },
-            dev: {
+            main: {
                 options: {
 
                 }
@@ -49,7 +88,7 @@ module.exports = function(grunt) {
             options: {
                 keepSpecialComments: 1
             },
-            minify: {
+            main: {
                 files: {
                     'assets/css/pos.min.css': ['assets/css/src/pos.css'],
                     'assets/css/admin.min.css':['assets/css/src/admin.css'],
@@ -64,7 +103,7 @@ module.exports = function(grunt) {
                     'number': true,
                     'money': true,
                     'is': true,
-                    'compare': true
+                    'getOption': true
                 },
                 knownHelpersOnly: true
             },
@@ -85,7 +124,7 @@ module.exports = function(grunt) {
                     }
                 },
                 files: {
-                    'assets/js/src/lib/components/numpad/templates.js':
+                    'assets/js/src/lib/components/numpad/templates.jst':
                         [
                             'assets/js/src/lib/components/numpad/header.hbs',
                             'assets/js/src/lib/components/numpad/numkeys.hbs',
@@ -97,262 +136,84 @@ module.exports = function(grunt) {
         // javascript linting with jshint
         jshint: {
             options: {
-                'reporter': require('jshint-stylish'),
-                'bitwise': true,
-                'boss' : true,
-                'browser' : true,
-                'curly' : true,
-                'eqeqeq' : true,
-                'eqnull' : true,
-                'immed' : true,
-                'jquery' : true,
-                'latedef' : true,
-                'newcap' : false,
-                'noarg' : true,
-                'node': true,
-                'sub' : true,
-                'trailing': true,
-                'undef' : true,
-                'unused' : false,
-                'globals': {
-                    'define': true,
-                    'alert': true,
-                    'Modernizr': true,
-                    '$': true,
-                    '_': true,
-                    'Backbone': true,
-                    'Marionette': true,
-                    'Handlebars': true,
-                    'POS': true,
-                    'FilteredCollection': true,
-                    'accounting': true,
-                    'moment': true
-                },
-                'strict': false,
-                'force': true
+                jshintrc : true,
+                reporter: require('jshint-stylish'),
+                verbose: true
             },
-            all: [
-                'Gruntfile.js',
-                'assets/js/src/**/*.js',
-                '!assets/js/vendor/**/*.js',
-                //'tests/data/**/*.json',
-                //'tests/specs/**/*.js',
-                //'tests/main.js',
-                'bower_components/backbone-dualStorage/backbone.dualstorage.js'
+            app: [
+                './assets/js/src/**/*.js',
+                '!assets/js/vendor/**/*.js'
+            ],
+            tests: [
+                './test/**/*.js'
             ]
         },
 
-        // bundle and compress js modules
-        browserify: {
+        webpack: {
             options: {
-
+                entry: {
+                    core: './<%= app.js.src %>/core.js',
+                    app: './<%= app.js.src %>/app.js',
+                    admin: './<%= app.js.src %>/admin-entry.js'
+                },
+                module: {
+                    loaders: [
+                        //{test: /\.html/, loader: 'html-loader'}
+                    ]
+                },
+                resolve: {
+                    alias: {
+                        //handlebars: 'handlebars/dist/handlebars.runtime.js',
+                        //marionette: 'backbone.marionette',
+                        'backbone.wreqr': 'backbone.radio',
+                        radio: 'backbone.radio',
+                        underscore: 'lodash'
+                    },
+                    modulesDirectories: ['node_modules', './<%= app.js.src %>']
+                },
+                externals: {
+                    jquery: 'jQuery',
+                    lodash: '_',
+                    underscore: '_',
+                    backbone: 'Backbone',
+                    handlebars: 'Handlebars',
+                    accounting: 'accounting',
+                    moment: 'moment',
+                    select2: 'select2'
+                },
+                //cache: true,
+                //watch: true
             },
             dev: {
-                src: ['assets/js/src/main.js'],
-                dest: 'assets/js/main.js',
-                options: {
-                    watch: true,
-                    alias: [
-                        'backbone:Backbone',
-                    ]
-                    //bundleOptions: {
-                    //    debug: true
-                    //}
-                    //transform: ['browserify-global-shim']
+                output: {
+                    path: './<%= app.js.build %>/',
+                    filename: '[name].build.js',
+                    pathinfo: true
+                },
+                devtool: 'eval-source-map',
+                debug: true
+            },
+            prod: {
+                output: {
+                    path: './<%= app.js.build %>/',
+                    filename: '[name].build.js'
                 }
             }
         },
 
-        //'browserify-global-shim': {
-        //    'backbone': 'Backbone'
-        //},
-
         // minify js
         uglify: {
-            core: {
-                options: {
-                    sourceMap: true,
-                    sourceMapName: 'assets/js/maps/core.map'
-                },
-                files: {
-                    'assets/js/core.min.js': [
-
-                        // marionette core (uses Backbone.Radio)
-                        'bower_components/backbone.radio/build/backbone.radio.js',
-                        'bower_components/backbone.babysitter/lib/backbone.babysitter.js',
-                        'bower_components/marionette/lib/core/backbone.marionette.js',
-                        'assets/js/src/lib/config/radio.shim.js',
-
-                        // backbone extras
-                        'assets/js/src/lib/config/sync.js',
-                        'bower_components/backbone.stickit/backbone.stickit.js',
-                        'bower_components/backbone.syphon/lib/backbone.syphon.js',
-                        'bower_components/backbone-validation/dist/backbone-validation.js',
-                        //'bower_components/backbone-poller/backbone.poller.min.js',
-                        //'bower_components/backbone.paginator/lib/backbone.paginator.min.js',
-                        'bower_components/idb-wrapper/idbstore.js',
-                        'bower_components/backbone-idb/backbone-idb.js',
-                        'bower_components/backbone-dualStorage/backbone.dualstorage.js',
-                        'bower_components/backbone-filtered-collection/backbone-filtered-collection.js',
-
-                        // templating
-                        //'bower_components/handlebars/handlebars.min.js', // cndjs
-
-                        // bootstrap js
-                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js',
-                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js',
-                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js',
-                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js',
-                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js',
-
-                        // other vendor plugins
-                        //'bower_components/select2/select2.min.js', // cndjs
-                        //'bower_components/moment/moment.js', // cndjs
-                        //'bower_components/accounting/accounting.min.js', // cndjs
-                        'bower_components/jquery.hotkeys/jquery.hotkeys.js'
-
-                    ]
-                }
-            },
-            app: {
-                options: {
-                    sourceMap: true,
-                    sourceMapName: 'assets/js/maps/app.map'
-                },
-                files: {
-                    'assets/js/app.min.js': [
-
-                        // main app & config
-                        'assets/js/src/lib/config/application.js',
-                        'assets/js/src/lib/config/region.js',
-                        'assets/js/src/lib/config/filtered_collection.js',
-                        'assets/js/src/app.js',
-                        'assets/js/src/lib/config/controller_base.js',
-                        'assets/js/src/lib/config/view_form.js',
-
-                        // utils
-                        'assets/js/src/lib/utilities/ajax.js',
-                        'assets/js/src/lib/utilities/utils.js',
-                        'assets/js/src/lib/utilities/handlebars-helpers.js',
-                        'assets/js/src/lib/utilities/stickit-handlers.js',
-
-                        // entities
-                        'assets/js/src/entities/db.js',
-                        'assets/js/src/entities/products.js',
-                        'assets/js/src/entities/products/model.js',
-                        'assets/js/src/entities/products/collection.js',
-                        'assets/js/src/entities/orders.js',
-                        'assets/js/src/entities/orders/model.js',
-                        'assets/js/src/entities/orders/collection.js',
-                        'assets/js/src/entities/cart.js',
-                        'assets/js/src/entities/cart/model.js',
-                        'assets/js/src/entities/cart/collection.js',
-
-                        'assets/js/src/entities/settings.js',
-                        //'assets/js/src/entities/settings/user.js',
-
-                        // components
-                        'assets/js/src/lib/components/hotkeys/behavior.js',
-                        'assets/js/src/lib/components/loading/controller.js',
-                        'assets/js/src/lib/components/loading/view.js',
-                        'assets/js/src/lib/components/modal/controller.js',
-                        'assets/js/src/lib/components/modal/view.js',
-                        'assets/js/src/lib/components/modal/behavior.js',
-                        'assets/js/src/lib/components/popover/controller.js',
-                        'assets/js/src/lib/components/popover/view.js',
-                        'assets/js/src/lib/components/popover/behavior.js',
-                        'assets/js/src/lib/components/tooltip/behavior.js',
-                        'assets/js/src/lib/components/filter/behavior.js',
-                        'assets/js/src/lib/components/autogrow/behavior.js',
-                        'assets/js/src/lib/components/tabs/controller.js',
-                        'assets/js/src/lib/components/tabs/view.js',
-                        'assets/js/src/lib/components/tabs/entities.js',
-                        'assets/js/src/lib/components/numpad/controller.js',
-                        'assets/js/src/lib/components/numpad/view.js',
-                        'assets/js/src/lib/components/numpad/entities.js',
-                        'assets/js/src/lib/components/numpad/behavior.js',
-                        'assets/js/src/lib/components/numpad/templates.js',
-                        'assets/js/src/lib/components/select2/behavior.js',
-                        'assets/js/src/lib/components/customer_select/view.js',
-                        'assets/js/src/lib/components/search_parser/controller.js',
-                        'assets/js/src/lib/components/alerts/controller.js',
-                        'assets/js/src/lib/components/alerts/view.js',
-                        'assets/js/src/lib/components/alerts/behavior.js',
-
-                        // sub apps
-                        'assets/js/src/apps/header/header_app.js',
-
-                        'assets/js/src/apps/pos/pos_app.js',
-                        'assets/js/src/apps/pos/products/controller.js',
-                        'assets/js/src/apps/pos/products/view.js',
-                        'assets/js/src/apps/pos/cart/controller.js',
-                        'assets/js/src/apps/pos/cart/view.js',
-                        'assets/js/src/apps/pos/checkout/controller.js',
-                        'assets/js/src/apps/pos/checkout/view.js',
-                        'assets/js/src/apps/pos/receipt/controller.js',
-                        'assets/js/src/apps/pos/receipt/view.js',
-
-                        'assets/js/src/apps/customer/customer_app.js',
-                        'assets/js/src/apps/customer/select/controller.js',
-                        'assets/js/src/apps/customer/select/view.js',
-
-                        'assets/js/src/apps/support/support_app.js',
-                        'assets/js/src/apps/support/show/controller.js',
-                        'assets/js/src/apps/support/show/view.js',
-
-                    ]
-                }
-            },
-            admin_app: {
-                options: {
-                    sourceMap: true,
-                    sourceMapName: 'assets/js/maps/admin_app.map'
-                },
-                files: {
-                    'assets/js/admin_app.min.js': [
-
-                        // main app & config
-                        'assets/js/src/lib/config/application.js',
-                        'assets/js/src/admin_app.js',
-                        'assets/js/src/lib/config/ajax.js',
-                        'assets/js/src/lib/config/controller_base.js',
-
-                        // entities
-                        'assets/js/src/entities/settings.js',
-
-                        // components
-                        'assets/js/src/lib/components/tooltip/behavior.js',
-                        'assets/js/src/lib/components/select2/behavior.js',
-                        'assets/js/src/lib/components/sortable/behavior.js',
-                        'assets/js/src/lib/components/modal/controller.js',
-                        'assets/js/src/lib/components/modal/view.js',
-                        'assets/js/src/lib/components/modal/behavior.js',
-                        'assets/js/src/lib/components/loading/controller.js',
-                        'assets/js/src/lib/components/loading/view.js',
-                        'assets/js/src/lib/components/customer_select/view.js',
-
-                        // subapps
-                        'assets/js/src/apps/settings/settings_POS.js',
-                        'assets/js/src/apps/settings/show/controller.js',
-                        'assets/js/src/apps/settings/show/view.js',
-                    ]
-                }
-            },
-            pos: {
-                files: {
-                    'assets/js/worker.min.js' : 'assets/js/src/worker.js',
-                    'assets/js/support.min.js' : 'assets/js/src/support.js',
-                    'assets/js/plugins.min.js' : [
-                        'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js',
-                        'assets/js/src/pushy.js'
-                    ]
-                }
-            },
-            admin: {
-                files: {
-                    'assets/js/products.min.js': 'assets/js/src/products.js'
-                }
-            }
+            //pos: {
+            //    files: {
+            //        'assets/js/worker.min.js' : 'assets/js/src/worker.js',
+            //        'assets/js/support.min.js' : 'assets/js/src/support.js',
+            //    }
+            //},
+            //admin: {
+            //    files: {
+            //        'assets/js/products.min.js': 'assets/js/src/products.js'
+            //    }
+            //}
         },
 
         // make .pot file
@@ -432,13 +293,92 @@ module.exports = function(grunt) {
                     }
                 }
             }
+        },
+
+        // copy prod build to staging site, excluding dev files
+        copy: {
+            prod: {
+                files: [
+                    {
+                        expand: true,
+                        src: ['<%= app.include %>'],
+                        dest: '<%= app.staging %>'
+                    },
+                ]
+            }
+        },
+
+        // deploy to WordPress repo
+        wp_deploy: {
+            deploy: {
+                options: {
+                    plugin_slug: 'your-plugin-slug',
+                    svn_user: 'your-wp-repo-username',
+                    build_dir: '<%= app.staging %>', //relative path to your build directory
+                    assets_dir: 'wp-assets' //relative path to your assets directory (optional).
+                }
+            }
+        },
+
+        // tests
+        simplemocha: {
+            options: {
+                //globals: ['should'],
+                //timeout: 3000,
+                //ignoreLeaks: false,
+                //grep: '*-test',
+                //ui: 'bdd',
+                reporter: 'spec'
+            },
+
+            all: {
+                src: [
+                    './test/setup/node.js',
+                    './test/setup/helpers.js',
+                    './test/unit/**/*.spec.js'
+                ]
+            }
+        },
+
+        // create symlink from node_modules to assets/js/src (for tests)
+        symlink: {
+            options: {
+                overwrite: false
+            },
+            expanded: {
+                files: [
+                    {
+                        expand: true,
+                        overwrite: false,
+                        cwd: 'assets/js/src',
+                        src: [
+                            '**/*.js',
+                            '**/*.html'
+                        ],
+                        dest: 'node_modules'
+                    },
+                ]
+            }
         }
 
     });
 
-    // register tasks
-    grunt.registerTask('default', ['makepot', 'compass', 'cssmin', 'handlebars', 'jshint', 'uglify', 'watch']);
+    // test
+    grunt.registerTask('test', 'Run unit tests', ['symlink', 'simplemocha']);
 
+    // dev
+    grunt.registerTask('dev', 'Development build', ['compass', 'cssmin', 'handlebars:compile', 'jshint', 'test', 'webpack:dev', 'watch']);
+
+    // prod
+    grunt.registerTask('prod', 'Production build', ['test', 'makepot', 'js_locales', 'webpack:prod', 'uglify:prod', 'copy']);
+
+    // deploy
+    grunt.registerTask('deploy', 'Deploy plugin to WordPress.org', ['prod', 'wp_deploy']);
+
+    // default = test
+    grunt.registerTask('default', ['test']);
+
+    // special task for building js i18n files
     grunt.registerTask('js_locales', 'Combine locales.json files', function() {
         var locales = grunt.file.readJSON('locales.json');
         var _ = grunt.util._;

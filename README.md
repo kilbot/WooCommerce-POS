@@ -1,4 +1,4 @@
-# WooCommerce POS #
+# [WooCommerce POS](http://woopos.com.au) [![Build Status](https://travis-ci.org/kilbot/WooCommerce-POS.svg)](https://travis-ci.org/kilbot/WooCommerce-POS)
 
 Development repository for WooCommerce POS - the Point of Sale plugin for [WooCommerce](woothemes.com/woocommerce/).
 

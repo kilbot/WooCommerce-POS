@@ -1,27 +1,27 @@
-POS.module('Components.Tooltip', function(Tooltip, POS, Backbone, Marionette, $, _) {
+var Behavior = require('lib/config/behavior');
+var _ = require('underscore');
+var POS = require('lib/utilities/global');
 
-    Tooltip.Behavior = Marionette.Behavior.extend({
+module.exports = POS.Behaviors.Tooltip = Behavior.extend({
 
-        initialize: function(options){
+  initialize: function(options){
 
-            this.options = _.defaults(options, {
-
-            });
-
-        },
-
-        ui: {
-            tooltip: '*[data-toggle="tooltip"]'
-        },
-
-        onRender: function() {
-            this.ui.tooltip.tooltip( this.options );
-        },
-
-        onBeforeDestroy: function() {
-            this.ui.tooltip.tooltip( 'destroy' );
-        }
+    this.options = _.defaults(options, {
 
     });
+
+  },
+
+  ui: {
+    tooltip: '*[data-toggle="tooltip"]'
+  },
+
+  onRender: function() {
+    this.ui.tooltip.tooltip( this.options );
+  },
+
+  onBeforeDestroy: function() {
+    this.ui.tooltip.tooltip( 'destroy' );
+  }
 
 });

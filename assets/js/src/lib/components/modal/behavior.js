@@ -1,31 +1,26 @@
-POS.module('Components.Modal', function(Modal, POS, Backbone, Marionette, $, _) {
+var Behavior = require('lib/config/behavior');
+var Backbone = require('backbone');
+var channel = Backbone.Radio.channel('modal');
+var POS = require('lib/utilities/global');
 
-    Modal.Behavior = Marionette.Behavior.extend({
+module.exports = POS.Behaviors.Modal = Behavior.extend({
+  initialize: function () {
+    this.listenToOnce(this.view, 'open',  this.openModal);
+  },
 
-        initialize: function (options) {
-            this.listenToOnce(this.view, 'modal:open', this.openModal);
-        },
-
-        openModal: function (callback) {
-            if( this.view.title ){
-                this.options.title = this.view.title;
-            }
-
-            Modal.channel.command('open', {
-                view: this.view,
-                callback: callback,
-                attributes: this.options
-            });
-
-            this.listenToOnce(this.view, 'modal:close', this.closeModal);
-        },
-
-        closeModal: function (callback) {
-            Modal.channel.command('close', {
-                callback: callback
-            });
-        }
-
+  openModal: function (callback) {
+    channel.command('open', {
+      view: this.view,
+      callback: callback,
+      attributes: this.options
     });
 
+    this.listenToOnce(this.view, 'destroy', this.destroyModal);
+  },
+
+  destroyModal: function (callback) {
+    channel.command('destroy', {
+      callback: callback
+    });
+  }
 });

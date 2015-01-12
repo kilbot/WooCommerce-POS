@@ -1,127 +1,154 @@
-Handlebars.registerHelper('is', function (value, test, options) {
-    if ( _( test.split('|') ).contains( value ) ) {
-        return options.fn(this);
-    } else {
-        return options.inverse(this);
-    }
+var _ = require('underscore');
+var hbs = require('handlebars');
+var accounting = require('accounting');
+var moment = require('moment');
+var Utils = require('lib/utilities/utils');
+var bb = require('backbone');
+var entitiesChannel = bb.Radio.channel('entities');
+
+/**
+ * is, compare helpers taken from
+ * https://github.com/assemble/handlebars-helpers
+ */
+
+hbs.registerHelper('is', function (value, test, options) {
+  if ( value === test ) {
+    return options.fn(this);
+  } else {
+    return options.inverse(this);
+  }
 });
 
-Handlebars.registerHelper('compare', function (left, operator, right, options) {
-    if (arguments.length < 3) {
-        throw new Error('Handlerbars Helper "compare" needs 2 parameters');
+/*jshint -W071, -W074: suppress warnings  */
+hbs.registerHelper('compare', function(left, operator, right, options) {
+
+  if (arguments.length < 3) {
+    throw new Error('Handlebars Helper "compare" needs 2 parameters');
+  }
+
+  if (options === undefined) {
+    options = right;
+    right = operator;
+    operator = '===';
+  }
+
+  var operators = {
+    //'==': function(l, r) {
+    //  return l == r;
+    //},
+    '===': function(l, r) {
+      return l === r;
+    },
+    //'!=': function(l, r) {
+    //  return l != r;
+    //},
+    '!==': function(l, r) {
+      return l !== r;
+    },
+    '<': function(l, r) {
+      return l < r;
+    },
+    '>': function(l, r) {
+      return l > r;
+    },
+    '<=': function(l, r) {
+      return l <= r;
+    },
+    '>=': function(l, r) {
+      return l >= r;
     }
+    //'typeof': function(l, r) {
+    //  return typeof l == r;
+    //}
+  };
 
-    if (options === undefined) {
-        options = right;
-        right = operator;
-        operator = '===';
-    }
+  if (!operators[operator]) {
+    throw new Error(
+      'Handlebars Helper "compare" doesn\'t know the operator ' + operator
+    );
+  }
 
-    var operators = {
-        '==':     function(l, r) {return l == r; },
-        '===':    function(l, r) {return l === r; },
-        '!=':     function(l, r) {return l != r; },
-        '!==':    function(l, r) {return l !== r; },
-        '<':      function(l, r) {return l < r; },
-        '>':      function(l, r) {return l > r; },
-        '<=':     function(l, r) {return l <= r; },
-        '>=':     function(l, r) {return l >= r; },
-        'typeof': function(l, r) {return typeof l == r; }
-    };
+  var result = operators[operator](left, right);
 
-    if (!operators[operator]) {
-        throw new Error('Handlerbars Helper "compare" doesn\'t know the operator ' + operator);
-    }
+  if (result) {
+    return options.fn(this);
+  } else {
+    return options.inverse(this);
+  }
+});
+/*jshint +W071, +W074 */
 
-    var result = operators[operator](left, right);
-
-    if (result) {
-        return options.fn(this);
-    } else {
-        return options.inverse(this);
-    }
+hbs.registerHelper('csv', function(items, options) {
+  return options.fn(items.join(', '));
 });
 
-Handlebars.registerHelper('csv', function(items, options) {
-    return options.fn(items.join(', '));
+hbs.registerHelper('money', function(num, options){
+  var defaultPrecision = accounting.settings.currency.precision,
+      precision = options.hash.precision || defaultPrecision;
+
+  if( precision === 'auto' ) {
+    precision = Utils.decimalPlaces(num);
+  }
+
+  // round the number to even
+  num = Utils.round(num, precision);
+
+  if(options.hash.negative) {
+    num = num * -1;
+  }
+
+  return accounting.formatMoney(num);
 });
 
-Handlebars.registerHelper('money', function(num, options){
-    var precision = options.hash.precision;
-    if( precision === undefined ) {
-        precision = accounting.settings.currency.precision;
-    }
+hbs.registerHelper('number', function(num, options){
+  var defaultPrecision = accounting.settings.number.precision,
+      precision = options.hash.precision || defaultPrecision;
 
-    if( precision === 'auto' ) {
-        precision = ((+num).toFixed(4)).replace(/^-?\d*\.?|0+$/g, '').length;
-    }
+  if( precision === 'auto' ) {
+    precision = Utils.decimalPlaces(num);
+  }
 
-    // round the number to even
-    num = POS.Utils.round(num, precision);
+  if(options.hash.negative) {
+    num = num * -1;
+  }
 
-    if(options.hash.negative) {
-        num = num * -1;
-    }
-    return accounting.formatMoney(num);
+  return accounting.formatNumber(num, precision);
 });
 
-Handlebars.registerHelper('number', function(num, options){
-    var precision = options.hash.precision;
-    if( precision === undefined ) {
-        precision = accounting.settings.number.precision;
-    }
+hbs.registerHelper('formatAddress', function(a, options){
+  var format = [
+    [a.first_name, a.last_name],
+    [a.company],
+    [a.address_1],
+    [a.address_2],
+    [a.city, a.state, a.postcode]
+  ];
 
-    if( precision === 'auto' ) {
-        precision = ((+num).toFixed(4)).replace(/^-?\d*\.?|0+$/g, '').length;
-    }
+  // format address
+  var address = _.chain(format)
+    .map(function(line) { return _.compact(line).join(' '); })
+    .compact()
+    .join('<br>\n')
+    .value();
 
-    if(options.hash.negative) {
-        num = num * -1;
-    }
+  // prepend title
+  if( address !== '' && options.hash.title ) {
+    address = '<h3>' + options.hash.title + '</h3>\n' + address;
+  }
 
-    return accounting.formatNumber(num, precision);
+  return new hbs.SafeString(address);
 });
 
-Handlebars.registerHelper('formatAddress', function(address, options){
-    var addr = '';
-
-    if( address.first_name || address.last_name ) {
-        addr += address.first_name + ' ' + address.last_name + '<br>';
-    }
-
-    if( address.company ) {
-        addr += address.company + '<br>';
-    }
-
-    if( address.address_1 ) {
-        addr += address.address_1 + '<br>';
-    }
-
-    if( address.address_2 ) {
-        addr += address.address_2 + '<br>';
-    }
-
-    if( address.city || address.state || address.postcode ) {
-        addr += address.city + ' ' + address.state + ' ' + address.postcode;
-    }
-
-    if( addr && options.hash.title ) {
-        addr = '<h3>' + options.hash.title + '</h3>' + addr;
-    }
-
-    return new Handlebars.SafeString(addr);
+hbs.registerHelper('formatDate', function(date, options){
+  var f = options.hash.format || '';
+  return moment(date).format(f);
 });
 
-Handlebars.registerHelper('formatDate', function(date, options){
-    var f = options.hash.format || '';
-    return moment(date).format(f);
-});
-
-Handlebars.registerHelper('getOption', function(key){
-    var lookup = key.split('.');
-    var option = POS.getOption( lookup.shift() );
-    for(var i = 0; i < lookup.length; i++) {
-        option = option[lookup[i]];
-    }
-    return option;
+hbs.registerHelper('getOption', function(key){
+  var lookup = key.split('.');
+  var option = entitiesChannel.request( lookup.shift() );
+  for(var i = 0; i < lookup.length; i++) {
+    option = option[lookup[i]];
+  }
+  return option;
 });

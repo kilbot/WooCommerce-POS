@@ -40,7 +40,7 @@
 	</div>
 	<div class="price"><input type="text" name="item_price" data-original="{{regular_price}}" data-title="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" class="btn autogrow"></div>
 	<div class="total">
-		{{#compare total '!=' subtotal}}
+		{{#compare total '!==' subtotal}}
 			<del>{{{money subtotal}}}</del>
 			<ins>{{{money total}}}</ins>
 		{{else}}
@@ -94,14 +94,14 @@
 		<div class="total">{{{money subtotal}}}</div>
 		<div class="action"></div>
 	</li>
-	{{#compare cart_discount '!=' 0}}
+	{{#compare cart_discount '!==' 0}}
 	<li class="cart-discount">
 		<div><?php /* translators: woocommerce */ _e( 'Cart Discount', 'woocommerce' ); ?>:</div>
 		<div class="total">{{{money cart_discount negative=true}}}</div>
 		<div class="action"></div>
 	</li>
 	{{/compare}}
-	{{#compare total_tax '!=' 0}}
+	{{#compare total_tax '!==' 0}}
 	{{#if show_itemized}}
 		{{#each itemized_tax}}
 			<li class="tax">

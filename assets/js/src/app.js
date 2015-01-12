@@ -1,63 +1,52 @@
-var POS = new Marionette.Application({
+var _ = require('underscore');
 
-    initialize: function(options) {
+///**
+// * create global variable
+// */
+//global['POS'] = {
+//    Behaviors: {}
+//};
 
-        // init Root LayoutView
-        this.layout = new Marionette.LayoutView({
-            el: '#page',
-            template: _.template( $('#page').html() ),
-            regions: {
-                headerRegion: '#header',
-                menuRegion  : '#menu',
-                tabsRegion  : '#tabs',
-                mainRegion	: '#main',
-                modalRegion	: '#modal'
-            }
-        });
-        this.layout.render();
+/**
+ * helpers
+ */
+require('lib/utilities/handlebars-helpers');
+require('lib/utilities/stickit-handlers');
 
-        // routes module
-        //this.module( 'Routes', function(){
-        //    this.channel = Backbone.Radio.channel('routes');
-        //});
+/**
+ * Create the app
+ */
+var Application = require('apps/app/application');
+var app = new Application();
 
-        // entites module
-        this.module( 'Entities', function(){
-            this.channel = Backbone.Radio.channel('entities');
-        });
-
-        // radio
-        this.channel.reply('default:region', function() {
-            return this.layout.mainRegion;
-        }, this);
-
-        this.channel.comply({
-            'register:instance': function(instance, id) {
-                return this.register(instance, id);
-            },
-            'unregister:instance': function(instance, id) {
-                return this.unregister(instance, id);
-            }
-        }, this);
-    },
-
-    onBeforeStart: function(options){
-        // app settings
-        this.options = options;
-
-        // boots
-        accounting.settings = this.options.accounting;
-    },
-
-    onStart: function(){
-        POS.startHistory();
-
-        // header app starts on all pages
-        POS.HeaderApp.start();
-    }
+/**
+ * Modules
+ */
+app.module( 'Entities', {
+    moduleClass: require('entities/module')
 });
 
-// behaviors
-Marionette.Behaviors.getBehaviorClass = function(options, key) {
-    return POS.Components[key].Behavior;
-};
+app.module( 'HeaderApp', {
+    moduleClass: require('apps/header/module'),
+    container: app.layout.headerRegion
+});
+
+app.module( 'POSApp', {
+    moduleClass: require('apps/pos/module'),
+    container: app.layout.mainRegion
+});
+
+app.module( 'SupportApp', {
+    moduleClass: require('apps/support/module'),
+    container: app.layout.mainRegion
+});
+
+app.module('Modal', {
+    moduleClass: require('lib/components/modal/module'),
+    container: app.layout.modalRegion
+});
+
+/**
+ * Expose app to window for third party plugins
+ */
+global['POS'] = _.defaults( app, ( global['POS'] || {} ) );
