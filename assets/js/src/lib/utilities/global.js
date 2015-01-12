@@ -1,4 +1,12 @@
-var POS = global['POS'] || {};
-POS['Behaviors'] = POS['Behaviors'] || {};
+/**
+ * create a global variable
+ */
+module.exports = {
+  Behaviors: {}
+}
 
-module.exports = POS;
+/**
+ * global helpers
+ */
+require('./handlebars-helpers');
+require('./stickit-handlers');

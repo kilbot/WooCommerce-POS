@@ -1,6 +1,7 @@
 var accounting = require('accounting');
+var POS = require('lib/utilities/global');
 
-var Utils = {
+module.exports = POS.Utils = {
 
   /**
    * Number and Currency helpers
@@ -52,6 +53,3 @@ var Utils = {
   }
 
 };
-
-global['POS'] = global['POS'] || {};
-module.exports = global['POS']['Utils'] = Utils;

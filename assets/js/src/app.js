@@ -1,22 +1,10 @@
 var _ = require('underscore');
-
-///**
-// * create global variable
-// */
-//global['POS'] = {
-//    Behaviors: {}
-//};
-
-/**
- * helpers
- */
-require('lib/utilities/handlebars-helpers');
-require('lib/utilities/stickit-handlers');
+var POS = require('lib/utilities/global');
+var Application = require('apps/app/application');
 
 /**
  * Create the app
  */
-var Application = require('apps/app/application');
 var app = new Application();
 
 /**
@@ -41,12 +29,12 @@ app.module( 'SupportApp', {
     container: app.layout.mainRegion
 });
 
-app.module('Modal', {
+app.module( 'Modal', {
     moduleClass: require('lib/components/modal/module'),
     container: app.layout.modalRegion
 });
 
 /**
- * Expose app to window for third party plugins
+ * Attach app to window for third party plugins
  */
-global['POS'] = _.defaults( app, ( global['POS'] || {} ) );
+window.POS = _.defaults( app, POS );
