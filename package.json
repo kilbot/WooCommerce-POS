@@ -1,8 +1,24 @@
 {
   "name": "woocommerce-pos",
+  "description": "A simple front-end for taking WooCommerce orders at the Point of Sale.",
   "version": "0.4.0",
   "scripts": {
     "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kilbot/WooCommerce-POS.git"
+  },
+  "keywords": [
+    "wordpress",
+    "woocommerce",
+    "pos"
+  ],
+  "author": "kilbot",
+  "license": "GPLv2",
+  "homepage": "http://woopos.com.au",
+  "bugs": {
+    "url": "https://github.com/kilbot/WooCommerce-POS/issues"
   },
   "dependencies": {
     "accounting": "^0.4.1",
