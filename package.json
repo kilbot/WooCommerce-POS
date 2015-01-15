@@ -21,7 +21,7 @@
     "url": "https://github.com/kilbot/WooCommerce-POS/issues"
   },
   "dependencies": {
-    "accounting": "^0.4.1",
+    "accounting": "0.4.1",
     "backbone": "^1.1.2",
     "backbone-dualStorage": "git://github.com/kilbot/backbone-dualStorage.git",
     "backbone-filtered-collection": "^0.4.0",
@@ -36,7 +36,7 @@
     "idb-wrapper": "^1.4.1",
     "jquery": "^2.1.3",
     "jquery.hotkeys": "git://github.com/jeresig/jquery.hotkeys.git",
-    "lodash": "^2.4.1",
+    "lodash": "2.4.1",
     "moment": "^2.9.0",
     "underscore": "^1.7.0"
   },

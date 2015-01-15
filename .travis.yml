@@ -1,26 +1,23 @@
-#language: php
-#
-#php:
-#    - 5.3
-#    - 5.4
-#
-#env:
-#    - WP_VERSION=latest WP_MULTISITE=0
-#    - WP_VERSION=latest WP_MULTISITE=1
-#    - WP_VERSION=3.8 WP_MULTISITE=0
-#    - WP_VERSION=3.8 WP_MULTISITE=1
-#
-#before_script:
-#    - npm install -g grunt-cli
-#    - npm install
-#    - bash tests/php/bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-#
-#script:
-#    - phpunit
+language: php
 
-language: node_js
-node_js:
-  - "0.8"
-  - "0.10"
+php:
+    - 5.3
+    - 5.4
+
+env:
+    - WP_VERSION=latest WP_MULTISITE=0
+    - WP_VERSION=latest WP_MULTISITE=1
+    - WP_VERSION=3.8 WP_MULTISITE=0
+    - WP_VERSION=3.8 WP_MULTISITE=1
+
 before_install:
-  - npm install -g grunt-cli
+    - nvm install 0.8
+
+before_script:
+    - npm install -g grunt-cli
+    - npm install
+    - bash tests/php/bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+
+script:
+    - grunt test
+    - phpunit
