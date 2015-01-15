@@ -1,4 +1,7 @@
-var Backbone = require('backbone');
+var bb = require('backbone');
 var POS = require('lib/utilities/global');
 
-module.exports = POS.Behavior = Backbone.Marionette.Behavior;
+var Behavior = bb.Marionette.Behavior;
+
+module.exports = Behavior;
+POS.attach('Behavior', Behavior);

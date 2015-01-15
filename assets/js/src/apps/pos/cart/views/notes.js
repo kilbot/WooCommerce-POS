@@ -1,5 +1,5 @@
 var ItemView = require('lib/config/item-view');
-var _ = require('underscore');
+var _ = require('lodash');
 
 module.exports = ItemView.extend({
   template: _.template( '<%= note %>' ),

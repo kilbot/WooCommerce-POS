@@ -4,7 +4,7 @@ var Model = require('lib/config/model');
 var bb = require('backbone');
 var entitiesChannel = bb.Radio.channel('entities');
 var $ = require('jquery');
-var _ = require('underscore');
+var _ = require('lodash');
 
 // Data from wpdb->usermeta
 Settings.Usermeta = Collection.extend({

@@ -1,5 +1,5 @@
 var bb = require('backbone');
-var _ = require('underscore');
+var _ = require('lodash');
 var POS = require('./global');
 
 var debug = false;

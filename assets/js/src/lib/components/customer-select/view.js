@@ -1,6 +1,6 @@
 var ItemView = require('lib/config/item-view');
 var Select2 = require('lib/components/select2/behavior');
-var _ = require('underscore');
+var _ = require('lodash');
 var bb = require('backbone');
 var entitiesChannel = bb.Radio.channel('entities');
 

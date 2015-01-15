@@ -1,12 +1,12 @@
 var Backbone = require('backbone');
 var DualCollection = require('lib/config/dual-collection');
-var Product = require('./model');
+var Model = require('./model');
+//var IndexedDB = require('lib/config/indexeddb');
+var _ = require('lodash');
 
 module.exports = DualCollection.extend({
-  model: Product,
-  url: function(){
-    return POS.getOption('wc_api') + 'products';
-  },
+  name: 'products',
+  model: Model,
 
   initialize: function(){
     this.indexedDB = new Backbone.IndexedDB({
@@ -23,22 +23,13 @@ module.exports = DualCollection.extend({
       ]
     }, this);
 
+    //this.indexedDB.sayHello();
+
     //
     this.on( 'remote:sync', this.remoteSync );
   },
 
-  state: {
-    pageSize: 10
-  },
-
-  parseState: function (resp, queryParams, state, options) {
-    // totals are always in the WC API headers
-    var totalRecords = parseInt(options.xhr.getResponseHeader('X-WC-Total'));
-    var totalPages =parseInt(options.xhr.getResponseHeader('X-WC-TotalPages'));
-    return {totalRecords: totalRecords, totalPages: totalPages};
-  },
-
-  parse: function (resp, options) {
+  parse: function (resp) {
     if( resp.products ){
       this.serverResponse(resp);
       return resp.products;
@@ -64,16 +55,16 @@ module.exports = DualCollection.extend({
     this.fullSync()
       .done( function() {
 
-      })
-      .fail( function( item, jqXHR, textStatus, errorThrown ){
-        // error alert
-        var errors = POS.Utils.parseErrorResponse( jqXHR );
-        POS.Components.Alerts.channel.command( 'open:alert', {
-          type: 'danger',
-          title: item.title,
-          message: errors
-        });
       });
+      //.fail( function( item, jqXHR, textStatus, errorThrown ){
+      //  // error alert
+      //  var errors = POS.Utils.parseErrorResponse( jqXHR );
+      //  POS.Components.Alerts.channel.command( 'open:alert', {
+      //    type: 'danger',
+      //    title: item.title,
+      //    message: errors
+      //  });
+      //});
   }
 
 });

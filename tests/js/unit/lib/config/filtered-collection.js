@@ -1,10 +1,8 @@
 describe('lib/config/filtered-collection.js', function () {
 
-  var bb = require('backbone');
-  var dummy = require('./../../../data/dummy-products.json');
-  var collection = new bb.Collection(dummy.products);
-
   beforeEach(function () {
+    var dummy = require('./../../../data/dummy-products.json');
+    var collection = new Backbone.Collection(dummy.products);
     var FilteredCollection = require('lib/config/filtered-collection');
     this.filtered = new FilteredCollection(collection);
   });

@@ -10,9 +10,10 @@ var entitiesChannel = bb.Radio.channel('entities');
 var posChannel = bb.Radio.channel('pos');
 var debugLog = require('lib/utilities/debug');
 var $ = require('jquery');
-var _ = require('underscore');
+var _ = require('lodash');
+var POS = require('lib/utilities/global');
 
-module.exports = Route.extend({
+var Route = Route.extend({
 
   initialize: function( options ) {
     this.id = options.id;
@@ -231,3 +232,6 @@ module.exports = Route.extend({
   }
 
 });
+
+module.exports = Route;
+POS.attach('POSApp.Cart.Route', Route);

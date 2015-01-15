@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var hbs = require('handlebars');
 var accounting = require('accounting');
 var moment = require('moment');

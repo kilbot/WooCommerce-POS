@@ -1,5 +1,5 @@
 var ItemView = require('lib/config/item-view');
-var _ = require('underscore');
+var _ = require('lodash');
 var $ = require('jquery');
 var Backbone = require('backbone');
 var GatewaySettingsModal = ('../modals/gateway-settings');

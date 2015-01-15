@@ -1,7 +1,7 @@
 var ItemView = require('lib/config/item-view');
 var Backbone = require('backbone');
 var entitiesChannel = Backbone.Radio.channel('entities');
-var _ = require('underscore');
+var _ = require('lodash');
 var $ = require('jquery');
 
 module.exports =  ItemView.extend({

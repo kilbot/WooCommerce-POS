@@ -1,3 +1,4 @@
+var POS = require('lib/utilities/global');
 var Router = require('lib/config/router');
 var LayoutView = require('./layout-view');
 var Products = require('./products/route');
@@ -5,7 +6,7 @@ var CartRoute = require('./cart/route');
 var entitiesChannel = Backbone.Radio.channel('entities');
 var FilteredCollection = require('lib/config/filtered-collection');
 
-module.exports = Router.extend({
+var Router = Router.extend({
   initialize: function(options) {
     this.container = options.container;
 
@@ -13,7 +14,20 @@ module.exports = Router.extend({
     this.products.collection = entitiesChannel.request('products');
     this.products.filtered   = new FilteredCollection( this.products.collection );
 
+    this.cart = entitiesChannel.request('cart');
+    this.orders = entitiesChannel.request('orders');
 
+    this.channel.reply({
+      'get:products': function(){
+        return this.products.filtered;
+      },
+      'get:cart': function(){
+        return this.cart;
+      },
+      'get:orders': function(){
+        return this.orders;
+      }
+    }, this);
   },
 
   onBeforeEnter: function() {
@@ -63,3 +77,6 @@ module.exports = Router.extend({
   }
 
 });
+
+module.exports = Router;
+POS.attach('POSApp.Router', Router);

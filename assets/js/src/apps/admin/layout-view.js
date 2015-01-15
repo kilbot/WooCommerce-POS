@@ -1,7 +1,7 @@
 var LayoutView = require('lib/config/layout-view');
 
 module.exports = LayoutView.extend({
-    el: 'body',
+    el: 'body'
     //template: _.template( $('#page').html() ),
     //regions: {
     //    headerRegion: '#header',

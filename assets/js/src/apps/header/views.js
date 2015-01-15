@@ -4,16 +4,19 @@ var Backbone = require('backbone');
 var headerChannel = Backbone.Radio.channel('header');
 var entitiesChannel = Backbone.Radio.channel('entities');
 var $ = require('jquery');
+var HotKeys = require('lib/components/hotkeys/behavior');
+var Modal = require('lib/components/modal/behavior');
+var Tooltip = require('lib/components/tooltip/behavior');
 
 Views.HelpModal = ItemView.extend({
   tagName: 'form',
 
   behaviors: {
     Modal: {
-      behaviorClass: require('lib/components/modal/behavior')
+      behaviorClass: Modal
     },
     Tooltip: {
-      behaviorClass: require('lib/components/tooltip/behavior')
+      behaviorClass: Tooltip
     }
   },
 
@@ -65,7 +68,7 @@ Views.Header = ItemView.extend({
 
   behaviors: {
     HotKeys: {
-      behaviorClass: require('lib/components/hotkeys/behavior')
+      behaviorClass: HotKeys
     }
   },
 

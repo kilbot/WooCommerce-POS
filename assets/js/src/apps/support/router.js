@@ -45,7 +45,7 @@ module.exports = Router.extend({
       action: 'wc_pos_system_status'
     });
 
-    var view = new StatusView( results );
+    //var view = new StatusView( results );
 
     //POS.Components.Loading.channel.command( 'show:loading', view, {
     //    region: this.layout.rightRegion,

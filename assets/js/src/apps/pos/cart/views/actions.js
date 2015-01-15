@@ -1,5 +1,4 @@
 var ItemView = require('lib/config/item-view');
-var _ = require('underscore');
 var $ = require('jquery');
 var hbs = require('handlebars');
 

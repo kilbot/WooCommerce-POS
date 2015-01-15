@@ -1,8 +1,7 @@
 var DualModel = require('lib/config/dual-model');
 
 module.exports = DualModel.extend({
-  idAttribute: 'local_id',
-  remoteIdAttribute: 'id',
+  name: 'order',
 
   defaults: {
     note: ''

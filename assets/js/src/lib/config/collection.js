@@ -1,7 +1,7 @@
-var Backbone = require('backbone');
+var bb = require('backbone');
 var POS = require('lib/utilities/global');
 
-module.exports = POS.Collection = Backbone.Collection.extend({
+var Collection = bb.Collection.extend({
   constructor: function() {
     Backbone.Collection.apply(this, arguments);
     this._isNew = true;
@@ -14,3 +14,6 @@ module.exports = POS.Collection = Backbone.Collection.extend({
     return this._isNew;
   }
 });
+
+module.exports = Collection;
+POS.attach('Collection', Collection);

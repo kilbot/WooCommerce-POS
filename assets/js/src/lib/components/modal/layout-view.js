@@ -1,8 +1,9 @@
 var LayoutView = require('lib/config/layout-view');
-var _ = require('underscore');
+var _ = require('lodash');
+var $ = require('jquery');
+var hbs = require('handlebars');
 
 module.exports = LayoutView.extend({
-  template: '#tmpl-modal',
   className: 'modal',
   attributes: {
     'tabindex' : -1,
@@ -20,6 +21,7 @@ module.exports = LayoutView.extend({
   },
 
   initialize: function () {
+    this.template = hbs.compile( $('#tmpl-modal').html() );
     this.$el.modal({ show: false });
   },
 

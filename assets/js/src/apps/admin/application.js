@@ -2,11 +2,9 @@ var Application = require('lib/config/application');
 var bb = require('backbone');
 var LayoutView = require('./layout-view');
 var debugLog = require('lib/utilities/debug');
-var $ = require('jquery');
-var _ = require('underscore');
-var accounting = require('accounting');
+//var accounting = require('accounting');
 var routerChannel = bb.Radio.channel('router');
-var entitiesChannel = bb.Radio.channel('entities');
+//var entitiesChannel = bb.Radio.channel('entities');
 
 
 module.exports = Application.extend({
@@ -31,7 +29,7 @@ module.exports = Application.extend({
         debugLog( 'starting WooCommerce POS admin app' );
 
         //// app settings
-        //this.options = options;
+        this.options = options || {};
         //
         //// bootstrap accounting settings
         //accounting.settings = options.accounting;

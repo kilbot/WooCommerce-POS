@@ -3,7 +3,7 @@ var AutoGrow = require('lib/components/autogrow/behavior');
 var Numpad = require('lib/components/numpad/behavior');
 var hbs = require('handlebars');
 var $ = require('jquery');
-var _ = require('underscore');
+var _ = require('lodash');
 var bb = require('backbone');
 var entitiesChannel = bb.Radio.channel('entities');
 

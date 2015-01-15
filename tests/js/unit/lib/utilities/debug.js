@@ -13,22 +13,26 @@ describe('lib/utilities/debug.js', function () {
     });
 
     describe('debugLog', function () {
+
         it('should log a message', function () {
             this.debugLog('foo');
-            sinon.assert.calledOnce(console.log);
-            sinon.assert.calledWithExactly(console.log, 'foo');
+            expect(console.log).to.have.been.calledOnce;
+            expect(console.log).to.have.been.calledWith('foo');
         });
+
         it('should switch console methods', function () {
             this.debugLog('foo', 'error');
-            sinon.assert.notCalled(console.log);
-            sinon.assert.calledOnce(console.error);
-            sinon.assert.calledWithExactly(console.error, 'foo');
+            expect(console.log).not.to.have.been.called;
+            expect(console.error).to.have.been.calledOnce;
+            expect(console.error).to.have.been.calledWith('foo');
         });
+
         it('should default to log', function () {
             this.debugLog('foo', 'bar');
-            sinon.assert.calledOnce(console.log);
-            sinon.assert.calledWithExactly(console.log, 'foo');
+            expect(console.log).to.have.been.calledOnce;
+            expect(console.log).to.have.been.calledWith('foo');
         });
+
     });
 
 });

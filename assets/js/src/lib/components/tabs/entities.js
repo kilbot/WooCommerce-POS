@@ -1,6 +1,6 @@
 var Model = require('lib/config/model');
 var Collection = require('lib/config/collection');
-var _ = require('underscore');
+var _ = require('lodash');
 
 var Tab = Model.extend({
   defaults: {

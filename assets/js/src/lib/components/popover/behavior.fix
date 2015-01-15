@@ -1,3 +1,5 @@
+require('bootstrap-sass/assets/javascripts/bootstrap/popover')
+
 POS.module('Components.Popover', function(Popover, POS, Backbone, Marionette, $, _){
 
     Popover.Behavior = Marionette.Behavior.extend({

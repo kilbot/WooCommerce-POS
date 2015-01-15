@@ -1,10 +1,8 @@
 var DualModel = require('lib/config/dual-model');
-var _ = require('underscore');
+var _ = require('lodash');
 
 module.exports = DualModel.extend({
-
-  idAttribute: 'local_id',
-  remoteIdAttribute: 'id',
+  name: 'product',
 
   // this is an array of fields used by FilterCollection.matchmaker()
   fields: ['title'],

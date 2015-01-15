@@ -1,9 +1,9 @@
 var Behavior = require('lib/config/behavior');
-var Backbone = require('backbone');
-var channel = Backbone.Radio.channel('modal');
+var bb = require('backbone');
+var channel = bb.Radio.channel('modal');
 var POS = require('lib/utilities/global');
 
-module.exports = POS.Behaviors.Modal = Behavior.extend({
+var Behavior = Behavior.extend({
   initialize: function () {
     this.listenToOnce(this.view, 'open',  this.openModal);
   },
@@ -24,3 +24,6 @@ module.exports = POS.Behaviors.Modal = Behavior.extend({
     });
   }
 });
+
+module.exports = Behavior;
+POS.attach('Behaviors.Modal', Behavior);

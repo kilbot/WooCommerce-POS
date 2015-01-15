@@ -1,4 +1,6 @@
 var LayoutView = require('lib/config/layout-view');
+var _ = require('lodash');
+var $ = require('jquery');
 
 module.exports = LayoutView.extend({
     el: '#page',

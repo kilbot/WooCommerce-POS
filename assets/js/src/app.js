@@ -1,6 +1,11 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var POS = require('lib/utilities/global');
 var Application = require('apps/app/application');
+
+/**
+ * bootstrap Handlebars Helpers
+ */
+require('lib/utilities/handlebars-helpers');
 
 /**
  * Create the app
@@ -37,4 +42,4 @@ app.module( 'Modal', {
 /**
  * Attach app to window for third party plugins
  */
-window.POS = _.defaults( app, POS );
+module.exports = window.POS = POS.create(app);

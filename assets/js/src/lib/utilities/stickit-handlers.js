@@ -1,6 +1,6 @@
 var Utils = require('./utils');
 var bb = require('backbone');
-var _ = require('underscore');
+var _ = require('lodash');
 
 /**
  * Display localised string, eg: 2,55

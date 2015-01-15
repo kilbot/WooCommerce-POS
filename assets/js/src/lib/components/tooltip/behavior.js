@@ -1,5 +1,5 @@
 var Behavior = require('lib/config/behavior');
-var _ = require('underscore');
+var _ = require('lodash');
 var POS = require('lib/utilities/global');
 
 module.exports = POS.Behaviors.Tooltip = Behavior.extend({

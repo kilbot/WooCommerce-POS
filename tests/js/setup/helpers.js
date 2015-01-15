@@ -1,7 +1,9 @@
 var _ = require('lodash');
 var Backbone = require('backbone');
-Backbone.Radio = require('backbone.radio');
+//var $ = require('jquery');
+//Backbone.$ = $;
 
+// core = Marionette & helper libraries
 require('core');
 
 before(function() {
@@ -11,11 +13,13 @@ before(function() {
 
 beforeEach(function() {
     this.sinon = sinon.sandbox.create();
+    //this.server = sinon.fakeServer.create();
+    //this.clock = this.sandbox.useFakeTimers();
     global.stub = this.sinon.stub.bind(this.sinon);
     global.spy  = this.sinon.spy.bind(this.sinon);
 });
 
 afterEach(function() {
     this.sinon.restore();
-    Backbone.history.stop();
+    //this.server.restore();
 });

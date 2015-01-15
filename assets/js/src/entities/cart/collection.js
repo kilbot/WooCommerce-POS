@@ -1,12 +1,12 @@
 var bb = require('backbone');
 var Collection = require('lib/config/collection');
-var CartItem = require('./model');
+var Model = require('./model');
 var Utils = require('lib/utilities/utils');
-var _ = require('underscore');
+var _ = require('lodash');
 var entitiesChannel = bb.Radio.channel('entities');
 
 module.exports = Collection.extend({
-  model: CartItem,
+  model: Model,
 
   comparator: function( model ){
     var type = model.get( 'type' );

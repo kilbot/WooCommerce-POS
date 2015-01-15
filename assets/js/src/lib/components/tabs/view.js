@@ -2,6 +2,7 @@ var ItemView = require('lib/config/item-view');
 var CollectionView = require('lib/config/collection-view');
 var Handlebars = require('handlebars');
 var Collection = require('./entities');
+var POS = require('lib/utilities/global');
 
 var Tab = ItemView.extend({
   tagName: 'li',
@@ -59,3 +60,4 @@ var Tabs = CollectionView.extend({
 });
 
 module.exports = Tabs;
+POS.attach('Components.Tabs.View', Tabs);

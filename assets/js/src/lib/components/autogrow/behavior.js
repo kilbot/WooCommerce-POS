@@ -1,6 +1,6 @@
 var Behavior = require('lib/config/behavior');
 var $ = require('jquery');
-var _ = require('underscore');
+var _ = require('lodash');
 var POS = require('lib/utilities/global');
 
 module.exports = POS.Behaviors.AutoGrow = Behavior.extend({

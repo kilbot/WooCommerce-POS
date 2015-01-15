@@ -2,7 +2,7 @@ var bb = require('backbone');
 var $ = require('jquery');
 var POS = require('lib/utilities/global');
 
-module.exports = POS.Route = bb.Marionette.Object.extend({
+var Route = bb.Marionette.Object.extend({
   constructor: function() {
     this.initialize.apply(this, arguments);
   },
@@ -42,3 +42,6 @@ module.exports = POS.Route = bb.Marionette.Object.extend({
   fetch  : function() {},
   render : function() {}
 });
+
+module.exports = Route;
+POS.attach('Route', Route);

@@ -1,11 +1,14 @@
 var ItemView = require('./item-view');
 var bb = require('backbone');
 var POS = require('lib/utilities/global');
+require('backbone.stickit');
+require('backbone-validation');
+require('lib/utilities/stickit-handlers');
 
-module.exports = POS.FormView = ItemView.extend({
+var FormView = ItemView.extend({
 
   constructor: function() {
-    return bb.Marionette.ItemView.prototype.constructor.apply(this, arguments);
+    return ItemView.prototype.constructor.apply(this, arguments);
   },
 
   bindings: {},
@@ -13,7 +16,7 @@ module.exports = POS.FormView = ItemView.extend({
   render: function(){
     // Invoke original render function
     var args = Array.prototype.slice.apply(arguments);
-    var result = bb.Marionette.ItemView.prototype.render.apply(this, args);
+    var result = ItemView.prototype.render.apply(this, args);
 
     // Apply validation
     bb.Validation.bind(this, {
@@ -42,7 +45,10 @@ module.exports = POS.FormView = ItemView.extend({
   remove: function() {
     // Remove the validation binding
     bb.Validation.unbind(this);
-    return bb.View.prototype.remove.apply(this, arguments);
+    return ItemView.prototype.remove.apply(this, arguments);
   }
 
 });
+
+module.exports = FormView;
+POS.attach('FormView', FormView);

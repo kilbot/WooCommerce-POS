@@ -1,7 +1,7 @@
 var bb = require('backbone');
 var POS = require('lib/utilities/global');
 
-module.exports = POS.Application = bb.Marionette.Application.extend({
+var Application = bb.Marionette.Application.extend({
   // Polyfill for:
   // https://github.com/marionettejs/backbone.marionette/pull/1723
   constructor: function() {
@@ -9,3 +9,6 @@ module.exports = POS.Application = bb.Marionette.Application.extend({
     this.initialize.apply(this, arguments);
   }
 });
+
+module.exports = Application;
+POS.attach('Application', Application);

@@ -1,13 +1,17 @@
 //
-// Marionette with Radio shim
+// Backbone with Marionette & Radio shim
 //
-var bb = require('backbone');
+//var $ = require('jquery');
 var _ = require('underscore');
-bb.Marionette = require('backbone.marionette');
-bb.Marionette.Application.prototype._initChannel = function () {
+var bb = require('backbone');
+var $ = require('jquery');
+bb.$ = $; // help bb find $ (for node mocha tests)
+bb.Radio = require('backbone.radio');
+var Marionette = require('backbone.marionette');
+Marionette.Application.prototype._initChannel = function () {
   this.channelName = _.result(this, 'channelName') || 'global';
   this.channel = _.result(this, 'channel') ||
-    bb.Radio.channel(this.channelName);
+  bb.Radio.channel(this.channelName);
 };
 
 //
@@ -20,7 +24,7 @@ require('idb-wrapper');
 require('backbone-idb/backbone-idb');
 require('backbone-dualStorage/backbone.dualstorage');
 bb.FilteredCollection =
-    require('backbone-filtered-collection/backbone-filtered-collection');
+  require('backbone-filtered-collection/backbone-filtered-collection');
 
 //
 // Bootstrap components

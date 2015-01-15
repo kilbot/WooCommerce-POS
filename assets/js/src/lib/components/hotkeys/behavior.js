@@ -1,12 +1,12 @@
 var Behavior = require('lib/config/behavior');
 var bb = require('backbone');
 var $ = require('jquery');
-var _ = require('underscore');
+var _ = require('lodash');
 var entitiesChannel = bb.Radio.channel('entities');
 var debugLog = require('lib/utilities/debug');
 var POS = require('lib/utilities/global');
 
-module.exports = POS.Behaviors.HotKeys = Behavior.extend({
+var HotKeys = Behavior.extend({
 
   initialize: function() {
 
@@ -29,3 +29,6 @@ module.exports = POS.Behaviors.HotKeys = Behavior.extend({
   }
 
 });
+
+module.exports = HotKeys;
+POS.attach('Behaviors.HotKeys', HotKeys);

@@ -1,12 +1,10 @@
 var Backbone = require('backbone');
 var DualCollection = require('lib/config/dual-collection');
-var Order = require('./model');
+var Model = require('./model');
 
 module.exports = DualCollection.extend({
-  model: Order,
-  url: function(){
-    return POS.getOption('wc_api') + 'orders';
-  },
+  name: 'orders',
+  model: Model,
 
   initialize: function( models, options ) {
     this.indexedDB = new Backbone.IndexedDB({
@@ -22,10 +20,6 @@ module.exports = DualCollection.extend({
         {name: 'status', keyPath: 'status', unique: false}  // required
       ]
     }, this);
-  },
-
-  parse: function (resp, options) {
-    return resp.orders ? resp.orders : resp ;
   },
 
   fetchLocalOrders: function(){

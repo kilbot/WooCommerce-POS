@@ -4,7 +4,6 @@ var ItemView = require('lib/config/item-view');
 var CollectionView = require('lib/config/collection-view');
 var Filter = require('lib/components/filter/behavior');
 var hbs = require('handlebars');
-var _ = require('underscore');
 var $ = require('jquery');
 
 /**
