@@ -1,7 +1,4 @@
-var Backbone = require('backbone');
+var bb = require('backbone');
 var POS = require('lib/utilities/global');
 
-var ItemView = Backbone.Marionette.ItemView;
-
-module.exports = ItemView;
-POS.attach('ItemView', ItemView);
+module.exports = POS.ItemView = bb.Marionette.ItemView;

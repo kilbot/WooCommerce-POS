@@ -5,14 +5,16 @@ var bb = require('backbone');
 var entitiesChannel = bb.Radio.channel('entities');
 var posChannel = bb.Radio.channel('pos');
 var $ = require('jquery');
-var debugLog = require('lib/utilities/debug');
 
 module.exports = Route.extend({
 
   initialize: function (options) {
     this.container  = options.container;
-    this.collection = options.collection;
-    this.filtered   = options.filtered;
+    this.filtered   = entitiesChannel.request('get', {
+      type: 'filtered',
+      name: 'products'
+    });
+    this.collection = this.filtered.superset();
 
     // add title to tab
     // super hack, get the label from the menu
@@ -23,7 +25,6 @@ module.exports = Route.extend({
 
   fetch: function() {
     if (this.collection.isNew()) {
-      debugLog('fetching products');
       return this.collection.fetch();
     }
   },
@@ -58,7 +59,10 @@ module.exports = Route.extend({
 
     // tabs component
     var view = new Tabs({
-      collection: entitiesChannel.request( 'get:options', 'tabs' )
+      collection: entitiesChannel.request('get', {
+        type: 'option',
+        name: 'tabs'
+      })
     });
 
     this.listenTo(view.collection, 'change:active', function (model) {

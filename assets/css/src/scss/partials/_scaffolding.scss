@@ -25,7 +25,8 @@ body {
   }
 }
 
-#main:not(.two-column), #main.two-column > div {
+// move .two-column to body?
+div#page:not(.two-column) #main, .two-column #main > div {
   position: absolute;
   top: 38px;
   bottom: 0;
@@ -35,7 +36,7 @@ body {
   @include display-flex;
 }
 
-#main.two-column {
+.two-column #main {
   > div {
     top: 70px;
     padding: $spacing/2 0 0 $spacing/2;
@@ -61,7 +62,7 @@ body {
   #tabs {
     display: none;
   }
-  #main.two-column {
+  .two-column #main {
     > div {
       top: 38px;
     }

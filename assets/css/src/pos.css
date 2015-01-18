@@ -1193,8 +1193,8 @@ body {
   flex: 1;
 }
 
-/* line 28, scss/partials/_scaffolding.scss */
-#main:not(.two-column), #main.two-column > div {
+/* line 29, scss/partials/_scaffolding.scss */
+div#page:not(.two-column) #main, .two-column #main > div {
   position: absolute;
   top: 38px;
   bottom: 0;
@@ -1205,45 +1205,45 @@ body {
   display: flex;
 }
 
-/* line 39, scss/partials/_scaffolding.scss */
-#main.two-column > div {
+/* line 40, scss/partials/_scaffolding.scss */
+.two-column #main > div {
   top: 70px;
   padding: 12px 0 0 12px;
 }
-/* line 42, scss/partials/_scaffolding.scss */
-#main.two-column > div #left, #main.two-column > div #right {
+/* line 43, scss/partials/_scaffolding.scss */
+.two-column #main > div #left, .two-column #main > div #right {
   display: -webkit-flex;
   display: flex;
   -webkit-flex: 1;
   flex: 1;
   padding: 0 12px 12px 0;
 }
-/* line 49, scss/partials/_scaffolding.scss */
-#main.two-column.left-active #right {
+/* line 50, scss/partials/_scaffolding.scss */
+.two-column #main.left-active #right {
   display: none;
 }
-/* line 54, scss/partials/_scaffolding.scss */
-#main.two-column.right-active #left {
+/* line 55, scss/partials/_scaffolding.scss */
+.two-column #main.right-active #left {
   display: none;
 }
 
 @media (min-width: 769px) {
-  /* line 61, scss/partials/_scaffolding.scss */
+  /* line 62, scss/partials/_scaffolding.scss */
   #tabs {
     display: none;
   }
 
-  /* line 65, scss/partials/_scaffolding.scss */
-  #main.two-column > div {
+  /* line 66, scss/partials/_scaffolding.scss */
+  .two-column #main > div {
     top: 38px;
   }
-  /* line 68, scss/partials/_scaffolding.scss */
-  #main.two-column.left-active #right, #main.two-column.right-active #left {
+  /* line 69, scss/partials/_scaffolding.scss */
+  .two-column #main.left-active #right, .two-column #main.right-active #left {
     display: -webkit-flex;
     display: flex;
   }
 }
-/* line 74, scss/partials/_scaffolding.scss */
+/* line 75, scss/partials/_scaffolding.scss */
 .module {
   width: 100%;
   display: -webkit-flex;
@@ -1251,7 +1251,7 @@ body {
   -webkit-flex-direction: column;
   flex-direction: column;
 }
-/* line 78, scss/partials/_scaffolding.scss */
+/* line 79, scss/partials/_scaffolding.scss */
 .module > div {
   background: white;
   /* default module background */
@@ -1259,30 +1259,30 @@ body {
   flex-shrink: 0;
   /* default don't shrink */
 }
-/* line 83, scss/partials/_scaffolding.scss */
+/* line 84, scss/partials/_scaffolding.scss */
 .module .list-actions > div {
   background: #455a64;
   padding: 8px;
 }
-/* line 87, scss/partials/_scaffolding.scss */
+/* line 88, scss/partials/_scaffolding.scss */
 .module .list-actions > div > .btn {
   float: right;
   margin-left: 8px;
 }
-/* line 93, scss/partials/_scaffolding.scss */
+/* line 94, scss/partials/_scaffolding.scss */
 .module .list-header {
   display: -webkit-flex;
   display: flex;
   background-color: #607d8b;
   color: rgba(255, 255, 255, 0.9);
 }
-/* line 98, scss/partials/_scaffolding.scss */
+/* line 99, scss/partials/_scaffolding.scss */
 .module .list-header > div {
   padding: 8px;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 103, scss/partials/_scaffolding.scss */
+/* line 104, scss/partials/_scaffolding.scss */
 .module .list {
   -webkit-flex-shrink: 1;
   flex-shrink: 1;
@@ -1290,13 +1290,13 @@ body {
   display: -webkit-flex;
   display: flex;
 }
-/* line 107, scss/partials/_scaffolding.scss */
+/* line 108, scss/partials/_scaffolding.scss */
 .module .list ul {
   width: 100%;
   margin: 0;
   padding: 0;
 }
-/* line 111, scss/partials/_scaffolding.scss */
+/* line 112, scss/partials/_scaffolding.scss */
 .module .list ul li {
   border-bottom: 1px solid #e8e8e8;
   display: -webkit-flex;
@@ -1304,26 +1304,26 @@ body {
   -webkit-align-items: center;
   align-items: center;
 }
-/* line 115, scss/partials/_scaffolding.scss */
+/* line 116, scss/partials/_scaffolding.scss */
 .module .list ul li > div {
   padding: 8px;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 119, scss/partials/_scaffolding.scss */
+/* line 120, scss/partials/_scaffolding.scss */
 .module .list ul li:last-of-type {
   border-bottom: none;
 }
-/* line 123, scss/partials/_scaffolding.scss */
+/* line 124, scss/partials/_scaffolding.scss */
 .module .list ul li.empty > div {
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 128, scss/partials/_scaffolding.scss */
+/* line 129, scss/partials/_scaffolding.scss */
 .module .list ul.striped li:nth-of-type(even) {
   background: #f9f9f9;
 }
-/* line 134, scss/partials/_scaffolding.scss */
+/* line 135, scss/partials/_scaffolding.scss */
 .module .list-totals ul {
   width: 100%;
   width: 100%;
@@ -1332,7 +1332,7 @@ body {
   border-top: 2px solid #d9d9d9;
   border-bottom: 2px solid #d9d9d9;
 }
-/* line 141, scss/partials/_scaffolding.scss */
+/* line 142, scss/partials/_scaffolding.scss */
 .module .list-totals ul li {
   border-bottom: 1px solid #e8e8e8;
   display: -webkit-flex;
@@ -1340,25 +1340,25 @@ body {
   -webkit-align-items: center;
   align-items: center;
 }
-/* line 145, scss/partials/_scaffolding.scss */
+/* line 146, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div {
   padding: 8px;
 }
-/* line 147, scss/partials/_scaffolding.scss */
+/* line 148, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div:first-of-type {
   font-weight: bold;
   -webkit-flex: 1;
   flex: 1;
 }
-/* line 151, scss/partials/_scaffolding.scss */
+/* line 152, scss/partials/_scaffolding.scss */
 .module .list-totals ul li > div.total {
   white-space: nowrap;
 }
-/* line 155, scss/partials/_scaffolding.scss */
+/* line 156, scss/partials/_scaffolding.scss */
 .module .list-totals ul li:last-of-type {
   border-bottom: none;
 }
-/* line 161, scss/partials/_scaffolding.scss */
+/* line 162, scss/partials/_scaffolding.scss */
 .module .list-footer {
   background: #cfd8dc;
 }

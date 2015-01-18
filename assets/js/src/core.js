@@ -1,6 +1,7 @@
-//
-// Backbone with Marionette & Radio shim
-//
+/**
+ * Core =
+ * Marionette & Radio shim
+ */
 //var $ = require('jquery');
 var _ = require('underscore');
 var bb = require('backbone');
@@ -14,28 +15,28 @@ Marionette.Application.prototype._initChannel = function () {
   bb.Radio.channel(this.channelName);
 };
 
-//
-// Backbone plugins
-//
-require('backbone.stickit');
+/**
+ * Backbone plugins
+ */
+//require('backbone.stickit'); // require in FormView??
 require('backbone.syphon/lib/backbone.syphon');
-require('backbone-validation');
+//require('backbone-validation'); // require in FormView??
 require('idb-wrapper');
 require('backbone-idb/backbone-idb');
 require('backbone-dualStorage/backbone.dualstorage');
 bb.FilteredCollection =
   require('backbone-filtered-collection/backbone-filtered-collection');
 
-//
-// Bootstrap components
-//
+/**
+ * Bootstrap components
+ */
 require('bootstrap-sass/assets/javascripts/bootstrap/modal');
 require('bootstrap-sass/assets/javascripts/bootstrap/tooltip');
 require('bootstrap-sass/assets/javascripts/bootstrap/popover');
 require('bootstrap-sass/assets/javascripts/bootstrap/transition');
 require('bootstrap-sass/assets/javascripts/bootstrap/dropdown');
 
-//
-// jQuery plugins
-//
+/**
+ * jQuery plugins
+ */
 require('jquery.hotkeys/jquery.hotkeys');

@@ -3,6 +3,8 @@ var Backbone = require('backbone');
 //var $ = require('jquery');
 //Backbone.$ = $;
 
+global.fs = require('fs');
+
 // core = Marionette & helper libraries
 require('core');
 

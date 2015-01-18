@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var POS = require('lib/utilities/global');
 var Application = require('apps/app/application');
 

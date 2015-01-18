@@ -5,10 +5,10 @@ if ( !$_tests_dir ) $_tests_dir = '/tmp/wordpress-tests-lib';
 
 require_once $_tests_dir . '/includes/functions.php';
 
-function _manually_load_plugin() {
-	require dirname(__FILE__) . '/../../woocommerce-pos.php';
+function load_wc_pos() {
+	require_once dirname( __FILE__ ) . '/../../woocommerce-pos.php';
 }
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
-require $_tests_dir . '/includes/bootstrap.php';
+tests_add_filter( 'muplugins_loaded', 'load_wc_pos' );
 
+require_once $_tests_dir . '/includes/bootstrap.php';

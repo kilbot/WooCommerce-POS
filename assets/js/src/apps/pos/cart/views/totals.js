@@ -39,24 +39,26 @@ module.exports = ItemView.extend({
   },
 
   /**
-   * todo: add a helper function for simple math
+   *
    */
   templateHelpers: function(){
     var data = {};
-    var tax = entitiesChannel.request('get:options', 'tax');
+
+    var tax = entitiesChannel.request('get', {
+      type : 'option',
+      name : 'tax'
+    });
+
     if( tax.tax_display_cart === 'incl' ) {
-
       data.subtotal = this.model.sum(['subtotal', 'subtotal_tax']);
-
-      data.cart_discount =
-          this.model.get('subtotal') + this.model.get('total');
-
+      // subtract?
+      data.cart_discount = this.model.sum(['subtotal', 'total']);
       data.incl_tax = true;
     }
 
     // original total for calculating percentage discount
     data.original = this.model.sum(['total', 'order_discount']);
-console.log(data);
+
     return data;
   },
 

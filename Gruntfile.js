@@ -61,8 +61,15 @@ module.exports = function(grunt) {
         tasks: ['jshint', 'handlebars']
       },
       test: {
-        files: ['./test/**/*.js'],
+        files: ['tests/js/**/*.js'],
         tasks: ['jshint:tests', 'simplemocha']
+      },
+      symlink: {
+        files: ['<%= app.js.src %>/**/*.js'],
+        options: {
+          event: ['added', 'deleted']
+        },
+        tasks: ['symlink']
       }
     },
 
@@ -157,7 +164,7 @@ module.exports = function(grunt) {
         entry: {
           core: './<%= app.js.src %>/core.js',
           app: './<%= app.js.src %>/app.js',
-          admin: './<%= app.js.src %>/admin-entry.js'
+          admin: './<%= app.js.src %>/admin.js'
         },
         module: {
 
@@ -334,10 +341,21 @@ module.exports = function(grunt) {
 
       all: {
         src: [
-          './tests/js/setup/node.js',
-          './tests/js/setup/helpers.js',
-          './tests/js/unit/**/*.spec.js'
+          'tests/js/setup/node.js',
+          'tests/js/setup/helpers.js',
+          'tests/js/unit/**/*.spec.js'
         ]
+      }
+    },
+
+    phpunit: {
+      classes: {
+        dir: 'tests/php/'
+      },
+      options: {
+        //bin: 'tests/php/bin/',
+        bootstrap: 'tests/php/bootstrap.php',
+        colors: true
       }
     },
 
@@ -381,7 +399,7 @@ module.exports = function(grunt) {
 
   // special task for building js i18n files
   grunt.registerTask('js_locales', 'Combine locales.json files', function() {
-    var locales = grunt.file.readJSON('locales.json');
+    var locales = grunt.file.readJSON('languages/locales.json');
     var _ = grunt.util._;
     var files = {};
 

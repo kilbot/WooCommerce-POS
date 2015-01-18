@@ -27,6 +27,7 @@ module.exports = Model.extend({
     if( this.get('item_price') === 0 ) {
       this.set({ 'item_price': parseFloat( this.get('price') ) });
     }
+
   },
 
   updateLineTotals: function() {

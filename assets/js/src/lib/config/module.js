@@ -2,7 +2,7 @@ var bb = require('backbone');
 var POS = require('lib/utilities/global');
 var _ = require('lodash');
 
-var Module = bb.Marionette.Module.extend({
+module.exports = POS.Module = bb.Marionette.Module.extend({
   constructor: function() {
     this.attachGlobals(arguments[0]);
     this.listenTo(bb.history, 'route', this._onHistoryRoute);
@@ -34,6 +34,3 @@ var Module = bb.Marionette.Module.extend({
     }
   }
 });
-
-module.exports = Module;
-POS.attach('Module', Module);

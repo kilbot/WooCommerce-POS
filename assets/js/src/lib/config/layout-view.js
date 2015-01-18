@@ -1,7 +1,7 @@
 var bb = require('backbone');
 var POS = require('lib/utilities/global');
 
-var LayoutView = bb.Marionette.LayoutView.extend({
+module.exports = POS.LayoutView = bb.Marionette.LayoutView.extend({
 
   working: function( action ) {
     if (action === 'start') {
@@ -12,6 +12,3 @@ var LayoutView = bb.Marionette.LayoutView.extend({
   }
 
 });
-
-module.exports = LayoutView;
-POS.attach('LayoutView', LayoutView);

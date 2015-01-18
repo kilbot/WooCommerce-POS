@@ -3,20 +3,23 @@ var bb = require('backbone');
 var $ = require('jquery');
 var _ = require('lodash');
 var entitiesChannel = bb.Radio.channel('entities');
-var debugLog = require('lib/utilities/debug');
+var debug = require('debug')('hotkey');
 var POS = require('lib/utilities/global');
 
 var HotKeys = Behavior.extend({
 
   initialize: function() {
 
-    var hotkeys = entitiesChannel.request( 'get:settings', 'hotkeys' );
+    var hotkeys = entitiesChannel.request( 'get', {
+      type: 'settings',
+      name: 'hotkeys'
+    });
     _.each( this.view.keyEvents, function( method, id ) {
       var trigger = hotkeys.get(id);
       if( trigger ) {
         $(document).bind('keydown', trigger.get('key'), this.view[method]);
       } else {
-        debugLog( 'warn', 'Hotkey not found, id: ' + id );
+        debug('not found, id: ' + id );
       }
     }, this);
 

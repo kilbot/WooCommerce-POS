@@ -1,12 +1,11 @@
 var Router = require('lib/config/router');
 var LayoutView = require('./layout-view');
-var FormView = require('./form/view');
-var StatusView = require('./status/view');
-var $ = require('jquery');
-var Backbone = require('backbone');
-var enititesChannel = Backbone.Radio.channel('entities');
+var FormRoute = require('./form/route');
+var StatusRoute = require('./status/route');
 
 module.exports = Router.extend({
+  columns: 2,
+
   initialize: function(options) {
     this.container = options.container;
   },
@@ -14,7 +13,6 @@ module.exports = Router.extend({
   onBeforeEnter: function() {
     this.layout = new LayoutView();
     this.container.show(this.layout);
-    this.container.$el.addClass('two-column');
   },
 
   routes: {
@@ -22,37 +20,22 @@ module.exports = Router.extend({
   },
 
   show: function(){
-    var ajaxurl = enititesChannel.request( 'get:options', 'ajaxurl');
-    this.showForm( ajaxurl );
-    this.showStatus( ajaxurl );
+    this.showForm();
+    this.showStatus();
   },
 
-  showForm: function( ajaxurl ){
-    var view = new FormView();
-
-    this.listenTo( view, 'send:email', function( data ){
-      $.post( ajaxurl, {
-        action: 'wc_pos_send_support_email',
-        payload: data
-      });
+  showForm: function(){
+    var route = new FormRoute({
+      container  : this.layout.leftRegion
     });
-
-    this.layout.leftRegion.show( view );
+    route.enter();
   },
 
-  showStatus: function( ajaxurl ){
-    var results = $.get( ajaxurl, {
-      action: 'wc_pos_system_status'
+  showStatus: function(){
+    var route = new StatusRoute({
+      container  : this.layout.rightRegion
     });
-
-    //var view = new StatusView( results );
-
-    //POS.Components.Loading.channel.command( 'show:loading', view, {
-    //    region: this.layout.rightRegion,
-    //    loading: {
-    //        entities: results
-    //    }
-    //});
+    route.enter();
   }
 
 });

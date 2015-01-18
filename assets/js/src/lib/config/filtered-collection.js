@@ -45,7 +45,7 @@ _.extend( bb.FilteredCollection.prototype, {
 
       if( key === '' ) {
         return _.all( array, function( value ) {
-          var attributes = _.pick( model.attributes, ( model.fields || 'title' ) );
+          var attributes = _.pick(model.attributes, (model.fields || 'title'));
           return _.any( _.values( attributes ), function( attribute ) {
             return attribute.toLowerCase().indexOf( value ) !== -1;
           });
@@ -133,5 +133,4 @@ _.extend( bb.FilteredCollection.prototype, {
  * note: FilteredCollection is not a Backbone.Collection
  * which means it lacks some methods, such as extend
  */
-module.exports = bb.FilteredCollection;
-POS.attach('FilteredCollection', bb.FilteredCollection);
+module.exports = POS.FilteredCollection = bb.FilteredCollection;

@@ -5,7 +5,7 @@ require('backbone.stickit');
 require('backbone-validation');
 require('lib/utilities/stickit-handlers');
 
-var FormView = ItemView.extend({
+module.exports = POS.FormView = ItemView.extend({
 
   constructor: function() {
     return ItemView.prototype.constructor.apply(this, arguments);
@@ -49,6 +49,3 @@ var FormView = ItemView.extend({
   }
 
 });
-
-module.exports = FormView;
-POS.attach('FormView', FormView);

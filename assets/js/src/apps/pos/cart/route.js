@@ -8,23 +8,38 @@ var CustomerSelect = require('lib/components/customer-select/view');
 var bb = require('backbone');
 var entitiesChannel = bb.Radio.channel('entities');
 var posChannel = bb.Radio.channel('pos');
-var debugLog = require('lib/utilities/debug');
+var debug = require('debug')('cart');
 var $ = require('jquery');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
 
-var Route = Route.extend({
+var CartRoute = Route.extend({
 
   initialize: function( options ) {
     this.id = options.id;
     this.container = options.container;
+    this.collection = options.collection;
 
     // listen for cart:add commands
     posChannel.comply( 'cart:add', this.addToCart, this );
   },
 
   fetch: function() {
-    return this.getOrders();
+    if (this.collection.isNew()) {
+      return this.collection.fetch({ local: true });
+    }
+  },
+
+  onBeforeRender: function(){
+    if( this.id ) {
+      this.order = this.collection.findWhere({
+        local_id: this.id
+      });
+    } else if( this.collection.length > 0 ) {
+      this.order = this.collection.at(0);
+    } else {
+      this.order = this.collection.add({ local_id: '' });
+    }
   },
 
   render: function() {
@@ -39,67 +54,6 @@ var Route = Route.extend({
     });
 
     this.container.show( this.layout );
-  },
-
-  /**
-   *
-   */
-  getOrders: function() {
-    var promise = $.Deferred();
-
-    // init orders collection
-    this.orders = entitiesChannel.request('orders');
-
-    // fetch collection of local orders
-    this.orders.once('idb:ready', function() {
-      this.orders.fetchLocalOrders();
-    }, this);
-
-    // fetch order
-    this.orders.once('orders:ready', function(){
-      this.getOrder( this.id );
-    }, this);
-
-    // finished setting up cart
-    this.on('cart:ready', function(){
-      promise.resolve();
-    });
-
-    return promise;
-  },
-
-  getOrder: function( id ) {
-
-    if( id ) {
-      // get order by id
-      this.order = this.orders.findWhere({ local_id: this.id });
-    } else if( this.orders.length > 0 ) {
-      // get first order
-      this.order = this.orders.at(0);
-    } else {
-      // new order
-      this.order = this.orders.add({ local_id: '' });
-    }
-
-    // add listener to order to update tab label
-    this.listenTo( this.order, 'change:total', this.updateTabLabel );
-
-    this.getCart( this.order );
-  },
-
-  /**
-   *
-   */
-  getCart: function( order ) {
-    this.cart = entitiesChannel.request('cart', { order: order });
-
-    this.cart.once('idb:ready', function() {
-      this.cart.fetchOrder();
-    }, this);
-
-    this.listenTo( this.cart, 'cart:ready', function() {
-      this.trigger('cart:ready');
-    });
   },
 
   /**
@@ -121,18 +75,18 @@ var Route = Route.extend({
     var attributes = item instanceof bb.Model ? item.attributes : item;
     var row;
 
-    if( _.isUndefined( this.cart ) ) {
-      debugLog('error', 'There is no cart');
+    if( _.isUndefined( this.order.cart ) ) {
+      debug('there is no cart');
     }
 
     if( attributes.id ) {
-      row = this.cart.findWhere({ id: attributes.id });
+      row = this.order.cart.findWhere({ id: attributes.id });
     }
 
     if( row instanceof bb.Model ) {
       row.quantity('increase');
     } else {
-      row = this.cart.add( attributes );
+      row = this.order.cart.add( attributes );
     }
 
     row.trigger( 'focus:row' );
@@ -142,7 +96,9 @@ var Route = Route.extend({
    *
    */
   showCart: function() {
-    var view = new ItemsView({ collection: this.cart });
+    var view = new ItemsView({
+      collection: this.order.cart
+    });
     this.layout.listRegion.show( view );
   },
 
@@ -150,7 +106,9 @@ var Route = Route.extend({
    *
    */
   showTotals: function() {
-    var view = new TotalsView({ model: this.order });
+    var view = new TotalsView({
+      model: this.order
+    });
     this.on( 'discount:clicked', view.showDiscountRow );
     this.layout.totalsRegion.show( view );
   },
@@ -187,7 +145,7 @@ var Route = Route.extend({
 
     // void cart
     this.listenTo( view, 'void:clicked', function() {
-      _.invoke( this.cart.toArray(), 'destroy' );
+      this.order.destroy();
     });
 
     // add note
@@ -226,12 +184,14 @@ var Route = Route.extend({
    *
    */
   showNotes: function() {
-    var view = new NotesView({ model: this.order });
+    var view = new NotesView({
+      model: this.order
+    });
     this.on( 'note:clicked', view.showNoteField );
     this.layout.notesRegion.show( view );
   }
 
 });
 
-module.exports = Route;
-POS.attach('POSApp.Cart.Route', Route);
+module.exports = CartRoute;
+POS.attach('POSApp.Cart.Route', CartRoute);

@@ -2,8 +2,9 @@ var bb = require('backbone');
 var $ = require('jquery');
 var POS = require('lib/utilities/global');
 var entitiesChannel = bb.Radio.channel('entities');
+var debug = require('debug')('dualCollection');
 
-var DualCollection = bb.DualCollection.extend({
+module.exports = POS.DualCollection = bb.DualCollection.extend({
   constructor: function() {
     bb.DualCollection.apply(this, arguments);
 
@@ -29,7 +30,8 @@ var DualCollection = bb.DualCollection.extend({
 
   fetch: function(options){
     var self = this;
-    return $.when( this._isReady).then(function() {
+    return $.when(this._isReady).then(function() {
+      debug('fetching: ' + self.name);
       return bb.DualCollection.prototype.fetch.call(self, options);
     });
   },
@@ -55,6 +57,3 @@ var DualCollection = bb.DualCollection.extend({
   }
 
 });
-
-module.exports = DualCollection;
-POS.attach('DualCollection', DualCollection);

@@ -13,8 +13,11 @@ module.exports = FormView.extend({
   },
 
   templateHelpers: function(){
-    var data = {},
-        tax = entitiesChannel.request('get:options', 'tax');
+    var data = {};
+    var tax = entitiesChannel.request('get', {
+      type: 'option',
+      name: 'tax'
+    });
 
     if( tax.tax_display_cart === 'incl' ) {
       data.subtotal = this.model.sum(['subtotal', 'subtotal_tax']);

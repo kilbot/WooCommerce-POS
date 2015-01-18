@@ -4,36 +4,22 @@ var LayoutView = require('./layout-view');
 var Products = require('./products/route');
 var CartRoute = require('./cart/route');
 var entitiesChannel = Backbone.Radio.channel('entities');
-var FilteredCollection = require('lib/config/filtered-collection');
 
 var Router = Router.extend({
+  columns: 2,
+
   initialize: function(options) {
     this.container = options.container;
-
-    this.products = {}
-    this.products.collection = entitiesChannel.request('products');
-    this.products.filtered   = new FilteredCollection( this.products.collection );
-
-    this.cart = entitiesChannel.request('cart');
-    this.orders = entitiesChannel.request('orders');
-
-    this.channel.reply({
-      'get:products': function(){
-        return this.products.filtered;
-      },
-      'get:cart': function(){
-        return this.cart;
-      },
-      'get:orders': function(){
-        return this.orders;
-      }
-    }, this);
+    this.orders = entitiesChannel.request('get', {
+      new   : true,
+      type  : 'collection',
+      name  : 'orders'
+    });
   },
 
   onBeforeEnter: function() {
     this.layout = new LayoutView();
     this.container.show(this.layout);
-    this.container.$el.addClass('two-column');
   },
 
   routes: {
@@ -53,16 +39,16 @@ var Router = Router.extend({
 
   showProducts: function(){
     var products = new Products({
-      container  : this.layout.leftRegion,
-      collection : this.products.collection,
-      filtered   : this.products.filtered
+      container  : this.layout.leftRegion
     });
     products.enter();
   },
 
   showCart: function(id) {
     return new CartRoute({
-      container  : this.layout.rightRegion
+      container  : this.layout.rightRegion,
+      collection : this.orders,
+      id: id
     });
 
     //new POSApp.Cart.Controller({ id: id, region: this.init() });

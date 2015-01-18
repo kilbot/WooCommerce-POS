@@ -4,6 +4,7 @@ var Model = require('./model');
 var Utils = require('lib/utilities/utils');
 var _ = require('lodash');
 var entitiesChannel = bb.Radio.channel('entities');
+var IndexedDB = require('lib/config/indexeddb');
 
 module.exports = Collection.extend({
   model: Model,
@@ -18,21 +19,22 @@ module.exports = Collection.extend({
   initialize: function (models, options) {
     options = options || {};
 
-    this.indexedDB = new bb.IndexedDB({
+    this.indexedDB = new IndexedDB({
       storeName: 'cart',
       storePrefix: 'wc_pos_',
       dbVersion: 1,
       keyPath: 'local_id',
       autoIncrement: true,
       indexes: [
+        {name: 'local_id', keyPath: 'local_id', unique: true},
         {name: 'order', keyPath: 'order', unique: false},
         {name: 'type', keyPath: 'type', unique: false}
       ]
     }, this);
 
-    // if no order?
-    if ( options.order ) {
-      this.order = options.order;
+    // if no order_id?
+    if ( options.order_id ) {
+      this.order_id = options.order_id;
     }
 
     this.on( 'add remove change', this.calcTotals );
@@ -49,8 +51,11 @@ module.exports = Collection.extend({
     subtotal_tax  = this.sum('subtotal_tax');
     total         = this.sum('total');
 
-    var tax = entitiesChannel.request('get:options', 'tax');
-    if( tax.calc_taxes === 'yes' ) {
+    var tax = entitiesChannel.request('get', {
+      type: 'option',
+      name: 'tax'
+    });
+    if( tax && tax.calc_taxes === 'yes' ) {
       total_tax = this.sum('total_tax');
     }
 
@@ -64,21 +69,18 @@ module.exports = Collection.extend({
       //'itemized_tax'  : itemized_tax
     };
 
-    // if no order?
-    if( this.order ) {
-      this.order.save( totals );
-    }
+    this.trigger('update:totals', totals);
   },
 
   fetchOrder: function () {
     var self = this;
     var onItem = function (item) {
-      if (item.order === self.order.id) {
+      if (item.order === self.order_id) {
         self.add(item);
       }
     };
     var onEnd = function () {
-      self.trigger('cart:ready');
+      //self.trigger('cart:ready');
     };
     self.indexedDB.iterate(onItem, {
       index: 'order',
@@ -90,6 +92,6 @@ module.exports = Collection.extend({
   // convenience method to sum attributes in collection
   sum: function(attribute){
     var array = this.pluck(attribute);
-    _( array ).reduce( function(memo, num){ return memo + num; }, 0 );
+    return _( array ).reduce( function(memo, num){ return memo + num; }, 0 );
   }
 });

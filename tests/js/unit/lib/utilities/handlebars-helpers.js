@@ -14,13 +14,13 @@ describe('lib/utilities/handlebars-helpers.js', function () {
             this.html = '{{formatAddress address title="Address Title"}}';
         });
 
-        it('will return an empty string if address attributes are empty', function() {
+        it('should return an empty string if address attributes are empty', function() {
             var template = hbs.compile(this.html);
             var result = template(this.data);
             expect(result).equal('');
         });
 
-        it('will return the title if an address attribute is present', function() {
+        it('should return the title if an address attribute is present', function() {
             var template = hbs.compile(this.html);
             this.data.address = {
                 first_name: 'Don'
@@ -29,7 +29,7 @@ describe('lib/utilities/handlebars-helpers.js', function () {
             expect(result).equal('<h3>Address Title</h3>\nDon');
         });
 
-        it('will not return lines of empty address attributes', function() {
+        it('should not return lines of empty address attributes', function() {
             var template = hbs.compile(this.html);
             this.data.address = {
                 city : 'New York',
@@ -46,7 +46,7 @@ describe('lib/utilities/handlebars-helpers.js', function () {
             expect(countLines(result)).equal(4);
         });
 
-        it('will return 6 lines for a full address', function() {
+        it('should return 6 lines for a full address', function() {
             var template = hbs.compile(this.html);
             this.data.address = {
                 phone : '215-523-4132',

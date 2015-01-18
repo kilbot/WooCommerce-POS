@@ -6,7 +6,7 @@ describe('lib/utilities/parser.js', function () {
 
   describe('parse', function () {
 
-    it('should log a message', function () {
+    it('should refactor this utility', function () {
 
     });
 

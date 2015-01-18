@@ -1,32 +1,15 @@
-var Application = require('lib/config/application');
-var Backbone = require('backbone');
-var debugLog = require('lib/utilities/debug');
+var POS = require('lib/utilities/global');
+var Application = require('apps/admin/application');
+
+/**
+ * bootstrap Handlebars Helpers
+ */
+require('lib/utilities/handlebars-helpers');
 
 /**
  * Create the app
  */
-var app = new Application({
-
-  initialize: function() {
-
-  },
-
-  /**
-   * Set up application with start params
-   */
-  onBeforeStart: function(){
-    debugLog( 'log', 'starting WooCommerce POS admin app' );
-  },
-
-  onStart: function(){
-
-    Backbone.history.start();
-
-    // header app starts on all pages
-    //POS.HeaderApp.start();
-  }
-});
-
+var app = new Application();
 /**
  * Modules
  */
@@ -35,4 +18,7 @@ app.module( 'SettingsApp', {
   container: app.layout.mainRegion
 });
 
-module.exports = app;
+/**
+ * Attach app to window for third party plugins
+ */
+module.exports = window.POS = POS.create(app);

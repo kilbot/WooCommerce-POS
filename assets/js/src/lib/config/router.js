@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Route = require('./route');
 var POS = require('lib/utilities/global');
 
-var Router = bb.Marionette.AppRouter.extend({
+module.exports = POS.Router = bb.Marionette.AppRouter.extend({
   constructor: function() {
     this.channel = bb.Radio.channel('router');
     this.on('all', this._onRouterEvent);
@@ -54,6 +54,3 @@ var Router = bb.Marionette.AppRouter.extend({
 
   triggerMethod: bb.Marionette.triggerMethod
 });
-
-module.exports = Router;
-POS.attach('Router', Router);

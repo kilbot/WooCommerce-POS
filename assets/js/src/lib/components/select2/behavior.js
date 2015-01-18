@@ -7,10 +7,9 @@ module.exports = POS.Behaviors.Select2 = Behavior.extend({
   initialize: function(options){
     this.options = _.defaults(options, {
       query           : _.bind( this.view.query, this.view ),
-      formatResult    : this.view.formatResult,
-      formatSelection : this.view.formatSelection
+      formatResult    : _.bind( this.view.formatResult, this.view ),
+      formatSelection : _.bind( this.view.formatSelection, this.view )
     });
-
   },
 
   ui: {
