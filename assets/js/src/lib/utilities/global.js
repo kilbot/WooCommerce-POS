@@ -31,5 +31,6 @@ module.exports = {
   create: function(app){
     return _.defaults( app, this );
   },
-  debug: debugFunc
+  debug: debugFunc,
+  getOption: function(){}
 };

@@ -1,8 +1,8 @@
-describe('entities/module.js', function () {
+describe('entities/service.js', function () {
 
   beforeEach(function () {
 
-    var Module = proxyquire('entities/module', {
+    var Module = proxyquire('entities/service', {
       './products/collection' : Backbone.Collection,
       './orders/collection'   : Backbone.Collection,
       './cart/collection'     : Backbone.Collection,

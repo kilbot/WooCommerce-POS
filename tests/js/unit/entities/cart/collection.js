@@ -15,22 +15,18 @@ describe('entities/cart/collection.js', function () {
     expect(this.collection).to.be.ok;
   });
 
-  describe('sum() method', function () {
-
-    it('should sum a given model attribute', function() {
-      var arr = [];
-      while(arr.length < 3){
-        arr.push( Math.random() );
-      }
-      this.collection.add([
-        { random: arr[0] },
-        { random: arr[1] },
-        { random: arr[2] }
-      ]);
-      var sum = arr.reduce(function(pv, cv) { return pv + cv; }, 0);
-      expect(this.collection.sum('random')).equals(sum);
-    });
-
+  it('should have sum convenience method ', function() {
+    var arr = [];
+    while(arr.length < 3){
+      arr.push( Math.random() );
+    }
+    this.collection.add([
+      { random: arr[0] },
+      { random: arr[1] },
+      { random: arr[2] }
+    ]);
+    var sum = arr.reduce(function(pv, cv) { return pv + cv; }, 0);
+    expect(this.collection.sum('random')).equals(sum);
   });
 
 });

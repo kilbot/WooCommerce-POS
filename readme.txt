@@ -111,6 +111,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * TODO: two tabs open, remove database, both try to update
 * TODO: harden against CORS w/ relative urls
 * TODO: add amount tendered and change to receipt
+* TODO: price set to 0.001 with 3 decimal precision shows 0.00 in cart
 * New: set custom permalink for POS front-end, eg: http://yourstore.com/custom-slug/
 * Fix: conflict with W3 Total Cache js minify
 * Fix: removed all cases of php echo shorthand for short_open_tag=off

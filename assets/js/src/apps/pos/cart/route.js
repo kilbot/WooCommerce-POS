@@ -14,9 +14,11 @@ var _ = require('lodash');
 var POS = require('lib/utilities/global');
 
 var CartRoute = Route.extend({
+  views: {},
 
   initialize: function( options ) {
-    this.id = options.id;
+    options = options || {};
+    this.order_id = options.order_id;
     this.container = options.container;
     this.collection = options.collection;
 
@@ -31,19 +33,19 @@ var CartRoute = Route.extend({
   },
 
   onBeforeRender: function(){
-    if( this.id ) {
+    if( this.order_id ) {
       this.order = this.collection.findWhere({
-        local_id: this.id
+        local_id: this.order_id
       });
     } else if( this.collection.length > 0 ) {
       this.order = this.collection.at(0);
     } else {
-      this.order = this.collection.add({ local_id: '' });
+      this.order = this.collection.create();
     }
   },
 
   render: function() {
-    this.layout = new LayoutView();
+    this.layout = new LayoutView({ order: this.order });
 
     this.listenTo( this.layout, 'show', function() {
       this.showCart();
@@ -51,6 +53,8 @@ var CartRoute = Route.extend({
       this.showCustomer();
       this.showActions();
       this.showNotes();
+
+      this.layout.showOrHide();
     });
 
     this.container.show( this.layout );
@@ -93,28 +97,28 @@ var CartRoute = Route.extend({
   },
 
   /**
-   *
+   * Cart Items
    */
   showCart: function() {
     var view = new ItemsView({
       collection: this.order.cart
     });
-    this.layout.listRegion.show( view );
+    this.layout.listRegion.show(view);
   },
 
   /**
-   *
+   * Cart Totals
    */
   showTotals: function() {
     var view = new TotalsView({
       model: this.order
     });
-    this.on( 'discount:clicked', view.showDiscountRow );
-    this.layout.totalsRegion.show( view );
+    this.on('discount:clicked', view.showDiscountRow);
+    this.layout.totalsRegion.show(view);
   },
 
   /**
-   *
+   * Customer Select
    */
   showCustomer: function(){
     var view = new CustomerSelect();
@@ -140,48 +144,42 @@ var CartRoute = Route.extend({
    * TODO: abstract as a collection of button models?
    */
   showActions: function() {
+    var view = new ActionsView(),
+        self = this;
 
-    var view = new ActionsView();
+    var actions = {
+      'void': function(){
+        self.order.voidOrder();
+      },
+      note: function(){
+        self.layout.notesRegion.currentView.showNoteField();
+      },
+      discount: function(){
+        self.layout.totalsRegion.currentView.showDiscountRow();
+      },
+      fee: function(args){
+        self.addToCart({ title: args.title, type: 'fee' });
+      },
+      shipping: function(args){
+        self.addToCart({ title: args.title, type: 'shipping' });
+      },
+      checkout: function(){
+        //posChannel.command('show:checkout');
+      }
+    };
 
-    // void cart
-    this.listenTo( view, 'void:clicked', function() {
-      this.order.destroy();
-    });
-
-    // add note
-    this.listenTo( view, 'note:clicked', function() {
-      this.trigger('note:clicked');
-    });
-
-    // cart discount
-    this.listenTo( view, 'discount:clicked', function() {
-      this.trigger('discount:clicked');
-    });
-
-    // add fee
-    this.listenTo( view, 'fee:clicked', function(args) {
-      var title = args.view.$('.action-fee').data('title');
-      //posChannel.command( 'cart:add', { title: title, type: 'fee' } );
-      this.addToCart({ title: title, type: 'fee' });
-    });
-
-    // add shipping
-    this.listenTo( view, 'shipping:clicked', function(args) {
-      var title = args.view.$('.action-shipping').data('title');
-      //posChannel.command( 'cart:add', { title: title, type: 'shipping' } );
-      this.addToCart({ title: title, type: 'shipping' });
-    });
-
-    // checkout
-    this.listenTo( view, 'checkout:clicked', function() {
-      posChannel.command('show:checkout');
+    this.listenTo( view, 'button:clicked', function(args) {
+      var action = args.action;
+      if(actions.hasOwnProperty(action)){
+        actions[action](args);
+      }
     });
 
     this.layout.actionsRegion.show( view );
   },
 
   /**
-   *
+   * Order Notes
    */
   showNotes: function() {
     var view = new NotesView({

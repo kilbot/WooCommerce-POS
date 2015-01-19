@@ -3,16 +3,22 @@ var $ = require('jquery');
 var hbs = require('handlebars');
 
 module.exports = ItemView.extend({
+
   initialize: function(){
     this.template = hbs.compile( $('#tmpl-cart-actions').html() );
   },
-  triggers: {
-    'click .action-void'  : 'void:clicked',
-    'click .action-note'  : 'note:clicked',
-    'click .action-discount': 'discount:clicked',
-    'click .action-fee'     : 'fee:clicked',
-    'click .action-shipping': 'shipping:clicked',
-    'click .action-checkout': 'checkout:clicked'
+
+  events: {
+    'click a': 'onButtonClicked'
+  },
+
+  onButtonClicked: function(e){
+    e.preventDefault();
+    var args = {
+      action: $(e.target).data('action'),
+      title: $(e.target).data('title')
+    }
+    this.trigger('button:clicked', args);
   }
 
 });

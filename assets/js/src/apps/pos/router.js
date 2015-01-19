@@ -11,9 +11,9 @@ var Router = Router.extend({
   initialize: function(options) {
     this.container = options.container;
     this.orders = entitiesChannel.request('get', {
-      new   : true,
-      type  : 'collection',
-      name  : 'orders'
+      init : true,
+      type : 'collection',
+      name : 'orders'
     });
   },
 
@@ -48,7 +48,7 @@ var Router = Router.extend({
     return new CartRoute({
       container  : this.layout.rightRegion,
       collection : this.orders,
-      id: id
+      order_id   : id
     });
 
     //new POSApp.Cart.Controller({ id: id, region: this.init() });

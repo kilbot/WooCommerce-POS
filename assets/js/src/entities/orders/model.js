@@ -37,7 +37,7 @@ module.exports = DualModel.extend({
     this.cart = cart;
   },
 
-  onDestroy: function(){
+  voidOrder: function(){
     _.invoke( this.cart.toArray(), 'destroy' );
   },
 

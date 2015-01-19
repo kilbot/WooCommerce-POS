@@ -46,7 +46,6 @@ module.exports = ItemView.extend({
   },
 
   showNoteField: function() {
-    console.log('show note');
     this.$el.parent('.cart-notes').show();
     this.$el.attr('contenteditable','true').focus();
   }

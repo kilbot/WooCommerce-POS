@@ -1,6 +1,6 @@
 describe('entities', function () {
-  require('./module');
+  require('./service');
   require('./orders/collection');
-  //require('./orders/model');
+  require('./orders/model');
   require('./cart/collection');
 });

@@ -10,10 +10,8 @@ module.exports = DualCollection.extend({
   model: Model,
 
   comparator: function( model ){
-    //var type = model.get( 'type' );
-    //if( type === 'fee' ) { return 2; }
-    //if( type === 'shipping' ) { return 1; }
-    //return 0;
+    if( model.get('id') === undefined ) { return 0; }
+    return 1;
   },
 
   initialize: function() {
@@ -53,7 +51,7 @@ module.exports = DualCollection.extend({
   fetchLocalOrders: function(promise){
     var self = this;
     var onItem = function(item) {
-      if( ! _( item).has('id') ) {
+      if( !item.id ) {
         self.add(item);
       }
     };

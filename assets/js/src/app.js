@@ -2,39 +2,48 @@ var POS = require('lib/utilities/global');
 var Application = require('apps/app/application');
 
 /**
+ * Services
+ */
+var EntitiesService = require('entities/service');
+var HeaderService = require('apps/header/service');
+var ModalService = require('lib/components/modal/service');
+
+/**
+ * SubApps
+ */
+var POSRouter = require('apps/pos/router');
+var SupportRouter = require('apps/support/router');
+
+/**
  * bootstrap Handlebars Helpers
  */
 require('lib/utilities/handlebars-helpers');
 
 /**
- * Create the app
+ * Create the app ...
  */
 var app = new Application();
 
 /**
- * Modules
+ * ... add SubApps and Services
  */
-app.module( 'Entities', {
-    moduleClass: require('entities/module')
+app.entities = new EntitiesService({
+    app: app
 });
 
-app.module( 'HeaderApp', {
-    moduleClass: require('apps/header/module'),
-    container: app.layout.headerRegion
+app.headerApp = new HeaderService({
+    container: app.layout.header
 });
 
-app.module( 'POSApp', {
-    moduleClass: require('apps/pos/module'),
+app.posApp = new POSRouter({
     container: app.layout.mainRegion
 });
 
-app.module( 'SupportApp', {
-    moduleClass: require('apps/support/module'),
+app.supportApp = new SupportRouter({
     container: app.layout.mainRegion
 });
 
-app.module( 'Modal', {
-    moduleClass: require('lib/components/modal/module'),
+app.modalApp = new ModalService({
     container: app.layout.modalRegion
 });
 
