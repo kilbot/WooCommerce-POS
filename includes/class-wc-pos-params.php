@@ -17,7 +17,7 @@ class WC_POS_Params {
 
 		$param['accounting'] 	= $this->accounting_settings();
 		$param['ajaxurl'] 	    = admin_url( 'admin-ajax.php', 'relative' );
-		$param['default_customer']= $this->get_default_customer();
+		$param['customers']		= $this->customers();
 		$param['denominations'] = WC_POS_i18n::currency_denominations( get_option('woocommerce_currency') );
 		$param['hotkeys'] 	    = $this->hotkeys();
 		$param['nonce'] 		= wp_create_nonce( WC_POS_PLUGIN_NAME );
@@ -39,9 +39,9 @@ class WC_POS_Params {
 	 */
 	public function admin() {
 
-		$param['default_customer']= $this->get_default_customer();
-		$param['nonce'] = wp_create_nonce( WC_POS_PLUGIN_NAME );
-		$param['page']  = 'settings';
+		$param['customers']	= $this->customers();
+		$param['nonce'] 	= wp_create_nonce( WC_POS_PLUGIN_NAME );
+		$param['page']  	= 'settings';
 
 		$param['hotkeys'] = $this->hotkeys();
 
@@ -158,29 +158,36 @@ class WC_POS_Params {
 	}
 
 	/**
-	 * Get the default customer
+	 * Get the default customer + guest
 	 *
 	 * @return object $customer
 	 */
-	public function get_default_customer() {
-		$settings 	= WC_POS_Admin_Settings::get_settings( 'general' );
-		$id = isset( $settings['customer'] ) ? $settings['customer'] : 0 ;
+	public function customers() {
+		$user = false;
+		$settings = WC_POS_Admin_Settings::get_settings( 'general' );
 
-		$user 	= get_userdata( $id );
-		if( $user ) {
-			$first_name = esc_html( $user->first_name );
-			$last_name 	= esc_html( $user->last_name );
-			$name		= $first_name .' '. $last_name;
-			if ( trim($name) == '' ) $name = esc_html( $user->display_name );
-		} else {
-			/* translators: woocommerce */
-			$name = __( 'Guest', 'woocommerce' );
+		if( isset( $settings['customer'] )
+			&& is_int( $settings['customer']
+			&& $settings['customer'] != 0 ) ){
+			$user = get_userdata( $settings['customer'] );
 		}
-		$customer = array(
-			'id' => $id,
-			'display_name' => $name
+
+		if( $user ) {
+			$customers['default'] = array(
+				'id' => $user->ID,
+				'first_name' => esc_html($user->first_name),
+				'last_name' => esc_html($user->last_name),
+				'email' => esc_html($user->email)
+			);
+		}
+
+		$customers['guest'] = array(
+			'id' => 0,
+			/* translators: woocommerce */
+			'first_name' => __( 'Guest', 'woocommerce' )
 		);
-		return $customer;
+
+		return $customers;
 	}
 
 	/**

@@ -200,4 +200,13 @@ class WC_POS_Template {
 			include $template;
 		}
 	}
+
+	/**
+	 * Payment gateways templates
+	 */
+	protected function gateways(){
+		$registry = WC_POS_Registry::instance();
+		$payment_gateways = $registry->get('gateways');
+		return $payment_gateways->enabled_gateways();
+	}
 }

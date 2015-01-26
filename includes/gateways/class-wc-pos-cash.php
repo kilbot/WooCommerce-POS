@@ -12,12 +12,9 @@
 
 class WC_POS_Gateways_Cash extends WC_Payment_Gateway {
 
-	/** @var string 'no' never enabled in Online Store. */
-	public $enabled = 'no';
-
-    /**
-     * Constructor for the gateway.
-     */
+	/**
+	 * Constructor for the gateway.
+	 */
 	public function __construct() {
 		$this->id          = 'pos_cash';
 		$this->title       = __( 'Cash', 'woocommerce-pos' );
@@ -30,7 +27,7 @@ class WC_POS_Gateways_Cash extends WC_Payment_Gateway {
 		add_action( 'woocommerce_thankyou_pos_cash', array( $this, 'calculate_change' ) );
 	}
 
-   	/**
+	/**
 	 * Display the payment fields on the checkout modal
 	 */
 	public function payment_fields() {
@@ -107,15 +104,6 @@ class WC_POS_Gateways_Cash extends WC_Payment_Gateway {
 		}
 
 		echo $message;
-	}
-
-	/**
-	 * Check If The Gateway Is Available For Use
-	 *
-	 * @return bool
-	 */
-	public function is_available() {
-		return true;
 	}
 
 }

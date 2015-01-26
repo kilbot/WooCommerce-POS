@@ -3,18 +3,16 @@ var Router = require('lib/config/router');
 var LayoutView = require('./layout-view');
 var Products = require('./products/route');
 var CartRoute = require('./cart/route');
-var entitiesChannel = Backbone.Radio.channel('entities');
+var CheckoutRoute = require('./checkout/route');
+var ReceiptRoute = require('./receipt/route');
+//var Radio = require('backbone').Radio;
 
 var Router = Router.extend({
   columns: 2,
 
   initialize: function(options) {
     this.container = options.container;
-    this.orders = entitiesChannel.request('get', {
-      init : true,
-      type : 'collection',
-      name : 'orders'
-    });
+    this.channel.comply('show:cart', this.showCart, this);
   },
 
   onBeforeEnter: function() {
@@ -23,43 +21,43 @@ var Router = Router.extend({
   },
 
   routes: {
-    '' : 'showCart',
-    'cart' : 'showCart',
-    'cart/:id' : 'showCart',
-    'checkout' : 'showCheckout',
-    'checkout/:id' : 'showCheckout',
+    ''            : 'showCart',
+    'cart'        : 'showCart',
+    'cart/:id'    : 'showCart',
+    'checkout'    : 'showCheckout',
+    'checkout/:id': 'showCheckout',
     'receipt/:id' : 'showReceipt'
   },
 
   onBeforeRoute: function(){
-    if( ! this.layout.leftRegion.hasView() ){
+    if(!this.layout.leftRegion.hasView()){
       this.showProducts();
     }
   },
 
   showProducts: function(){
     var products = new Products({
-      container  : this.layout.leftRegion
+      container : this.layout.leftRegion
     });
     products.enter();
   },
 
-  showCart: function(id) {
+  showCart: function() {
     return new CartRoute({
-      container  : this.layout.rightRegion,
-      collection : this.orders,
-      order_id   : id
+      container : this.layout.rightRegion
     });
-
-    //new POSApp.Cart.Controller({ id: id, region: this.init() });
   },
 
-  showCheckout: function(id) {
-    //new POSApp.Checkout.Controller({ id: id, region: this.init() });
+  showCheckout: function() {
+    return new CheckoutRoute({
+      container : this.layout.rightRegion
+    });
   },
 
-  showReceipt: function(id) {
-    //new POSApp.Receipt.Controller({ id: id, region: this.init() });
+  showReceipt: function() {
+    return new ReceiptRoute({
+      container : this.layout.rightRegion
+    });
   }
 
 });

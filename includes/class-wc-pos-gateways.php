@@ -24,18 +24,24 @@ class WC_POS_Gateways {
 
 	/**
 	 * Add POS gateways
-	 * hide gateways on the woocommerce settings page
 	 * @param $gateways
 	 * @return array
 	 */
 	public function payment_gateways( $gateways ) {
-		$screen = get_current_screen();
-		if( !empty($screen) && $screen->id == 'woocommerce_page_wc-settings' ) {
-			return $gateways;
-		} else {
-			array_push( $gateways, 'WC_POS_Gateways_Cash', 'WC_POS_Gateways_Card');
-			return $gateways;
+		$pos_gateways = array(
+			'WC_POS_Gateways_Cash',
+			'WC_POS_Gateways_Card'
+		);
+
+		// hide gateways on the woocommerce settings page
+		if(is_admin()){
+			$screen = get_current_screen();
+			if( !empty($screen) && $screen->id == 'woocommerce_page_wc-settings' ) {
+				$pos_gateways = array();
+			}
 		}
+
+		return array_merge($gateways, $pos_gateways);
 	}
 
 	/**
@@ -98,6 +104,88 @@ class WC_POS_Gateways {
 			wp_add_inline_style( 'wp-admin', $css );
 		}
 
+	}
+
+	/**
+	 *
+	 */
+	public function enabled_gateways(){
+		$_gateways = array();
+		$checkout_settings = WC_POS_Admin_Settings::get_settings('checkout');
+		$enabled_gateways = array_keys($checkout_settings['enabled']);
+		$payment_gateways = WC()->payment_gateways->payment_gateways();
+		foreach ( $enabled_gateways as $gateway ) {
+			if(array_key_exists($gateway, $payment_gateways)){
+				$_gateways[$gateway] = $this->sanitize( $payment_gateways[$gateway] );
+			}
+		}
+		error_log(print_r($this->order_gateways($_gateways), true));
+		return $this->order_gateways($_gateways);
+	}
+
+	private function order_gateways($gateways){
+		$checkout_settings = WC_POS_Admin_Settings::get_settings('checkout');
+		$order = $checkout_settings['gateway_order'];
+		$commonKeysInOrder = array_intersect_key($order, $gateways);
+		$commonKeysWithValue = array_intersect_key($gateways, $commonKeysInOrder);
+		return array_merge($commonKeysInOrder, $commonKeysWithValue);
+	}
+
+	private function sanitize($gateway){
+		$settings = WC_POS_Admin_Settings::get_settings('gateway_'.$gateway->id);
+
+		if(isset($settings['title']) && $settings['title'] !== ''){
+			$gateway->title = $settings['title'];
+		}
+
+		if(isset($settings['description']) && $settings['description'] !== ''){
+			$gateway->description = $settings['description'];
+		}
+
+		if(isset($settings['icon']) && $settings['icon'] === 'true'){
+			$gateway->icon = $this->sanitize_icon($gateway);
+		}
+
+		$gateway->payment_fields = $this->sanitize_payment_fields($gateway);
+
+		return $gateway;
+	}
+
+	private function sanitize_icon($gateway){
+		$icon = $gateway->get_icon();
+		if($icon !== ''){
+			// simple preg_match
+			preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $icon, $src);
+			$icon = $src[1];
+		}
+		return $icon;
+	}
+
+	private function sanitize_payment_fields($gateway){
+		$html = '';
+		if( $gateway->has_fields() || $gateway->get_description() ){
+
+			ob_start();
+			$gateway->payment_fields();
+			$html = ob_get_contents();
+			ob_end_clean();
+
+			// remove any javascript
+			// note: DOMDocument causes more problems than it's worth
+
+//			$doc = new DOMDocument();
+//			$doc->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+//			$script_tags = $doc->getElementsByTagName('script');
+//			$length = $script_tags->length;
+//			for ($i = 0; $i < $length; $i++) {
+//				$script_tags->item($i)->parentNode->removeChild($script_tags->item($i));
+//			}
+//			echo $doc->saveHTML();
+
+			// simple preg_replace
+			$html = preg_replace('/<script.+?<\/script>/im', '', $html);
+		}
+		return $html;
 	}
 
 }

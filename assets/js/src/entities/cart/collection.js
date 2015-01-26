@@ -16,8 +16,7 @@ module.exports = Collection.extend({
     return 0;
   },
 
-  initialize: function (models, options) {
-    options = options || {};
+  initialize: function () {
 
     this.indexedDB = new IndexedDB({
       storeName: 'cart',
@@ -31,11 +30,6 @@ module.exports = Collection.extend({
         {name: 'type', keyPath: 'type', unique: false}
       ]
     }, this);
-
-    // if no order_id?
-    if ( options.order_id ) {
-      this.order_id = options.order_id;
-    }
 
     this.on( 'add remove change', this.calcTotals );
   },
@@ -72,17 +66,20 @@ module.exports = Collection.extend({
     this.trigger('update:totals', totals);
   },
 
-  fetchOrder: function () {
-    var self = this;
+  fetchCartItems: function (options) {
+    var options = options || {};
+    if(!options.order_id){
+      return;
+    }
+
+    this.order_id = options.order_id;
     var onItem = function (item) {
-      if (item.order === self.order_id) {
-        self.add(item);
+      if (item.order === this.order_id) {
+        this.add(item);
       }
-    };
-    var onEnd = function () {
-      //self.trigger('cart:ready');
-    };
-    self.indexedDB.iterate(onItem, {
+    }.bind(this);
+    var onEnd = function () {};
+    this.indexedDB.iterate(onItem, {
       index: 'order',
       order: 'ASC',
       onEnd: onEnd
@@ -93,5 +90,32 @@ module.exports = Collection.extend({
   sum: function(attribute){
     var array = this.pluck(attribute);
     return _( array ).reduce( function(memo, num){ return memo + num; }, 0 );
+  },
+
+  /**
+   * add/increase item
+   */
+  addToCart: function(options){
+    options = options || {};
+    var attributes,
+        model;
+
+    if(options.model){
+      attributes = options.model.attributes;
+    } else {
+      attributes = options;
+    }
+
+    if( attributes.id ) {
+      model = this.findWhere({ id: attributes.id });
+    }
+
+    if( model ) {
+      model.quantity('increase');
+    } else {
+      model = this.add(attributes);
+    }
+
+    model.trigger('focus');
   }
 });

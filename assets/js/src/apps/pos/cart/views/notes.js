@@ -20,7 +20,7 @@ module.exports = ItemView.extend({
 
   showOrHide: function() {
     if( this.model.get('note') === '' ) {
-      this.$el.parent('.cart-notes').hide();
+      this.$el.hide();
     }
   },
 
@@ -46,7 +46,7 @@ module.exports = ItemView.extend({
   },
 
   showNoteField: function() {
-    this.$el.parent('.cart-notes').show();
+    this.$el.show();
     this.$el.attr('contenteditable','true').focus();
   }
 });

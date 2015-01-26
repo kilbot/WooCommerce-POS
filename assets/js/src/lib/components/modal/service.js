@@ -26,6 +26,10 @@ module.exports = Service.extend({
     this.listenTo(Backbone.history, {
       'route' : this.onRoute
     });
+
+    this.listenTo(this.layout, 'all', function(e){
+      console.log(e);
+    });
   },
 
   onStop: function(){
@@ -40,41 +44,41 @@ module.exports = Service.extend({
     }
   },
 
-  alert: function(options){
-    //var deferred = $.Deferred();
-    //var view = new AlertView(options);
-    //
-    //view.on({
-    //  'confirm' : deferred.resolve,
-    //  'cancel'  : deferred.resolve
-    //});
-    //
-    //return deferred;
-  },
-
-  confirm: function(options){
-    //var deferred = $.Deferred();
-    //var view = new ConfirmView(options);
-    //
-    //view.on({
-    //  'confirm' : deferred.resolve,
-    //  'cancel'  : deferred.reject
-    //});
-    //
-    //return deferred;
-  },
-
-  prompt: function(options){
-    //var deferred = $.Deferred();
-    //var view = new PromptView(options);
-    //
-    //view.on({
-    //  'submit' : deferred.resolve,
-    //  'cancel' : deferred.reject
-    //});
-    //
-    //return deferred;
-  },
+  //alert: function(options){
+  //  var deferred = $.Deferred();
+  //  var view = new AlertView(options);
+  //
+  //  view.on({
+  //    'confirm' : deferred.resolve,
+  //    'cancel'  : deferred.resolve
+  //  });
+  //
+  //  return deferred;
+  //},
+  //
+  //confirm: function(options){
+  //  var deferred = $.Deferred();
+  //  var view = new ConfirmView(options);
+  //
+  //  view.on({
+  //    'confirm' : deferred.resolve,
+  //    'cancel'  : deferred.reject
+  //  });
+  //
+  //  return deferred;
+  //},
+  //
+  //prompt: function(options){
+  //  var deferred = $.Deferred();
+  //  var view = new PromptView(options);
+  //
+  //  view.on({
+  //    'submit' : deferred.resolve,
+  //    'cancel' : deferred.reject
+  //  });
+  //
+  //  return deferred;
+  //},
 
   open: function(view){
     var self = this;

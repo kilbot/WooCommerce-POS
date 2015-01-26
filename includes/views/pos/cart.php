@@ -15,7 +15,7 @@
 	<div class="list"></div>
 	<div class="list-totals"></div>
 	<div class="cart-customer"><?php /* translators: woocommerce */ _e( 'Customer', 'woocommerce' ); ?>: </div>
-	<div class="cart-actions"></div>
+	<div class="list-actions"></div>
 	<div class="cart-notes"></div>
 	<div class="list-footer"></div>
 </script>
@@ -39,14 +39,7 @@
 		<a href="#" class="btn btn-default btn-circle-sm action-more"><i class="icon icon-angle-down"></i></a>
 	</div>
 	<div class="price"><input type="text" name="item_price" data-original="{{regular_price}}" data-title="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" class="btn autogrow"></div>
-	<div class="total">
-		{{#compare total '!==' subtotal}}
-			<del>{{{money subtotal}}}</del>
-			<ins>{{{money total}}}</ins>
-		{{else}}
-			{{{money total}}}
-		{{/compare}}
-	</div>
+	<div class="total"></div>
 	<div class="action"><a class="btn btn-circle btn-danger action-remove" href="#"><i class="icon icon-times icon-lg"></i></a></div>
 </script>
 

@@ -1,44 +1,90 @@
 var DualModel = require('lib/config/dual-model');
-var Cart = require('entities/cart/collection');
-var bb = require('backbone');
-var entitiesChannel = bb.Radio.channel('entities');
+var Radio = require('backbone').Radio;
+var debug = require('debug')('orderModel');
+var _ = require('lodash');
 
 module.exports = DualModel.extend({
   name: 'order',
-  defaults: {
-    note: ''
+  defaults: function(){
+    var defaults = { note: '' },
+        customers,
+        default_customer;
+
+    customers = Radio.request('entities', 'get', {
+      type : 'option',
+      name : 'customers'
+    });
+
+    if(customers){
+      default_customer = customers['default'] || customers.guest;
+    }
+
+    if(default_customer){
+      defaults.customer_id = default_customer.id;
+      defaults.customer = default_customer;
+    }
+
+    return defaults;
   },
 
   initialize: function(){
     if( !this.hasRemoteId() ){
       this.attachCart();
+      this.attachGateways();
     }
+    _.bindAll(this, 'onSaveSuccess', 'process');
   },
 
   /**
    * Attach cart
    */
   attachCart: function(){
-    var cart = entitiesChannel.request('get', {
-      new     : true,
-      type    : 'collection',
-      name    : 'cart',
-      order_id: this.get('local_id')
+    var cart = Radio.request('entities', 'get', {
+      init : true,
+      type : 'collection',
+      name : 'cart'
     });
 
-    cart.once('idb:ready', function() {
-      cart.fetchOrder();
+    this.listenToOnce(cart, 'idb:ready', function() {
+      cart.fetchCartItems({order_id: this.id});
     });
 
-    this.listenTo(cart, 'update:totals', function(totals){
-      this.save(totals);
+    this.listenTo(cart, {
+      'update:totals': function(totals){
+        this.save(totals, { success: this.onSaveSuccess });
+      },
+      'remove': function(){
+        if(cart.length === 0){
+          this.destroy();
+        }
+      }
     });
 
     this.cart = cart;
   },
 
-  voidOrder: function(){
-    _.invoke( this.cart.toArray(), 'destroy' );
+  /**
+   * Attach gateways
+   */
+  attachGateways: function(){
+    this.gateways = Radio.request('entities', 'get', {
+      init : true,
+      type : 'collection',
+      name : 'gateways'
+    });
+  },
+
+  /**
+   * special case, first save, update order_id
+   */
+  onSaveSuccess: function(){
+    if(this.cart.order_id){
+      return;
+    }
+    this.cart.order_id = this.id;
+    this.cart.each(function(model) {
+      model.save({order: this.id}, {silent: true});
+    }, this);
   },
 
   /**
@@ -50,5 +96,13 @@ module.exports = DualModel.extend({
       sum += this.get(array[i]);
     }
     return sum;
+  },
+
+  /**
+   * process order
+   */
+  process: function(){
+    debug('process order ' + this.id);
   }
+
 });

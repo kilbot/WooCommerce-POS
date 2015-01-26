@@ -10,19 +10,27 @@ describe('apps/pos/cart/route.js', function () {
       './views/notes': stub(),
       'lib/components/customer-select/view': stub()
     });
-    this.route = new Route();
+    Route.prototype.initialize = stub();
 
+    this.route = new Route();
   });
 
   it('should be in a valid state', function() {
     expect(this.route).to.be.ok;
   });
 
-  describe('onBeforeRender', function () {
+  describe('onFetch', function () {
 
     beforeEach(function(){
 
-      this.route.collection = new Backbone.Collection([
+      // Order models have id = remoteId, local_id = idAttribute
+      var Collection = Backbone.Collection.extend({
+        model: Backbone.Model.extend({
+          idAttribute: 'local_id'
+        })
+      });
+
+      this.route.collection = new Collection([
         { local_id: 1 },
         { local_id: 2 },
         { local_id: 3 }
@@ -30,24 +38,26 @@ describe('apps/pos/cart/route.js', function () {
 
     });
 
-    it('should attach the correct order if order_id given', function() {
-      this.route.order_id = 2;
-      this.route.onBeforeRender();
-      expect(this.route.order).to.be.instanceof(Backbone.Model);
-      expect(this.route.order.get('local_id')).equals(2);
+    it('should attach the correct order if id given', function() {
+      this.route.onFetch(2);
+      var active = this.route.collection.active;
+      expect(active).to.be.instanceof(Backbone.Model);
+      expect(active.get('local_id')).equals(2);
     });
 
-    it('should attach the first order if order_id not given', function() {
-      this.route.onBeforeRender();
-      expect(this.route.order).to.be.instanceof(Backbone.Model);
-      expect(this.route.order.get('local_id')).equals(1);
+    it('should attach the first order if id not given', function() {
+      this.route.onFetch();
+      var active = this.route.collection.active;
+      expect(active).to.be.instanceof(Backbone.Model);
+      expect(active.get('local_id')).equals(1);
     });
 
-    //it('should create a new order if no orders present', function() {
-    //  this.route.collection = new Backbone.Collection([]);
-    //  this.route.onBeforeRender();
-    //  expect(this.route.order).to.be.instanceof(Backbone.Model);
-    //});
+    it('should create a new order if no orders present', function() {
+      this.route.collection.reset();
+      this.route.onFetch();
+      var active = this.route.collection.active;
+      expect(active).to.be.instanceof(Backbone.Model);
+    });
 
   });
 

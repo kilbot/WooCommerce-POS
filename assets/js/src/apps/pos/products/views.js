@@ -56,13 +56,13 @@ Views.Item = ItemView.extend({
   },
 
   ui: {
-    add: '.action-add',
-    variations: '.action-variations'
+    add       : 'a[data-action="add"]',
+    variations: 'a[data-action="variations"]'
   },
 
   triggers: {
-    'click @ui.add'         : 'cart:add:clicked',
-    'click @ui.variations'  : 'product:variations:clicked'
+    'click @ui.add'         : 'add:to:cart',
+    'click @ui.variations'  : 'show:variations'
   }
 
 });

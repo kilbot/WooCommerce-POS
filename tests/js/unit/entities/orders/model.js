@@ -1,10 +1,8 @@
 describe('entities/orders/model.js', function () {
 
   beforeEach(function () {
-
     var Model = require('entities/orders/model');
     this.order = new Model();
-
   });
 
   it('should be in a valid state', function() {
@@ -29,14 +27,42 @@ describe('entities/orders/model.js', function () {
     expect(this.order.cart).to.be.instanceof(Backbone.Collection);
   });
 
-  it('should have a void method which clears the cart collection', function() {
-    this.order.cart = new Backbone.Collection([
+  it('should destroy itself when cart is empty', function() {
+    this.order.cart.add([
       { title: 'foo' },
       { title: 'bar' }
     ]);
-    expect(this.order.cart.length).equals(2);
-    this.order.voidOrder();
-    expect(this.order.cart.length).equals(0);
+    this.order.destroy = stub();
+    _.invoke( this.order.cart.toArray(), 'destroy');
+    expect(this.order.destroy).to.have.been.calledOnce;
+  });
+
+  describe('onSaveSuccess()', function () {
+    before(function () {
+      expect(this.order).to.respondTo('onSaveSuccess');
+    });
+
+    beforeEach(function(){
+      var CartItem = Backbone.Model.extend({
+        url: '?'
+      });
+      this.order.cart = new Backbone.Collection([
+        new CartItem({ title: 'foo' }),
+        new CartItem({ title: 'bar' })
+      ]);
+    });
+
+    it('should set cart.order_id if undefined', function() {
+      this.order.set({local_id: 1});
+      this.order.onSaveSuccess();
+      expect(this.order.cart.order_id).equals(1);
+    });
+
+    it('should update cart items with order_id', function() {
+      this.order.set({local_id: 1});
+      this.order.onSaveSuccess();
+      expect(this.order.cart.where({order: 1})).to.have.length(2);
+    });
   });
 
 });

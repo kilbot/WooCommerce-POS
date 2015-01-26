@@ -18,9 +18,6 @@ Marionette.Application.prototype._initChannel = function () {
 /**
  * Backbone plugins
  */
-//require('backbone.stickit'); // require in FormView??
-require('backbone.syphon/lib/backbone.syphon');
-//require('backbone-validation'); // require in FormView??
 require('idb-wrapper');
 require('backbone-idb/backbone-idb');
 require('backbone-dualStorage/backbone.dualstorage');

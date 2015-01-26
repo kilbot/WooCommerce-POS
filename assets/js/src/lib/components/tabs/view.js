@@ -1,6 +1,6 @@
 var ItemView = require('lib/config/item-view');
 var CollectionView = require('lib/config/collection-view');
-var Handlebars = require('handlebars');
+var hbs = require('handlebars');
 var Collection = require('./entities');
 var POS = require('lib/utilities/global');
 
@@ -8,7 +8,7 @@ var Tab = ItemView.extend({
   tagName: 'li',
 
   initialize: function () {
-    this.template = Handlebars.compile('' +
+    this.template = hbs.compile('' +
       '{{#unless fixed}}' +
       '<a href="#">' +
         '<i class="icon icon-times-circle action-remove"></i>' +

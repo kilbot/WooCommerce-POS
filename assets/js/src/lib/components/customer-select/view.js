@@ -1,84 +1,83 @@
 var ItemView = require('lib/config/item-view');
 var Select2 = require('lib/components/select2/behavior');
 var _ = require('lodash');
-var bb = require('backbone');
-var entitiesChannel = bb.Radio.channel('entities');
+var Radio = require('backbone').Radio;
 var hbs = require('handlebars');
+var POS = require('lib/utilities/global');
+var debug = require('debug')('customerSelect');
 
 // Select view
-module.exports = ItemView.extend({
+var View = ItemView.extend({
   template: function() {
-    return '<input name="customer" type="hidden" class="select2">'
+    return '<input name="customer" type="hidden" class="select2">';
+  },
+
+  initialize: function(options){
+    options = options || {};
+    this.model = options.model;
+    this.filtered = Radio.request('entities', 'get', {
+      type: 'filtered',
+      name: 'customers'
+    });
+    var customers = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'customers'
+    });
+    if(customers){
+      this.guest = customers.guest;
+    }
   },
 
   behaviors: {
     Select2: {
       behaviorClass: Select2,
-      minimumInputLength: 2,
-      //ajax: {
-      //  url: function() {
-      //    return entitiesChannel.request('get:options', 'ajaxurl');
-      //  },
-      //  dataType: 'json',
-      //  quietMillis: 250,
-      //  data: function( term ) {
-      //    return {
-      //      term: term,
-      //      action: 'wc_pos_json_search_customers'
-      //    };
-      //  },
-      //  results: function( data ) {
-      //    var customers = [];
-      //    _( data ).each( function( obj ) {
-      //      customers.push( obj );
-      //    });
-      //    return { results: customers };
-      //  }
-      //},
-      initSelection: function( element, callback ) {
-        var customer = entitiesChannel.request('get', {
-          type: 'option',
-          name: 'default_customer'
-        });
-        callback( customer );
-      }
+      minimumInputLength: 2
     }
   },
 
-  query: function(){},
-
-  events: {
-    'change #select-customer' : 'updateCustomer'
+  ui: {
+    select: 'input[name="customer"]'
   },
 
-  updateCustomer: function(e) {
-    this.trigger( 'customer:select', e.added.id, this.formatSelection( e.added ) );
+  events: {
+    'change @ui.select' : 'onSelect'
   },
 
   /**
-   * select2 query function
-   * @param query
+   *
    */
-  query: function( query ){
-    var term = query.term.toLowerCase();
-    var collection = this.customerCollection();
-    collection.filterBy(function(model) {
-      var attributes = _.pick( model.attributes, ['email', 'first_name', 'last_name'] );
-      return _.any( _.values( attributes ), function( value ){
-        // match for attributes starting with query term
-        return value.toLowerCase().indexOf( term ) === 0;
+  query: function(query){
+    var self = this;
+    this.filtered.superset()
+      .fetch()
+      .done(function(){
+        self.filtered.query(query.term);
+        var results = self.filtered.toJSON();
+        results.unshift(self.guest);
+        query.callback({ results: results });
+        self.filtered.resetFilters();
       });
-    });
-    var results = collection.toJSON();
-    //results.unshift( app.getOption('default_customer') );
-    query.callback({ results: results });
+  },
+
+  /**
+   *
+   */
+  initSelection: function( element, callback ) {
+    var customer;
+    if(this.model){
+      customer = this.model.get('customer');
+    } else {
+      debug('no initial customer');
+    }
+    callback( customer );
   },
 
   /**
    * select2 parse results
    */
   formatResult: function( customer ) {
-    var format = '{{first_name}} {{last_name}} ({{email}})';
+    var format = '{{first_name}} {{last_name}} ' +
+      '{{#if email}}({{email}}){{/if}}';
 
     if( this.hasNoNames(customer) ){
       format = '{{username}} ({{email}})';
@@ -111,6 +110,16 @@ module.exports = ItemView.extend({
       .compact()
       .isEmpty()
       .value();
+  },
+
+  /**
+   *
+   */
+  onSelect: function(e) {
+    this.trigger( 'customer:select', e.added );
   }
 
 });
+
+module.exports = View;
+POS.attach('Components.CustomerSelect.View', View);

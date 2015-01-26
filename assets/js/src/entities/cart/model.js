@@ -1,6 +1,11 @@
 var Model = require('lib/config/model');
+//var debug = require('debug')('cartModel');
+var Utils = require('lib/utilities/utils');
+var _ = require('lodash');
+var Radio = require('backbone').Radio;
 
 module.exports = Model.extend({
+  idAttribute: 'local_id',
 
   defaults : {
     'subtotal'      : 0,
@@ -14,14 +19,34 @@ module.exports = Model.extend({
     'tax_class'     : ''
   },
 
-  initialize: function( options ) {
-
-    if( this.collection && this.collection.order ) {
-      this.set({ order: this.collection.order.id });
+  initialize: function() {
+    // set order id
+    if(this.collection){
+      this.set({ order: this.collection.order_id });
     }
 
-    // update on change to qty or item_price
-    this.on( 'change:qty change:item_price change:taxable change:tax_class', this.updateLineTotals );
+    // get tax settings
+    var tax = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'tax'
+    });
+    this.tax = tax || {};
+
+    // get tax settings
+    var tax_rates = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'tax_rates'
+    });
+    this.tax_rates = tax_rates || {};
+
+    // update on change to qty, item_price ...
+    this.on(
+      'change:qty ' +
+      'change:item_price ' +
+      'change:regular_price ' +
+      'change:taxable ' +
+      'change:tax_class',
+      this.updateLineTotals );
 
     // set item price on init, this will trigger updateLineTotals()
     if( this.get('item_price') === 0 ) {
@@ -31,7 +56,6 @@ module.exports = Model.extend({
   },
 
   updateLineTotals: function() {
-    console.log('recalc');
     var qty             = this.get('qty'),
         item_price      = this.get('item_price'),
         type            = this.get('type'),
@@ -45,7 +69,7 @@ module.exports = Model.extend({
     }
 
     // if price does not include tax
-    if( POS.getOption('tax').prices_include_tax === 'yes' ) {
+    if( this.tax.prices_include_tax === 'yes' ) {
       regular_price -= item_subtotal_tax;
       item_price -= item_tax;
     }
@@ -53,11 +77,11 @@ module.exports = Model.extend({
     this.save({
       'item_subtotal'     : regular_price,
       'item_subtotal_tax' : item_subtotal_tax,
-      'item_tax'          : POS.Utils.round( item_tax, 4 ),
-      'subtotal'          : POS.Utils.round( regular_price * qty, 4 ),
-      'subtotal_tax'      : POS.Utils.round( item_subtotal_tax * qty, 4 ),
-      'total_tax'         : POS.Utils.round( item_tax * qty, 4 ),
-      'total'             : POS.Utils.round( item_price * qty, 4 )
+      'item_tax'          : Utils.round( item_tax, 4 ),
+      'subtotal'          : Utils.round( regular_price * qty, 4 ),
+      'subtotal_tax'      : Utils.round( item_subtotal_tax * qty, 4 ),
+      'total_tax'         : Utils.round( item_tax * qty, 4 ),
+      'total'             : Utils.round( item_price * qty, 4 )
     });
 
   },
@@ -69,11 +93,10 @@ module.exports = Model.extend({
   calcTax: function( price, qty ) {
     var item_tax = 0,
       tax_class = this.get('tax_class'),
-      tax_rates = POS.getOption('tax_rates'),
-      rates = tax_rates[tax_class];
+      rates = this.tax_rates[tax_class];
 
-    if( POS.getOption('tax').calc_taxes === 'yes' && this.get('taxable') && rates ) {
-      if( POS.getOption('tax').prices_include_tax === 'yes' ) {
+    if( this.tax.calc_taxes === 'yes' && this.get('taxable') && rates ) {
+      if( this.tax.prices_include_tax === 'yes' ) {
         item_tax = this.calcInclusiveTax( price, rates, qty );
       }
       else {
@@ -132,8 +155,8 @@ module.exports = Model.extend({
       tax_amount = price - net_price;
 
       // do the rounding now if required
-      var item_tax_ = POS.Utils.round( tax_amount, 4 );
-      var line_tax_ = POS.Utils.round( tax_amount * qty, 4 );
+      var item_tax_ = Utils.round( tax_amount, 4 );
+      var line_tax_ = Utils.round( tax_amount * qty, 4 );
 
       // set the itemized taxes
       this.set( 'item_tax_' + key, item_tax_ );
@@ -151,7 +174,7 @@ module.exports = Model.extend({
     }, this);
 
     // return the item tax
-    return POS.Utils.round( item_tax, 4 );
+    return Utils.round( item_tax, 4 );
   },
 
   /**
@@ -191,8 +214,8 @@ module.exports = Model.extend({
       }
 
       // do the rounding now if required
-      var item_tax_ = POS.Utils.round( taxes[ key ], 4 );
-      var line_tax_ = POS.Utils.round( taxes[ key ] * qty, 4 );
+      var item_tax_ = Utils.round( taxes[ key ], 4 );
+      var line_tax_ = Utils.round( taxes[ key ] * qty, 4 );
 
       // set the itemized taxes
       this.set( 'item_tax_' + key, item_tax_ );
@@ -210,7 +233,7 @@ module.exports = Model.extend({
     }, this);
 
     // return the item tax
-    return POS.Utils.round( item_tax, 4 );
+    return Utils.round(item_tax, 4);
   },
 
   // Convenience method to increase or decrease qty
@@ -225,6 +248,6 @@ module.exports = Model.extend({
     for (var i = 0; i < array.length; i++) {
       sum += this.get(array[i]);
     }
-    return sum;
+    return Utils.round(sum, 4);
   }
 });

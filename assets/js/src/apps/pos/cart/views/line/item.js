@@ -1,7 +1,7 @@
 var FormView = require('lib/config/form-view');
 var Utils = require('lib/utilities/utils');
 var bb = require('backbone');
-var entitiesChannel = bb.Radio.channel('entities');
+var Radio = bb.Radio;
 var AutoGrow = require('lib/components/autogrow/behavior');
 var Numpad = require('lib/components/numpad/behavior');
 var hbs = require('handlebars');
@@ -14,7 +14,7 @@ module.exports = FormView.extend({
 
   templateHelpers: function(){
     var data = {};
-    var tax = entitiesChannel.request('get', {
+    var tax = Radio.request('entities', 'get', {
       type: 'option',
       name: 'tax'
     });
@@ -41,8 +41,8 @@ module.exports = FormView.extend({
   },
 
   ui: {
-    remove: '.action-remove',
-    more: '.action-more'
+    remove  : '.action-remove',
+    more    : '.action-more'
   },
 
   events: {
@@ -54,7 +54,7 @@ module.exports = FormView.extend({
   },
 
   bindings: {
-    'input[name="qty"]'   : {
+    'input[name="qty"]' : {
       observe: 'qty',
       onGet: function(value) {
         return Utils.formatNumber(value, 'auto');
@@ -62,10 +62,24 @@ module.exports = FormView.extend({
       onSet: Utils.unformat
     },
     'strong.action-edit-title': 'title',
-    'input[name="item_price"]'   : {
+    'input[name="item_price"]': {
       observe: 'item_price',
       onGet: Utils.formatNumber,
       onSet: Utils.unformat
+    },
+    '.total': {
+      observe: ['total', 'subtotal'],
+      updateMethod: 'html',
+      onGet: function(value) {
+        var total     = Utils.formatMoney(value[0]),
+            subtotal  = Utils.formatMoney(value[1]);
+
+        if(total !== subtotal){
+          return '<del>' + subtotal + '</del> <ins>' + total + '</ins>';
+        } else {
+          return total;
+        }
+      }
     }
   },
 
@@ -77,9 +91,9 @@ module.exports = FormView.extend({
     this.$('.action-remove').attr( 'disabled', 'true' );
 
     // add bg colour and fade out
-    this.$el.addClass('bg-danger').parent('ul').addClass('animating');
+    this.$el.addClass('bg-danger').closest('ul').addClass('animating');
     this.$el.fadeOut( 500, function() {
-      this.$el.parent('ul').removeClass('animating');
+      this.$el.closest('ul').removeClass('animating');
       this.trigger('animation:finished');
       bb.Marionette.ItemView.prototype.remove.call(this);
     }.bind(this));

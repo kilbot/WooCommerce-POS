@@ -1,11 +1,12 @@
 var FormView = require('lib/config/form-view');
+var Utils = require('lib/utilities/utils');
 var AutoGrow = require('lib/components/autogrow/behavior');
 var Numpad = require('lib/components/numpad/behavior');
 var hbs = require('handlebars');
 var $ = require('jquery');
 var _ = require('lodash');
 var bb = require('backbone');
-var entitiesChannel = bb.Radio.channel('entities');
+var Radio = bb.Radio;
 
 module.exports = FormView.extend({
   initialize: function() {
@@ -36,13 +37,20 @@ module.exports = FormView.extend({
   },
 
   bindings: {
-    'input[name="regular_price"]'   : 'regular_price',
+    'input[name="regular_price"]'   : {
+      observe: 'regular_price',
+      onGet: Utils.formatNumber,
+      onSet: Utils.unformat
+    },
     'input[name="taxable"]'         : 'taxable',
     'select[name="tax_class"]'      : {
       observe: 'tax_class',
       selectOptions: {
         collection: function(){
-          return entitiesChannel.request('get:options', 'tax_labels');
+          return Radio.request('entities', 'get', {
+            type: 'option',
+            name: 'tax_labels'
+          });
         }
       }
     },
@@ -50,7 +58,10 @@ module.exports = FormView.extend({
       observe: 'shipping_method',
       selectOptions: {
         collection: function(){
-          return entitiesChannel.request( 'get:options', 'shipping' );
+          return Radio.request('entities', 'get', {
+            type: 'option',
+            name: 'shipping'
+          });
         },
         comparator: function(){}
       }

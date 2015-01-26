@@ -58,16 +58,15 @@ class WC_POS {
 
 		$registry = WC_POS_Registry::instance();
 
-		$registry->add( 'i18n',     new WC_POS_i18n() );      // internationalization
-		$registry->add( 'params',   new WC_POS_Params() );    //
-		new WC_POS_Template();      // POS front end
-		new WC_POS_Products();
-//		new WC_POS_Orders();
-		new WC_POS_Gateways();
+		$registry->add( 'i18n',     new WC_POS_i18n() );
+		$registry->add( 'params',   new WC_POS_Params() );
+		$registry->add( 'template', new WC_POS_Template() );
+		$registry->add( 'products', new WC_POS_Products() );
+		$registry->add( 'gateways', new WC_POS_Gateways() );
 
 		// admin only
 		if ( is_admin() ) {
-			new WC_POS_Admin();
+			$registry->add( 'admin',  new WC_POS_Admin() );
 		}
 
 	}

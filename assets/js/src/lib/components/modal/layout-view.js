@@ -1,7 +1,8 @@
 var LayoutView = require('lib/config/layout-view');
-var _ = require('lodash');
+//var _ = require('lodash');
 var $ = require('jquery');
 var hbs = require('handlebars');
+var Radio = require('backbone').Radio;
 
 module.exports = LayoutView.extend({
   className: 'modal',
@@ -15,7 +16,10 @@ module.exports = LayoutView.extend({
   },
 
   events: {
-    //'click .action-close'   : 'destroyModal',
+    'click [data-action="close"]' : function(e){
+      e.preventDefault();
+      Radio.request('modal', 'close');
+    }
     //'click .action-save'    : 'saving',
     //'click .modal-footer a' : 'onButtonClick'
   },
@@ -93,7 +97,7 @@ module.exports = LayoutView.extend({
   //  this.isShown = true;
   //
   //  if( options.view.model ) {
-  //    this.listenTo( options.view.model, 'save:status', this.updateSaveStatus );
+  //    this.listenTo(options.view.model, 'save:status', this.updateSaveStatus);
   //  }
   //
   //},

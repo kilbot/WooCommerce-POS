@@ -1,119 +1,25 @@
 {
   "products": [
     {
-      "title": "Grouped Product",
-      "id": 120,
-      "created_at": "2014-10-17T07:00:20Z",
-      "updated_at": "2014-10-17T07:04:36Z",
-      "type": "grouped",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/grouped-product\/",
-      "sku": "",
-      "price": "3.00",
-      "regular_price": "0.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;3.00<\/span>&ndash;<span class=\"amount\">&pound;15.00<\/span>",
-      "taxable": true,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": false,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/plugins\/woocommerce\/assets\/images\/placeholder.png",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 1,
-      "variations": [],
-      "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
-      "barcode": ""
-    },
-    {
-      "title": "Grouped Product &rarr; Test Product",
-      "id": 117,
-      "created_at": "2014-10-16T04:21:44Z",
-      "updated_at": "2014-10-17T07:02:56Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/test-product\/",
-      "sku": "",
-      "price": "15.00",
-      "regular_price": "15.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;15.00<\/span>",
-      "taxable": true,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 120,
-      "categories": [],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/plugins\/woocommerce\/assets\/images\/placeholder.png",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
-      "barcode": ""
-    },
-    {
       "title": "Woo Single #2",
       "id": 99,
       "created_at": "2013-06-07T11:38:12Z",
-      "updated_at": "2014-10-29T02:08:18Z",
+      "updated_at": "2013-06-07T11:38:12Z",
       "type": "simple",
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/woo-single-2\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-single-2\/",
       "sku": "",
       "price": "2.00",
       "regular_price": "3.00",
       "sale_price": "2.00",
       "price_html": "<del><span class=\"amount\">&pound;3.00<\/span><\/del> <ins><span class=\"amount\">&pound;2.00<\/span><\/ins>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
-      "managing_stock": true,
-      "stock_quantity": 5,
+      "managing_stock": false,
+      "stock_quantity": 0,
       "in_stock": true,
       "backorders_allowed": false,
       "backordered": false,
@@ -131,39 +37,31 @@
       "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_6_angle-90x90.jpg",
       "attributes": [],
       "purchase_note": "",
-      "total_sales": 6,
+      "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
       "title": "Woo Album #4",
       "id": 96,
       "created_at": "2013-06-07T11:37:23Z",
-      "updated_at": "2014-10-29T01:45:10Z",
+      "updated_at": "2013-06-07T11:37:23Z",
       "type": "simple",
       "status": "publish",
       "downloadable": true,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/woo-album-4\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-album-4\/",
       "sku": "",
       "price": "9.00",
       "regular_price": "9.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;9.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
-      "managing_stock": true,
-      "stock_quantity": 2,
+      "managing_stock": false,
+      "stock_quantity": 0,
       "in_stock": true,
       "backorders_allowed": false,
       "backordered": false,
@@ -181,35 +79,27 @@
       "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_5_angle-90x90.jpg",
       "attributes": [],
       "purchase_note": "",
-      "total_sales": 8,
+      "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
-      "title": "Grouped Product &rarr; Woo Single #1",
+      "title": "Woo Single #1",
       "id": 93,
       "created_at": "2013-06-07T11:36:34Z",
-      "updated_at": "2014-10-17T07:03:20Z",
+      "updated_at": "2013-06-07T11:36:34Z",
       "type": "simple",
       "status": "publish",
       "downloadable": true,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/woo-single-1\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-single-1\/",
       "sku": "",
       "price": "3.00",
       "regular_price": "3.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;3.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -223,7 +113,7 @@
       "visible": true,
       "catalog_visibility": "visible",
       "on_sale": false,
-      "parent_id": 120,
+      "parent_id": 0,
       "categories": [
         "Music",
         "Singles"
@@ -234,32 +124,24 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
       "title": "Woo Album #3",
       "id": 90,
       "created_at": "2013-06-07T11:35:18Z",
-      "updated_at": "2014-10-19T04:13:32Z",
+      "updated_at": "2013-06-07T11:35:18Z",
       "type": "simple",
       "status": "publish",
       "downloadable": true,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/woo-album-3\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-album-3\/",
       "sku": "",
       "price": "9.00",
       "regular_price": "9.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;9.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -281,35 +163,27 @@
       "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_3_angle-90x90.jpg",
       "attributes": [],
       "purchase_note": "",
-      "total_sales": 3,
+      "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
       "title": "Woo Album #2",
       "id": 87,
       "created_at": "2013-06-07T11:34:14Z",
-      "updated_at": "2014-10-11T10:48:07Z",
+      "updated_at": "2013-06-07T11:34:14Z",
       "type": "simple",
       "status": "publish",
       "downloadable": true,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/woo-album-2\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-album-2\/",
       "sku": "",
       "price": "9.00",
       "regular_price": "9.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;9.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -331,35 +205,27 @@
       "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_2_angle-90x90.jpg",
       "attributes": [],
       "purchase_note": "",
-      "total_sales": 2,
+      "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
       "title": "Woo Album #1",
       "id": 83,
       "created_at": "2013-06-07T11:33:05Z",
-      "updated_at": "2014-10-11T11:29:54Z",
+      "updated_at": "2013-06-07T11:33:05Z",
       "type": "simple",
       "status": "publish",
       "downloadable": true,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/woo-album-1\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-album-1\/",
       "sku": "",
       "price": "9.00",
       "regular_price": "9.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;9.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -381,17 +247,9 @@
       "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_1_angle-90x90.jpg",
       "attributes": [],
       "purchase_note": "",
-      "total_sales": 3,
+      "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -403,13 +261,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/woo-logo-3\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-logo-3\/",
       "sku": "",
       "price": "15.00",
       "regular_price": "15.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;15.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -431,14 +289,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -450,13 +300,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/woo-ninja-3\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-ninja-3\/",
       "sku": "",
       "price": "15.00",
       "regular_price": "15.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;15.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -478,14 +328,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -497,13 +339,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/premium-quality-2\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/premium-quality-2\/",
       "sku": "",
       "price": "12.00",
       "regular_price": "15.00",
       "sale_price": "12.00",
       "price_html": "<del><span class=\"amount\">&pound;15.00<\/span><\/del> <ins><span class=\"amount\">&pound;12.00<\/span><\/ins>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -525,14 +367,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -544,13 +378,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/flying-ninja\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/flying-ninja\/",
       "sku": "",
       "price": "12.00",
       "regular_price": "15.00",
       "sale_price": "12.00",
       "price_html": "<del><span class=\"amount\">&pound;15.00<\/span><\/del> <ins><span class=\"amount\">&pound;12.00<\/span><\/ins>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -572,14 +406,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -591,13 +417,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/ship-your-idea-3\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea-3\/",
       "sku": "",
       "price": "15.00",
       "regular_price": "15.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;15.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -619,14 +445,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -638,13 +456,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/woo-logo-2\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-logo-2\/",
       "sku": "",
       "price": "35.00",
       "regular_price": "35.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;35.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -669,14 +487,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -688,13 +498,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/ninja-silhouette-2\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/ninja-silhouette-2\/",
       "sku": "",
       "price": "35.00",
       "regular_price": "35.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;35.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -719,14 +529,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -738,13 +540,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/happy-ninja-2\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/happy-ninja-2\/",
       "sku": "",
       "price": "35.00",
       "regular_price": "35.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;35.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -769,14 +571,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -788,13 +582,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/patient-ninja\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/patient-ninja\/",
       "sku": "",
       "price": "35.00",
       "regular_price": "35.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;35.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -819,14 +613,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -838,13 +624,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/woo-ninja-2\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-ninja-2\/",
       "sku": "",
       "price": "35.00",
       "regular_price": "35.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;35.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -869,14 +655,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -888,13 +666,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/ship-your-idea-2\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea-2\/",
       "sku": "",
       "price": "30.00",
       "regular_price": "0.00",
       "sale_price": null,
       "price_html": "<del><span class=\"amount\">&pound;35.00<\/span><\/del> <ins><span class=\"amount\">&pound;30.00<\/span>&ndash;<span class=\"amount\">&pound;35.00<\/span><\/ins>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -917,14 +695,10 @@
       "attributes": [
         {
           "name": "Color",
-          "slug": "color",
           "position": "0",
           "visible": false,
           "variation": true,
-          "options": [
-            "Black",
-            "Blue"
-          ]
+          "options": [""]
         }
       ],
       "purchase_note": "",
@@ -936,12 +710,12 @@
           "updated_at": "2013-06-07T11:00:28Z",
           "downloadable": false,
           "virtual": false,
-          "permalink": "http:\/\/demo.woopos.com.au\/shop\/ship-your-idea-2\/?attribute_pa_color=black",
+          "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea-2\/?attribute_pa_color=black",
           "sku": "",
           "price": "35.00",
           "regular_price": "35.00",
           "sale_price": null,
-          "taxable": true,
+          "taxable": false,
           "tax_status": "taxable",
           "tax_class": "",
           "managing_stock": false,
@@ -954,18 +728,9 @@
           "attributes": [
             {
               "name": "Color",
-              "slug": "color",
               "option": "black"
             }
           ],
-          "tax_rates": {
-            "1": {
-              "rate": "25.0000",
-              "label": "VAT (25%)",
-              "shipping": "yes",
-              "compound": "no"
-            }
-          },
           "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_7_front-90x90.jpg",
           "barcode": ""
         },
@@ -975,12 +740,12 @@
           "updated_at": "2013-06-07T11:00:28Z",
           "downloadable": false,
           "virtual": false,
-          "permalink": "http:\/\/demo.woopos.com.au\/shop\/ship-your-idea-2\/?attribute_pa_color=blue",
+          "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea-2\/?attribute_pa_color=blue",
           "sku": "",
           "price": "30.00",
           "regular_price": "35.00",
           "sale_price": "30.00",
-          "taxable": true,
+          "taxable": false,
           "tax_status": "taxable",
           "tax_class": "",
           "managing_stock": false,
@@ -993,31 +758,14 @@
           "attributes": [
             {
               "name": "Color",
-              "slug": "color",
               "option": "blue"
             }
           ],
-          "tax_rates": {
-            "1": {
-              "rate": "25.0000",
-              "label": "VAT (25%)",
-              "shipping": "yes",
-              "compound": "no"
-            }
-          },
           "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_1_front-90x90.jpg",
           "barcode": ""
         }
       ],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -1029,13 +777,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/happy-ninja\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/happy-ninja\/",
       "sku": "",
       "price": "18.00",
       "regular_price": "18.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;18.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -1060,14 +808,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -1079,13 +819,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/woo-ninja\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-ninja\/",
       "sku": "",
       "price": "20.00",
       "regular_price": "20.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;20.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -1110,14 +850,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -1129,13 +861,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/ninja-silhouette\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/ninja-silhouette\/",
       "sku": "",
       "price": "20.00",
       "regular_price": "20.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;20.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -1160,14 +892,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -1179,13 +903,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/ship-your-idea\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea\/",
       "sku": "",
       "price": "20.00",
       "regular_price": "0.00",
       "sale_price": null,
-      "price_html": "Free!",
-      "taxable": true,
+      "price_html": "<span class=\"amount\">&pound;20.00<\/span>",
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -1208,14 +932,10 @@
       "attributes": [
         {
           "name": "Color",
-          "slug": "color",
           "position": "0",
           "visible": false,
           "variation": true,
-          "options": [
-            "Black",
-            "Green"
-          ]
+          "options": [""]
         }
       ],
       "purchase_note": "",
@@ -1227,12 +947,12 @@
           "updated_at": "2013-06-07T10:46:01Z",
           "downloadable": false,
           "virtual": false,
-          "permalink": "http:\/\/demo.woopos.com.au\/shop\/ship-your-idea\/?attribute_pa_color=black",
+          "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea\/?attribute_pa_color=black",
           "sku": "",
           "price": "20.00",
           "regular_price": "20.00",
           "sale_price": null,
-          "taxable": true,
+          "taxable": false,
           "tax_status": "taxable",
           "tax_class": "",
           "managing_stock": false,
@@ -1245,18 +965,9 @@
           "attributes": [
             {
               "name": "Color",
-              "slug": "color",
               "option": "black"
             }
           ],
-          "tax_rates": {
-            "1": {
-              "rate": "25.0000",
-              "label": "VAT (25%)",
-              "shipping": "yes",
-              "compound": "no"
-            }
-          },
           "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/T_4_front1-90x90.jpg",
           "barcode": ""
         },
@@ -1266,12 +977,12 @@
           "updated_at": "2013-06-07T10:46:01Z",
           "downloadable": false,
           "virtual": false,
-          "permalink": "http:\/\/demo.woopos.com.au\/shop\/ship-your-idea\/?attribute_pa_color=green",
+          "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea\/?attribute_pa_color=green",
           "sku": "",
           "price": "20.00",
           "regular_price": "20.00",
           "sale_price": null,
-          "taxable": true,
+          "taxable": false,
           "tax_status": "taxable",
           "tax_class": "",
           "managing_stock": false,
@@ -1284,31 +995,14 @@
           "attributes": [
             {
               "name": "Color",
-              "slug": "color",
               "option": "green"
             }
           ],
-          "tax_rates": {
-            "1": {
-              "rate": "25.0000",
-              "label": "VAT (25%)",
-              "shipping": "yes",
-              "compound": "no"
-            }
-          },
           "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/T_3_front-90x90.jpg",
           "barcode": ""
         }
       ],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -1320,13 +1014,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/premium-quality\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/premium-quality\/",
       "sku": "",
       "price": "20.00",
       "regular_price": "20.00",
       "sale_price": null,
       "price_html": "<span class=\"amount\">&pound;20.00<\/span>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": false,
@@ -1351,14 +1045,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     },
     {
@@ -1370,13 +1056,13 @@
       "status": "publish",
       "downloadable": false,
       "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/shop\/woo-logo\/",
+      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-logo\/",
       "sku": "",
       "price": "18.00",
       "regular_price": "20.00",
       "sale_price": "18.00",
       "price_html": "<del><span class=\"amount\">&pound;20.00<\/span><\/del> <ins><span class=\"amount\">&pound;18.00<\/span><\/ins>",
-      "taxable": true,
+      "taxable": false,
       "tax_status": "taxable",
       "tax_class": "",
       "managing_stock": true,
@@ -1401,14 +1087,6 @@
       "total_sales": 0,
       "variations": [],
       "parent": [],
-      "tax_rates": {
-        "1": {
-          "rate": "25.0000",
-          "label": "VAT (25%)",
-          "shipping": "yes",
-          "compound": "no"
-        }
-      },
       "barcode": ""
     }
   ]

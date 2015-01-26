@@ -64,7 +64,7 @@
 				<th colspan="2"><?php /* translators: woocommerce */ _e( 'Cart Subtotal', 'woocommerce' ); ?>:</th>
 				<td colspan="1">{{{money subtotal}}}</td>
 			</tr>
-			{{#compare cart_discount '!=' '0.00'}}
+			{{#compare cart_discount '!==' 0}}
 			<tr class="cart-discount">
 				<th colspan="2"><?php /* translators: woocommerce */ _e( 'Cart Discount', 'woocommerce' ); ?>:</th>
 				<td colspan="1">{{{money cart_discount negative=true}}}</td>
@@ -76,7 +76,7 @@
 				<td colspan="1">{{{money total}}}</td>
 			</tr>
 			{{/each}}
-			{{#compare total_tax '!=' '0.00'}}
+			{{#compare total_tax '!==' 0}}
 			{{#if show_itemized}}
 			{{#each tax_lines}}
 			<tr class="tax">
@@ -97,7 +97,7 @@
 			</tr>
 			{{/if}}
 			{{/compare}}
-			{{#compare order_discount '!=' '0.00'}}
+			{{#compare order_discount '!==' 0}}
 			<tr class="order-discount">
 				<th colspan="2"><?php /* translators: woocommerce-admin */ _e( 'Order Discount', 'woocommerce-admin' ); ?>:</th>
 				<td colspan="1">{{{money order_discount negative=true}}}</td>

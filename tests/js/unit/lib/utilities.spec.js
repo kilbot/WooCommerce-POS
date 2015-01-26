@@ -1,5 +1,6 @@
 describe('lib/utilities', function () {
-  require('./utilities/global.js');
-  require('./utilities/handlebars-helpers.js');
-  require('./utilities/parser.js');
+  require('./utilities/global');
+  require('./utilities/utils');
+  require('./utilities/handlebars-helpers');
+  require('./utilities/parser');
 });

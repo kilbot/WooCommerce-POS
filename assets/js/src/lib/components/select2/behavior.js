@@ -5,11 +5,23 @@ var POS = require('lib/utilities/global');
 module.exports = POS.Behaviors.Select2 = Behavior.extend({
 
   initialize: function(options){
-    this.options = _.defaults(options, {
-      query           : _.bind( this.view.query, this.view ),
-      formatResult    : _.bind( this.view.formatResult, this.view ),
-      formatSelection : _.bind( this.view.formatSelection, this.view )
-    });
+    options = options || {};
+    var defaults = {};
+    var methods = [
+      'query',
+      'initSelection',
+      'formatResult',
+      'formatSelection'
+    ];
+
+    _(methods).each(function(method){
+      if( this.view[method] ){
+        options[method] = _.bind(this.view[method], this.view);
+      }
+      defaults[method] = this[method];
+    }, this);
+
+    this.options = _.defaults(options, defaults);
   },
 
   ui: {
@@ -25,6 +37,11 @@ module.exports = POS.Behaviors.Select2 = Behavior.extend({
 
   onBeforeDestroy: function() {
     this.ui.select.select2( 'destroy' );
-  }
+  },
+
+  query: function(){},
+  initSelection: function(){},
+  formatResult: function(){},
+  formatSelection: function(){}
 
 });

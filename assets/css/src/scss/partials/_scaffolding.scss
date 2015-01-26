@@ -81,10 +81,13 @@ div#page:not(.two-column) #main, .two-column #main > div {
     @include flex-shrink(0); /* default don't shrink */
   }
   .list-actions {
+    >div {
+      padding: $spacing/3;
+    }
+  }
+  .list-actions:first-of-type {
     > div {
       background: nth( $primaryPalette, 8 );
-      padding: $spacing/3;
-//      border-bottom: 1px solid $list-border-color;
       > .btn {
         float: right;
         margin-left: $spacing/3;

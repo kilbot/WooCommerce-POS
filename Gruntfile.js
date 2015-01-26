@@ -18,10 +18,10 @@ module.exports = function(grunt) {
         build: 'assets/js'
       },
 
-      // point to WordPress staging install
+      // point to staging folder
       staging : '/Users/kilbot/Sites/staging.woopos.com.au/wp-content/plugins/woocommerce-pos',
 
-      // files to package for production
+      // files to package for staging
       include: [
         '**/*',
         '!node_modules/**',
@@ -201,7 +201,7 @@ module.exports = function(grunt) {
         devtool: 'eval-source-map',
         debug: true
       },
-      prod: {
+      staging: {
         output: {
           path: './<%= app.js.build %>/',
           filename: '[name].build.js'
@@ -303,9 +303,9 @@ module.exports = function(grunt) {
       }
     },
 
-    // copy prod build to staging site, excluding dev files
+    // copy staging build to staging site, excluding dev files
     copy: {
-      prod: {
+      staging: {
         files: [
           {
             expand: true,
@@ -388,11 +388,11 @@ module.exports = function(grunt) {
   // dev
   grunt.registerTask('dev', 'Development build', ['compass', 'cssmin', 'handlebars:compile', 'jshint', 'test', 'webpack:dev', 'watch']);
 
-  // prod
-  grunt.registerTask('prod', 'Production build', ['test', 'makepot', 'js_locales', 'webpack:prod', 'uglify:prod', 'copy']);
+  // staging
+  grunt.registerTask('staging', 'Production build', ['test', 'makepot', 'js_locales', 'webpack:staging', 'uglify:staging', 'copy']);
 
   // deploy
-  grunt.registerTask('deploy', 'Deploy plugin to WordPress.org', ['prod', 'wp_deploy']);
+  grunt.registerTask('deploy', 'Deploy plugin to WordPress.org', ['staging', 'wp_deploy']);
 
   // default = test
   grunt.registerTask('default', ['test']);

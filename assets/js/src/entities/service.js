@@ -5,8 +5,8 @@ var Cart = require('./cart/collection');
 var Customers = require('./customers/collection');
 var Coupons = require('./coupons/collection');
 var Settings = require('./settings/model');
+var Gateways = require('./gateways/collection');
 var FilteredCollection = require('lib/config/filtered-collection');
-var bb = require('backbone');
 var debug = require('debug')('entities');
 var POS = require('lib/utilities/global');
 
@@ -16,6 +16,8 @@ module.exports = POS.Entities = Service.extend({
   initialize: function() {
     this.channel.reply('get', this.get, this);
     this.channel.reply('set', this.set, this);
+    this.channel.comply('set:filter', this.setFilter, this);
+    this.channel.comply('add:to:cart', this.addToCart, this);
   },
 
   collections: {
@@ -23,7 +25,8 @@ module.exports = POS.Entities = Service.extend({
     orders    : Orders,
     cart      : Cart,
     customers : Customers,
-    coupons   : Coupons
+    coupons   : Coupons,
+    gateways  : Gateways
   },
 
   methods: {
@@ -92,6 +95,24 @@ module.exports = POS.Entities = Service.extend({
   getSettings: function(options){
     var option = this.app.getOption(options.name);
     return new Settings(option);
+  },
+
+  setFilter: function(options){
+    options = options || {};
+    var filteredProp = '_filtered' + options.name;
+    if( this[filteredProp] ){
+      this[filteredProp].filterBy('search', options.filter);
+    }
+  },
+
+  addToCart: function(options) {
+    var orders = this.getCollection({ name: 'orders' });
+    var order = orders.active;
+    if(order && order.cart){
+      order.cart.addToCart(options);
+    } else {
+      debug('no active order or cart');
+    }
   }
 
 });

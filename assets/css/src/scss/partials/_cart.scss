@@ -155,16 +155,24 @@
     padding: $spacing/3;
     border-bottom: 2px solid darken( $list-border-color, 5% );
   }
-  .cart-actions {
-    text-align: right;
-    padding: $spacing/3;
-    padding-bottom: 0;
-    a {
-      margin-bottom: $spacing/3;
+  .list-actions {
+    > div {
+      text-align: right;
+      padding-bottom: 0;
+      a {
+        margin-bottom: $spacing/3;
+      }
     }
   }
   .cart-notes {
-    padding: $spacing/3;
-    border-top: 1px solid darken( $list-border-color, 5% );
+    > div {
+      padding: $spacing/3;
+      border-top: 1px solid darken( $list-border-color, 5% );
+    }
+  }
+  &.cart-empty {
+    .list-totals, .cart-customer, .list-actions, .cart-notes {
+      display: none;
+    }
   }
 }

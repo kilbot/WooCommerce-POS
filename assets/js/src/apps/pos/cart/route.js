@@ -5,47 +5,56 @@ var TotalsView = require('./views/totals');
 var ActionsView = require('./views/actions');
 var NotesView = require('./views/notes');
 var CustomerSelect = require('lib/components/customer-select/view');
-var bb = require('backbone');
-var entitiesChannel = bb.Radio.channel('entities');
-var posChannel = bb.Radio.channel('pos');
-var debug = require('debug')('cart');
+var Radio = require('backbone').Radio;
+//var debug = require('debug')('cart');
 var $ = require('jquery');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
 
 var CartRoute = Route.extend({
-  views: {},
 
   initialize: function( options ) {
     options = options || {};
-    this.order_id = options.order_id;
     this.container = options.container;
-    this.collection = options.collection;
+    this.collection = Radio.request('entities', 'get', {
+      type: 'collection',
+      name: 'orders'
+    });
 
-    // listen for cart:add commands
-    posChannel.comply( 'cart:add', this.addToCart, this );
+    // re-init cart if this.order is removed
+    this.listenTo(this.collection, 'remove', function(order){
+      if(order.id === this.order.id){
+        this.order = undefined;
+        this.onFetch();
+        _.delay(_.bind(this.render, this), 500);
+      }
+    });
   },
 
   fetch: function() {
-    if (this.collection.isNew()) {
-      return this.collection.fetch({ local: true });
-    }
+    //if (this.collection.isNew()) {
+    this.collection.reset();
+    return this.collection.fetch({ local: true });
+    //}
   },
 
-  onBeforeRender: function(){
-    if( this.order_id ) {
-      this.order = this.collection.findWhere({
-        local_id: this.order_id
-      });
-    } else if( this.collection.length > 0 ) {
+  onFetch: function(id){
+    if(id){
+      this.order = this.collection.get(id);
+    } else if(this.collection.length > 0){
       this.order = this.collection.at(0);
     } else {
-      this.order = this.collection.create();
+      this.order = this.collection.add({});
     }
+
+    // set active order
+    this.collection.active = this.order;
   },
 
   render: function() {
-    this.layout = new LayoutView({ order: this.order });
+    this.layout = new LayoutView({
+      order: this.order
+    });
 
     this.listenTo( this.layout, 'show', function() {
       this.showCart();
@@ -53,8 +62,6 @@ var CartRoute = Route.extend({
       this.showCustomer();
       this.showActions();
       this.showNotes();
-
-      this.layout.showOrHide();
     });
 
     this.container.show( this.layout );
@@ -69,32 +76,8 @@ var CartRoute = Route.extend({
       /* global accounting */
       label += ' - ' + accounting.formatMoney( order.get('total') );
     }
-    posChannel.command( 'update:tab:label', label, 'right' );
+    //posChannel.command( 'update:tab:label', label, 'right' );
   }, 100),
-
-  /**
-   *
-   */
-  addToCart: function( item ) {
-    var attributes = item instanceof bb.Model ? item.attributes : item;
-    var row;
-
-    if( _.isUndefined( this.order.cart ) ) {
-      debug('there is no cart');
-    }
-
-    if( attributes.id ) {
-      row = this.order.cart.findWhere({ id: attributes.id });
-    }
-
-    if( row instanceof bb.Model ) {
-      row.quantity('increase');
-    } else {
-      row = this.order.cart.add( attributes );
-    }
-
-    row.trigger( 'focus:row' );
-  },
 
   /**
    * Cart Items
@@ -121,19 +104,21 @@ var CartRoute = Route.extend({
    * Customer Select
    */
   showCustomer: function(){
-    var view = new CustomerSelect();
+    var view = new CustomerSelect({
+      model: this.order
+    });
 
-    this.listenTo( view, 'customer:select', function( id, name ) {
+    this.listenTo(view, 'customer:select', function(customer) {
       this.order.save({
-        customer_id: id,
-        customer_name: name
+        customer_id: customer.id,
+        customer: customer
       });
-    }, this);
+    });
 
     // bit of a hack
     // get the "Customer:" translation and add it to the view
-    this.layout.customerRegion.on( 'before:show', function(view){
-      var label = this.$el.html();
+    this.listenTo(this.layout.customerRegion, 'before:show', function(){
+      var label = this.layout.customerRegion.$el.html();
       view.$el.prepend( label );
     });
 
@@ -141,37 +126,33 @@ var CartRoute = Route.extend({
   },
 
   /**
+   * Actions
    * TODO: abstract as a collection of button models?
    */
   showActions: function() {
-    var view = new ActionsView(),
-        self = this;
+    var view = new ActionsView();
 
-    var actions = {
+    this.listenTo(view, {
       'void': function(){
-        self.order.voidOrder();
+        _.invoke( this.order.cart.toArray(), 'destroy');
       },
       note: function(){
-        self.layout.notesRegion.currentView.showNoteField();
+        this.layout.notesRegion.currentView.showNoteField();
       },
       discount: function(){
-        self.layout.totalsRegion.currentView.showDiscountRow();
+        this.layout.totalsRegion.currentView.showDiscountRow();
       },
-      fee: function(args){
-        self.addToCart({ title: args.title, type: 'fee' });
+      fee: function(title){
+        this.order.cart.addToCart({title: title, type: 'fee'});
       },
-      shipping: function(args){
-        self.addToCart({ title: args.title, type: 'shipping' });
+      shipping: function(title){
+        this.order.cart.addToCart({title: title, type: 'shipping'});
       },
       checkout: function(){
-        //posChannel.command('show:checkout');
-      }
-    };
-
-    this.listenTo( view, 'button:clicked', function(args) {
-      var action = args.action;
-      if(actions.hasOwnProperty(action)){
-        actions[action](args);
+        this.navigate('checkout/' + this.order.id, {
+          trigger: true,
+          replace: true
+        });
       }
     });
 

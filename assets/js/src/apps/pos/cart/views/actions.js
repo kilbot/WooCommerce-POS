@@ -8,17 +8,19 @@ module.exports = ItemView.extend({
     this.template = hbs.compile( $('#tmpl-cart-actions').html() );
   },
 
-  events: {
-    'click a': 'onButtonClicked'
+  ui: {
+    btn: 'a[data-action!=""]'
   },
 
-  onButtonClicked: function(e){
+  events: {
+    'click @ui.btn': 'onButtonClick'
+  },
+
+  onButtonClick: function(e){
     e.preventDefault();
-    var args = {
-      action: $(e.target).data('action'),
-      title: $(e.target).data('title')
-    }
-    this.trigger('button:clicked', args);
+    var action = $(e.target).data('action');
+    var title = $(e.target).data('title');
+    this.trigger(action, title);
   }
 
 });

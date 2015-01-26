@@ -3,8 +3,8 @@ var bb = require('backbone');
 var LayoutView = require('./layout-view');
 var debug = require('debug')('app');
 var accounting = require('accounting');
-var routerChannel = bb.Radio.channel('router');
-var entitiesChannel = bb.Radio.channel('entities');
+var Radio = require('backbone').Radio;
+var routerChannel = Radio.channel('router');
 
 module.exports = Application.extend({
 
@@ -37,7 +37,10 @@ module.exports = Application.extend({
     bb.$.ajaxSetup({
       data: {
         security: function(){
-          return entitiesChannel.request( 'get:options', 'nonce' );
+          return Radio.request('entities', 'get', {
+            type: 'option',
+            name: 'nonce'
+          });
         }
       },
       beforeSend: function(xhr){

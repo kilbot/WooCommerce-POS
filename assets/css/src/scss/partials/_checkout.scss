@@ -1,46 +1,27 @@
-#checkout-gateways {
-	legend {
-		margin-bottom: 0;
-		padding: $spacing/4 $spacing/2;
-		font-size: 18px;
-		vertical-align: middle;
-		cursor: pointer;
-		background: $panel-default-heading-bg;
-		input[type="radio"] {
-			width: auto;
-			margin: 0 $spacing/4 0 0;
-		}
-		img {
-			margin-left: $spacing/4;
-		}
-	}
-	fieldset.active {
-		legend {
-			color: $panel-success-text;
-			border-color: $panel-success-border;
-			background: $panel-success-heading-bg;			
-		}
-	}
-	.form-group {
-		padding: $spacing/2;
-		margin-bottom: 0;
-		input {
-			@extend .form-control; 
-		}
-		.form-row {
-			@include clearfix();
-			label {
-				float: left;
-				margin-right: $spacing;
-				line-height: 34px;
+.checkout-module {
+	.list {
+		ul {
+			li {
+				display: block;
+				h5 {
+					margin: 0;
+					padding: $spacing/4 $spacing/2;
+					font-size: 18px;
+					cursor: pointer;
+					input[type="radio"] {
+						width: auto;
+						margin: 0 $spacing/4 0 0;
+					}
+					img {
+						vertical-align: middle;
+						max-height: 21px;
+						margin-left: $spacing/4;
+					}
+				}
+				> div {
+					display: block;
+				}
 			}
-			.input-group {
-				float: left;
-				width: 150px;
-			}
-		}
-		&:last-of-type {
-			border-bottom: 1px solid $dark-border-color;
 		}
 	}
 }

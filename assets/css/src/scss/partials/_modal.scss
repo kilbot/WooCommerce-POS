@@ -12,7 +12,7 @@
       line-height: 50px;
       margin: 0;
     }
-    .action-close {
+    i {
       position: absolute;
       top: 0;
       right: 0;
@@ -28,7 +28,7 @@
       @include transition-duration(.1s);
       @include transition-timing-function(ease-in-out);
     }
-    .action-close:hover {
+    i:hover {
       color: #000;
       border-color: #ccc;
       background: #ddd;

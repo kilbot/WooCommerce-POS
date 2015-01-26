@@ -6,7 +6,7 @@ module.exports = POS.Behaviors.Filter = Behavior.extend({
 
   ui: {
     searchField : 'input[type=search]',
-    clearBtn  : 'a.clear'
+    clearBtn    : 'a.clear'
   },
 
   events: {
@@ -17,7 +17,7 @@ module.exports = POS.Behaviors.Filter = Behavior.extend({
   query: _.debounce( function(){
     var value = this.ui.searchField.val();
     this.showClearButtonMaybe( value );
-    this.view.trigger( 'search:query', value );
+    this.view.collection.query(value);
   }, 149),
 
   // clear the filter

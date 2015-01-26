@@ -27,6 +27,18 @@ module.exports = POS.Utils = {
     return accounting.formatNumber(num, precision);
   },
 
+  formatMoney: function( num, precision ) {
+    if( precision === undefined ) {
+      precision = accounting.settings.currency.precision;
+    }
+    if( precision === 'auto' ) {
+      precision = this.decimalPlaces(num);
+    }
+    // round the number to even
+    num = this.round(num, precision);
+    return accounting.formatMoney(num);
+  },
+
   isPositiveInteger: function( num, allowZero ){
     var n = ~~Number(num);
     if(allowZero) {

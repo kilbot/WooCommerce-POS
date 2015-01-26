@@ -20,7 +20,10 @@ module.exports = POS.DualCollection = bb.DualCollection.extend({
   },
 
   url: function(){
-    var wc_api = entitiesChannel.request( 'get:options', 'wc_api' );
+    var wc_api = entitiesChannel.request( 'get', {
+      type: 'option',
+      name: 'wc_api'
+    });
     return wc_api + this.name;
   },
 

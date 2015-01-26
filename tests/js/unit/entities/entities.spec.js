@@ -3,4 +3,5 @@ describe('entities', function () {
   require('./orders/collection');
   require('./orders/model');
   require('./cart/collection');
+  require('./cart/model');
 });

@@ -565,16 +565,17 @@ th {
 }
 
 /* line 19, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+.dropup,
 .dropdown {
   position: relative;
 }
 
-/* line 24, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 25, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-toggle:focus {
   outline: 0;
 }
 
-/* line 29, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 30, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -596,19 +597,19 @@ th {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
 }
-/* line 52, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 53, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu.pull-right {
   right: 0;
   left: auto;
 }
-/* line 58, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 59, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu .divider {
   height: 1px;
   margin: 9px 0;
   overflow: hidden;
   background-color: #e5e5e5;
 }
-/* line 63, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 64, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu > li > a {
   display: block;
   padding: 3px 20px;
@@ -619,14 +620,14 @@ th {
   white-space: nowrap;
 }
 
-/* line 76, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 77, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
   text-decoration: none;
   color: #262626;
   background-color: whitesmoke;
 }
 
-/* line 86, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 87, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
   color: white;
   text-decoration: none;
@@ -634,11 +635,11 @@ th {
   background-color: #607d8b;
 }
 
-/* line 101, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 102, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
   color: #777777;
 }
-/* line 108, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 109, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
   text-decoration: none;
   background-color: transparent;
@@ -647,28 +648,28 @@ th {
   cursor: not-allowed;
 }
 
-/* line 121, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 122, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .open > .dropdown-menu {
   display: block;
 }
-/* line 126, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 127, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .open > a {
   outline: 0;
 }
 
-/* line 135, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 136, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu-right {
   left: auto;
   right: 0;
 }
 
-/* line 145, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 146, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-menu-left {
   left: 0;
   right: auto;
 }
 
-/* line 151, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 152, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-header {
   display: block;
   padding: 3px 20px;
@@ -678,7 +679,7 @@ th {
   white-space: nowrap;
 }
 
-/* line 161, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 162, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropdown-backdrop {
   position: fixed;
   left: 0;
@@ -688,34 +689,34 @@ th {
   z-index: 990;
 }
 
-/* line 171, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 172, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .pull-right > .dropdown-menu {
   right: 0;
   left: auto;
 }
 
-/* line 184, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 185, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropup .caret,
 .navbar-fixed-bottom .dropdown .caret {
   border-top: 0;
   border-bottom: 4px solid;
   content: "";
 }
-/* line 190, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+/* line 191, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
 .dropup .dropdown-menu,
 .navbar-fixed-bottom .dropdown .dropdown-menu {
   top: auto;
   bottom: 100%;
-  margin-bottom: 1px;
+  margin-bottom: 2px;
 }
 
 @media (min-width: 768px) {
-  /* line 204, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+  /* line 205, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
   .navbar-right .dropdown-menu {
     right: 0;
     left: auto;
   }
-  /* line 209, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
+  /* line 210, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss */
   .navbar-right .dropdown-menu-left {
     left: 0;
     right: auto;

@@ -1,16 +1,14 @@
 var Route = require('lib/config/route');
 var Views = require('./views');
 var Tabs = require('lib/components/tabs/view');
-var bb = require('backbone');
-var entitiesChannel = bb.Radio.channel('entities');
-var posChannel = bb.Radio.channel('pos');
-var $ = require('jquery');
+var Radio = require('backbone').Radio;
+//var $ = require('jquery');
 
 module.exports = Route.extend({
 
   initialize: function (options) {
     this.container  = options.container;
-    this.filtered   = entitiesChannel.request('get', {
+    this.filtered   = Radio.request('entities', 'get', {
       type: 'filtered',
       name: 'products'
     });
@@ -19,8 +17,8 @@ module.exports = Route.extend({
     // add title to tab
     // super hack, get the label from the menu
     // TODO: put menu items into params, remove this hack
-    var label = $('#menu li.products').text();
-    posChannel.command('update:tab:label', label, 'left');
+    //var label = $('#menu li.products').text();
+    //posChannel.command('update:tab:label', label, 'left');
   },
 
   fetch: function() {
@@ -46,12 +44,6 @@ module.exports = Route.extend({
     var view = new Views.Actions({
       collection: this.filtered
     });
-
-    this.listenTo(view, 'search:query', function (query) {
-      this.filtered.query(query);
-    });
-
-    // show
     this.layout.actionsRegion.show(view);
   },
 
@@ -59,7 +51,7 @@ module.exports = Route.extend({
 
     // tabs component
     var view = new Tabs({
-      collection: entitiesChannel.request('get', {
+      collection: Radio.request('entities', 'get', {
         type: 'option',
         name: 'tabs'
       })
@@ -69,13 +61,9 @@ module.exports = Route.extend({
       this.filtered.query(model.get('value'), 'tab');
     });
 
-    // listen for new tabs
-    this.on('add:new:tab', function (tab) {
-      view.collection.add(tab).set({active: true});
-    });
-
     // show tabs component
     this.layout.tabsRegion.show(view);
+    this.tabs = view;
   },
 
   showProducts: function() {
@@ -84,28 +72,22 @@ module.exports = Route.extend({
       collection: this.filtered
     });
 
-    // add to cart
-    this.listenTo(view, 'childview:cart:add:clicked', this.sendToCart);
-
-    // variations, new tab filter
-    this.listenTo(view, 'childview:product:variations:clicked', this.newTab);
+    this.listenTo(view,{
+      'childview:add:to:cart': function(childview, args){
+        Radio.command('entities', 'add:to:cart', {model: args.model});
+      },
+      'childview:show:variations': function(childview, args){
+        this.tabs.collection.add({
+          label: args.model.get('title'),
+          value: 'parent:' + args.model.get('id'),
+          fixed: false
+        }).set({active: true});
+      }
+    });
 
     // show
     this.layout.listRegion.show(view);
 
-  },
-
-  sendToCart: function(childview, args){
-    posChannel.command('cart:add', args.model);
-  },
-
-  newTab: function(childview, args){
-    var newTab = {
-      label: args.model.get('title'),
-      value: 'parent:' + args.model.get('id'),
-      fixed: false
-    };
-    this.trigger('add:new:tab', newTab);
   }
 
 });

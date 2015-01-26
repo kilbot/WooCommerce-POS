@@ -12,12 +12,9 @@
 
 class WC_POS_Gateways_Card extends WC_Payment_Gateway {
 
-	/** @var string 'no' never enabled in Online Store. */
-	public $enabled = 'no';
-
-    /**
-     * Constructor for the gateway.
-     */
+	/**
+	 * Constructor for the gateway.
+	 */
 	public function __construct() {
 		$this->id           = 'pos_card';
 		$this->title        = __( 'Card', 'woocommerce-pos' );
@@ -28,9 +25,10 @@ class WC_POS_Gateways_Card extends WC_Payment_Gateway {
 		// Actions
 		add_action( 'woocommerce_pos_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_thankyou_pos_card', array( $this, 'calculate_cashback' ) );
+
 	}
 
-    /**
+	/**
 	 * Display the payment fields in the checkout
 	 */
 	public function payment_fields() {
@@ -118,12 +116,4 @@ class WC_POS_Gateways_Card extends WC_Payment_Gateway {
 		echo $message;
 	}
 
-	/**
-	 * Check If The Gateway Is Available For Use
-	 *
-	 * @return bool
-	 */
-	public function is_available() {
-		return true;
-	}
 }

@@ -7,12 +7,11 @@ module.exports = LayoutView.extend({
   initialize: function(options){
     options = options || {};
     this.order = options.order;
-
     this.template = _.template( $('#tmpl-cart').html() );
 
-    if(this.order.cart){
-      this.listenTo(this.order.cart, 'add remove', this.showOrHide);
-    }
+    this.listenTo(this.listRegion, 'show', function(cart){
+      this.onShowCart(cart);
+    });
   },
 
   tagName: 'section',
@@ -21,7 +20,7 @@ module.exports = LayoutView.extend({
     listRegion      : '.list',
     totalsRegion    : '.list-totals',
     customerRegion  : '.cart-customer',
-    actionsRegion   : '.cart-actions',
+    actionsRegion   : '.list-actions',
     notesRegion     : '.cart-notes',
     footerRegion    : '.list-footer'
   },
@@ -30,17 +29,17 @@ module.exports = LayoutView.extend({
     'class'         : 'module cart-module'
   },
 
-  showOrHide: function(){
-    var regions = this.getRegions(),
-        items = this.order.cart.length,
-        toggle = items === 0 ? 'hide' : 'show';
+  /**
+   * add/remove cart-empty class
+   */
+  onShowCart: function(cart){
+    if(cart.isEmpty()){
+      this.$el.addClass('cart-empty');
+    }
 
-    _.chain(regions)
-      .omit('listRegion')
-      .values()
-      .map(function(region){
-        region.$el[toggle]();
-      });
+    this.listenToOnce(cart, 'add:child', function(){
+      this.$el.removeClass('cart-empty');
+    });
   }
 
 });
