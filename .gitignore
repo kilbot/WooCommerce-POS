@@ -2,3 +2,10 @@
 node_modules
 .idea
 npm-debug.log
+assets/css/admin.min.css
+assets/css/pos.min.css
+assets/css/src/admin.css
+assets/css/src/pos.css
+assets/js/admin.build.js
+assets/js/app.build.js
+assets/js/core.build.js

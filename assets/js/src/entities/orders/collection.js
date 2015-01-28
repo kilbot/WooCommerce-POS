@@ -43,7 +43,7 @@ module.exports = DualCollection.extend({
         return promise;
       } else {
         debug('fetching: orders');
-        return bb.DualCollection.prototype.fetch.call(self, options);
+        return DualCollection.prototype.fetch.call(self, options);
       }
     });
   },

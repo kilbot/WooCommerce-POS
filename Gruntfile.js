@@ -76,7 +76,7 @@ module.exports = function(grunt) {
     // compass
     compass: {
       options: {
-        require: ['susy', 'breakpoint'],
+        require: ['breakpoint'],
         sassDir: 'assets/css/src/scss',
         cssDir: 'assets/css/src',
         fontsDir: 'assets/fonts',
@@ -187,7 +187,8 @@ module.exports = function(grunt) {
           handlebars: 'Handlebars',
           accounting: 'accounting',
           moment: 'moment',
-          select2: 'select2'
+          select2: 'select2',
+          'idb-wrapper': 'IDBStore'
         },
         cache: true,
         watch: true

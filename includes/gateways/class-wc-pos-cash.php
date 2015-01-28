@@ -56,6 +56,10 @@ class WC_POS_Gateways_Cash extends WC_Payment_Gateway {
 				'. $right_addon .'
 				</div>
 			</div>
+			<div class="form-row">
+				<label>'. __('Change', 'woocommerce-pos') .'</label>
+				<span></span>
+			</div>
 		';
 
 	}

@@ -5,12 +5,16 @@ var $ = require('jquery');
 module.exports = ItemView.extend({
   tagName: 'h5',
   template: hbs.compile('' +
-    '<input type="radio">' +
+    //'<input type="radio">' +
     '{{title}}' +
     '{{#if icon}}<img src="{{icon}}">{{/if}}'
   ),
 
   initialize: function() {
+    var tmpl = $('script[data-gateway="' + this.model.id + '"]');
+    if(tmpl.data('default') !== ''){
+      this.makeActive();
+    }
   },
 
   templateHelpers: function(){
@@ -23,7 +27,7 @@ module.exports = ItemView.extend({
   },
 
   modelEvents: {
-    'change:active': 'onChangeActive'
+    //'change:active': 'onChangeActive'
   },
 
   events: {
@@ -34,9 +38,9 @@ module.exports = ItemView.extend({
     this.model.set({
       active: true
     });
-  },
-
-  onChangeActive: function(model, active){
-    this.$('input[type="radio"]').prop('checked', active);
   }
+
+  //onChangeActive: function(model, active){
+  //  this.$('input[type="radio"]').prop('checked', active);
+  //}
 });

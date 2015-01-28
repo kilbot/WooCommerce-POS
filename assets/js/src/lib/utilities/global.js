@@ -2,6 +2,7 @@ var version = version || '';
 var _ = require('lodash');
 var debugFunc = require('debug');
 var bb = require('backbone');
+var $ = require('jquery');
 
 /**
  * check debugging flag
@@ -26,7 +27,8 @@ module.exports = {
       obj[parent] = child;
       return obj;
     }, value || {});
-    _.merge(this, nestedObj);
+    //_.merge(this, nestedObj); // not avail in underscore
+    $.extend(true, this, nestedObj);
   },
   create: function(app){
     return _.defaults( app, this );

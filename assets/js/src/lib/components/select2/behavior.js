@@ -2,7 +2,7 @@ var Behavior = require('lib/config/behavior');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
 
-module.exports = POS.Behaviors.Select2 = Behavior.extend({
+var Select2 = Behavior.extend({
 
   initialize: function(options){
     options = options || {};
@@ -39,9 +39,12 @@ module.exports = POS.Behaviors.Select2 = Behavior.extend({
     this.ui.select.select2( 'destroy' );
   },
 
-  query: function(){},
-  initSelection: function(){},
-  formatResult: function(){},
-  formatSelection: function(){}
+  //query: function(){},
+  //initSelection: function(){},
+  //formatResult: function(){},
+  //formatSelection: function(){}
 
 });
+
+module.exports = Select2;
+POS.attach('Behaviors.Select2', Select2);

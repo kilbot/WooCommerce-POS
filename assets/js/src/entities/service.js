@@ -5,6 +5,7 @@ var Cart = require('./cart/collection');
 var Customers = require('./customers/collection');
 var Coupons = require('./coupons/collection');
 var Settings = require('./settings/model');
+var SettingsCollection = require('./settings/collection');
 var Gateways = require('./gateways/collection');
 var FilteredCollection = require('lib/config/filtered-collection');
 var debug = require('debug')('entities');
@@ -26,7 +27,8 @@ module.exports = POS.Entities = Service.extend({
     cart      : Cart,
     customers : Customers,
     coupons   : Coupons,
-    gateways  : Gateways
+    gateways  : Gateways,
+    settings  : SettingsCollection
   },
 
   methods: {

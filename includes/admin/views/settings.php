@@ -9,16 +9,20 @@
 ?>
 
 <div class="wrap">
-	<h2 id="wc-pos-settings-tabs" class="nav-tab-wrapper">
-		<?php foreach( $settings as $setting ): ?>
-			<a href="#" class="nav-tab" data-tab="<?php echo $setting->id ?>"><?php echo $setting->label ?></a>
-		<?php endforeach; ?>
-	</h2>
-	<div id="wc-pos-settings" class="wc-pos-settings">
-		<p><?php _e( 'There has been an error loading the settings, please contact <a href="mailto:support@woopos.com.au">support</a>', 'woocommerce-pos' ); ?></p>
-	</div>
-	<?php foreach( $settings as $setting ): ?>
-		<?php echo $setting->output(); ?>
-	<?php endforeach; ?>
+	<p><?php _e( 'There has been an error loading the settings, please contact <a href="mailto:support@woopos.com.au">support</a>', 'woocommerce-pos' ); ?></p>
 </div>
-<div id="wc-pos-modal"></div>
+
+<?php foreach( $settings as $setting ): ?>
+	<?php echo $setting->output(); ?>
+<?php endforeach; ?>
+
+<script type="text/template" id="tmpl-modal">
+	<div class="modal-dialog"><div class="modal-content">
+			<div class="modal-header"><h1><?php /* translators: wordpress */ _e( 'Title' ); ?></h1><i class="icon icon-times" data-action="close" title="<?php /* translators: wordpress */ _e( 'Close' ); ?>"></i></div>
+			<div class="modal-body"></div>
+			<div class="modal-footer">
+				<p class="response" data-success="<?php /* translators: woocommerce */ _e( 'Your changes have been saved.', 'woocommerce' ); ?>" data-error="<?php /* translators: woocommerce */ _e( 'Sorry, there has been an error.', 'woocommerce' ); ?>"></p>
+				<a href="#" class="btn btn-primary" data-action="save"><?php /* translators: woocommerce */ _e( 'Save Changes', 'woocommerce' ); ?></a>
+			</div>
+		</div></div>
+</script>

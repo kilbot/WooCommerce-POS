@@ -1,13 +1,18 @@
 var LayoutView = require('lib/config/layout-view');
+var _ = require('lodash');
 
 module.exports = LayoutView.extend({
-    el: 'body'
-    //template: _.template( $('#page').html() ),
-    //regions: {
-    //    headerRegion: '#header',
-    //    menuRegion  : '#menu',
-    //    tabsRegion  : '#tabs',
-    //    mainRegion  : '#main',
-    //    modalRegion : '#modal'
-    //}
+
+  el: '#wpbody-content .wrap',
+
+  template: function(){
+    return '<div id="wc-pos-admin"></div>' +
+      '<div id="wc-pos-modal"></div>';
+  },
+
+  regions: {
+    mainRegion  : '#wc-pos-admin',
+    modalRegion : '#wc-pos-modal'
+  }
+
 });

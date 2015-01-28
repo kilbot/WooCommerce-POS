@@ -10,7 +10,7 @@ Development repository for WooCommerce POS - the Point of Sale plugin for [WooCo
 
 Please report all bugs [here](https://github.com/kilbot/WooCommerce-POS/issues) or contact support via [support@woopos.com.au](mailto:support@woopos.com.au)
 
-### Developing locally
+## Developing locally
 
 **This branch is currently being refactored, do not build this branch until it is renamed to master!!**
 
@@ -35,7 +35,7 @@ cd woocommerce-pos && npm install
 
 ### Building the project
 
-Changes to the .js or .css source files will require a project rebuild. Build tasks are automated by [Grunt](http://gruntjs.com).
+Once you have cloned the project you will have all the files necessary to build and customise the plugin. Build tasks are automated by [Grunt](http://gruntjs.com).
 
 ```sh
 grunt dev

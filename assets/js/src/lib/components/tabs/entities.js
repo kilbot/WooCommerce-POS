@@ -4,33 +4,29 @@ var _ = require('lodash');
 
 var Tab = Model.extend({
   defaults: {
-    label: '&nbsp;',
-    value: '',
+    label: 'Tab',
     active: false,
     fixed: true
-  },
-  idAttribute: 'value'
+  }
 });
 
 var Tabs = Collection.extend({
   model: Tab,
+
   initialize: function() {
     this.on( 'remove', this.onRemove );
-    this.on( 'change:active', this.onChangeActive );
   },
 
   onRemove: function() {
-    var activeTabs = _.compact( this.pluck('active') );
-    if( _.isEmpty( activeTabs ) ) {
-      this.first().set({ active: true });
+    var activeTabs = this.where({'active':true});
+    if( activeTabs.length === 0 ) {
+      this.at(0).set({active:true});
     }
   },
 
-  onChangeActive: function(model) {
+  setActive: function(id){
     this.each( function(tab) {
-      if( model.id !== tab.id ) {
-        tab.set( { active: false }, { silent: true } );
-      }
+      tab.set({active: ( id === tab.id ) });
     });
   }
 

@@ -81,11 +81,13 @@ div#page:not(.two-column) #main, .two-column #main > div {
     @include flex-shrink(0); /* default don't shrink */
   }
   .list-actions {
+    border-top: 2px solid darken( $list-border-color, 5% );
     >div {
       padding: $spacing/3;
     }
   }
   .list-actions:first-of-type {
+    border-top: 0;
     > div {
       background: nth( $primaryPalette, 8 );
       > .btn {

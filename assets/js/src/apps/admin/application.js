@@ -4,9 +4,8 @@ var _ = require('lodash');
 var LayoutView = require('./layout-view');
 var debug = require('debug')('admin');
 //var accounting = require('accounting');
-var routerChannel = bb.Radio.channel('router');
-//var entitiesChannel = bb.Radio.channel('entities');
-
+var Radio = require('backbone').Radio;
+var routerChannel = Radio.channel('router');
 
 module.exports = Application.extend({
 

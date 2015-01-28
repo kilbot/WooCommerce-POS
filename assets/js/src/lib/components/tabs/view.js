@@ -10,8 +10,8 @@ var Tab = ItemView.extend({
   initialize: function () {
     this.template = hbs.compile('' +
       '{{#unless fixed}}' +
-      '<a href="#">' +
-        '<i class="icon icon-times-circle action-remove"></i>' +
+      '<a href="#" data-action="remove">' +
+        '<i class="icon icon-times-circle"></i>' +
       '</a>' +
       '{{/unless}}' +
       '{{{ label }}}'
@@ -24,15 +24,27 @@ var Tab = ItemView.extend({
     }
   },
 
+  modelEvents: {
+    'change:active': 'toggleClass'
+  },
+
   triggers: {
     'click': 'tab:clicked',
-    'click .action-remove': 'tab:removed'
+    'click *[data-action="remove"]': 'remove:tab'
+  },
+
+  toggleClass: function(){
+    this.$el.toggleClass('active', this.model.get('active'));
   },
 
   onTabClicked: function () {
     if (!this.model.get('active')) {
-      this.model.set({active: true});
+      this.model.collection.setActive(this.model.id);
     }
+  },
+
+  onRemoveTab: function(){
+    this.model.collection.remove(this.model);
   }
 
 });
@@ -40,21 +52,13 @@ var Tab = ItemView.extend({
 var Tabs = CollectionView.extend({
   tagName: 'ul',
   childView: Tab,
-  // className: 'nav nav-tabs',
   attributes: {
     'role' : 'tablist'
   },
 
-  collectionEvents: {
-    'change:active change:label' : 'render'
-  },
-
   initialize: function(options) {
+    options = options || {};
     this.collection = new Collection( options.collection );
-
-    this.on( 'childview:tab:removed', function( childview, args ) {
-      this.collection.remove( args.model );
-    });
   }
 
 });

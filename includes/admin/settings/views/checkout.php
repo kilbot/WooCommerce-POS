@@ -3,7 +3,7 @@
  * Template for the checkout settings
  */
 ?>
-<script id="tmpl-wc-pos-settings-checkout" type="text/html">
+<script class="tmpl-wc-pos-settings" data-id="<?php echo $this->id ?>" data-label="<?php echo $this->label ?>" type="text/template">
 
 	<h3><?php /* translators: woocommerce */ _e( 'Checkout Process', 'woocommerce' ); ?></h3>
 

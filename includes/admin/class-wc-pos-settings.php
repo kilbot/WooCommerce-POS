@@ -64,7 +64,6 @@ class WC_POS_Admin_Settings {
 		$settings = apply_filters( 'woocommerce_pos_settings_tabs_array', array(
 			new WC_POS_Admin_Settings_General(),
 			new WC_POS_Admin_Settings_Checkout(),
-			new WC_POS_Admin_Settings_Hotkeys(),
 			new WC_POS_Admin_Settings_Tools()
 		));
 		$this->settings = $settings;
@@ -78,17 +77,22 @@ class WC_POS_Admin_Settings {
 	 * @param mixed $key
 	 * @return array
 	 */
-	static public function get_settings( $id, $key = false ) {
+	static public function get_settings($id, $key = false) {
 
 		// get settings
-		$settings = get_option( self::DB_PREFIX . $id );
+		$settings = get_option(self::DB_PREFIX . $id);
 
 		// default settings for gateways
-		if( ! $settings ) {
-			preg_replace( '/^gateway_/', '', $id, 1, $count );
-			if( $count ) {
-				$settings = get_option( self::DB_PREFIX . $id );
+		if(!$settings) {
+			preg_replace('/^gateway_/', '', $id, 1, $count);
+			if($count) {
+				$settings = get_option(self::DB_PREFIX . $id);
 			}
+		}
+
+		// return a single setting if $key given
+		if($key) {
+			$settings = array_key_exists($key, $settings) ? $settings[$key] : false;
 		}
 
 		return $settings;
@@ -193,6 +197,14 @@ class WC_POS_Admin_Settings {
 		);
 
 		wp_enqueue_script(
+			'idb-wrapper',
+			'//cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.4.1/idbstore.min.js',
+			false,
+			false,
+			true
+		);
+
+		wp_enqueue_script(
 			WC_POS_PLUGIN_NAME . '-core',
 			WC_POS_PLUGIN_URL . 'assets/js/core.build.js',
 			array( 'jquery', 'backbone', 'underscore' ),
@@ -236,15 +248,6 @@ class WC_POS_Admin_Settings {
 		$params = $registry->get('params');
 
 		echo '<script type="text/javascript">POS.start('. json_encode( $params->admin() ) .');</script>';
-	}
-
-	/**
-	 * Params for the Settings App
-	 *
-	 * @return mixed|void
-	 */
-	public function admin_params() {
-
 	}
 
 }

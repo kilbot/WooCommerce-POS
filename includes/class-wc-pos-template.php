@@ -115,6 +115,7 @@ class WC_POS_Template {
 			'lodash-js'         => '<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>',
 			'backbone-js'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>',
 			'handlebars'        => '<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>',
+			'idb-wrapper'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.4.1/idbstore.min.js"></script>',
 			'select2'           => '<script src="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js"></script>',
 			'moment'            => '<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"></script>',
 			'accounting'        => '<script src="//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>',
@@ -201,8 +202,10 @@ class WC_POS_Template {
 		}
 	}
 
+
 	/**
-	 * Payment gateways templates
+	 * Get enabled payment gateways
+	 * @return array
 	 */
 	protected function gateways(){
 		$registry = WC_POS_Registry::instance();

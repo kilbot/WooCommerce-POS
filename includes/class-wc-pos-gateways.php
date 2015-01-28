@@ -107,61 +107,100 @@ class WC_POS_Gateways {
 	}
 
 	/**
-	 *
+	 * @return array
 	 */
 	public function enabled_gateways(){
-		$_gateways = array();
-		$checkout_settings = WC_POS_Admin_Settings::get_settings('checkout');
-		$enabled_gateways = array_keys($checkout_settings['enabled']);
-		$payment_gateways = WC()->payment_gateways->payment_gateways();
-		foreach ( $enabled_gateways as $gateway ) {
-			if(array_key_exists($gateway, $payment_gateways)){
-				$_gateways[$gateway] = $this->sanitize( $payment_gateways[$gateway] );
-			}
-		}
-		error_log(print_r($this->order_gateways($_gateways), true));
-		return $this->order_gateways($_gateways);
+		$_gateways 					= array();
+		$enabled_gateways 	= WC_POS_Admin_Settings::get_settings('checkout', 'enabled');
+		$default_gateway 		= WC_POS_Admin_Settings::get_settings('checkout', 'default');
+		$payment_gateways 	= WC()->payment_gateways->payment_gateways();
+
+		error_log(print_r($enabled_gateways, true));
+		error_log(print_r($default_gateway, true));
+
+		if($enabled_gateways):
+			foreach(array_keys($enabled_gateways) as $gateway):
+				if(array_key_exists($gateway, $payment_gateways)){
+					$_gateways[$gateway] = $this->sanitize( $payment_gateways[$gateway] );
+					$_gateways[$gateway]->default = $gateway == $default_gateway;
+				}
+			endforeach;
+		endif;
+
+		return $this->order($_gateways);
 	}
 
-	private function order_gateways($gateways){
-		$checkout_settings = WC_POS_Admin_Settings::get_settings('checkout');
-		$order = $checkout_settings['gateway_order'];
+	/**
+	 * @param array $gateways
+	 * @return array
+	 */
+	private function order(array $gateways){
+		$order = WC_POS_Admin_Settings::get_settings('checkout', 'gateway_order');
 		$commonKeysInOrder = array_intersect_key($order, $gateways);
 		$commonKeysWithValue = array_intersect_key($gateways, $commonKeysInOrder);
 		return array_merge($commonKeysInOrder, $commonKeysWithValue);
 	}
 
-	private function sanitize($gateway){
+	/**
+	 * @param WC_Payment_Gateway $gateway
+	 * @return WC_Payment_Gateway
+	 */
+	private function sanitize(WC_Payment_Gateway $gateway){
 		$settings = WC_POS_Admin_Settings::get_settings('gateway_'.$gateway->id);
 
-		if(isset($settings['title']) && $settings['title'] !== ''){
-			$gateway->title = $settings['title'];
-		}
-
-		if(isset($settings['description']) && $settings['description'] !== ''){
-			$gateway->description = $settings['description'];
-		}
-
-		if(isset($settings['icon']) && $settings['icon'] === 'true'){
-			$gateway->icon = $this->sanitize_icon($gateway);
-		}
-
-		$gateway->payment_fields = $this->sanitize_payment_fields($gateway);
+		$gateway->title 					= $this->get_title($gateway, $settings);
+		$gateway->description 		= $this->get_description($gateway, $settings);
+		$gateway->icon 						= $this->get_icon($gateway, $settings);
+		$gateway->payment_fields	= $this->payment_fields($gateway);
 
 		return $gateway;
 	}
 
-	private function sanitize_icon($gateway){
-		$icon = $gateway->get_icon();
-		if($icon !== ''){
-			// simple preg_match
-			preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $icon, $src);
-			$icon = $src[1];
+	/**
+	 * @param WC_Payment_Gateway $gateway
+	 * @param array $settings
+	 * @return string
+	 */
+	private function get_title(WC_Payment_Gateway $gateway, array $settings){
+		$title = isset($settings['title']) ? $settings['title']: $gateway->get_title();
+		return $title;
+	}
+
+	/**
+	 * @param WC_Payment_Gateway $gateway
+	 * @param array $settings
+	 * @return string
+	 */
+	private function get_description(WC_Payment_Gateway $gateway, array $settings){
+		$description = isset($settings['description']) ? $settings['description']: '';
+		return $description;
+	}
+
+	/**
+	 * @param WC_Payment_Gateway $gateway
+	 * @param array $settings
+	 * @return string
+	 */
+	private function get_icon(WC_Payment_Gateway $gateway, array $settings){
+		$icon = '';
+
+		if(isset($settings['icon']) && $settings['icon'] == true){
+			$icon = $gateway->get_icon();
+			if($icon !== ''){
+				// simple preg_match
+				preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $icon, $src);
+				$icon = $src[1];
+			}
 		}
+
 		return $icon;
 	}
 
-	private function sanitize_payment_fields($gateway){
+	/**
+	 * @param WC_Payment_Gateway $gateway
+	 * @return mixed|string
+	 */
+	private function payment_fields(WC_Payment_Gateway $gateway){
 		$html = '';
 		if( $gateway->has_fields() || $gateway->get_description() ){
 

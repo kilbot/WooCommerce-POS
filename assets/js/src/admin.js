@@ -2,20 +2,34 @@ var POS = require('lib/utilities/global');
 var Application = require('apps/admin/application');
 
 /**
- * bootstrap Handlebars Helpers
+ * Services
  */
-require('lib/utilities/handlebars-helpers');
+var EntitiesService = require('entities/service');
+var ModalService = require('lib/components/modal/service');
+
+/**
+ * SubApps
+ */
+var SettingsRouter = require('apps/settings/router');
 
 /**
  * Create the app
  */
 var app = new Application();
+
 /**
- * Modules
+ * ... add SubApps and Services
  */
-app.module( 'SettingsApp', {
-  moduleClass: require('apps/settings/module'),
+app.entities = new EntitiesService({
+  app: app
+});
+
+app.settingsApp = new SettingsRouter({
   container: app.layout.mainRegion
+});
+
+app.modalApp = new ModalService({
+  container: app.layout.modalRegion
 });
 
 /**

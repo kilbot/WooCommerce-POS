@@ -4,6 +4,7 @@ var entitiesChannel = bb.Radio.channel('entities');
 var _ = require('lodash');
 
 module.exports = Model.extend({
+
   initialize: function() {
     this.url = entitiesChannel.request('get', {
       type: 'option',
@@ -11,6 +12,7 @@ module.exports = Model.extend({
     });
     this._saving = false;
   },
+
   sync: function (method, model, options) {
     var id       = 'id=' + model.get('id'),
       action   = 'action=wc_pos_admin_settings';
@@ -38,4 +40,5 @@ module.exports = Model.extend({
 
     return bb.sync(method, model, options);
   }
+
 });

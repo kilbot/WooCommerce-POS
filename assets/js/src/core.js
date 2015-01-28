@@ -2,10 +2,9 @@
  * Core =
  * Marionette & Radio shim
  */
-//var $ = require('jquery');
+var $ = require('jquery');
 var _ = require('underscore');
 var bb = require('backbone');
-var $ = require('jquery');
 bb.$ = $; // help bb find $ (for node mocha tests)
 bb.Radio = require('backbone.radio');
 var Marionette = require('backbone.marionette');
@@ -18,9 +17,6 @@ Marionette.Application.prototype._initChannel = function () {
 /**
  * Backbone plugins
  */
-require('idb-wrapper');
-require('backbone-idb/backbone-idb');
-require('backbone-dualStorage/backbone.dualstorage');
 bb.FilteredCollection =
   require('backbone-filtered-collection/backbone-filtered-collection');
 

@@ -15,6 +15,7 @@
 	data-gateway="<?php echo $gateway->id; ?>"
 	data-title="<?php echo $gateway->title; ?>"
 	data-icon="<?php echo $gateway->icon; ?>"
+	data-default="<?php echo $gateway->default; ?>"
 >
 	<div class="form-group">
 		<?php echo $gateway->payment_fields; ?>
