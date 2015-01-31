@@ -115,9 +115,6 @@ class WC_POS_Gateways {
 		$default_gateway 		= WC_POS_Admin_Settings::get_settings('checkout', 'default');
 		$payment_gateways 	= WC()->payment_gateways->payment_gateways();
 
-		error_log(print_r($enabled_gateways, true));
-		error_log(print_r($default_gateway, true));
-
 		if($enabled_gateways):
 			foreach(array_keys($enabled_gateways) as $gateway):
 				if(array_key_exists($gateway, $payment_gateways)){

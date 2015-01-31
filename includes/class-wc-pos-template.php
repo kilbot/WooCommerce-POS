@@ -12,28 +12,15 @@ class WC_POS_Template {
 
 	/**
 	 * Constructor
+	 * @param WC_POS_Gateways $gateways
 	 */
-	public function __construct() {
+	public function __construct(WC_POS_Gateways $gateways) {
 
-		add_filter( 'generate_rewrite_rules', array( $this, 'generate_rewrite_rules' ) );
+		$this->gateways = $gateways;
+
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
 
-	}
-
-	/**
-	 * Add rewrite rule to permalinks
-	 *
-	 * @param $wp_rewrite
-	 */
-	public function generate_rewrite_rules( $wp_rewrite ) {
-		$option = get_option( WC_POS_Admin_Settings::DB_PREFIX . 'permalink', 'pos' );
-		$slug = empty($option) ? 'pos' : $option; // make sure slug not empty
-
-		$custom_page_rules = array(
-			'^'. $slug .'/?$' => 'index.php?pos=1',
-		);
-		$wp_rewrite->rules = $custom_page_rules + $wp_rewrite->rules;
 	}
 
 	/**
@@ -61,7 +48,7 @@ class WC_POS_Template {
 			auth_redirect();
 
 		// check privileges
-		if( ! current_user_can( 'manage_woocommerce_pos' ) )
+		if( ! current_user_can( 'access_woocommerce_pos' ) )
 			/* translators: wordpress */
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 
@@ -136,9 +123,7 @@ class WC_POS_Template {
 		}
 
 		// inline start app with params
-		$registry = WC_POS_Registry::instance();
-		$params = $registry->get('params');
-		echo '<script type="text/javascript">POS.start('. json_encode( $params->frontend() ) .');</script>';
+		echo '<script type="text/javascript">POS.start('. json_encode( WC_POS_Params::frontend() ) .');</script>';
 	}
 
 	/**
@@ -202,14 +187,4 @@ class WC_POS_Template {
 		}
 	}
 
-
-	/**
-	 * Get enabled payment gateways
-	 * @return array
-	 */
-	protected function gateways(){
-		$registry = WC_POS_Registry::instance();
-		$payment_gateways = $registry->get('gateways');
-		return $payment_gateways->enabled_gateways();
-	}
 }

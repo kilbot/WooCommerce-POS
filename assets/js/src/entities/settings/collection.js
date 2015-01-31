@@ -1,12 +1,7 @@
 var Collection = require('lib/config/collection');
 var Model = require('./model');
-var $ = require('jquery');
+var Radio = require('backbone').Radio;
 
 module.exports = Collection.extend({
-  model: Model,
-
-  initialize: function( models, options ) {
-
-  }
-
+  model: Model
 });

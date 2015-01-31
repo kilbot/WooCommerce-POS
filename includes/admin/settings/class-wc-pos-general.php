@@ -18,7 +18,6 @@ class WC_POS_Admin_Settings_General extends WC_POS_Admin_Settings_Page {
 		$this->id    = 'general';
 		/* translators: woocommerce */
 		$this->label = __( 'General', 'woocommerce' );
-		$this->data  = get_option( WC_POS_Admin_Settings::DB_PREFIX . $this->id );
 	}
 
 }

@@ -21,15 +21,15 @@ class WC_POS {
 			spl_autoload_register( array( $this, 'autoload' ) );
 		}
 
-		$this->init();
-
+		add_action( 'init', array( $this, 'init' ) );
+		add_filter( 'generate_rewrite_rules', array( $this, 'generate_rewrite_rules' ) );
 		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ) );
 		do_action( 'woocommerce_pos_loaded' );
 
 	}
 
 	/**
-	 * Autoload classes
+	 * Autoload classes + pseudo namespacing
 	 * turns WC_POS_i18n into includes/class-wc-pos-i18n.php and
 	 * WC_POS_Admin_Settings into includes/admin/class-wc-pos-settings.php
 	 *
@@ -51,24 +51,39 @@ class WC_POS {
 	/**
 	 * Load the required resources
 	 */
-	private function init() {
+	public function init() {
 
 		// global helper functions
 		require_once WC_POS_PLUGIN_PATH . 'includes/wc-pos-functions.php';
 
-		$registry = WC_POS_Registry::instance();
-
-		$registry->add( 'i18n',     new WC_POS_i18n() );
-		$registry->add( 'params',   new WC_POS_Params() );
-		$registry->add( 'template', new WC_POS_Template() );
-		$registry->add( 'products', new WC_POS_Products() );
-		$registry->add( 'gateways', new WC_POS_Gateways() );
+		$gateways = new WC_POS_Gateways();
+		new WC_POS_Products(); // admin only?
 
 		// admin only
-		if ( is_admin() ) {
-			$registry->add( 'admin',  new WC_POS_Admin() );
+		if (is_admin()) {
+			new WC_POS_Admin();
 		}
 
+		// frontend only
+		if (!is_admin()) {
+			new WC_POS_Template($gateways);
+		}
+
+	}
+
+	/**
+	 * Add rewrite rule to permalinks
+	 *
+	 * @param $wp_rewrite
+	 */
+	public function generate_rewrite_rules( $wp_rewrite ) {
+		$option = get_option( WC_POS_Admin_Settings::DB_PREFIX . 'permalink', 'pos' );
+		$slug = empty($option) ? 'pos' : $option; // make sure slug not empty
+
+		$custom_page_rules = array(
+			'^'. $slug .'/?$' => 'index.php?pos=1',
+		);
+		$wp_rewrite->rules = $custom_page_rules + $wp_rewrite->rules;
 	}
 
 	/**
@@ -84,8 +99,8 @@ class WC_POS {
 			global $current_user;
 			$user = $current_user;
 
-			if( ! user_can( $user->ID, 'manage_woocommerce_pos' ) )
-				$user = new WP_Error( 'woocommerce_pos_authentication_error', __( 'User not authorized to manage WooCommerce POS', 'woocommerce-pos' ), array( 'code' => 500 ) );
+			if( ! user_can( $user->ID, 'access_woocommerce_pos' ) )
+				$user = new WP_Error( 'woocommerce_pos_authentication_error', __( 'User not authorized to access WooCommerce POS', 'woocommerce-pos' ), array( 'code' => 500 ) );
 		}
 
 		return $user;

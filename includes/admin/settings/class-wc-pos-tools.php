@@ -18,7 +18,6 @@ class WC_POS_Admin_Settings_Tools extends WC_POS_Admin_Settings_Page {
 		$this->id    = 'tools';
 		/* translators: woocommerce */
 		$this->label = __( 'Tools', 'woocommerce' );
-		$this->button = false;
 	}
 
 }

@@ -8,7 +8,10 @@
 	<?php _e( 'To Pay', 'woocommerce-pos' ); ?>: {{{money total}}}
 </script>
 
-<?php $gateways = $this->gateways(); if($gateways): foreach( $gateways as $gateway ): ?>
+<?php
+	$gateways = $this->gateways->enabled_gateways();
+	if($gateways): foreach( $gateways as $gateway ):
+?>
 <script
 	type="text/x-handlebars-template"
 	class="tmpl-checkout-gateways"

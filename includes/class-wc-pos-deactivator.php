@@ -69,18 +69,27 @@ class WC_POS_Deactivator {
 	 * Fired when the plugin is deactivated.
 	 */
 	public static function single_deactivate() {
-		// can not remove rewrite rule on deactivation AFAIK
-
-		// remove the manage_woocommerce_pos capability to administrator and shop_manager
-		$administrator = get_role( 'administrator' );
-		if( $administrator )
-			$administrator->remove_cap( 'manage_woocommerce_pos' );
-		$shop_manager = get_role( 'shop_manager' );
-		if( $shop_manager )
-			$shop_manager->remove_cap( 'manage_woocommerce_pos' );
+		// remove pos capabilities
+		self::remove_pos_capability();
 
 		// flush on activation and deactivation
+		// this will remove the pos rewrite rule
 		flush_rewrite_rules( false ); // false will not overwrite .htaccess
+	}
+
+	/**
+	 * remove default pos capabilities to administrator and
+	 * shop_manager roles
+	 */
+	static private function remove_pos_capability(){
+		$roles = array('administrator', 'shop_manager');
+		$caps = array('manage_woocommerce_pos', 'access_woocommerce_pos');
+		foreach($roles as $slug) :
+			$role = get_role($slug);
+			if($role) : foreach($caps as $cap) :
+				$role->remove_cap($cap);
+			endforeach; endif;
+		endforeach;
 	}
 
 }

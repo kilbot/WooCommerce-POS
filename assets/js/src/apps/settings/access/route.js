@@ -1,18 +1,15 @@
 var Route = require('lib/config/route');
-//var debug = require('debug')('receipt');
 var POS = require('lib/utilities/global');
 var View = require('./view');
 
-var SettingsRoute = Route.extend({
+var Access = Route.extend({
 
   initialize: function( options ) {
     options = options || {};
     this.container = options.container;
-    this.model = options.model;
-  },
-
-  fetch: function() {
-
+    this.model = options.collection.add(window.wc_pos_settings_access);
+    this.model.set({id: 'access'});
+    this.model._isNew = false;
   },
 
   render: function() {
@@ -24,5 +21,5 @@ var SettingsRoute = Route.extend({
 
 });
 
-module.exports = SettingsRoute;
-POS.attach('SettingsApp.Route', SettingsRoute);
+module.exports = Access;
+POS.attach('SettingsApp.Access.Route', Access);

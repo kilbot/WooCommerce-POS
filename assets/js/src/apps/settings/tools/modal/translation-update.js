@@ -5,16 +5,10 @@ var _ = require('lodash');
 var $ = require('jquery');
 
 module.exports =  ItemView.extend({
-  template: _.template( $('#tmpl-translation-update-modal').html() ),
-
-  behaviors: {
-    Modal: {
-      behaviorClass: require('lib/components/modal/behavior')
-    }
-  },
-
   initialize: function (options) {
-    this.trigger('modal:open');
+    this.template = function(){
+      return '<i class="spinner"></i>';
+    };
     this.initUpdate();
   },
 

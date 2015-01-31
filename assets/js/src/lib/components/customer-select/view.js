@@ -8,13 +8,14 @@ var debug = require('debug')('customerSelect');
 
 // Select view
 var View = ItemView.extend({
-  template: function() {
-    return '<input name="customer" type="hidden" class="select2">';
-  },
-
   initialize: function(options){
     options = options || {};
     this.model = options.model;
+
+    this.template = function(){
+      return '<input name="customer" type="hidden" class="select2">';
+    };
+
     this.filtered = Radio.request('entities', 'get', {
       type: 'filtered',
       name: 'customers'
@@ -67,7 +68,7 @@ var View = ItemView.extend({
     if(this.model){
       customer = this.model.get('customer');
     } else {
-      debug('no initial customer');
+      debug('no customer attribute', this.model);
     }
     callback( customer );
   },

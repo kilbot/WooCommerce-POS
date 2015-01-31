@@ -3,7 +3,7 @@ var bb = require('backbone');
 var _ = require('lodash');
 var LayoutView = require('./layout-view');
 var debug = require('debug')('admin');
-//var accounting = require('accounting');
+var accounting = require('accounting');
 var Radio = require('backbone').Radio;
 var routerChannel = Radio.channel('router');
 
@@ -28,24 +28,11 @@ module.exports = Application.extend({
   onBeforeStart: function(options){
     debug( 'starting WooCommerce POS admin app' );
 
-    //// app settings
+    // app settings
     this.options = options || {};
-    //
-    //// bootstrap accounting settings
-    //accounting.settings = options.accounting;
-    //
-    //// global ajax settings
-    //bb.$.ajaxSetup({
-    //    data: {
-    //        security: function(){
-    //            return entitiesChannel.request( 'get:options', 'nonce' );
-    //        }
-    //    },
-    //    beforeSend: function(xhr){
-    //        xhr.setRequestHeader('X-WC-POS', 1);
-    //    },
-    //    timeout: 50000
-    //});
+
+    // bootstrap accounting settings
+    accounting.settings = options.accounting;
   },
 
   onStart: function(){

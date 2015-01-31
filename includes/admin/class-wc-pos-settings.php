@@ -26,6 +26,20 @@ class WC_POS_Admin_Settings {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'current_screen', array( $this, 'conditional_init' ) );
+		$this->init();
+	}
+
+	/**
+	 * Load admin subclasses
+	 */
+	private function init(){
+		$settings = apply_filters( 'woocommerce_pos_settings_tabs_array', array(
+			new WC_POS_Admin_Settings_General(),
+			new WC_POS_Admin_Settings_Checkout(),
+			new WC_POS_Admin_Settings_Access(),
+			new WC_POS_Admin_Settings_Tools()
+		));
+		$this->settings = $settings;
 	}
 
 	/**
@@ -61,18 +75,12 @@ class WC_POS_Admin_Settings {
 	 * Output the settings pages
 	 */
 	public function display_settings_page() {
-		$settings = apply_filters( 'woocommerce_pos_settings_tabs_array', array(
-			new WC_POS_Admin_Settings_General(),
-			new WC_POS_Admin_Settings_Checkout(),
-			new WC_POS_Admin_Settings_Tools()
-		));
-		$this->settings = $settings;
-
 		include 'views/settings.php';
 	}
 
 	/**
 	 * Get settings data
+	 *
 	 * @param $id
 	 * @param mixed $key
 	 * @return array
@@ -100,27 +108,32 @@ class WC_POS_Admin_Settings {
 
 	/**
 	 * Save settings data
+	 *
+	 * @param bool $id
+	 * @param array $data
 	 * @return array
 	 */
-	static public function save_settings() {
-		$data = json_decode(trim(file_get_contents('php://input')), true);
+	static public function save_settings($id = false, array $data) {
 
-		// validate
-		if( !isset( $data['id'] ) )
+		// validate id
+		if( !$id && isset( $data['id'] )){
+			$id = $data['id'];
+			unset($data['id']);
+		}
+
+		if(!$id){
 			wp_die('There is no option id');
+		}
 
-		// reserved option names
-		if( isset( $data['response'] ) )
-			wp_die('Data name "response" is reserved');
+		// check if settings has save action
+		if( has_action('woocommerce_pos_settings_save_'.$id) ) {
+			do_action('woocommerce_pos_settings_save_'.$id, $data);
+			$saved = true;
+		} else {
+			$saved = self::update_option($id, $data);
+		}
 
-		// add timestamp to force update
-		$data['updated'] = current_time( 'timestamp' );
-
-		// remove the security attribute
-		unset( $data['security'] );
-
-		// update settings
-		if( update_option( self::DB_PREFIX . $data['id'], $data ) ) {
+		if($saved){
 			$response = array(
 				'result' => 'success',
 				/* translators: woocommerce */
@@ -132,10 +145,63 @@ class WC_POS_Admin_Settings {
 				/* translators: woocommerce */
 				'notice' => __( 'Action failed. Please refresh the page and retry.', 'woocommerce' )
 			);
+
 		}
 
 		$return['response'] = $response;
 		return $return;
+	}
+
+	/**
+	 * Store the settings in the WP options table
+	 *
+	 * @param $id
+	 * @param $data
+	 * @return bool
+	 */
+	static private function update_option($id, $data){
+
+		// reserved option names
+		if( isset( $data['response'] ) )
+			wp_die('Data name "response" is reserved');
+
+		// add timestamp to force update
+		$data['updated'] = current_time( 'timestamp' );
+
+		// remove the security attribute
+		unset( $data['security'] );
+
+		$updated = add_option( self::DB_PREFIX . $id, $data, '', 'no' );
+		if(!$updated) {
+			$updated = update_option( self::DB_PREFIX . $id, $data );
+		}
+
+		return $updated;
+	}
+
+	/**
+	 * Delete settings in WP options table
+	 *
+	 * @param $id
+	 * @return bool
+	 */
+	static function delete_settings($id){
+		return delete_option(self::DB_PREFIX . $id);
+	}
+
+	/**
+	 * Delete all settings in WP options table
+	 */
+	static function delete_all_settings(){
+		global $wpdb;
+		$wpdb->query(
+			$wpdb->prepare("
+				DELETE FROM {$wpdb->options}
+				WHERE option_name
+				LIKE '%s'",
+				self::DB_PREFIX.'%'
+			)
+		);
 	}
 
 	/**
@@ -244,10 +310,7 @@ class WC_POS_Admin_Settings {
 	 * Start the Settings App
 	 */
 	public function admin_inline_js() {
-		$registry = WC_POS_Registry::instance();
-		$params = $registry->get('params');
-
-		echo '<script type="text/javascript">POS.start('. json_encode( $params->admin() ) .');</script>';
+		echo '<script type="text/javascript">POS.start('. json_encode( WC_POS_Params::admin() ) .');</script>';
 	}
 
 }

@@ -28,8 +28,3 @@ require('bootstrap-sass/assets/javascripts/bootstrap/tooltip');
 require('bootstrap-sass/assets/javascripts/bootstrap/popover');
 require('bootstrap-sass/assets/javascripts/bootstrap/transition');
 require('bootstrap-sass/assets/javascripts/bootstrap/dropdown');
-
-/**
- * jQuery plugins
- */
-require('jquery.hotkeys/jquery.hotkeys');

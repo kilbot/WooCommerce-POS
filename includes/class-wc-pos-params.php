@@ -13,22 +13,22 @@ class WC_POS_Params {
 	/**
 	 * Required parameters for the POS front end
 	 */
-	public function frontend() {
+	static public function frontend() {
 
-		$param['accounting'] 	= $this->accounting_settings();
-		$param['ajaxurl'] 	    = admin_url( 'admin-ajax.php', 'relative' );
-		$param['customers']		= $this->customers();
+		$param['accounting']		= self::accounting_settings();
+		$param['ajaxurl']				= admin_url( 'admin-ajax.php', 'relative' );
+		$param['customers']			= self::customers();
 		$param['denominations'] = WC_POS_i18n::currency_denominations( get_option('woocommerce_currency') );
-		$param['hotkeys'] 	    = $this->hotkeys();
-		$param['nonce'] 		= wp_create_nonce( WC_POS_PLUGIN_NAME );
-		$param['shipping']      = $this->shipping_labels();
-		$param['tabs'] 		    = $this->product_tabs();
-		$param['tax'] 		    = $this->wc_settings();
-		$param['tax_labels']    = $this->tax_labels();
-		$param['tax_rates']     = $this->tax_rates();
-		$param['user'] 		    = $this->user();
-		$param['wc_api']        = get_woocommerce_api_url( '' );
-		$param['worker'] 	    = WC_POS_PLUGIN_URL .'public/assets/js/worker.min.js?ver='. WC_POS_VERSION;
+		$param['hotkeys'] 	    = self::hotkeys();
+		$param['nonce']					= wp_create_nonce( WC_POS_PLUGIN_NAME );
+		$param['shipping']			= self::shipping_labels();
+		$param['tabs']					= self::product_tabs();
+		$param['tax']						= self::wc_settings();
+		$param['tax_labels']		= self::tax_labels();
+		$param['tax_rates']			= self::tax_rates();
+		$param['user']					= self::user();
+		$param['wc_api']				= get_woocommerce_api_url( '' );
+		$param['worker']				= WC_POS_PLUGIN_URL .'public/assets/js/worker.min.js?ver='. WC_POS_VERSION;
 
 		return apply_filters( 'woocommerce_pos_params', $param );
 
@@ -37,13 +37,12 @@ class WC_POS_Params {
 	/**
 	 * @return mixed|void
 	 */
-	public function admin() {
-
-		$param['customers']	= $this->customers();
-		$param['nonce'] 	= wp_create_nonce( WC_POS_PLUGIN_NAME );
-		$param['page']  	= 'settings';
-
-		$param['hotkeys'] = $this->hotkeys();
+	static public function admin() {
+		$param['accounting']	= self::accounting_settings();
+		$param['ajaxurl']			= admin_url( 'admin-ajax.php', 'relative' );
+		$param['customers']		= self::customers();
+		$param['nonce']				= wp_create_nonce( WC_POS_PLUGIN_NAME );
+		$param['hotkeys']			= self::hotkeys();
 
 		return apply_filters( 'woocommerce_pos_admin_params', $param );
 	}
@@ -53,7 +52,7 @@ class WC_POS_Params {
 	 *
 	 * @return array
 	 */
-	public function product_tabs() {
+	static private function product_tabs() {
 		$tabs = array(
 			array(
 				/* translators: woocommerce-admin */
@@ -78,7 +77,7 @@ class WC_POS_Params {
 	 *
 	 * @return array
 	 */
-	public function hotkeys() {
+	static private function hotkeys() {
 
 		// default keys
 		$keys = array(
@@ -115,14 +114,14 @@ class WC_POS_Params {
 	 *
 	 * @return array $settings
 	 */
-	public function accounting_settings() {
+	static private function accounting_settings() {
 		$decimal = get_option( 'woocommerce_price_decimal_sep' );
 		$thousand = get_option( 'woocommerce_price_thousand_sep' );
 		$precision = get_option( 'woocommerce_price_num_decimals' );
 		$settings = array(
 			'currency' => array(
 				'decimal'	=> $decimal,
-				'format'	=> $this->currency_format(),
+				'format'	=> self::currency_format(),
 				'precision'	=> $precision,
 				'symbol'	=> get_woocommerce_currency_symbol( get_woocommerce_currency() ),
 				'thousand'	=> $thousand,
@@ -141,7 +140,7 @@ class WC_POS_Params {
 	 *
 	 * @return array $format
 	 */
-	private function currency_format() {
+	static private function currency_format() {
 		$currency_pos = get_option( 'woocommerce_currency_pos' );
 
 		if( $currency_pos == 'right' )
@@ -162,7 +161,7 @@ class WC_POS_Params {
 	 *
 	 * @return object $customer
 	 */
-	public function customers() {
+	static private function customers() {
 		$user = false;
 		$settings = WC_POS_Admin_Settings::get_settings( 'general' );
 
@@ -195,7 +194,7 @@ class WC_POS_Params {
 	 *
 	 * @return array $settings
 	 */
-	public function wc_settings() {
+	static private function wc_settings() {
 		$settings = array(
 			'tax_label'				=> WC()->countries->tax_or_vat(),
 			'calc_taxes'			=> get_option( 'woocommerce_calc_taxes' ),
@@ -212,7 +211,7 @@ class WC_POS_Params {
 	 *
 	 * @return array $settings
 	 */
-	public function user() {
+	static private function user() {
 		global $current_user;
 
 		$settings = array(
@@ -223,7 +222,7 @@ class WC_POS_Params {
 		return $settings;
 	}
 
-	public function tax_rates() {
+	static private function tax_rates() {
 		$rates = array();
 
 		$classes = array_filter( array_map( 'sanitize_title', explode( "\n", get_option('woocommerce_tax_classes' ) ) ) );
@@ -240,7 +239,7 @@ class WC_POS_Params {
 		return $rates;
 	}
 
-	public function tax_labels() {
+	static private function tax_labels() {
 		$labels = array_reduce( explode( "\n", get_option('woocommerce_tax_classes' ) ), function ($result, $label) {
 			if( $label = trim($label) ) {
 				$result[ sanitize_title($label) ] = $label;
@@ -254,7 +253,7 @@ class WC_POS_Params {
 		return $standard + $labels;
 	}
 
-	public function shipping_labels() {
+	static public function shipping_labels() {
 
 		/* translators: woocommerce */
 		$labels = array( '' => __( 'N/A', 'woocommerce' ) );
@@ -271,7 +270,7 @@ class WC_POS_Params {
 		return $labels;
 	}
 
-	public function modals() {
+	static private function modals() {
 		$modals = array(
 			'titles' => array(
 				'hotkeys' => __( 'HotKeys', 'woocommerce-pos' ),

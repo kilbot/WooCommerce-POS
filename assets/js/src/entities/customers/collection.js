@@ -10,6 +10,6 @@ module.exports = Collection.extend({
       type: 'option',
       name: 'ajaxurl'
     });
-    this.url = ajaxurl + '?action=pos_json_search_customers';
+    this.url = ajaxurl + '?action=wc_pos_json_search_customers';
   }
 });

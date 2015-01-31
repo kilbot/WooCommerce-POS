@@ -11,7 +11,8 @@
 
 abstract class WC_POS_Admin_Settings_Page {
 
-	public $button = true;
+	protected $data;
+	public $current_user_authorized = true;
 
 	/**
 	 * Output the view file
@@ -20,15 +21,11 @@ abstract class WC_POS_Admin_Settings_Page {
 		include 'views/' . $this->id . '.php';
 	}
 
-	/**
-	 * Bootstrap the settings
-	 * @return mixed|string|void
-	 */
-	public function bootstrap_data() {
-		$data = get_option( WC_POS_Admin_Settings::DB_PREFIX . $this->id );
-		$data['id'] = $this->id;
-		$data['security'] = wp_create_nonce( 'wc-pos-settings' );
-		return json_encode( $data );
+	public function get_data(){
+		if(!$this->data){
+			$this->data = get_option( WC_POS_Admin_Settings::DB_PREFIX . $this->id );
+		}
+		return $this->data;
 	}
 
 }

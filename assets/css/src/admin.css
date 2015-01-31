@@ -1709,69 +1709,69 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
   background: white;
 }
 
-/* line 3, scss/partials/admin/_settings.scss */
+/* line 2, scss/partials/admin/_settings.scss */
 #wc-pos-settings-tabs ul {
   margin: 0;
   border-bottom: 1px solid #ccc;
   padding: 9px 15px 0 10px;
 }
-/* line 7, scss/partials/admin/_settings.scss */
+/* line 6, scss/partials/admin/_settings.scss */
 #wc-pos-settings-tabs ul li {
   padding: 6px 10px;
   font-weight: 700;
   font-size: 15px;
   line-height: 24px;
 }
-/* line 12, scss/partials/admin/_settings.scss */
+/* line 11, scss/partials/admin/_settings.scss */
 #wc-pos-settings-tabs ul li.active {
   color: #000;
   background: #f1f1f1;
 }
-/* line 16, scss/partials/admin/_settings.scss */
+/* line 15, scss/partials/admin/_settings.scss */
 #wc-pos-settings-tabs ul li:hover {
   cursor: pointer;
 }
 
-/* line 24, scss/partials/admin/_settings.scss */
-.wc-pos-settings table.form-table {
+/* line 23, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.form-table {
   vertical-align: middle;
   margin-bottom: 20px;
   line-height: 1;
 }
-/* line 29, scss/partials/admin/_settings.scss */
-.wc-pos-settings table.form-table th img {
+/* line 28, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.form-table th img {
   margin: 2px -10px 0 0;
   float: right;
 }
-/* line 34, scss/partials/admin/_settings.scss */
-.wc-pos-settings table.form-table td {
+/* line 33, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.form-table td {
   padding-right: 0;
 }
-/* line 39, scss/partials/admin/_settings.scss */
-.wc-pos-settings table.wc-gateways th:first-of-type {
+/* line 38, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways th:first-of-type {
   width: 1%;
 }
-/* line 42, scss/partials/admin/_settings.scss */
-.wc-pos-settings table.wc-gateways th, .wc-pos-settings table.wc-gateways td {
+/* line 41, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways th, #wc-pos-settings table.wc-gateways td {
   text-align: center;
   padding: 9px 7px;
 }
-/* line 46, scss/partials/admin/_settings.scss */
-.wc-pos-settings table.wc-gateways th.gateway-name, .wc-pos-settings table.wc-gateways th.gateway-id,
-.wc-pos-settings table.wc-gateways td.gateway-name, .wc-pos-settings table.wc-gateways td.gateway-id {
+/* line 45, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways th.gateway-name, #wc-pos-settings table.wc-gateways th.gateway-id,
+#wc-pos-settings table.wc-gateways td.gateway-name, #wc-pos-settings table.wc-gateways td.gateway-id {
   text-align: left;
 }
-/* line 54, scss/partials/admin/_settings.scss */
-.wc-pos-settings table.wc-gateways tbody td {
+/* line 53, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways tbody td {
   cursor: move;
   padding: 7px;
 }
-/* line 58, scss/partials/admin/_settings.scss */
-.wc-pos-settings table.wc-gateways tbody td.gateway-name {
+/* line 57, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways tbody td.gateway-name {
   font-weight: 700;
 }
-/* line 61, scss/partials/admin/_settings.scss */
-.wc-pos-settings table.wc-gateways tbody .status-enabled:before {
+/* line 60, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways tbody .status-enabled:before {
   font-family: WooCommerce;
   speak: none;
   font-weight: 400;
@@ -1785,8 +1785,8 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
   content: "\e015";
   color: #ad74a2;
 }
-/* line 75, scss/partials/admin/_settings.scss */
-.wc-pos-settings table.wc-gateways tbody .status-enabled:before {
+/* line 74, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways tbody .status-enabled:before {
   font-family: WooCommerce;
   speak: none;
   font-weight: 400;
@@ -1800,8 +1800,8 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
   content: "\e015";
   color: #ad74a2;
 }
-/* line 89, scss/partials/admin/_settings.scss */
-.wc-pos-settings table.wc-gateways tbody .status-disabled:before {
+/* line 88, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.wc-gateways tbody .status-disabled:before {
   font-family: WooCommerce;
   speak: none;
   font-weight: 400;
@@ -1816,19 +1816,19 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
   content: "\e602";
   color: #E0E0E0;
 }
-/* line 105, scss/partials/admin/_settings.scss */
-.wc-pos-settings p.response {
+/* line 104, scss/partials/admin/_settings.scss */
+#wc-pos-settings p.response {
   display: inline-block;
   margin: 0 0 0 10px;
   line-height: 20px;
 }
-/* line 109, scss/partials/admin/_settings.scss */
-.wc-pos-settings p.response i {
+/* line 108, scss/partials/admin/_settings.scss */
+#wc-pos-settings p.response i {
   margin-right: 5px;
   vertical-align: middle;
 }
 
-/* line 115, scss/partials/admin/_settings.scss */
+/* line 114, scss/partials/admin/_settings.scss */
 .wc-pos-settings i.spinner, #wc-pos-modal i.spinner {
   display: inline-block;
   float: none;
@@ -2040,4 +2040,74 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
 /* line 82, scss/partials/admin/_modal.scss */
 #wc-pos-modal p {
   margin-top: 0;
+}
+
+/* line 2, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings ul.wc-pos-access-panel {
+  position: relative;
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  background: #fff;
+}
+/* line 10, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings ul.wc-pos-access-panel > li {
+  margin: 0;
+  padding: 10px 20px;
+  width: 160px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #f5f5f5;
+  border-top: 1px solid #eaeaea;
+  border-right: 1px solid #eaeaea;
+}
+/* line 18, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings ul.wc-pos-access-panel > li > strong {
+  font-size: 15px;
+  line-height: 2;
+}
+@media (min-width: 782px) {
+  /* line 18, scss/partials/admin/settings/_access.scss */
+  #wc-pos-settings ul.wc-pos-access-panel > li > strong {
+    line-height: 1.4;
+  }
+}
+/* line 25, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings ul.wc-pos-access-panel > li > ul {
+  display: none;
+  position: absolute;
+  top: 20px;
+  left: 220px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* line 33, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings ul.wc-pos-access-panel > li > ul > li {
+  display: inline-block;
+  min-width: 230px;
+}
+/* line 38, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings ul.wc-pos-access-panel > li.active {
+  border-color: #dfdfdf;
+  background: #fff;
+  color: #555;
+  border-right: 0;
+}
+/* line 43, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings ul.wc-pos-access-panel > li.active > ul {
+  display: block;
+}
+/* line 47, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings ul.wc-pos-access-panel > li:hover {
+  cursor: pointer;
+}
+/* line 50, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings ul.wc-pos-access-panel > li:first-of-type {
+  border-top: 0;
+}
+/* line 53, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings ul.wc-pos-access-panel > li:last-of-type {
+  border-bottom: 0;
 }

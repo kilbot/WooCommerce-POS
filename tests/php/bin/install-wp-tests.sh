@@ -73,6 +73,12 @@ install_db() {
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
+install_woo() {
+	wget -nv -O /tmp/woocommerce.zip https://downloads.wordpress.org/plugin/woocommerce.zip
+	unzip /tmp/woocommerce.zip -dq $WP_CORE_DIR/wp-content/plugins
+}
+
 install_wp
 install_test_suite
 install_db
+install_woo

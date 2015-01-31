@@ -1,6 +1,7 @@
 var bb = require('backbone');
 var $ = require('jquery');
 var POS = require('lib/utilities/global');
+var Loading = require('lib/components/loading/view');
 
 module.exports = POS.Route = bb.Marionette.Object.extend({
   constructor: function() {
@@ -21,6 +22,9 @@ module.exports = POS.Route = bb.Marionette.Object.extend({
     var self = this;
     this._triggerMethod('before:enter', args);
     this._triggerMethod('before:fetch', args);
+
+    var view = new Loading();
+    this.container.show(view);
 
     return $.when(this.fetch.apply(this, args)).then(function() {
       self._triggerMethod('fetch', args);

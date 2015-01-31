@@ -27,7 +27,6 @@ module.exports = {
       obj[parent] = child;
       return obj;
     }, value || {});
-    //_.merge(this, nestedObj); // not avail in underscore
     $.extend(true, this, nestedObj);
   },
   create: function(app){

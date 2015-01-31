@@ -20,17 +20,17 @@ class WC_POS_AJAX {
 
 		// woocommerce_EVENT => nopriv
 		$ajax_events = array(
-			'process_order'             => false,
-			'get_product_ids'			=> false,
-			'get_modal'					=> false,
-			'json_search_customers'		=> false,
-			'set_product_visibilty' 	=> false,
-			'email_receipt' 			=> false,
-			'get_print_template' 		=> false,
-			'admin_settings'            => false,
-			'system_status'             => false,
-			'send_support_email'        => false,
-			'update_translations'       => false
+			'process_order'					=> false,
+			'get_product_ids'				=> false,
+			'get_modal'							=> false,
+			'json_search_customers'	=> false,
+			'set_product_visibilty'	=> false,
+			'email_receipt'					=> false,
+			'get_print_template'		=> false,
+			'admin_settings'				=> false,
+			'system_status'					=> false,
+			'send_support_email'		=> false,
+			'update_translations'		=> false
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -256,7 +256,8 @@ class WC_POS_AJAX {
 
 		$method = $_SERVER['REQUEST_METHOD'];
 		if( $method === 'POST' ) {
-			$response = WC_POS_Admin_Settings::save_settings();
+			$data = json_decode(trim(file_get_contents('php://input')), true);
+			$response = WC_POS_Admin_Settings::save_settings(false, $data);
 		} elseif( $method === 'GET' ) {
 			$response = WC_POS_Admin_Settings::get_settings( $_GET['id'] );
 		}

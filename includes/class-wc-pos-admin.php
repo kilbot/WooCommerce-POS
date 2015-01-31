@@ -32,14 +32,14 @@ class WC_POS_Admin {
 
 		// ajax
 		if( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			new WC_POS_AJAX();      // classes only needed for ajax requests
+			new WC_POS_AJAX();
 
 		// wp admin
 		} else {
-			new WC_POS_Admin_Menu();    // add menu items
-			new WC_POS_Admin_Settings;  // Settings pages
+			new WC_POS_Admin_Menu();
 		}
 
+		new WC_POS_Admin_Settings;
 	}
 
 	public function conditional_init( $current_screen ) {

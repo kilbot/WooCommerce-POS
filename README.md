@@ -17,7 +17,7 @@ Please report all bugs [here](https://github.com/kilbot/WooCommerce-POS/issues) 
 WooCommerce POS is a WordPress plugin which requires [WordPress](http://wordpress.org) 3.8+ and [WooCommerce](wordpress.org/plugins/woocommerce) 2.2+.
 
 To develop the plugin locally you will first have to set up a local server with WordPress and WooCommerce installed.
-If this is your first time setting up a local development environment you may want to check out the [Varying Vagrant Vagrants](https://github.com/Varying-Vagrant-Vagrants/VVV) project.
+If this is your first time setting up a local development environment you may want to check out [Varying Vagrant Vagrants](https://github.com/Varying-Vagrant-Vagrants/VVV) or [Chassis](https://github.com/Chassis/Chassis).
 
 ### Installation
 
@@ -35,7 +35,7 @@ cd woocommerce-pos && npm install
 
 ### Building the project
 
-Once you have cloned the project you will have all the files necessary to build and customise the plugin. Build tasks are automated by [Grunt](http://gruntjs.com).
+Once you have installed the project you will have all the files necessary to build and customise the plugin. Build tasks are automated by [Grunt](http://gruntjs.com).
 
 ```sh
 grunt dev

@@ -105,16 +105,26 @@ class WC_POS_Activator {
 		add_rewrite_rule('^'. $slug .'/?$','index.php?pos=1','top');
 		flush_rewrite_rules( false ); // false will not overwrite .htaccess
 
-		// add the manage_woocommerce_pos capability to administrator and shop_manager
-		$administrator = get_role( 'administrator' );
-		if( $administrator )
-			$administrator->add_cap( 'manage_woocommerce_pos' );
-		$shop_manager = get_role( 'shop_manager' );
-		if( $shop_manager )
-			$shop_manager->add_cap( 'manage_woocommerce_pos' );
+		// add pos capabilities
+		self::add_pos_capability();
 
 		// set the auto redirection on next page load
 		set_transient( 'woocommere_pos_welcome', 1, 30 );
+	}
+
+	/**
+	 * add default pos capabilities to administrator and
+	 * shop_manager roles
+	 */
+	static private function add_pos_capability(){
+		$roles = array('administrator', 'shop_manager');
+		$caps = array('manage_woocommerce_pos', 'access_woocommerce_pos');
+		foreach($roles as $slug) :
+			$role = get_role($slug);
+			if($role) : foreach($caps as $cap) :
+				$role->add_cap($cap);
+			endforeach; endif;
+		endforeach;
 	}
 
 	/**
