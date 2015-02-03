@@ -2,8 +2,12 @@ var FormView = require('lib/config/form-view');
 var POS = require('lib/utilities/global');
 var $ = require('jquery');
 var hbs = require('handlebars');
+var Buttons = require('lib/components/buttons/behavior');
 
 var View = FormView.extend({
+  attributes: {
+    id: 'wc-pos-settings-access'
+  },
 
   initialize: function() {
     this.template = function(){
@@ -12,13 +16,18 @@ var View = FormView.extend({
   },
 
   ui: {
-    submit  : '*[data-action="save"]',
-    tab     : '.wc-pos-access-panel > li'
+    tabs    : '.wc-pos-access-tabs > li',
+    options : '.wc-pos-access-panel > li'
   },
 
   events: {
-    'click @ui.submit'  : 'onSubmit',
-    'click @ui.tab'     : 'onTabClick'
+    'click @ui.tabs' : 'onTabClick'
+  },
+
+  behaviors: {
+    Buttons: {
+      behaviorClass: Buttons
+    }
   },
 
   onRender: function(){
@@ -33,19 +42,20 @@ var View = FormView.extend({
     });
 
     // init the first tab
-    this.ui.tab.first().addClass('active');
+    this.ui.tabs.first().addClass('active');
+    this.ui.options.first().addClass('active');
   },
 
   onTabClick: function(e){
-    this.ui.tab.each(function(tab){
+    this.ui.tabs.each(function(){
+      $(this).removeClass('active');
+    });
+    this.ui.options.each(function(){
       $(this).removeClass('active');
     });
     $(e.currentTarget).addClass('active');
-  },
-
-  onSubmit: function(e) {
-    e.preventDefault();
-    this.model.save();
+    var option = $(e.currentTarget).data('id');
+    $('#' + option).addClass('active');
   }
 
 });

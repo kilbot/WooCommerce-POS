@@ -4,7 +4,7 @@ var _ = require('lodash');
 
 module.exports = POS.Service = bb.Marionette.Object.extend({
   constructor: function(options) {
-    //this.attachGlobals(arguments[0]);
+    options = options || {};
 
     if (this.channelName) {
       this.channel = bb.Radio.channel(_.result(this, 'channelName'));
@@ -33,16 +33,5 @@ module.exports = POS.Service = bb.Marionette.Object.extend({
   isStarted: function(){
     return this._isStarted === true;
   }
-
-  /**
-   * attach any POS.POSApp globals before it gets overwritten
-   * this is required so third party plugins can access
-   * Router, Routes etc
-   */
-  //attachGlobals: function(moduleName){
-  //  if( _(POS).has(moduleName) ){
-  //    _.defaults( this, POS[moduleName] );
-  //  }
-  //}
 
 });

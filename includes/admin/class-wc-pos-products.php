@@ -12,20 +12,20 @@
 
 class WC_POS_Admin_Products {
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
+  /**
+   * Constructor
+   */
+  public function __construct() {
 
-		$this->init();
-	}
+    $this->init();
+  }
 
-	/**
-	 * Load admin subclasses
-	 */
-	private function init() {
+  /**
+   * Load admin subclasses
+   */
+  private function init() {
 
-		// pos only products
-	}
+    // pos only products
+  }
 
 }

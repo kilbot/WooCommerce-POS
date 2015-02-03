@@ -32,7 +32,6 @@ var CheckoutRoute = Route.extend({
       this.order = this.collection.at(0);
     }
 
-    this.order.gateways.fetch();
     this.collection.active = this.order;
   },
 
@@ -59,7 +58,6 @@ var CheckoutRoute = Route.extend({
     var view = new GatewaysView({
       collection: this.order.gateways
     });
-
     this.layout.listRegion.show(view);
   },
 

@@ -6,17 +6,30 @@ var POS = require('lib/utilities/global');
 var Select2 = require('lib/components/select2/behavior');
 var Tooltip = require('lib/components/tooltip/behavior');
 var CustomerSelect = require('lib/components/customer-select/view');
+var Buttons = require('lib/components/buttons/behavior');
 
 var View = FormView.extend({
-  //tagName: 'form',
+  attributes: {
+    id: 'wc-pos-settings-general'
+  },
 
   initialize: function() {
     var id = this.model.id;
     this.template = function(){
       return $('script[data-id="' + id + '"]').html();
     };
-    this.listenTo( this.model, 'update:start', this.saving );
-    this.listenTo( this.model, 'update:stop', this.saved );
+  },
+
+  behaviors: {
+    Select2: {
+      behaviorClass: Select2
+    },
+    Tooltip: {
+      behaviorClass: Tooltip
+    },
+    Buttons: {
+      behaviorClass: Buttons
+    }
   },
 
   onRender: function(){
@@ -30,108 +43,39 @@ var View = FormView.extend({
       }
     });
 
-    // bind the customer-select
+    this.customerSelect();
+  },
+
+  customerSelect: function(){
     var view = new CustomerSelect({
       el    : this.$('*[data-component="customer-select"]'),
-      model : this.model,
-      name  : 'default_customer'
+      model : this.model
     });
     view.render();
 
+    // update model on customer select
     this.listenTo(view, 'customer:select', function(customer) {
       this.model.set({
         default_customer: customer.id,
         customer: customer
       });
     });
-  },
 
-  ui: {
-    submit : '*[data-action="save"]'
-  },
-
-  events: {
-    'click @ui.submit': 'onSubmit'
-    //'mouseenter a.wc-pos-modal': 'proLoadSettings',
-    //'click a.wc-pos-modal': 'openModal',
-    //'click a.action-translation': 'translationUpdate'
-  },
-
-  behaviors: {
-    Select2: {
-      behaviorClass: Select2
-    },
-    Tooltip: {
-      behaviorClass: Tooltip
+    // disable customer select if logged_in_user checked
+    if(this.model.get('logged_in_user')){
+      view.triggerMethod('select:disable', true);
     }
-  },
 
-  //onBeforeShow: function() {
-  //  //Backbone.Syphon.deserialize( this, this.model.toJSON() );
-  //},
-  //
-  //onBeforeDestroy: function() {
-  //  this.storeState();
-  //},
-  //
-  onSubmit: function(e) {
-    e.preventDefault();
-    this.model.save();
-  },
+    this.model.on('change:logged_in_user', function(model, toggle){
+      view.triggerMethod('select:disable', toggle);
+    })
 
-  saving: function() {
-    this.ui.submit
-      .prop( 'disabled', true )
-      .next( 'p.response' )
-      .html( '<i class="spinner"></i>' );
-  },
-
-  saved: function() {
-    var response = this.model.get('response');
-    var success = response.result === 'success' ? 'yes' : 'no';
-    this.ui.submit
-      .prop( 'disabled', false)
-      .next( 'p.response' )
-      .html( '' +
-        '<i class="dashicons dashicons-' + success + '"></i>' +
-        response.notice
-      );
-
-    this.model.unset( 'response', { silent: true } );
-  },
-  //
-  //proLoadSettings: function(e) {
-  //  var id = 'gateway_' + $(e.target).data('gateway');
-  //
-  //  if( _.isUndefined( this.collection.get( id ) ) ) {
-  //    var modalModel = this.collection.add({
-  //      id: id,
-  //      security: this.model.get('security'),
-  //      title: 'Loading ...'
-  //    });
-  //    modalModel.fetch();
-  //  }
-  //},
-  //
-  //openModal: function(e) {
-  //  e.preventDefault();
-  //  var id = 'gateway_' + $(e.target).data('gateway');
-  //
-  //  new GatewaySettingsModal({
-  //    model: this.collection.get( id )
-  //  });
-  //},
-  //
-  //translationUpdate: function(e) {
-  //  e.preventDefault();
-  //  var title = $(e.target).parent('td').prev('th').html();
-  //
-  //  new TranslationUpdateModal({
-  //    model: new Backbone.Model({
-  //      title: title
-  //    })
-  //  });
-  //}
+    // clean up
+    // TODO: abstract clean up
+    this.on('destroy', function(){
+      view.destroy();
+    });
+  }
 
 });
 

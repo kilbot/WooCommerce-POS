@@ -7,9 +7,13 @@ var Access = Route.extend({
   initialize: function( options ) {
     options = options || {};
     this.container = options.container;
-    this.model = options.collection.add(window.wc_pos_settings_access);
-    this.model.set({id: 'access'});
-    this.model._isNew = false;
+    this.model = options.model;
+  },
+
+  fetch: function() {
+    if(this.model.isNew()){
+      return this.model.fetch();
+    }
   },
 
   render: function() {

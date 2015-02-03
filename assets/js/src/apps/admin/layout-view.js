@@ -1,5 +1,6 @@
 var LayoutView = require('lib/config/layout-view');
 var _ = require('lodash');
+var $ = require('jquery');
 
 module.exports = LayoutView.extend({
 
@@ -11,8 +12,8 @@ module.exports = LayoutView.extend({
   },
 
   regions: {
-    mainRegion  : '#wc-pos-admin',
-    modalRegion : '#wc-pos-modal'
+    mainRegion : '#wc-pos-admin',
+    modalRegion: '#wc-pos-modal'
   }
 
 });

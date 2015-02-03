@@ -45,7 +45,6 @@ module.exports = Application.extend({
     // Don't show for synchronous route changes
     _.defer(function() {
       if (self.transitioning) {
-        console.log('loading');
         //nprogress.start();
       }
     });

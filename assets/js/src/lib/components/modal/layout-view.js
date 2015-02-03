@@ -3,6 +3,7 @@ var LayoutView = require('lib/config/layout-view');
 var $ = require('jquery');
 var hbs = require('handlebars');
 var Radio = require('backbone').Radio;
+var Buttons = require('lib/components/buttons/behavior');
 
 module.exports = LayoutView.extend({
   className: 'modal',
@@ -15,24 +16,24 @@ module.exports = LayoutView.extend({
     content: '.modal-body'
   },
 
-  events: {
-    'click [data-action="close"]' : function(e){
-      e.preventDefault();
-      Radio.request('modal', 'close');
-    }
-    //'click .action-save'    : 'saving',
-    //'click .modal-footer a' : 'onButtonClick'
-  },
-
   initialize: function () {
     this.template = hbs.compile( $('#tmpl-modal').html() );
     this.$el.modal({ show: false, backdrop: 'static' });
   },
 
-  //onButtonClick: function(e) {
-  //  e.preventDefault();
-  //  this.content.currentView.trigger('button:clicked', e);
-  //},
+  events: {
+    'click [data-action="close"]' : function(e){
+      e.preventDefault();
+      Radio.request('modal', 'close');
+    }
+  },
+
+  behaviors: {
+    Buttons: {
+      behaviorClass: Buttons,
+      modal: true
+    }
+  },
 
   triggers: {
     'show.bs.modal'   : { preventDefault: false, event: 'before:open' },
@@ -44,6 +45,7 @@ module.exports = LayoutView.extend({
   open: function(view){
     var deferred = $.Deferred();
     this.once('open', deferred.resolve);
+    this.setupModal(view);
     this.content.show(view);
     this.$el.modal('show');
     return deferred;
@@ -57,7 +59,18 @@ module.exports = LayoutView.extend({
     });
     this.$el.modal('hide');
     return deferred;
+  },
+
+  setupModal: function(view){
+    var attributes = view.modal || {};
+    this.updateTitle(attributes.title);
+  },
+
+  updateTitle: function(title){
+    title = title || this.$('.modal-header h1').data('title');
+    this.$('.modal-header h1').html(title);
   }
+
   //
   //openModal: function (options) {
   //  options = options || {};

@@ -72,6 +72,7 @@ module.exports = DualModel.extend({
       type : 'collection',
       name : 'gateways'
     });
+    this.gateways.fetch();
   },
 
   /**

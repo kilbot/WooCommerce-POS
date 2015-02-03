@@ -1,15 +1,15 @@
 <phpunit
-	bootstrap="tests/php/bootstrap.php"
-	backupGlobals="false"
-	colors="true"
-	convertErrorsToExceptions="true"
-	convertNoticesToExceptions="true"
-	convertWarningsToExceptions="true"
-	verbose="true"
-	>
-	<testsuites>
-		<testsuite name="WooCommerce POS Test Suite">
-			<directory prefix="test-" suffix=".php">./tests/php/unit/</directory>
-		</testsuite>
-	</testsuites>
+  bootstrap="tests/php/bootstrap.php"
+  backupGlobals="false"
+  colors="true"
+  convertErrorsToExceptions="true"
+  convertNoticesToExceptions="true"
+  convertWarningsToExceptions="true"
+  verbose="true"
+  >
+  <testsuites>
+    <testsuite name="WooCommerce POS Test Suite">
+      <directory prefix="test-" suffix=".php">./tests/php/unit/</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>

@@ -2664,6 +2664,11 @@ table.form-table .error span.error-message {
   color: white;
   background: #4caf50;
 }
+/* line 60, scss/partials/_checkout.scss */
+.checkout-module .list ul li.empty p {
+  padding: 8px;
+  margin: 0;
+}
 
 /* line 1, scss/partials/_numpad.scss */
 .numpad-popover {
@@ -2917,23 +2922,26 @@ table.form-table .error span.error-message {
   -webkit-border-radius: 0;
   border-radius: 0 0 3px 3px;
 }
-/* line 92, scss/partials/_select2.scss */
+/* line 93, scss/partials/_select2.scss */
 .select2-container.select2-container-disabled .select2-choice {
   background-color: #f4f4f4;
   border: 1px solid #cfcfcf;
   cursor: default;
 }
-/* line 98, scss/partials/_select2.scss */
+/* line 97, scss/partials/_select2.scss */
+.select2-container.select2-container-disabled .select2-choice .select2-chosen {
+  background-color: #f4f4f4;
+}
+/* line 100, scss/partials/_select2.scss */
 .select2-container.select2-container-disabled .select2-choice .select2-arrow {
   background-color: #f4f4f4;
-  border-left: 0;
 }
 /* line 103, scss/partials/_select2.scss */
 .select2-container.select2-container-disabled .select2-choice abbr {
   display: none;
 }
 
-/* line 108, scss/partials/_select2.scss */
+/* line 110, scss/partials/_select2.scss */
 .select2-drop-mask {
   border: 0;
   margin: 0;
@@ -2953,7 +2961,7 @@ table.form-table .error span.error-message {
 }
 
 /* select search */
-/* line 127, scss/partials/_select2.scss */
+/* line 129, scss/partials/_select2.scss */
 .select2-drop {
   width: 100%;
   margin-top: -1px;
@@ -2969,14 +2977,14 @@ table.form-table .error span.error-message {
   /* hide search box */
   /* results */
 }
-/* line 139, scss/partials/_select2.scss */
+/* line 141, scss/partials/_select2.scss */
 .select2-drop.select2-drop-above {
   -moz-border-radius: 3px 3px 0 0;
   -webkit-border-radius: 3px;
   border-radius: 3px 3px 0 0;
   margin-top: 1px;
 }
-/* line 145, scss/partials/_select2.scss */
+/* line 147, scss/partials/_select2.scss */
 .select2-drop .select2-search {
   display: inline-block;
   width: 100%;
@@ -2985,18 +2993,18 @@ table.form-table .error span.error-message {
   white-space: nowrap;
   padding: 3px;
 }
-/* line 153, scss/partials/_select2.scss */
+/* line 155, scss/partials/_select2.scss */
 .select2-drop .select2-search input {
   border: 1px solid #cfcfcf;
   padding: 3px 6px;
   outline: 0;
   width: 100%;
 }
-/* line 163, scss/partials/_select2.scss */
+/* line 165, scss/partials/_select2.scss */
 .select2-drop.no-search .select2-search {
   display: none;
 }
-/* line 169, scss/partials/_select2.scss */
+/* line 171, scss/partials/_select2.scss */
 .select2-drop .select2-results {
   max-height: 200px;
   padding: 0 0 0 3px;
@@ -3007,26 +3015,26 @@ table.form-table .error span.error-message {
   overflow-y: auto;
   -webkit-tap-highlight-color: transparent;
 }
-/* line 179, scss/partials/_select2.scss */
+/* line 181, scss/partials/_select2.scss */
 .select2-drop .select2-results ul.select2-result-sub {
   margin: 0;
   padding-left: 0;
 }
-/* line 183, scss/partials/_select2.scss */
+/* line 185, scss/partials/_select2.scss */
 .select2-drop .select2-results ul.select2-result-sub li {
   list-style: none;
   display: list-item;
   background-image: none;
 }
-/* line 188, scss/partials/_select2.scss */
+/* line 190, scss/partials/_select2.scss */
 .select2-drop .select2-results ul.select2-result-sub li.select2-result-with-children > .select2-result-label {
   font-weight: bold;
 }
-/* line 193, scss/partials/_select2.scss */
+/* line 195, scss/partials/_select2.scss */
 .select2-drop .select2-results ul.select2-result-sub em {
   font-style: normal;
 }
-/* line 198, scss/partials/_select2.scss */
+/* line 200, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-result-label {
   padding: 3px 7px 4px;
   margin: 0;
@@ -3038,21 +3046,21 @@ table.form-table .error span.error-message {
   -ms-user-select: none;
   user-select: none;
 }
-/* line 209, scss/partials/_select2.scss */
+/* line 211, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-highlighted {
   background: #3875d7;
   color: #fff;
 }
-/* line 213, scss/partials/_select2.scss */
+/* line 215, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-highlighted em {
   background: transparent;
 }
-/* line 217, scss/partials/_select2.scss */
+/* line 219, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-highlighted ul {
   background: #fff;
   color: #000;
 }
-/* line 223, scss/partials/_select2.scss */
+/* line 225, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-no-results,
 .select2-drop .select2-results .select2-searching,
 .select2-drop .select2-results .select2-ajax-error,
@@ -3060,57 +3068,57 @@ table.form-table .error span.error-message {
   display: list-item;
   padding-left: 5px;
 }
-/* line 231, scss/partials/_select2.scss */
+/* line 233, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-disabled {
   background: #f4f4f4;
   display: list-item;
   cursor: default;
 }
-/* line 236, scss/partials/_select2.scss */
+/* line 238, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-disabled.select2-highlighted {
   color: #666;
   background: #f4f4f4;
   display: list-item;
   cursor: default;
 }
-/* line 244, scss/partials/_select2.scss */
+/* line 246, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-selected {
   display: none;
 }
-/* line 248, scss/partials/_select2.scss */
+/* line 250, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-ajax-error {
   color: #a94442;
 }
 
-/* line 255, scss/partials/_select2.scss */
+/* line 257, scss/partials/_select2.scss */
 .select2-drop-auto-width {
   border-top: 1px solid #cfcfcf;
   width: auto;
 }
 
-/* line 261, scss/partials/_select2.scss */
+/* line 263, scss/partials/_select2.scss */
 .select2-container-active .select2-choice,
 .select2-container-active .select2-choices {
   outline: none;
 }
 
-/* line 268, scss/partials/_select2.scss */
+/* line 270, scss/partials/_select2.scss */
 .select2-dropdown-open .select2-choice {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-/* line 274, scss/partials/_select2.scss */
+/* line 276, scss/partials/_select2.scss */
 .select2-dropdown-open .select2-choice .select2-arrow b:before {
   content: "\f106";
 }
-/* line 282, scss/partials/_select2.scss */
+/* line 284, scss/partials/_select2.scss */
 .select2-dropdown-open.select2-drop-above .select2-choice,
 .select2-dropdown-open.select2-drop-above .select2-choices {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
-/* line 290, scss/partials/_select2.scss */
+/* line 292, scss/partials/_select2.scss */
 .select2-hidden-accessible {
   border: 0;
   clip: rect(0 0 0 0);
@@ -3122,58 +3130,58 @@ table.form-table .error span.error-message {
   width: 1px;
 }
 
-/* line 301, scss/partials/_select2.scss */
+/* line 303, scss/partials/_select2.scss */
 .select2-results-dept-1 .select2-result-label {
   padding-left: 20px;
 }
 
-/* line 302, scss/partials/_select2.scss */
+/* line 304, scss/partials/_select2.scss */
 .select2-results-dept-2 .select2-result-label {
   padding-left: 40px;
 }
 
-/* line 303, scss/partials/_select2.scss */
+/* line 305, scss/partials/_select2.scss */
 .select2-results-dept-3 .select2-result-label {
   padding-left: 60px;
 }
 
-/* line 304, scss/partials/_select2.scss */
+/* line 306, scss/partials/_select2.scss */
 .select2-results-dept-4 .select2-result-label {
   padding-left: 80px;
 }
 
-/* line 305, scss/partials/_select2.scss */
+/* line 307, scss/partials/_select2.scss */
 .select2-results-dept-5 .select2-result-label {
   padding-left: 100px;
 }
 
-/* line 306, scss/partials/_select2.scss */
+/* line 308, scss/partials/_select2.scss */
 .select2-results-dept-6 .select2-result-label {
   padding-left: 110px;
 }
 
-/* line 307, scss/partials/_select2.scss */
+/* line 309, scss/partials/_select2.scss */
 .select2-results-dept-7 .select2-result-label {
   padding-left: 120px;
 }
 
-/* line 309, scss/partials/_select2.scss */
+/* line 311, scss/partials/_select2.scss */
 .select2-more-results {
   background: #f4f4f4;
   display: list-item;
 }
-/* line 312, scss/partials/_select2.scss */
+/* line 314, scss/partials/_select2.scss */
 .select2-more-results.select2-active {
   background: #f4f4f4 url("select2-spinner.gif") no-repeat 100%;
 }
 
-/* line 317, scss/partials/_select2.scss */
+/* line 319, scss/partials/_select2.scss */
 .select2-result-selectable .select2-match,
 .select2-result-unselectable .select2-match {
   text-decoration: underline;
 }
 
-/* line 322, scss/partials/_select2.scss */
+/* line 324, scss/partials/_select2.scss */
 .select2-offscreen, .select2-offscreen:focus {
   clip: rect(0 0 0 0) !important;
   width: 1px !important;
@@ -3188,12 +3196,12 @@ table.form-table .error span.error-message {
   top: 0px !important;
 }
 
-/* line 336, scss/partials/_select2.scss */
+/* line 338, scss/partials/_select2.scss */
 .select2-display-none {
   display: none;
 }
 
-/* line 340, scss/partials/_select2.scss */
+/* line 342, scss/partials/_select2.scss */
 .select2-measure-scrollbar {
   position: absolute;
   top: -10000px;
@@ -3204,13 +3212,13 @@ table.form-table .error span.error-message {
 }
 
 /* multiselect */
-/* line 350, scss/partials/_select2.scss */
+/* line 352, scss/partials/_select2.scss */
 .select2-container-multi {
   /* multiselect list */
   /* active styles */
   /* disabled styles */
 }
-/* line 353, scss/partials/_select2.scss */
+/* line 355, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices {
   background: #f9f9f9;
   border: 1px solid #cfcfcf;
@@ -3222,7 +3230,7 @@ table.form-table .error span.error-message {
   /* multiselect search item */
   /* multiselect chosen item */
 }
-/* line 362, scss/partials/_select2.scss */
+/* line 364, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li {
   padding: 1px 6px;
   margin: 3px;
@@ -3230,7 +3238,7 @@ table.form-table .error span.error-message {
   float: left;
   list-style: none;
 }
-/* line 371, scss/partials/_select2.scss */
+/* line 373, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-field {
   padding-left: 0;
   margin-left: 0;
@@ -3238,7 +3246,7 @@ table.form-table .error span.error-message {
   margin: 0;
   max-width: 100px !important;
 }
-/* line 377, scss/partials/_select2.scss */
+/* line 379, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-field input {
   margin-left: 0;
   outline: 0;
@@ -3247,7 +3255,7 @@ table.form-table .error span.error-message {
   box-shadow: none;
   background: transparent !important;
 }
-/* line 387, scss/partials/_select2.scss */
+/* line 389, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-choice {
   cursor: default;
   border: 1px solid #cfcfcf;
@@ -3262,76 +3270,76 @@ table.form-table .error span.error-message {
   user-select: none;
   /* close */
 }
-/* line 397, scss/partials/_select2.scss */
+/* line 399, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-choice > div {
   float: right;
 }
-/* line 402, scss/partials/_select2.scss */
+/* line 404, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-choice .select2-search-choice-close {
   font-family: WooCommercePOS;
   text-decoration: none;
   color: #757575;
   margin-right: 3px;
 }
-/* line 407, scss/partials/_select2.scss */
+/* line 409, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-choice .select2-search-choice-close:before {
   content: "\f057";
 }
-/* line 413, scss/partials/_select2.scss */
+/* line 415, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices .select2-search-choice-focus {
   background: #d4d4d4;
 }
-/* line 420, scss/partials/_select2.scss */
+/* line 422, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-active .select2-choices {
   outline: none;
 }
-/* line 428, scss/partials/_select2.scss */
+/* line 430, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-disabled .select2-choices {
   background-color: #f4f4f4;
   border: 1px solid #ddd;
   cursor: default;
 }
-/* line 433, scss/partials/_select2.scss */
+/* line 435, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice {
   padding: 3px 5px 3px 5px;
   border: 1px solid #ddd;
   background-color: #f4f4f4;
 }
-/* line 438, scss/partials/_select2.scss */
+/* line 440, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice .select2-search-choice-close {
   display: none;
 }
 
-/* line 446, scss/partials/_select2.scss */
+/* line 448, scss/partials/_select2.scss */
 .select2-locked {
   padding: 3px 5px 3px 5px !important;
 }
 
-/* line 450, scss/partials/_select2.scss */
+/* line 452, scss/partials/_select2.scss */
 .select2-default {
   color: #999 !important;
 }
 
 /* rtl */
-/* line 456, scss/partials/_select2.scss */
+/* line 458, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container .select2-choice .select2-arrow {
   border-left: none;
   border-right: 1px solid #cfcfcf;
 }
-/* line 460, scss/partials/_select2.scss */
+/* line 462, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-results {
   padding: 0 4px 0 0;
   margin: 4px 0 4px 4px;
 }
-/* line 464, scss/partials/_select2.scss */
+/* line 466, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-choices {
   padding: 0 0 0 5px;
 }
-/* line 466, scss/partials/_select2.scss */
+/* line 468, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-choices li {
   float: right;
 }
-/* line 470, scss/partials/_select2.scss */
+/* line 472, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice {
   margin: 3px 5px 3px 0;
   padding: 3px 18px 3px 5px;

@@ -5,11 +5,19 @@ var Radio = require('backbone').Radio;
 module.exports = Collection.extend({
   model: Model,
 
-  initialize: function(){
-    var ajaxurl = Radio.request('entities', 'get', {
+  url: function(){
+    var wc_api = Radio.request('entities', 'get', {
       type: 'option',
-      name: 'ajaxurl'
+      name: 'wc_api'
     });
-    this.url = ajaxurl + '?action=wc_pos_json_search_customers';
+    return wc_api + 'customers';
+  },
+
+  initialize: function(){
+
+  },
+
+  parse: function (resp) {
+    return resp.customers ? resp.customers : resp ;
   }
 });

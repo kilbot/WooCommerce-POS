@@ -155,7 +155,11 @@ module.exports = POS.DeepModel = Model.extend({
     }
     this.set(attrs, options);
     this.changed = {};
-    this.initialize.apply(this, arguments);
+
+    // do POS.Model.constructor
+    Model.apply(this, arguments);
+
+    //this.initialize.apply(this, arguments);
   },
 
   // Return a copy of the model's `attributes` object.

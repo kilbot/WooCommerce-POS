@@ -9,5 +9,5 @@
 ?>
 
 <div class="wrap clear woocommerce-pos-upgrade">
-	<?php echo $upgrade ?>
+  <?php echo $upgrade ?>
 </div>

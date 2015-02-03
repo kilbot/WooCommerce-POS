@@ -1,10 +1,12 @@
 var ItemView = require('lib/config/item-view');
 var POS = require('lib/utilities/global');
-var TranslationUpdateModal = ('../modals/translation-update');
-var Tooltip = require('lib/components/tooltip/behavior');
+//var Tooltip = require('lib/components/tooltip/behavior');
 var $ = require('jquery');
 
 var View = ItemView.extend({
+  attributes: {
+    id: 'wc-pos-settings-tools'
+  },
 
   initialize: function() {
     this.template = function(){
@@ -12,11 +14,11 @@ var View = ItemView.extend({
     };
   },
 
-  behaviors: {
-    Tooltip: {
-      behaviorClass: Tooltip
-    }
-  },
+  //behaviors: {
+  //  Tooltip: {
+  //    behaviorClass: Tooltip
+  //  }
+  //},
 
   ui: {
     translation: '*[data-action="translation"]'
@@ -28,22 +30,7 @@ var View = ItemView.extend({
 
   triggers: {
     'click @ui.translation': 'translation:update'
-  },
-
-  onTranslationUpdate: function(){
-
   }
-
-  //translationUpdate: function(e) {
-  //  e.preventDefault();
-  //  var title = $(e.target).parent('td').prev('th').html();
-  //
-  //  new TranslationUpdateModal({
-  //    model: new Backbone.Model({
-  //      title: title
-  //    })
-  //  });
-  //}
 
 });
 

@@ -11,13 +11,13 @@
 
 class WC_POS_Admin_Settings_Tools extends WC_POS_Admin_Settings_Page {
 
-	/**
-	 * Each settings tab requires an id and label
-	 */
-	public function __construct() {
-		$this->id    = 'tools';
-		/* translators: woocommerce */
-		$this->label = __( 'Tools', 'woocommerce' );
-	}
+  /**
+   * Each settings tab requires an id and label
+   */
+  public function __construct() {
+    $this->id    = 'tools';
+    /* translators: woocommerce */
+    $this->label = __( 'Tools', 'woocommerce' );
+  }
 
 }

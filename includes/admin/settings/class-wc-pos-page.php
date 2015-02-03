@@ -11,21 +11,21 @@
 
 abstract class WC_POS_Admin_Settings_Page {
 
-	protected $data;
-	public $current_user_authorized = true;
+  protected $data;
+  public $current_user_authorized = true;
 
-	/**
-	 * Output the view file
-	 */
-	public function output(){
-		include 'views/' . $this->id . '.php';
-	}
+  /**
+   * Output the view file
+   */
+  public function output(){
+    include 'views/' . $this->id . '.php';
+  }
 
-	public function get_data(){
-		if(!$this->data){
-			$this->data = get_option( WC_POS_Admin_Settings::DB_PREFIX . $this->id );
-		}
-		return $this->data;
-	}
+  public function get_data(){
+    if(!$this->data){
+      $this->data = get_option( WC_POS_Admin_Settings::DB_PREFIX . $this->id );
+    }
+    return $this->data;
+  }
 
 }

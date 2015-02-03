@@ -13,22 +13,22 @@ module.exports = Service.extend({
 
   onStart: function(){
     this.channel.reply({
-      'open' : this.open,
-      'close' : this.close,
-      'alert' : this.alert,
+      'open'    : this.open,
+      'close'   : this.close,
+      'alert'   : this.alert,
       'confirm' : this.confirm,
-      'prompt' : this.prompt
+      'prompt'  : this.prompt
     }, this);
 
     this.layout = new LayoutView();
     this.container.show(this.layout);
 
+    this.channel.comply({
+      'update:title'  : this.layout.updateTitle
+    }, this.layout);
+
     this.listenTo(Backbone.history, {
       'route' : this.onRoute
-    });
-
-    this.listenTo(this.layout, 'all', function(e){
-      console.log(e);
     });
   },
 

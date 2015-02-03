@@ -12,29 +12,35 @@
   <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/pos-access' ); ?>
 </p>
 
-<ul class="wc-pos-access-panel">
-  <?php $data = $this->get_data(); if($data): foreach($data['roles'] as $key => $role): ?>
-    <li>
-      <strong><?php echo translate_user_role($role['name']); ?></strong>
-      <ul>
-        <?php if($this::$pos_capabilities): foreach($this::$pos_capabilities as $cap): ?>
-          <li>
-            <input type="checkbox"
-                   name="roles.<?php echo esc_attr($key); ?>.pos_capabilities.<?php echo esc_attr($cap); ?>">
-            <?php echo $cap; ?>
-          </li>
-        <?php endforeach; endif; ?>
-        <?php if($this::$woo_capabilities): foreach($this::$woo_capabilities as $cap): ?>
-          <li>
-            <input type="checkbox"
-                   name="roles.<?php echo esc_attr($key); ?>.woo_capabilities.<?php echo esc_attr($cap); ?>">
-            <?php echo $cap; ?>
-          </li>
-        <?php endforeach; endif; ?>
-      </ul>
-    </li>
-  <?php endforeach; endif; ?>
-</ul>
+<div class="wc-pos-access">
+  <ul class="wc-pos-access-tabs">
+    <?php $data = $this->get_data(); if($data): foreach($data['roles'] as $key => $role): ?>
+      <li data-id="<?php echo $key; ?>"><?php echo translate_user_role($role['name']); ?></li>
+    <?php endforeach; endif; ?>
+  </ul>
+  <ul class="wc-pos-access-panel">
+    <?php if($data): foreach($data['roles'] as $key => $role): ?>
+      <li id="<?php echo $key; ?>">
+        <ul>
+          <?php if($this::$pos_capabilities): foreach($this::$pos_capabilities as $cap): ?>
+            <li>
+              <input type="checkbox"
+                     name="roles.<?php echo esc_attr($key); ?>.pos_capabilities.<?php echo esc_attr($cap); ?>">
+              <?php echo $cap; ?>
+            </li>
+          <?php endforeach; endif; ?>
+          <?php if($this::$woo_capabilities): foreach($this::$woo_capabilities as $cap): ?>
+            <li>
+              <input type="checkbox"
+                     name="roles.<?php echo esc_attr($key); ?>.woo_capabilities.<?php echo esc_attr($cap); ?>">
+              <?php echo $cap; ?>
+            </li>
+          <?php endforeach; endif; ?>
+        </ul>
+      </li>
+    <?php endforeach; endif; ?>
+  </ul>
+</div>
 
 <a class="button-primary" data-action="save">
   <?php /* translators: wordpress */ echo esc_attr__( 'Save Changes' ); ?>

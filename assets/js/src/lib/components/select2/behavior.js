@@ -44,6 +44,10 @@ var Select2 = Behavior.extend({
   //formatResult: function(){},
   //formatSelection: function(){}
 
+  onSelectDisable: function(toggle){
+    this.ui.select.attr('disabled', toggle);
+  }
+
 });
 
 module.exports = Select2;

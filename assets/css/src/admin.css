@@ -1260,23 +1260,26 @@ th {
   -webkit-border-radius: 0;
   border-radius: 0 0 3px 3px;
 }
-/* line 92, scss/partials/_select2.scss */
+/* line 93, scss/partials/_select2.scss */
 .select2-container.select2-container-disabled .select2-choice {
   background-color: #f4f4f4;
   border: 1px solid #cfcfcf;
   cursor: default;
 }
-/* line 98, scss/partials/_select2.scss */
+/* line 97, scss/partials/_select2.scss */
+.select2-container.select2-container-disabled .select2-choice .select2-chosen {
+  background-color: #f4f4f4;
+}
+/* line 100, scss/partials/_select2.scss */
 .select2-container.select2-container-disabled .select2-choice .select2-arrow {
   background-color: #f4f4f4;
-  border-left: 0;
 }
 /* line 103, scss/partials/_select2.scss */
 .select2-container.select2-container-disabled .select2-choice abbr {
   display: none;
 }
 
-/* line 108, scss/partials/_select2.scss */
+/* line 110, scss/partials/_select2.scss */
 .select2-drop-mask {
   border: 0;
   margin: 0;
@@ -1296,7 +1299,7 @@ th {
 }
 
 /* select search */
-/* line 127, scss/partials/_select2.scss */
+/* line 129, scss/partials/_select2.scss */
 .select2-drop {
   width: 100%;
   margin-top: -1px;
@@ -1312,14 +1315,14 @@ th {
   /* hide search box */
   /* results */
 }
-/* line 139, scss/partials/_select2.scss */
+/* line 141, scss/partials/_select2.scss */
 .select2-drop.select2-drop-above {
   -moz-border-radius: 3px 3px 0 0;
   -webkit-border-radius: 3px;
   border-radius: 3px 3px 0 0;
   margin-top: 1px;
 }
-/* line 145, scss/partials/_select2.scss */
+/* line 147, scss/partials/_select2.scss */
 .select2-drop .select2-search {
   display: inline-block;
   width: 100%;
@@ -1328,18 +1331,18 @@ th {
   white-space: nowrap;
   padding: 3px;
 }
-/* line 153, scss/partials/_select2.scss */
+/* line 155, scss/partials/_select2.scss */
 .select2-drop .select2-search input {
   border: 1px solid #cfcfcf;
   padding: 3px 6px;
   outline: 0;
   width: 100%;
 }
-/* line 163, scss/partials/_select2.scss */
+/* line 165, scss/partials/_select2.scss */
 .select2-drop.no-search .select2-search {
   display: none;
 }
-/* line 169, scss/partials/_select2.scss */
+/* line 171, scss/partials/_select2.scss */
 .select2-drop .select2-results {
   max-height: 200px;
   padding: 0 0 0 3px;
@@ -1350,26 +1353,26 @@ th {
   overflow-y: auto;
   -webkit-tap-highlight-color: transparent;
 }
-/* line 179, scss/partials/_select2.scss */
+/* line 181, scss/partials/_select2.scss */
 .select2-drop .select2-results ul.select2-result-sub {
   margin: 0;
   padding-left: 0;
 }
-/* line 183, scss/partials/_select2.scss */
+/* line 185, scss/partials/_select2.scss */
 .select2-drop .select2-results ul.select2-result-sub li {
   list-style: none;
   display: list-item;
   background-image: none;
 }
-/* line 188, scss/partials/_select2.scss */
+/* line 190, scss/partials/_select2.scss */
 .select2-drop .select2-results ul.select2-result-sub li.select2-result-with-children > .select2-result-label {
   font-weight: bold;
 }
-/* line 193, scss/partials/_select2.scss */
+/* line 195, scss/partials/_select2.scss */
 .select2-drop .select2-results ul.select2-result-sub em {
   font-style: normal;
 }
-/* line 198, scss/partials/_select2.scss */
+/* line 200, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-result-label {
   padding: 3px 7px 4px;
   margin: 0;
@@ -1381,21 +1384,21 @@ th {
   -ms-user-select: none;
   user-select: none;
 }
-/* line 209, scss/partials/_select2.scss */
+/* line 211, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-highlighted {
   background: #3875d7;
   color: #fff;
 }
-/* line 213, scss/partials/_select2.scss */
+/* line 215, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-highlighted em {
   background: transparent;
 }
-/* line 217, scss/partials/_select2.scss */
+/* line 219, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-highlighted ul {
   background: #fff;
   color: #000;
 }
-/* line 223, scss/partials/_select2.scss */
+/* line 225, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-no-results,
 .select2-drop .select2-results .select2-searching,
 .select2-drop .select2-results .select2-ajax-error,
@@ -1403,57 +1406,57 @@ th {
   display: list-item;
   padding-left: 5px;
 }
-/* line 231, scss/partials/_select2.scss */
+/* line 233, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-disabled {
   background: #f4f4f4;
   display: list-item;
   cursor: default;
 }
-/* line 236, scss/partials/_select2.scss */
+/* line 238, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-disabled.select2-highlighted {
   color: #666;
   background: #f4f4f4;
   display: list-item;
   cursor: default;
 }
-/* line 244, scss/partials/_select2.scss */
+/* line 246, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-selected {
   display: none;
 }
-/* line 248, scss/partials/_select2.scss */
+/* line 250, scss/partials/_select2.scss */
 .select2-drop .select2-results .select2-ajax-error {
   color: #a94442;
 }
 
-/* line 255, scss/partials/_select2.scss */
+/* line 257, scss/partials/_select2.scss */
 .select2-drop-auto-width {
   border-top: 1px solid #cfcfcf;
   width: auto;
 }
 
-/* line 261, scss/partials/_select2.scss */
+/* line 263, scss/partials/_select2.scss */
 .select2-container-active .select2-choice,
 .select2-container-active .select2-choices {
   outline: none;
 }
 
-/* line 268, scss/partials/_select2.scss */
+/* line 270, scss/partials/_select2.scss */
 .select2-dropdown-open .select2-choice {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-/* line 274, scss/partials/_select2.scss */
+/* line 276, scss/partials/_select2.scss */
 .select2-dropdown-open .select2-choice .select2-arrow b:before {
   content: "\f106";
 }
-/* line 282, scss/partials/_select2.scss */
+/* line 284, scss/partials/_select2.scss */
 .select2-dropdown-open.select2-drop-above .select2-choice,
 .select2-dropdown-open.select2-drop-above .select2-choices {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
-/* line 290, scss/partials/_select2.scss */
+/* line 292, scss/partials/_select2.scss */
 .select2-hidden-accessible {
   border: 0;
   clip: rect(0 0 0 0);
@@ -1465,58 +1468,58 @@ th {
   width: 1px;
 }
 
-/* line 301, scss/partials/_select2.scss */
+/* line 303, scss/partials/_select2.scss */
 .select2-results-dept-1 .select2-result-label {
   padding-left: 20px;
 }
 
-/* line 302, scss/partials/_select2.scss */
+/* line 304, scss/partials/_select2.scss */
 .select2-results-dept-2 .select2-result-label {
   padding-left: 40px;
 }
 
-/* line 303, scss/partials/_select2.scss */
+/* line 305, scss/partials/_select2.scss */
 .select2-results-dept-3 .select2-result-label {
   padding-left: 60px;
 }
 
-/* line 304, scss/partials/_select2.scss */
+/* line 306, scss/partials/_select2.scss */
 .select2-results-dept-4 .select2-result-label {
   padding-left: 80px;
 }
 
-/* line 305, scss/partials/_select2.scss */
+/* line 307, scss/partials/_select2.scss */
 .select2-results-dept-5 .select2-result-label {
   padding-left: 100px;
 }
 
-/* line 306, scss/partials/_select2.scss */
+/* line 308, scss/partials/_select2.scss */
 .select2-results-dept-6 .select2-result-label {
   padding-left: 110px;
 }
 
-/* line 307, scss/partials/_select2.scss */
+/* line 309, scss/partials/_select2.scss */
 .select2-results-dept-7 .select2-result-label {
   padding-left: 120px;
 }
 
-/* line 309, scss/partials/_select2.scss */
+/* line 311, scss/partials/_select2.scss */
 .select2-more-results {
   background: #f4f4f4;
   display: list-item;
 }
-/* line 312, scss/partials/_select2.scss */
+/* line 314, scss/partials/_select2.scss */
 .select2-more-results.select2-active {
   background: #f4f4f4 url("select2-spinner.gif") no-repeat 100%;
 }
 
-/* line 317, scss/partials/_select2.scss */
+/* line 319, scss/partials/_select2.scss */
 .select2-result-selectable .select2-match,
 .select2-result-unselectable .select2-match {
   text-decoration: underline;
 }
 
-/* line 322, scss/partials/_select2.scss */
+/* line 324, scss/partials/_select2.scss */
 .select2-offscreen, .select2-offscreen:focus {
   clip: rect(0 0 0 0) !important;
   width: 1px !important;
@@ -1531,12 +1534,12 @@ th {
   top: 0px !important;
 }
 
-/* line 336, scss/partials/_select2.scss */
+/* line 338, scss/partials/_select2.scss */
 .select2-display-none {
   display: none;
 }
 
-/* line 340, scss/partials/_select2.scss */
+/* line 342, scss/partials/_select2.scss */
 .select2-measure-scrollbar {
   position: absolute;
   top: -10000px;
@@ -1547,13 +1550,13 @@ th {
 }
 
 /* multiselect */
-/* line 350, scss/partials/_select2.scss */
+/* line 352, scss/partials/_select2.scss */
 .select2-container-multi {
   /* multiselect list */
   /* active styles */
   /* disabled styles */
 }
-/* line 353, scss/partials/_select2.scss */
+/* line 355, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices {
   background: white;
   border: 1px solid #cfcfcf;
@@ -1565,7 +1568,7 @@ th {
   /* multiselect search item */
   /* multiselect chosen item */
 }
-/* line 362, scss/partials/_select2.scss */
+/* line 364, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li {
   padding: 1px 6px;
   margin: 3px;
@@ -1573,7 +1576,7 @@ th {
   float: left;
   list-style: none;
 }
-/* line 371, scss/partials/_select2.scss */
+/* line 373, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-field {
   padding-left: 0;
   margin-left: 0;
@@ -1581,7 +1584,7 @@ th {
   margin: 0;
   max-width: 100px !important;
 }
-/* line 377, scss/partials/_select2.scss */
+/* line 379, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-field input {
   margin-left: 0;
   outline: 0;
@@ -1590,7 +1593,7 @@ th {
   box-shadow: none;
   background: transparent !important;
 }
-/* line 387, scss/partials/_select2.scss */
+/* line 389, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-choice {
   cursor: default;
   border: 1px solid #cfcfcf;
@@ -1605,76 +1608,76 @@ th {
   user-select: none;
   /* close */
 }
-/* line 397, scss/partials/_select2.scss */
+/* line 399, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-choice > div {
   float: right;
 }
-/* line 402, scss/partials/_select2.scss */
+/* line 404, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-choice .select2-search-choice-close {
   font-family: WooCommercePOS;
   text-decoration: none;
   color: #757575;
   margin-right: 3px;
 }
-/* line 407, scss/partials/_select2.scss */
+/* line 409, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices li.select2-search-choice .select2-search-choice-close:before {
   content: "\f057";
 }
-/* line 413, scss/partials/_select2.scss */
+/* line 415, scss/partials/_select2.scss */
 .select2-container-multi .select2-choices .select2-search-choice-focus {
   background: #d4d4d4;
 }
-/* line 420, scss/partials/_select2.scss */
+/* line 422, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-active .select2-choices {
   outline: none;
 }
-/* line 428, scss/partials/_select2.scss */
+/* line 430, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-disabled .select2-choices {
   background-color: #f4f4f4;
   border: 1px solid #ddd;
   cursor: default;
 }
-/* line 433, scss/partials/_select2.scss */
+/* line 435, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice {
   padding: 3px 5px 3px 5px;
   border: 1px solid #ddd;
   background-color: #f4f4f4;
 }
-/* line 438, scss/partials/_select2.scss */
+/* line 440, scss/partials/_select2.scss */
 .select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice .select2-search-choice-close {
   display: none;
 }
 
-/* line 446, scss/partials/_select2.scss */
+/* line 448, scss/partials/_select2.scss */
 .select2-locked {
   padding: 3px 5px 3px 5px !important;
 }
 
-/* line 450, scss/partials/_select2.scss */
+/* line 452, scss/partials/_select2.scss */
 .select2-default {
   color: #999 !important;
 }
 
 /* rtl */
-/* line 456, scss/partials/_select2.scss */
+/* line 458, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container .select2-choice .select2-arrow {
   border-left: none;
   border-right: 1px solid #cfcfcf;
 }
-/* line 460, scss/partials/_select2.scss */
+/* line 462, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-results {
   padding: 0 4px 0 0;
   margin: 4px 0 4px 4px;
 }
-/* line 464, scss/partials/_select2.scss */
+/* line 466, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-choices {
   padding: 0 0 0 5px;
 }
-/* line 466, scss/partials/_select2.scss */
+/* line 468, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-choices li {
   float: right;
 }
-/* line 470, scss/partials/_select2.scss */
+/* line 472, scss/partials/_select2.scss */
 html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice {
   margin: 3px 5px 3px 0;
   padding: 3px 18px 3px 5px;
@@ -1707,132 +1710,6 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
 /* line 21, scss/partials/_loading.scss */
 .module .loading p {
   background: white;
-}
-
-/* line 2, scss/partials/admin/_settings.scss */
-#wc-pos-settings-tabs ul {
-  margin: 0;
-  border-bottom: 1px solid #ccc;
-  padding: 9px 15px 0 10px;
-}
-/* line 6, scss/partials/admin/_settings.scss */
-#wc-pos-settings-tabs ul li {
-  padding: 6px 10px;
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 24px;
-}
-/* line 11, scss/partials/admin/_settings.scss */
-#wc-pos-settings-tabs ul li.active {
-  color: #000;
-  background: #f1f1f1;
-}
-/* line 15, scss/partials/admin/_settings.scss */
-#wc-pos-settings-tabs ul li:hover {
-  cursor: pointer;
-}
-
-/* line 23, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.form-table {
-  vertical-align: middle;
-  margin-bottom: 20px;
-  line-height: 1;
-}
-/* line 28, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.form-table th img {
-  margin: 2px -10px 0 0;
-  float: right;
-}
-/* line 33, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.form-table td {
-  padding-right: 0;
-}
-/* line 38, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways th:first-of-type {
-  width: 1%;
-}
-/* line 41, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways th, #wc-pos-settings table.wc-gateways td {
-  text-align: center;
-  padding: 9px 7px;
-}
-/* line 45, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways th.gateway-name, #wc-pos-settings table.wc-gateways th.gateway-id,
-#wc-pos-settings table.wc-gateways td.gateway-name, #wc-pos-settings table.wc-gateways td.gateway-id {
-  text-align: left;
-}
-/* line 53, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways tbody td {
-  cursor: move;
-  padding: 7px;
-}
-/* line 57, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways tbody td.gateway-name {
-  font-weight: 700;
-}
-/* line 60, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways tbody .status-enabled:before {
-  font-family: WooCommerce;
-  speak: none;
-  font-weight: 400;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  margin: 0;
-  text-indent: 0;
-  font-size: 20px;
-  content: "\e015";
-  color: #ad74a2;
-}
-/* line 74, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways tbody .status-enabled:before {
-  font-family: WooCommerce;
-  speak: none;
-  font-weight: 400;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  margin: 0;
-  text-indent: 0;
-  font-size: 20px;
-  content: "\e015";
-  color: #ad74a2;
-}
-/* line 88, scss/partials/admin/_settings.scss */
-#wc-pos-settings table.wc-gateways tbody .status-disabled:before {
-  font-family: WooCommerce;
-  speak: none;
-  font-weight: 400;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  margin: 0;
-  text-indent: 0;
-  font-size: 20px;
-  text-align: center;
-  content: "\e602";
-  color: #E0E0E0;
-}
-/* line 104, scss/partials/admin/_settings.scss */
-#wc-pos-settings p.response {
-  display: inline-block;
-  margin: 0 0 0 10px;
-  line-height: 20px;
-}
-/* line 108, scss/partials/admin/_settings.scss */
-#wc-pos-settings p.response i {
-  margin-right: 5px;
-  vertical-align: middle;
-}
-
-/* line 114, scss/partials/admin/_settings.scss */
-.wc-pos-settings i.spinner, #wc-pos-modal i.spinner {
-  display: inline-block;
-  float: none;
-  margin: 0;
 }
 
 /**
@@ -1940,23 +1817,34 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
     margin: 0;
   }
 }
-/* line 2, scss/partials/admin/_modal.scss */
+/* line 1, scss/partials/admin/_modal.scss */
+.modal {
+  z-index: 160000;
+}
+
+/* line 6, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-content {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+/* line 9, scss/partials/admin/_modal.scss */
 #wc-pos-modal .modal-header {
   padding: 0;
   position: relative;
   background-color: #fcfcfc;
 }
-/* line 6, scss/partials/admin/_modal.scss */
+/* line 13, scss/partials/admin/_modal.scss */
 #wc-pos-modal .modal-header h1 {
   padding: 0 16px;
   font-size: 22px;
   line-height: 50px;
   margin: 0;
 }
-/* line 12, scss/partials/admin/_modal.scss */
-#wc-pos-modal .modal-header .close {
+/* line 19, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-header i {
   position: absolute;
-  top: 2px;
+  top: 0;
   right: 0;
   cursor: pointer;
   color: #777;
@@ -1973,141 +1861,256 @@ html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice
   -webkit-transition-timing-function: ease-in-out;
   transition-timing-function: ease-in-out;
 }
-/* line 28, scss/partials/admin/_modal.scss */
-#wc-pos-modal .modal-header .close:hover {
+/* line 35, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-header i:hover {
   color: #000;
   border-color: #ccc;
   background: #ddd;
   outline: 0;
 }
-/* line 35, scss/partials/admin/_modal.scss */
-#wc-pos-modal .modal-body {
-  font-size: 14px;
-  line-height: 1.4;
+/* line 14, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+#wc-pos-modal .modal-body:before, #wc-pos-modal .modal-body:after {
+  content: " ";
+  display: table;
 }
-/* line 38, scss/partials/admin/_modal.scss */
-#wc-pos-modal .modal-body table.form-table {
-  width: 100%;
-}
-/* line 40, scss/partials/admin/_modal.scss */
-#wc-pos-modal .modal-body table.form-table th {
-  font-weight: 600;
-  width: 150px;
-  text-align: left;
-  padding: 10px 10px 10px 0;
+/* line 19, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+#wc-pos-modal .modal-body:after {
+  clear: both;
 }
 /* line 45, scss/partials/admin/_modal.scss */
-#wc-pos-modal .modal-body table.form-table th img {
-  margin: 2px -10px 0 0;
-  float: right;
-}
-/* line 50, scss/partials/admin/_modal.scss */
-#wc-pos-modal .modal-body table.form-table td {
-  padding: 10px 0 10px 10px;
-}
-/* line 53, scss/partials/admin/_modal.scss */
-#wc-pos-modal .modal-body table.form-table input[type="text"] {
-  width: 100%;
-}
-/* line 56, scss/partials/admin/_modal.scss */
-#wc-pos-modal .modal-body table.form-table textarea {
-  width: 100%;
-  height: 50px;
-}
-/* line 62, scss/partials/admin/_modal.scss */
 #wc-pos-modal .modal-footer {
   padding: 11px;
 }
-/* line 64, scss/partials/admin/_modal.scss */
+/* line 47, scss/partials/admin/_modal.scss */
 #wc-pos-modal .modal-footer p.response {
   display: inline-block;
   margin: 0 10px 0 0;
   text-align: right;
   line-height: 20px;
 }
-/* line 69, scss/partials/admin/_modal.scss */
+/* line 52, scss/partials/admin/_modal.scss */
 #wc-pos-modal .modal-footer p.response .spinner {
   display: inline-block;
   float: none;
   margin: 0;
 }
-/* line 74, scss/partials/admin/_modal.scss */
+/* line 57, scss/partials/admin/_modal.scss */
 #wc-pos-modal .modal-footer p.response i {
   margin-right: 5px;
   vertical-align: middle;
 }
+/* line 61, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-footer p.response.success {
+  color: #3c763d;
+}
+/* line 64, scss/partials/admin/_modal.scss */
+#wc-pos-modal .modal-footer p.response.error {
+  color: #a94442;
+}
 
-/* line 82, scss/partials/admin/_modal.scss */
-#wc-pos-modal p {
-  margin-top: 0;
+/* line 2, scss/partials/admin/_settings.scss */
+#wc-pos-settings-tabs ul {
+  margin: 0;
+  border-bottom: 1px solid #ccc;
+  padding: 9px 15px 0 10px;
+}
+/* line 6, scss/partials/admin/_settings.scss */
+#wc-pos-settings-tabs ul li {
+  padding: 6px 10px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 24px;
+}
+/* line 11, scss/partials/admin/_settings.scss */
+#wc-pos-settings-tabs ul li.active {
+  color: #000;
+  background: #f1f1f1;
+}
+/* line 15, scss/partials/admin/_settings.scss */
+#wc-pos-settings-tabs ul li:hover {
+  cursor: pointer;
+}
+
+/* line 23, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.form-table {
+  margin-bottom: 20px;
+  line-height: 1;
+}
+/* line 27, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.form-table th img {
+  margin: 2px -10px 0 0;
+  float: right;
+}
+/* line 32, scss/partials/admin/_settings.scss */
+#wc-pos-settings table.form-table td {
+  padding-right: 0;
+}
+/* line 36, scss/partials/admin/_settings.scss */
+#wc-pos-settings p.response {
+  display: inline-block;
+  margin: 0 0 0 10px;
+  line-height: 20px;
+}
+/* line 40, scss/partials/admin/_settings.scss */
+#wc-pos-settings p.response i {
+  margin-right: 5px;
+  vertical-align: middle;
+}
+/* line 43, scss/partials/admin/_settings.scss */
+#wc-pos-settings p.response i.spinner {
+  display: inline-block;
+  float: none;
+  margin: 0;
+}
+
+/* line 2, scss/partials/admin/settings/_general.scss */
+#wc-pos-settings-general [data-component="customer-select"] {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+/* line 3, scss/partials/admin/settings/_checkout.scss */
+#wc-pos-settings-checkout table.wc-gateways th:first-of-type {
+  width: 1%;
+}
+/* line 6, scss/partials/admin/settings/_checkout.scss */
+#wc-pos-settings-checkout table.wc-gateways th, #wc-pos-settings-checkout table.wc-gateways td {
+  text-align: center;
+  padding: 9px 7px;
+}
+/* line 10, scss/partials/admin/settings/_checkout.scss */
+#wc-pos-settings-checkout table.wc-gateways th.gateway-name, #wc-pos-settings-checkout table.wc-gateways th.gateway-id,
+#wc-pos-settings-checkout table.wc-gateways td.gateway-name, #wc-pos-settings-checkout table.wc-gateways td.gateway-id {
+  text-align: left;
+}
+/* line 18, scss/partials/admin/settings/_checkout.scss */
+#wc-pos-settings-checkout table.wc-gateways tbody td {
+  cursor: move;
+  padding: 7px;
+}
+/* line 22, scss/partials/admin/settings/_checkout.scss */
+#wc-pos-settings-checkout table.wc-gateways tbody td.gateway-name {
+  font-weight: 700;
+}
+/* line 25, scss/partials/admin/settings/_checkout.scss */
+#wc-pos-settings-checkout table.wc-gateways tbody .status-enabled:before {
+  font-family: WooCommerce;
+  speak: none;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  text-indent: 0;
+  font-size: 20px;
+  content: "\e015";
+  color: #ad74a2;
+}
+/* line 39, scss/partials/admin/settings/_checkout.scss */
+#wc-pos-settings-checkout table.wc-gateways tbody .status-enabled:before {
+  font-family: WooCommerce;
+  speak: none;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  text-indent: 0;
+  font-size: 20px;
+  content: "\e015";
+  color: #ad74a2;
+}
+/* line 53, scss/partials/admin/settings/_checkout.scss */
+#wc-pos-settings-checkout table.wc-gateways tbody .status-disabled:before {
+  font-family: WooCommerce;
+  speak: none;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  text-indent: 0;
+  font-size: 20px;
+  text-align: center;
+  content: "\e602";
+  color: #E0E0E0;
 }
 
 /* line 2, scss/partials/admin/settings/_access.scss */
-#wc-pos-settings ul.wc-pos-access-panel {
-  position: relative;
-  list-style: none;
+#wc-pos-settings-access .wc-pos-access {
+  display: -webkit-flex;
+  display: flex;
+  background: #fff;
   margin: 20px 0;
-  padding: 0;
   border: 1px solid #e5e5e5;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-  background: #fff;
+  background: #f5f5f5;
+}
+/* line 14, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+#wc-pos-settings-access .wc-pos-access:before, #wc-pos-settings-access .wc-pos-access:after {
+  content: " ";
+  display: table;
+}
+/* line 19, ../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+#wc-pos-settings-access .wc-pos-access:after {
+  clear: both;
 }
 /* line 10, scss/partials/admin/settings/_access.scss */
-#wc-pos-settings ul.wc-pos-access-panel > li {
-  margin: 0;
-  padding: 10px 20px;
-  width: 160px;
-  background: #f5f5f5;
-  border-bottom: 1px solid #f5f5f5;
-  border-top: 1px solid #eaeaea;
-  border-right: 1px solid #eaeaea;
-}
-/* line 18, scss/partials/admin/settings/_access.scss */
-#wc-pos-settings ul.wc-pos-access-panel > li > strong {
-  font-size: 15px;
-  line-height: 2;
-}
-@media (min-width: 782px) {
-  /* line 18, scss/partials/admin/settings/_access.scss */
-  #wc-pos-settings ul.wc-pos-access-panel > li > strong {
-    line-height: 1.4;
-  }
-}
-/* line 25, scss/partials/admin/settings/_access.scss */
-#wc-pos-settings ul.wc-pos-access-panel > li > ul {
-  display: none;
-  position: absolute;
-  top: 20px;
-  left: 220px;
+#wc-pos-settings-access .wc-pos-access .wc-pos-access-tabs {
+  -webkit-flex: 0 0 200px;
+  flex: 0 0 200px;
   list-style: none;
   margin: 0;
   padding: 0;
+  background: #f5f5f5;
+  border-right: 1px solid #eaeaea;
+  float: left;
 }
-/* line 33, scss/partials/admin/settings/_access.scss */
-#wc-pos-settings ul.wc-pos-access-panel > li > ul > li {
-  display: inline-block;
-  min-width: 230px;
+/* line 18, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings-access .wc-pos-access .wc-pos-access-tabs > li {
+  border-bottom: 1px solid #f5f5f5;
+  border-top: 1px solid #eaeaea;
+  margin: 0;
+  padding: 10px 20px;
+  font-size: 15px;
 }
-/* line 38, scss/partials/admin/settings/_access.scss */
-#wc-pos-settings ul.wc-pos-access-panel > li.active {
+/* line 24, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings-access .wc-pos-access .wc-pos-access-tabs > li:hover {
+  cursor: pointer;
+}
+/* line 27, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings-access .wc-pos-access .wc-pos-access-tabs > li:first-of-type {
+  border-top: 0;
+}
+/* line 30, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings-access .wc-pos-access .wc-pos-access-tabs > li.active {
   border-color: #dfdfdf;
   background: #fff;
   color: #555;
-  border-right: 0;
+  margin-right: -1px;
 }
-/* line 43, scss/partials/admin/settings/_access.scss */
-#wc-pos-settings ul.wc-pos-access-panel > li.active > ul {
-  display: block;
+/* line 38, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings-access .wc-pos-access .wc-pos-access-panel {
+  -webkit-flex: 1;
+  flex: 1;
+  background-color: #fff;
+  margin: 0;
+  padding: 10px;
+  list-style: none;
+}
+/* line 44, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings-access .wc-pos-access .wc-pos-access-panel > li {
+  display: none;
 }
 /* line 47, scss/partials/admin/settings/_access.scss */
-#wc-pos-settings ul.wc-pos-access-panel > li:hover {
-  cursor: pointer;
+#wc-pos-settings-access .wc-pos-access .wc-pos-access-panel > li ul > li {
+  display: inline-block;
+  min-width: 250px;
 }
-/* line 50, scss/partials/admin/settings/_access.scss */
-#wc-pos-settings ul.wc-pos-access-panel > li:first-of-type {
-  border-top: 0;
-}
-/* line 53, scss/partials/admin/settings/_access.scss */
-#wc-pos-settings ul.wc-pos-access-panel > li:last-of-type {
-  border-bottom: 0;
+/* line 52, scss/partials/admin/settings/_access.scss */
+#wc-pos-settings-access .wc-pos-access .wc-pos-access-panel > li.active {
+  display: block;
 }

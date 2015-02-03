@@ -28,23 +28,23 @@ var app = new Application();
  * ... add SubApps and Services
  */
 app.entities = new EntitiesService({
-    app: app
+  app: app
 });
 
 app.headerApp = new HeaderService({
-    container: app.layout.header
+  container: app.layout.header
 });
 
 app.posApp = new POSRouter({
-    container: app.layout.mainRegion
+  container: app.layout.mainRegion
 });
 
 app.supportApp = new SupportRouter({
-    container: app.layout.mainRegion
+  container: app.layout.mainRegion
 });
 
 app.modalApp = new ModalService({
-    container: app.layout.modalRegion
+  container: app.layout.modalRegion
 });
 
 /**

@@ -62,12 +62,11 @@ module.exports = Application.extend({
     var self = this;
     this.transitioning = true;
     // Don't show for synchronous route changes
-    setTimeout(function() {
+    _.defer(function() {
       if (self.transitioning) {
-        console.log('loading');
         //nprogress.start();
       }
-    }, 0);
+    });
   },
 
   onEnterRoute: function(route) {

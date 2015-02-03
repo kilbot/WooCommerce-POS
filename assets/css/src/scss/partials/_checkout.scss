@@ -56,6 +56,12 @@
 						}
 					}
 				}
+				&.empty {
+					p {
+						padding: $spacing/3;
+						margin: 0;
+					}
+				}
 			}
 		}
 	}

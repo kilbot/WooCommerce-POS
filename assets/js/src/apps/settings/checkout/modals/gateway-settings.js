@@ -1,45 +1,52 @@
-var ItemView = require('lib/config/item-view');
-var _ = require('lodash');
+var FormView = require('lib/config/form-view');
 var $ = require('jquery');
-var Backbone = require('backbone');
+var Tooltip = require('lib/components/tooltip/behavior');
+var Radio = require('backbone').Radio;
 
-module.exports = ItemView.extend({
-  template: _.template( $('#tmpl-gateway-settings-modal').html() ),
+module.exports = FormView.extend({
+  tagName: 'table',
+  className: 'form-table',
+
+  initialize: function () {
+    if(this.model.isNew()){
+      this.model.fetch();
+    }
+    this.modalAttributes();
+  },
 
   behaviors: {
-    Modal: {
-      behaviorClass: require('lib/components/modal/behavior')
-    },
     Tooltip: {
-      behaviorClass: require('lib/components/tooltip/behavior')
+      behaviorClass: Tooltip
     }
   },
 
-  initialize: function (options) {
-    this.trigger('modal:open');
-  },
-
   modelEvents: {
-    'change': 'render'
+    'change:title': function(modal, value){
+      Radio.command('modal', 'update:title', value);
+    }
   },
 
-  events: {
-    'click .save' : 'save',
-    'click .close' : 'cancel'
+  modalAttributes: function(){
+    this.modal = {
+      title: this.model.get('title')
+    }
   },
 
-  onBeforeShow: function() {
-    Backbone.Syphon.deserialize( this, this.model.toJSON() );
+  onRender: function(){
+    var self = this;
+    this.$('input, select, textarea').each(function(){
+      var name = $(this).attr('name');
+      if(name){
+        self.addBinding(null, '*[name="' + name + '"]', name);
+      }
+    });
   },
 
   save: function() {
-    var data = Backbone.Syphon.serialize( this );
-    this.model.set( data );
     this.model.save();
   },
 
   cancel: function () {
-    this.trigger('modal:close');
   }
 
 });

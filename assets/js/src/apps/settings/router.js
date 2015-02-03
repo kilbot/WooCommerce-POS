@@ -21,9 +21,37 @@ var SettingsRouter = Router.extend({
   },
 
   onBeforeEnter: function() {
+    this.bootstrapTabs();
+    this.bootstrapSettings();
     this.layout = new LayoutView();
     this.listenTo(this.layout, 'show', this.showTabs);
     this.container.show(this.layout);
+  },
+
+  bootstrapTabs: function(){
+    var tabs = [],
+        frag = bb.history.getFragment() || 'general';
+
+    // check page for templates
+    $('.tmpl-wc-pos-settings').each(function(){
+      tabs.push({
+        id    : $(this).data('id'),
+        label : $(this).data('label'),
+        active: ( $(this).data('id') === frag )
+      });
+    });
+
+    this.tabsArray = tabs;
+  },
+
+  bootstrapSettings: function(){
+    var settings = window.wc_pos_settings;
+
+    _.each(settings, function(setting, id){
+      var model = this.collection.add(setting);
+      model.set({ id: id });
+      model._isNew = false;
+    }, this);
   },
 
   routes: {
@@ -35,23 +63,10 @@ var SettingsRouter = Router.extend({
   },
 
   showTabs: function(){
-    var tabs = [];
-
-    // check page for templates
-    $('.tmpl-wc-pos-settings').each(function(){
-      tabs.push({
-        id: $(this).data('id'),
-        label: $(this).data('label')
-      });
-    });
 
     var view = new Tabs({
-      collection: tabs
+      collection: this.tabsArray
     });
-
-    // init active tab
-    var id = bb.history.getFragment() || 'general';
-    view.collection.get(id).set({active:true});
 
     this.listenTo(view, 'show', function(){
       // use wordpress admin styles
@@ -76,21 +91,21 @@ var SettingsRouter = Router.extend({
   showGeneral: function(){
     return new General({
       container : this.layout.settingsRegion,
-      collection: this.collection
+      model: this.collection.get('general')
     });
   },
 
   showCheckout: function(){
     return new Checkout({
       container : this.layout.settingsRegion,
-      collection: this.collection
+      model: this.collection.get('checkout')
     });
   },
 
   showAccess: function(){
     return new Access({
       container : this.layout.settingsRegion,
-      collection: this.collection
+      model: this.collection.get('access')
     });
   },
 

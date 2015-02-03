@@ -1,86 +1,43 @@
-/**
-* Based on https://github.com/brian-mann/sc02-loading-views
-*/
+var Service = require('lib/config/service');
+var View = require('./view');
+var _ = require('lodash');
+var debug = require('debug')('loading');
 
-POS.module('Components.Loading', function(Loading, POS, Backbone, Marionette, $, _){
+module.exports = Service.extend({
+  channelName: 'loading',
 
-    /**
-     * API
-     */
-    Loading.channel = Backbone.Radio.channel('loading');
+  initialize: function (options) {
+    options = options || {};
+    this.container = options.container;
 
-    Loading.channel.comply('show:loading', function(view, options) {
-        return new Loading.Controller({
-            view: view,
-            region: options.region,
-            config: options.loading
-        });
+    if(!this.container){
+      debug('invalid loading container', options);
+      return;
+    }
+
+    _.defaults(options, {
+      type    : 'spinner',
+      message : ''
     });
 
-    /**
-     * Controller
-     */
-    Loading.Controller = POS.Controller.Base.extend({
+    if(this[options.type]){
+      this[options.type](options);
+    } else {
+      debug('invalid loading type', options);
+    }
+  },
 
-        initialize: function(options) {
-            var view 	= options.view,
-                config 	= options.config;
-
-            config = _.isBoolean(config) ? {} : config;
-
-            _.defaults(config, {
-                loadingType : 'spinner',
-                loadingMessage : ''
-                // entities 	: this.getEntities(view),
-                // debug 		: false
-            });
-
-            switch (config.loadingType) {
-                case 'spinner':
-                    var loadingView = new Loading.Spinner({ message: config.loadingMessage });
-                    this.show(loadingView);
-                break;
-                case 'opacity':
-                    this.region.currentView.$el.css({ 'opacity': 0.5 });
-                break;
-                default:
-                    throw new Error('Invalid loadingType');
-            }
-
-            this.showRealView(view, loadingView, config);
-        },
-
-        showRealView: function(realView, loadingView, config){
-            var self = this,
-                array = config.entities;
-
-            // expect an array of promises
-            if( ! _.isArray( array ) ) {
-                array = [config.entities];
-            }
-
-            $.when.apply( $, array ).done( function( data, textStatus, jqXHR ){
-                switch (config.loadingType) {
-                    case 'spinner':
-                        if(self.region.currentView !== loadingView) {
-                            return realView.close();
-                        }
-                    break;
-                    case 'opacity':
-                        self.region.currentView.$el.removeAttr('style');
-                    break;
-                }
-                self.show(realView);
-            }).fail( function( jqXHR, textStatus, errorThrown ){
-                POS.debugLog('error', errorThrown);
-                loadingView.fail(textStatus);
-            });
-        }
-
-        // getEntities: function(view) {
-        // 	_.chain(view).pick('model', 'collection').toArray().compact().value();
-        // }
-
+  spinner: function(options){
+    var view = new View({
+      message: options.message
     });
+    this.container.show(view);
+  },
+
+  opacity: function(){
+    this.container.currentView.$el.css({
+      'opacity': 0.5
+    });
+  }
 
 });

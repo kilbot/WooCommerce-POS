@@ -11,13 +11,13 @@
 
 class WC_POS_Admin_Settings_General extends WC_POS_Admin_Settings_Page {
 
-	/**
-	 * Each settings tab requires an id and label
-	 */
-	public function __construct() {
-		$this->id    = 'general';
-		/* translators: woocommerce */
-		$this->label = __( 'General', 'woocommerce' );
-	}
+  /**
+   * Each settings tab requires an id and label
+   */
+  public function __construct() {
+    $this->id    = 'general';
+    /* translators: woocommerce */
+    $this->label = __( 'General', 'woocommerce' );
+  }
 
 }

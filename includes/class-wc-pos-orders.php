@@ -11,11 +11,11 @@
 
 class WC_POS_Orders {
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
+  /**
+   * Constructor
+   */
+  public function __construct() {
 
-	}
+  }
 
 }

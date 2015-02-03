@@ -1,7 +1,8 @@
 var bb = require('backbone');
 var $ = require('jquery');
+var _ = require('lodash');
 var POS = require('lib/utilities/global');
-var Loading = require('lib/components/loading/view');
+var LoadingService = require('lib/components/loading/service');
 
 module.exports = POS.Route = bb.Marionette.Object.extend({
   constructor: function() {
@@ -20,16 +21,23 @@ module.exports = POS.Route = bb.Marionette.Object.extend({
 
   enter: function(args) {
     var self = this;
+    this.transitioning = true;
     this._triggerMethod('before:enter', args);
     this._triggerMethod('before:fetch', args);
 
-    var view = new Loading();
-    this.container.show(view);
+    _.defer(function() {
+      if (self.transitioning) {
+        self.loading = new LoadingService({
+          container: self.container
+        });
+      }
+    });
 
     return $.when(this.fetch.apply(this, args)).then(function() {
       self._triggerMethod('fetch', args);
       self._triggerMethod('before:render', args);
     }).then(function() {
+      self.transitioning = false;
       return self.render.apply(self, args);
     }).then(function() {
       self._triggerMethod('render', args);

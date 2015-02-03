@@ -89,19 +89,21 @@
   }
 
   /* disabled styles */
-  &.select2-container-disabled .select2-choice {
-    background-color: $select2-disabled-bg;
-    border: 1px solid $select2-border-color;
-    cursor: default;
-  }
-
-  &.select2-container-disabled .select2-choice .select2-arrow {
-    background-color: $select2-disabled-bg;
-    border-left: 0;
-  }
-
-  &.select2-container-disabled .select2-choice abbr {
-    display: none;
+  &.select2-container-disabled {
+    .select2-choice {
+      background-color: $select2-disabled-bg;
+      border: 1px solid $select2-border-color;
+      cursor: default;
+      .select2-chosen {
+        background-color: $select2-disabled-bg;
+      }
+      .select2-arrow {
+        background-color: $select2-disabled-bg;
+      }
+      abbr {
+        display: none;
+      }
+    }
   }
 }
 

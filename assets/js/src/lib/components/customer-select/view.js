@@ -1,6 +1,7 @@
 var ItemView = require('lib/config/item-view');
 var Select2 = require('lib/components/select2/behavior');
 var _ = require('lodash');
+var $ = require('jquery');
 var Radio = require('backbone').Radio;
 var hbs = require('handlebars');
 var POS = require('lib/utilities/global');
@@ -16,16 +17,19 @@ var View = ItemView.extend({
       return '<input name="customer" type="hidden" class="select2">';
     };
 
-    this.filtered = Radio.request('entities', 'get', {
-      type: 'filtered',
+    this.collection = Radio.request('entities', 'get', {
+      type: 'collection',
       name: 'customers'
     });
+
     var customers = Radio.request('entities', 'get', {
       type: 'option',
       name: 'customers'
     });
+
     if(customers){
-      this.guest = customers.guest;
+      this.guest_customer = customers.guest;
+      this.default_customer = customers.default || customers.guest;
     }
   },
 
@@ -49,14 +53,17 @@ var View = ItemView.extend({
    */
   query: function(query){
     var self = this;
-    this.filtered.superset()
-      .fetch()
+    this.collection
+      .fetch({
+        data: 'filter[q]=' + query.term,
+        beforeSend: function(xhr){
+          xhr.setRequestHeader('X-WC-POS', 1);
+        }
+      })
       .done(function(){
-        self.filtered.query(query.term);
-        var results = self.filtered.toJSON();
-        results.unshift(self.guest);
+        var results = self.collection.toJSON();
+        results.unshift(self.guest_customer);
         query.callback({ results: results });
-        self.filtered.resetFilters();
       });
   },
 
@@ -65,11 +72,8 @@ var View = ItemView.extend({
    */
   initSelection: function( element, callback ) {
     var customer;
-    if(this.model){
-      customer = this.model.get('customer');
-    } else {
-      debug('no customer attribute', this.model);
-    }
+    if(this.model){ customer = this.model.get('customer'); }
+    if(!customer){ customer = this.default_customer; }
     callback( customer );
   },
 

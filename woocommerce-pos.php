@@ -20,7 +20,7 @@
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-	die;
+  die;
 }
 
 /**
@@ -53,5 +53,5 @@ require_once WC_POS_PLUGIN_PATH . 'includes/class-wc-pos.php';
  */
 add_action( 'woocommerce_loaded', 'run_woocommerce_pos' );
 function run_woocommerce_pos() {
-	new WC_POS();
+  new WC_POS();
 }

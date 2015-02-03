@@ -7,15 +7,7 @@ var General = Route.extend({
   initialize: function( options ) {
     options = options || {};
     this.container = options.container;
-    if(window.wc_pos_settings_general){
-      this.model = options.collection.add(window.wc_pos_settings_general);
-      this.model.set({id: 'general'});
-      this.model._isNew = false;
-    } else {
-      this.model = options.collection.add({
-        id: 'general'
-      });
-    }
+    this.model = options.model;
   },
 
   fetch: function() {

@@ -1,5 +1,6 @@
 var Behavior = require('lib/config/behavior');
 var POS = require('lib/utilities/global');
+var $ = require('jquery');
 
 var Sortable = Behavior.extend({
 
@@ -24,6 +25,7 @@ var Sortable = Behavior.extend({
         ui.item.removeAttr('style');
         $('input.gateway_order', this).each(function(idx) {
           $(this).val(idx);
+          $(this).trigger('input');
         });
       }
     });
@@ -34,7 +36,7 @@ var Sortable = Behavior.extend({
     sortable: '.sortable'
   },
 
-  onShow: function() {
+  onRender: function() {
     if( this.ui.sortable.length > 0 ) {
 
       // Custom sorting for checkout settings table
