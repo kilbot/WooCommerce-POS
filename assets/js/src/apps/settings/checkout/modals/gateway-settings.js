@@ -29,7 +29,7 @@ module.exports = FormView.extend({
   modalAttributes: function(){
     this.modal = {
       title: this.model.get('title')
-    }
+    };
   },
 
   onRender: function(){

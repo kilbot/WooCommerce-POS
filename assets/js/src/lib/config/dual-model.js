@@ -1,5 +1,6 @@
 var Model = require('./model');
 var POS = require('lib/utilities/global');
+var $ = require('jquery');
 
 module.exports = POS.DualModel = Model.extend({
   idAttribute: 'local_id',
@@ -25,7 +26,7 @@ module.exports = POS.DualModel = Model.extend({
     var remoteId;
     remoteId = this.get(this.remoteIdAttribute);
     if (remoteId && (method === 'update' || method === 'delete')) {
-      return "" + urlRoot + "/" + remoteId + "/";
+      return '' + urlRoot + '/' + remoteId + '/';
     }
     return urlRoot;
   },
@@ -36,7 +37,15 @@ module.exports = POS.DualModel = Model.extend({
 
   isDelayed: function() {
     var _ref;
-    return (_ref = this.get('status')) === this.states.DELETE_FAILED || _ref === this.states.UPDATE_FAILED || _ref === this.states.CREATE_FAILED;
+    return (_ref = this.get('status')) === this.states.DELETE_FAILED ||
+      _ref === this.states.UPDATE_FAILED ||
+      _ref === this.states.CREATE_FAILED;
+  },
+
+  serverSync: function(){
+    var deferred = $.Deferred();
+    _.delay(deferred.resolve, 5000, 'success');
+    return deferred;
   }
 
 });

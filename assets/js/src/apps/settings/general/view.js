@@ -1,7 +1,5 @@
 var FormView = require('lib/config/form-view');
-var _ = require('lodash');
 var $ = require('jquery');
-var Backbone = require('backbone');
 var POS = require('lib/utilities/global');
 var Select2 = require('lib/components/select2/behavior');
 var Tooltip = require('lib/components/tooltip/behavior');
@@ -68,7 +66,7 @@ var View = FormView.extend({
 
     this.model.on('change:logged_in_user', function(model, toggle){
       view.triggerMethod('select:disable', toggle);
-    })
+    });
 
     // clean up
     // TODO: abstract clean up

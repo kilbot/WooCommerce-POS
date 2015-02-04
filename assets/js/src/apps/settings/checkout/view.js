@@ -1,6 +1,5 @@
 var FormView = require('lib/config/form-view');
 var $ = require('jquery');
-var Backbone = require('backbone');
 var POS = require('lib/utilities/global');
 //var Select2 = require('lib/components/select2/behavior');
 var Tooltip = require('lib/components/tooltip/behavior');

@@ -1,31 +1,32 @@
 /**
- This is a customised version of https://github.com/vincentmac/backbone-idb
+This is a customised version of https://github.com/vincentmac/backbone-idb
 
- The MIT License (MIT)
+The MIT License (MIT)
 
- Copyright (c) 2013 Vincent Mac
+Copyright (c) 2013 Vincent Mac
 
- Permission is hereby granted, free of charge, to any person obtaining a copy of
- this software and associated documentation files (the "Software"), to deal in
- the Software without restriction, including without limitation the rights to
- use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- the Software, and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
 
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 var Backbone = require('backbone');
-var POS = require('lib/utilities/global');
 var IDBStore = require('idb-wrapper');
+var _ = require('lodash');
+var $ = require('jquery');
 
 var defaultErrorHandler = function (error) {
   throw error;
@@ -42,8 +43,8 @@ Backbone.IndexedDB = function IndexedDB(options, parent) {
     // console.log('idb:ready this:', this);  // <IDBStore>
     // console.log('idb:ready that:', that);  // <IndexedDB>
 
-    // By default, make the Backbone.IndexedDB available through `parent.indexedDB`
-    // that.parent.indexedDB = that;
+    // By default, make the Backbone.IndexedDB available through
+    // `parent.indexedDB` that.parent.indexedDB = that;
     // Fire ready event on parent model or collection
     that.parent.trigger('idb:ready', that);
   };
@@ -85,7 +86,7 @@ Backbone.IndexedDB.prototype = {
 
     this.store.put(data, function(insertedId) {
       data[that.keyPath] = insertedId;
-      options.success(data)
+      options.success(data);
     }, options.error);
 
   },
@@ -217,30 +218,31 @@ Backbone.IndexedDB.prototype = {
   },
 
   /**
-   * Perform a batch operation to save all models in the current collection to indexedDB.
+   * Perform a batch operation to save all models in the current collection to
+   * indexedDB.
    *
    * @param {Function} [onSuccess] - success callback
    * @param {Function} [onError] - error callback
    */
   saveAll: function(onSuccess, onError) {
-    onSuccess || (onSuccess = noop);
-    onError || (onError = defaultErrorHandler);
+    onSuccess = onSuccess || noop;
+    onError = onError || defaultErrorHandler;
 
     this.store.putBatch(this.parent.toJSON(), onSuccess, onError);
   },
 
   /**
-   * Perform a batch operation to save and/or remove models in the current collection to
-   * indexedDB. This is a proxy to the idbstore `batch` method
+   * Perform a batch operation to save and/or remove models in the current
+   * collection to indexedDB. This is a proxy to the idbstore `batch` method
    *
-   * @param {Array} dataArray - Array of objects containing the operation to run and
-   *  the model (for put operations).
+   * @param {Array} dataArray - Array of objects containing the operation
+   * to run and the model (for put operations).
    * @param {Function} [onSuccess] - success callback
    * @param {Function} [onError] - error callback
    */
   batch: function(dataArray, onSuccess, onError) {
-    onSuccess || (onSuccess = noop);
-    onError || (onError = defaultErrorHandler);
+    onSuccess = onSuccess || noop;
+    onError = onError || defaultErrorHandler;
 
     this.store.batch(dataArray, onSuccess, onError);
   },
@@ -254,8 +256,8 @@ Backbone.IndexedDB.prototype = {
    * @param {Function} [onError] - error callback
    */
   putBatch: function(dataArray, onSuccess, onError) {
-    onSuccess || (onSuccess = noop);
-    onError || (onError = defaultErrorHandler);
+    onSuccess = onSuccess || noop;
+    onError = onError || defaultErrorHandler;
 
     this.store.putBatch(dataArray, onSuccess, onError);
   },
@@ -269,8 +271,8 @@ Backbone.IndexedDB.prototype = {
    * @param {Function} [onError] - error callback
    */
   removeBatch: function(keyArray, onSuccess, onError) {
-    onSuccess || (onSuccess = noop);
-    onError || (onError = defaultErrorHandler);
+    onSuccess = onSuccess || noop;
+    onError = onError || defaultErrorHandler;
 
     this.store.removeBatch(keyArray, onSuccess, onError);
   },
@@ -282,8 +284,8 @@ Backbone.IndexedDB.prototype = {
    * @param {Function} [onError] - error callback
    */
   clear: function(onSuccess, onError) {
-    onSuccess || (onSuccess = noop);
-    onError || (onError = defaultErrorHandler);
+    onSuccess = onSuccess || noop;
+    onError = onError || defaultErrorHandler;
 
     this.store.clear(onSuccess, onError);
   },
@@ -305,6 +307,7 @@ Backbone.IndexedDB.prototype = {
  * This function replaces the model or collection's sync method and remains
  * compliant with Backbone's api.
  */
+/*jshint -W071, -W074*/
 Backbone.IndexedDB.sync = Backbone.idbSync = function(method, model, options) {
   var deferred = new $.Deferred();
   var db = model.indexedDB || model.collection.indexedDB;
@@ -323,7 +326,11 @@ Backbone.IndexedDB.sync = Backbone.idbSync = function(method, model, options) {
 
     // Retrieve an individual model or entire collection from indexedDB
     case 'read':
-      model.id !== undefined ? db.read(model, options) : db.getAll(options);
+      if(model.id !== undefined){
+        db.read(model, options);
+      } else {
+        db.getAll(options);
+      }
       break;
 
     case 'create':
@@ -351,6 +358,7 @@ Backbone.IndexedDB.sync = Backbone.idbSync = function(method, model, options) {
   return deferred.promise();
 
 };
+/*jshint +W071, +W074*/
 
 // Reference original `Backbone.sync`
 Backbone.ajaxSync = Backbone.sync;

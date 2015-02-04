@@ -12,7 +12,7 @@ DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
 
 WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
-WP_CORE_DIR=/tmp/wordpress/
+WP_CORE_DIR=/tmp/wordpress
 
 set -ex
 
@@ -75,7 +75,7 @@ install_db() {
 
 install_woo() {
   wget -nv -O /tmp/woocommerce.zip https://downloads.wordpress.org/plugin/woocommerce.zip
-  unzip /tmp/woocommerce.zip -dq $WP_CORE_DIR/wp-content/plugins
+  unzip -qo /tmp/woocommerce.zip -d $WP_CORE_DIR/wp-content/plugins
 }
 
 install_wp

@@ -1,39 +1,43 @@
 var ItemView = require('lib/config/item-view');
-var Backbone = require('backbone');
-var entitiesChannel = Backbone.Radio.channel('entities');
-var _ = require('lodash');
-var $ = require('jquery');
+var Radio = require('backbone').Radio;
+var EventSource = global['EventSource'];
 
 module.exports =  ItemView.extend({
   initialize: function (options) {
+    options = options || {};
+
     this.template = function(){
       return '<i class="spinner"></i>';
     };
+
+    this.modal = {
+      title: options.title,
+      footer: false
+    };
+
     this.initUpdate();
-  },
-
-  events: {
-    'click .close' : 'cancel'
-  },
-
-  cancel: function () {
-    this.trigger('modal:close');
   },
 
   initUpdate: function() {
     var view = this;
-    var ajaxurl = global['ajaxurl'];
-    var nonce = entitiesChannel.request( 'get:options', 'nonce' );
-    var stream = new EventSource( ajaxurl + '?action=wc_pos_update_translations&security=' + nonce );
+    var ajaxurl = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'ajaxurl'
+    });
+    var nonce = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'nonce'
+    });
+    var stream = new EventSource(
+      ajaxurl + '?action=wc_pos_update_translations&security=' + nonce
+    );
     stream.onmessage = function(e){
       if( e.data === 'complete' ){
         this.close();
-        view.$('.modal-body .spinner').hide();
-        view.$('.modal-footer').show();
+        view.$('.spinner').hide();
       } else {
-        view.$('.modal-body .spinner').before('<p>' + e.data + '</p>');
+        view.$('.spinner').before('<p>' + e.data + '</p>');
       }
     };
   }
-
 });

@@ -29,21 +29,3 @@
   <?php endif; ?>
 
 <?php endif; endforeach; ?>
-
-<script type="text/template" id="tmpl-modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 data-title="<?php /* translators: wordpress */ _e( 'Loading&hellip;' ); ?>"></h1>
-        <i class="icon icon-times" data-action="close" title="<?php /* translators: wordpress */ _e( 'Close' ); ?>"></i>
-      </div>
-      <div class="modal-body"></div>
-      <div class="modal-footer">
-        <p class="response"></p>
-        <a href="#" class="button-primary" data-action="save">
-          <?php /* translators: woocommerce */ _e( 'Save Changes', 'woocommerce' ); ?>
-        </a>
-      </div>
-    </div>
-  </div>
-</script>

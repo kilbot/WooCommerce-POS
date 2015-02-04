@@ -42,7 +42,7 @@
   </ul>
 </div>
 
-<a class="button-primary" data-action="save">
+<button class="button-primary" data-action="save">
   <?php /* translators: wordpress */ echo esc_attr__( 'Save Changes' ); ?>
-</a>
+</button>
 <p class="response"></p>

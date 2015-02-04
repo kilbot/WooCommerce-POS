@@ -20,7 +20,12 @@ var General = Route.extend({
     var view = new View({
       model: this.model
     });
+    this.listenTo(view, 'action:save', this.saveModel);
     this.container.show(view);
+  },
+
+  saveModel: function(){
+    this.model.save();
   }
 
 });

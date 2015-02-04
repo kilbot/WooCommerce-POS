@@ -27,4 +27,4 @@ var Tooltip = Behavior.extend({
 });
 
 module.exports = Tooltip;
-POS.attach('Behaviors.Tooltip');
+POS.attach('Behaviors.Tooltip', Tooltip);

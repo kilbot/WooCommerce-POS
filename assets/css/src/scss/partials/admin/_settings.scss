@@ -8,9 +8,13 @@
       font-weight: 700;
       font-size: 15px;
       line-height: 24px;
+      border-bottom: 1px solid #ccc;
       &.active {
         color: #000;
         background: #f1f1f1;
+        border-bottom: none;
+        position: relative;
+        top: 1px;
       }
       &:hover {
         cursor: pointer;

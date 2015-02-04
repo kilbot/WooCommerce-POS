@@ -7,23 +7,15 @@ module.exports = Service.extend({
   channelName: 'loading',
 
   initialize: function (options) {
-    options = options || {};
-    this.container = options.container;
-
-    if(!this.container){
-      debug('invalid loading container', options);
-      return;
-    }
-
     _.defaults(options, {
       type    : 'spinner',
       message : ''
     });
 
-    if(this[options.type]){
+    if(options.container && this[options.type]){
       this[options.type](options);
     } else {
-      debug('invalid loading type', options);
+      debug('invalid loading options', options);
     }
   },
 
@@ -31,11 +23,11 @@ module.exports = Service.extend({
     var view = new View({
       message: options.message
     });
-    this.container.show(view);
+    options.container.show(view);
   },
 
-  opacity: function(){
-    this.container.currentView.$el.css({
+  opacity: function(options){
+    options.container.currentView.$el.css({
       'opacity': 0.5
     });
   }

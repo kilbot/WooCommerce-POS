@@ -1,4 +1,3 @@
-var bb = require('backbone');
 var DualCollection = require('lib/config/dual-collection');
 var Model = require('./model');
 var debug = require('debug')('ordersCollection');

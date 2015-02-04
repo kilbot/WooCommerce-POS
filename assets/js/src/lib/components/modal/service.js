@@ -1,6 +1,6 @@
 var Service = require('lib/config/service');
 var Backbone = require('backbone');
-var LayoutView = require('./layout-view');
+var LayoutView = require('./views/layout');
 var $ = require('jquery');
 
 module.exports = Service.extend({
@@ -24,7 +24,7 @@ module.exports = Service.extend({
     this.container.show(this.layout);
 
     this.channel.comply({
-      'update:title'  : this.layout.updateTitle
+      'update': this.layout.update
     }, this.layout);
 
     this.listenTo(Backbone.history, {

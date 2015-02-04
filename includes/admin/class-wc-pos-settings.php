@@ -24,22 +24,16 @@ class WC_POS_Admin_Settings {
    * Constructor
    */
   public function __construct() {
+    $this->init();
     add_action( 'admin_menu', array( $this, 'admin_menu' ) );
     add_action( 'current_screen', array( $this, 'conditional_init' ) );
-    $this->init();
   }
 
   /**
-   * Load admin subclasses
+   *
    */
   private function init(){
-    $settings = apply_filters( 'woocommerce_pos_settings_tabs_array', array(
-      new WC_POS_Admin_Settings_General(),
-      new WC_POS_Admin_Settings_Checkout(),
-      new WC_POS_Admin_Settings_Access(),
-      new WC_POS_Admin_Settings_Tools()
-    ));
-    $this->settings = $settings;
+
   }
 
   /**
@@ -59,15 +53,27 @@ class WC_POS_Admin_Settings {
   }
 
   /**
-   * Enqueue scripts for the settings page
+   *
    *
    * @param $current_screen
    */
   public function conditional_init( $current_screen ) {
     if( $current_screen->id == $this->screen_id ) {
+
+      // Load settings page subclasses
+      $settings = apply_filters( 'woocommerce_pos_settings_tabs_array', array(
+        new WC_POS_Admin_Settings_General(),
+        new WC_POS_Admin_Settings_Checkout(),
+        new WC_POS_Admin_Settings_Access(),
+        new WC_POS_Admin_Settings_Tools()
+      ));
+      $this->settings = $settings;
+
+      // Enqueue scripts for the settings page
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
       add_action( 'admin_print_footer_scripts', array( $this, 'admin_inline_js' ) );
+
     }
   }
 
@@ -273,7 +279,7 @@ class WC_POS_Admin_Settings {
     wp_enqueue_script(
       WC_POS_PLUGIN_NAME . '-core',
       WC_POS_PLUGIN_URL . 'assets/js/core.build.js',
-      array( 'jquery', 'backbone', 'underscore' ),
+      array( 'jquery', 'backbone', 'underscore', 'accounting', 'idb-wrapper', 'moment', 'select2', 'handlebars' ),
       WC_POS_VERSION,
       true
     );

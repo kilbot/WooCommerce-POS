@@ -1,21 +1,21 @@
 var ItemView = require('lib/config/item-view');
 var Select2 = require('lib/components/select2/behavior');
 var _ = require('lodash');
-var $ = require('jquery');
 var Radio = require('backbone').Radio;
 var hbs = require('handlebars');
 var POS = require('lib/utilities/global');
-var debug = require('debug')('customerSelect');
+//var debug = require('debug')('customerSelect');
 
 // Select view
 var View = ItemView.extend({
+
+  template: function(){
+    return '<input name="customer" type="hidden" class="select2">';
+  },
+
   initialize: function(options){
     options = options || {};
     this.model = options.model;
-
-    this.template = function(){
-      return '<input name="customer" type="hidden" class="select2">';
-    };
 
     this.collection = Radio.request('entities', 'get', {
       type: 'collection',
@@ -29,7 +29,7 @@ var View = ItemView.extend({
 
     if(customers){
       this.guest_customer = customers.guest;
-      this.default_customer = customers.default || customers.guest;
+      this.default_customer = customers['default'] || customers.guest;
     }
   },
 

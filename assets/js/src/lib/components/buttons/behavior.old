@@ -1,24 +1,22 @@
 var Behavior = require('lib/config/behavior');
 var POS = require('lib/utilities/global');
-var $ = require('jquery');
+var bb = require('backbone');
 
 var Buttons = Behavior.extend({
 
   initialize: function(options){
     options = options || {};
     if(options.modal){
-      this.listenTo(this.view.content, 'before:show', function(view){
-        this.view.model = view.model;
-      });
+      this.modalSetup();
     }
   },
 
   ui: {
-    submit : '*[data-action="save"]'
+    save : '*[data-action="save"]'
   },
 
-  events: {
-    'click @ui.submit': 'onSubmit'
+  triggers: {
+    'click @ui.save': 'action:save'
   },
 
   modelEvents: {
@@ -26,30 +24,49 @@ var Buttons = Behavior.extend({
     'update:stop' : 'saved'
   },
 
-  onSubmit: function(e) {
-    e.preventDefault();
-    this.view.model.save();
-  },
-
   saving: function() {
-    this.ui.submit
+    this.ui.save
       .prop( 'disabled', true )
-      .next( 'p.response' )
+      .siblings( 'p.response' )
       .html( '<i class="spinner"></i>' );
   },
 
   saved: function() {
     var response = this.view.model.get('response');
     var success = response.result === 'success' ? 'yes' : 'no';
-    this.ui.submit
+    this.ui.save
       .prop( 'disabled', false)
-      .next( 'p.response' )
+      .siblings( 'p.response' )
       .html( '' +
       '<i class="dashicons dashicons-' + success + '"></i>' +
       response.notice
     );
 
     this.view.model.unset( 'response', { silent: true } );
+  },
+
+  /**
+   * Modal setup
+   *
+   * modal buttons are behaviors on the modal view
+   * but need to share events with the modal content view
+   */
+  modalSetup: function(){
+    this.listenTo(this.view.content, {
+      'before:show' : this.beforeModalContentShow,
+      'before:empty': this.beforeModalContentEmpty
+    }, this);
+  },
+
+  beforeModalContentShow: function(view){
+    this.view.model = view.model;
+    bb.Marionette.bindEntityEvents(
+      this, this.view.model, this.modelEvents
+    );
+  },
+
+  beforeModalContentEmpty: function(){
+    this.ui.save.siblings('p.response').html('');
   }
 
 });

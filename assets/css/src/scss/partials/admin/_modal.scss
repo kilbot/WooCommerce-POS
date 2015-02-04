@@ -41,6 +41,11 @@
   }
   .modal-body {
     @include clearfix;
+    i.spinner {
+      display: inline-block;
+      float: none;
+      margin: 0;
+    }
   }
   .modal-footer {
     padding: 11px;
@@ -49,14 +54,14 @@
       margin: 0 10px 0 0;
       text-align: right;
       line-height: 20px;
-      .spinner {
-        display: inline-block;
-        float: none;
-        margin: 0;
-      }
       i {
         margin-right: 5px;
         vertical-align: middle;
+        &.spinner {
+          display: inline-block;
+          float: none;
+          margin: 0;
+        }
       }
       &.success {
         color: $state-success-text;

@@ -1,7 +1,6 @@
 var FormView = require('lib/config/form-view');
 var POS = require('lib/utilities/global');
 var $ = require('jquery');
-var hbs = require('handlebars');
 var Buttons = require('lib/components/buttons/behavior');
 
 var View = FormView.extend({

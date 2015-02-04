@@ -5,7 +5,7 @@ var POS = require('lib/utilities/global');
 var View = ItemView.extend({
   className: 'loading',
 
-  initialize: function (options) {
+  initialize: function () {
     this.on('update:message', this.render);
     this.timeout = setTimeout(_.bind(this.fail, this), 60000);
   },

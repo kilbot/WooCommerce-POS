@@ -59,14 +59,14 @@ module.exports = Application.extend({
   },
 
   onBeforeEnterRoute: function() {
-    var self = this;
+    //var self = this;
     this.transitioning = true;
     // Don't show for synchronous route changes
-    _.defer(function() {
-      if (self.transitioning) {
-        //nprogress.start();
-      }
-    });
+    //_.defer(function() {
+    //  if (self.transitioning) {
+    //    nprogress.start();
+    //  }
+    //});
   },
 
   onEnterRoute: function(route) {

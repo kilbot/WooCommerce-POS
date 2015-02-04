@@ -40,17 +40,12 @@
   }
   .modal-footer {
     padding: 11px;
-    p.response {
+    p.message {
       display: inline-block;
       margin: 0 10px 0 0;
       text-align: right;
       line-height: 20px;
-      .spinner {
-        display: inline-block;
-        float: none;
-        margin: 0;
-      }
-      i {
+      i.icon {
         margin-right: 5px;
         vertical-align: middle;
       }

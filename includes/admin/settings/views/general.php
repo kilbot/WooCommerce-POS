@@ -26,13 +26,13 @@
     <td>
       <div data-component="customer-select"></div>
       <input type="checkbox" name="logged_in_user" id="logged_in_user">
-      <label for="logged_in_user"><?php _e( 'Logged in cashier', 'woocommerce-pos' ) ?></label>
+      <label for="logged_in_user"><?php _ex( 'Use cashier account', 'Default customer setting', 'woocommerce-pos' ) ?></label>
     </td>
   </tr>
 
 </table>
 
-<a class="button-primary" data-action="save">
+<button class="button-primary" data-action="save">
   <?php /* translators: wordpress */ echo esc_attr__( 'Save Changes' ); ?>
-</a>
+</button>
 <p class="response"></p>

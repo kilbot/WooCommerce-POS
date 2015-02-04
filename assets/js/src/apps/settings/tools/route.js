@@ -13,16 +13,20 @@ var Tools = Route.extend({
 
   render: function() {
     var view = new View();
-
     this.listenTo(view, {
       'translation:update': this.openTranslationModal
     });
-
     this.container.show(view);
   },
 
-  openTranslationModal: function(){
-    var view = new TranslationModal();
+  openTranslationModal: function(args){
+    var title = args.view
+      .$('[data-action="translation"]')
+      .data('title');
+
+    var view = new TranslationModal({
+      title: title
+    });
     Radio.request('modal', 'open', view);
   }
 

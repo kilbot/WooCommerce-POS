@@ -97,13 +97,13 @@ class WC_POS_Template {
   protected function footer() {
     // required scripts
     $scripts = array(
-      'jquery-js'         => '<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>',
+      'jquery-js'         => '<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>',
       'lodash-js'         => '<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>',
       'backbone-js'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>',
       'handlebars'        => '<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>',
       'idb-wrapper'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.4.1/idbstore.min.js"></script>',
       'select2'           => '<script src="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js"></script>',
-      'moment'            => '<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"></script>',
+      'moment'            => '<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>',
       'accounting'        => '<script src="//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>',
       'jquery.color'      => '<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js"></script>',
       'core-js'           => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/core.build.js?ver='. WC_POS_VERSION .'"></script>',

@@ -11,7 +11,11 @@
     <tr>
       <th><?php /* translators: woocommerce */ _e( 'Translation Upgrade', 'woocommerce' ); ?></th>
       <td>
-        <a href="#" class="button" data-action="translation">
+        <a href="#"
+           class="button"
+           data-action="translation"
+           data-title="<?php /* translators: woocommerce */ _e( 'Translation Upgrade', 'woocommerce' ); ?>"
+          >
           <?php
             /* translators: woocommerce */
             _e( 'Force Translation Upgrade', 'woocommerce' );

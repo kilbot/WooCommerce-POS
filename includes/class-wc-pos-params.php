@@ -17,10 +17,12 @@ class WC_POS_Params {
 
     $param['accounting']    = self::accounting_settings();
     $param['ajaxurl']       = admin_url( 'admin-ajax.php', 'relative' );
+    $param['buttons']       = self::buttons();
     $param['customers']     = self::customers();
     $param['denominations'] = WC_POS_i18n::currency_denominations( get_option('woocommerce_currency') );
     $param['hotkeys']       = self::hotkeys();
     $param['nonce']         = wp_create_nonce( WC_POS_PLUGIN_NAME );
+    $param['messages']      = self::messages();
     $param['shipping']      = self::shipping_labels();
     $param['tabs']          = self::product_tabs();
     $param['tax']           = self::wc_settings();
@@ -40,8 +42,10 @@ class WC_POS_Params {
   static public function admin() {
     $param['accounting']  = self::accounting_settings();
     $param['ajaxurl']     = admin_url( 'admin-ajax.php', 'relative' );
+    $param['buttons']     = self::buttons();
     $param['customers']   = self::customers();
     $param['nonce']       = wp_create_nonce( WC_POS_PLUGIN_NAME );
+    $param['messages']    = self::messages();
     $param['hotkeys']     = self::hotkeys();
     $param['wc_api']      = get_woocommerce_api_url( '' );
 
@@ -279,11 +283,32 @@ class WC_POS_Params {
         'receipt' => '',
       ),
       'buttons' => array(
-        'save' => '',
+        'save'  => '',
         'print' => ''
       )
     );
     return $modals;
+  }
+
+  static private function buttons() {
+    $buttons = array(
+      'save'      => /* translators: woocommerce */ __( 'Save Changes', 'woocommerce' ),
+      'print'     => /* translators: wordpress   */ __( 'Print' ),
+      'email'     => /* translators: wordpress   */ __( 'Email' ),
+      'refresh'   => /* translators: wordpress   */ __( 'Refresh' ),
+      'new-order' => /* translators: woocommerce */ __( 'New Order', 'woocommerce' ),
+      'close'     => /* translators: wordpress   */ __( 'Close' )
+    );
+    return $buttons;
+  }
+
+  static private function messages() {
+    $messages = array(
+      'success'   => /* translators: woocommerce */ __( 'Your changes have been saved.', 'woocommerce' ),
+      'error'     => /* translators: woocommerce */ __( 'Sorry, there has been an error.', 'woocommerce' ),
+      'loading'   => /* translators: wordpress   */ __( 'Loading&hellip;' )
+    );
+    return $messages;
   }
 
 }

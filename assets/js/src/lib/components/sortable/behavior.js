@@ -1,6 +1,7 @@
 var Behavior = require('lib/config/behavior');
 var POS = require('lib/utilities/global');
 var $ = require('jquery');
+var _ = require('lodash');
 
 var Sortable = Behavior.extend({
 

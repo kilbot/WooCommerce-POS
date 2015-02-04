@@ -1,7 +1,9 @@
-var Radio = require('backbone').Radio;
+var Backbone = require('backbone');
+var Radio = Backbone.Radio;
 var debug = require('debug')('dualCollection');
 var Collection = require('./collection');
 var POS = require('lib/utilities/global');
+var _ = require('lodash');
 var $ = require('jquery');
 
 var wrapError = function(model, options) {

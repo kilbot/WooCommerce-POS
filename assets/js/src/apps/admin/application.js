@@ -1,6 +1,6 @@
 var Application = require('lib/config/application');
 var bb = require('backbone');
-var _ = require('lodash');
+//var _ = require('lodash');
 var LayoutView = require('./layout-view');
 var debug = require('debug')('admin');
 var accounting = require('accounting');
@@ -40,14 +40,14 @@ module.exports = Application.extend({
   },
 
   onBeforeEnterRoute: function() {
-    var self = this;
+    //var self = this;
     this.transitioning = true;
     // Don't show for synchronous route changes
-    _.defer(function() {
-      if (self.transitioning) {
-        //nprogress.start();
-      }
-    });
+    //_.defer(function() {
+    //  if (self.transitioning) {
+    //    nprogress.start();
+    //  }
+    //});
   },
 
   onEnterRoute: function() {

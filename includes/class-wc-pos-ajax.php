@@ -19,6 +19,7 @@ class WC_POS_AJAX {
    * @param WC_POS_i18n $i18n
    */
   public function __construct(WC_POS_i18n $i18n) {
+
     $this->i18n = $i18n;
 
     // woocommerce_EVENT => nopriv

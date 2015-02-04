@@ -1,11 +1,21 @@
 var LayoutView = require('lib/config/layout-view');
-//var _ = require('lodash');
+var Header = require('./header');
+var Footer = require('./footer');
+var _ = require('lodash');
 var $ = require('jquery');
-var hbs = require('handlebars');
 var Radio = require('backbone').Radio;
-var Buttons = require('lib/components/buttons/behavior');
+var debug = require('debug')('modalLayout');
 
 module.exports = LayoutView.extend({
+  template: function(){
+    return '<div class="modal-dialog">' +
+      '<div class="modal-content">' +
+        '<div class="modal-header"></div>' +
+        '<div class="modal-body"></div>' +
+        '<div class="modal-footer"></div>' +
+      '</div>' +
+    '</div>';
+  },
   className: 'modal',
   attributes: {
     'tabindex' : -1,
@@ -13,11 +23,12 @@ module.exports = LayoutView.extend({
   },
 
   regions: {
-    content: '.modal-body'
+    header  : '.modal-header',
+    content : '.modal-body',
+    footer  : '.modal-footer'
   },
 
   initialize: function () {
-    this.template = hbs.compile( $('#tmpl-modal').html() );
     this.$el.modal({ show: false, backdrop: 'static' });
   },
 
@@ -25,13 +36,6 @@ module.exports = LayoutView.extend({
     'click [data-action="close"]' : function(e){
       e.preventDefault();
       Radio.request('modal', 'close');
-    }
-  },
-
-  behaviors: {
-    Buttons: {
-      behaviorClass: Buttons,
-      modal: true
     }
   },
 
@@ -45,7 +49,7 @@ module.exports = LayoutView.extend({
   open: function(view){
     var deferred = $.Deferred();
     this.once('open', deferred.resolve);
-    this.setupModal(view);
+    this.setup(view);
     this.content.show(view);
     this.$el.modal('show');
     return deferred;
@@ -55,20 +59,66 @@ module.exports = LayoutView.extend({
     var deferred = $.Deferred();
     this.once('close', function() {
       this.content.empty();
+      this.footer.empty();
       deferred.resolve();
     });
     this.$el.modal('hide');
     return deferred;
   },
 
-  setupModal: function(view){
+  setup: function(view){
     var attributes = view.modal || {};
-    this.updateTitle(attributes.title);
+
+    _.defaults(attributes, {
+      header: {},
+      footer: {}
+    });
+
+    _.each(attributes, function(attr, key){
+      var method = $.camelCase('modal-' + key);
+      if(this[method]){
+        this[method](attr);
+      } else {
+        debug('no method matching ' + method);
+      }
+    }, this);
   },
 
-  updateTitle: function(title){
+  update: function(options){
+    options = options || {};
+    _.each(options, function(attr, key){
+      this[key].currentView.triggerMethod('Update', attr);
+    }, this);
+  },
+
+  modalHeader: function(options){
+    var view = new Header(options);
+    this.header.show(view);
+  },
+
+  modalFooter: function(options){
+    var view = new Footer(options);
+
+    this.listenTo(view, 'action:save', function(){
+      this.content.currentView.trigger('action:save');
+    });
+
+    this.footer.show(view);
+  },
+
+  modalTitle: function(title){
     title = title || this.$('.modal-header h1').data('title');
     this.$('.modal-header h1').html(title);
+  },
+
+  modalSize: function(size){
+    var className = {
+      small: 'modal-sm',
+      large: 'modal-lg'
+    };
+    if(className[size]){
+      this.$('.modal-dialog').addClass(className[size]);
+    }
   }
 
   //

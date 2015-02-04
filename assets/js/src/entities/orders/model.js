@@ -104,7 +104,7 @@ module.exports = DualModel.extend({
    */
   process: function(){
     debug('process order ' + this.id);
-    this.collection.fullSync();
+
   }
 
 });
