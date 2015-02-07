@@ -15,9 +15,8 @@ class WC_POS_Products {
    * Constructor
    */
   public function __construct() {
-
     $this->init();
-
+    add_filter( 'woocommerce_api_query_args', array( $this, 'woocommerce_api_query_args' ), 10, 2 );
     add_filter( 'woocommerce_api_product_response', array( $this, 'filter_product_response' ), 10, 4 );
   }
 
@@ -31,6 +30,18 @@ class WC_POS_Products {
     if( isset( $settings['pos_only_products'] ) && $settings['pos_only_products'] ) {
       new WC_POS_Products_Visibility();
     }
+  }
+
+  /**
+   * @param $args
+   * @param $request_args
+   * @return mixed
+   */
+  public function woocommerce_api_query_args($args, $request_args){
+    if(is_pos() && !empty($request_args['post__in'])){
+      $args['post__in'] = explode(',', $request_args['post__in']);
+    }
+    return $args;
   }
 
   /**

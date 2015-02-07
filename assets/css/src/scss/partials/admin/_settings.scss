@@ -37,18 +37,25 @@
       padding-right: 0;
     }
   }
-  p.response {
+}
+
+#wc-pos-settings-footer {
+  button {
+    vertical-align: middle;
+  }
+  p.message {
     display: inline-block;
     margin: 0 0 0 10px;
     line-height: 20px;
     i {
       margin-right: 5px;
       vertical-align: middle;
-      &.spinner {
-        display: inline-block;
-        float: none;
-        margin: 0;
-      }
+    }
+    &.success {
+      color: $state-success-text;
+    }
+    &.error {
+      color: $state-danger-text;
     }
   }
 }

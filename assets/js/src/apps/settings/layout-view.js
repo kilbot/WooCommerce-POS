@@ -6,12 +6,14 @@ var Layout = LayoutView.extend({
   template: function(){
     return '' +
       '<div id="wc-pos-settings-tabs"></div>' +
-      '<div id="wc-pos-settings"></div>';
+      '<div id="wc-pos-settings"></div>' +
+      '<div id="wc-pos-settings-footer"></div>';
   },
 
   regions: {
-    tabsRegion: '#wc-pos-settings-tabs',
-    settingsRegion: '#wc-pos-settings'
+    tabs    : '#wc-pos-settings-tabs',
+    settings: '#wc-pos-settings',
+    footer  : '#wc-pos-settings-footer'
   }
 
 });

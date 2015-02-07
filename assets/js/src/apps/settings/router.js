@@ -6,6 +6,7 @@ var Checkout = require('./checkout/route');
 var Access = require('./access/route');
 var Tools = require('./tools/route');
 var Tabs = require('lib/components/tabs/view');
+var Buttons = require('lib/components/buttons/view');
 var bb = require('backbone');
 var Radio = bb.Radio;
 var $ = require('jquery');
@@ -62,6 +63,10 @@ var SettingsRouter = Router.extend({
     'tools'   : 'showTools'
   },
 
+  onBeforeRoute: function() {
+    this.layout.footer.empty();
+  },
+
   showTabs: function(){
 
     var view = new Tabs({
@@ -85,34 +90,59 @@ var SettingsRouter = Router.extend({
       }
     });
 
-    this.layout.tabsRegion.show(view);
+    this.layout.tabs.show(view);
   },
 
   showGeneral: function(){
+    var model = this.collection.get('general');
+    this.showFooter({model: model});
     return new General({
-      container : this.layout.settingsRegion,
-      model: this.collection.get('general')
+      container : this.layout.settings,
+      model: model
     });
   },
 
   showCheckout: function(){
+    var model = this.collection.get('checkout');
+    this.showFooter({model: model});
     return new Checkout({
-      container : this.layout.settingsRegion,
-      model: this.collection.get('checkout')
+      container : this.layout.settings,
+      model: model
     });
   },
 
   showAccess: function(){
+    var model = this.collection.get('access');
+    this.showFooter({model: model});
     return new Access({
-      container : this.layout.settingsRegion,
-      model: this.collection.get('access')
+      container : this.layout.settings,
+      model: model
     });
   },
 
   showTools: function(){
     return new Tools({
-      container : this.layout.settingsRegion
+      container : this.layout.settings
     });
+  },
+
+  showFooter: function(options){
+
+    _.defaults(options, {
+      buttons: [{
+        action: 'save',
+        className: 'button-primary'
+      }],
+      msgPos: 'right'
+    });
+
+    var view = new Buttons(options);
+
+    this.listenTo(view, 'action:save', function(){
+      options.model.save([], { buttons: view });
+    });
+
+    this.layout.footer.show(view);
   }
 
 });

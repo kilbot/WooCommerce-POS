@@ -39,6 +39,12 @@ class WC_POS_Status {
         'pass'  => __( 'Authentication Passed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="icon icon-info-circle"></i></a><textarea readonly="readonly" class="small form-control" style="display:none">' . $this->auth_response . '</textarea>',
         'fail'  => __( 'Authentication Failed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="icon icon-info-circle"></i></a><textarea readonly="readonly" class="small form-control" style="display:none">' . $this->auth_response . '</textarea>',
       ),
+      array(
+        'title' => __( 'Allow URL fopen', 'woocommerce-pos' ),
+        'test'  => ini_get('allow_url_fopen'),
+        'pass'  => __( 'allow_url_fopen enabled', 'woocommerce-pos' ),
+        'fail'  => __( 'allow_url_fopen disabled', 'woocommerce-pos' ),
+      ),
     );
     return $results;
   }

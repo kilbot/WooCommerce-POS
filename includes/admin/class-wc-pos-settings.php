@@ -96,16 +96,8 @@ class WC_POS_Admin_Settings {
     // get settings
     $settings = get_option(self::DB_PREFIX . $id);
 
-//		// default settings for gateways
-//		if(!$settings) {
-//			preg_replace('/^gateway_/', '', $id, 1, $count);
-//			if($count) {
-//				$settings = get_option(self::DB_PREFIX . $id);
-//			}
-//		}
-
     // return a single setting if $key given
-    if($key) {
+    if($key && is_array($settings)) {
       $settings = array_key_exists($key, $settings) ? $settings[$key] : false;
     }
 

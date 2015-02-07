@@ -1,7 +1,6 @@
 var FormView = require('lib/config/form-view');
 var POS = require('lib/utilities/global');
 var $ = require('jquery');
-var Buttons = require('lib/components/buttons/behavior');
 
 var View = FormView.extend({
   attributes: {
@@ -21,12 +20,6 @@ var View = FormView.extend({
 
   events: {
     'click @ui.tabs' : 'onTabClick'
-  },
-
-  behaviors: {
-    Buttons: {
-      behaviorClass: Buttons
-    }
   },
 
   onRender: function(){

@@ -56,10 +56,6 @@ module.exports = function(grunt) {
         files: ['<%= app.js.src %>/**/*.js'],
         tasks: ['webpack:dev', 'simplemocha', 'jshint:app']
       },
-      hbs: {
-        files: ['<%= app.js.src %>/**/*.hbs'],
-        tasks: ['jshint', 'handlebars']
-      },
       test: {
         files: ['tests/js/**/*.js'],
         tasks: ['jshint:tests', 'simplemocha']
@@ -106,42 +102,6 @@ module.exports = function(grunt) {
       }
     },
 
-    handlebars: {
-      compilerOptions: {
-        knownHelpers: {
-          'number': true,
-          'money': true,
-          'is': true,
-          'getOption': true
-        },
-        knownHelpersOnly: true
-      },
-      compile: {
-        options: {
-          namespace: function(filename) {
-            var names = filename.replace(/assets\/js\/src\/lib\/(.*)(\/\w+\.hbs)/, '$1').split('/');
-            var array = names.map( function(name) {
-              return name.charAt(0).toUpperCase() + name.slice(1);
-            });
-            return 'POS.' + array.join('.');
-          },
-          processName: function(filePath) {
-            var pieces = filePath.split("/");
-            var filename = pieces[pieces.length - 1];
-            var name = filename.replace('.hbs', 'Tmpl');
-            return name.charAt(0).toUpperCase() + name.slice(1);
-          }
-        },
-        files: {
-          'assets/js/src/lib/components/numpad/templates.jst':
-            [
-              'assets/js/src/lib/components/numpad/header.hbs',
-              'assets/js/src/lib/components/numpad/numkeys.hbs',
-            ]
-        }
-      }
-    },
-
     // javascript linting with jshint
     jshint: {
       options: {
@@ -167,11 +127,12 @@ module.exports = function(grunt) {
           admin: './<%= app.js.src %>/admin.js'
         },
         module: {
-
+          loaders: [
+            { test: /\.hbs$/, loader: 'raw-loader' }
+          ]
         },
         resolve: {
           alias: {
-            //handlebars: 'handlebars/dist/handlebars.runtime.js',
             //marionette: 'backbone.marionette',
             'backbone.wreqr': 'backbone.radio',
             radio: 'backbone.radio',
@@ -373,7 +334,8 @@ module.exports = function(grunt) {
             cwd: 'assets/js/src',
             src: [
               '**/*.js',
-              '**/*.html'
+              '**/*.html',
+              '**/*.hbs'
             ],
             dest: 'node_modules'
           }
@@ -387,7 +349,7 @@ module.exports = function(grunt) {
   grunt.registerTask('test', 'Run unit tests', ['symlink', 'simplemocha']);
 
   // dev
-  grunt.registerTask('dev', 'Development build', ['compass', 'cssmin', 'handlebars:compile', 'jshint', 'test', 'webpack:dev', 'watch']);
+  grunt.registerTask('dev', 'Development build', ['compass', 'cssmin', 'jshint', 'test', 'webpack:dev', 'watch']);
 
   // staging
   grunt.registerTask('staging', 'Production build', ['test', 'makepot', 'js_locales', 'webpack:staging', 'uglify:staging', 'copy']);

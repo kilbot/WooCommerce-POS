@@ -48,26 +48,24 @@
     }
   }
   .modal-footer {
-    padding: 11px;
-    p.response {
-      display: inline-block;
-      margin: 0 10px 0 0;
-      text-align: right;
-      line-height: 20px;
-      i {
-        margin-right: 5px;
-        vertical-align: middle;
-        &.spinner {
-          display: inline-block;
-          float: none;
-          margin: 0;
+    padding: 0px;
+    > div {
+      padding: 11px;
+      p.message {
+        display: inline-block;
+        margin: 0 10px 0 0;
+        text-align: right;
+        line-height: 20px;
+        i {
+          margin-right: 5px;
+          vertical-align: middle;
         }
-      }
-      &.success {
-        color: $state-success-text;
-      }
-      &.error {
-        color: $state-danger-text;
+        &.success {
+          color: $state-success-text;
+        }
+        &.error {
+          color: $state-danger-text;
+        }
       }
     }
   }

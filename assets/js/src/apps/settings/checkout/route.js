@@ -22,17 +22,13 @@ var SettingsRoute = Route.extend({
     var view = new View({
       model: this.model
     });
-
-    this.listenTo(view, {
-      'gateway:settings': this.openGatewaySettingsModal
-    });
-
+    this.listenTo(view, 'gateway:settings', this.openGatewaySettingsModal);
     this.container.show(view);
   },
 
   openGatewaySettingsModal: function(id, tmpl){
     var model = this.model.collection.add({
-      id    : 'gateway_' + id
+      id: 'gateway_' + id
     });
 
     var view = new GatewaySettingsModal({
@@ -40,9 +36,14 @@ var SettingsRoute = Route.extend({
       model: model
     });
 
-    Radio.request('modal', 'open', view);
-  }
+    var self = this;
+    Radio.request('modal', 'open', view).done(function(args){
+      self.listenTo(view, 'action:save', function(){
+        model.save([], { buttons: args.view.footer.currentView });
+      });
+    });
 
+  }
 });
 
 module.exports = SettingsRoute;

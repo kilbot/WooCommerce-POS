@@ -4,7 +4,6 @@ var POS = require('lib/utilities/global');
 var Select2 = require('lib/components/select2/behavior');
 var Tooltip = require('lib/components/tooltip/behavior');
 var CustomerSelect = require('lib/components/customer-select/view');
-var Buttons = require('lib/components/buttons/behavior');
 
 var View = FormView.extend({
   attributes: {
@@ -24,9 +23,6 @@ var View = FormView.extend({
     },
     Tooltip: {
       behaviorClass: Tooltip
-    },
-    Buttons: {
-      behaviorClass: Buttons
     }
   },
 

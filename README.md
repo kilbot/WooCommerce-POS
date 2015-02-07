@@ -1,5 +1,6 @@
 # [WooCommerce POS](http://woopos.com.au) 
 [![Build Status](https://travis-ci.org/kilbot/WooCommerce-POS.svg)](https://travis-ci.org/kilbot/WooCommerce-POS) 
+[![Code Climate](https://codeclimate.com/github/kilbot/WooCommerce-POS/badges/gpa.svg)](https://codeclimate.com/github/kilbot/WooCommerce-POS)
 [![Dependency Status](https://david-dm.org/kilbot/WooCommerce-POS.svg)](https://david-dm.org/kilbot/WooCommerce-POS)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kilbot/WooCommerce-POS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 

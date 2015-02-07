@@ -54,6 +54,7 @@ Backbone.IndexedDB = function IndexedDB(options, parent) {
     storePrefix: '',
     dbVersion: 1,
     keyPath: 'id',
+    dualStorage: false,
     autoIncrement: true,
     onStoreReady: defaultReadyHandler,
     onError: defaultErrorHandler,
@@ -64,6 +65,7 @@ Backbone.IndexedDB = function IndexedDB(options, parent) {
   this.dbName = options.storePrefix + options.storeName;
   this.store = new IDBStore(options);
   this.keyPath = options.keyPath;
+  this.dualStorage = options.dualStorage;
 };
 
 Backbone.IndexedDB.prototype = {
@@ -130,7 +132,7 @@ Backbone.IndexedDB.prototype = {
     if(this.dualStorage){
       var data = [];
       return this.iterate(function(item) {
-        if (item.status !== item.states.DELETE_FAILED) {
+        if (item.status !== 'DELETE_FAILED') {
           return data.push(item);
         }
       }, {
@@ -363,18 +365,17 @@ Backbone.IndexedDB.sync = Backbone.idbSync = function(method, model, options) {
 // Reference original `Backbone.sync`
 Backbone.ajaxSync = Backbone.sync;
 
-Backbone.getIDBSyncMethod = function(model) {
-  if(model.indexedDB || (model.collection && model.collection.indexedDB)) {
-    return Backbone.idbSync;
-  }
-
-  return Backbone.ajaxSync;
-};
-
 // Override 'Backbone.sync' to default to idbSync,
 // the original 'Backbone.sync' is still available in 'Backbone.ajaxSync'
 Backbone.sync = function(method, model, options) {
-  return Backbone.getIDBSyncMethod(model).apply(this, [method, model, options]);
+  var local = false;
+  if(model.indexedDB || (model.collection && model.collection.indexedDB)) {
+    local = true;
+  }
+  if(local && !options.remote){
+    return Backbone.idbSync.apply(this, [method, model, options]);
+  }
+  return Backbone.ajaxSync.apply(this, [method, model, options]);
 };
 
 module.exports = Backbone.IndexedDB;

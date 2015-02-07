@@ -1,6 +1,7 @@
 var ItemView = require('lib/config/item-view');
 var hbs = require('handlebars');
 var Radio = require('backbone').Radio;
+var _ = require('lodash');
 
 module.exports = ItemView.extend({
   template: hbs.compile('' +
@@ -30,12 +31,17 @@ module.exports = ItemView.extend({
     defaults = {
       title: messages.loading,
       close: buttons.close
-    }
+    };
 
     this.data = _.defaults(options, defaults);
   },
 
   templateHelpers: function(){
     return this.data;
+  },
+
+  onUpdate: function(options){
+    _.extend(this.data, options);
+    this.render();
   }
 });

@@ -4,7 +4,6 @@ var POS = require('lib/utilities/global');
 //var Select2 = require('lib/components/select2/behavior');
 var Tooltip = require('lib/components/tooltip/behavior');
 var Sortable = require('lib/components/sortable/behavior');
-var Buttons = require('lib/components/buttons/behavior');
 
 var View = FormView.extend({
   attributes: {
@@ -45,9 +44,6 @@ var View = FormView.extend({
     },
     Sortable: {
       behaviorClass: Sortable
-    },
-    Buttons: {
-      behaviorClass: Buttons
     }
   },
 

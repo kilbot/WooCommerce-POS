@@ -25,7 +25,7 @@ class WC_POS_AJAX {
     // woocommerce_EVENT => nopriv
     $ajax_events = array(
       'process_order'         => false,
-      'get_product_ids'       => false,
+      'get_all_ids'           => false,
       'get_modal'             => false,
       'json_search_customers' => false,
       'set_product_visibilty' => false,
@@ -84,19 +84,23 @@ class WC_POS_AJAX {
   }
 
   /**
-   * Get all the product ids
+   * Get all the ids for a given post_type
    * @return json
    */
-  public function get_product_ids() {
+  public function get_all_ids() {
 
     // security
     check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
 
+    if(empty( $_REQUEST['type'] )) {
+      die();
+    }
+
     $args = array(
-      'post_type'   => array('product'),
+      'post_type'     => array('product'),
       'post_status'   => array('publish'),
       'posts_per_page'=>  -1,
-      'fields'    => 'ids'
+      'fields'        => 'ids'
     );
 
     $query = new WP_Query( $args );

@@ -1,7 +1,7 @@
-describe('lib/utilities/parser.js', function () {
+describe('lib/config/filtered-collection/parser.js', function () {
 
   beforeEach(function () {
-    this.Parser = require('lib/utilities/parser');
+    this.Parser = require('lib/config/filtered-collection/parser');
   });
 
   describe('parse', function () {

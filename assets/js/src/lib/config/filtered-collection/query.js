@@ -1,19 +1,21 @@
-var bb = require('backbone');
-var POS = require('lib/utilities/global');
-var Parser = require('lib/utilities/parser');
 var _ = require('lodash');
+var Parser = require('./parser');
 
-/**
- * Extend the FilteredCollection class
- */
-_.extend( bb.FilteredCollection.prototype, {
+module.exports = {
 
   query: function( query, label ){
     label = label || 'search';
     var criterion = Parser.parse( query );
 
+    if(_(criterion).isEmpty()){
+      this.removeFilter(label);
+      return;
+    }
+
     // syphon off special cases
     this.checkCriterion( criterion );
+
+    // add filter
     this.filterBy( label,
       //_.bind( collection.matchMaker, collection, criterion, fields )
       _.partial( this.matchMaker, criterion )
@@ -23,17 +25,8 @@ _.extend( bb.FilteredCollection.prototype, {
   checkCriterion: function(criterion){
 
     // special cases for product search
-    if( _(this._superset).has('indexedDB') &&
-      this._superset.indexedDB.dbName === 'wc_pos_products' ){
-
-      if( _(criterion).has('parent') ){
-        this.removeFilter('hideVariations');
-        //criterion.type = ['variation'];
-      } else {
-        this.hideVariations();
-      }
-
-      if( _( criterion ).has( 'barcode' ) ){
+    if( this._superset.name === 'products' ){
+      if( _( criterion ).has('barcode') ){
         this.barcodeSearch( criterion.barcode );
       }
     }
@@ -87,12 +80,6 @@ _.extend( bb.FilteredCollection.prototype, {
 
     }, this);
 
-  },
-
-  hideVariations: function(){
-    this.filterBy( 'hideVariations', function( model ){
-      return model.get('type') !== 'variation';
-    });
   }
 
 //barcodeSearch: function( barcode ) {
@@ -127,10 +114,4 @@ _.extend( bb.FilteredCollection.prototype, {
 
 //}
 
-});
-
-/**
- * note: FilteredCollection is not a Backbone.Collection
- * which means it lacks some methods, such as extend
- */
-module.exports = POS.FilteredCollection = bb.FilteredCollection;
+};

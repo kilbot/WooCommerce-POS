@@ -133,9 +133,12 @@ class WC_POS_Gateways {
    */
   private function order(array $gateways){
     $order = WC_POS_Admin_Settings::get_settings('checkout', 'gateway_order');
-    $commonKeysInOrder = array_intersect_key($order, $gateways);
-    $commonKeysWithValue = array_intersect_key($gateways, $commonKeysInOrder);
-    return array_merge($commonKeysInOrder, $commonKeysWithValue);
+    if($order){
+      $commonKeysInOrder = array_intersect_key($order, $gateways);
+      $commonKeysWithValue = array_intersect_key($gateways, $commonKeysInOrder);
+      $gateways = array_merge($commonKeysInOrder, $commonKeysWithValue);
+    }
+    return $gateways;
   }
 
   /**

@@ -1,8 +1,9 @@
 var Views = {};
 var LayoutView = require('lib/config/layout-view');
 var ItemView = require('lib/config/item-view');
-var CollectionView = require('lib/config/collection-view');
+var InfiniteListView = require('lib/config/infinite-list-view');
 var Filter = require('lib/components/filter/behavior');
+var InfiniteScroll = require('lib/components/infinite-scroll/behavior');
 var hbs = require('handlebars');
 var $ = require('jquery');
 
@@ -38,6 +39,12 @@ Views.Actions = ItemView.extend({
     Filter: {
       behaviorClass: Filter
     }
+  },
+  ui: {
+    sync: 'a[data-action="sync"]'
+  },
+  triggers: {
+    'click @ui.sync': 'sync:products'
   }
 });
 
@@ -76,25 +83,17 @@ Views.Empty = ItemView.extend({
   template: '#tmpl-products-empty'
 });
 
-Views.List = CollectionView.extend({
+Views.List = InfiniteListView.extend({
   tagName: 'ul',
   className: 'striped',
   childView: Views.Item,
   emptyView: Views.Empty,
 
-  initialize: function() {
-    this.collection.bind('request', this.ajaxStart, this);
-    this.collection.bind('sync', this.ajaxComplete, this);
-  },
-
-  ajaxStart: function() {
-    this.$el.css({ 'opacity': 0.5 });
-  },
-
-  ajaxComplete: function() {
-    this.$el.removeAttr('style');
+  behaviors: {
+    InfiniteScroll: {
+      behaviorClass: InfiniteScroll
+    }
   }
-
 });
 
 /**

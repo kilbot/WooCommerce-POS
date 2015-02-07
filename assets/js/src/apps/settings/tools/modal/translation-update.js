@@ -11,8 +11,16 @@ module.exports =  ItemView.extend({
     };
 
     this.modal = {
-      title: options.title,
-      footer: false
+      header: {
+        title: options.title
+      },
+      footer: {
+        show: false,
+        buttons: [{
+          action: 'close',
+          className: 'button'
+        }]
+      }
     };
 
     this.initUpdate();
@@ -35,6 +43,9 @@ module.exports =  ItemView.extend({
       if( e.data === 'complete' ){
         this.close();
         view.$('.spinner').hide();
+        Radio.command('modal', 'update', { footer: {
+          show: true
+        }});
       } else {
         view.$('.spinner').before('<p>' + e.data + '</p>');
       }

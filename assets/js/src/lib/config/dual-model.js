@@ -1,6 +1,7 @@
 var Model = require('./model');
 var POS = require('lib/utilities/global');
-var $ = require('jquery');
+//var $ = require('jquery');
+//var _ = require('lodash');
 
 module.exports = POS.DualModel = Model.extend({
   idAttribute: 'local_id',
@@ -43,9 +44,7 @@ module.exports = POS.DualModel = Model.extend({
   },
 
   serverSync: function(){
-    var deferred = $.Deferred();
-    _.delay(deferred.resolve, 5000, 'success');
-    return deferred;
+    return this.collection.fullSync();
   }
 
 });

@@ -3,7 +3,7 @@ var $ = require('jquery');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
 
-module.exports = POS.Behaviors.AutoGrow = Behavior.extend({
+var AutoGrow = Behavior.extend({
 
   initialize: function(options){
     this.options = options || (options = {});
@@ -57,3 +57,6 @@ module.exports = POS.Behaviors.AutoGrow = Behavior.extend({
   }
 
 });
+
+module.exports = AutoGrow;
+POS.attach('Behaviors.AutoGrow', AutoGrow);

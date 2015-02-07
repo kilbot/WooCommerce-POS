@@ -67,11 +67,11 @@ class WC_POS_Params {
       array(
         /* translators: woocommerce-admin */
         'label' => __( 'Featured', 'woocommerce'),
-        'value' => 'featured:true'
+        'id' => 'featured:true'
       ),
       array(
         'label' => _x( 'On Sale', 'Product tab: \'On Sale\' products', 'woocommerce-pos'),
-        'value' => 'on_sale:true'
+        'id' => 'on_sale:true'
       ),
     );
     return $tabs;
@@ -170,10 +170,9 @@ class WC_POS_Params {
     $user = false;
     $settings = WC_POS_Admin_Settings::get_settings( 'general' );
 
-    if( isset($settings['logged_in_user'])
-      && $settings['logged_in_user']){
+    if(!empty($settings['logged_in_user'])){
       $user = wp_get_current_user();
-    } elseif ( isset( $settings['customer'] ) ){
+    } elseif (!empty($settings['customer']['id'])){
       $user = get_userdata( $settings['customer']['id'] );
     }
 

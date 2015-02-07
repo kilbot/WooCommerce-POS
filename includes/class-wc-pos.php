@@ -23,7 +23,7 @@ class WC_POS {
 
     add_action( 'init', array( $this, 'init' ) );
     add_filter( 'generate_rewrite_rules', array( $this, 'generate_rewrite_rules' ) );
-    add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ) );
+    add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 2 );
     do_action( 'woocommerce_pos_loaded' );
 
   }
@@ -58,7 +58,7 @@ class WC_POS {
 
     $i18n     = new WC_POS_i18n();
     $gateways = new WC_POS_Gateways();
-    new WC_POS_Products(); // admin only?
+    new WC_POS_Products($this); // admin only?
     new WC_POS_Customers();
 
     // admin only
@@ -99,7 +99,7 @@ class WC_POS {
    *
    * @return WP_User object
    */
-  public function wc_api_authentication( $user ) {
+  public function wc_api_authentication( $user, $wc_api ) {
 
     if( is_pos() ) {
       global $current_user;

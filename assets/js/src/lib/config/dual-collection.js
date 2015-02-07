@@ -61,7 +61,7 @@ module.exports = POS.DualCollection = Collection.extend({
   },
 
   state: {
-    pageSize: 10
+    pageSize: 10,
   },
 
   parseState: function (resp, queryParams, state, options) {
@@ -102,51 +102,49 @@ module.exports = POS.DualCollection = Collection.extend({
     return newData;
   },
 
-  firstSync: function(options) {
-    var event, fetchSuccess, originalSuccess, syncError, syncSuccess;
-    if (options == null) {
-      options = {};
-    }
-    originalSuccess = options.success || $.noop;
-    event = _.extend({}, Backbone.Events);
-    syncSuccess = (function(_this) {
-      return function(response) {
-        var data, method;
-        data = _this.mergeFirstSync(_this.parse(response));
-        event.trigger(_this.eventNames.REMOTE_SYNC_SUCCESS);
-        method = options.reset ? 'reset' : 'set';
-        _this[method](data, options);
-        originalSuccess(_this, data, options);
-        _this.trigger('sync', _this, data, options);
-        wrapError(_this, options);
-        return _this.save().done(function() {
-          return _this.fetch().done(function() {
-            return event.trigger(_this.eventNames.SYNCHRONIZED);
-          });
-        });
-      };
-    })(this);
-    syncError = (function(_this) {
-      return function(error) {
-        return event.trigger(_this.eventNames.REMOTE_SYNC_FAIL, error, options);
-      };
-    })(this);
-    fetchSuccess = (function(_this) {
-      return function(data) {
-        options.success = syncSuccess;
-        options.error = syncError;
-        event.trigger(_this.eventNames.LOCAL_SYNC_SUCCESS, data);
-        return Backbone.ajaxSync('read', _this, options);
-      };
-    })(this);
-    this.fetch({
-      success: fetchSuccess,
-      error: function(error) {
-        return event.trigger(this.eventNames.LOCAL_SYNC_FAIL, error);
-      }
-    });
-    return event;
-  },
+  //firstSync: function(options) {
+  //  var event, fetchSuccess, originalSuccess, syncError, syncSuccess;
+  //  options = options || {};
+  //  originalSuccess = options.success || $.noop;
+  //  event = _.extend({}, Backbone.Events);
+  //  syncSuccess = (function(_this) {
+  //    return function(response) {
+  //      var data, method;
+  //      data = _this.mergeFirstSync(_this.parse(response));
+  //      event.trigger(_this.eventNames.REMOTE_SYNC_SUCCESS);
+  //      method = options.reset ? 'reset' : 'set';
+  //      _this[method](data, options);
+  //      originalSuccess(_this, data, options);
+  //      _this.trigger('sync', _this, data, options);
+  //      wrapError(_this, options);
+  //      return _this.save().done(function() {
+  //        return _this.fetch().done(function() {
+  //          return event.trigger(_this.eventNames.SYNCHRONIZED);
+  //        });
+  //      });
+  //    };
+  //  })(this);
+  //  syncError = (function(_this) {
+  //    return function(error) {
+  //      return event.trigger(_this.eventNames.REMOTE_SYNC_FAIL, error, options);
+  //    };
+  //  })(this);
+  //  fetchSuccess = (function(_this) {
+  //    return function(data) {
+  //      options.success = syncSuccess;
+  //      options.error = syncError;
+  //      event.trigger(_this.eventNames.LOCAL_SYNC_SUCCESS, data);
+  //      return Backbone.ajaxSync('read', _this, options);
+  //    };
+  //  })(this);
+  //  this.fetch({
+  //    success: fetchSuccess,
+  //    error: function(error) {
+  //      return event.trigger(this.eventNames.LOCAL_SYNC_FAIL, error);
+  //    }
+  //  });
+  //  return event;
+  //},
 
   removeGarbage: function(delayedData) {
     var deferred, idsForRemove, key;
@@ -262,6 +260,122 @@ module.exports = POS.DualCollection = Collection.extend({
       return deferred.reject();
     }));
     return deferred.promise();
+  },
+
+  serverSync: function(options){
+    options = options || {};
+    var originalSuccess = options.success || $.noop,
+        deferred = $.Deferred();
+
+    var syncSuccess = function(){
+
+    };
+
+    return Backbone.ajaxSync('read', this, options);
+  },
+
+  firstSync: function(options){
+    options = options || {};
+    var originalError = options.error || $.noop;
+    var self = this;
+
+    return this.fetch({
+      success: function(data){
+        self.trigger(self.eventNames.LOCAL_SYNC_SUCCESS, data);
+        self.auditRecords(options);
+      },
+      error: function(error) {
+        self.trigger(self.eventNames.LOCAL_SYNC_FAIL, error);
+        Radio.command('error', self.eventNames.LOCAL_SYNC_FAIL, error);
+        originalError(error);
+      }
+    });
+  },
+
+  auditRecords: function(options){
+    var local = this.pluck('id'),
+        self = this;
+
+    this.getRemoteIds().done(function(remote){
+      var diff = _.difference(local, remote);
+      if( diff.length > 0 ) {
+        return self.removeRecords(diff);
+      }
+    }).then(function(remote){
+      var diff = _.difference(remote, local);
+      self.queue(diff);
+      self.processQueue();
+    });
+  },
+
+  getRemoteIds: function(){
+    var ajaxurl = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'ajaxurl'
+    });
+
+    return $.getJSON( ajaxurl, {
+      'action': 'wc_pos_get_all_ids',
+      'type'  : this.name
+    });
+    //.done(function(response) {
+    //  var err;
+    //  if(response === 0){ err = 'wp_ajax error: no method found'; }
+    //  if(response === -1){ err = 'wp_ajax error: authentication error'; }
+    //  if(err){
+    //    debug(err);
+    //    Radio.command('error', self.eventNames.REMOTE_SYNC_FAIL, err);
+    //    deferred.fail(err);
+    //  } else {
+    //    deferred.resolve(response);
+    //  }
+    //})
+    //.fail(function( jqxhr, textStatus, error ) {
+    //  var err = textStatus + ", " + error;
+    //  debug(err);
+    //  Radio.command('error', self.eventNames.REMOTE_SYNC_FAIL, err);
+    //  deferred.fail(err);
+    //});
+  },
+
+  removeRecords: function(ids){
+    var dfd = $.Deferred();
+
+    _.each( ids, function(id, index) {
+      var model = this.get(id);
+      model.destroy({
+        success: function(model, response) {
+          debug(response.title + 'deleted');
+          if( index++ === ids.length ) {
+            dfd.resolve();
+          }
+        },
+        error: function(model, response) {
+          debug('problem deleting ' + response.title);
+        }
+      });
+    }, this);
+
+    return dfd;
+  },
+
+  queue: function(ids){
+    this._queue = ids;
+  },
+
+  processQueue: function(collection, response){
+    if(response){
+      this.indexedDB.putBatch(this.parse(response));
+    }
+    if(this._queue.length > 0){
+      var ids = this._queue.splice(0, 10)
+      this.fetch({
+        remote  : true,
+        success : this.processQueue.bind(this),
+        data    : { filter: { limit: -1, post__in: ids.join(',') } },
+        remove  : false
+      });
+    }
   }
 
 });

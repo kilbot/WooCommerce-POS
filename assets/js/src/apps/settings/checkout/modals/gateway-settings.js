@@ -11,7 +11,20 @@ module.exports = FormView.extend({
     if(this.model.isNew()){
       this.model.fetch();
     }
-    this.modalAttributes();
+
+    // modal setup
+    this.modal = {
+      header: {
+        title: this.model.get('title')
+      },
+      footer: {
+        buttons: [{
+          action    : 'save',
+          className : 'button-primary',
+          disabled  : this.model.isNew()
+        }]
+      }
+    };
   },
 
   behaviors: {
@@ -22,14 +35,18 @@ module.exports = FormView.extend({
 
   modelEvents: {
     'change:title': function(modal, value){
-      Radio.command('modal', 'update:title', value);
+      var update = {};
+      update.header = { title: value };
+      if(this.model.isNew()){
+        update.footer = {
+          buttons: [{
+            action: 'save',
+            disabled: false
+          }]
+        };
+      }
+      Radio.command('modal', 'update', update);
     }
-  },
-
-  modalAttributes: function(){
-    this.modal = {
-      title: this.model.get('title')
-    };
   },
 
   onRender: function(){
@@ -40,13 +57,6 @@ module.exports = FormView.extend({
         self.addBinding(null, '*[name="' + name + '"]', name);
       }
     });
-  },
-
-  save: function() {
-    this.model.save();
-  },
-
-  cancel: function () {
   }
 
 });

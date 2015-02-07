@@ -77,7 +77,8 @@ describe('entities/service.js', function () {
       type: 'filtered',
       name: 'orders'
     });
-    expect(filtered).to.be.instanceof(Backbone.FilteredCollection);
+    var Filtered = require('lib/config/filtered-collection');
+    expect(filtered).to.be.instanceof(Filtered);
   });
 
   it('should return an app option using { type: "option" }', function(){

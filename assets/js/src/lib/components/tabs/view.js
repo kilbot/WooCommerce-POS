@@ -33,7 +33,7 @@ var Tab = ItemView.extend({
     'click *[data-action="remove"]': 'remove:tab'
   },
 
-  toggleClass: function(){
+  toggleClass: function(model, active){
     this.$el.toggleClass('active', this.model.get('active'));
   },
 

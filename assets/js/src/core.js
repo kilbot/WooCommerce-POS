@@ -15,12 +15,6 @@ Marionette.Application.prototype._initChannel = function () {
 };
 
 /**
- * Backbone plugins
- */
-bb.FilteredCollection =
-  require('backbone-filtered-collection/backbone-filtered-collection');
-
-/**
  * Bootstrap components
  */
 require('bootstrap-sass/assets/javascripts/bootstrap/modal');

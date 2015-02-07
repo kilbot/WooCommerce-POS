@@ -45,3 +45,6 @@ describe('lib/config/filtered-collection.js', function () {
   });
 
 });
+
+// sub modules
+require('./filtered-collection/parser');

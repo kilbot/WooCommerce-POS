@@ -1,6 +1,6 @@
 var LayoutView = require('lib/config/layout-view');
 var Header = require('./header');
-var Footer = require('./footer');
+var Buttons = require('lib/components/buttons/view');
 var _ = require('lodash');
 var $ = require('jquery');
 var Radio = require('backbone').Radio;
@@ -97,7 +97,7 @@ module.exports = LayoutView.extend({
   },
 
   modalFooter: function(options){
-    var view = new Footer(options);
+    var view = new Buttons(options);
 
     this.listenTo(view, 'action:save', function(){
       this.content.currentView.trigger('action:save');

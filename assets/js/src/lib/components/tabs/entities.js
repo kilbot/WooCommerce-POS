@@ -3,6 +3,7 @@ var Collection = require('lib/config/collection');
 
 var Tab = Model.extend({
   defaults: {
+    id: '',
     label: 'Tab',
     active: false,
     fixed: true

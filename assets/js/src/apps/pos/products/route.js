@@ -31,7 +31,6 @@ module.exports = Route.extend({
     this.layout = new Views.Layout();
 
     this.listenTo(this.layout, 'show', function () {
-      this.filtered.hideVariations();
       this.showActions();
       this.showTabs();
       this.showProducts();
@@ -44,6 +43,11 @@ module.exports = Route.extend({
     var view = new Views.Actions({
       collection: this.filtered
     });
+
+    this.listenTo(view, 'sync:products', function() {
+      this.collection.firstSync();
+    });
+
     this.layout.actionsRegion.show(view);
   },
 
@@ -57,8 +61,8 @@ module.exports = Route.extend({
       })
     });
 
-    this.listenTo(view.collection, 'change:active', function (model) {
-      this.filtered.query(model.get('value'), 'tab');
+    this.listenTo(view.collection, 'change:active', function (model, active) {
+      if(active){ this.filtered.query(model.id, 'tab'); }
     });
 
     // show tabs component
@@ -82,6 +86,9 @@ module.exports = Route.extend({
           value: 'parent:' + args.model.get('id'),
           fixed: false
         }).set({active: true});
+      },
+      'load:more': function(options){
+        this.collection.loadMore(options);
       }
     });
 
