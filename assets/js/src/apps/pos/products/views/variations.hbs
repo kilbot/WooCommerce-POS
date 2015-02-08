@@ -1,0 +1,18 @@
+{{#variations}}
+  <strong>{{name}}</strong>
+  {{#unless this.select}}
+    <div class="btn-group" data-toggle="buttons">
+    {{#each options}}
+      <button class="btn btn-default" data-name="{{../name}}">{{this}}</button>
+    {{/each}}
+    </div>
+  {{/unless}}
+  {{#if this.select}}
+    <select>
+    {{#each options}}
+        <option value="{{this.value}} data-name="{{../name}}">{{this}}</option>
+    {{/each}}
+    </select>
+  {{/if}}
+{{/variations}}
+<button class="btn btn-success" data-action="add" disabled>Add to Cart</button>

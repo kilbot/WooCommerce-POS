@@ -1,13 +1,14 @@
-var bb = require('backbone');
+var Mn = require('backbone.marionette');
+var Radio = require('backbone.radio');
 var POS = require('lib/utilities/global');
 var _ = require('lodash');
 
-module.exports = POS.Service = bb.Marionette.Object.extend({
+module.exports = POS.Service = Mn.Object.extend({
   constructor: function(options) {
     options = options || {};
 
     if (this.channelName) {
-      this.channel = bb.Radio.channel(_.result(this, 'channelName'));
+      this.channel = Radio.channel(_.result(this, 'channelName'));
     }
 
     // add reference to the app, like old Marionette.Module
@@ -15,7 +16,7 @@ module.exports = POS.Service = bb.Marionette.Object.extend({
       this.app = options.app;
     }
 
-    bb.Marionette.Object.apply(this, arguments);
+    Mn.Object.apply(this, arguments);
   },
 
   start: function(){

@@ -2,43 +2,43 @@ describe('lib/config/filtered-collection.js', function () {
 
   beforeEach(function () {
     var dummy = require('./../../../data/products.json');
-    var collection = new Backbone.Collection(dummy.products);
-    var FilteredCollection = require('lib/config/filtered-collection');
-    this.filtered = new FilteredCollection(collection);
+    var superset = new Backbone.Collection(dummy.products);
+    var Collection = require('lib/config/filtered-collection');
+    this.collection = new Collection(superset);
   });
 
   describe('var filtered = new FilteredCollection();', function () {
     it('should be in a valid state', function() {
-      expect(this.filtered).to.be.ok;
+      expect(this.collection).to.be.ok;
     });
   });
 
   describe('filtered.query()', function () {
 
     it('should have a query method', function() {
-      expect(this.filtered).to.have.property('query');
+      expect(this.collection).to.have.property('query');
     });
 
     it('should filter a freetext query', function() {
-      this.filtered.query('woo');
-      expect(this.filtered.length).equal(12);
-      this.filtered.query('ninja');
-      expect(this.filtered.length).equal(9);
+      this.collection.query('woo');
+      expect(this.collection.length).equal(12);
+      this.collection.query('ninja');
+      expect(this.collection.length).equal(9);
     });
 
     it('should filter a cat: query', function() {
-      this.filtered.query('cat:Music');
-      expect(this.filtered.length).equal(6);
+      this.collection.query('cat:Music');
+      expect(this.collection.length).equal(6);
     });
 
     it('should filter an id: query', function() {
-      this.filtered.query('id:99');
-      expect(this.filtered.length).equal(1);
+      this.collection.query('id:99');
+      expect(this.collection.length).equal(1);
     });
 
     it('should filter a piped id: query', function() {
-      this.filtered.query('id:99|96');
-      expect(this.filtered.length).equal(2);
+      this.collection.query('id:99|96');
+      expect(this.collection.length).equal(2);
     });
 
 

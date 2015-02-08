@@ -1,5 +1,5 @@
 var DualModel = require('lib/config/dual-model');
-var Radio = require('backbone').Radio;
+var Radio = require('backbone.radio');
 var debug = require('debug')('orderModel');
 var _ = require('lodash');
 

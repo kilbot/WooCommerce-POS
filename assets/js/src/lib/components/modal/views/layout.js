@@ -3,8 +3,10 @@ var Header = require('./header');
 var Buttons = require('lib/components/buttons/view');
 var _ = require('lodash');
 var $ = require('jquery');
-var Radio = require('backbone').Radio;
+var Radio = require('backbone.radio');
 var debug = require('debug')('modalLayout');
+require('bootstrap-sass/assets/javascripts/bootstrap/modal');
+require('bootstrap-sass/assets/javascripts/bootstrap/transition');
 
 module.exports = LayoutView.extend({
   template: function(){

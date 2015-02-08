@@ -1,5 +1,5 @@
 var DeepModel = require('lib/config/deep-model');
-var Radio = require('backbone').Radio;
+var Radio = require('backbone.radio');
 
 module.exports = DeepModel.extend({
 

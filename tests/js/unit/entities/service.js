@@ -75,7 +75,7 @@ describe('entities/service.js', function () {
   it('should return a FilteredCollection using { type: "filtered" }', function(){
     var filtered = this.module.channel.request('get', {
       type: 'filtered',
-      name: 'orders'
+      name: 'products'
     });
     var Filtered = require('lib/config/filtered-collection');
     expect(filtered).to.be.instanceof(Filtered);

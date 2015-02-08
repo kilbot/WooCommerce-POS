@@ -2,7 +2,7 @@ var Behavior = require('lib/config/behavior');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
 
-module.exports = POS.Behaviors.Filter = Behavior.extend({
+var Filter = Behavior.extend({
 
   ui: {
     searchField : 'input[type=search]',
@@ -18,6 +18,7 @@ module.exports = POS.Behaviors.Filter = Behavior.extend({
     var value = this.ui.searchField.val();
     this.showClearButtonMaybe( value );
     this.view.collection.query(value);
+    this.view.collection.firstPage();
   }, 149),
 
   // clear the filter
@@ -37,3 +38,6 @@ module.exports = POS.Behaviors.Filter = Behavior.extend({
   }
 
 });
+
+module.exports = Filter;
+POS.attach('Behaviors.Filter', Filter);

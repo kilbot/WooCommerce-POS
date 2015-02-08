@@ -3,7 +3,7 @@ var bb = require('backbone');
 var LayoutView = require('./layout-view');
 var debug = require('debug')('app');
 var accounting = require('accounting');
-var Radio = require('backbone').Radio;
+var Radio = require('backbone.radio');
 var routerChannel = Radio.channel('router');
 
 module.exports = Application.extend({

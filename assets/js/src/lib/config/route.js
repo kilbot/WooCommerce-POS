@@ -1,10 +1,11 @@
 var bb = require('backbone');
+var Mn = require('backbone.marionette');
 var $ = require('jquery');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
 var LoadingService = require('lib/components/loading/service');
 
-module.exports = POS.Route = bb.Marionette.Object.extend({
+module.exports = POS.Route = Mn.Object.extend({
   constructor: function() {
     this.initialize.apply(this, arguments);
   },

@@ -2,7 +2,7 @@ var Route = require('lib/config/route');
 var POS = require('lib/utilities/global');
 var View = require('./view');
 var GatewaySettingsModal = require('./modals/gateway-settings');
-var Radio = require('backbone').Radio;
+var Radio = require('backbone.radio');
 
 var SettingsRoute = Route.extend({
 

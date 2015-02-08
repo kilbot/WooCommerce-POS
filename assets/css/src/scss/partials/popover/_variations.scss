@@ -1,0 +1,16 @@
+.popover-variations {
+  width: 200px;
+  max-width: none;
+  .popover-region {
+    padding: $spacing/3;
+    strong {
+      color: $inverse-text-color;
+    }
+    .btn-group {
+      margin-bottom: $spacing/3;
+    }
+    *[data-action="add"] {
+      width: 100%;
+    }
+  }
+}

@@ -2,7 +2,7 @@ var Model = require('lib/config/model');
 //var debug = require('debug')('cartModel');
 var Utils = require('lib/utilities/utils');
 var _ = require('lodash');
-var Radio = require('backbone').Radio;
+var Radio = require('backbone.radio');
 
 module.exports = Model.extend({
   idAttribute: 'local_id',

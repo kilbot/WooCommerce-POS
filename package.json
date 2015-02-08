@@ -26,6 +26,7 @@
     "backbone-filtered-collection": "^0.4.0",
     "backbone-validation": "^0.9.2",
     "backbone.marionette": "^2.3.1",
+    "backbone.obscura": "^1.0.1",
     "backbone.radio": "^0.9.0",
     "backbone.stickit": "^0.8.0",
     "backbone.syphon": "^0.5.0",

@@ -96,8 +96,6 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Page {
 
   private function update_capabilities( array $roles ){
     foreach($roles as $slug => $array):
-      error_log($slug);
-      error_log(print_r($array, true));
       $role = get_role($slug);
 
       // pos

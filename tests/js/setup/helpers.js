@@ -1,12 +1,8 @@
 var _ = require('lodash');
 var Backbone = require('backbone');
-//var $ = require('jquery');
-//Backbone.$ = $;
+Backbone.$ = require('jquery');
 
 global.fs = require('fs');
-
-// core = Marionette & helper libraries
-require('core');
 
 before(function() {
     global._ = _;

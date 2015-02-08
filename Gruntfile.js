@@ -53,7 +53,7 @@ module.exports = function(grunt) {
         tasks: ['cssmin']
       },
       js: {
-        files: ['<%= app.js.src %>/**/*.js'],
+        files: ['<%= app.js.src %>/**/*.js', '<%= app.js.src %>/**/*.hbs'],
         tasks: ['webpack:dev', 'simplemocha', 'jshint:app']
       },
       test: {
@@ -122,7 +122,6 @@ module.exports = function(grunt) {
     webpack: {
       options: {
         entry: {
-          core: './<%= app.js.src %>/core.js',
           app: './<%= app.js.src %>/app.js',
           admin: './<%= app.js.src %>/admin.js'
         },
@@ -133,7 +132,7 @@ module.exports = function(grunt) {
         },
         resolve: {
           alias: {
-            //marionette: 'backbone.marionette',
+            marionette: 'backbone.marionette',
             'backbone.wreqr': 'backbone.radio',
             radio: 'backbone.radio',
             underscore: 'lodash'
@@ -145,6 +144,10 @@ module.exports = function(grunt) {
           lodash: '_',
           underscore: '_',
           backbone: 'Backbone',
+          'backbone.radio': 'Backbone.Radio',
+          radio: 'Backbone.Radio',
+          'backbone.marionette': 'Marionette',
+          marionette: 'Marionette',
           handlebars: 'Handlebars',
           accounting: 'accounting',
           moment: 'moment',

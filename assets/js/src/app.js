@@ -7,6 +7,7 @@ var Application = require('apps/app/application');
 var EntitiesService = require('entities/service');
 var HeaderService = require('apps/header/service');
 var ModalService = require('lib/components/modal/service');
+var PopoverService = require('lib/components/popover/service');
 
 /**
  * SubApps
@@ -46,6 +47,8 @@ app.supportApp = new SupportRouter({
 app.modalApp = new ModalService({
   container: app.layout.modalRegion
 });
+
+app.popoverApp = new PopoverService();
 
 /**
  * Attach app to window for third party plugins

@@ -5,8 +5,8 @@ var headerChannel = Backbone.Radio.channel('header');
 var entitiesChannel = Backbone.Radio.channel('entities');
 var $ = require('jquery');
 var HotKeys = require('lib/components/hotkeys/behavior');
-//var Modal = require('lib/components/modal/behavior');
 var Tooltip = require('lib/components/tooltip/behavior');
+var Dropdown = require('lib/components/dropdown/behavior');
 
 Views.HelpModal = ItemView.extend({
   tagName: 'form',

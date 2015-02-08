@@ -1,12 +1,12 @@
 var bb = require('backbone');
+var Mn = require('backbone.marionette');
 var POS = require('lib/utilities/global');
 var _ = require('lodash');
 
-module.exports = POS.Module = bb.Marionette.Module.extend({
+module.exports = POS.Module = Mn.Module.extend({
   constructor: function() {
-    this.attachGlobals(arguments[0]);
     this.listenTo(bb.history, 'route', this._onHistoryRoute);
-    bb.Marionette.Module.apply(this, arguments);
+    Mn.Module.apply(this, arguments);
   },
 
   initialize: function() {},
@@ -20,17 +20,6 @@ module.exports = POS.Module = bb.Marionette.Module.extend({
       this.start();
     } else {
       this.stop();
-    }
-  },
-
-  /**
-   * attach any POS.POSApp globals before it gets overwritten
-   * this is required so third party plugins can access
-   * Router, Routes etc
-   */
-  attachGlobals: function(moduleName){
-    if( _(POS).has(moduleName) ){
-      _.defaults( this, POS[moduleName] );
     }
   }
 });

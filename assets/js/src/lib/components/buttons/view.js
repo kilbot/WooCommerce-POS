@@ -1,6 +1,6 @@
 var ItemView = require('lib/config/item-view');
 var hbs = require('handlebars');
-var Radio = require('backbone').Radio;
+var Radio = require('backbone.radio');
 var _ = require('lodash');
 var $ = require('jquery');
 var tmpl = require('./buttons.hbs');

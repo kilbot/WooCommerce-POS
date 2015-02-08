@@ -7,6 +7,7 @@ var Coupons = require('./coupons/collection');
 var Settings = require('./settings/model');
 var SettingsCollection = require('./settings/collection');
 var Gateways = require('./gateways/collection');
+var Variations = require('./variations/collection');
 var FilteredCollection = require('lib/config/filtered-collection');
 var debug = require('debug')('entities');
 var POS = require('lib/utilities/global');
@@ -28,6 +29,7 @@ module.exports = POS.Entities = Service.extend({
     customers : Customers,
     coupons   : Coupons,
     gateways  : Gateways,
+    variations: Variations,
     settings  : SettingsCollection
   },
 
@@ -78,7 +80,7 @@ module.exports = POS.Entities = Service.extend({
     if( this[filteredProp] ){ return this[filteredProp]; }
     if( !this[prop] ){ this.attach(options); }
 
-    this[filteredProp] = new FilteredCollection( this[prop] );
+    this[filteredProp] = new FilteredCollection(this[prop], options);
     return this[filteredProp];
   },
 

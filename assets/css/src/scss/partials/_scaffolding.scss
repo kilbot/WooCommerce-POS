@@ -110,29 +110,49 @@ div#page:not(.two-column) #main, .two-column #main > div {
     @include flex-shrink(1);
     overflow: auto;
     @include display-flex;
-      ul {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        li {
-          border-bottom: 1px solid $list-border-color;
-          @include display-flex;
-          @include align-items(center);
-          > div {
-            padding: $spacing/3;
-            @include flex(1);
-          }
-          &:last-of-type {
-            border-bottom: none;
-          }
-        }
-        li.empty > div {
+    ul {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      li {
+        border-bottom: 1px solid $list-border-color;
+        @include display-flex;
+        @include align-items(center);
+        > div {
+          padding: $spacing/3;
           @include flex(1);
         }
+        &:last-of-type {
+          border-bottom: none;
+        }
       }
+      li.empty > div {
+        @include flex(1);
+      }
+    }
     ul.striped {
       li:nth-of-type(even) {
         background: $alternate-bg;
+      }
+    }
+    > div.infinite-list {
+      width: 100%;
+      > div {
+        background: $drawer-bg;
+        text-align: center;
+        padding: $spacing/3;
+        box-shadow: inset 0 0 $spacing/3 0 rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+      &.pull {
+        > div:first-of-type {
+          display: block;
+        }
+      }
+      &.loading {
+        > div:last-of-type {
+          display: block;
+        }
       }
     }
   }

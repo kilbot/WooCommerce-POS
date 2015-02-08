@@ -1,5 +1,5 @@
 var ItemView = require('lib/config/item-view');
-var Radio = require('backbone').Radio;
+var Radio = require('backbone.radio');
 var EventSource = global['EventSource'];
 
 module.exports =  ItemView.extend({

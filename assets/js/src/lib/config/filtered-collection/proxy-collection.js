@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var Backbone = require('backbone');
+
 var blacklistedMethods = [
   '_onModelEvent',
   '_prepareModel',
@@ -29,6 +30,7 @@ var blacklistedMethods = [
   'once',
   'stopListening'
 ];
+
 var eventWhiteList = [
   'add',
   'remove',

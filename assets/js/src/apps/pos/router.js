@@ -5,7 +5,7 @@ var Products = require('./products/route');
 var CartRoute = require('./cart/route');
 var CheckoutRoute = require('./checkout/route');
 var ReceiptRoute = require('./receipt/route');
-//var Radio = require('backbone').Radio;
+//var Radio = require('backbone.radio');
 
 var Router = Router.extend({
   columns: 2,

@@ -29,12 +29,14 @@
 @import "partials/tables";
 @import "partials/forms";
 @import "partials/alerts";
+@import "partials/popover";
 
 @import "partials/tabs";
 @import "partials/products";
 @import "partials/cart";
 @import "partials/checkout";
 
-@import "partials/numpad";
+@import "partials/popover/numpad";
+@import "partials/popover/variations";
 @import "partials/select2";
 @import "partials/modal";

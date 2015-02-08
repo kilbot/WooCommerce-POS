@@ -1,5 +1,5 @@
 var Route = require('lib/config/route');
-var Radio = require('backbone').Radio;
+var Radio = require('backbone.radio');
 //var debug = require('debug')('checkout');
 var POS = require('lib/utilities/global');
 var LayoutView = require('./views/layout');

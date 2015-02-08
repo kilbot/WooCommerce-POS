@@ -59,7 +59,6 @@ class WC_POS_Customers {
     $ids_str = implode(',', $ids);
 
     if (!empty($ids_str)){
-      error_log(print_r($ids_str, true));
       $wp_user_query->query_where = str_replace(
         "user_nicename LIKE '".$term."'",
         "ID IN(".$ids_str.")",

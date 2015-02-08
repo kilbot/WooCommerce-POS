@@ -1,8 +1,10 @@
 var Route = require('lib/config/route');
-var Views = require('./views');
+var Layout = require('./views/layout');
+var Actions = require('./views/actions');
+var List = require('./views/list');
+var Variations = require('./views/variations');
 var Tabs = require('lib/components/tabs/view');
-var Radio = require('backbone').Radio;
-//var $ = require('jquery');
+var Radio = require('backbone.radio');
 
 module.exports = Route.extend({
 
@@ -10,7 +12,8 @@ module.exports = Route.extend({
     this.container  = options.container;
     this.filtered   = Radio.request('entities', 'get', {
       type: 'filtered',
-      name: 'products'
+      name: 'products',
+      perPage: 10
     });
     this.collection = this.filtered.superset();
 
@@ -28,7 +31,7 @@ module.exports = Route.extend({
   },
 
   render: function() {
-    this.layout = new Views.Layout();
+    this.layout = new Layout();
 
     this.listenTo(this.layout, 'show', function () {
       this.showActions();
@@ -40,7 +43,7 @@ module.exports = Route.extend({
   },
 
   showActions: function() {
-    var view = new Views.Actions({
+    var view = new Actions({
       collection: this.filtered
     });
 
@@ -72,7 +75,7 @@ module.exports = Route.extend({
 
   showProducts: function() {
 
-    var view = new Views.List({
+    var view = new List({
       collection: this.filtered
     });
 
@@ -80,21 +83,34 @@ module.exports = Route.extend({
       'childview:add:to:cart': function(childview, args){
         Radio.command('entities', 'add:to:cart', {model: args.model});
       },
-      'childview:show:variations': function(childview, args){
-        this.tabs.collection.add({
-          label: args.model.get('title'),
-          value: 'parent:' + args.model.get('id'),
-          fixed: false
-        }).set({active: true});
-      },
-      'load:more': function(options){
-        this.collection.loadMore(options);
-      }
+      'childview:show:variations': this.showVariations
     });
 
     // show
     this.layout.listRegion.show(view);
 
+  },
+
+  showVariations: function(childview, options){
+    options = options || {};
+
+    var view = new Variations(options);
+
+    this.listenTo(view, 'add:to:cart', function(args){
+      var product = args.collection.models[0].toJSON();
+      Radio.command('entities', 'add:to:cart', product);
+    });
+
+    _.extend(options, { view: view }, view.popover);
+    Radio.request('popover', 'open', options);
   }
+
+  //showPagination: function(){
+  //  var view = new Views.Pagination({
+  //    collection: this.filtered
+  //  });
+  //  // show
+  //  this.layout.footerRegion.show(view);
+  //}
 
 });

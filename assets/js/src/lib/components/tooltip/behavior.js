@@ -1,6 +1,7 @@
 var Behavior = require('lib/config/behavior');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
+require('bootstrap-sass/assets/javascripts/bootstrap/tooltip');
 
 var Tooltip = Behavior.extend({
 
