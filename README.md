@@ -17,6 +17,12 @@ Thanks to [Wordpress](http://wordpress.org) and [WooCommerce](http://woothemes.c
 
 ## Changelog ##
 
+### 0.3.5 ###
+* Note: this is a minor compatibility update for WooCommerce 2.3
+* Fix WC_Gateway_Mijireh error with WC 2.3
+* Fix for W3 Total Cache minify js conflict
+* Fix capitalization bug with product searches
+
 ### 0.3.4 ###
 * Urgent Fix: performance issue downloading products
 * Fix: potential clash for admin menu position
@@ -65,14 +71,3 @@ Thanks to [Wordpress](http://wordpress.org) and [WooCommerce](http://woothemes.c
 * Fix: Bug effecting admin settings for translation users
 
 * Pro Feature: Pro users can enable any Payment Gateway. [Upgrade to Pro](http://woopos.com.au/pro)
-
-### 0.3 ###
-* New: Set default POS customer on new settings page
-* New: Add customer to order
-* New: Documentation for third party developers [http://kilbot.github.io/WooCommerce-POS/](http://kilbot.github.io/WooCommerce-POS/)
-* New: pt_BR translation thanks to Hermes Alves Dias Souza! [http://pt.woopos.com.au/pos](http://pt.woopos.com.au/pos)
-* New: Icons for mobile devices. Thanks [@sixthcore](https://github.com/kilbot/WooCommerce-POS/issues/11)!
-* Fix: stock is now synced after each order
-* Fix: Add-to-cart bug for particular tax settings (tax enabled + prices exclusive from tax + no tax rates set)
-* Fix: product display for sites where home_url != site_url
-* Fix: authentication test for subfolder wordpress installs

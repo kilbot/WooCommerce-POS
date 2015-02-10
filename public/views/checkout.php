@@ -41,14 +41,10 @@
 								$gateway->payment_fields();
 								$html = ob_get_contents();
 								ob_end_clean();
-								$doc = new DOMDocument();
-								$doc->loadHTML($html);
-								$script_tags = $doc->getElementsByTagName('script');
-								$length = $script_tags->length;
-								for ($i = 0; $i < $length; $i++) {
-									$script_tags->item($i)->parentNode->removeChild($script_tags->item($i));
-								}
-								echo $doc->saveHTML();
+
+								// simple preg_replace
+								$html = preg_replace('/<script.+?<\/script>/im', '', $html);
+								echo $html;
 							}
 						?>
 					</div>

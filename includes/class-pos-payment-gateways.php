@@ -56,7 +56,6 @@ class WooCommerce_POS_Payment_Gateways {
 	 * __construct function.
 	 *
 	 * @access public
-	 * @return void
 	 */
 	public function __construct() {
 		$this->includes();
@@ -66,24 +65,7 @@ class WooCommerce_POS_Payment_Gateways {
 			'POS_Gateway_Card'
 		) );
 
-		if( version_compare( WC()->version, '2.2.0' ) >= 0 ) {
-			$global_gateways = apply_filters( 'woocommerce_payment_gateways', array(
-				'WC_Gateway_Paypal',
-				'WC_Gateway_BACS',
-				'WC_Gateway_Cheque',
-				'WC_Gateway_COD',
-				'WC_Gateway_Mijireh',
-				'WC_Gateway_Simplify_Commerce'
-			) );
-		} else {
-			$global_gateways = apply_filters( 'woocommerce_payment_gateways', array(
-				'WC_Gateway_Paypal',
-				'WC_Gateway_BACS',
-				'WC_Gateway_Cheque',
-				'WC_Gateway_COD',
-				'WC_Gateway_Mijireh'
-			) );
-		}
+		$global_gateways = WC()->payment_gateways()->payment_gateways;
 
 		$this->gateways = array_merge( $pos_only_gateways, $global_gateways );
 		$pos_only_gateways[] = $global_gateways[0];

@@ -1,14 +1,14 @@
-# Copyright (C) 2014 kilbot
+# Copyright (C) 2015 kilbot
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.3.4\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2014-10-16 04:54:07+00:00\n"
+"POT-Creation-Date: 2015-02-10 00:23:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Team Name <team@example.com>\n"
 "X-Generator: grunt-wp-i18n 0.4.8\n"
@@ -177,7 +177,7 @@ msgstr ""
 
 #: admin/includes/settings/class-settings-general.php:85
 #: public/includes/class-pos-ajax.php:156
-#: public/includes/pos-template-hooks.php:70
+#: public/includes/pos-template-hooks.php:71
 msgid "Guest"
 msgstr ""
 
@@ -297,11 +297,11 @@ msgstr ""
 msgid "Amount Tendered"
 msgstr ""
 
-#: public/class-pos.php:228
+#: public/class-pos.php:231
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: public/class-pos.php:245
+#: public/class-pos.php:248
 msgid "User not authorized to manage WooCommerce POS"
 msgstr ""
 
@@ -329,39 +329,39 @@ msgstr ""
 msgid "There was an error sending the email"
 msgstr ""
 
-#: public/includes/pos-template-hooks.php:136
+#: public/includes/pos-template-hooks.php:137
 msgid "No matches found"
 msgstr ""
 
-#: public/includes/pos-template-hooks.php:137
+#: public/includes/pos-template-hooks.php:138
 msgid "Please enter 1 more character"
 msgstr ""
 
-#: public/includes/pos-template-hooks.php:138
+#: public/includes/pos-template-hooks.php:139
 msgid "Please enter %d more characters"
 msgstr ""
 
-#: public/includes/pos-template-hooks.php:139
+#: public/includes/pos-template-hooks.php:140
 msgid "Please delete 1 character"
 msgstr ""
 
-#: public/includes/pos-template-hooks.php:140
+#: public/includes/pos-template-hooks.php:141
 msgid "Please delete %d characters"
 msgstr ""
 
-#: public/includes/pos-template-hooks.php:141
+#: public/includes/pos-template-hooks.php:142
 msgid "You can only select 1 item"
 msgstr ""
 
-#: public/includes/pos-template-hooks.php:142
+#: public/includes/pos-template-hooks.php:143
 msgid "You can only select %d items"
 msgstr ""
 
-#: public/includes/pos-template-hooks.php:143
+#: public/includes/pos-template-hooks.php:144
 msgid "Loading more results"
 msgstr ""
 
-#: public/includes/pos-template-hooks.php:144
+#: public/includes/pos-template-hooks.php:145
 msgid "Searching"
 msgstr ""
 
@@ -440,15 +440,15 @@ msgstr ""
 msgid "To Pay"
 msgstr ""
 
-#: public/views/checkout.php:49
+#: public/views/checkout.php:58
 msgid "No payment gateways enabled."
 msgstr ""
 
-#: public/views/checkout.php:61
+#: public/views/checkout.php:70
 msgid "Return to Sale"
 msgstr ""
 
-#: public/views/checkout.php:62
+#: public/views/checkout.php:71
 msgid "Process Payment"
 msgstr ""
 
@@ -774,17 +774,17 @@ msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
 
-#: public/includes/pos-template-hooks.php:152
+#: public/includes/pos-template-hooks.php:153
 msgctxt "Product tab: 'All' products"
 msgid "All"
 msgstr ""
 
-#: public/includes/pos-template-hooks.php:156
+#: public/includes/pos-template-hooks.php:157
 msgctxt "Product tab: 'Featured' products"
 msgid "Featured"
 msgstr ""
 
-#: public/includes/pos-template-hooks.php:160
+#: public/includes/pos-template-hooks.php:161
 msgctxt "Product tab: 'On Sale' products"
 msgid "On Sale"
 msgstr ""

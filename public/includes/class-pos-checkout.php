@@ -30,7 +30,7 @@ class WooCommerce_POS_Checkout {
 
 		// payment complete
 		add_action( 'woocommerce_payment_complete', array( $this, 'payment_complete' ), 10, 1 );
-		
+
 	}
 
 	/**
@@ -423,11 +423,11 @@ class WooCommerce_POS_Checkout {
 		if( get_post_meta( $order_id, '_payment_method', true ) !== 'pos_cash'  || 'pos_card' ) {
 			delete_post_meta( $order_id, '_pos_payment_message');
 		}
-	} 
+	}
 
 	/**
 	 * Bump post_modified & post_modified_gmt
-	 * @return [type] [description]
+	 * @param $order
 	 */
 	public function stock_modified( $order ) {
 		

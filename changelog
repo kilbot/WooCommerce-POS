@@ -1,3 +1,16 @@
+= 0.3.5 =
+* Note: this is a minor compatibility update for WooCommerce 2.3
+* Fix WC_Gateway_Mijireh error with WC 2.3
+* Fix for W3 Total Cache minify js conflict
+* Fix capitalization bug with product searches
+
+= 0.3.4 =
+* Urgent Fix: performance issue downloading products
+* Fix: potential clash for admin menu position
+* Fix: bug affecting woocommerce_api_order_response
+* Fix: cashback entry on receipt
+* Improved: POS Only products
+
 = 0.3.3 =
 * Urgent Fix: Compatibility with new order-status introduced in WooCommerce > 2.2
 * Fix: POS Only products improved, fixes 404 errors on imported products
