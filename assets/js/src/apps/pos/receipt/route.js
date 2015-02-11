@@ -13,6 +13,10 @@ var CheckoutRoute = Route.extend({
       type: 'collection',
       name: 'orders'
     });
+
+    // checkout label
+    this.label = options.label;
+    Radio.command('header', 'update:tab', {id: 'right', label: this.label});
   },
 
   fetch: function() {

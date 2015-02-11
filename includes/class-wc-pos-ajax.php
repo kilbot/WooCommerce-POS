@@ -263,7 +263,7 @@ class WC_POS_AJAX {
       wp_die('There is no option id');
 
     $method = $_SERVER['REQUEST_METHOD'];
-    if( $method === 'POST' ) {
+    if( $method === 'POST' || $method === 'PUT' ) {
       $data = json_decode(trim(file_get_contents('php://input')), true);
       $response = WC_POS_Admin_Settings::save_settings(false, $data);
     } elseif( $method === 'GET' ) {

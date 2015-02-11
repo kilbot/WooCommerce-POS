@@ -2,6 +2,7 @@ var Router = require('lib/config/router');
 var LayoutView = require('./layout-view');
 var FormRoute = require('./form/route');
 var StatusRoute = require('./status/route');
+var Radio = require('backbone.radio');
 
 module.exports = Router.extend({
   columns: 2,
@@ -13,6 +14,11 @@ module.exports = Router.extend({
   onBeforeEnter: function() {
     this.layout = new LayoutView();
     this.container.show(this.layout);
+
+    // TODO: put menu into params
+    var title = $('#menu li.support').text();
+    Radio.command('header', 'update:title', title);
+    Radio.command('header', 'update:tab', {id: 'left', active: true});
   },
 
   routes: {
@@ -20,15 +26,14 @@ module.exports = Router.extend({
   },
 
   show: function(){
-    this.showForm();
+    this.execute(this.showForm);
     this.showStatus();
   },
 
   showForm: function(){
-    var route = new FormRoute({
+    return new FormRoute({
       container  : this.layout.leftRegion
     });
-    route.enter();
   },
 
   showStatus: function(){

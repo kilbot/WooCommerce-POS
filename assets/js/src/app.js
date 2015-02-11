@@ -33,7 +33,9 @@ app.entities = new EntitiesService({
 });
 
 app.headerApp = new HeaderService({
-  container: app.layout.header
+  headerContainer : app.layout.headerRegion,
+  menuContainer   : app.layout.menuRegion,
+  tabsContainer   : app.layout.tabsRegion
 });
 
 app.posApp = new POSRouter({

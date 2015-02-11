@@ -11,6 +11,16 @@
 
 class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Page {
 
+  static public $default_settings = array(
+    'order_status'    => 'wc-completed',
+    'default_gateway' => 'pos_cash',
+    'enabled'         => array(
+      'pos_cash'  => true,
+      'pos_card'  => true,
+      'paypal'    => true
+    )
+  );
+
   /**
    * Each settings tab requires an id and label
    */

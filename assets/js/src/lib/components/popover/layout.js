@@ -1,5 +1,6 @@
 var LayoutView = require('lib/config/layout-view');
 var _ = require('lodash');
+var $ = require('jquery');
 require('bootstrap-sass/assets/javascripts/bootstrap/popover');
 
 module.exports = LayoutView.extend({
@@ -28,7 +29,7 @@ module.exports = LayoutView.extend({
     this.view = options.view;
     this.render().setup(options);
 
-    _.bindAll(this, 'show', 'shown', 'hide', 'hidden');
+    _.bindAll(this, 'open', 'close', 'show', 'shown', 'hide', 'hidden');
 
     this.target.on({
       'show.bs.popover'   : this.show,
@@ -65,7 +66,7 @@ module.exports = LayoutView.extend({
   },
 
   shown: function(){
-    $('body').on('click', this.close.bind(this));
+    $('body').on('click', this.close);
   },
 
   hide: function(){

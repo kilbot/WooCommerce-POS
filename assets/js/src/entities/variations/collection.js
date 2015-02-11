@@ -1,5 +1,6 @@
 var Collection = require('lib/config/collection');
 var Model = require('./model');
+var _ = require('lodash');
 
 module.exports = Collection.extend({
   model: Model,

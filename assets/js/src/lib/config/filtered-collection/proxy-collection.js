@@ -48,7 +48,8 @@ function proxyCollection(from, target) {
   }
   function pipeEvents(eventName) {
     var args = _.toArray(arguments);
-    var isChangeEvent = eventName === 'change' || eventName.slice(0, 7) === 'change:';
+    var isChangeEvent = eventName === 'change' ||
+      eventName.slice(0, 7) === 'change:';
     if (eventName === 'reset') {
       target.models = from.models;
     }

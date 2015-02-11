@@ -130,8 +130,8 @@ var SettingsRouter = Router.extend({
 
     _.defaults(options, {
       buttons: [{
-        action: 'save',
-        className: 'button-primary'
+        action    : 'save',
+        className : 'button-primary'
       }],
       msgPos: 'right'
     });

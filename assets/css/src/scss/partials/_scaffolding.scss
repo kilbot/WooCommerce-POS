@@ -17,14 +17,6 @@ body {
   background-color: $body-bg;
 }
 
-#header {
-  @include display-flex;
-  @include box-shadow(0 2px 5px rgba(0, 0, 0, 0.26));
-  > div, > h1 {
-    @include flex(1);
-  }
-}
-
 // move .two-column to body?
 div#page:not(.two-column) #main, .two-column #main > div {
   position: absolute;

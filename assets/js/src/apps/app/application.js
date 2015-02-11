@@ -70,6 +70,7 @@ module.exports = Application.extend({
   },
 
   onEnterRoute: function(route) {
+    console.log(route);
     this.layout.columns(route.columns);
 
     this.transitioning = false;

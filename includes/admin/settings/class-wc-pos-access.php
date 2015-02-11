@@ -83,12 +83,20 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Page {
           array_flip(self::$woo_capabilities)
         ),
       );
+      // TODO: fix this .. empty array is bad
+      if(empty($role_caps[$slug]['pos_capabilities'])){
+        $role_caps[$slug]['pos_capabilities'] = new StdClass;
+      }
+      if(empty($role_caps[$slug]['woo_capabilities'])){
+        $role_caps[$slug]['woo_capabilities'] = new StdClass;
+      }
     endforeach; endif;
 
     return $role_caps;
   }
 
   public function save( array $data ){
+    error_log(print_r($data, true));
     if(isset($data['roles'])){
       $this->update_capabilities($data['roles']);
     }

@@ -103,25 +103,31 @@ var unsupportedMethods = [
 
 _.each(filteredMethods, function (method) {
   methods[method] = function () {
-    var result = FilteredCollection.prototype[method].apply(this._filtered, arguments);
+    var result = FilteredCollection.prototype[method]
+      .apply(this._filtered, arguments);
     return result === this._filtered ? this : result;
   };
 });
 _.each(paginatedMethods, function (method) {
   methods[method] = function () {
-    var result = PaginatedCollection.prototype[method].apply(this._paginated, arguments);
+    var result = PaginatedCollection.prototype[method]
+      .apply(this._paginated, arguments);
     return result === this._paginated ? this : result;
   };
 });
 _.each(sortedMethods, function (method) {
   methods[method] = function () {
-    var result = SortedCollection.prototype[method].apply(this._sorted, arguments);
+    var result = SortedCollection.prototype[method]
+      .apply(this._sorted, arguments);
     return result === this._sorted ? this : result;
   };
 });
 _.each(unsupportedMethods, function (method) {
   methods[method] = function () {
-    throw new Error('Backbone.Obscura: Unsupported method: ' + method + 'called on read-only proxy');
+    throw new Error(
+      'Backbone.Obscura: Unsupported method: ' +
+      method + 'called on read-only proxy'
+    );
   };
 });
 

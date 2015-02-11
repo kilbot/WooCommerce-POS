@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2015-01-25 13:05:00+00:00\n"
+"POT-Creation-Date: 2015-02-10 08:43:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,135 +20,136 @@ msgid "View POS"
 msgstr ""
 
 #: includes/admin/class-wc-pos-menu.php:52
-#: includes/admin/settings/views/checkout.php:85
+#: includes/admin/settings/views/checkout.php:88
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: includes/admin/settings/class-wc-pos-hotkeys.php:19
-#: includes/admin/settings/views/hotkeys.php:9
-msgid "Hotkeys"
+#: includes/admin/settings/class-wc-pos-access.php:50
+msgid "POS Access"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:14
+#: includes/admin/settings/views/access.php:7
+msgid "Grant POS Access"
+msgstr ""
+
+#: includes/admin/settings/views/access.php:10
+msgid ""
+"By default, access to the POS is limited to Administrator and Shop Manager "
+"roles."
+msgstr ""
+
+#: includes/admin/settings/views/access.php:11
+msgid ""
+"It is recommended that you <strong>do not change</strong> the default "
+"settings unless you are fully aware of the consequences."
+msgstr ""
+
+#: includes/admin/settings/views/access.php:12
+#: includes/admin/settings/views/checkout.php:50
+msgid ""
+"For more information please visit <a href=\"%1$s\" "
+"target=\"_blank\">%1$s</a>"
+msgstr ""
+
+#: includes/admin/settings/views/checkout.php:13
 msgid "Completed Order Status"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:15
+#: includes/admin/settings/views/checkout.php:14
 msgid "Change the default order status for POS sales"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:28
+#: includes/admin/settings/views/checkout.php:27
 msgid "Order Emails"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:29
+#: includes/admin/settings/views/checkout.php:28
 msgid "blah"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:42
+#: includes/admin/settings/views/checkout.php:44
 msgid ""
 "Installed gateways are listed below. Drag and drop gateways to control "
 "their display order at the Point of Sale. "
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:43
+#: includes/admin/settings/views/checkout.php:45
 msgid ""
 "Payment Gateways enabled here will be available at the Point of Sale. "
 "Payment Gateways enabled on the settings page will be available in your "
 "Online Store. "
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:47
+#: includes/admin/settings/views/checkout.php:49
 msgid ""
 "It is your responsibility to ensure the security of your customer's "
 "information. Transmitting credit card or other sensitive information should "
-"only be done using a secure connnection. For more information please visit "
-"<a "
-"href=\"http://woopos.com.au/docs/security\">http://woopos.com.au/docs/"
-"security</a>"
+"only be done using a secure connnection."
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:53
+#: includes/admin/settings/views/checkout.php:56
 msgid "Gateway Display"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:61
+#: includes/admin/settings/views/checkout.php:64
 msgid "Online Status"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:62
+#: includes/admin/settings/views/checkout.php:65
 msgid "POS Status"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:63
+#: includes/admin/settings/views/checkout.php:66
 msgid "POS Settings"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:121
+#: includes/admin/settings/views/checkout.php:113
 msgid "Payment method title."
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:128
+#: includes/admin/settings/views/checkout.php:120
 msgid "Payment method description that will be shown in the POS."
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:134
+#: includes/admin/settings/views/checkout.php:126
 msgid "Icon"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:143
-msgid "Card Reader"
-msgstr ""
-
-#: includes/admin/settings/views/checkout.php:148
-msgid ""
-"Please <a href=\"%s\" target=\"_blank\">read the docs</a> for more "
-"information on card readers."
-msgstr ""
-
-#: includes/admin/settings/views/general.php:14
-msgid "Grant POS Access"
-msgstr ""
-
-#: includes/admin/settings/views/general.php:15
-msgid "Select which user roles have access to the POS."
-msgstr ""
-
-#: includes/admin/settings/views/general.php:28
+#: includes/admin/settings/views/general.php:13
 msgid "Product Visibility"
 msgstr ""
 
-#: includes/admin/settings/views/general.php:32
+#: includes/admin/settings/views/general.php:17
 msgid "Enable <a href=\"%s\">POS Only products</a>"
 msgstr ""
 
-#: includes/admin/settings/views/general.php:38
+#: includes/admin/settings/views/general.php:23
 msgid "Default POS Customer"
 msgstr ""
 
-#: includes/admin/settings/views/general.php:39
+#: includes/admin/settings/views/general.php:24
 msgid "The default customer for POS orders, eg: Guest or create a new customer."
 msgstr ""
 
-#: includes/admin/views/settings.php:18
+#: includes/admin/views/settings.php:12
 msgid ""
 "There has been an error loading the settings, please contact <a "
 "href=\"mailto:support@woopos.com.au\">support</a>"
 msgstr ""
 
-#: includes/class-wc-pos-activator.php:143
+#: includes/class-wc-pos-activator.php:153
 msgid ""
 "<strong>WooCommerce POS</strong> requires <a href=\"%s\">WooCommerce</a>. "
 "Please <a href=\"%s\">install and activate WooCommerce</a>"
 msgstr ""
 
-#: includes/class-wc-pos-activator.php:175
+#: includes/class-wc-pos-activator.php:185
 msgid ""
 "<strong>WooCommerce POS</strong> requires the WooCommerce REST API. Please "
 "<a href=\"%s\">enable the REST API</a>"
 msgstr ""
 
-#: includes/class-wc-pos-activator.php:192
+#: includes/class-wc-pos-activator.php:202
 msgid ""
 "<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks "
 "to work correctly. Please <a href=\"%s\">enable permalinks</a>."
@@ -159,12 +160,12 @@ msgctxt "Permalink setting, eg: /pos"
 msgid "POS base"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:138
+#: includes/admin/settings/views/checkout.php:130
 msgctxt "POS checkout settings"
 msgid "Show payment gateway icon."
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:147
-msgctxt "POS checkout settings"
-msgid "Enable card reader input field."
+#: includes/admin/settings/views/general.php:29
+msgctxt "Default customer setting"
+msgid "Use cashier account"
 msgstr ""

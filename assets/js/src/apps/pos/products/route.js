@@ -5,6 +5,7 @@ var List = require('./views/list');
 var Variations = require('./views/variations');
 var Tabs = require('lib/components/tabs/view');
 var Radio = require('backbone.radio');
+var _ = require('lodash');
 
 module.exports = Route.extend({
 
@@ -17,11 +18,9 @@ module.exports = Route.extend({
     });
     this.collection = this.filtered.superset();
 
-    // add title to tab
-    // super hack, get the label from the menu
-    // TODO: put menu items into params, remove this hack
-    //var label = $('#menu li.products').text();
-    //posChannel.command('update:tab:label', label, 'left');
+    // products label
+    this.label = options.label;
+    Radio.command('header', 'update:tab', {id: 'left', label: this.label});
   },
 
   fetch: function() {
@@ -99,6 +98,7 @@ module.exports = Route.extend({
     this.listenTo(view, 'add:to:cart', function(args){
       var product = args.collection.models[0].toJSON();
       Radio.command('entities', 'add:to:cart', product);
+      Radio.request('popover', 'close');
     });
 
     _.extend(options, { view: view }, view.popover);

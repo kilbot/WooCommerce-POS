@@ -5,8 +5,7 @@ var $ = require('jquery');
 module.exports = ItemView.extend({
   tagName: 'section',
   attributes: {
-    'class'         : 'module status-module',
-    'data-title'    : 'System Status'
+    'class'         : 'module status-module'
   },
 
   initialize: function(options) {

@@ -1,7 +1,6 @@
 var bb = require('backbone');
 var Mn = require('backbone.marionette');
 var POS = require('lib/utilities/global');
-var _ = require('lodash');
 
 module.exports = POS.Module = Mn.Module.extend({
   constructor: function() {

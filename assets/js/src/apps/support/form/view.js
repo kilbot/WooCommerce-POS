@@ -5,8 +5,7 @@ module.exports = ItemView.extend({
   template: '#tmpl-support-form',
   tagName: 'form',
   attributes: {
-    'class'         : 'module support-module',
-    'data-title'    : 'Support Form'
+    'class'         : 'module support-module'
   },
 
   events: {

@@ -1,4 +1,3 @@
-var Backbone = require('backbone');
 var DualCollection = require('lib/config/dual-collection');
 var Model = require('./model');
 var IndexedDB = require('lib/config/indexeddb');

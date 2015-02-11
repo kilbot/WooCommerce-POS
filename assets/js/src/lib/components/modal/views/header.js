@@ -25,7 +25,7 @@ module.exports = ItemView.extend({
 
     buttons = Radio.request('entities', 'get', {
       type: 'option',
-      name: 'buttons'
+      name: 'labels'
     }) || {};
 
     defaults = {

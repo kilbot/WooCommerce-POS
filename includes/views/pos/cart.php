@@ -4,7 +4,7 @@
  */
 ?>
 
-<script type="text/template" id="tmpl-cart" data-title="<?php /* translators: woocommerce */ _e( 'Cart', 'woocommerce' ); ?>">
+<script type="text/template" id="tmpl-cart">
 	<div class="list-header">
 		<div class="qty"><?php _ex( 'Qty', 'Abbreviation of Quantity', 'woocommerce-pos' ); ?></div>
 		<div class="title"><?php /* translators: woocommerce */ _e( 'Product', 'woocommerce' ); ?></div>

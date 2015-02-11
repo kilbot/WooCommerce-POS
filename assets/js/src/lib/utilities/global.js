@@ -1,7 +1,6 @@
 var version = version || '';
 var _ = require('lodash');
 var debugFunc = require('debug');
-var bb = require('backbone');
 var $ = require('jquery');
 var Radio = require('backbone.radio');
 

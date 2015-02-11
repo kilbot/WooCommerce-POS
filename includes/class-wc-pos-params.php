@@ -17,7 +17,7 @@ class WC_POS_Params {
 
     $param['accounting']    = self::accounting_settings();
     $param['ajaxurl']       = admin_url( 'admin-ajax.php', 'relative' );
-    $param['buttons']       = self::buttons();
+    $param['labels']        = self::labels();
     $param['customers']     = self::customers();
     $param['denominations'] = WC_POS_i18n::currency_denominations( get_option('woocommerce_currency') );
     $param['hotkeys']       = self::hotkeys();
@@ -42,7 +42,7 @@ class WC_POS_Params {
   static public function admin() {
     $param['accounting']  = self::accounting_settings();
     $param['ajaxurl']     = admin_url( 'admin-ajax.php', 'relative' );
-    $param['buttons']     = self::buttons();
+    $param['labels']      = self::labels();
     $param['customers']   = self::customers();
     $param['nonce']       = wp_create_nonce( WC_POS_PLUGIN_NAME );
     $param['messages']    = self::messages();
@@ -289,23 +289,28 @@ class WC_POS_Params {
     return $modals;
   }
 
-  static private function buttons() {
-    $buttons = array(
+  static private function labels() {
+    $labels = array(
       'save'      => /* translators: woocommerce */ __( 'Save Changes', 'woocommerce' ),
       'print'     => /* translators: wordpress   */ __( 'Print' ),
       'email'     => /* translators: wordpress   */ __( 'Email' ),
       'refresh'   => /* translators: wordpress   */ __( 'Refresh' ),
       'new-order' => /* translators: woocommerce */ __( 'New Order', 'woocommerce' ),
-      'close'     => /* translators: wordpress   */ __( 'Close' )
+      'close'     => /* translators: wordpress   */ __( 'Close' ),
+      'products'  => /* translators: woocommerce */ __( 'Products', 'woocommerce' ),
+      'cart'      => /* translators: woocommerce */ __( 'Cart', 'woocommerce' ),
+      'checkout'  => /* translators: woocommerce */ __( 'Checkout', 'woocommerce' ),
+      'receipt'   => /* translators: woocommerce */ __( 'Receipt', 'woocommerce' ),
     );
-    return $buttons;
+    return $labels;
   }
 
   static private function messages() {
     $messages = array(
       'success'   => /* translators: woocommerce */ __( 'Your changes have been saved.', 'woocommerce' ),
       'error'     => /* translators: woocommerce */ __( 'Sorry, there has been an error.', 'woocommerce' ),
-      'loading'   => /* translators: wordpress   */ __( 'Loading&hellip;' )
+      'loading'   => /* translators: wordpress   */ __( 'Loading&hellip;' ),
+      'choose'    => /* translators: woocommerce */ __( 'Choose an option', 'woocommerce' )
     );
     return $messages;
   }

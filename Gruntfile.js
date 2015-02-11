@@ -176,6 +176,12 @@ module.exports = function(grunt) {
 
     // minify js
     uglify: {
+      staging: {
+        files: {
+          'assets/js/app.min.js': 'assets/js/app.build.js',
+          'assets/js/admin.min.js': 'assets/js/admin.build.js'
+        }
+      }
       //pos: {
       //    files: {
       //        'assets/js/worker.min.js' : 'assets/js/src/worker.js',
@@ -276,20 +282,8 @@ module.exports = function(grunt) {
             expand: true,
             src: ['<%= app.include %>'],
             dest: '<%= app.staging %>'
-          },
+          }
         ]
-      }
-    },
-
-    // deploy to WordPress repo
-    wp_deploy: {
-      deploy: {
-        options: {
-          plugin_slug: 'your-plugin-slug',
-          svn_user: 'your-wp-repo-username',
-          build_dir: '<%= app.staging %>', //relative path to your build directory
-          assets_dir: 'wp-assets' //relative path to your assets directory (optional).
-        }
       }
     },
 
@@ -306,9 +300,9 @@ module.exports = function(grunt) {
 
       all: {
         src: [
-          'tests/js/setup/node.js',
-          'tests/js/setup/helpers.js',
-          'tests/js/unit/**/*.spec.js'
+          'tests/unit/js/setup/node.js',
+          'tests/unit/js/setup/helpers.js',
+          'tests/unit/js/spec/**/*.spec.js'
         ]
       }
     },
@@ -356,9 +350,6 @@ module.exports = function(grunt) {
 
   // staging
   grunt.registerTask('staging', 'Production build', ['test', 'makepot', 'js_locales', 'webpack:staging', 'uglify:staging', 'copy']);
-
-  // deploy
-  grunt.registerTask('deploy', 'Deploy plugin to WordPress.org', ['staging', 'wp_deploy']);
 
   // default = test
   grunt.registerTask('default', ['test']);

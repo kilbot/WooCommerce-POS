@@ -26,11 +26,12 @@ class WC_POS_Admin_Menu {
    * Add POS to admin menu
    */
   public function admin_menu() {
+    if(!current_user_can('manage_woocommerce_pos')){
+      return;
+    }
 
     $this->toplevel_screen_id = add_menu_page(
-      /* translators: woocommerce-pos */
       __( 'POS', 'woocommerce-pos' ),
-      /* translators: woocommerce-pos */
       __( 'POS', 'woocommerce-pos' ),
       'manage_woocommerce_pos',
       WC_POS_PLUGIN_NAME,
@@ -51,7 +52,6 @@ class WC_POS_Admin_Menu {
     $pos_submenu = &$submenu[WC_POS_PLUGIN_NAME];
     $pos_submenu[0][0] = __( 'Upgrade to Pro', 'woocommerce-pos' );
     $pos_submenu[1][2] = wc_pos_url();
-
   }
 
   /**

@@ -14,9 +14,13 @@ function modelInsertIndex(model) {
     return this._superset.indexOf(model);
   } else {
     if (!this._reverse) {
-      return _.sortedIndex(this._collection.toArray(), model, lookupIterator(this._comparator));
+      return _.sortedIndex(
+        this._collection.toArray(), model, lookupIterator(this._comparator)
+      );
     } else {
-      return reverseSortedIndex(this._collection.toArray(), model, lookupIterator(this._comparator));
+      return reverseSortedIndex(
+        this._collection.toArray(), model, lookupIterator(this._comparator)
+      );
     }
   }
 }
@@ -33,7 +37,8 @@ function onRemove(model) {
 }
 
 function onChange(model) {
-  if (this.contains(model) && this._collection.indexOf(model) !== modelInsertIndex.call(this, model)) {
+  if (this.contains(model) &&
+    this._collection.indexOf(model) !== modelInsertIndex.call(this, model)) {
     this._collection.remove(model);
     onAdd.call(this, model);
   }

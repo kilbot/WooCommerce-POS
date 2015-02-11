@@ -11,6 +11,10 @@
 
 class WC_POS_Admin_Settings_General extends WC_POS_Admin_Settings_Page {
 
+  static public $default_settings = array(
+
+  );
+
   /**
    * Each settings tab requires an id and label
    */

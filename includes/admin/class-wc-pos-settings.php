@@ -18,7 +18,7 @@ class WC_POS_Admin_Settings {
   private $screen_id;
 
   /* @var array An array of settings objects */
-  private $settings = array();
+  private $settings;
 
   /**
    * Constructor
@@ -30,10 +30,17 @@ class WC_POS_Admin_Settings {
   }
 
   /**
-   *
+   * Load settings page subclasses
+   * settings subclasses needed for admin & ajax
    */
   private function init(){
-
+    $settings = apply_filters( 'woocommerce_pos_settings_tabs_array', array(
+      new WC_POS_Admin_Settings_General(),
+      new WC_POS_Admin_Settings_Checkout(),
+      new WC_POS_Admin_Settings_Access(),
+      new WC_POS_Admin_Settings_Tools()
+    ));
+    $this->settings = $settings;
   }
 
   /**
@@ -59,15 +66,6 @@ class WC_POS_Admin_Settings {
    */
   public function conditional_init( $current_screen ) {
     if( $current_screen->id == $this->screen_id ) {
-
-      // Load settings page subclasses
-      $settings = apply_filters( 'woocommerce_pos_settings_tabs_array', array(
-        new WC_POS_Admin_Settings_General(),
-        new WC_POS_Admin_Settings_Checkout(),
-        new WC_POS_Admin_Settings_Access(),
-        new WC_POS_Admin_Settings_Tools()
-      ));
-      $this->settings = $settings;
 
       // Enqueue scripts for the settings page
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
@@ -229,6 +227,22 @@ class WC_POS_Admin_Settings {
     wp_enqueue_script( 'jquery-ui-sortable' );
 
     wp_enqueue_script(
+      'backbone.radio',
+      '//cdnjs.cloudflare.com/ajax/libs/backbone.radio/0.9.0/backbone.radio.min.js',
+      array( 'jquery', 'backbone', 'underscore' ),
+      false,
+      true
+    );
+
+    wp_enqueue_script(
+      'marionette',
+      '//cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.3.2/backbone.marionette.min.js',
+      array( 'jquery', 'backbone', 'underscore' ),
+      false,
+      true
+    );
+
+    wp_enqueue_script(
       'handlebars',
       '//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js',
       array( 'jquery', 'backbone', 'underscore' ),
@@ -269,17 +283,9 @@ class WC_POS_Admin_Settings {
     );
 
     wp_enqueue_script(
-      WC_POS_PLUGIN_NAME . '-core',
-      WC_POS_PLUGIN_URL . 'assets/js/core.build.js',
-      array( 'jquery', 'backbone', 'underscore', 'accounting', 'idb-wrapper', 'moment', 'select2', 'handlebars' ),
-      WC_POS_VERSION,
-      true
-    );
-
-    wp_enqueue_script(
       WC_POS_PLUGIN_NAME . '-admin-app',
       WC_POS_PLUGIN_URL . 'assets/js/admin.build.js',
-      array( WC_POS_PLUGIN_NAME . '-core' ),
+      array( 'idb-wrapper' ),
       WC_POS_VERSION,
       true
     );

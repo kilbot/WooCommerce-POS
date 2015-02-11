@@ -58,21 +58,19 @@ class WC_POS {
 
     $i18n     = new WC_POS_i18n();
     $gateways = new WC_POS_Gateways();
-    new WC_POS_Products($this); // admin only?
+    new WC_POS_Products();
     new WC_POS_Customers();
 
     // admin only
+    // pos ajax needs some admin classes, eg: settings
     if (is_admin()) {
-      if( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-        new WC_POS_AJAX($i18n);
-      } else {
-        new WC_POS_Admin();
-      }
+      new WC_POS_Admin();
+      new WC_POS_AJAX( $i18n );
     }
 
     // frontend only
     if (!is_admin()) {
-      new WC_POS_Template($gateways);
+      new WC_POS_Template( $gateways );
     }
 
   }

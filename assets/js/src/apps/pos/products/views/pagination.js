@@ -1,3 +1,5 @@
+var ItemView = require('lib/config/item-view');
+
 var Pagination = ItemView.extend({
   template: function(){
     return '<button class="topcoat-button--quiet prev">Prev</button>' +
@@ -34,3 +36,5 @@ var Pagination = ItemView.extend({
     }
   }
 });
+
+module.exports = Pagination;

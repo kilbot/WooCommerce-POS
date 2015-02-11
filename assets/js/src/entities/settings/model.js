@@ -20,12 +20,14 @@ module.exports = DeepModel.extend({
         action   = 'action=wc_pos_admin_settings',
         security = 'security=' + nonce;
 
-    options.emulateHTTP = true;
+    //options.emulateHTTP = true;
     options.url = this.url + '?' + action + '&' + id + '&' + security;
 
     if(options.buttons){
       this.buttons(options);
     }
+
+    console.log(model.toJSON());
 
     // TODO: fix this
     model.unset('response');

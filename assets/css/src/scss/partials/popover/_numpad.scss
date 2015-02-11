@@ -9,64 +9,60 @@
 	padding: $spacing/4;
 	background-color: transparent;
 	border-bottom: 1px solid lighten($numpad-bg, 10%);
-    > div {
-	  @include display-flex;
-	  @include align-items(center);
-	  .title {
-			@include flex(1);
-			color: $inverse-text-color;
-	  }
-	  span {
-			color: $inverse-text-color;
-	  }
-	  .input-group{
-			margin-left: $spacing/4;
-	  }
+	@include display-flex;
+	@include align-items(center);
+	.title {
+		@include flex(1);
+		color: $inverse-text-color;
+	}
+	span {
+		color: $inverse-text-color;
+	}
+	.input-group{
+		margin-left: $spacing/4;
 	}
 }
 
 .numpad-keys {
-  > div {
+	@include display-flex;
+	.row {
 		@include display-flex;
-		.row {
-			@include display-flex;
+	}
+	.keys {
+		@include flex(3);
+		padding: $spacing/8;
+		min-width: 180px;
+		a {
+		font-size: 18px;
+		line-height: 50px;
+		@include flex(1 0 50px);
+		margin: $spacing/8;
+		padding: 0;
+		text-align: center;
+		@include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
 		}
-		.keys {
-			@include flex(3);
-			padding: $spacing/8;
-			min-width: 180px;
+	}
+	.extra-keys {
+		@include flex(1);
+		@include display-flex;
+		@include flex-direction(column);
+		border-left: 1px solid lighten($numpad-bg, 10%);
+		min-width: 65px;
+		&.standard {
+			border-left: 0;
+			padding-left: 0;
+			min-width: 58px;
 			a {
-			font-size: 18px;
-			line-height: 50px;
-			@include flex(1 0 50px);
-			margin: $spacing/8;
-			padding: 0;
-			text-align: center;
-			@include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+				margin-left: 0;
 			}
 		}
-		.extra-keys {
-			@include flex(1);
-			@include display-flex;
-			@include flex-direction(column);
-			border-left: 1px solid lighten($numpad-bg, 10%);
-			min-width: 65px;
-			&.standard {
-				border-left: 0;
-				padding-left: 0;
-				min-width: 58px;
-				a {
-					margin-left: 0;
-				}
-			}
-			a {
-				@include flex(0 0 52px);
-				&.return {
-					font-size: 12px;
-					line-height: 100px;
-					@include flex-grow(1);
-				}
+		a {
+			@include flex(0 0 52px);
+			&.return {
+				font-size: 12px;
+				line-height: 100px;
+				@include flex-grow(1);
 			}
 		}
-  }
+	}
 }

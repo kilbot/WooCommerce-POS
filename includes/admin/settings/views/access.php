@@ -24,15 +24,13 @@
         <ul>
           <?php if($this::$pos_capabilities): foreach($this::$pos_capabilities as $cap): ?>
             <li>
-              <input type="checkbox"
-                     name="roles.<?php echo esc_attr($key); ?>.pos_capabilities.<?php echo esc_attr($cap); ?>">
+              <input type="checkbox" name="roles.<?php echo esc_attr($key); ?>.pos_capabilities.<?php echo esc_attr($cap); ?>" />
               <?php echo $cap; ?>
             </li>
           <?php endforeach; endif; ?>
           <?php if($this::$woo_capabilities): foreach($this::$woo_capabilities as $cap): ?>
             <li>
-              <input type="checkbox"
-                     name="roles.<?php echo esc_attr($key); ?>.woo_capabilities.<?php echo esc_attr($cap); ?>">
+              <input type="checkbox" name="roles.<?php echo esc_attr($key); ?>.woo_capabilities.<?php echo esc_attr($cap); ?>" />
               <?php echo $cap; ?>
             </li>
           <?php endforeach; endif; ?>

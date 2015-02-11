@@ -5,7 +5,8 @@ var Products = require('./products/route');
 var CartRoute = require('./cart/route');
 var CheckoutRoute = require('./checkout/route');
 var ReceiptRoute = require('./receipt/route');
-//var Radio = require('backbone.radio');
+var Radio = require('backbone.radio');
+var bb = require('backbone');
 
 var Router = Router.extend({
   columns: 2,
@@ -18,6 +19,19 @@ var Router = Router.extend({
   onBeforeEnter: function() {
     this.layout = new LayoutView();
     this.container.show(this.layout);
+
+    this.labels = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'labels'
+    }) || {};
+
+    if(bb.history.fragment === ''){
+      Radio.command('header', 'update:tab', {id:'left', active: true});
+    } else {
+      Radio.command('header', 'update:tab', {id:'right', active: true});
+    };
+
+    Radio.command('header', 'update:title', '');
   },
 
   routes: {
@@ -37,26 +51,30 @@ var Router = Router.extend({
 
   showProducts: function(){
     var products = new Products({
-      container : this.layout.leftRegion
+      container : this.layout.leftRegion,
+      label     : this.labels.products
     });
     products.enter();
   },
 
   showCart: function() {
     return new CartRoute({
-      container : this.layout.rightRegion
+      container : this.layout.rightRegion,
+      label     : this.labels.cart
     });
   },
 
   showCheckout: function() {
     return new CheckoutRoute({
-      container : this.layout.rightRegion
+      container : this.layout.rightRegion,
+      label     : this.labels.checkout
     });
   },
 
   showReceipt: function() {
     return new ReceiptRoute({
-      container : this.layout.rightRegion
+      container : this.layout.rightRegion,
+      label     : this.labels.receipt
     });
   }
 

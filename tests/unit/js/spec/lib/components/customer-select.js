@@ -3,7 +3,7 @@ describe('lib/components/customer-select/view.js', function () {
   beforeEach(function () {
 
     // dummy customer
-    var file = fs.readFileSync( 'tests/js/data/customers.json' );
+    var file = fs.readFileSync( 'tests/unit/js/data/customers.json' );
     var dummy = JSON.parse( file );
     this.customer = dummy.customers[0];
 

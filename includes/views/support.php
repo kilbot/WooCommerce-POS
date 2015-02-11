@@ -8,7 +8,7 @@ global $current_user;
 
 ?>
 
-<script type="text/x-handlebars-template" id="tmpl-support-form">
+<script type="text/x-handlebars-template" id="tmpl-support-form" data-title="<?php _e( 'Support Form', 'woocommerce-pos' ); ?>">
   <h4><?php _e( 'Support Form', 'woocommerce-pos' ); ?></h4>
   <form>
     <fieldset class="form-group">
@@ -39,7 +39,7 @@ global $current_user;
   </form>
 </script>
 
-<script type="text/x-handlebars-template" id="tmpl-pos-status">
+<script type="text/x-handlebars-template" id="tmpl-pos-status" data-title="<?php /* translators: woocommerce-admin */ _e( 'System Status', 'woocommerce-admin' ); ?>">
   <h4><?php /* translators: woocommerce-admin */ _e( 'System Status', 'woocommerce-admin' ); ?></h4>
   <table class="table">
     {{#each []}}

@@ -1,58 +1,41 @@
 var Behavior = require('lib/config/behavior');
 var POS = require('lib/utilities/global');
+var Modernizr = global['Modernizr'];
+var NumpadView = require('./view');
+var Radio = require('backbone.radio');
 
-/**
- * Numpad behavior
- */
-module.exports = POS.Behaviors.Numpad = Behavior.extend({
-  //
-  //initialize: function( options ) {
-  //
-  //},
-  //
-  //ui: {
-  //  input: '*[data-numpad]'
-  //},
-  //
-  //events: {
-  //  'show:numpad'     : 'numpadPopover',
-  //  'click @ui.input'   : 'numpadPopover',
-  //  'keydown @ui.input' : 'onBeforeDestroy'
-  //},
-  //
-  //onShow: function() {
-  //  if(Modernizr.touch) {
-  //    this.$('*[data-numpad]').attr('readonly', true);
-  //  }
-  //},
-  //
-  //numpadPopover: function(e) {
-  //
-  //  // select the target element
-  //  $(e.target).select();
-  //
-  //  // bail if popover is already open
-  //  if( $(e.target).attr('aria-describedby') ) {
-  //    return;
-  //  }
-  //
-  //  // nuke any open numpads
-  //  $('*[data-numpad]').trigger( 'close:popover' );
-  //
-  //  // open popover
-  //  Numpad.channel.command( 'show:popover', { target: $(e.target) } );
-  //
-  //  // on numpad return, close numpad and update value
-  //  $(e.target).on( 'numpad:return', function( e, value ) {
-  //    $(this).trigger( 'close:popover' );
-  //    //var enter = $.Event( 'keypress', { which: 13 } );
-  //    $(this).val( value ).trigger( 'blur' );
-  //  });
-  //
-  //},
-  //
-  //onBeforeDestroy: function() {
-  //  this.view.$('*[data-numpad]').trigger( 'close:popover' );
-  //}
+var NumpadBehavior = Behavior.extend({
+
+  initialize: function( options ) {
+
+  },
+
+  ui: {
+    input: '*[data-numpad]'
+  },
+
+  events: {
+    'click @ui.input'   : 'numpadPopover'
+  },
+
+  onShow: function() {
+    if(Modernizr.touch) {
+      this.$('*[data-numpad]').attr('readonly', true);
+    }
+  },
+
+  numpadPopover: function(e){
+    var numpad = new NumpadView({ model: this.view.model });
+    var options = {
+      target    : $(e.currentTarget),
+      view      : numpad,
+      className : 'popover popover-numpad popover-dark-bg',
+      placement : 'bottom auto'
+    };
+    Radio.request('popover', 'open', options);
+  }
 
 });
+
+module.exports = NumpadBehavior;
+POS.attach('Behaviors.Numpad', NumpadBehavior);

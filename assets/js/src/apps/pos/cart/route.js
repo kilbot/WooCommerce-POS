@@ -10,6 +10,7 @@ var Radio = require('backbone.radio');
 var $ = require('jquery');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
+var accounting = require('accounting');
 
 var CartRoute = Route.extend({
 
@@ -29,6 +30,10 @@ var CartRoute = Route.extend({
         _.delay(_.bind(this.render, this), 500);
       }
     });
+
+    // cart label
+    this.label = options.label;
+    Radio.command('header', 'update:tab', {id: 'right', label: this.label});
   },
 
   fetch: function() {
@@ -49,6 +54,8 @@ var CartRoute = Route.extend({
 
     // set active order
     this.collection.active = this.order;
+
+    this.listenTo(this.order, 'change:total', this.updateTabLabel);
   },
 
   render: function() {
@@ -70,13 +77,10 @@ var CartRoute = Route.extend({
   /**
    * Add/update tab label
    */
-  updateTabLabel: _.debounce( function( order ) {
-    var label = $('#tmpl-cart').data('title');
-    if( order ){
+  updateTabLabel: _.debounce(function(model, value) {
       /* global accounting */
-      label += ' - ' + accounting.formatMoney( order.get('total') );
-    }
-    //posChannel.command( 'update:tab:label', label, 'right' );
+    var label = this.label + ' - ' + accounting.formatMoney(value);
+    Radio.command('header', 'update:tab', {id: 'right', label: label});
   }, 100),
 
   /**

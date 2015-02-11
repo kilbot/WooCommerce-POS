@@ -1,12 +1,17 @@
 .popover-variations {
-  width: 200px;
-  max-width: none;
+  min-width: 200px;
+  max-width: 280px;
   .popover-region {
     padding: $spacing/3;
     strong {
       color: $inverse-text-color;
     }
     .btn-group {
+      margin-bottom: $spacing/3;
+    }
+    select {
+      padding: $spacing/3;
+      width: 100%;
       margin-bottom: $spacing/3;
     }
     *[data-action="add"] {

@@ -2,13 +2,15 @@ var Route = require('lib/config/route');
 var POS = require('lib/utilities/global');
 var FormView = require('./view');
 var $ = require('jquery');
-var bb = require('backbone');
-var enititesChannel = bb.Radio.channel('entities');
+var Radio = require('backbone.radio');
 
 var FormRoute = Route.extend({
 
   initialize: function(options){
     this.container = options.container;
+
+    var label = $('#tmpl-support-form').data('title');
+    Radio.command('header', 'update:tab', {id: 'left', label: label});
   },
 
   fetch: function(){
@@ -18,7 +20,7 @@ var FormRoute = Route.extend({
   render: function(){
     var view = new FormView();
 
-    var ajaxurl = enititesChannel.request('get', {
+    var ajaxurl = Radio.request('entities', 'get', {
       type: 'option',
       name: 'ajaxurl'
     });

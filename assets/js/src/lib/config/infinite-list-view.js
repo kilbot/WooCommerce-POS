@@ -1,5 +1,7 @@
 var Mn = require('backbone.marionette');
 var POS = require('lib/utilities/global');
+var _ = require('lodash');
+var $ = require('jquery');
 
 module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
   className: 'infinite-list',
@@ -7,7 +9,7 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
     return '<div><i class="icon icon-pull-arrow"></i>' +
       '<i class="icon icon-spinner"></i></div>' +
       '<ul class="striped"></ul>' +
-      '<div><i class="icon icon-spinner"></i></div>'
+      '<div><i class="icon icon-spinner"></i></div>';
   },
 
   initialize: function(){

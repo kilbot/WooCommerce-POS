@@ -13,7 +13,7 @@ module.exports = ItemView.extend({
   initialize: function(options){
     options = options || {};
 
-    this.getParams(['messages, buttons']);
+    this.getParams(['messages', 'buttons']);
 
     var defaults = {
       buttons: [{

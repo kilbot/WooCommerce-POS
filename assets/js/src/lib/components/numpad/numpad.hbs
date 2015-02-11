@@ -1,0 +1,76 @@
+<div class="numpad">
+    <div class="numpad-header">
+        <strong class="title">{{title}}</strong>
+
+      {{#is type 'price'}}
+          <div class="input-group">
+              <span class="input-group-addon">{{{getOption 'accounting.currency.symbol'}}}</span>
+              <input type="text" name="value" class="form-control autogrow">
+          </div>
+      {{/is}}
+
+      {{#is type 'discount'}}
+          <span></span>
+          <div class="input-group">
+              <span class="input-group-btn"><a class="disabled" href="#" data-modifier="value">{{{getOption 'accounting.currency.symbol'}}}</a></span>
+              <input type="text" name="value" class="form-control autogrow">
+              <input type="text" name="percentage" class="form-control autogrow" style="display:none">
+              <span class="input-group-btn"><a href="#" data-modifier="percentage">%</a></span>
+          </div>
+      {{/is}}
+
+      {{#is type 'quantity'}}
+          <div class="input-group">
+              <span class="input-group-btn"><a href="#" data-modifier="decrease"><i class="icon icon-minus"></i></a></span>
+              <input type="text" name="value" class="form-control autogrow">
+              <span class="input-group-btn"><a href="#" data-modifier="increase"><i class="icon icon-plus"></i></a></span>
+          </div>
+      {{/is}}
+    </div>
+    <div class="numpad-keys">
+        <div class="keys">
+            <div class="row">
+                <a href="#" class="btn">1</a>
+                <a href="#" class="btn">2</a>
+                <a href="#" class="btn">3</a>
+            </div>
+            <div class="row">
+                <a href="#" class="btn">4</a>
+                <a href="#" class="btn">5</a>
+                <a href="#" class="btn">6</a>
+            </div>
+            <div class="row">
+                <a href="#" class="btn">7</a>
+                <a href="#" class="btn">8</a>
+                <a href="#" class="btn">9</a>
+            </div>
+            <div class="row">
+                <a href="#" class="btn">0</a>
+                <a href="#" class="btn">00</a>
+                <a href="#" class="btn decimal">{{getOption 'accounting.number.decimal'}}</a>
+            </div>
+        </div>
+        <div class="keys extra-keys standard">
+            <a href="#" class="btn del"><i class="icon icon-delete"><span>del</span></i></a>
+            <a href="#" class="btn">+/-</a>
+            <a href="#" class="btn return">return</a>
+        </div>
+
+      {{#is type 'discount'}}
+          <div class="keys extra-keys discount">
+              <a href="#" class="btn">5%</a>
+              <a href="#" class="btn">10%</a>
+              <a href="#" class="btn">20%</a>
+              <a href="#" class="btn">25%</a>
+          </div>
+      {{/is}}
+
+      {{#is type 'tendered'}}
+          <div class="keys extra-keys tendered">
+            {{#each quick_key}}
+                <a href="#" class="btn">{{{number this}}}</a>
+            {{/each}}
+          </div>
+      {{/is}}
+    </div>
+</div>

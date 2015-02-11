@@ -25,7 +25,8 @@ var Tab = ItemView.extend({
   },
 
   modelEvents: {
-    'change:active': 'toggleClass'
+    'change:active': 'toggleClass',
+    'change:label': 'render'
   },
 
   triggers: {
@@ -33,7 +34,7 @@ var Tab = ItemView.extend({
     'click *[data-action="remove"]': 'remove:tab'
   },
 
-  toggleClass: function(model, active){
+  toggleClass: function(){
     this.$el.toggleClass('active', this.model.get('active'));
   },
 

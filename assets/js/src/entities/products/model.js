@@ -1,5 +1,4 @@
 var DualModel = require('lib/config/dual-model');
-var _ = require('lodash');
 
 module.exports = DualModel.extend({
   name: 'product',

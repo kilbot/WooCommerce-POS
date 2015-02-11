@@ -7,7 +7,7 @@ function lookupIterator(value) {
 }
 
 function reverseSortedIndex(array, obj, iterator, context) {
-  iterator = iterator == null ? _.identity : lookupIterator(iterator);
+  iterator = iterator === null ? _.identity : lookupIterator(iterator);
   var value = iterator.call(context, obj);
   var low = 0, high = array.length;
   while (low < high) {
