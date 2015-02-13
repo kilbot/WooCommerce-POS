@@ -99,7 +99,7 @@
 			{{/compare}}
 			{{#compare order_discount '!==' 0}}
 			<tr class="order-discount">
-				<th colspan="2"><?php /* translators: woocommerce-admin */ _e( 'Order Discount', 'woocommerce-admin' ); ?>:</th>
+				<th colspan="2"><?php /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</th>
 				<td colspan="1">{{{money order_discount negative=true}}}</td>
 			</tr>
 			{{/compare}}

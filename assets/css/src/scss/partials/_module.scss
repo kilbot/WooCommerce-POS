@@ -1,69 +1,3 @@
-/* apply a natural box layout model to all elements, but allowing components to change */
-html {
-  box-sizing: border-box;
-  font-size: 10px;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-body {
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-  line-height: $line-height-base;
-  color: $text-color;
-  background-color: $body-bg;
-}
-
-// move .two-column to body?
-div#page:not(.two-column) #main, .two-column #main > div {
-  position: absolute;
-  top: 38px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: $spacing/2;
-  @include display-flex;
-}
-
-.two-column #main {
-  > div {
-    top: 70px;
-    padding: $spacing/2 0 0 $spacing/2;
-    #left, #right {
-      @include display-flex;
-      @include flex(1);
-      padding: 0 $spacing/2 $spacing/2 0;
-    }
-  }
-  &.left-active {
-    #right {
-      display: none;
-    }
-  }
-  &.right-active {
-    #left {
-      display: none;
-    }
-  }
-}
-
-@include breakpoint($tablet) {
-  #tabs {
-    display: none;
-  }
-  .two-column #main {
-    > div {
-      top: 38px;
-    }
-    &.left-active #right, &.right-active #left {
-      @include display-flex;
-    }
-  }
-}
-
 .module {
   width: 100%;
   @include display-flex;
@@ -74,8 +8,12 @@ div#page:not(.two-column) #main, .two-column #main > div {
   }
   .list-actions {
     border-top: 2px solid darken( $list-border-color, 5% );
+    text-align: right;
     >div {
       padding: $spacing/3;
+      p.message {
+        display: inline;
+      }
     }
   }
   .list-actions:first-of-type {
@@ -92,10 +30,14 @@ div#page:not(.two-column) #main, .two-column #main > div {
     @include display-flex;
     background-color: nth( $primaryPalette, 6 );
     color: $inverse-text-color;
-//    padding-right: 16px;
+    //    padding-right: 16px;
     > div {
       padding: $spacing/3;
       @include flex(1);
+    }
+    h4 {
+      text-align: center;
+      width: 100%;
     }
   }
   .list {
@@ -113,13 +55,21 @@ div#page:not(.two-column) #main, .two-column #main > div {
         > div {
           padding: $spacing/3;
           @include flex(1);
+          &.shrink {
+            @include flex(0 1 auto);
+          }
         }
         &:last-of-type {
           border-bottom: none;
         }
-      }
-      li.empty > div {
-        @include flex(1);
+        &.sub-heading {
+          background-color: nth( $primaryPalette, 6 );
+          color: $inverse-text-color;
+          text-align: center;
+          h5 {
+            width: 100%;
+          }
+        }
       }
     }
     ul.striped {

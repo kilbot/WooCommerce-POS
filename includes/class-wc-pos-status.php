@@ -10,16 +10,16 @@
 
 class WC_POS_Status {
 
-  /** @var string Contains auth response */
-  public $auth_response;
+  private $capabilities = array();
+  private $wc_min_version = '2.2';
 
-  public function getTestResults() {
+  public function tests() {
     $results = array(
       array(
-        'title' => __( 'WooCommerce Version', 'woocommerce-pos' ),
+        'title' => __( 'WC Version', 'woocommerce-pos' ),
         'test'  => $this->wc_version_check(),
         'pass'  => esc_html( WC()->version ),
-        'fail'  => __( 'WooCommerce >= 2.2 required', 'woocommerce-pos' ),
+        'fail'  => sprintf( __( 'WooCommerce >= %s required', 'woocommerce-pos' ), $this->wc_min_version),
         'action'=> admin_url('update-core.php'),
         /* translators: wordpress */
         'prompt'=> __( 'Update' ),
@@ -30,21 +30,17 @@ class WC_POS_Status {
         'pass'  => __( 'API is active', 'woocommerce-pos' ),
         'fail'  => __( 'Access to the REST API is required', 'woocommerce-pos' ),
         'action'=> admin_url('admin.php?page=wc-settings'),
-        /* translators: woocommerce-admin */
-        'prompt'=> __( 'Enable the REST API', 'woocommerce-admin' ),
+        /* translators: woocommerce */
+        'prompt'=> __( 'Enable the REST API', 'woocommerce' ),
       ),
       array(
-        'title' => __( 'API Authentication', 'woocommerce-pos' ),
-        'test'  => $this->check_api_auth(),
-        'pass'  => __( 'Authentication Passed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="icon icon-info-circle"></i></a><textarea readonly="readonly" class="small form-control" style="display:none">' . $this->auth_response . '</textarea>',
-        'fail'  => __( 'Authentication Failed', 'woocommerce-pos' ) . ' <a href="#" class="toggle"><i class="icon icon-info-circle"></i></a><textarea readonly="readonly" class="small form-control" style="display:none">' . $this->auth_response . '</textarea>',
-      ),
-      array(
-        'title' => __( 'Allow URL fopen', 'woocommerce-pos' ),
-        'test'  => ini_get('allow_url_fopen'),
-        'pass'  => __( 'allow_url_fopen enabled', 'woocommerce-pos' ),
-        'fail'  => __( 'allow_url_fopen disabled', 'woocommerce-pos' ),
-      ),
+        /* translators: woocommerce */
+        'title' => __( 'Capabilities', 'woocommerce' ),
+        'test'  => $this->check_capabilities(),
+        'pass'  => '<dl>'. $this->format_caps($this->capabilities) .'</dl>',
+        'fail'  => '<dl>'. $this->format_caps($this->capabilities) .'</dl>',
+        'action'=> false
+      )
     );
     return $results;
   }
@@ -53,8 +49,8 @@ class WC_POS_Status {
    * Test WC >= 2.2
    * @return boolean
    */
-  public function wc_version_check() {
-    $result = version_compare( WC()->version, '2.2.0' ) >= 0 ? true : false;
+  private function wc_version_check() {
+    $result = version_compare( WC()->version, $this->wc_min_version ) >= 0 ? true : false;
     return $result;
   }
 
@@ -62,7 +58,7 @@ class WC_POS_Status {
    * Check API is active
    * @return boolean
    */
-  public function check_api_active() {
+  private function check_api_active() {
     $api_access = false;
     $file_headers = @get_headers( get_woocommerce_api_url( '' ) );
     if( strpos( $file_headers[0], '404 Not Found' ) === false ) {
@@ -72,33 +68,37 @@ class WC_POS_Status {
   }
 
   /**
-   * Check WC REST API authentication
-   * Note: this will not pass the cookie authentication
+   * Check capabilities of logged-in user
    * @return boolean
    */
-  public function check_api_auth() {
-    $api_auth = false;
+  private function check_capabilities() {
+    $poscaps  = WC_POS_Admin_Settings_Access::$poscaps;
+    $woocaps  = WC_POS_Admin_Settings_Access::$woocaps;
+    $reqcaps = apply_filters('woocommerce_pos_required_capabilities', WC_POS_Admin_Settings_Access::$reqcaps);
+    $hascaps = array();
 
-    $user = apply_filters( 'woocommerce_api_check_authentication', null, $this );
-
-    if( get_class( $user ) == 'WP_User' ) {
-      $user_info = array(
-        'user_login' => $user->user_login,
-        'roles'    => $user->roles,
-        'read_private_products' => isset( $user->allcaps['read_private_products'] ) ? $user->allcaps['read_private_products'] : '' ,
-        'manage_woocommerce_pos' => isset( $user->allcaps['manage_woocommerce_pos'] ) ? $user->allcaps['manage_woocommerce_pos'] : '' ,
-      );
-      if( $user_info['read_private_products'] && $user_info['manage_woocommerce_pos'] )
-        $api_auth = true;
-
-      $this->auth_response = print_r( $user_info, true );
-
-    } else {
-
-      $this->auth_response = 'WP_Error';
+    foreach(array_merge($poscaps, $woocaps) as $cap){
+      $access = current_user_can($cap);
+      $this->capabilities[$cap] = $access;
+      if(in_array($cap, $reqcaps)){
+        $hascaps[] = $access;
+      }
     }
 
-    return $api_auth;
+    if(count(array_unique($hascaps)) === 1) {
+      return current($hascaps);
+    } else {
+      return false;
+    }
+  }
+
+  private function format_caps($caps){
+    $arr = array();
+    foreach($caps as $cap => $bool){
+      $access = $bool ? 'pass' : 'fail';
+      $arr[] = '<span class="'.$access.'">'.$cap.'</span>';
+    }
+    return implode(', ', $arr);
   }
 
 }

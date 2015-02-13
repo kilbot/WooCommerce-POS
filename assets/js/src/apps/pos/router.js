@@ -20,12 +20,7 @@ var Router = Router.extend({
     this.layout = new LayoutView();
     this.container.show(this.layout);
 
-    this.labels = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'labels'
-    }) || {};
-
-    if(bb.history.fragment === ''){
+    if(bb.history.getFragment() === ''){
       Radio.command('header', 'update:tab', {id:'left', active: true});
     } else {
       Radio.command('header', 'update:tab', {id:'right', active: true});
@@ -51,30 +46,26 @@ var Router = Router.extend({
 
   showProducts: function(){
     var products = new Products({
-      container : this.layout.leftRegion,
-      label     : this.labels.products
+      container : this.layout.leftRegion
     });
     products.enter();
   },
 
   showCart: function() {
     return new CartRoute({
-      container : this.layout.rightRegion,
-      label     : this.labels.cart
+      container : this.layout.rightRegion
     });
   },
 
   showCheckout: function() {
     return new CheckoutRoute({
-      container : this.layout.rightRegion,
-      label     : this.labels.checkout
+      container : this.layout.rightRegion
     });
   },
 
   showReceipt: function() {
     return new ReceiptRoute({
-      container : this.layout.rightRegion,
-      label     : this.labels.receipt
+      container : this.layout.rightRegion
     });
   }
 

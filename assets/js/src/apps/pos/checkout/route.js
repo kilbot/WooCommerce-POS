@@ -6,6 +6,7 @@ var LayoutView = require('./views/layout');
 var StatusView = require('./views/status');
 var GatewaysView = require('./views/gateways');
 var ActionsView = require('./views/actions');
+var polyglot = require('lib/utilities/polyglot');
 
 var CheckoutRoute = Route.extend({
 
@@ -18,8 +19,10 @@ var CheckoutRoute = Route.extend({
     });
 
     // checkout label
-    this.label = options.label;
-    Radio.command('header', 'update:tab', {id: 'right', label: this.label});
+    Radio.command('header', 'update:tab', {
+      id: 'right',
+      label: polyglot.t('titles.checkout')
+    });
   },
 
   fetch: function(){

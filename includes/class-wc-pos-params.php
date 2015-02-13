@@ -17,12 +17,11 @@ class WC_POS_Params {
 
     $param['accounting']    = self::accounting_settings();
     $param['ajaxurl']       = admin_url( 'admin-ajax.php', 'relative' );
-    $param['labels']        = self::labels();
     $param['customers']     = self::customers();
     $param['denominations'] = WC_POS_i18n::currency_denominations( get_option('woocommerce_currency') );
     $param['hotkeys']       = self::hotkeys();
+    $param['i18n']          = WC_POS_i18n::translations();
     $param['nonce']         = wp_create_nonce( WC_POS_PLUGIN_NAME );
-    $param['messages']      = self::messages();
     $param['shipping']      = self::shipping_labels();
     $param['tabs']          = self::product_tabs();
     $param['tax']           = self::wc_settings();
@@ -42,10 +41,9 @@ class WC_POS_Params {
   static public function admin() {
     $param['accounting']  = self::accounting_settings();
     $param['ajaxurl']     = admin_url( 'admin-ajax.php', 'relative' );
-    $param['labels']      = self::labels();
     $param['customers']   = self::customers();
     $param['nonce']       = wp_create_nonce( WC_POS_PLUGIN_NAME );
-    $param['messages']    = self::messages();
+    $param['i18n']        = WC_POS_i18n::translations('admin');
     $param['hotkeys']     = self::hotkeys();
     $param['wc_api']      = get_woocommerce_api_url( '' );
 
@@ -60,12 +58,12 @@ class WC_POS_Params {
   static private function product_tabs() {
     $tabs = array(
       array(
-        /* translators: woocommerce-admin */
+        /* translators: woocommerce */
         'label' => __( 'All', 'woocommerce'),
         'active' => true
       ),
       array(
-        /* translators: woocommerce-admin */
+        /* translators: woocommerce */
         'label' => __( 'Featured', 'woocommerce'),
         'id' => 'featured:true'
       ),
@@ -179,9 +177,9 @@ class WC_POS_Params {
     if( $user ) {
       $customers['default'] = array(
         'id' => $user->ID,
-        'first_name' => esc_html($user->first_name),
-        'last_name' => esc_html($user->last_name),
-        'email' => esc_html($user->email)
+        'first_name'  => esc_html($user->first_name),
+        'last_name'   => esc_html($user->last_name),
+        'email'       => esc_html($user->email)
       );
     }
 
@@ -201,12 +199,12 @@ class WC_POS_Params {
    */
   static private function wc_settings() {
     $settings = array(
-      'tax_label'       => WC()->countries->tax_or_vat(),
-      'calc_taxes'      => get_option( 'woocommerce_calc_taxes' ),
-      'prices_include_tax'  => get_option( 'woocommerce_prices_include_tax' ),
+      'tax_label'             => WC()->countries->tax_or_vat(),
+      'calc_taxes'            => get_option( 'woocommerce_calc_taxes' ),
+      'prices_include_tax'    => get_option( 'woocommerce_prices_include_tax' ),
       'tax_round_at_subtotal' => get_option( 'woocommerce_tax_round_at_subtotal' ),
-      'tax_display_cart'    => get_option( 'woocommerce_tax_display_cart' ),
-      'tax_total_display'   => get_option( 'woocommerce_tax_total_display' ),
+      'tax_display_cart'      => get_option( 'woocommerce_tax_display_cart' ),
+      'tax_total_display'     => get_option( 'woocommerce_tax_total_display' ),
     );
     return $settings;
   }
@@ -273,46 +271,6 @@ class WC_POS_Params {
     $labels['other'] = __( 'Other', 'woocommerce' );
 
     return $labels;
-  }
-
-  static private function modals() {
-    $modals = array(
-      'titles' => array(
-        'hotkeys' => __( 'HotKeys', 'woocommerce-pos' ),
-        'receipt' => '',
-      ),
-      'buttons' => array(
-        'save'  => '',
-        'print' => ''
-      )
-    );
-    return $modals;
-  }
-
-  static private function labels() {
-    $labels = array(
-      'save'      => /* translators: woocommerce */ __( 'Save Changes', 'woocommerce' ),
-      'print'     => /* translators: wordpress   */ __( 'Print' ),
-      'email'     => /* translators: wordpress   */ __( 'Email' ),
-      'refresh'   => /* translators: wordpress   */ __( 'Refresh' ),
-      'new-order' => /* translators: woocommerce */ __( 'New Order', 'woocommerce' ),
-      'close'     => /* translators: wordpress   */ __( 'Close' ),
-      'products'  => /* translators: woocommerce */ __( 'Products', 'woocommerce' ),
-      'cart'      => /* translators: woocommerce */ __( 'Cart', 'woocommerce' ),
-      'checkout'  => /* translators: woocommerce */ __( 'Checkout', 'woocommerce' ),
-      'receipt'   => /* translators: woocommerce */ __( 'Receipt', 'woocommerce' ),
-    );
-    return $labels;
-  }
-
-  static private function messages() {
-    $messages = array(
-      'success'   => /* translators: woocommerce */ __( 'Your changes have been saved.', 'woocommerce' ),
-      'error'     => /* translators: woocommerce */ __( 'Sorry, there has been an error.', 'woocommerce' ),
-      'loading'   => /* translators: wordpress   */ __( 'Loading&hellip;' ),
-      'choose'    => /* translators: woocommerce */ __( 'Choose an option', 'woocommerce' )
-    );
-    return $messages;
   }
 
 }

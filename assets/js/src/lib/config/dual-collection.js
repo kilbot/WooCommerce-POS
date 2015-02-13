@@ -61,7 +61,7 @@ module.exports = POS.DualCollection = Collection.extend({
   },
 
   state: {
-    pageSize: 10,
+    pageSize: 10
   },
 
   parseState: function (resp, queryParams, state, options) {

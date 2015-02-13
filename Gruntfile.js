@@ -182,17 +182,6 @@ module.exports = function(grunt) {
           'assets/js/admin.min.js': 'assets/js/admin.build.js'
         }
       }
-      //pos: {
-      //    files: {
-      //        'assets/js/worker.min.js' : 'assets/js/src/worker.js',
-      //        'assets/js/support.min.js' : 'assets/js/src/support.js',
-      //    }
-      //},
-      //admin: {
-      //    files: {
-      //        'assets/js/products.min.js': 'assets/js/src/products.js'
-      //    }
-      //}
     },
 
     // make .pot file
@@ -304,17 +293,6 @@ module.exports = function(grunt) {
           'tests/unit/js/setup/helpers.js',
           'tests/unit/js/spec/**/*.spec.js'
         ]
-      }
-    },
-
-    phpunit: {
-      classes: {
-        dir: 'tests/php/'
-      },
-      options: {
-        //bin: 'tests/php/bin/',
-        bootstrap: 'tests/php/bootstrap.php',
-        colors: true
       }
     },
 

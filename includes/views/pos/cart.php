@@ -118,7 +118,7 @@
 	{{/if}}
 	{{/compare}}
 	<li class="order-discount" {{#compare order_discount '===' 0}}style="display:none"{{/compare}}>
-		<div><?php /* translators: woocommerce-admin */ _e( 'Order Discount', 'woocommerce-admin' ); ?>:</div>
+		<div><?php /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</div>
 		<div class="total">
 			<input type="text" value="{{number order_discount}}" name="order_discount" data-original="{{original}}" data-title="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-placement="left" data-numpad="discount" class="autogrow">
 			<span class="amount">{{{money order_discount negative=true}}}</span>

@@ -3,12 +3,14 @@ var LayoutView = require('./layout-view');
 var FormRoute = require('./form/route');
 var StatusRoute = require('./status/route');
 var Radio = require('backbone.radio');
+var Collection = require('lib/config/collection');
 
 module.exports = Router.extend({
   columns: 2,
 
   initialize: function(options) {
     this.container = options.container;
+    this.collection = new Collection();
   },
 
   onBeforeEnter: function() {
@@ -38,7 +40,8 @@ module.exports = Router.extend({
 
   showStatus: function(){
     var route = new StatusRoute({
-      container  : this.layout.rightRegion
+      container  : this.layout.rightRegion,
+      collection : this.collection
     });
     route.enter();
   }

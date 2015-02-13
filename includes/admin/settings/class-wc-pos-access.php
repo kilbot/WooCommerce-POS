@@ -11,12 +11,12 @@
 
 class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Page {
 
-  public static $pos_capabilities = array(
+  public static $poscaps = array(
     'manage_woocommerce_pos', // pos admin
     'access_woocommerce_pos'  // pos frontend
   );
 
-  public static $woo_capabilities = array(
+  public static $woocaps = array(
 
     // products
     'read_private_products',
@@ -36,6 +36,14 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Page {
     // coupons
     'read_private_shop_coupons',
     'publish_shop_coupons'
+  );
+
+  // base caps required to use the POS
+  public static $reqcaps = array(
+    'access_woocommerce_pos',
+    'read_private_products',
+    'publish_shop_orders',
+    'list_users'
   );
 
   /**
@@ -76,14 +84,15 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Page {
         'name' => $role['name'],
         'pos_capabilities' => array_intersect_key(
           $role['capabilities'],
-          array_flip(self::$pos_capabilities)
+          array_flip(self::$poscaps)
         ),
         'woo_capabilities' => array_intersect_key(
           $role['capabilities'],
-          array_flip(self::$woo_capabilities)
+          array_flip(self::$woocaps)
         ),
       );
-      // TODO: fix this .. empty array is bad
+
+      // TODO: refactor this ...
       if(empty($role_caps[$slug]['pos_capabilities'])){
         $role_caps[$slug]['pos_capabilities'] = new StdClass;
       }
@@ -96,7 +105,6 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Page {
   }
 
   public function save( array $data ){
-    error_log(print_r($data, true));
     if(isset($data['roles'])){
       $this->update_capabilities($data['roles']);
     }
@@ -109,7 +117,7 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Page {
       // pos
       if(isset($array['pos_capabilities'])):
         foreach($array['pos_capabilities'] as $capability => $grant):
-          if(in_array($capability, self::$pos_capabilities)){
+          if(in_array($capability, self::$poscaps)){
             $grant ? $role->add_cap($capability) : $role->remove_cap($capability);
           }
         endforeach;
@@ -117,7 +125,7 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Page {
 
       if(isset($array['woo_capabilities'])):
         foreach($array['woo_capabilities'] as $capability => $grant):
-          if(in_array($capability, self::$woo_capabilities)){
+          if(in_array($capability, self::$woocaps)){
             $grant ? $role->add_cap($capability) : $role->remove_cap($capability);
           }
         endforeach;

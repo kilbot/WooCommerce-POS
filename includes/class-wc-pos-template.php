@@ -146,8 +146,8 @@ class WC_POS_Template {
         'href'   => admin_url('edit.php?post_type=shop_order')
       ),
       'customers' => array(
-        /* translators: woocommerce-admin */
-        'label'  => __( 'Customers', 'woocommerce-admin' ),
+        /* translators: woocommerce */
+        'label'  => __( 'Customers', 'woocommerce' ),
         'href'   => admin_url('users.php')
       ),
       'coupons' => array(
@@ -156,8 +156,8 @@ class WC_POS_Template {
         'href'   => admin_url('edit.php?post_type=shop_coupon')
       ),
       'support' => array(
-        /* translators: woocommerce-admin */
-        'label'  => __( 'Support', 'woocommerce-admin' ),
+        /* translators: woocommerce */
+        'label'  => __( 'Support', 'woocommerce' ),
         'href'   => '#support'
       ),
     );

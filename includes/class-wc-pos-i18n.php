@@ -264,4 +264,39 @@ class WC_POS_i18n {
     return $code ? $denominations->$code : $denominations;
   }
 
+  public static function translations($dest = 'frontend'){
+    $translations = array();
+
+    $translations['titles'] = array(
+      'products'  => /* translators: woocommerce */ __( 'Products', 'woocommerce' ),
+      'orders'    => /* translators: woocommerce */ __( 'Orders', 'woocommerce' ),
+      'customers' => /* translators: woocommerce */ __( 'Customers', 'woocommerce' ),
+      'coupons'   => /* translators: woocommerce */ __( 'Coupons', 'woocommerce' ),
+      'cart'      => /* translators: woocommerce */ __( 'Cart', 'woocommerce' ),
+      'checkout'  => /* translators: woocommerce */ __( 'Checkout', 'woocommerce' ),
+      'receipt'   => /* translators: woocommerce */ __( 'Receipt', 'woocommerce' ),
+      'browser'   => _x( 'Browser', 'system status: browser capabilities', 'woocommerce-pos' ),
+    );
+
+    $translations['buttons'] = array(
+      'save'      => /* translators: woocommerce */ __( 'Save Changes', 'woocommerce' ),
+      'print'     => /* translators: wordpress   */ __( 'Print' ),
+      'email'     => /* translators: wordpress   */ __( 'Email' ),
+      'refresh'   => /* translators: wordpress   */ __( 'Refresh' ),
+      'new-order' => /* translators: woocommerce */ __( 'New Order', 'woocommerce' ),
+      'close'     => /* translators: wordpress   */ __( 'Close' ),
+      'send'      => /* translators: wordpress   */ __( 'Submit' ),
+      'clear'     => _x( 'Clear', 'system status: delete local records', 'woocommerce-pos' ),
+    );
+
+    $translations['messages'] = array(
+      'success'   => /* translators: woocommerce */ __( 'Your changes have been saved.', 'woocommerce' ),
+      'error'     => /* translators: woocommerce */ __( 'Sorry, there has been an error.', 'woocommerce' ),
+      'loading'   => /* translators: wordpress   */ __( 'Loading&hellip;' ),
+      'choose'    => /* translators: woocommerce */ __( 'Choose an option', 'woocommerce' )
+    );
+
+    return $translations;
+  }
+
 }

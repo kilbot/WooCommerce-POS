@@ -11,6 +11,7 @@ var $ = require('jquery');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
 var accounting = require('accounting');
+var polyglot = require('lib/utilities/polyglot');
 
 var CartRoute = Route.extend({
 
@@ -32,8 +33,10 @@ var CartRoute = Route.extend({
     });
 
     // cart label
-    this.label = options.label;
-    Radio.command('header', 'update:tab', {id: 'right', label: this.label});
+    Radio.command('header', 'update:tab', {
+      id: 'right',
+      label: polyglot.t('titles.cart')
+    });
   },
 
   fetch: function() {
@@ -78,9 +81,10 @@ var CartRoute = Route.extend({
    * Add/update tab label
    */
   updateTabLabel: _.debounce(function(model, value) {
-      /* global accounting */
-    var label = this.label + ' - ' + accounting.formatMoney(value);
-    Radio.command('header', 'update:tab', {id: 'right', label: label});
+    Radio.command('header', 'update:tab', {
+      id: 'right',
+      label: polyglot.t('titles.cart') + ' - ' + accounting.formatMoney(value)
+    });
   }, 100),
 
   /**

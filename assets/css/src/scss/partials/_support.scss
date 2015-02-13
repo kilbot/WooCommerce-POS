@@ -1,40 +1,34 @@
-#support-form {
-	h4 {
-		margin: 0;
-		padding: $spacing/2;
-		border-bottom: 1px solid $dark-border-color;
-	}
-	fieldset {
-		margin: 0;
-		padding: $spacing/2;
-		border-bottom: 1px solid $border-color;
-	}
-	textarea {
-		height: 100px;
-	}
-	.actions {
-		border-top: 1px solid $dark-border-color;
+.support-module {
+	.list {
+		ul li {
+			.label {
+				@include flex(0 1 25%);
+			}
+			.input {
+				input {
+					width: 100%;
+				}
+			}
+			textarea {
+				width: 100%;
+				height: 100px;
+			}
+		}
 	}
 }
 
-#system-status {
-	h4 {
-		margin: 0;
-		padding: $spacing/2;
-		border-bottom: 1px solid $dark-border-color;
-	}
-	table { 
-		tr.pass td:first-of-type {
-			color: $brand-success;
-		}
-		tr.fail td:first-of-type {
-			color: $brand-danger;
-		}
-		tr:first-of-type td {
-			border-top: 0;
-		}
-		td {
-			padding: $spacing/2;
+.status-module {
+	.list {
+		ul li {
+			.pass, i.icon-check {
+				color: $state-success-text;
+			}
+			.fail, i.icon-times {
+				color: $state-danger-text;
+			}
+			> div.title {
+				@include flex(0 1 25%);
+			}
 		}
 	}
 }

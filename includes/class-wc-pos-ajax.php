@@ -32,7 +32,6 @@ class WC_POS_AJAX {
       'email_receipt'         => false,
       'get_print_template'    => false,
       'admin_settings'        => false,
-      'system_status'         => false,
       'send_support_email'    => false,
       'update_translations'   => false
     );
@@ -269,19 +268,6 @@ class WC_POS_AJAX {
     } elseif( $method === 'GET' ) {
       $response = WC_POS_Admin_Settings::get_settings( $_GET['id'] );
     }
-
-    $this->json_headers();
-    echo json_encode( $response );
-    die();
-  }
-
-  public function system_status() {
-
-    // security
-    check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
-
-    $status = new WC_POS_Status();
-    $response = $status->getTestResults();
 
     $this->json_headers();
     echo json_encode( $response );

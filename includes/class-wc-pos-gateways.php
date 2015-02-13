@@ -82,8 +82,8 @@ class WC_POS_Gateways {
 
     echo '<td class="pos_status">';
     if ( in_array( $gateway->id, $enabled_gateways ) )
-      /* translators: woocommerce-admin */
-      echo '<span class="status-enabled tips" data-tip="' . __ ( 'Enabled', 'woocommerce-admin' ) . '">' . __ ( 'Enabled', 'woocommerce-pos' ) . '</span>';
+      /* translators: woocommerce */
+      echo '<span class="status-enabled tips" data-tip="' . __ ( 'Enabled', 'woocommerce' ) . '">' . __ ( 'Enabled', 'woocommerce-pos' ) . '</span>';
     else
       echo '-';
     echo '</td>';

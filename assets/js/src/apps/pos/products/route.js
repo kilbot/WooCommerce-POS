@@ -6,6 +6,7 @@ var Variations = require('./views/variations');
 var Tabs = require('lib/components/tabs/view');
 var Radio = require('backbone.radio');
 var _ = require('lodash');
+var polyglot = require('lib/utilities/polyglot');
 
 module.exports = Route.extend({
 
@@ -19,8 +20,10 @@ module.exports = Route.extend({
     this.collection = this.filtered.superset();
 
     // products label
-    this.label = options.label;
-    Radio.command('header', 'update:tab', {id: 'left', label: this.label});
+    Radio.command('header', 'update:tab', {
+      id    : 'left',
+      label : polyglot.t('titles.products')
+    });
   },
 
   fetch: function() {

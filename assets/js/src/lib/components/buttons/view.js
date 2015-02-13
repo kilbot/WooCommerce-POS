@@ -4,22 +4,19 @@ var Radio = require('backbone.radio');
 var _ = require('lodash');
 var $ = require('jquery');
 var tmpl = require('./buttons.hbs');
+var polyglot = require('lib/utilities/polyglot');
 
 module.exports = ItemView.extend({
   template: hbs.compile(tmpl),
-  buttons: {},
-  messages: {},
 
   initialize: function(options){
     options = options || {};
-
-    this.getParams(['messages', 'buttons']);
 
     var defaults = {
       buttons: [{
         action    : 'save',
         className : 'btn-primary',
-        label     : this.buttons.save
+        label     : polyglot.t('buttons.save')
       }],
       msgPos: 'left'
     };
@@ -31,21 +28,12 @@ module.exports = ItemView.extend({
     this.data = _.defaults(options, defaults);
   },
 
-  getParams: function(array){
-    _.each(array, function(name){
-      this[name] = Radio.request('entities', 'get', {
-        type: 'option',
-        name: name
-      }) || {};
-    }, this);
-  },
-
   templateHelpers: function(){
     this.data.positionLeft = (this.data.msgPos === 'left');
 
     _.each(this.data.buttons, function(button){
       if(!button.label){
-        button.label = this.buttons[button.action];
+        button.label = polyglot.t('buttons.' + button.action);
       }
     }, this);
 
@@ -100,7 +88,7 @@ module.exports = ItemView.extend({
     if( _.isString(obj) ){
       obj = {};
       obj.type = message;
-      obj.text = (this.messages[message] || message);
+      obj.text = polyglot.t('messages.' + message);
     }
     obj.icon = obj.icon || obj.type;
     return obj;

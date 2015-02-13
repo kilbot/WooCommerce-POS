@@ -5,6 +5,7 @@ var debug = require('debug')('app');
 var accounting = require('accounting');
 var Radio = require('backbone.radio');
 var routerChannel = Radio.channel('router');
+var polyglot = require('lib/utilities/polyglot');
 
 module.exports = Application.extend({
 
@@ -30,8 +31,13 @@ module.exports = Application.extend({
     // app settings
     this.options = options;
 
+    // i18n
+    polyglot.extend(options.i18n);
+    delete options.i18n;
+
     // bootstrap accounting settings
     accounting.settings = options.accounting;
+    delete options.accounting;
 
     // global ajax settings
     bb.$.ajaxSetup({
@@ -51,11 +57,7 @@ module.exports = Application.extend({
   },
 
   onStart: function(){
-
     bb.history.start();
-
-    // header app starts on all pages
-    //POS.HeaderApp.start();
   },
 
   onBeforeEnterRoute: function() {
@@ -70,7 +72,6 @@ module.exports = Application.extend({
   },
 
   onEnterRoute: function(route) {
-    console.log(route);
     this.layout.columns(route.columns);
 
     this.transitioning = false;

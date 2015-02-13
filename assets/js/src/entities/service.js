@@ -9,6 +9,7 @@ var SettingsCollection = require('./settings/collection');
 var Gateways = require('./gateways/collection');
 var Variations = require('./variations/collection');
 var FilteredCollection = require('lib/config/filtered-collection');
+var SupportForm = require('./support/form');
 var debug = require('debug')('entities');
 var POS = require('lib/utilities/global');
 
@@ -33,8 +34,13 @@ module.exports = POS.Entities = Service.extend({
     settings  : SettingsCollection
   },
 
+  models: {
+    supportForm : SupportForm
+  },
+
   methods: {
     collection  : 'getCollection',
+    model       : 'getModel',
     filtered    : 'getFiltered',
     option      : 'getOption',
     settings    : 'getSettings'
@@ -53,9 +59,10 @@ module.exports = POS.Entities = Service.extend({
    * init a new collection, attach to this and return a reference
    */
   attach: function(options){
-    var prop = '_' + options.name;
-    if( this.collections.hasOwnProperty(options.name) ){
-      this[prop] = new this.collections[options.name]([], options);
+    var type = options.type === 'model' ? 'models' : 'collections',
+        prop = '_' + options.name;
+    if( this[type].hasOwnProperty(options.name) ){
+      this[prop] = new this[type][options.name]([], options);
     }
     return this[prop];
   },
@@ -67,6 +74,14 @@ module.exports = POS.Entities = Service.extend({
     var prop = '_' + options.name;
     if( options.init ) {
       return new this.collections[options.name]([], options);
+    }
+    return ( this[prop] || this.attach(options) );
+  },
+
+  getModel: function(options){
+    var prop = '_' + options.name;
+    if( options.init ) {
+      return new this.models[options.name]([], options);
     }
     return ( this[prop] || this.attach(options) );
   },

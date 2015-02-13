@@ -1,7 +1,7 @@
-var DeepModel = require('lib/config/deep-model');
+var Model = require('lib/config/model');
 var Radio = require('backbone.radio');
 
-module.exports = DeepModel.extend({
+module.exports = Model.extend({
 
   initialize: function() {
     this.url = Radio.request('entities', 'get', {
@@ -17,11 +17,11 @@ module.exports = DeepModel.extend({
     });
 
     var id       = 'id=' + model.get('id'),
-        action   = 'action=wc_pos_admin_settings',
-        security = 'security=' + nonce;
+      action   = 'action=wc_pos_send_email',
+      security = 'security=' + nonce;
 
     //options.emulateHTTP = true;
-    options.url = this.url + '?' + action + '&' + id + '&' + security;
+    options.url = this.url + '?' + action + '&' + security;
 
     if(options.buttons){
       this.buttons(options);
@@ -30,7 +30,7 @@ module.exports = DeepModel.extend({
     // TODO: fix this
     model.unset('response');
 
-    return DeepModel.prototype.sync(method, model, options);
+    return Model.prototype.sync(method, model, options);
   },
 
   buttons: function(options){

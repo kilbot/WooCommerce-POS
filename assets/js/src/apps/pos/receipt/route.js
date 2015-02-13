@@ -3,6 +3,7 @@ var Radio = require('backbone.radio');
 //var debug = require('debug')('receipt');
 var POS = require('lib/utilities/global');
 var LayoutView = require('./views/layout');
+var polyglot = require('lib/utilities/polyglot');
 
 var CheckoutRoute = Route.extend({
 
@@ -15,8 +16,10 @@ var CheckoutRoute = Route.extend({
     });
 
     // checkout label
-    this.label = options.label;
-    Radio.command('header', 'update:tab', {id: 'right', label: this.label});
+    Radio.command('header', 'update:tab', {
+      id: 'right',
+      label: polyglot.t('title.receipt')
+    });
   },
 
   fetch: function() {
