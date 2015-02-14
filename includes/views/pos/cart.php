@@ -25,7 +25,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item">
-	<div class="qty"><input type="text" name="qty" data-title="<?php /* translators: woocommerce */ _e( 'Quantity', 'woocommerce' ); ?>" data-numpad="quantity" class="btn autogrow"></div>
+	<div class="qty"><input type="text" name="qty" data-label="<?php /* translators: woocommerce */ _e( 'Quantity', 'woocommerce' ); ?>" data-numpad="quantity" class="btn autogrow"></div>
 	<div class="title">
 		<strong class="action-edit-title" contenteditable="true">{{title}}</strong>
 		{{#with attributes}}
@@ -38,7 +38,7 @@
 		{{/with}}
 		<a href="#" class="btn btn-default btn-circle-sm action-more"><i class="icon icon-angle-down"></i></a>
 	</div>
-	<div class="price"><input type="text" name="item_price" data-original="{{regular_price}}" data-title="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" class="btn autogrow"></div>
+	<div class="price"><input type="text" name="item_price" data-label="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" class="btn autogrow"></div>
 	<div class="total"></div>
 	<div class="action"><a class="btn btn-circle btn-danger action-remove" href="#"><i class="icon icon-times icon-lg"></i></a></div>
 </script>
@@ -48,7 +48,7 @@
 	{{#if id}}
 	<div class="col-1"><label for="regular_price"><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
-		<input name="regular_price" id="regular_price" class="autogrow btn" type="text" data-numpad="money" data-title="<?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>" />
+		<input name="regular_price" id="regular_price" class="autogrow btn" type="text" data-numpad="money" data-label="<?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>" />
 	</div>
 	{{/if}}
 

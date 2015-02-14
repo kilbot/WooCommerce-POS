@@ -12,7 +12,7 @@
 abstract class WC_POS_Admin_Settings_Page {
 
   protected $data;
-  static public $default_settings;
+  protected $default_settings;
   public $current_user_authorized = true;
 
   /**
@@ -24,17 +24,13 @@ abstract class WC_POS_Admin_Settings_Page {
 
   public function get_data(){
     if(!$this->data){
-      $this->data = $this->stored_data() ? $this->stored_data() : $this->default_data();
+      $this->data = $this->stored_data() ? $this->stored_data() : $this->default_settings;
     }
     return $this->data;
   }
 
   private function stored_data(){
     return WC_POS_Admin_Settings::get_settings($this->id);
-  }
-
-  private function default_data(){
-    return $this::$default_settings;
   }
 
 }

@@ -1,5 +1,4 @@
 var FormView = require('lib/config/form-view');
-var Backbone = require('backbone');
 var $ = require('jquery');
 
 module.exports = FormView.extend({

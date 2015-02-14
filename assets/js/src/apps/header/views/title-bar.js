@@ -8,7 +8,7 @@ var $ = require('jquery');
 
 var View = ItemView.extend({
   template: function(){
-    return $('#header > div').html()
+    return $('#header > div').html();
   },
 
   initialize: function(){

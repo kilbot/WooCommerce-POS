@@ -28,11 +28,11 @@ var app = new Application();
 /**
  * ... add SubApps and Services
  */
-app.entities = new EntitiesService({
+app.entitiesService = new EntitiesService({
   app: app
 });
 
-app.headerApp = new HeaderService({
+app.headerService = new HeaderService({
   headerContainer : app.layout.headerRegion,
   menuContainer   : app.layout.menuRegion,
   tabsContainer   : app.layout.tabsRegion
@@ -46,11 +46,11 @@ app.supportApp = new SupportRouter({
   container: app.layout.mainRegion
 });
 
-app.modalApp = new ModalService({
+app.modalService = new ModalService({
   container: app.layout.modalRegion
 });
 
-app.popoverApp = new PopoverService();
+app.popoverService = new PopoverService();
 
 /**
  * Attach app to window for third party plugins

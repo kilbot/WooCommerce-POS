@@ -7,7 +7,6 @@ var NotesView = require('./views/notes');
 var CustomerSelect = require('lib/components/customer-select/view');
 var Radio = require('backbone.radio');
 //var debug = require('debug')('cart');
-var $ = require('jquery');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
 var accounting = require('accounting');

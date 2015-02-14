@@ -1,33 +1,50 @@
 var Behavior = require('lib/config/behavior');
-var bb = require('backbone');
-var $ = require('jquery');
+var Radio = require('backbone.radio');
 var _ = require('lodash');
-var entitiesChannel = bb.Radio.channel('entities');
 var debug = require('debug')('hotkey');
 var POS = require('lib/utilities/global');
+var Combokeys = require('combokeys');
 
 var HotKeys = Behavior.extend({
+  keys: [],
 
-  initialize: function() {
-
-    var hotkeys = entitiesChannel.request( 'get', {
-      type: 'settings',
+  initialize: function(options) {
+    options = options || {};
+    this.element = options.el;
+    this.hotkeys = Radio.request('entities', 'get', {
+      type: 'option',
       name: 'hotkeys'
-    });
-    _.each( this.view.keyEvents, function( method, id ) {
-      var trigger = hotkeys.get(id);
-      if( trigger ) {
-        $(document).bind('keydown', trigger.get('key'), this.view[method]);
-      } else {
-        debug('not found, id: ' + id );
-      }
-    }, this);
-
+    }) || {};
   },
 
-  onClose: function() {
-    _.each( this.view.keyEvents, function( method ) {
-      $(document).unbind( 'keydown', this.view[method] );
+  // todo: this.element => this.view.el
+  onRender: function(){
+    var element = this.element || document,
+        _view = this.view;
+
+    this.combokeys = new Combokeys(element);
+
+    _.each( _view.keyEvents, function(callback, id) {
+      var trigger = this.hotkeys[id];
+
+      if (!_.isFunction(callback)) { callback = _view[callback]; }
+
+      if(!trigger || !callback){
+        return debug('hotkey not found: ' + id, this.view.keyEvents);
+      }
+
+      this.combokeys.bind(trigger.key, function(e, combo){
+        callback.call(_view, e, combo);
+      });
+
+      this.keys.push(trigger.key);
+
+    }, this);
+  },
+
+  onDestroy: function(){
+    _.each( this.keys, function( key ) {
+      this.combokeys.unbind(key);
     }, this);
   }
 

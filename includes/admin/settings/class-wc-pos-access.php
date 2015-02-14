@@ -91,14 +91,6 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Page {
           array_flip(self::$woocaps)
         ),
       );
-
-      // TODO: refactor this ...
-      if(empty($role_caps[$slug]['pos_capabilities'])){
-        $role_caps[$slug]['pos_capabilities'] = new StdClass;
-      }
-      if(empty($role_caps[$slug]['woo_capabilities'])){
-        $role_caps[$slug]['woo_capabilities'] = new StdClass;
-      }
     endforeach; endif;
 
     return $role_caps;

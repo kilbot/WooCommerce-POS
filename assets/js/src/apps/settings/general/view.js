@@ -19,7 +19,8 @@ var View = FormView.extend({
 
   behaviors: {
     Select2: {
-      behaviorClass: Select2
+      behaviorClass: Select2,
+      maximumSelectionSize: 4
     },
     Tooltip: {
       behaviorClass: Tooltip

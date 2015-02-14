@@ -21,9 +21,12 @@
  */
 @import "partials/select2";
 @import "partials/loading";
+@import "partials/hotkeys";
+
+@import "partials/modal";
+@import "partials/admin/modal";
 
 @import "partials/admin/upgrade";
-@import "partials/admin/modal";
 @import "partials/admin/settings";
 @import "partials/admin/settings/general";
 @import "partials/admin/settings/checkout";

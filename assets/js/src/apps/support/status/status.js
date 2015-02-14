@@ -2,7 +2,6 @@ var ItemView = require('lib/config/item-view');
 var $ = require('jquery');
 var Tmpl = require('./status.hbs');
 var hbs = require('handlebars');
-var IDBStore = require('idb-wrapper');
 
 module.exports = ItemView.extend({
   tagName: 'ul',

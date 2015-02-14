@@ -1,6 +1,7 @@
 var LayoutView = require('lib/config/layout-view');
 var _ = require('lodash');
 var $ = require('jquery');
+require('bootstrap-sass/assets/javascripts/bootstrap/tooltip');
 require('bootstrap-sass/assets/javascripts/bootstrap/popover');
 
 module.exports = LayoutView.extend({

@@ -37,6 +37,7 @@ class WC_POS_Admin_Settings {
     $settings = apply_filters( 'woocommerce_pos_settings_tabs_array', array(
       new WC_POS_Admin_Settings_General(),
       new WC_POS_Admin_Settings_Checkout(),
+      new WC_POS_Admin_Settings_HotKeys(),
       new WC_POS_Admin_Settings_Access(),
       new WC_POS_Admin_Settings_Tools()
     ));
@@ -161,9 +162,6 @@ class WC_POS_Admin_Settings {
     if( isset( $data['response'] ) )
       wp_die('Data name "response" is reserved');
 
-    // add timestamp to force update
-    $data['updated'] = current_time( 'timestamp' );
-
     // remove the security attribute
     unset( $data['security'] );
 
@@ -277,7 +275,7 @@ class WC_POS_Admin_Settings {
     wp_enqueue_script(
       'idb-wrapper',
       '//cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.4.1/idbstore.min.js',
-      false,
+      array(),
       false,
       true
     );
@@ -314,7 +312,7 @@ class WC_POS_Admin_Settings {
    * Start the Settings App
    */
   public function admin_inline_js() {
-    echo '<script type="text/javascript">POS.start('. json_encode( WC_POS_Params::admin() ) .');</script>';
+    echo '<script type="text/javascript">POS.options = '. wc_pos_json_encode( WC_POS_Params::admin() ) .'; POS.start();</script>';
   }
 
 }

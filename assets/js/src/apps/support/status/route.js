@@ -3,6 +3,7 @@ var POS = require('lib/utilities/global');
 var Layout = require('./layout');
 var Status = require('./status');
 var $ = require('jquery');
+var _ = require('lodash');
 var Modernizr = global['Modernizr'];
 var Radio = require('backbone.radio');
 var polyglot = require('lib/utilities/polyglot');

@@ -40,6 +40,12 @@
 }
 
 #wc-pos-settings-footer {
+  margin-top: 20px;
+  border-top: 1px solid lighten(#CFCFCF, 5%);
+  >div {
+    padding-top: 20px;
+//    border-top: 1px solid lighten(#f1f1f1, 5%);
+  }
   button {
     vertical-align: middle;
   }

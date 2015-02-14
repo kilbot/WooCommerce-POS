@@ -2,6 +2,7 @@ var ItemView = require('lib/config/item-view');
 var hbs = require('handlebars');
 var Radio = require('backbone.radio');
 var _ = require('lodash');
+var polyglot = require('lib/utilities/polyglot');
 
 module.exports = ItemView.extend({
   template: hbs.compile('' +
@@ -18,19 +19,9 @@ module.exports = ItemView.extend({
       console.log('hide header');
     }
 
-    messages = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'messages'
-    }) || {};
-
-    buttons = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'labels'
-    }) || {};
-
     defaults = {
-      title: messages.loading,
-      close: buttons.close
+      title: polyglot.t('messages.loading'),
+      close: polyglot.t('buttons.close')
     };
 
     this.data = _.defaults(options, defaults);

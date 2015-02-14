@@ -59,7 +59,18 @@ var Tabs = CollectionView.extend({
 
   initialize: function(options) {
     options = options || {};
-    this.collection = new Collection( options.collection );
+
+    // todo: refactor to service?
+    // allows view to be init with bb collection or
+    // attributes in an array or object
+    if (options.collection instanceof Backbone.Collection) {
+      this.collection = options.collection;
+    } else {
+      this.collection = new Collection();
+      _.each(options.collection, function(attributes){
+        this.collection.add(attributes);
+      }, this);
+    }
   }
 
 });

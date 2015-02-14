@@ -3,10 +3,11 @@ var POS = require('lib/utilities/global');
 var Modernizr = global['Modernizr'];
 var NumpadView = require('./view');
 var Radio = require('backbone.radio');
+var $ = require('jquery');
 
 var NumpadBehavior = Behavior.extend({
 
-  initialize: function( options ) {
+  initialize: function() {
 
   },
 
@@ -25,7 +26,10 @@ var NumpadBehavior = Behavior.extend({
   },
 
   numpadPopover: function(e){
-    var numpad = new NumpadView({ model: this.view.model });
+    var numpad = new NumpadView({
+      target    : $(e.currentTarget),
+      model     : this.view.model
+    });
     var options = {
       target    : $(e.currentTarget),
       view      : numpad,

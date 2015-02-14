@@ -3,6 +3,7 @@ var TitleBar = require('./views/title-bar');
 var Menu = require('./views/menu');
 var Tabs = require('lib/components/tabs/view');
 var POS = require('lib/utilities/global');
+var $ = require('jquery');
 
 var Service = Service.extend({
   channelName: 'header',
@@ -12,7 +13,6 @@ var Service = Service.extend({
     this.header = options.headerContainer;
     this.menu = options.menuContainer;
     this.tabs = options.tabsContainer;
-    this.start();
   },
 
   onStart: function(){

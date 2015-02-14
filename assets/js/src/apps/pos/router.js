@@ -24,7 +24,7 @@ var Router = Router.extend({
       Radio.command('header', 'update:tab', {id:'left', active: true});
     } else {
       Radio.command('header', 'update:tab', {id:'right', active: true});
-    };
+    }
 
     Radio.command('header', 'update:title', '');
   },

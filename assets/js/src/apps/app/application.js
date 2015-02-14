@@ -25,19 +25,14 @@ module.exports = Application.extend({
   /**
    * Set up application with start params
    */
-  onBeforeStart: function(options){
+  onBeforeStart: function(){
     debug( 'starting WooCommerce POS app' );
 
-    // app settings
-    this.options = options;
-
     // i18n
-    polyglot.extend(options.i18n);
-    delete options.i18n;
+    polyglot.extend(this.options.i18n);
 
     // bootstrap accounting settings
-    accounting.settings = options.accounting;
-    delete options.accounting;
+    accounting.settings = this.options.accounting;
 
     // global ajax settings
     bb.$.ajaxSetup({
@@ -54,6 +49,9 @@ module.exports = Application.extend({
       },
       timeout: 50000
     });
+
+    // start header service
+    this.headerService.start();
   },
 
   onStart: function(){

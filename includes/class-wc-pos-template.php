@@ -123,7 +123,7 @@ class WC_POS_Template {
     }
 
     // inline start app with params
-    echo '<script type="text/javascript">POS.start('. json_encode( WC_POS_Params::frontend() ) .');</script>';
+    echo '<script type="text/javascript">POS.options = '. wc_pos_json_encode( WC_POS_Params::frontend() ) .'; POS.start();</script>';
   }
 
   /**

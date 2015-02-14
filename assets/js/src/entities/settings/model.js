@@ -33,6 +33,8 @@ module.exports = DeepModel.extend({
     return DeepModel.prototype.sync(method, model, options);
   },
 
+  // TODO: a more elegant way of updating buttons
+  // one that does not stomp on original success/error
   buttons: function(options){
     options.buttons.triggerMethod('Update', { message: 'spinner' });
     options.success = function(model, resp){

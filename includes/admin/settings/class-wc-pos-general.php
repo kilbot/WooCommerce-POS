@@ -11,10 +11,6 @@
 
 class WC_POS_Admin_Settings_General extends WC_POS_Admin_Settings_Page {
 
-  static public $default_settings = array(
-
-  );
-
   /**
    * Each settings tab requires an id and label
    */
@@ -22,6 +18,8 @@ class WC_POS_Admin_Settings_General extends WC_POS_Admin_Settings_Page {
     $this->id    = 'general';
     /* translators: woocommerce */
     $this->label = __( 'General', 'woocommerce' );
+
+    $this->default_settings = array();
   }
 
 }

@@ -4,6 +4,7 @@ var FormRoute = require('./form/route');
 var StatusRoute = require('./status/route');
 var Radio = require('backbone.radio');
 var Collection = require('lib/config/collection');
+var $ = require('jquery');
 
 module.exports = Router.extend({
   columns: 2,

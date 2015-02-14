@@ -6,6 +6,7 @@ var debug = require('debug')('admin');
 var accounting = require('accounting');
 var Radio = require('backbone.radio');
 var routerChannel = Radio.channel('router');
+var polyglot = require('lib/utilities/polyglot');
 
 module.exports = Application.extend({
 
@@ -25,14 +26,14 @@ module.exports = Application.extend({
   /**
    * Set up application with start params
    */
-  onBeforeStart: function(options){
+  onBeforeStart: function(){
     debug( 'starting WooCommerce POS admin app' );
 
-    // app settings
-    this.options = options || {};
+    // i18n
+    polyglot.extend(this.options.i18n);
 
     // bootstrap accounting settings
-    accounting.settings = options.accounting;
+    accounting.settings = this.options.accounting;
   },
 
   onStart: function(){

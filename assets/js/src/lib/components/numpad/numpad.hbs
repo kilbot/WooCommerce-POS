@@ -1,10 +1,10 @@
 <div class="numpad">
     <div class="numpad-header">
-        <strong class="title">{{title}}</strong>
+        <strong class="title">{{label}}</strong>
 
       {{#is type 'price'}}
           <div class="input-group">
-              <span class="input-group-addon">{{{getOption 'accounting.currency.symbol'}}}</span>
+              <span class="input-group-addon">{{currency.symbol}}</span>
               <input type="text" name="value" class="form-control autogrow">
           </div>
       {{/is}}
@@ -12,7 +12,7 @@
       {{#is type 'discount'}}
           <span></span>
           <div class="input-group">
-              <span class="input-group-btn"><a class="disabled" href="#" data-modifier="value">{{{getOption 'accounting.currency.symbol'}}}</a></span>
+              <span class="input-group-btn"><a class="disabled" href="#" data-modifier="value">{{currency.symbol}}</a></span>
               <input type="text" name="value" class="form-control autogrow">
               <input type="text" name="percentage" class="form-control autogrow" style="display:none">
               <span class="input-group-btn"><a href="#" data-modifier="percentage">%</a></span>
@@ -47,7 +47,7 @@
             <div class="row">
                 <a href="#" class="btn">0</a>
                 <a href="#" class="btn">00</a>
-                <a href="#" class="btn decimal">{{getOption 'accounting.number.decimal'}}</a>
+                <a href="#" class="btn decimal">{{currency.decimal}}</a>
             </div>
         </div>
         <div class="keys extra-keys standard">

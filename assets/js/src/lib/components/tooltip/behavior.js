@@ -5,11 +5,15 @@ require('bootstrap-sass/assets/javascripts/bootstrap/tooltip');
 var Tooltip = Behavior.extend({
 
   initialize: function(options){
-
+    this.options = options;
   },
 
   ui: {
     tooltip: '*[data-toggle="tooltip"]'
+  },
+
+  onRender: function() {
+    this.ui.tooltip.tooltip( this.options );
   }
 
 });

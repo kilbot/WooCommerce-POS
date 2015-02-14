@@ -3,6 +3,7 @@ var Router = require('lib/config/router');
 var LayoutView = require('./layout-view');
 var General = require('./general/route');
 var Checkout = require('./checkout/route');
+var HotKeys = require('./hotkeys/route');
 var Access = require('./access/route');
 var Tools = require('./tools/route');
 var Tabs = require('lib/components/tabs/view');
@@ -59,6 +60,7 @@ var SettingsRouter = Router.extend({
     ''        : 'showGeneral',
     'general' : 'showGeneral',
     'checkout': 'showCheckout',
+    'hotkeys' : 'showHotkeys',
     'access'  : 'showAccess',
     'tools'   : 'showTools'
   },
@@ -111,6 +113,15 @@ var SettingsRouter = Router.extend({
     });
   },
 
+  showHotkeys: function(){
+    var model = this.collection.get('hotkeys');
+    this.showFooter({model: model});
+    return new HotKeys({
+      container : this.layout.settings,
+      model: model
+    });
+  },
+
   showAccess: function(){
     var model = this.collection.get('access');
     this.showFooter({model: model});
@@ -129,17 +140,28 @@ var SettingsRouter = Router.extend({
   showFooter: function(options){
 
     _.defaults(options, {
-      buttons: [{
-        action    : 'save',
-        className : 'button-primary'
-      }],
+      buttons: [
+        {
+          action    : 'save',
+          className : 'button-primary'
+        },
+        {
+          action    : 'restore',
+          className : 'button pull-right'
+        }
+      ],
       msgPos: 'right'
     });
 
     var view = new Buttons(options);
 
-    this.listenTo(view, 'action:save', function(){
-      options.model.save([], { buttons: view });
+    this.listenTo(view, {
+      'action:save': function(){
+        options.model.save([], { buttons: view });
+      },
+      'action:restore': function(){
+        options.model.fetch({ buttons: view, restore: true });
+      }
     });
 
     this.layout.footer.show(view);

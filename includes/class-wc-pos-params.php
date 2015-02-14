@@ -57,17 +57,17 @@ class WC_POS_Params {
    */
   static private function product_tabs() {
     $tabs = array(
-      array(
+      'all' => array(
         /* translators: woocommerce */
         'label' => __( 'All', 'woocommerce'),
         'active' => true
       ),
-      array(
+      'featured' => array(
         /* translators: woocommerce */
         'label' => __( 'Featured', 'woocommerce'),
         'id' => 'featured:true'
       ),
-      array(
+      'onsale' => array(
         'label' => _x( 'On Sale', 'Product tab: \'On Sale\' products', 'woocommerce-pos'),
         'id' => 'on_sale:true'
       ),
@@ -81,34 +81,8 @@ class WC_POS_Params {
    * @return array
    */
   static private function hotkeys() {
-
-    // default keys
-    $keys = array(
-      array(
-        'id' => 'help',
-        'label' => __( 'Help screen' ),
-        'key' => 'shift+/'
-      ),
-      array(
-        'id' => 'barcode',
-        'label' => __( 'Barcode mode' ),
-        'key' => 'ctrl+b'
-      ),
-      array(
-        'id' => 'sync',
-        'label' => __( 'Sync with server' ),
-        'key' => 'ctrl+s'
-      )
-    );
-    $keys = apply_filters( 'woocommerce_pos_hotkeys', $keys );
-
-    // merge with user options
-    $user_options = get_user_option( WC_POS_Admin_Settings::DB_PREFIX . 'hotkeys' );
-    if( is_array( $user_options ) ) {
-      $keys = array_merge( $keys, $user_options );
-    }
-
-    return $keys;
+    $hotkeys = new WC_POS_Admin_Settings_HotKeys();
+    return $hotkeys->get_data();
   }
 
   /**
@@ -166,7 +140,8 @@ class WC_POS_Params {
    */
   static private function customers() {
     $user = false;
-    $settings = WC_POS_Admin_Settings::get_settings( 'general' );
+    $general = new WC_POS_Admin_Settings_General();
+    $settings = $general->get_data();
 
     if(!empty($settings['logged_in_user'])){
       $user = wp_get_current_user();

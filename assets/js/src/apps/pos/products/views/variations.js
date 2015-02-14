@@ -10,10 +10,10 @@ var $ = require('jquery');
 // rough calculation of variation option size
 var hasManyOptions = function(variation){
   var opts = variation.options.length,
-      char = variation.options.reduce(function(total, opt){
-          return total + opt.length
+      chars = variation.options.reduce(function(total, opt){
+          return total + opt.length;
       }, 0);
-  return (opts * 26) + (char * 5) > 250;
+  return (opts * 26) + (chars * 5) > 250;
 };
 
 var emptyOption = function(){
@@ -22,7 +22,7 @@ var emptyOption = function(){
     name: 'messages'
   });
   return messages.choose;
-}
+};
 
 var Variations = ItemView.extend({
   template: hbs.compile(Tmpl),

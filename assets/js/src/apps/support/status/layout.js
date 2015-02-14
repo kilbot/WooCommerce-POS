@@ -1,5 +1,6 @@
 var LayoutView = require('lib/config/layout-view');
 var POS = require('lib/utilities/global');
+var $ = require('jquery');
 
 var Layout = LayoutView.extend({
   template: function(){

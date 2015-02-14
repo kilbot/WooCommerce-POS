@@ -1,4 +1,4 @@
-#modal {
+#wc-pos-modal, #modal {
   .modal-content {
     @include border-radius(0);
   }
@@ -6,6 +6,7 @@
     padding: 0;
     position: relative;
     background-color: #fcfcfc;
+    height: 50px;
     h1 {
       padding: 0 16px;
       font-size: 22px;
@@ -37,38 +38,32 @@
   }
   .modal-body {
     @include clearfix;
-  }
-  .modal-footer {
-    padding: 11px;
-    p.message {
+    i.spinner {
       display: inline-block;
-      margin: 0 10px 0 0;
-      text-align: right;
-      line-height: 20px;
-      i.icon {
-        margin-right: 5px;
-        vertical-align: middle;
-      }
-      &.success {
-        color: $state-success-text;
-      }
-      &.error {
-        color: $state-danger-text;
-      }
+      float: none;
+      margin: 0;
     }
   }
-}
-
-// hotkeys
-ul.hotkeys {
-  @include column-count(2);
-  padding: 0;
-  margin: 0;
-  li {
-    padding: $spacing/4 0;
-    input {
-      max-width: 80px;
-      margin-right: $spacing/2;
+  .modal-footer {
+    padding: 0px;
+    > div {
+      padding: 11px;
+      p.message {
+        display: inline-block;
+        margin: 0 10px 0 0;
+        text-align: right;
+        line-height: 20px;
+        i {
+          margin-right: 5px;
+          vertical-align: middle;
+        }
+        &.success {
+          color: $state-success-text;
+        }
+        &.error {
+          color: $state-danger-text;
+        }
+      }
     }
   }
 }

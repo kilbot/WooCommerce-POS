@@ -5,7 +5,7 @@ var POS = require('lib/utilities/global');
 
 var View = ItemView.extend({
   template: function(){
-    return $('#menu').html()
+    return $('#menu').html();
   },
 
   initialize: function(){
@@ -24,7 +24,7 @@ var View = ItemView.extend({
     this.close();
   },
 
-  open: function(e){
+  open: function(){
     // open menu & append backdrop
     $('body').addClass('menu-open');
     this.backdrop = $('<div class="modal-backdrop in"></div>');

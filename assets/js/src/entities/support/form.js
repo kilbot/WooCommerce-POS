@@ -16,9 +16,8 @@ module.exports = Model.extend({
       name: 'nonce'
     });
 
-    var id       = 'id=' + model.get('id'),
-      action   = 'action=wc_pos_send_email',
-      security = 'security=' + nonce;
+    var action   = 'action=wc_pos_send_email',
+        security = 'security=' + nonce;
 
     //options.emulateHTTP = true;
     options.url = this.url + '?' + action + '&' + security;

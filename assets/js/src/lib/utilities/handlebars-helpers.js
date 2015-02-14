@@ -3,7 +3,7 @@ var hbs = require('handlebars');
 var accounting = require('accounting');
 var moment = require('moment');
 var Utils = require('lib/utilities/utils');
-var Radio = require('backbone.radio');
+//var Radio = require('backbone.radio');
 
 /**
  * is, compare helpers taken from
@@ -143,14 +143,14 @@ hbs.registerHelper('formatDate', function(date, options){
   return moment(date).format(f);
 });
 
-hbs.registerHelper('getOption', function(key){
-  var lookup = key.split('.');
-  var option = Radio.request( 'entities', 'get', {
-    type: 'option',
-    name: lookup.shift()
-  });
-  for(var i = 0; i < lookup.length; i++) {
-    option = option[lookup[i]];
-  }
-  return option;
-});
+//hbs.registerHelper('getOption', function(key){
+//  var lookup = key.split('.');
+//  var option = Radio.request( 'entities', 'get', {
+//    type: 'option',
+//    name: lookup.shift()
+//  });
+//  for(var i = 0; i < lookup.length; i++) {
+//    option = option[lookup[i]];
+//  }
+//  return option;
+//});

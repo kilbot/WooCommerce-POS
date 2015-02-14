@@ -61,17 +61,53 @@ function is_pos( $type = false ) {
  * The option will _not_ auto-load by default.
  *
  * @param string $name
- * @param mixed  $value
+ * @param mixed $value
+ * @param string $autoload
  * @return bool
  */
-if( ! function_exists('add_or_update_option') ) {
-  function add_or_update_option( $name, $value, $autoload = 'no' ) {
-    $success = add_option( $name, $value, '', $autoload );
+function wc_pos_update_option( $name, $value, $autoload = 'no' ) {
+  $success = add_option( $name, $value, '', $autoload );
 
-    if ( ! $success ) {
-      $success = update_option( $name, $value );
-    }
+  if ( ! $success ) {
+    $success = update_option( $name, $value );
+  }
 
-    return $success;
+  return $success;
+}
+
+/**
+ * Simple wrapper for json_encode
+ *
+ * Use JSON_FORCE_OBJECT for PHP 5.3 or higher with fallback for
+ * PHP less than 5.3.
+ *
+ * WP 4.1 adds some wp_json_encode sanity checks which may be
+ * useful at some later stage.
+ *
+ * @param $data
+ * @return mixed
+ */
+function wc_pos_json_encode($data){
+  if ( version_compare( PHP_VERSION, '5.3', '>=' ) ) {
+    $args = array( $data, JSON_FORCE_OBJECT );
+  } else {
+    $args = array( _wc_pos_array_to_object($data) );
+  }
+
+  return call_user_func_array( 'json_encode', $args );
+}
+
+
+/**
+ * Recursively cast array to object
+ *
+ * @param $data
+ * @return object
+ */
+function _wc_pos_array_to_object($data) {
+  if (is_array($data)) {
+    return (object) array_map(__FUNCTION__, $data);
+  } else {
+    return $data;
   }
 }

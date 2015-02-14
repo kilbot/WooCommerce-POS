@@ -3,10 +3,10 @@
 class AccessSettingsTest extends WP_UnitTestCase {
 
   function test_capabilities_array(){
-    $pos_capabilities = WC_POS_Admin_Settings_Access::$pos_capabilities;
+    $pos_capabilities = WC_POS_Admin_Settings_Access::$poscaps;
     $this->assertNotEmpty( $pos_capabilities );
 
-    $woo_capabilities = WC_POS_Admin_Settings_Access::$woo_capabilities;
+    $woo_capabilities = WC_POS_Admin_Settings_Access::$woocaps;
     $this->assertNotEmpty( $woo_capabilities );
   }
 
@@ -14,8 +14,8 @@ class AccessSettingsTest extends WP_UnitTestCase {
     $access = new WC_POS_Admin_Settings_Access();
     $this->assertNotEmpty( $access->get_data() );
 
-    $pos_caps = WC_POS_Admin_Settings_Access::$pos_capabilities;
-    $woo_caps = WC_POS_Admin_Settings_Access::$woo_capabilities;
+    $pos_caps = WC_POS_Admin_Settings_Access::$poscaps;
+    $woo_caps = WC_POS_Admin_Settings_Access::$woocaps;
 
     $data = $access->get_data();
     $pos_data = array_keys($data['roles']['administrator']['pos_capabilities']);
