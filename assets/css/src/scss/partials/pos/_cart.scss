@@ -44,7 +44,7 @@
               &.title {
                 position: relative;
                 padding-right: 14px;
-                .action-more {
+                [data-action="more"] {
                   position: absolute;
                   top: 50%;
                   margin-top: -11px;
@@ -156,7 +156,6 @@
   }
   .list-actions {
     > div {
-      text-align: right;
       padding-bottom: 0;
       a {
         margin-bottom: $spacing/3;

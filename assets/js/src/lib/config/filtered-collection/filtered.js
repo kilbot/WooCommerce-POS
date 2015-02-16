@@ -1,3 +1,4 @@
+/* jshint -W071, -W073, -W074 */
 var _ = require('lodash');
 var Backbone = require('backbone');
 var proxyCollection = require('./proxy-collection');
@@ -89,7 +90,7 @@ function onModelAttributeChange(model) {
   }
 }
 
-function onAll(eventName, model, value) {
+function onAll(eventName) {
   if (eventName.slice(0, 7) === 'change:') {
     onModelAttributeChange.call(this, arguments[1]);
   }
@@ -170,3 +171,4 @@ _.extend(Filtered.prototype, methods, Backbone.Events);
 _.extend(Filtered.prototype, query);
 
 module.exports = Filtered;
+/* jshint +W071, +W073, +W074 */

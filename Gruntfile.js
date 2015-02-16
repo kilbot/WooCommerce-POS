@@ -57,7 +57,7 @@ module.exports = function(grunt) {
         tasks: ['webpack:dev', 'simplemocha', 'jshint:app']
       },
       test: {
-        files: ['tests/js/**/*.js'],
+        files: ['tests/unit/js/**/*.js'],
         tasks: ['jshint:tests', 'simplemocha']
       },
       symlink: {

@@ -9,6 +9,10 @@ var $ = require('jquery');
 module.exports = Router.extend({
   columns: 2,
 
+  routes: {
+    'support' : 'show'
+  },
+
   initialize: function(options) {
     this.container = options.container;
     this.collection = new Collection();
@@ -17,15 +21,13 @@ module.exports = Router.extend({
   onBeforeEnter: function() {
     this.layout = new LayoutView();
     this.container.show(this.layout);
+  },
 
+  onBeforeRoute: function(){
     // TODO: put menu into params
     var title = $('#menu li.support').text();
     Radio.command('header', 'update:title', title);
     Radio.command('header', 'update:tab', {id: 'left', active: true});
-  },
-
-  routes: {
-    'support' : 'show'
   },
 
   show: function(){

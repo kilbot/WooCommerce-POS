@@ -59,10 +59,16 @@ function Sorted(superset) {
   this._comparator = null;
   this._collection = new Backbone.Collection(superset.toArray());
   proxyCollection(this._collection, this);
-  this.listenTo(this._superset, 'add', onAdd);
-  this.listenTo(this._superset, 'remove', onRemove);
-  this.listenTo(this._superset, 'change', onChange);
-  this.listenTo(this._superset, 'reset', sort);
+  this.listenTo(this._superset, {
+    'add'   : onAdd,
+    'remove': onRemove,
+    'change': onChange,
+    'reset' : sort
+  });
+  //this.listenTo(this._superset, 'add', onAdd);
+  //this.listenTo(this._superset, 'remove', onRemove);
+  //this.listenTo(this._superset, 'change', onChange);
+  //this.listenTo(this._superset, 'reset', sort);
 }
 
 var methods = {

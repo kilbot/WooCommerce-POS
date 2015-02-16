@@ -36,11 +36,11 @@
 			{{/each}}
 		</dl>
 		{{/with}}
-		<a href="#" class="btn btn-default btn-circle-sm action-more"><i class="icon icon-angle-down"></i></a>
+		<a data-action="more" href="#" class="btn btn-default btn-circle-sm"><i class="icon icon-angle-down"></i></a>
 	</div>
 	<div class="price"><input type="text" name="item_price" data-label="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" class="btn autogrow"></div>
 	<div class="total"></div>
-	<div class="action"><a class="btn btn-circle btn-danger action-remove" href="#"><i class="icon icon-times icon-lg"></i></a></div>
+	<div class="action"><a data-action="remove" class="btn btn-circle btn-danger" href="#"><i class="icon icon-times icon-lg"></i></a></div>
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item-drawer">
@@ -120,7 +120,7 @@
 	<li class="order-discount" {{#compare order_discount '===' 0}}style="display:none"{{/compare}}>
 		<div><?php /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</div>
 		<div class="total">
-			<input type="text" value="{{number order_discount}}" name="order_discount" data-original="{{original}}" data-title="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-placement="left" data-numpad="discount" class="autogrow">
+			<input type="text" value="{{number order_discount}}" name="order_discount" data-original="{{order_discount}}" data-title="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-placement="left" data-numpad="discount" class="autogrow">
 			<span class="amount">{{{money order_discount negative=true}}}</span>
 		</div>
 		<div class="action"></div>

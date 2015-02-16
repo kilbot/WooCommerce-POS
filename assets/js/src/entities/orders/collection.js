@@ -31,37 +31,11 @@ module.exports = DualCollection.extend({
 
   },
 
-  fetch: function(options){
-    options = options || {};
-    var self = this;
-    return $.when(this._isReady).then(function() {
-      if( options.local ){
-        debug('fetching: local orders');
-        var promise = $.Deferred();
-        self.fetchLocalOrders(promise);
-        return promise;
-      } else {
-        debug('fetching: orders');
-        return DualCollection.prototype.fetch.call(self, options);
-      }
-    });
-  },
-
-  fetchLocalOrders: function(promise){
-    var self = this;
-    var onItem = function(item) {
-      if( !item.id ) {
-        self.add(item);
-      }
-    };
-    var onEnd = function() {
-      promise.resolve();
-    };
-    self.indexedDB.iterate(onItem, {
-      index: 'local_id',
-      order: 'ASC',
-      onEnd: onEnd
-    });
+  getActiveOrder: function(){
+    if(this.active){
+      return this.active;
+    }
+    return this.add({});
   }
 
 });

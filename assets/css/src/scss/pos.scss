@@ -32,10 +32,12 @@
 @import "partials/alerts";
 @import "partials/popover";
 
+@import "partials/pos/products";
+@import "partials/pos/cart";
+@import "partials/pos/checkout";
+@import "partials/pos/receipt";
+
 @import "partials/tabs";
-@import "partials/products";
-@import "partials/cart";
-@import "partials/checkout";
 @import "partials/support";
 
 @import "partials/popover/numpad";

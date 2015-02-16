@@ -1,6 +1,6 @@
 var Route = require('lib/config/route');
 var LayoutView = require('./views/layout');
-var ItemsView = require('./views/items');
+var Items = require('./views/items');
 var TotalsView = require('./views/totals');
 var ActionsView = require('./views/actions');
 var NotesView = require('./views/notes');
@@ -11,6 +11,7 @@ var _ = require('lodash');
 var POS = require('lib/utilities/global');
 var accounting = require('accounting');
 var polyglot = require('lib/utilities/polyglot');
+var routerChannel = Radio.channel('router');
 
 var CartRoute = Route.extend({
 
@@ -39,10 +40,9 @@ var CartRoute = Route.extend({
   },
 
   fetch: function() {
-    //if (this.collection.isNew()) {
-    this.collection.reset();
-    return this.collection.fetch({ local: true });
-    //}
+    if (this.collection.isNew()) {
+      return this.collection.fetch();
+    }
   },
 
   onFetch: function(id){
@@ -50,14 +50,10 @@ var CartRoute = Route.extend({
       this.order = this.collection.get(id);
     } else if(this.collection.length > 0){
       this.order = this.collection.at(0);
-    } else {
-      this.order = this.collection.add({});
     }
 
-    // set active order
+    // set active order: important for addToCart
     this.collection.active = this.order;
-
-    this.listenTo(this.order, 'change:total', this.updateTabLabel);
   },
 
   render: function() {
@@ -65,15 +61,23 @@ var CartRoute = Route.extend({
       order: this.order
     });
 
-    this.listenTo( this.layout, 'show', function() {
-      this.showCart();
-      this.showTotals();
-      this.showCustomer();
-      this.showActions();
-      this.showNotes();
-    });
+    this.listenTo( this.layout, 'show', this.onShow );
 
     this.container.show( this.layout );
+  },
+
+  onShow: function(){
+    if(!this.order){
+      return this.showEmpty();
+    }
+
+    this.showCart();
+    this.showTotals();
+    this.showCustomer();
+    this.showActions();
+    this.showNotes();
+
+    this.listenTo(this.order, 'change:total', this.updateTabLabel);
   },
 
   /**
@@ -87,10 +91,18 @@ var CartRoute = Route.extend({
   }, 100),
 
   /**
+   * Empty Cart
+   */
+  showEmpty: function(){
+    var view = new Items.Empty();
+    this.layout.listRegion.show(view);
+  },
+
+  /**
    * Cart Items
    */
   showCart: function() {
-    var view = new ItemsView({
+    var view = new Items.View({
       collection: this.order.cart
     });
     this.layout.listRegion.show(view);

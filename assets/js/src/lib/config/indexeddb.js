@@ -159,7 +159,7 @@ Backbone.IndexedDB.prototype = {
       return false;
     }
 
-    if(this.dualStorage){
+    if(this.dualStorage && model.hasRemoteId()){
       model.set('status', model.states.DELETE_FAILED);
       this.store.put(model.attributes, options.success, options.error);
     } else {

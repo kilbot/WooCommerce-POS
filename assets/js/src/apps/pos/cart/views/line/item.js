@@ -41,8 +41,8 @@ module.exports = FormView.extend({
   },
 
   ui: {
-    remove  : '.action-remove',
-    more    : '.action-more'
+    remove  : '*[data-action="remove"]',
+    more    : '*[data-action="more"]'
   },
 
   events: {

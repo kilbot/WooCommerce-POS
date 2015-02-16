@@ -1,3 +1,9 @@
+// remove iOS rounded corners
+input {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
 // input group
 .input-group {
   @include display-flex;

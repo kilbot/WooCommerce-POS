@@ -118,7 +118,7 @@ class WC_POS_AJAX {
     if( isset( $_REQUEST['data']) )
       extract( $_REQUEST['data'] );
 
-    include_once( dirname(__FILE__) . '/../views/modal/' . $_REQUEST['template'] . '.php' );
+    include_once( dirname(__FILE__) . '/views/modals/' . $_REQUEST['template'] . '.php' );
     die();
   }
 

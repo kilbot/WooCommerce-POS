@@ -3,6 +3,8 @@ var CollectionView = require('lib/config/collection-view');
 var hbs = require('handlebars');
 var Collection = require('./entities');
 var POS = require('lib/utilities/global');
+var Backbone = require('backbone');
+var _ = require('lodash');
 
 var Tab = ItemView.extend({
   tagName: 'li',

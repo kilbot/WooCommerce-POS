@@ -3,7 +3,7 @@ var Collection = require('lib/config/collection');
 var Model = require('./model');
 var Utils = require('lib/utilities/utils');
 var _ = require('lodash');
-var entitiesChannel = bb.Radio.channel('entities');
+var Radio = require('backbone.radio');
 var IndexedDB = require('lib/config/indexeddb');
 
 module.exports = Collection.extend({
@@ -36,16 +36,16 @@ module.exports = Collection.extend({
 
   calcTotals: function() {
     var subtotal,
-      subtotal_tax,
-      total_tax = 0,
-      total;
+        subtotal_tax,
+        total_tax = 0,
+        total;
 
     // sum up the line totals
     subtotal      = this.sum('subtotal');
     subtotal_tax  = this.sum('subtotal_tax');
     total         = this.sum('total');
 
-    var tax = entitiesChannel.request('get', {
+    var tax = Radio.request('entities', 'get', {
       type: 'option',
       name: 'tax'
     });

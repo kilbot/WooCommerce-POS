@@ -31,7 +31,7 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Page {
     'list_users',
     'create_users',
     'edit_users',
-    'delete_users',
+//    'delete_users',
 
     // coupons
     'read_private_shop_coupons',

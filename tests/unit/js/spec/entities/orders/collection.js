@@ -15,14 +15,4 @@ describe('entities/orders/collection.js', function () {
     expect(this.collection).to.be.ok;
   });
 
-  describe('fetch', function () {
-
-    it('should call fetchLocalOrders with {local: true}', function() {
-      this.collection.fetchLocalOrders = stub();
-      this.collection.fetch({local:true});
-      expect(this.collection.fetchLocalOrders).to.have.been.called;
-    });
-
-  });
-
 });

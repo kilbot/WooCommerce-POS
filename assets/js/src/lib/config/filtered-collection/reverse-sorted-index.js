@@ -1,3 +1,4 @@
+/* jshint -W030 */
 var _ = require('lodash');
 
 function lookupIterator(value) {
@@ -18,3 +19,4 @@ function reverseSortedIndex(array, obj, iterator, context) {
 }
 
 module.exports = reverseSortedIndex;
+/* jshint +W030 */

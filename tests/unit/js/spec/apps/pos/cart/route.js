@@ -52,13 +52,6 @@ describe('apps/pos/cart/route.js', function () {
       expect(active.get('local_id')).equals(1);
     });
 
-    it('should create a new order if no orders present', function() {
-      this.route.collection.reset();
-      this.route.onFetch();
-      var active = this.route.collection.active;
-      expect(active).to.be.instanceof(Backbone.Model);
-    });
-
   });
 
 });

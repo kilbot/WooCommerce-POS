@@ -6,7 +6,10 @@ var _ = require('lodash');
 module.exports = DualModel.extend({
   name: 'order',
   defaults: function(){
-    var defaults = { note: '' },
+    var defaults = {
+          note: '',
+          order_discount: 0
+        },
         customers,
         default_customer;
 
@@ -103,8 +106,8 @@ module.exports = DualModel.extend({
    * process order
    */
   process: function(){
-    debug('process order ' + this.id);
-
+    debug('cart toJSON? + remove unnecessary');
+    this.serverSync();
   }
 
 });

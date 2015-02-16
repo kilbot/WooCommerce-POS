@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2015-02-10 08:43:03+00:00\n"
+"POT-Creation-Date: 2015-02-15 13:31:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,18 +14,35 @@ msgstr ""
 "Language-Team: Team Name <team@example.com>\n"
 "X-Generator: grunt-wp-i18n 0.4.9\n"
 
-#: includes/admin/class-wc-pos-menu.php:43
+#: includes/admin/class-wc-pos-menu.php:34
+#: includes/admin/class-wc-pos-menu.php:35
+msgid "POS"
+msgstr ""
+
 #: includes/admin/class-wc-pos-menu.php:44
+#: includes/admin/class-wc-pos-menu.php:45
 msgid "View POS"
 msgstr ""
 
-#: includes/admin/class-wc-pos-menu.php:52
+#: includes/admin/class-wc-pos-menu.php:53
 #: includes/admin/settings/views/checkout.php:88
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: includes/admin/settings/class-wc-pos-access.php:50
+#: includes/admin/settings/class-wc-pos-access.php:58
 msgid "POS Access"
+msgstr ""
+
+#: includes/admin/settings/class-wc-pos-hotkeys.php:23
+msgid "Help screen"
+msgstr ""
+
+#: includes/admin/settings/class-wc-pos-hotkeys.php:27
+msgid "Barcode search"
+msgstr ""
+
+#: includes/admin/settings/class-wc-pos-hotkeys.php:31
+msgid "Sync with server"
 msgstr ""
 
 #: includes/admin/settings/views/access.php:7
@@ -46,6 +63,7 @@ msgstr ""
 
 #: includes/admin/settings/views/access.php:12
 #: includes/admin/settings/views/checkout.php:50
+#: includes/admin/settings/views/hotkeys.php:6
 msgid ""
 "For more information please visit <a href=\"%1$s\" "
 "target=\"_blank\">%1$s</a>"
@@ -131,6 +149,30 @@ msgstr ""
 msgid "The default customer for POS orders, eg: Guest or create a new customer."
 msgstr ""
 
+#: includes/admin/settings/views/general.php:35
+msgid "Discount Quick Keys"
+msgstr ""
+
+#: includes/admin/settings/views/general.php:36
+msgid "Configure discount keys for quick numpad entry"
+msgstr ""
+
+#: includes/admin/settings/views/hotkeys.php:1
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: includes/admin/settings/views/hotkeys.php:4
+msgid ""
+"You can trigger certain events in WooCommerce POS using keyboard shortcuts "
+"(HotKeys)."
+msgstr ""
+
+#: includes/admin/settings/views/hotkeys.php:5
+msgid ""
+"HotKeys can also be used as a prefix for your barcode scanner or card "
+"reader."
+msgstr ""
+
 #: includes/admin/views/settings.php:12
 msgid ""
 "There has been an error loading the settings, please contact <a "
@@ -158,6 +200,11 @@ msgstr ""
 #: includes/admin/class-wc-pos-permalink.php:28
 msgctxt "Permalink setting, eg: /pos"
 msgid "POS base"
+msgstr ""
+
+#: includes/admin/settings/class-wc-pos-hotkeys.php:19
+msgctxt "keyboard shortcuts"
+msgid "HotKeys"
 msgstr ""
 
 #: includes/admin/settings/views/checkout.php:130

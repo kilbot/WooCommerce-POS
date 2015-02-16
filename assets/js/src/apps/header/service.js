@@ -4,6 +4,8 @@ var Menu = require('./views/menu');
 var Tabs = require('lib/components/tabs/view');
 var POS = require('lib/utilities/global');
 var $ = require('jquery');
+var Radio = require('backbone.radio');
+var routerChannel = Radio.channel('router');
 
 var Service = Service.extend({
   channelName: 'header',
@@ -13,22 +15,36 @@ var Service = Service.extend({
     this.header = options.headerContainer;
     this.menu = options.menuContainer;
     this.tabs = options.tabsContainer;
+
+    this.listenTo(routerChannel, {
+      'before:enter': this.onBeforeEnter
+    });
+
+    this.channel.comply({
+      'update:title': this.updateTitle,
+      'update:tab'  : this.updateTabs
+    }, this);
   },
 
   onStart: function(){
     this.showTitleBar();
     this.showMenu();
-    this.showTabs();
+  },
+
+  onBeforeEnter: function(router){
+    this.tabs.empty();
+    if(router.columns){
+      this.showTabs();
+    }
   },
 
   showTitleBar: function(){
     var view = new TitleBar();
-
-    this.channel.comply({
-      'update:title': view.update
-    }, view);
-
     this.header.show(view);
+  },
+
+  updateTitle: function(title){
+    this.header.currentView.update(title);
   },
 
   showMenu: function(){
@@ -47,13 +63,6 @@ var Service = Service.extend({
       collection: [{id: 'left'}, {id: 'right'}]
     });
 
-    this.channel.comply({
-      'update:tab' : function(attributes){
-        attributes = attributes || {};
-        view.collection.get(attributes.id).set(attributes);
-      }
-    }, view);
-
     this.listenTo(view.collection, 'change:active', function(model, active){
       if(active){
         $('#main').removeClass('left-active right-active');
@@ -62,6 +71,13 @@ var Service = Service.extend({
     });
 
     this.tabs.show(view);
+  },
+
+  updateTabs: function(attributes){
+    attributes = attributes || {};
+    if(this.tabs.hasView()){
+      this.tabs.currentView.collection.get(attributes.id).set(attributes);
+    }
   },
 
   onStop: function(){

@@ -8,10 +8,6 @@ module.exports = LayoutView.extend({
     options = options || {};
     this.order = options.order;
     this.template = _.template( $('#tmpl-cart').html() );
-
-    this.listenTo(this.listRegion, 'show', function(cart){
-      this.onShowCart(cart);
-    });
   },
 
   tagName: 'section',
@@ -32,14 +28,8 @@ module.exports = LayoutView.extend({
   /**
    * add/remove cart-empty class
    */
-  onShowCart: function(cart){
-    if(cart.isEmpty()){
-      this.$el.addClass('cart-empty');
-    }
-
-    this.listenToOnce(cart, 'add:child', function(){
-      this.$el.removeClass('cart-empty');
-    });
+  onShow: function(){
+    this.$el.toggleClass('cart-empty', !this.order);
   }
 
 });

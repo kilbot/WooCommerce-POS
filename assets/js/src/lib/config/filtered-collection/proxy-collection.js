@@ -1,3 +1,4 @@
+/* jshint -W071, -W074 */
 var _ = require('lodash');
 var Backbone = require('backbone');
 
@@ -90,3 +91,4 @@ function proxyCollection(from, target) {
 }
 
 module.exports = proxyCollection;
+/* jshint +W071, +W074 */

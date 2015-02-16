@@ -1,3 +1,4 @@
+/* jshint -W101, -W071, -W074 */
 var _ = require('lodash');
 var Backbone = require('backbone');
 var proxyCollection = require('./proxy-collection');
@@ -21,7 +22,7 @@ function updatePagination(options) {
 }
 
 function updateNumPages() {
-  var currentNumPages = this._totalPages;
+  //var currentNumPages = this._totalPages;
   var length = this.superset().length;
   var perPage = this.getPerPage();
   var totalPages = length % perPage === 0 ? length / perPage : Math.floor(length / perPage) + 1;
@@ -61,7 +62,7 @@ function difference(arrayA, arrayB) {
   }
 }
 
-function onAddRemove(model, collection, options) {
+function onAddRemove() {
   if (updateNumPages.call(this)) {
     return;
   }
@@ -169,3 +170,4 @@ var methods = {
 _.extend(Paginated.prototype, methods, Backbone.Events);
 
 module.exports = Paginated;
+/* jshint +W101, +W071, +W074 */

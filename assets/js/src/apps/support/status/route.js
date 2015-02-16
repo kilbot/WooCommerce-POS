@@ -11,6 +11,8 @@ var debug = require('debug')('systemStatus');
 
 var StatusRoute = Route.extend({
 
+  databases: ['products', 'orders'],
+
   initialize: function(options){
     this.container = options.container;
     this.collection = options.collection;
@@ -20,14 +22,15 @@ var StatusRoute = Route.extend({
   },
 
   fetch: function(){
-    this.products = Radio.request('entities', 'get', {
-      type: 'collection',
-      name: 'products'
+    // if not fetched, need to fetch all local records
+    var dfd = $.Deferred(),
+        fetched = _.map(this.databases, this.fetchDB, this);
+
+    $.when.apply($, fetched).done(function(){
+      dfd.resolve();
     });
 
-    if(this.products.isNew()){
-      return this.products.fetch();
-    }
+    return dfd;
   },
 
   render: function(){
@@ -75,16 +78,29 @@ var StatusRoute = Route.extend({
   },
 
   storageStatus: function(){
-    var title = polyglot.t('titles.products'),
-      count = this.products.length,
-      message = title + ': ' + count;
-    return {
-      message : message,
-      button  : {
-        action: 'clear-products',
-        label : 'Clear'
-      }
-    };
+    return _.map(this.databases, function(db){
+      var title = polyglot.t('titles.' + db),
+        count = this[db].length,
+        message = title + ': ' + count;
+      return {
+        message : message,
+        button  : {
+          action: 'clear-' + db,
+          label : 'Clear'
+        }
+      };
+    }, this);
+  },
+
+  fetchDB: function(db){
+    this[db] = Radio.request('entities', 'get', {
+      type: 'collection',
+      name: db
+    });
+
+    if(this[db].isNew()){
+      return this[db].fetch();
+    }
   },
 
   clearDB: function(db){

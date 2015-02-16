@@ -1,3 +1,4 @@
+/* jshint -W071, -W003, -W021 */
 var _ = require('lodash');
 var Backbone = require('backbone');
 var FilteredCollection = require('./filtered-collection/filtered');
@@ -137,3 +138,4 @@ Obscura.FilteredCollection = FilteredCollection;
 Obscura.SortedCollection = SortedCollection;
 Obscura.PaginatedCollection = PaginatedCollection;
 module.exports = Obscura;
+/* jshint +W071, +W003, +W021 */

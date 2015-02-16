@@ -4,7 +4,10 @@ var HotKeys = require('lib/components/hotkeys/behavior');
 var Dropdown = require('lib/components/dropdown/behavior');
 var Radio = require('backbone.radio');
 var HelpModal = require('./modals/help');
+var BrowserModal = require('./modals/browser');
 var $ = require('jquery');
+var _ = require('lodash');
+var Modernizr = global['Modernizr'];
 
 var View = ItemView.extend({
   template: function(){
@@ -24,7 +27,7 @@ var View = ItemView.extend({
   },
 
   keyEvents: {
-    'help': 'showHelpModal'
+    'help': 'browserCheck'
   },
 
   behaviors: {
@@ -49,6 +52,16 @@ var View = ItemView.extend({
   showHelpModal: function() {
     var view = new HelpModal();
     Radio.request('modal', 'open', view);
+  },
+
+  browserCheck: function(){
+    var props = ['hi', 'flexbox', 'indexeddb', 'localstorage'],
+        pass = _.every(props, function(prop){ return Modernizr[prop]; });
+
+    if(!pass){
+      var view = new BrowserModal();
+      Radio.request('modal', 'open', view);
+    }
   }
 
 });

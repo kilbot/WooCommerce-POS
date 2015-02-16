@@ -11,24 +11,6 @@ var bb = require('backbone');
 var Router = Router.extend({
   columns: 2,
 
-  initialize: function(options) {
-    this.container = options.container;
-    this.channel.comply('show:cart', this.showCart, this);
-  },
-
-  onBeforeEnter: function() {
-    this.layout = new LayoutView();
-    this.container.show(this.layout);
-
-    if(bb.history.getFragment() === ''){
-      Radio.command('header', 'update:tab', {id:'left', active: true});
-    } else {
-      Radio.command('header', 'update:tab', {id:'right', active: true});
-    }
-
-    Radio.command('header', 'update:title', '');
-  },
-
   routes: {
     ''            : 'showCart',
     'cart'        : 'showCart',
@@ -38,10 +20,28 @@ var Router = Router.extend({
     'receipt/:id' : 'showReceipt'
   },
 
+  initialize: function(options) {
+    this.container = options.container;
+    this.channel.comply('show:cart', this.showCart, this);
+  },
+
+  onBeforeEnter: function() {
+    this.layout = new LayoutView();
+    this.container.show(this.layout);
+  },
+
   onBeforeRoute: function(){
     if(!this.layout.leftRegion.hasView()){
       this.showProducts();
     }
+
+    if(bb.history.getFragment() === ''){
+      Radio.command('header', 'update:tab', {id:'left', active: true});
+    } else {
+      Radio.command('header', 'update:tab', {id:'right', active: true});
+    }
+
+    Radio.command('header', 'update:title', '');
   },
 
   showProducts: function(){

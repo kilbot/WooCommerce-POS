@@ -125,13 +125,10 @@ module.exports = POS.Entities = Service.extend({
   },
 
   addToCart: function(options) {
-    var orders = this.getCollection({ name: 'orders' });
-    var order = orders.active;
-    if(order && order.cart){
+    var order = this.getCollection({ name: 'orders' }).getActiveOrder();
+    $.when(order.cart._isReady).then(function() {
       order.cart.addToCart(options);
-    } else {
-      debug('no active order or cart');
-    }
+    });
   }
 
 });
