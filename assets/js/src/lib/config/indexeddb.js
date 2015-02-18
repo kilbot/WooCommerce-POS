@@ -38,6 +38,7 @@ var noop = function () {
 Backbone.IndexedDB = function IndexedDB(options, parent) {
   var that = this;
   this.parent = parent;  // reference to the model or collection
+  this.parent._isReady = $.Deferred();
 
   var defaultReadyHandler = function () {
     // console.log('idb:ready this:', this);  // <IDBStore>
@@ -46,6 +47,7 @@ Backbone.IndexedDB = function IndexedDB(options, parent) {
     // By default, make the Backbone.IndexedDB available through
     // `parent.indexedDB` that.parent.indexedDB = that;
     // Fire ready event on parent model or collection
+    that.parent._isReady.resolve();
     that.parent.trigger('idb:ready', that);
   };
 

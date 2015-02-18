@@ -34,30 +34,12 @@ module.exports = POS.DualCollection = Collection.extend({
     SYNCHRONIZED        : 'SYNCHRONIZED'
   },
 
-  constructor: function() {
-    Collection.apply(this, arguments);
-
-    this._isReady = $.Deferred();
-    this.once('idb:ready', function() {
-      this._isReady.resolve();
-    });
-
-  },
-
   url: function(){
     var wc_api = Radio.request('entities', 'get', {
       type: 'option',
       name: 'wc_api'
     });
     return wc_api + this.name;
-  },
-
-  fetch: function(options){
-    var self = this;
-    return $.when(this._isReady).then(function() {
-      debug('fetching: ' + self.name);
-      return Collection.prototype.fetch.call(self, options);
-    });
   },
 
   state: {

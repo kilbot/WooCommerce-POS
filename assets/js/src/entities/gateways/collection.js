@@ -4,8 +4,12 @@ var $ = require('jquery');
 
 var gateways = [];
 $('.tmpl-checkout-gateways').each(function(){
-  var method = $(this).data('gateway');
-  gateways.push({id: method});
+  gateways.push({
+    id    : $(this).data('gateway'),
+    title : $(this).data('title'),
+    icon  : $(this).data('icon'),
+    active: (1 === $(this).data('default'))
+  });
 });
 
 module.exports = Collection.extend({

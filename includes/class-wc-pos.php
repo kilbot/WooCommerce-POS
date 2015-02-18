@@ -59,6 +59,7 @@ class WC_POS {
     $i18n     = new WC_POS_i18n();
     $gateways = new WC_POS_Gateways();
     new WC_POS_Products();
+    new WC_POS_Orders();
     new WC_POS_Customers();
 
     // admin only

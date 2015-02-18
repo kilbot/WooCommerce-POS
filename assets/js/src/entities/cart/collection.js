@@ -7,6 +7,7 @@ var Radio = require('backbone.radio');
 var IndexedDB = require('lib/config/indexeddb');
 
 module.exports = Collection.extend({
+  name: 'cart',
   model: Model,
 
   comparator: function( model ){
@@ -94,28 +95,41 @@ module.exports = Collection.extend({
 
   /**
    * add/increase item
+   * also prune attributes
    */
   addToCart: function(options){
     options = options || {};
-    var attributes,
-        model;
+    var attributes = options.model ? options.model.attributes : options;
 
-    if(options.model){
-      attributes = options.model.attributes;
-    } else {
-      attributes = options;
+    if(attributes.id) {
+      var model = this.findWhere({ product_id: attributes.id });
+      if(model) { attributes.local_id = model.id; }
+      attributes.product_id = attributes.id;
+      delete attributes.id;
     }
 
-    if( attributes.id ) {
-      model = this.findWhere({ id: attributes.id });
-    }
+    attributes.order = this.order_id;
 
-    if( model ) {
-      model.quantity('increase');
-    } else {
-      model = this.add(attributes);
-    }
+    var props = [
+      'order',
+      'title',
+      'local_id',
+      'product_id',
+      'type',
+      'price',
+      'regular_price',
+      'sale_price',
+      'taxable',
+      'tax_status',
+      'tax_class',
+      'attributes',
+      'method_title', // shipping
+      'method_id'     // shipping
+    ];
 
+    var model = this.add(_.pick(attributes, props));
+    model.quantity('increase');
     model.trigger('focus');
   }
+
 });

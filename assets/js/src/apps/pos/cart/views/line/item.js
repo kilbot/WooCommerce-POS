@@ -46,22 +46,28 @@ module.exports = FormView.extend({
   },
 
   events: {
-    'click @ui.remove' : 'removeItem'
+    'click @ui.remove': 'removeItem'
   },
 
   triggers: {
-    'click @ui.more'   : 'drawer:toggle'
+    'click @ui.more'  : 'drawer:toggle'
+  },
+
+  modelEvents: {
+    'change:title'        : 'save',
+    'change:method_title' : 'save'
   },
 
   bindings: {
-    'input[name="qty"]' : {
-      observe: 'qty',
+    'input[name="quantity"]' : {
+      observe: 'quantity',
       onGet: function(value) {
         return Utils.formatNumber(value, 'auto');
       },
       onSet: Utils.unformat
     },
-    'strong.action-edit-title': 'title',
+    '*[data-name="title"]': 'title',
+    '*[data-name="method_title"]': 'method_title',
     'input[name="item_price"]': {
       observe: 'item_price',
       onGet: Utils.formatNumber,
@@ -83,12 +89,16 @@ module.exports = FormView.extend({
     }
   },
 
+  save: function(){
+    this.model.save();
+  },
+
   remove: function() {
     // Remove the validation binding
     bb.Validation.unbind(this);
 
     // disable button
-    this.$('.action-remove').attr( 'disabled', 'true' );
+    this.$('[data-action="remove"]').attr( 'disabled', 'true' );
 
     // add bg colour and fade out
     this.$el.addClass('bg-danger').closest('ul').addClass('animating');

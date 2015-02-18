@@ -63,7 +63,7 @@
     "os_version"      : "8.1"
   },
   "opera_12.16_win_8_1": {
-    "human"           : "Chrome 39 on Windows 7",
+    "human"           : "Opera 12.16 on Windows 7",
     "browser_version" : "12.16",
     "browser"         : "Opera",
     "os"              : "Windows",

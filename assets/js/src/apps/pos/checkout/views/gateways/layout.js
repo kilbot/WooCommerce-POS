@@ -25,6 +25,12 @@ module.exports = LayoutView.extend({
     this.gatewayRegion.show(view);
   },
 
+  onShow: function(){
+    if(this.model.get('active')){
+      this.openDrawer();
+    }
+  },
+
   openDrawer: function(){
     var view = new DrawerView({
       model: this.model

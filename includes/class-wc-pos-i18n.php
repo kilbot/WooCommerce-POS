@@ -277,8 +277,8 @@ class WC_POS_i18n {
       'receipt'   => /* translators: woocommerce */ __( 'Receipt', 'woocommerce' ),
       'browser'   => _x( 'Browser', 'system status: browser capabilities', 'woocommerce-pos' ),
       'hotkeys'   => _x( 'HotKeys', 'keyboard shortcuts', 'woocommerce-pos' ),
+      'to-pay'    => __( 'To Pay', 'woocommerce-pos' )
     );
-
 
     $translations['buttons'] = array(
       'save'      => /* translators: woocommerce */ __( 'Save Changes', 'woocommerce' ),
@@ -290,6 +290,8 @@ class WC_POS_i18n {
       'send'      => /* translators: wordpress   */ __( 'Submit' ),
       'clear'     => _x( 'Clear', 'system status: delete local records', 'woocommerce-pos' ),
       'restore'   => _x( 'Restore defaults', 'restore default settings', 'woocommerce-pos' ),
+      'return-to-sale'  => __( 'Return to Sale', 'woocommerce-pos' ),
+      'process-payment' => __( 'Process Payment', 'woocommerce-pos' )
     );
 
     $translations['messages'] = array(

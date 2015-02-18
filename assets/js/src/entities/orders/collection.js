@@ -3,6 +3,7 @@ var Model = require('./model');
 var debug = require('debug')('ordersCollection');
 var $ = require('jquery');
 var IndexedDB = require('lib/config/indexeddb');
+var Radio = require('backbone.radio');
 
 module.exports = DualCollection.extend({
   name: 'orders',

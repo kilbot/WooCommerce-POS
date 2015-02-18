@@ -54,7 +54,7 @@ module.exports = DualModel.extend({
 
     this.listenTo(cart, {
       'update:totals': function(totals){
-        this.save(totals, { success: this.onSaveSuccess });
+        this.save(totals, { success: this.onSaveSuccess, wait: true });
       },
       'remove': function(){
         if(cart.length === 0){
@@ -106,8 +106,30 @@ module.exports = DualModel.extend({
    * process order
    */
   process: function(){
-    debug('cart toJSON? + remove unnecessary');
+    this.processCart();
     this.serverSync();
+  },
+
+  processCart: function(){
+    var obj = {
+      product : [],
+      shipping: [],
+      fee     : []
+    };
+
+    this.cart.each(function(model){
+      var type = model.get('type');
+      if(type !== 'shipping' && type !== 'fee'){
+        type = 'product';
+      }
+      obj[type].push(model.toJSON());
+    });
+
+    this.set({
+      line_items    : obj.product,
+      shipping_lines: obj.shipping,
+      fee_lines     : obj.fee
+    });
   }
 
 });

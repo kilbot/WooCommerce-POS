@@ -54,8 +54,8 @@ module.exports = FormView.extend({
         }
       }
     },
-    'select[name="shipping_method"]': {
-      observe: 'shipping_method',
+    'select[name="method_id"]': {
+      observe: 'method_id',
       selectOptions: {
         collection: function(){
           return Radio.request('entities', 'get', {

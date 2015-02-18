@@ -26,16 +26,21 @@ var NumpadBehavior = Behavior.extend({
   },
 
   numpadPopover: function(e){
+    var input = $(e.currentTarget);
+
     var numpad = new NumpadView({
-      target    : $(e.currentTarget),
-      model     : this.view.model
+      target    : input,
+      model     : this.view.model,
+      parent    : this.view
     });
+
     var options = {
-      target    : $(e.currentTarget),
+      target    : input,
       view      : numpad,
       className : 'popover popover-numpad popover-dark-bg',
-      placement : 'bottom auto'
+      placement : 'bottom'
     };
+
     Radio.request('popover', 'open', options);
   }
 

@@ -39,7 +39,8 @@
 								@include clearfix();
 								label {
 									float: left;
-									margin-right: $spacing/3
+									margin-right: $spacing/3;
+                  line-height: 2.4;
 								}
 							}
 						}

@@ -1,36 +1,23 @@
 var Route = require('lib/config/route');
 var LayoutView = require('./views/layout');
-var Items = require('./views/items');
+var ItemsView = require('./views/items');
 var TotalsView = require('./views/totals');
 var ActionsView = require('./views/actions');
 var NotesView = require('./views/notes');
 var CustomerSelect = require('lib/components/customer-select/view');
 var Radio = require('backbone.radio');
-//var debug = require('debug')('cart');
+var debug = require('debug')('cart');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
 var accounting = require('accounting');
 var polyglot = require('lib/utilities/polyglot');
-var routerChannel = Radio.channel('router');
 
 var CartRoute = Route.extend({
 
   initialize: function( options ) {
     options = options || {};
-    this.container = options.container;
-    this.collection = Radio.request('entities', 'get', {
-      type: 'collection',
-      name: 'orders'
-    });
-
-    // re-init cart if this.order is removed
-    this.listenTo(this.collection, 'remove', function(order){
-      if(order.id === this.order.id){
-        this.order = undefined;
-        this.onFetch();
-        _.delay(_.bind(this.render, this), 500);
-      }
-    });
+    this.container  = options.container;
+    this.collection = options.collection;
 
     // cart label
     Radio.command('header', 'update:tab', {
@@ -46,7 +33,9 @@ var CartRoute = Route.extend({
   },
 
   onFetch: function(id){
-    if(id){
+    if(id === 'new'){
+      this.order = undefined;
+    } else if(id){
       this.order = this.collection.get(id);
     } else if(this.collection.length > 0){
       this.order = this.collection.at(0);
@@ -54,6 +43,11 @@ var CartRoute = Route.extend({
 
     // set active order: important for addToCart
     this.collection.active = this.order;
+
+    // update tab with order total
+    if(this.order){
+      this.listenTo(this.order, 'change:total', this.updateTabLabel);
+    }
   },
 
   render: function() {
@@ -68,7 +62,7 @@ var CartRoute = Route.extend({
 
   onShow: function(){
     if(!this.order){
-      return this.showEmpty();
+      return this.noActiveOrder();
     }
 
     this.showCart();
@@ -76,14 +70,13 @@ var CartRoute = Route.extend({
     this.showCustomer();
     this.showActions();
     this.showNotes();
-
-    this.listenTo(this.order, 'change:total', this.updateTabLabel);
   },
 
   /**
    * Add/update tab label
    */
   updateTabLabel: _.debounce(function(model, value) {
+    console.log('update:tab');
     Radio.command('header', 'update:tab', {
       id: 'right',
       label: polyglot.t('titles.cart') + ' - ' + accounting.formatMoney(value)
@@ -93,16 +86,22 @@ var CartRoute = Route.extend({
   /**
    * Empty Cart
    */
-  showEmpty: function(){
-    var view = new Items.Empty();
+  noActiveOrder: function(){
+    var view = new ItemsView();
     this.layout.listRegion.show(view);
+    _.invoke([
+      this.layout.totalsRegion,
+      this.layout.customerRegion,
+      this.layout.actionsRegion,
+      this.layout.notesRegion
+    ], 'empty');
   },
 
   /**
    * Cart Items
    */
   showCart: function() {
-    var view = new Items.View({
+    var view = new ItemsView({
       collection: this.order.cart
     });
     this.layout.listRegion.show(view);
@@ -162,16 +161,20 @@ var CartRoute = Route.extend({
         this.layout.totalsRegion.currentView.showDiscountRow();
       },
       fee: function(title){
-        this.order.cart.addToCart({title: title, type: 'fee'});
+        this.order.cart.addToCart({
+          type  : 'fee',
+          title : title
+        });
       },
       shipping: function(title){
-        this.order.cart.addToCart({title: title, type: 'shipping'});
+        this.order.cart.addToCart({
+          type        : 'shipping',
+          method_title: title,
+          method_id   : ''         // todo: settings
+        });
       },
       checkout: function(){
-        this.navigate('checkout/' + this.order.id, {
-          trigger: true,
-          replace: true
-        });
+        this.navigate('checkout/' + this.order.id, { trigger: true });
       }
     });
 

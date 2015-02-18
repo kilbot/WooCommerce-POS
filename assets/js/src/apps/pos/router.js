@@ -28,6 +28,16 @@ var Router = Router.extend({
   onBeforeEnter: function() {
     this.layout = new LayoutView();
     this.container.show(this.layout);
+
+    this.orders = Radio.request('entities', 'get', {
+      type: 'collection',
+      name: 'orders'
+    });
+
+    this.listenTo(this.orders, 'add remove', function(){
+      if(this.orders.isNew()){ return; }
+      this.execute(this.showCart);
+    });
   },
 
   onBeforeRoute: function(){
@@ -53,19 +63,28 @@ var Router = Router.extend({
 
   showCart: function() {
     return new CartRoute({
-      container : this.layout.rightRegion
+      container : this.layout.rightRegion,
+      collection: this.orders
     });
   },
 
   showCheckout: function() {
     return new CheckoutRoute({
-      container : this.layout.rightRegion
+      container : this.layout.rightRegion,
+      collection: this.orders
     });
   },
 
   showReceipt: function() {
     return new ReceiptRoute({
       container : this.layout.rightRegion
+    });
+  },
+
+  getCollection: function(name){
+    return Radio.request('entities', 'get', {
+      type: 'collection',
+      name: name
     });
   }
 

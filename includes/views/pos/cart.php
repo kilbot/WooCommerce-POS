@@ -25,9 +25,13 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item">
-	<div class="qty"><input type="text" name="qty" data-label="<?php /* translators: woocommerce */ _e( 'Quantity', 'woocommerce' ); ?>" data-numpad="quantity" class="btn autogrow"></div>
+	<div class="qty"><input type="text" name="quantity" data-label="<?php /* translators: woocommerce */ _e( 'Quantity', 'woocommerce' ); ?>" data-numpad="quantity" class="btn autogrow"></div>
 	<div class="title">
-		<strong class="action-edit-title" contenteditable="true">{{title}}</strong>
+    {{#if method_title}}
+		<strong data-name="method_title" contenteditable="true">{{method_title}}</strong>
+    {{else}}
+    <strong data-name="title" contenteditable="true">{{title}}</strong>
+    {{/if}}
 		{{#with attributes}}
 		<dl>
 			{{#each this}}
@@ -45,7 +49,7 @@
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item-drawer">
 
-	{{#if id}}
+	{{#if product_id}}
 	<div class="col-1"><label for="regular_price"><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
 		<input name="regular_price" id="regular_price" class="autogrow btn" type="text" data-numpad="money" data-label="<?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>" />
@@ -53,9 +57,9 @@
 	{{/if}}
 
 	{{#is type 'shipping'}}
-	<div class="col-1"><label for="shipping_method"><?php /* translators: woocommerce */ _e( 'Shipping Method', 'woocommerce' ); ?>:</label></div>
+	<div class="col-1"><label for="method_id"><?php /* translators: woocommerce */ _e( 'Shipping Method', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
-		<select name="shipping_method" id="shipping_method"></select>
+		<select name="method_id" id="method_id"></select>
 	</div>
 	{{/is}}
 
@@ -65,7 +69,7 @@
 		<select name="tax_class" id="tax_class" {{#unless taxable}}disabled{{/unless}}></select>
 	</div>
 
-	{{#if id}}
+	{{#if product_id}}
 	<div class="col-1"><?php /* translators: woocommerce */ _e( 'Add&nbsp;meta', 'woocommerce' ); ?>:</div>
 	<div class="col-2">
 		{{#each meta}}

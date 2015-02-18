@@ -45,7 +45,7 @@ module.exports = LayoutView.extend({
       container : 'body',
       content   : ' ',
       delay     : 0,
-      placement : 'auto right',
+      placement : 'right',
       template  : this.el,
       title     : '',
       trigger   : 'manual'

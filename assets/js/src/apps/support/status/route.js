@@ -11,7 +11,7 @@ var debug = require('debug')('systemStatus');
 
 var StatusRoute = Route.extend({
 
-  databases: ['products', 'orders'],
+  databases: ['products', 'orders', 'cart'],
 
   initialize: function(options){
     this.container = options.container;

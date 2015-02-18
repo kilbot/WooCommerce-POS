@@ -1,4 +1,7 @@
- /* apply a natural box layout model to all elements, but allowing components to change */
+html, body {
+ height: 100%;
+}
+
 html {
   box-sizing: border-box;
   font-size: 10px;

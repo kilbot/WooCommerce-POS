@@ -34,12 +34,11 @@ describe('entities/cart/model.js', function () {
   });
 
   it('should have a quantity convenience method ', function() {
-    // model starts with qty = 1
-    expect(this.model.get('qty')).equals(1);
+    expect(this.model.get('quantity')).equals(0);
     this.model.quantity('increase');
-    expect(this.model.get('qty')).equals(2);
+    expect(this.model.get('quantity')).equals(1);
     this.model.quantity('decrease');
-    expect(this.model.get('qty')).equals(1);
+    expect(this.model.get('quantity')).equals(0);
   });
 
   it('should have sum convenience method ', function() {
@@ -53,19 +52,19 @@ describe('entities/cart/model.js', function () {
 
   it("should initiate with the correct values", function() {
 
-    expect(this.model.get('qty')).equal(1);
+    expect(this.model.get('quantity')).equal(0);
     expect(this.model.get('item_price')).equal(2);
-    expect(this.model.get('total')).equal(2);
+    expect(this.model.get('total')).equal(0);
 
   });
 
   it("should re-calculate on quantity change to any floating point number", function() {
 
-    var qty = _.random(10, true);
-    this.model.set( { 'qty': qty } );
+    var quantity = _.random(10, true);
+    this.model.set( { 'quantity': quantity } );
 
-    expect(this.model.get('qty')).equal(qty);
-    expect(this.model.get('total')).equal( parseFloat( (2 * qty).toFixed(4) ) );
+    expect(this.model.get('quantity')).equal(quantity);
+    expect(this.model.get('total')).equal( parseFloat( (2 * quantity).toFixed(4) ) );
 
   });
 
@@ -78,9 +77,9 @@ describe('entities/cart/model.js', function () {
       //tax_total_display: 'itemized'
     };
 
-    // dummy product id 99, qty 2, regular price $3, on sale for $2
+    // dummy product id 99, quantity 2, regular price $3, on sale for $2
     this.model.set( this.products[0] );
-    this.model.set({ 'qty': 2, 'taxable': true });
+    this.model.set({ 'quantity': 2, 'taxable': true });
 
     expect(this.model.get('item_price')).equal(2);
     expect(this.model.get('subtotal')).equal(6);
@@ -101,8 +100,8 @@ describe('entities/cart/model.js', function () {
       //tax_total_display: 'itemized'
     };
 
-    // dummy product id 99, qty 2, regular price $3, on sale for $2
-    this.model.set({ 'qty': 2, 'taxable': true });
+    // dummy product id 99, quantity 2, regular price $3, on sale for $2
+    this.model.set({ 'quantity': 2, 'taxable': true });
 
     expect(this.model.get('item_price')).equal(2);
     expect(this.model.get('subtotal')).equal(5.2632);
@@ -123,7 +122,7 @@ describe('entities/cart/model.js', function () {
   //    tax_total_display: 'itemized'
   //  };
   //
-  //  this.model.set({ 'qty': 3, 'taxable': true });
+  //  this.model.set({ 'quantity': 3, 'taxable': true });
   //
   //  expect(this.model.get('item_tax')).equal(0.28);
   //  expect(this.model.get('item_tax_2')).equal(0.18);
@@ -143,7 +142,7 @@ describe('entities/cart/model.js', function () {
   //    tax_total_display: 'itemized'
   //  };
   //
-  //  this.model.set({ 'qty': 3, 'taxable': true });
+  //  this.model.set({ 'quantity': 3, 'taxable': true });
   //
   //  expect(this.model.get('item_tax')).equal(0.2456);
   //  expect(this.model.get('item_tax_2')).equal(0.1579);
@@ -164,7 +163,7 @@ describe('entities/cart/model.js', function () {
   //  };
   //
   //  // set new price to $1.50
-  //  this.model.set( { 'taxable': true, 'qty': 2, 'item_price': 1.5 } );
+  //  this.model.set( { 'taxable': true, 'quantity': 2, 'item_price': 1.5 } );
   //
   //  expect(this.model.get('total_tax')).equal(0.42);
   //  expect(this.model.get('line_tax_2')).equal(0.27);
@@ -182,7 +181,7 @@ describe('entities/cart/model.js', function () {
   //  };
   //
   //  // set new price to $1.50
-  //  this.model.set( { 'taxable': true, 'qty': 2, 'item_price': 1.5 } );
+  //  this.model.set( { 'taxable': true, 'quantity': 2, 'item_price': 1.5 } );
   //
   //  expect(this.model.get('total_tax')).equal(0.3684);
   //  expect(this.model.get('line_tax_2')).equal(0.2368);

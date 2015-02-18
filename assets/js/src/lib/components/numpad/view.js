@@ -3,6 +3,7 @@ var Tmpl = require('./numpad.hbs');
 var hbs = require('handlebars');
 var POS = require('lib/utilities/global');
 var accounting = require('accounting');
+var AutoGrow = require('lib/components/autogrow/behavior');
 
 var View = FormView.extend({
   template: hbs.compile(Tmpl),
@@ -10,6 +11,7 @@ var View = FormView.extend({
   initialize: function(options){
     options = options || {};
     this.target = options.target;
+    this.bindings = options.parent.bindings;
   },
 
   ui: {
@@ -24,12 +26,20 @@ var View = FormView.extend({
     'click @ui.keys'  : 'keys'
   },
 
+  behaviors: {
+    AutoGrow: {
+      behaviorClass: AutoGrow
+    }
+  },
+
   templateHelpers: function(){
     var data = {
-      label: this.target.data('label'),
+      numpad: this.target.data('numpad'),
+      label : this.target.data('label'),
+      name  : this.target.attr('name'),
       currency: {
-        symbol: accounting.settings.currency.symbol,
-        decimal: accounting.settings.currency.decimal
+        symbol  : accounting.settings.currency.symbol,
+        decimal : accounting.settings.currency.decimal
       }
     };
 

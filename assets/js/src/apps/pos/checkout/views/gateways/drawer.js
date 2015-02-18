@@ -1,7 +1,7 @@
 var FormView = require('lib/config/form-view');
 var hbs = require('handlebars');
 var $ = require('jquery');
-//var bb =
+var Numpad = require('lib/components/numpad/behavior');
 
 module.exports = FormView.extend({
   initialize: function() {
@@ -12,7 +12,9 @@ module.exports = FormView.extend({
   },
 
   behaviors: {
-
+    Numpad: {
+      behaviorClass: Numpad
+    }
   },
 
   ui: {

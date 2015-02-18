@@ -5,7 +5,7 @@ var POS = require('lib/utilities/global');
 var LayoutView = require('./views/layout');
 var StatusView = require('./views/status');
 var GatewaysView = require('./views/gateways');
-var ActionsView = require('./views/actions');
+var Buttons = require('lib/components/buttons/view');
 var polyglot = require('lib/utilities/polyglot');
 
 var CheckoutRoute = Route.extend({
@@ -13,10 +13,7 @@ var CheckoutRoute = Route.extend({
   initialize: function(options){
     options = options || {};
     this.container = options.container;
-    this.collection = Radio.request('entities', 'get', {
-      type: 'collection',
-      name: 'orders'
-    });
+    this.collection = options.collection;
 
     // checkout label
     Radio.command('header', 'update:tab', {
@@ -26,10 +23,9 @@ var CheckoutRoute = Route.extend({
   },
 
   fetch: function(){
-    //if (this.collection.isNew()) {
-    this.collection.reset();
-    return this.collection.fetch({ local: true });
-    //}
+    if(this.collection.isNew()){
+      return this.collection.fetch();
+    }
   },
 
   onFetch: function(id){
@@ -69,16 +65,24 @@ var CheckoutRoute = Route.extend({
   },
 
   showActions: function(){
-    var view = new ActionsView();
+    var view = new Buttons({
+      buttons: [{
+        action: 'return-to-sale',
+        className: 'btn pull-left'
+      },{
+        action: 'process-payment',
+        className: 'btn btn-success'
+      }]
+    });
 
     this.listenTo(view, {
-      'close': function(){
+      'action:return-to-sale': function(){
         this.navigate('cart/' + this.order.id, {
           trigger: true,
           replace: true
         });
       },
-      'process': function(){
+      'action:process-payment': function(){
         this.order.process();
       }
     });
