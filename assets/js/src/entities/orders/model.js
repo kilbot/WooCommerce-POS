@@ -2,6 +2,7 @@ var DualModel = require('lib/config/dual-model');
 var Radio = require('backbone.radio');
 var debug = require('debug')('orderModel');
 var _ = require('lodash');
+var Utils = require('lib/utilities/utils');
 
 module.exports = DualModel.extend({
   name: 'order',
@@ -42,28 +43,19 @@ module.exports = DualModel.extend({
    * Attach cart
    */
   attachCart: function(){
-    var cart = Radio.request('entities', 'get', {
+    this.cart = Radio.request('entities', 'get', {
       init : true,
       type : 'collection',
       name : 'cart'
     });
 
-    this.listenToOnce(cart, 'idb:ready', function() {
-      cart.fetchCartItems({order_id: this.id});
-    });
-
-    this.listenTo(cart, {
-      'update:totals': function(totals){
-        this.save(totals, { success: this.onSaveSuccess, wait: true });
-      },
-      'remove': function(){
-        if(cart.length === 0){
-          this.destroy();
-        }
+    $.when(this.cart._isReady).then(function(cart){
+      if(cart){
+        cart.fetchCartItems({order_id: this.id});
       }
     });
 
-    this.cart = cart;
+    this.listenTo(this.cart, 'add remove change', this.calcTotals);
   },
 
   /**
@@ -76,6 +68,40 @@ module.exports = DualModel.extend({
       name : 'gateways'
     });
     this.gateways.fetch();
+  },
+
+  calcTotals: function(){
+    var subtotal,
+        subtotal_tax,
+        total_tax = 0,
+        total;
+
+    // special case, no items in cart
+    if(this.cart.length === 0){
+      return this.destroy();
+    }
+
+    // sum up the line totals
+    subtotal      = this.cart.sum('subtotal');
+    subtotal_tax  = this.cart.sum('subtotal_tax');
+    total         = this.cart.sum('total');
+
+    var tax = this.collection ? this.collection.tax : undefined;
+    if( tax && tax.calc_taxes === 'yes' ) {
+      total_tax   = this.cart.sum('total_tax');
+    }
+
+    // create totals object
+    var totals = {
+      'total'         : Utils.round( total, 4 ),
+      'subtotal'      : Utils.round( subtotal, 4 ),
+      'subtotal_tax'  : Utils.round( subtotal_tax, 4 ),
+      'cart_discount' : Utils.round( subtotal - total, 4 ),
+      'total_tax'     : Utils.round( total_tax, 4 ),
+      'tax_lines'     : this.cart.itemizedTax()
+    };
+
+    this.save(totals, { success: this.onSaveSuccess, wait: true });
   },
 
   /**
@@ -107,7 +133,8 @@ module.exports = DualModel.extend({
    */
   process: function(){
     this.processCart();
-    this.serverSync();
+    //this.serverSync();
+    console.log(this.toJSON());
   },
 
   processCart: function(){

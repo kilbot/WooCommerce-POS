@@ -14,7 +14,7 @@ module.exports = Model.extend({
     'total'         : 0,
     'item_price'    : 0,
     'item_tax'      : 0,
-    'quantity'      : 0,
+    'quantity'      : 1,
     'taxable'       : true,
     'tax_class'     : ''
   },
@@ -33,11 +33,6 @@ module.exports = Model.extend({
       name: 'tax_rates'
     }) || {};
 
-    // set item price on init
-    if( this.get('item_price') === 0 ) {
-      this.set({ 'item_price': parseFloat( this.get('price') ) });
-    }
-
     // update on change to quantity, item_price ...
     this.on(
       'change:quantity ' +
@@ -46,15 +41,30 @@ module.exports = Model.extend({
       'change:taxable ' +
       'change:tax_class',
       this.updateLineTotals );
+
+    // set item price on init, this wil kick off updateLineTotals
+    if( this.get('item_price') === 0 ) {
+      this.set({ 'item_price': parseFloat( this.get('price') ) });
+    }
   },
 
   updateLineTotals: function() {
     var quantity        = this.get('quantity'),
         item_price      = this.get('item_price'),
         type            = this.get('type'),
-        regular_price   = parseFloat( this.get('regular_price') ),
-        item_tax        = this.calcTax( item_price, quantity),
-        item_subtotal_tax = this.calcTax( regular_price );
+        regular_price   = parseFloat( this.get('regular_price') );
+
+    // calc taxes
+    var item_tax = this.calcTax({
+      price    : item_price,
+      quantity : quantity
+    });
+
+    var item_subtotal_tax = this.calcTax({
+      price    : regular_price,
+      quantity : quantity,
+      subtotal : true
+    });
 
     // if shipping or fee
     if( type === 'shipping' || type === 'fee' ) {
@@ -68,8 +78,8 @@ module.exports = Model.extend({
     }
 
     this.save({
-      'item_subtotal'     : regular_price,
-      'item_subtotal_tax' : item_subtotal_tax,
+      'item_subtotal'     : Utils.round( regular_price, 4 ),
+      'item_subtotal_tax' : Utils.round( item_subtotal_tax, 4 ),
       'item_tax'          : Utils.round( item_tax, 4 ),
       'subtotal'          : Utils.round( regular_price * quantity, 4 ),
       'subtotal_tax'      : Utils.round( item_subtotal_tax * quantity, 4 ),
@@ -83,17 +93,17 @@ module.exports = Model.extend({
    * Calculate the line item tax total
    * based on the calc_tax function in woocommerce/includes/class-wc-tax.php
    */
-  calcTax: function( price, quantity ) {
+  calcTax: function(options) {
     var item_tax = 0,
-      tax_class = this.get('tax_class'),
-      rates = this.tax_rates[tax_class];
+        tax_class = this.get('tax_class'),
+        rates = this.tax_rates[tax_class];
 
     if( this.tax.calc_taxes === 'yes' && this.get('taxable') && rates ) {
+      options.rates = rates;
       if( this.tax.prices_include_tax === 'yes' ) {
-        item_tax = this.calcInclusiveTax( price, rates, quantity );
-      }
-      else {
-        item_tax = this.calcExclusiveTax( price, rates, quantity );
+        item_tax = this.calcInclusiveTax(options);
+      } else {
+        item_tax = this.calcExclusiveTax(options);
       }
     }
 
@@ -106,18 +116,15 @@ module.exports = Model.extend({
    * based on the calc_inclusive_tax function in
    * woocommerce/includes/class-wc-tax.php
    */
-  calcInclusiveTax: function( price, rates, quantity ) {
+  calcInclusiveTax: function(options) {
     var regular_tax_rates = 0,
-      compound_tax_rates = 0,
-      non_compound_price = 0,
-      tax_amount = 0,
-      item_tax = 0,
-      line_tax = 0;
-
-    if( quantity === undefined ) {
-      var subtotal_calc = true;
-      quantity = 1;
-    }
+        compound_tax_rates = 0,
+        non_compound_price = 0,
+        tax_amount = 0,
+        item_tax = 0,
+        price = options.price,
+        rates = options.rates,
+        qty = options.quantity;
 
     _(rates).each( function(rate) {
       if ( rate.compound === 'yes' ) {
@@ -132,15 +139,14 @@ module.exports = Model.extend({
     var compound_tax_rate   = 1 + ( compound_tax_rates / 100 );
     non_compound_price = price / compound_tax_rate;
 
-    _(rates).each( function(rate, key) {
+    _(rates).each( function(rate) {
       var the_rate = parseFloat(rate.rate) / 100;
       var the_price = 0;
 
       if ( rate.compound === 'yes' ) {
         the_price = price;
         the_rate  = the_rate / compound_tax_rate;
-      }
-      else {
+      }  else {
         the_price = non_compound_price;
         the_rate  = the_rate / regular_tax_rate;
       }
@@ -148,27 +154,20 @@ module.exports = Model.extend({
       var net_price = price - ( the_rate * the_price );
       tax_amount = price - net_price;
 
-      // do the rounding now if required
-      var item_tax_ = Utils.round( tax_amount, 4 );
-      var line_tax_ = Utils.round( tax_amount * quantity, 4 );
-
       // set the itemized taxes
-      this.set( 'item_tax_' + key, item_tax_ );
-      this.set( 'line_tax_' + key, line_tax_ );
-      rate.tax_amount = line_tax_; // nested attribute, for WC API
+      var prop = options.subtotal ? 'subtotal' : 'total';
+      rate[prop] = Utils.round( tax_amount * qty, 4 );
 
       // sum item taxes
-      item_tax += item_tax_;
-
-      // WC API v2
-      if( subtotal_calc ) {
-        rate.subtotal_tax = item_tax_;
-      }
+      item_tax += tax_amount;
 
     }, this);
 
+    // itemized tax
+    this.set('tax', rates);
+
     // return the item tax
-    return Utils.round( item_tax, 4 );
+    return item_tax;
   },
 
   /**
@@ -176,17 +175,14 @@ module.exports = Model.extend({
    * based on the calc_exclusive_tax function in
    * woocommerce/includes/class-wc-tax.php
    */
-  calcExclusiveTax: function( price, rates, quantity ) {
+  calcExclusiveTax: function(options) {
     var taxes = [],
-      pre_compound_total = 0,
-      tax_amount = 0,
-      item_tax = 0,
-      line_tax =0;
-
-    if( quantity === undefined ) {
-      var subtotal_calc = true;
-      quantity = 1;
-    }
+        pre_compound_total = 0,
+        tax_amount = 0,
+        item_tax = 0,
+        price = options.price,
+        rates = options.rates,
+        qty = options.quantity;
 
     // multiple taxes
     _(rates).each( function(rate, key) {
@@ -208,27 +204,20 @@ module.exports = Model.extend({
         taxes[ key ] = the_price_inc_tax * ( parseFloat(rate.rate) / 100 );
       }
 
-      // do the rounding now if required
-      var item_tax_ = Utils.round( taxes[ key ], 4 );
-      var line_tax_ = Utils.round( taxes[ key ] * quantity, 4 );
-
       // set the itemized taxes
-      this.set( 'item_tax_' + key, item_tax_ );
-      this.set( 'line_tax_' + key, line_tax_ );
-      rate.tax_amount = line_tax_; // nested attribute, for WC API
+      var prop = options.subtotal ? 'subtotal' : 'total';
+      rate[prop] = Utils.round( taxes[ key ] * qty, 4 );
 
       // sum item taxes
-      item_tax += item_tax_;
-
-      // WC API v2
-      if( subtotal_calc ) {
-        rate.subtotal_tax = item_tax_;
-      }
+      item_tax += taxes[ key ];
 
     }, this);
 
+    // itemized tax
+    this.set('tax', rates);
+
     // return the item tax
-    return Utils.round(item_tax, 4);
+    return item_tax;
   },
 
   // Convenience method to increase or decrease quantity

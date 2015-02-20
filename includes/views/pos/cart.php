@@ -99,8 +99,8 @@
 	</li>
 	{{/compare}}
 	{{#compare total_tax '!==' 0}}
-	{{#if show_itemized}}
-		{{#each itemized_tax}}
+	{{#if itemized}}
+		{{#each tax_lines}}
 			<li class="tax">
 				<div>
 					{{#if ../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}

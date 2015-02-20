@@ -32,39 +32,6 @@ module.exports = Collection.extend({
       ]
     }, this);
 
-    this.on( 'add remove change', this.calcTotals );
-  },
-
-  calcTotals: function() {
-    var subtotal,
-        subtotal_tax,
-        total_tax = 0,
-        total;
-
-    // sum up the line totals
-    subtotal      = this.sum('subtotal');
-    subtotal_tax  = this.sum('subtotal_tax');
-    total         = this.sum('total');
-
-    var tax = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'tax'
-    });
-    if( tax && tax.calc_taxes === 'yes' ) {
-      total_tax = this.sum('total_tax');
-    }
-
-    // create totals object
-    var totals = {
-      'total'         : Utils.round( total, 4 ),
-      'subtotal'      : Utils.round( subtotal, 4 ),
-      'subtotal_tax'  : Utils.round( subtotal_tax, 4 ),
-      'cart_discount' : Utils.round( subtotal - total, 4 ),
-      'total_tax'     : Utils.round( total_tax, 4 )
-      //'itemized_tax'  : itemized_tax
-    };
-
-    this.trigger('update:totals', totals);
   },
 
   fetchCartItems: function (options) {
@@ -99,10 +66,11 @@ module.exports = Collection.extend({
    */
   addToCart: function(options){
     options = options || {};
-    var attributes = options.model ? options.model.attributes : options;
+    var model,
+        attributes = options.model ? options.model.attributes : options;
 
     if(attributes.id) {
-      var model = this.findWhere({ product_id: attributes.id });
+      model = this.findWhere({ product_id: attributes.id });
       if(model) { attributes.local_id = model.id; }
       attributes.product_id = attributes.id;
       delete attributes.id;
@@ -127,9 +95,37 @@ module.exports = Collection.extend({
       'method_id'     // shipping
     ];
 
-    var model = this.add(_.pick(attributes, props));
-    model.quantity('increase');
+    if(model){
+      model.quantity('increase');
+    } else {
+      model = this.add(_.pick(attributes, props));
+    }
+
     model.trigger('focus');
+  },
+
+  itemizedTax: function(){
+    var taxes = this.pluck('tax');
+
+    var obj = _.reduce(taxes, function(result, next){
+      return _.merge(result, next, function(a, b){
+        if(a){
+          b.total += a.total;
+          b.subtotal += a.subtotal;
+        }
+        return b;
+      });
+    }, {});
+
+    // convert obj to array to be consistent with WC REST API output
+    var arr = [];
+    _.each(obj, function(value, key){
+      value.rate_id = parseInt(key);
+      arr.push(value);
+    });
+
+    return arr;
+
   }
 
 });

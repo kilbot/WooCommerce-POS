@@ -30,6 +30,18 @@ module.exports = DualCollection.extend({
       ]
     }, this);
 
+    // get tax settings
+    this.tax = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'tax'
+    }) || {};
+
+    // get tax settings
+    this.tax_rates = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'tax_rates'
+    }) || {};
+
   },
 
   getActiveOrder: function(){

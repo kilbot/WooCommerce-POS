@@ -3,6 +3,9 @@ describe('entities/orders/model.js', function () {
   beforeEach(function () {
     var Model = require('entities/orders/model');
     this.order = new Model();
+    this.order.save = stub();
+    this.order.cart.sum = stub();
+    this.order.cart.itemizedTax = stub();
   });
 
   it('should be in a valid state', function() {
@@ -33,8 +36,17 @@ describe('entities/orders/model.js', function () {
       { title: 'bar' }
     ]);
     this.order.destroy = stub();
+
+    // void
     _.invoke( this.order.cart.toArray(), 'destroy');
     expect(this.order.destroy).to.have.been.calledOnce;
+
+    // single remove
+    this.order.cart.add([
+      { title: 'foo' }
+    ]);
+    this.order.cart.at(0).destroy();
+    expect(this.order.destroy).to.have.been.calledTwice;
   });
 
   describe('onSaveSuccess()', function () {

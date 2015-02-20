@@ -4,9 +4,7 @@ describe('entities/cart/collection.js', function () {
 
     var Collection = proxyquire('entities/cart/collection',{
       'lib/config/collection': Backbone.Collection,
-      './model': Backbone.Model.extend({
-        quantity: stub()
-      }),
+      './model': Backbone.Model,
       'lib/config/indexeddb': stub()
     });
     this.collection = new Collection();
@@ -41,28 +39,6 @@ describe('entities/cart/collection.js', function () {
     // add product as attributes
     this.collection.addToCart({ id: 2, title: 'Product 2'});
     expect(this.collection.length).equals(2);
-
-    // increase qty
-    //this.collection.addToCart({ id: 1, title: 'Product 1'});
-    //expect(model.quantity).to.have.been.calledWith('increase');
-  });
-
-  it('should update the order totals on cart change', function() {
-    this.collection.add([
-      { total: 1 },
-      { total: 2 }
-    ]);
-    var trigger = stub();
-    this.collection.on('update:totals', trigger);
-    this.collection.add({ total: 3 });
-    console.log(this.collection);
-    expect(trigger).to.have.been.calledWith({
-      cart_discount: 0,
-      subtotal: 0,
-      subtotal_tax: 0,
-      total: 6,
-      total_tax: 0
-    });
   });
 
 });

@@ -34,11 +34,11 @@ describe('entities/cart/model.js', function () {
   });
 
   it('should have a quantity convenience method ', function() {
-    expect(this.model.get('quantity')).equals(0);
-    this.model.quantity('increase');
     expect(this.model.get('quantity')).equals(1);
+    this.model.quantity('increase');
+    expect(this.model.get('quantity')).equals(2);
     this.model.quantity('decrease');
-    expect(this.model.get('quantity')).equals(0);
+    expect(this.model.get('quantity')).equals(1);
   });
 
   it('should have sum convenience method ', function() {
@@ -52,9 +52,9 @@ describe('entities/cart/model.js', function () {
 
   it("should initiate with the correct values", function() {
 
-    expect(this.model.get('quantity')).equal(0);
+    this.model.set({quantity: 1});
     expect(this.model.get('item_price')).equal(2);
-    expect(this.model.get('total')).equal(0);
+    expect(this.model.get('total')).equal(2);
 
   });
 
@@ -73,8 +73,7 @@ describe('entities/cart/model.js', function () {
     // pos params
     this.model.tax = {
       calc_taxes: 'yes',
-      prices_include_tax: 'no',
-      //tax_total_display: 'itemized'
+      prices_include_tax: 'no'
     };
 
     // dummy product id 99, quantity 2, regular price $3, on sale for $2
@@ -86,8 +85,13 @@ describe('entities/cart/model.js', function () {
     expect(this.model.get('subtotal_tax')).equal(0.84);
     expect(this.model.get('total')).equal(4);
     expect(this.model.get('total_tax')).equal(0.56);
-    //expect(this.model.get('line_tax_2')).equal(0.36);
-    //expect(this.model.get('line_tax_3')).equal(0.2);
+
+    // itemized
+    var tax = this.model.get('tax');
+    expect(tax[2].total).equal(0.36);
+    expect(tax[2].subtotal).equal(0.54);
+    expect(tax[3].total).equal(0.2);
+    expect(tax[3].subtotal).equal(0.3);
 
   });
 
@@ -96,8 +100,7 @@ describe('entities/cart/model.js', function () {
     // pos params
     this.model.tax = {
       calc_taxes: 'yes',
-      prices_include_tax: 'yes',
-      //tax_total_display: 'itemized'
+      prices_include_tax: 'yes'
     };
 
     // dummy product id 99, quantity 2, regular price $3, on sale for $2
@@ -105,88 +108,19 @@ describe('entities/cart/model.js', function () {
 
     expect(this.model.get('item_price')).equal(2);
     expect(this.model.get('subtotal')).equal(5.2632);
+    //expect(this.model.get('subtotal_tax')).equal(0.7369); // todo: woo gives different rounding!
     expect(this.model.get('subtotal_tax')).equal(0.7368);
     expect(this.model.get('total')).equal(3.5088);
     expect(this.model.get('total_tax')).equal(0.4912);
-    //expect(this.model.get('line_tax_2')).equal(0.3158);
-    //expect(this.model.get('line_tax_3')).equal(0.1754);
+
+
+    // itemized
+    var tax = this.model.get('tax');
+    expect(tax[2].total).equal(0.3158);
+    expect(tax[2].subtotal).equal(0.4737);
+    expect(tax[3].total).equal(0.1754);
+    expect(tax[3].subtotal).equal(0.2632);
 
   });
-  //
-  //it("should re-calculate exclusive tax with change to quantity", function() {
-  //
-  //  // pos params
-  //  this.model.tax = {
-  //    calc_taxes: 'yes',
-  //    prices_include_tax: 'no',
-  //    tax_total_display: 'itemized'
-  //  };
-  //
-  //  this.model.set({ 'quantity': 3, 'taxable': true });
-  //
-  //  expect(this.model.get('item_tax')).equal(0.28);
-  //  expect(this.model.get('item_tax_2')).equal(0.18);
-  //  expect(this.model.get('item_tax_3')).equal(0.1);
-  //  expect(this.model.get('total_tax')).equal(0.84);
-  //  expect(this.model.get('line_tax_2')).equal(0.54);
-  //  expect(this.model.get('line_tax_3')).equal(0.3);
-  //
-  //});
-  //
-  //it("should re-calculate inclusive tax with change to quantity", function() {
-  //
-  //  // pos params
-  //  this.model.tax = {
-  //    calc_taxes: 'yes',
-  //    prices_include_tax: 'yes',
-  //    tax_total_display: 'itemized'
-  //  };
-  //
-  //  this.model.set({ 'quantity': 3, 'taxable': true });
-  //
-  //  expect(this.model.get('item_tax')).equal(0.2456);
-  //  expect(this.model.get('item_tax_2')).equal(0.1579);
-  //  expect(this.model.get('item_tax_3')).equal(0.0877);
-  //  expect(this.model.get('total_tax')).equal(0.7368);
-  //  expect(this.model.get('line_tax_2')).equal(0.4737);
-  //  expect(this.model.get('line_tax_3')).equal(0.2632);
-  //
-  //});
-  //
-  //it("should re-calculate exclusive tax with item discount", function() {
-  //
-  //  // pos params
-  //  this.model.tax = {
-  //    calc_taxes: 'yes',
-  //    prices_include_tax: 'no',
-  //    tax_total_display: 'itemized'
-  //  };
-  //
-  //  // set new price to $1.50
-  //  this.model.set( { 'taxable': true, 'quantity': 2, 'item_price': 1.5 } );
-  //
-  //  expect(this.model.get('total_tax')).equal(0.42);
-  //  expect(this.model.get('line_tax_2')).equal(0.27);
-  //  expect(this.model.get('line_tax_3')).equal(0.15);
-  //
-  //});
-  //
-  //it("should re-calculate inclusive tax with item discount", function() {
-  //
-  //  // pos params
-  //  this.model.tax = {
-  //    calc_taxes: 'yes',
-  //    prices_include_tax: 'yes',
-  //    tax_total_display: 'itemized'
-  //  };
-  //
-  //  // set new price to $1.50
-  //  this.model.set( { 'taxable': true, 'quantity': 2, 'item_price': 1.5 } );
-  //
-  //  expect(this.model.get('total_tax')).equal(0.3684);
-  //  expect(this.model.get('line_tax_2')).equal(0.2368);
-  //  expect(this.model.get('line_tax_3')).equal(0.1316);
-  //
-  //});
 
 });

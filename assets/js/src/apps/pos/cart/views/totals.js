@@ -13,6 +13,11 @@ module.exports = ItemView.extend({
 
   initialize: function() {
     this.template = hbs.compile( $('#tmpl-cart-totals').html() );
+
+    this.options = entitiesChannel.request('get', {
+      type : 'option',
+      name : 'tax'
+    });
   },
 
   behaviors: {
@@ -44,16 +49,15 @@ module.exports = ItemView.extend({
   templateHelpers: function(){
     var data = {};
 
-    var tax = entitiesChannel.request('get', {
-      type : 'option',
-      name : 'tax'
-    });
-
-    if( tax.tax_display_cart === 'incl' ) {
+    if( this.options.tax_display_cart === 'incl' ) {
       data.subtotal = this.model.sum(['subtotal', 'subtotal_tax']);
-      // subtract?
-      data.cart_discount = this.model.sum(['subtotal', 'total']);
+      data.cart_discount = this.model.get('subtotal') - this.model.get('total');
       data.incl_tax = true;
+    }
+
+    // itemized
+    if( this.options.tax_total_display === 'itemized' ){
+      data.itemized = true;
     }
 
     // original total for calculating percentage discount

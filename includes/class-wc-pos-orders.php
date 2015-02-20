@@ -23,7 +23,7 @@ class WC_POS_Orders {
 
     add_filter( 'woocommerce_api_create_order_data', array( $this, 'create_order_data'), 10, 2 );
     add_action( 'woocommerce_order_add_product', array( $this, 'order_add_product'), 10, 5 );
-    add_action( 'woocommerce_api_create_order', array( $this, 'create_order'), 10, 2 );
+    add_action( 'woocommerce_api_create_order', array( $this, 'create_order'), 10, 3 );
 
     // payment complete
     add_action( 'woocommerce_payment_complete', array( $this, 'payment_complete' ), 10, 1 );
@@ -41,10 +41,18 @@ class WC_POS_Orders {
   public function create_order_data( $data, $WC_API_Orders ) {
 
     // get raw data from request body
-    $this->data = json_decode(trim(file_get_contents('php://input')), true);
-    unset($this->data['status']);
-    return $this->data;
+    $data = json_decode(trim(file_get_contents('php://input')), true);
 
+    // store raw data
+    $this->data = $data;
+
+    // scrub properties
+    $props = array('status');
+    foreach($props as $prop){
+      unset($data[$prop]);
+    }
+
+    return $data;
   }
 
   /**
@@ -56,15 +64,36 @@ class WC_POS_Orders {
    * @param $args
    */
   public function order_add_product( $order_id, $item_id, $product, $qty, $args ) {
-    $item_meta = $this->get_line_meta($product->id);
-    if($item_meta): foreach($item_meta as $meta):
-      $label = isset($meta['label']) ? $meta['label'] : '';
-      $value = isset($meta['value']) ? $meta['value'] : '';
-      wc_add_order_item_meta($item_id, $label, $value);
+
+    if(!$_item = $this->get_line_item($product->id)){
+      return;
+    };
+
+    // tax class
+    wc_update_order_item_meta( $item_id, '_tax_class', $_item['tax_class'] );
+
+//    // tax data
+//    $tax_data = array();
+//    $tax_data['total']    = array_map( 'wc_format_decimal', $args['totals']['tax'] );
+//    $tax_data['subtotal'] = array_map( 'wc_format_decimal', $args['totals']['subtotal_tax'] );
+//    wc_add_order_item_meta( $item_id, '_line_tax_data', $tax_data );
+
+    // line meta
+    if(isset($_item['meta'])): foreach($_item['meta'] as $meta):
+      wc_add_order_item_meta(
+        $item_id,
+        isset($meta['label']) ? $meta['label'] : '',
+        isset($meta['value']) ? $meta['value'] : ''
+      );
     endforeach; endif;
   }
 
-  private function get_line_meta($product_id){
+  /**
+   * Get posted line item data
+   * @param $product_id
+   * @return bool|void
+   */
+  private function get_line_item($product_id){
     if(!isset($this->data['line_items']))
       return;
 
@@ -72,7 +101,7 @@ class WC_POS_Orders {
 
     foreach($items as $item):
       if(isset($item['product_id']) && $item['product_id'] == $product_id):
-        return isset($item['meta']) ? $item['meta']: false;
+        return $item;
       endif;
     endforeach;
 
@@ -82,9 +111,12 @@ class WC_POS_Orders {
   /**
    * Payment processing
    * @param $order_id
+   * @param $data
    * @param $WC_API_Orders
    */
-  public function create_order( $order_id, $WC_API_Orders ){
+  public function create_order( $order_id, $data, $WC_API_Orders ){
+
+    // patch customer
 
   }
 
