@@ -38,17 +38,24 @@ module.exports = DeepModel.extend({
   buttons: function(options){
     options.buttons.triggerMethod('Update', { message: 'spinner' });
     options.success = function(model, resp){
-      var message = 'success';
-      if(resp.response){
-        message = {
-          type: resp.response.result,
-          text: resp.response.notice
-        };
+      var result = 'success';
+      if(resp.success){
+        result = {
+          type: 'success',
+          text: resp.success
+        }
       }
-      options.buttons.triggerMethod('Update', { message: message });
+      options.buttons.triggerMethod('Update', { message: result });
     };
-    options.error = function(){
-      options.buttons.triggerMethod('Update', { message: 'error' });
+    options.error = function(jqxhr){
+      var result = 'error';
+      if(jqxhr.responseJSON && jqxhr.responseJSON.errors){
+        result = {
+          type: 'error',
+          text: jqxhr.responseJSON.errors[0].message
+        }
+      }
+      options.buttons.triggerMethod('Update', { message: result });
     };
   },
 

@@ -9,7 +9,7 @@
 * @link     http://www.woopos.com.au
 */
 
-class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Page {
+class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
 
   /**
    * Each settings tab requires an id and label
@@ -53,7 +53,18 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Page {
     return $ordered_gateways;
   }
 
-  static public function default_gateway_settings( $gateway_id ) {
+  /**
+   * Gateway data, eg: title, description, icon
+   * defaults to Woo settings
+   * @param $gateway_id
+   * @return array|bool
+   */
+  public function get_gateway_data($gateway_id){
+    $data = get_option(WC_POS_Admin_Settings::DB_PREFIX . 'gateway_' . $gateway_id);
+    return $data ? $data : $this->default_gateway_settings($gateway_id);
+  }
+
+  private function default_gateway_settings( $gateway_id ) {
     $gateways = WC_Payment_Gateways::instance()->payment_gateways;
     $settings = false;
     $gateway = null;
@@ -70,9 +81,6 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Page {
       $settings['title'] = $gateway->title;
       $settings['description'] = $gateway->description;
       $settings['icon'] = 'true';
-
-      // update settings so we don't have to do this again
-      update_option( WC_POS_Admin_Settings::DB_PREFIX . 'gateway_' . $gateway_id, $settings );
     }
 
     return $settings;

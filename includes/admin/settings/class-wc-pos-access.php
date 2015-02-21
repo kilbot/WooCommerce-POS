@@ -9,7 +9,7 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Page {
+class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Abstract {
 
   public static $poscaps = array(
     'manage_woocommerce_pos', // pos admin
@@ -61,17 +61,10 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Page {
     add_action('woocommerce_pos_settings_save_'.$this->id, array($this, 'save'));
   }
 
-  public function output(){
-    include 'views/' . $this->id . '.php';
-  }
-
-  public function get_data(){
-    if(!$this->data){
-      $this->data = array(
-        'roles' => $this->get_role_caps()
-      );
-    }
-    return $this->data;
+  public function get_data($key = false){
+    return array(
+      'roles' => $this->get_role_caps()
+    );
   }
 
   private function get_role_caps(){

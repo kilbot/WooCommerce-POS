@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Responsible for the POS front-end
  *
@@ -9,6 +10,8 @@
  */
 
 class WC_POS_Template {
+
+  private $params;
 
   /**
    * Constructor
@@ -123,7 +126,7 @@ class WC_POS_Template {
     }
 
     // inline start app with params
-    echo '<script type="text/javascript">POS.options = '. wc_pos_json_encode( WC_POS_Params::frontend() ) .'; POS.start();</script>';
+    echo '<script type="text/javascript">POS.options = '. json_encode( WC_POS_Params::frontend() ) .'; POS.start();</script>';
   }
 
   /**

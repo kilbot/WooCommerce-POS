@@ -136,6 +136,24 @@ class WC_POS_i18n {
   }
 
   /**
+   * Force update translations from AJAX
+   */
+  public function update_translations(){
+    // security
+    check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
+
+    header("Content-Type: text/event-stream");
+    header("Cache-Control: no-cache");
+    header("Access-Control-Allow-Origin: *");
+
+    echo ":" . str_repeat(" ", 2048) . PHP_EOL; // 2 kB padding for IE
+
+    $this->manual_update();
+
+    die();
+  }
+
+  /**
    * Force update translations
    */
   public function manual_update() {

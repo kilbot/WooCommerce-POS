@@ -15,21 +15,24 @@ class WC_POS_Params {
    */
   static public function frontend() {
 
-    $param['accounting']    = self::accounting_settings();
-    $param['ajaxurl']       = admin_url( 'admin-ajax.php', 'relative' );
-    $param['customers']     = self::customers();
-    $param['denominations'] = WC_POS_i18n::currency_denominations( get_option('woocommerce_currency') );
-    $param['hotkeys']       = self::hotkeys();
-    $param['i18n']          = WC_POS_i18n::translations();
-    $param['nonce']         = wp_create_nonce( WC_POS_PLUGIN_NAME );
-    $param['shipping']      = self::shipping_labels();
-    $param['tabs']          = self::product_tabs();
-    $param['tax']           = self::wc_settings();
-    $param['tax_labels']    = self::tax_labels();
-    $param['tax_rates']     = self::tax_rates();
-    $param['user']          = self::user();
-    $param['wc_api']        = get_woocommerce_api_url( '' );
-    $param['worker']        = WC_POS_PLUGIN_URL .'public/assets/js/worker.min.js?ver='. WC_POS_VERSION;
+    $param = array(
+      'accounting'    => self::accounting_settings(),
+      'ajaxurl'       => admin_url( 'admin-ajax.php', 'relative' ),
+      'customers'     => self::customers(),
+      'denominations' => WC_POS_i18n::currency_denominations( get_option('woocommerce_currency') ),
+      'discount_keys' => self::discount_keys(),
+      'hotkeys'       => self::hotkeys(),
+      'i18n'          => WC_POS_i18n::translations(),
+      'nonce'         => wp_create_nonce( WC_POS_PLUGIN_NAME ),
+      'shipping'      => self::shipping_labels(),
+      'tabs'          => self::product_tabs(),
+      'tax'           => self::wc_settings(),
+      'tax_labels'    => self::tax_labels(),
+      'tax_rates'     => self::tax_rates(),
+      'user'          => self::user(),
+      'wc_api'        => get_woocommerce_api_url( '' ),
+      'worker'        => WC_POS_PLUGIN_URL .'public/assets/js/worker.min.js?ver='. WC_POS_VERSION
+    );
 
     return apply_filters( 'woocommerce_pos_params', $param );
 
@@ -39,13 +42,15 @@ class WC_POS_Params {
    * @return mixed|void
    */
   static public function admin() {
-    $param['accounting']  = self::accounting_settings();
-    $param['ajaxurl']     = admin_url( 'admin-ajax.php', 'relative' );
-    $param['customers']   = self::customers();
-    $param['nonce']       = wp_create_nonce( WC_POS_PLUGIN_NAME );
-    $param['i18n']        = WC_POS_i18n::translations('admin');
-    $param['hotkeys']     = self::hotkeys();
-    $param['wc_api']      = get_woocommerce_api_url( '' );
+
+    $param = array(
+      'accounting'  => self::accounting_settings(),
+      'ajaxurl'     => admin_url( 'admin-ajax.php', 'relative' ),
+      'customers'   => self::customers(),
+      'nonce'       => wp_create_nonce( WC_POS_PLUGIN_NAME ),
+      'i18n'        => WC_POS_i18n::translations('admin'),
+      'wc_api'      => get_woocommerce_api_url( '' )
+    );
 
     return apply_filters( 'woocommerce_pos_admin_params', $param );
   }
@@ -246,6 +251,16 @@ class WC_POS_Params {
     $labels['other'] = __( 'Other', 'woocommerce' );
 
     return $labels;
+  }
+
+  static private function discount_keys(){
+    $discount_keys = array();
+    $settings = new WC_POS_Admin_Settings_General();
+    $data = $settings->get_data();
+    if(isset($data['discount_quick_keys'])){
+      $discount_keys = $data['discount_quick_keys'];
+    }
+    return $discount_keys;
   }
 
 }

@@ -9,7 +9,7 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_Admin_Settings_Tools extends WC_POS_Admin_Settings_Page {
+class WC_POS_Admin_Settings_Tools extends WC_POS_Admin_Settings_Abstract {
 
   /**
    * Each settings tab requires an id and label

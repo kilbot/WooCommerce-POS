@@ -7,10 +7,10 @@
 </p>
 
 <ul class="wc-pos-hotkeys">
-  <?php $keys = $this->get_data(); if($keys): error_log(print_r($keys, true)); foreach($keys as $id => $key): ?>
+  <?php $keys = $this->get_data('hotkeys'); if($keys): foreach($keys as $id => $key): ?>
     <li>
-      <input type="text" name="<?php echo $id?>.key">
-      <label for="<?php echo $id?>.key"><?php echo $key['label']?></label>
+      <input type="text" name="hotkeys.<?php echo $id?>.key">
+      <label for="hotkeys.<?php echo $id?>.key"><?php echo $key['label']?></label>
     </li>
   <?php endforeach; endif; ?>
 </ul>

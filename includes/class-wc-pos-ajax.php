@@ -20,66 +20,23 @@ class WC_POS_AJAX {
    */
   public function __construct(WC_POS_i18n $i18n) {
 
-    $this->i18n = $i18n;
-
-    // woocommerce_EVENT => nopriv
     $ajax_events = array(
-      'process_order'         => false,
-      'get_all_ids'           => false,
-      'get_modal'             => false,
-      'json_search_customers' => false,
-      'set_product_visibilty' => false,
-      'email_receipt'         => false,
-      'get_print_template'    => false,
-      'admin_settings'        => false,
-      'send_support_email'    => false,
-      'update_translations'   => false
+      'get_all_ids'           => $this,
+      'get_modal'             => $this,
+      'get_print_template'    => $this,
+      'set_product_visibilty' => $this,
+      'email_receipt'         => $this,
+      'admin_settings'        => $this,
+      'send_support_email'    => $this,
+      'update_translations'   => $i18n
     );
 
-    foreach ( $ajax_events as $ajax_event => $nopriv ) {
-      add_action( 'wp_ajax_wc_pos_' . $ajax_event, array( $this, $ajax_event ) );
-
-      if ( $nopriv )
-        add_action( 'wp_ajax_nopriv_wc_pos_' . $ajax_event, array( $this, $ajax_event ) );
+    foreach ( $ajax_events as $ajax_event => $class ) {
+      // check_ajax_referer
+      add_action( 'wp_ajax_wc_pos_' . $ajax_event, array( $this, 'check_ajax_referer' ), 1 );
+      // trigger method
+      add_action( 'wp_ajax_wc_pos_' . $ajax_event, array( $class, $ajax_event ) );
     }
-  }
-
-
-  /**
-   * Process the order
-   * TODO: validation
-   * @return json
-   */
-  public function process_order() {
-
-    // security
-    check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
-
-    // if there is no cart, there is nothing to process!
-    if( empty( $_REQUEST['line_items'] ) )
-      wp_die('There are no cart items');
-
-    // create order
-    WC_POS()->is_pos = true;
-    $response = WC_POS()->checkout->create_order();
-
-    $this->json_headers();
-    echo json_encode( $response );
-
-    die();
-  }
-
-  public function email_receipt() {
-
-    // security
-    check_ajax_referer( 'woocommerce-pos', 'security' );
-
-    // update order with email
-    $response = WC_POS()->checkout->email_receipt();
-
-    $this->json_headers();
-    echo json_encode( $response );
-    die();
   }
 
   /**
@@ -87,9 +44,6 @@ class WC_POS_AJAX {
    * @return json
    */
   public function get_all_ids() {
-
-    // security
-    check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
 
     if(empty( $_REQUEST['type'] )) {
       die();
@@ -105,15 +59,10 @@ class WC_POS_AJAX {
     $query = new WP_Query( $args );
     $ids = array_map( 'intval', $query->posts );
 
-    $this->json_headers();
-    echo json_encode( $ids );
-    die();
+    $this->serve_response($ids);
   }
 
   public function get_modal() {
-
-    // security
-    check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
 
     if( isset( $_REQUEST['data']) )
       extract( $_REQUEST['data'] );
@@ -124,9 +73,6 @@ class WC_POS_AJAX {
 
   public function get_print_template() {
 
-    // security
-    check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
-
     // check for custom template
     $template_path_theme = '/woocommerce-pos/';
     $template_path_plugin = WC_POS()->plugin_path. 'public/views/print/';
@@ -134,87 +80,6 @@ class WC_POS_AJAX {
     wc_get_template( $_REQUEST['template'] . '.php', null, $template_path_theme, $template_path_plugin );
 
     die();
-  }
-
-  /**
-   * Search for customers and return json
-   * based on same method in woocommerce/includes/class-wc-ajax.php
-   * with a few changes to display more info
-   */
-  public function json_search_customers() {
-
-    // security
-    check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
-
-    $term = wc_clean( stripslashes( $_GET['term'] ) );
-
-    if ( empty( $term ) ) {
-      die();
-    }
-
-    // get the default customer
-    $customer_id  = get_option( 'woocommerce_pos_default_customer', 0 );
-    $default    = get_userdata( $customer_id );
-    if( ! $default ) {
-      $default = new WP_User(0);
-
-      // $default->first_name = __( 'Guest', 'woocommerce-pos' );
-      //
-      // using init() because __set throws a warning if WP_DEBUG true
-      $data = array(
-        'ID'      => 0,
-        'first_name'  => __( 'Guest', 'woocommerce-pos' )
-      );
-      $default->init( (object)$data );
-    }
-
-    add_action( 'pre_user_query', array( __CLASS__, 'json_search_customer_name' ) );
-
-    // query the users table
-    $customers_query = new WP_User_Query( apply_filters( 'woocommerce_pos_json_search_customers_query', array(
-      'fields'         => 'all',
-      'orderby'        => 'display_name',
-      'search'         => '*' . $term . '*',
-      'search_columns' => array( 'ID', 'user_login', 'user_email', 'user_nicename' ),
-    ) ) );
-
-    remove_action( 'pre_user_query', array( __CLASS__, 'json_search_customer_name' ) );
-
-    // merge the two results
-    $customers = $customers_query->get_results();
-
-    // add the default customer to the results
-    array_unshift( $customers, $default );
-
-    foreach ( $customers as $customer ) {
-
-      // use id as key to return unique array
-      $found_customers[$customer->ID] = array(
-        'id'      => $customer->ID,
-        'display_name'  => $customer->display_name,
-        'first_name'  => $customer->first_name,
-        'last_name'   => $customer->last_name,
-        'user_email'  => sanitize_email( $customer->user_email ),
-      );
-    }
-
-    $this->json_headers();
-    echo json_encode( $found_customers );
-    die();
-  }
-
-  public static function json_search_customer_name( $query ) {
-    global $wpdb;
-
-    $term = wc_clean( stripslashes( $_GET['term'] ) );
-    if ( method_exists( $wpdb, 'esc_like' ) ) {
-      $term = $wpdb->esc_like( $term );
-    } else {
-      $term = like_escape( $term );
-    }
-
-    $query->query_from  .= " INNER JOIN {$wpdb->usermeta} AS user_name ON {$wpdb->users}.ID = user_name.user_id AND ( user_name.meta_key = 'first_name' OR user_name.meta_key = 'last_name' ) ";
-    $query->query_where .= $wpdb->prepare( " OR user_name.meta_value LIKE %s ", '%' . $term . '%' );
   }
 
   /**
@@ -237,37 +102,67 @@ class WC_POS_AJAX {
         'post_modified'   => $post_modified,
         'post_modified_gmt' => $post_modified_gmt
       ));
-      $response = array('success' => true);
+      $result = array('success' => true);
     }
     else {
       wp_die('Failed to update post meta table');
     }
 
-    $this->json_headers();
-    echo json_encode( $response );
-    die();
+    $this->serve_response($result);
   }
 
   /**
    * POS Settings stored in options table
    */
   public function admin_settings() {
-    $response = '';
+    $result = $this->process_admin_settings();
+    $this->serve_response($result);
+  }
 
-    // security
-    check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
-
+  private function process_admin_settings(){
     // validate
-    if( ! isset( $_GET['id'] ) )
-      wp_die('There is no option id');
+    if(!isset($_GET['id']))
+      return new WP_Error(
+        'woocommerce_pos_settings_error',
+        __( 'There is no settings id', 'woocommerce-pos' ),
+        array( 'status' => 401 )
+      );
 
-    $method = $_SERVER['REQUEST_METHOD'];
-    if( $method === 'POST' || $method === 'PUT' ) {
-      $data = json_decode(trim(file_get_contents('php://input')), true);
-      $response = WC_POS_Admin_Settings::save_settings(false, $data);
-    } elseif( $method === 'GET' ) {
-      $response = WC_POS_Admin_Settings::get_settings( $_GET['id'] );
+    // init relevant handler
+    $id = $_GET['id'];
+    $handlers = (array) apply_filters( 'woocommerce_pos_settings_handlers', WC_POS_Admin_Settings::$handlers);
+    if(!isset($handlers[$id]))
+      return new WP_Error(
+        'woocommerce_pos_settings_error',
+        sprintf( __( 'No handler found for %s settings', 'woocommerce-pos' ), $_GET['id']),
+        array( 'status' => 401 )
+      );
+
+    $handler = new $handlers[$id]();
+    $method = strtolower($_SERVER['REQUEST_METHOD']);
+
+    // get
+    if( $method === 'get' ) {
+      return $handler->get_data();
     }
+
+    // set
+    if( $method === 'post' || $method === 'put' ) {
+      $data = $this->get_raw_data();
+      return $handler->save($data);
+    }
+
+    return new WP_Error(
+      'woocommerce_pos_cannot_{$method}_{$id}',
+      __( 'Settings error', 'woocommerce-pos' ),
+      array( 'status' => 401 )
+    );
+  }
+
+  public function email_receipt() {
+
+    //
+    $response = '';
 
     $this->json_headers();
     echo json_encode( $response );
@@ -276,43 +171,85 @@ class WC_POS_AJAX {
 
   public function send_support_email() {
 
-    // security
-    check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
-
     $headers[] = 'From: '. $_POST['payload']['name'] .' <'. $_POST['payload']['email'] .'>';
     $message = print_r( $_POST['payload'], true );
     if( wp_mail( 'support@woopos.com.au', 'WooCommerce POS Support', $message, $headers ) ) {
-      $response = 'success';
+      $result['success'] = __( 'Email sent!', 'woocommerce-pos' );
     } else {
-      $response = 'error';
+      $result = new WP_Error(
+        'woocommerce_pos_mail_error',
+        __( 'Error sending email', 'woocommerce-pos' ),
+        array( 'status' => 401 )
+      );
     }
 
-    $this->json_headers();
-    echo json_encode( $response );
-    die();
+    $this->serve_response($result);
   }
 
-  public function update_translations(){
+  /**
+   * Verifies the AJAX request
+   */
+  public function check_ajax_referer(){
+    $pass = check_ajax_referer( WC_POS_PLUGIN_NAME, 'security', false );
+    if(!$pass){
+      $result = new WP_Error(
+        'woocommerce_pos_invalid_nonce',
+        __( 'Invalid security nonce', 'woocommerce-pos' ),
+        array( 'status' => 401 )
+      );
+      $this->serve_response($result);
+    }
+  }
 
-    // security
-    check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
+  /**
+   * The below functions closely resemble output from the WC REST API
+   * This keeps response handling in the POS somewhat consistent
+   * between API and AJAX calls
+   *
+   * Output the result
+   * @param $result
+   */
+  private function serve_response($result){
 
-    header("Content-Type: text/event-stream");
-    header("Cache-Control: no-cache");
-    header("Access-Control-Allow-Origin: *");
+    header( 'Content-Type: application/json; charset=utf-8' );
 
-    echo ":" . str_repeat(" ", 2048) . PHP_EOL; // 2 kB padding for IE
+    if (is_wp_error($result)) {
+      $data = $result->get_error_data();
+      if ( is_array( $data ) && isset( $data['status'] ) ) {
+        status_header( $data['status'] );
+      }
+      $result = $this->error_to_array( $result );
+    }
 
-    $this->i18n->manual_update();
-
+    echo json_encode( $result );
     die();
   }
 
   /**
-   * Output headers for JSON requests
+   * Convert wp_error to array
+   * @param $error
+   * @return array
    */
-  private function json_headers() {
-    header( 'Content-Type: application/json; charset=utf-8' );
+  private function error_to_array( $error ) {
+    $errors = array();
+    foreach ( (array) $error->errors as $code => $messages ) {
+      foreach ( (array) $messages as $message ) {
+        $errors[] = array( 'code' => $code, 'message' => $message );
+      }
+    }
+    return array( 'errors' => $errors );
+  }
+
+  /**
+   * Raw payload
+   * @return array|mixed|string
+   */
+  private function get_raw_data() {
+    global $HTTP_RAW_POST_DATA;
+    if ( !isset( $HTTP_RAW_POST_DATA ) ) {
+      $HTTP_RAW_POST_DATA = json_decode(trim(file_get_contents('php://input')), true);
+    }
+    return $HTTP_RAW_POST_DATA;
   }
 
 }

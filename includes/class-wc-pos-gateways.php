@@ -11,6 +11,10 @@
 
 class WC_POS_Gateways {
 
+  private $settings;
+  private $settings_data;
+  private $gateway_data;
+
   /**
    * Constructor
    */
@@ -110,16 +114,20 @@ class WC_POS_Gateways {
    * @return array
    */
   public function enabled_gateways(){
-    $_gateways          = array();
-    $enabled_gateways   = WC_POS_Admin_Settings::get_settings('checkout', 'enabled');
-    $default_gateway    = WC_POS_Admin_Settings::get_settings('checkout', 'default_gateway');
-    $payment_gateways   = WC()->payment_gateways->payment_gateways();
+    $this->settings      = new WC_POS_Admin_Settings_Checkout();
+    $this->settings_data = $this->settings->get_data();
 
-    if($enabled_gateways):
-      foreach(array_keys(array_filter($enabled_gateways)) as $gateway):
-        if(array_key_exists($gateway, $payment_gateways)){
-          $_gateways[$gateway] = $this->sanitize( $payment_gateways[$gateway] );
-          $_gateways[$gateway]->default = $gateway == $default_gateway;
+    $_gateways  = array();
+    $data       = $this->settings_data;
+    $enabled    = isset($data['enabled']) ? $data['enabled'] : '';
+    $default    = isset($data['default_gateway']) ? $data['default_gateway'] : '';
+    $gateways   = WC()->payment_gateways->payment_gateways();
+
+    if($enabled):
+      foreach(array_keys(array_filter($enabled)) as $gateway):
+        if(array_key_exists($gateway, $gateways)){
+          $_gateways[$gateway] = $this->sanitize( $gateways[$gateway] );
+          $_gateways[$gateway]->default = $gateway == $default;
         }
       endforeach;
     endif;
@@ -132,8 +140,8 @@ class WC_POS_Gateways {
    * @return array
    */
   private function order(array $gateways){
-    $order = WC_POS_Admin_Settings::get_settings('checkout', 'gateway_order');
-    if($order){
+    if(isset($this->settings_data['gateway_order'])){
+      $order = $this->settings_data['gateway_order'];
       $commonKeysInOrder = array_intersect_key($order, $gateways);
       $commonKeysWithValue = array_intersect_key($gateways, $commonKeysInOrder);
       $gateways = array_merge($commonKeysInOrder, $commonKeysWithValue);
@@ -146,11 +154,11 @@ class WC_POS_Gateways {
    * @return WC_Payment_Gateway
    */
   private function sanitize(WC_Payment_Gateway $gateway){
-    $settings = WC_POS_Admin_Settings::get_settings('gateway_'.$gateway->id);
+    $this->gateway_data = $this->settings->get_gateway_data($gateway->id);
 
-    $gateway->title           = $this->get_title($gateway, $settings);
-    $gateway->description     = $this->get_description($gateway, $settings);
-    $gateway->icon            = $this->get_icon($gateway, $settings);
+    $gateway->title           = $this->get_title($gateway);
+    $gateway->description     = $this->get_description($gateway);
+    $gateway->icon            = $this->get_icon($gateway);
     $gateway->payment_fields  = $this->payment_fields($gateway);
 
     return $gateway;
@@ -158,33 +166,28 @@ class WC_POS_Gateways {
 
   /**
    * @param WC_Payment_Gateway $gateway
-   * @param array $settings
    * @return string
    */
-  private function get_title(WC_Payment_Gateway $gateway, array $settings){
-    $title = isset($settings['title']) ? $settings['title']: $gateway->get_title();
-    return $title;
+  private function get_title(WC_Payment_Gateway $gateway){
+    return isset($this->gateway_data['title']) ? $this->gateway_data['title']: $gateway->get_title();
   }
 
   /**
    * @param WC_Payment_Gateway $gateway
-   * @param array $settings
    * @return string
    */
-  private function get_description(WC_Payment_Gateway $gateway, array $settings){
-    $description = isset($settings['description']) ? $settings['description']: '';
-    return $description;
+  private function get_description(WC_Payment_Gateway $gateway){
+    return isset($this->gateway_data['description']) ? $this->gateway_data['description']: '';
   }
 
   /**
    * @param WC_Payment_Gateway $gateway
-   * @param array $settings
    * @return string
    */
-  private function get_icon(WC_Payment_Gateway $gateway, array $settings){
+  private function get_icon(WC_Payment_Gateway $gateway){
     $icon = '';
 
-    if(isset($settings['icon']) && $settings['icon'] == true){
+    if(isset($this->gateway_data['icon']) && $this->gateway_data['icon'] == true){
       $icon = $gateway->get_icon();
       if($icon !== ''){
         // simple preg_match

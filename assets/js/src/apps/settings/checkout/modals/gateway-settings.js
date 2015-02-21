@@ -8,20 +8,22 @@ module.exports = FormView.extend({
   className: 'form-table',
 
   initialize: function () {
-    if(this.model.isNew()){
+    var title = this.model.get('title');
+
+    if(!title){
       this.model.fetch();
     }
 
     // modal setup
     this.modal = {
       header: {
-        title: this.model.get('title')
+        title: title
       },
       footer: {
         buttons: [{
           action    : 'save',
           className : 'button-primary',
-          disabled  : this.model.isNew()
+          disabled  : !title
         }]
       }
     };
@@ -35,6 +37,7 @@ module.exports = FormView.extend({
 
   modelEvents: {
     'change:title': function(modal, value){
+      debugger;
       var update = {};
       update.header = { title: value };
       if(this.model.isNew()){

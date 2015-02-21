@@ -18,7 +18,15 @@ class WC_POS_Admin_Settings {
   private $screen_id;
 
   /* @var array An array of settings objects */
-  private $settings;
+  private $settings = array();
+
+  static public $handlers = array(
+    'general'   => 'WC_POS_Admin_Settings_General',
+    'checkout'  => 'WC_POS_Admin_Settings_Checkout',
+    'hotkeys'   => 'WC_POS_Admin_Settings_HotKeys',
+    'access'    => 'WC_POS_Admin_Settings_Access',
+    'tools'     => 'WC_POS_Admin_Settings_Tools'
+  );
 
   /**
    * Constructor
@@ -31,17 +39,9 @@ class WC_POS_Admin_Settings {
 
   /**
    * Load settings page subclasses
-   * settings subclasses needed for admin & ajax
    */
   private function init(){
-    $settings = apply_filters( 'woocommerce_pos_settings_tabs_array', array(
-      new WC_POS_Admin_Settings_General(),
-      new WC_POS_Admin_Settings_Checkout(),
-      new WC_POS_Admin_Settings_HotKeys(),
-      new WC_POS_Admin_Settings_Access(),
-      new WC_POS_Admin_Settings_Tools()
-    ));
-    $this->settings = $settings;
+
   }
 
   /**
@@ -68,10 +68,19 @@ class WC_POS_Admin_Settings {
   public function conditional_init( $current_screen ) {
     if( $current_screen->id == $this->screen_id ) {
 
+      // init handlers for settings pages
+      $handlers = apply_filters( 'woocommerce_pos_settings_handlers', self::$handlers);
+      foreach($handlers as $key => $handler){
+        $this->settings[$key] = new $handler();
+      }
+
       // Enqueue scripts for the settings page
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
       add_action( 'admin_print_footer_scripts', array( $this, 'admin_inline_js' ) );
+
+      // allow third party to hook into settings page
+      do_action( 'woocommerce_pos_settings_page' );
 
     }
   }
@@ -81,96 +90,6 @@ class WC_POS_Admin_Settings {
    */
   public function display_settings_page() {
     include 'views/settings.php';
-  }
-
-  /**
-   * Get settings data
-   *
-   * @param $id
-   * @param mixed $key
-   * @return array
-   */
-  static public function get_settings($id, $key = false) {
-
-    // get settings
-    $settings = get_option(self::DB_PREFIX . $id);
-
-    // return a single setting if $key given
-    if($key && is_array($settings)) {
-      $settings = array_key_exists($key, $settings) ? $settings[$key] : false;
-    }
-
-    return $settings;
-  }
-
-  /**
-   * Save settings data
-   *
-   * @param bool $id
-   * @param array $data
-   * @return array
-   */
-  static public function save_settings($id = false, array $data) {
-
-    // validate id
-    if( !$id && isset( $data['id'] )){
-      $id = $data['id'];
-      unset($data['id']);
-    }
-
-    if(!$id){
-      wp_die('There is no option id');
-    }
-
-    // check if settings has save action
-    if( has_action('woocommerce_pos_settings_save_'.$id) ) {
-      do_action('woocommerce_pos_settings_save_'.$id, $data);
-      $saved = true;
-    } else {
-      $saved = self::update_option($id, $data);
-    }
-
-    if($saved){
-      $response = array(
-        'result' => 'success',
-        /* translators: woocommerce */
-        'notice' => __( 'Your settings have been saved.', 'woocommerce' )
-      );
-    } else {
-      $response = array(
-        'result' => 'error',
-        /* translators: woocommerce */
-        'notice' => __( 'Action failed. Please refresh the page and retry.', 'woocommerce' )
-      );
-
-    }
-
-    $return['response'] = $response;
-    return $return;
-  }
-
-  /**
-   * Store the settings in the WP options table
-   *
-   * @param $id
-   * @param $data
-   * @return bool
-   */
-  static private function update_option($id, $data){
-
-    // reserved option names
-    if( isset( $data['response'] ) )
-      wp_die('Data name "response" is reserved');
-
-    // remove the security attribute
-    unset( $data['security'] );
-
-    $updated = add_option( self::DB_PREFIX . $id, $data, '', 'no' );
-    if(!$updated) {
-      $updated = update_option( self::DB_PREFIX . $id, $data );
-    }
-
-    return $updated;
   }
 
   /**
@@ -283,7 +202,7 @@ class WC_POS_Admin_Settings {
     wp_enqueue_script(
       WC_POS_PLUGIN_NAME . '-admin-app',
       WC_POS_PLUGIN_URL . 'assets/js/admin.build.js',
-      array( 'idb-wrapper' ),
+      array('backbone', 'backbone.radio', 'marionette', 'handlebars', 'idb-wrapper', 'accounting', 'moment', 'select2'),
       WC_POS_VERSION,
       true
     );
@@ -301,7 +220,7 @@ class WC_POS_Admin_Settings {
       wp_enqueue_script(
         WC_POS_PLUGIN_NAME . '-js-locale',
         $locale_js,
-        array( WC_POS_PLUGIN_NAME . '-core' ),
+        array( WC_POS_PLUGIN_NAME . '-admin-app' ),
         WC_POS_VERSION,
         true
       );

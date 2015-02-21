@@ -9,7 +9,7 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_Admin_Settings_HotKeys extends WC_POS_Admin_Settings_Page {
+class WC_POS_Admin_Settings_HotKeys extends WC_POS_Admin_Settings_Abstract {
 
   /**
    * Each settings tab requires an id and label
@@ -19,17 +19,19 @@ class WC_POS_Admin_Settings_HotKeys extends WC_POS_Admin_Settings_Page {
     $this->label = _x( 'HotKeys', 'keyboard shortcuts', 'woocommerce-pos' );
 
     $this->default_settings = array(
-      'help' => array(
-        'label' => __( 'Help screen', 'woocommerce-pos' ),
-        'key' => '?'
-      ),
-      'barcode' => array(
-        'label' => __( 'Barcode search', 'woocommerce-pos' ),
-        'key' => 'ctrl+b'
-      ),
-      'sync' => array(
-        'label' => __( 'Sync with server', 'woocommerce-pos' ),
-        'key' => 'ctrl+s'
+      'hotkeys' => array(
+        'help' => array(
+          'label' => __( 'Help screen', 'woocommerce-pos' ),
+          'key' => '?'
+        ),
+        'barcode' => array(
+          'label' => __( 'Barcode search', 'woocommerce-pos' ),
+          'key' => 'ctrl+b'
+        ),
+        'sync' => array(
+          'label' => __( 'Sync with server', 'woocommerce-pos' ),
+          'key' => 'ctrl+s'
+        )
       )
     );
   }
