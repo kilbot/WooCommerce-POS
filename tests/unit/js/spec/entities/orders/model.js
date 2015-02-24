@@ -4,7 +4,10 @@ describe('entities/orders/model.js', function () {
     var Model = require('entities/orders/model');
     this.order = new Model();
     this.order.save = stub();
-    this.order.cart.sum = stub();
+    this.order.cart.sum = function(prop){
+      if(prop === 'total') return 10;
+      if(prop === 'subtotal') return 12;
+    };
     this.order.cart.itemizedTax = stub();
   });
 
@@ -75,6 +78,31 @@ describe('entities/orders/model.js', function () {
       this.order.onSaveSuccess();
       expect(this.order.cart.where({order: 1})).to.have.length(2);
     });
+
   });
+
+  describe('calcTotals()', function () {
+
+    beforeEach(function(){
+      var Collection = Backbone.Collection.extend({
+        sum: function(prop){
+          if(prop === 'total') return 10;
+          if(prop === 'subtotal') return 12;
+        },
+        save: stub(),
+        itemizedTax: stub()
+      });
+      this.order.cart = new Collection({ title: 'foo' });
+    });
+
+    it('should calculate the cart discount', function() {
+      this.order.calcTotals();
+      var totals = this.order.save.args[0][0]; // first args on first call
+      expect(totals.cart_discount).equals(2);
+    });
+
+  });
+
+
 
 });

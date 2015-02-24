@@ -37,7 +37,6 @@ module.exports = FormView.extend({
 
   modelEvents: {
     'change:title': function(modal, value){
-      debugger;
       var update = {};
       update.header = { title: value };
       if(this.model.isNew()){

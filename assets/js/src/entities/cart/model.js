@@ -21,13 +21,11 @@ module.exports = Model.extend({
 
   initialize: function() {
 
-    // get tax settings
+    // attach tax settings
     this.tax = Radio.request('entities', 'get', {
       type: 'option',
       name: 'tax'
     }) || {};
-
-    // get tax settings
     this.tax_rates = Radio.request('entities', 'get', {
       type: 'option',
       name: 'tax_rates'
@@ -52,17 +50,26 @@ module.exports = Model.extend({
     var quantity        = this.get('quantity'),
         item_price      = this.get('item_price'),
         type            = this.get('type'),
-        regular_price   = parseFloat( this.get('regular_price') );
+        regular_price   = parseFloat( this.get('regular_price')),
+        tax_class       = this.get('tax_class'),
+        rates;
+
+    // make a copy of the tax rates for this product
+    if(this.tax_rates[tax_class]){
+      rates = _.deepClone(this.tax_rates[tax_class]);
+    }
 
     // calc taxes
     var item_tax = this.calcTax({
       price    : item_price,
-      quantity : quantity
+      quantity : quantity,
+      rates    : rates
     });
 
     var item_subtotal_tax = this.calcTax({
       price    : regular_price,
       quantity : quantity,
+      rates    : rates,
       subtotal : true
     });
 
@@ -94,12 +101,9 @@ module.exports = Model.extend({
    * based on the calc_tax function in woocommerce/includes/class-wc-tax.php
    */
   calcTax: function(options) {
-    var item_tax = 0,
-        tax_class = this.get('tax_class'),
-        rates = this.tax_rates[tax_class];
+    var item_tax = 0;
 
-    if( this.tax.calc_taxes === 'yes' && this.get('taxable') && rates ) {
-      options.rates = rates;
+    if(this.tax.calc_taxes === 'yes' && this.get('taxable') && options.rates) {
       if( this.tax.prices_include_tax === 'yes' ) {
         item_tax = this.calcInclusiveTax(options);
       } else {
@@ -129,8 +133,7 @@ module.exports = Model.extend({
     _(rates).each( function(rate) {
       if ( rate.compound === 'yes' ) {
         compound_tax_rates = compound_tax_rates + parseFloat(rate.rate);
-      }
-      else {
+      } else {
         regular_tax_rates = regular_tax_rates + parseFloat(rate.rate);
       }
     });

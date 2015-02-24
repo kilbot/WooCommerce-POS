@@ -87,7 +87,7 @@ class WC_POS_Params {
    */
   static private function hotkeys() {
     $hotkeys = new WC_POS_Admin_Settings_HotKeys();
-    return $hotkeys->get_data();
+    return $hotkeys->get_data('hotkeys');
   }
 
   /**
@@ -205,16 +205,19 @@ class WC_POS_Params {
     return $settings;
   }
 
-  static private function tax_rates() {
-    $rates = array();
-
+  static public function tax_classes(){
     $classes = array_filter( array_map( 'sanitize_title', explode( "\n", get_option('woocommerce_tax_classes' ) ) ) );
     array_unshift( $classes, '' ); // add 'standard'
+    return $classes;
+  }
+
+  static public function tax_rates() {
+    $rates = array();
 
     // get_shop_base_rate depreciated in 2.3
     $get_rates = method_exists( 'WC_Tax','get_base_tax_rates' ) ? 'get_base_tax_rates' : 'get_shop_base_rate';
 
-    foreach( $classes as $class ) {
+    foreach( self::tax_classes() as $class ) {
       if( $rate = WC_Tax::$get_rates( $class ) )
         $rates[$class] = $rate;
     }
@@ -222,7 +225,7 @@ class WC_POS_Params {
     return $rates;
   }
 
-  static private function tax_labels() {
+  static public function tax_labels() {
     $labels = array_reduce( explode( "\n", get_option('woocommerce_tax_classes' ) ), function ($result, $label) {
       if( $label = trim($label) ) {
         $result[ sanitize_title($label) ] = $label;

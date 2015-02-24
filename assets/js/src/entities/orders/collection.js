@@ -1,9 +1,9 @@
 var DualCollection = require('lib/config/dual-collection');
 var Model = require('./model');
-var debug = require('debug')('ordersCollection');
-var $ = require('jquery');
+//var debug = require('debug')('ordersCollection');
+//var $ = require('jquery');
 var IndexedDB = require('lib/config/indexeddb');
-var Radio = require('backbone.radio');
+//var Radio = require('backbone.radio');
 
 module.exports = DualCollection.extend({
   name: 'orders',
@@ -29,18 +29,6 @@ module.exports = DualCollection.extend({
         {name: 'status', keyPath: 'status', unique: false}
       ]
     }, this);
-
-    // get tax settings
-    this.tax = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'tax'
-    }) || {};
-
-    // get tax settings
-    this.tax_rates = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'tax_rates'
-    }) || {};
 
   },
 

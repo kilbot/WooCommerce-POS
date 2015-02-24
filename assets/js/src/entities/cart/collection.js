@@ -1,9 +1,9 @@
-var bb = require('backbone');
+//var bb = require('backbone');
 var Collection = require('lib/config/collection');
 var Model = require('./model');
-var Utils = require('lib/utilities/utils');
+//var Utils = require('lib/utilities/utils');
 var _ = require('lodash');
-var Radio = require('backbone.radio');
+//var Radio = require('backbone.radio');
 var IndexedDB = require('lib/config/indexeddb');
 
 module.exports = Collection.extend({
@@ -17,7 +17,9 @@ module.exports = Collection.extend({
     return 0;
   },
 
-  initialize: function () {
+  initialize: function (models, options) {
+    options = options || {};
+    this.order_id = options.order_id;
 
     this.indexedDB = new IndexedDB({
       storeName: 'cart',
@@ -34,23 +36,23 @@ module.exports = Collection.extend({
 
   },
 
-  fetchCartItems: function (options) {
-    var options = options || {};
-    if(!options.order_id){
+  /**
+   * If collection has order_id, query idb for index: 'order' = order_id
+   * onSuccess add items to collection
+   */
+  fetchCartItems: function () {
+    if(!this.order_id){
       return;
     }
 
-    this.order_id = options.order_id;
-    var onItem = function (item) {
-      if (item.order === this.order_id) {
-        this.add(item);
-      }
-    }.bind(this);
-    var onEnd = function () {};
-    this.indexedDB.iterate(onItem, {
+    var onSuccess = this.add.bind(this);
+    var keyRange = this.indexedDB.store.makeKeyRange({
+      only: this.order_id
+    });
+
+    this.indexedDB.store.query(onSuccess, {
       index: 'order',
-      order: 'ASC',
-      onEnd: onEnd
+      keyRange: keyRange
     });
   },
 
@@ -66,17 +68,8 @@ module.exports = Collection.extend({
    */
   addToCart: function(options){
     options = options || {};
-    var model,
-        attributes = options.model ? options.model.attributes : options;
-
-    if(attributes.id) {
-      model = this.findWhere({ product_id: attributes.id });
-      if(model) { attributes.local_id = model.id; }
-      attributes.product_id = attributes.id;
-      delete attributes.id;
-    }
-
-    attributes.order = this.order_id;
+    var attributes = options.model ? options.model.toJSON() : options;
+    var model = this.findWhere({ product_id: attributes.id });
 
     var props = [
       'order',
@@ -98,6 +91,9 @@ module.exports = Collection.extend({
     if(model){
       model.quantity('increase');
     } else {
+      attributes.order = this.order_id;
+      attributes.product_id = attributes.id;
+      delete attributes.id;
       model = this.add(_.pick(attributes, props));
     }
 
@@ -120,7 +116,7 @@ module.exports = Collection.extend({
     // convert obj to array to be consistent with WC REST API output
     var arr = [];
     _.each(obj, function(value, key){
-      value.rate_id = parseInt(key);
+      value.rate_id = parseInt(key, 10);
       arr.push(value);
     });
 

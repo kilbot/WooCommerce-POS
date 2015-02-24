@@ -101,6 +101,7 @@
 	{{#compare total_tax '!==' 0}}
 	{{#if itemized}}
 		{{#each tax_lines}}
+      {{#compare total '!==' 0}}
 			<li class="tax">
 				<div>
 					{{#if ../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
@@ -109,6 +110,7 @@
 				<div class="total">{{{money total}}}</div>
 				<div class="action"></div>
 			</li>
+      {{/compare}}
 		{{/each}}
 	{{else}}
 		<li class="tax">
@@ -140,7 +142,7 @@
 	<a href="#" class="btn btn-danger pull-left" data-action="void"><?php _e( 'Void', 'woocommerce-pos' ); ?></a>
 	<a href="#" class="btn btn-primary" data-action="fee" data-title="<?php /* translators: woocommerce */ _e( 'Fee Name', 'woocommerce' ); ?>"><?php /* translators: woocommerce */ _e( 'Fee', 'woocommerce' ); ?></a>
 	<a href="#" class="btn btn-primary" data-action="shipping" data-title="<?php /* translators: woocommerce */ _e( 'Shipping Name', 'woocommerce' ); ?>"><?php /* translators: woocommerce */ _e( 'Shipping', 'woocommerce' ); ?></a>
-	<a href="#" class="btn btn-primary" data-action="coupon"><?php /* translators: woocommerce */ _e( 'Coupon', 'woocommerce' ); ?></a>
+<!--	<a href="#" class="btn btn-primary" data-action="coupon">--><?php ///* translators: woocommerce */ _e( 'Coupon', 'woocommerce' ); ?><!--</a>-->
 	<a href="#" class="btn btn-primary" data-action="discount"><?php _e( 'Discount', 'woocommerce-pos' ); ?></a>
 	<a href="#" class="btn btn-primary" data-action="note"><?php /* translators: woocommerce */ _e( 'Note', 'woocommerce' ); ?></a>
 	<a href="#" class="btn btn-success" data-action="checkout"><?php /* translators: woocommerce */ _e( 'Checkout', 'woocommerce' ); ?></a>

@@ -1,6 +1,6 @@
 <?php
 
-class AJAXTest extends WP_UnitTestCase {
+//class AJAXTest extends WP_UnitTestCase {
 
 //  function test_get_settings() {
 //
@@ -27,5 +27,5 @@ class AJAXTest extends WP_UnitTestCase {
 //
 //  }
 
-}
+//}
 

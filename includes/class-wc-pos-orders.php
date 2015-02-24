@@ -65,18 +65,13 @@ class WC_POS_Orders {
    */
   public function order_add_product( $order_id, $item_id, $product, $qty, $args ) {
 
-    if(!$_item = $this->get_line_item($product->id)){
+    if(!$_item = $this->get_line_item($product->id, $item_id)){
       return;
     };
 
     // tax class
     wc_update_order_item_meta( $item_id, '_tax_class', $_item['tax_class'] );
 
-//    // tax data
-//    $tax_data = array();
-//    $tax_data['total']    = array_map( 'wc_format_decimal', $args['totals']['tax'] );
-//    $tax_data['subtotal'] = array_map( 'wc_format_decimal', $args['totals']['subtotal_tax'] );
-//    wc_add_order_item_meta( $item_id, '_line_tax_data', $tax_data );
 
     // line meta
     if(isset($_item['meta'])): foreach($_item['meta'] as $meta):
@@ -91,16 +86,18 @@ class WC_POS_Orders {
   /**
    * Get posted line item data
    * @param $product_id
+   * @param $item_id
    * @return bool|void
    */
-  private function get_line_item($product_id){
+  private function get_line_item($product_id, $item_id){
     if(!isset($this->data['line_items']))
       return;
 
     $items = $this->data['line_items'];
 
-    foreach($items as $item):
+    foreach($items as $k => $item):
       if(isset($item['product_id']) && $item['product_id'] == $product_id):
+        $this->data['line_items'][$k]['id'] = $item_id;
         return $item;
       endif;
     endforeach;
@@ -115,8 +112,53 @@ class WC_POS_Orders {
    * @param $WC_API_Orders
    */
   public function create_order( $order_id, $data, $WC_API_Orders ){
+    $this->update_order_meta($order_id);
+    $this->update_line_items($order_id);
+  }
 
-    // patch customer
+  private function update_order_meta( $order_id ){
+    update_post_meta( $order_id, '_order_discount', $this->data['order_discount'] );
+    update_post_meta( $order_id, '_cart_discount', 	$this->data['cart_discount'] );
+    update_post_meta( $order_id, '_order_tax', 			$this->data['total_tax'] );
+    update_post_meta( $order_id, '_order_total', 		$this->data['total'] );
+  }
+
+  /**
+   * @param $order_id
+   */
+  private function update_line_items( $order_id ){
+
+    if(!isset($this->data['line_items']))
+      return;
+
+    foreach($this->data['line_items'] as $item){
+      if(!isset($item['id']))
+        return;
+
+      $line_taxes = array();
+      $line_subtotal_taxes = array();
+      foreach($item['tax'] as $key => $itemized){
+        $line_taxes[$key] = $itemized['total'];
+        $line_subtotal_taxes[$key] = $itemized['subtotal'];
+
+        $code = WC_Tax::get_rate_code( $key );
+        $tax_item_id = wc_add_order_item( $order_id, array(
+          'order_item_name' => $code,
+          'order_item_type' => 'tax'
+        ));
+        if($tax_item_id) {
+          wc_add_order_item_meta( $tax_item_id, 'rate_id', $key );
+          wc_add_order_item_meta( $tax_item_id, 'label', $itemized['label'] );
+          wc_add_order_item_meta( $tax_item_id, 'compound', ( $itemized['compound'] == 'yes' ? 1 : 0 ) );
+          wc_add_order_item_meta( $tax_item_id, 'tax_amount', $itemized['total'] );
+          wc_add_order_item_meta( $tax_item_id, 'shipping_tax_amount', 0 );
+        }
+      }
+
+      wc_update_order_item_meta( $item['id'], '_line_subtotal_tax', $item['subtotal_tax'] );
+      wc_update_order_item_meta( $item['id'], '_line_tax', $item['total_tax'] );
+      wc_update_order_item_meta( $item['id'], '_line_tax_data', array( 'total' => $line_taxes, 'subtotal' => $line_subtotal_taxes ) );
+    }
 
   }
 

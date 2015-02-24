@@ -43,7 +43,7 @@ module.exports = DeepModel.extend({
         result = {
           type: 'success',
           text: resp.success
-        }
+        };
       }
       options.buttons.triggerMethod('Update', { message: result });
     };
@@ -53,7 +53,7 @@ module.exports = DeepModel.extend({
         result = {
           type: 'error',
           text: jqxhr.responseJSON.errors[0].message
-        }
+        };
       }
       options.buttons.triggerMethod('Update', { message: result });
     };

@@ -1,6 +1,7 @@
 var bb = require('backbone');
 var POS = require('lib/utilities/global');
 var debug = require('debug')('collection');
+var $ = require('jquery');
 
 module.exports = POS.Collection = bb.Collection.extend({
   constructor: function() {

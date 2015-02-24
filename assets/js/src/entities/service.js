@@ -12,6 +12,7 @@ var FilteredCollection = require('lib/config/filtered-collection');
 var SupportForm = require('./support/form');
 var debug = require('debug')('entities');
 var POS = require('lib/utilities/global');
+var $ = require('jquery');
 
 module.exports = POS.Entities = Service.extend({
   channelName: 'entities',

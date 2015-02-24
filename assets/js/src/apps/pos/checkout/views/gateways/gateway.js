@@ -1,6 +1,6 @@
 var ItemView = require('lib/config/item-view');
 var hbs = require('handlebars');
-var $ = require('jquery');
+//var $ = require('jquery');
 
 module.exports = ItemView.extend({
   tagName: 'h5',

@@ -1,7 +1,7 @@
 var ItemView = require('lib/config/item-view');
 var POS = require('lib/utilities/global');
 var hbs = require('handlebars');
-var $ = require('jquery');
+//var $ = require('jquery');
 var polyglot = require('lib/utilities/polyglot');
 
 var View = ItemView.extend({
