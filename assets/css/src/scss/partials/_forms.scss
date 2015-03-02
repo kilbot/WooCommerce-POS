@@ -32,6 +32,11 @@ input {
       &:hover {
         color: nth($primaryPalette, 10);
       }
+      &.disabled {
+        cursor: $cursor-disabled;
+        pointer-events: none; // Future-proof disabling of clicks
+        color: $text-color;
+      }
     }
   }
   .form-control, .input-text {

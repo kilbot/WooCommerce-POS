@@ -14,6 +14,9 @@
       p.message {
         display: inline;
       }
+      .btn.pull-left {
+        margin-right: $spacing/4;
+      }
     }
   }
   .list-actions:first-of-type {

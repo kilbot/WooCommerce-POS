@@ -17,6 +17,12 @@
     }
     .title {
       @include flex(1);
+      i {
+        color: $secondary-text-color;
+      }
+      small {
+        display: block;
+      }
       dl {
         @include clearfix();
         width: 100%;
@@ -27,6 +33,7 @@
           float: left;
           padding-right: 5px;
           clear: left;
+          font-weight: 600;
         }
         dd {
           float: left;

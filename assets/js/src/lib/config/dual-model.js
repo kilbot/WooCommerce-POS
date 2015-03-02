@@ -3,6 +3,7 @@ var POS = require('lib/utilities/global');
 var bb = require('backbone');
 //var $ = require('jquery');
 var _ = require('lodash');
+var Radio = require('backbone.radio');
 
 module.exports = POS.DualModel = Model.extend({
   idAttribute: 'local_id',
@@ -63,16 +64,25 @@ module.exports = POS.DualModel = Model.extend({
   },
 
   serverSync: function(){
-    var method, status, options = {};
+    var method, status, self = this, options = {};
     status = this.get('status');
     method = this.getSyncMethodsByState(status);
 
-    options.success = function(){
-      console.log(arguments);
+    options.success = function(response){ // (response, textStatus, jqXHR)
+      if (method === 'delete') {
+        return self.destroy();
+      }
+      var data = self.parse(response);
+      if (!data.status) { data.status = ''; }
+      return self.save(data);
     };
 
-    options.error = function(){
-      console.log(arguments);
+    options.error = function(jqXHR, textStatus, errorThrown){
+      Radio.trigger('global', 'error', {
+        jqXHR   : jqXHR,
+        status  : textStatus,
+        message : errorThrown
+      })
     };
 
     return bb.ajaxSync(method, this, options);

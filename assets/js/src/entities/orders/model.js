@@ -87,27 +87,33 @@ module.exports = DualModel.extend({
       return this.destroy();
     }
 
-    var subtotal_tax  = 0,
-        total_tax     = 0,
+    var total_tax     = 0,
+        subtotal_tax  = 0,
+        shipping_tax  = 0,
+        cart_discount_tax = 0,
         subtotal      = this.cart.sum('subtotal'),
         total         = this.cart.sum('total'),
         cart_discount = subtotal - total;
 
     if( this.tax.calc_taxes === 'yes' ) {
-      subtotal_tax  = this.cart.sum('subtotal_tax');
-      total_tax     = this.cart.sum('total_tax');
+      total_tax         = this.cart.sum('total_tax');
+      subtotal_tax      = this.cart.sum('subtotal_tax');
+      shipping_tax      = this.cart.sum('total_tax', 'shipping');
+      cart_discount_tax = subtotal_tax - total_tax;
     }
 
     total += total_tax;
 
     // create totals object
     var totals = {
-      'total'         : Utils.round( total, 4 ),
-      'subtotal'      : Utils.round( subtotal, 4 ),
-      'total_tax'     : Utils.round( total_tax, 4 ),
-      'subtotal_tax'  : Utils.round( subtotal_tax, 4 ),
-      'cart_discount' : Utils.round( cart_discount, 4 ),
-      'tax_lines'     : this.cart.itemizedTax()
+      'total'             : Utils.round( total, 4 ),
+      'subtotal'          : Utils.round( subtotal, 4 ),
+      'total_tax'         : Utils.round( total_tax, 4 ),
+      'subtotal_tax'      : Utils.round( subtotal_tax, 4 ),
+      'shipping_tax'      : Utils.round( shipping_tax, 4 ),
+      'cart_discount'     : Utils.round( cart_discount, 4 ),
+      'cart_discount_tax' : Utils.round( cart_discount_tax, 4 ),
+      'tax_lines'         : this.cart.itemizedTax()
     };
 
     this.save(totals, { success: this.onSaveSuccess, wait: true });

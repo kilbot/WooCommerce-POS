@@ -60,8 +60,7 @@ module.exports = LayoutView.extend({
   close: function() {
     var deferred = $.Deferred();
     this.once('close', function() {
-      this.content.empty();
-      this.footer.empty();
+      this.tearDown();
       deferred.resolve();
     });
     this.$el.modal('hide');
@@ -86,6 +85,13 @@ module.exports = LayoutView.extend({
     }, this);
   },
 
+  tearDown: function(){
+    this.header.empty();
+    this.content.empty();
+    this.footer.empty();
+    this.$('.modal-dialog').removeClass().addClass('modal-dialog');
+  },
+
   update: function(options){
     options = options || {};
     _.each(options, function(attr, key){
@@ -99,11 +105,18 @@ module.exports = LayoutView.extend({
   },
 
   modalFooter: function(options){
-    var view = new Buttons(options);
+    var view = new Buttons(options),
+        actions = _.pluck(options.buttons, 'action'),
+        events = {};
 
-    this.listenTo(view, 'action:save', function(){
-      this.content.currentView.trigger('action:save');
-    });
+    // register action events and pass them to the currentView
+    _.each(actions, function(action){
+      events['action:' + action] = function(){
+        this.content.currentView.trigger('action:' + action);
+      }
+    }, this);
+
+    this.listenTo(view, events);
 
     this.footer.show(view);
   },
@@ -113,89 +126,10 @@ module.exports = LayoutView.extend({
     this.$('.modal-header h1').html(title);
   },
 
-  modalSize: function(size){
-    var className = {
-      small: 'modal-sm',
-      large: 'modal-lg'
-    };
-    if(className[size]){
-      this.$('.modal-dialog').addClass(className[size]);
+  modalClassName: function(className){
+    if(className){
+      this.$('.modal-dialog').addClass(className);
     }
   }
-
-  //
-  //openModal: function (options) {
-  //  options = options || {};
-  //  this.once('after:show', options.callback); // 'after:show' = 'show' ??
-  //  this.setupModal(options);
-  //  this.$el.modal('show');
-  //},
-  //
-  //destroyModal: function (options) {
-  //  options = options || {};
-  //  this.once('hide', options.callback);
-  //  this.once('hide', this.teardownModal);
-  //  this.$el.modal('hide');
-  //},
-  //
-  //setupModal: function (options) {
-  //  options = options || {};
-  //  if (this.isShown) {
-  //    this.teardownModal();
-  //  }
-  //
-  //  // pass on attributes
-  //  if( options.attributes ){
-  //
-  //    // modal class
-  //    if( options.attributes.className ){
-  //      this.$('.modal-dialog').addClass( options.attributes.className );
-  //    }
-  //
-  //    // modal title
-  //    if( options.attributes.title ) {
-  //      this.$('.modal-header h1').html( options.attributes.title );
-  //    }
-  //  }
-  //
-  //  this.content.show(options.view);
-  //  this.isShown = true;
-  //
-  //  if( options.view.model ) {
-  //    this.listenTo(options.view.model, 'save:status', this.updateSaveStatus);
-  //  }
-  //
-  //},
-  //
-  //teardownModal: function () {
-  //  if (!this.isShown) {
-  //    return;
-  //  }
-  //  this.content.empty();
-  //  this.render(); // re-render to reset attributes
-  //  this.isShown = false;
-  //},
-  //
-  //saving: function(){
-  //  this.$('.modal-footer .action-save')
-  //      .addClass( 'disabled' );
-  //
-  //  this.$('.modal-footer p.response')
-  //      .removeClass('success error')
-  //      .html( '<i class="icon icon-spinner"></i>' );
-  //},
-  //
-  //updateSaveStatus: function( status, message ){
-  //  if( _.isUndefined(message) ){
-  //    message = this.$('.modal-footer p.response').data(status);
-  //  }
-  //
-  //  this.$('.modal-footer p.response')
-  //      .addClass(status)
-  //      .html( '<i class="icon icon-' + status + '"></i> ' + message );
-  //
-  //  this.$('.modal-footer .action-save')
-  //      .removeClass( 'disabled' );
-  //}
 
 });

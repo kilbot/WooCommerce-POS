@@ -10,22 +10,26 @@ var $ = require('jquery');
 module.exports = FormView.extend({
   initialize: function() {
     this.template = hbs.compile( $('#tmpl-cart-item').html() );
+    this.tax = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'tax'
+    });
   },
 
   templateHelpers: function(){
     var data = {};
-    var tax = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'tax'
-    });
 
-    if( tax.tax_display_cart === 'incl' ) {
+    if( this.tax.tax_display_cart === 'incl' ) {
       data.subtotal = this.model.sum(['subtotal', 'subtotal_tax']);
       data.total = this.model.sum(['total', 'total_tax']);
     }
 
     if( this.model.get('total') !== this.model.get('subtotal') ){
       data.discount = true;
+    }
+
+    if( this.model.get('type') === 'variation'){
+      data.variation = this.model.get('attributes');
     }
 
     return data;

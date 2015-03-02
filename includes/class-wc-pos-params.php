@@ -257,13 +257,8 @@ class WC_POS_Params {
   }
 
   static private function discount_keys(){
-    $discount_keys = array();
     $settings = new WC_POS_Admin_Settings_General();
-    $data = $settings->get_data();
-    if(isset($data['discount_quick_keys'])){
-      $discount_keys = $data['discount_quick_keys'];
-    }
-    return $discount_keys;
+    return $settings->get_data('discount_quick_keys');
   }
 
 }

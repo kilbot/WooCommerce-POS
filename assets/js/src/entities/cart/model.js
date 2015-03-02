@@ -52,6 +52,8 @@ module.exports = Model.extend({
         type            = this.get('type'),
         regular_price   = parseFloat( this.get('regular_price')),
         tax_class       = this.get('tax_class'),
+        item_tax,
+        item_subtotal_tax,
         rates;
 
     // make a copy of the tax rates for this product
@@ -59,24 +61,24 @@ module.exports = Model.extend({
       rates = _.deepClone(this.tax_rates[tax_class]);
     }
 
+    // if shipping or fee
+    if( type === 'shipping' || type === 'fee' ) {
+      regular_price = item_price;
+    }
+
     // calc taxes
-    var item_tax = this.calcTax({
+    item_tax = this.calcTax({
       price    : item_price,
       quantity : quantity,
       rates    : rates
     });
 
-    var item_subtotal_tax = this.calcTax({
+    item_subtotal_tax = this.calcTax({
       price    : regular_price,
       quantity : quantity,
       rates    : rates,
       subtotal : true
     });
-
-    // if shipping or fee
-    if( type === 'shipping' || type === 'fee' ) {
-      regular_price = item_price;
-    }
 
     // if price does not include tax
     if( this.tax.prices_include_tax === 'yes' ) {
@@ -109,9 +111,10 @@ module.exports = Model.extend({
       } else {
         item_tax = this.calcExclusiveTax(options);
       }
+    } else {
+      this.set('tax', undefined);
     }
 
-    // use for init subtotal_tax
     return item_tax;
   },
 

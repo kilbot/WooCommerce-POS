@@ -21,12 +21,14 @@ describe('entities/cart/collection.js', function () {
       arr.push( Math.random() );
     }
     this.collection.add([
-      { random: arr[0] },
+      { random: arr[0], type: 'type' },
       { random: arr[1] },
       { random: arr[2] }
     ]);
     var sum = arr.reduce(function(pv, cv) { return pv + cv; }, 0);
     expect(this.collection.sum('random')).equals(sum);
+    expect(this.collection.sum('random', 'type')).equals(arr[0]);
+
   });
 
   it('should add new items to the cart', function() {
@@ -39,6 +41,44 @@ describe('entities/cart/collection.js', function () {
     // add product as attributes
     this.collection.addToCart({ id: 2, title: 'Product 2'});
     expect(this.collection.length).equals(2);
+  });
+
+  it('should combine itemized taxes', function() {
+    this.collection.add([
+      {
+        tax: {
+          1: {subtotal: 1.5, total: 1.2},
+          2: {subtotal: 3, total: 2}
+        }
+      },
+      {
+        tax: {
+          2: {subtotal: 8.5, total: 5}
+        }
+      },
+      {
+        tax: {
+          1: {subtotal: 3, total: 2}
+        },
+        type: 'shipping'
+      }
+    ]);
+
+    var tax = this.collection.itemizedTax();
+    expect(tax).to.be.an('array').that.deep.equals([
+      {
+        subtotal: 4.5,
+        total: 3.2,
+        shipping: 2,
+        rate_id: 1
+      },
+      {
+        rate_id: 2,
+        total: 7,
+        subtotal: 11.5,
+        shipping: 0
+      }
+    ]);
   });
 
 });

@@ -63,6 +63,7 @@
                     float: left;
                     padding-right: 5px;
                     clear: left;
+                    font-weight: 600;
                   }
                   dd {
                     float: left;
@@ -118,9 +119,11 @@
             padding: $spacing/3;
           }
         }
-        &.drawer-open{
-          .action-more i {
-            @include rotate(180deg);
+        &.drawer-open {
+          .title {
+            [data-action="more"] i {
+              @include rotate(180deg);
+            }
           }
         }
       }
@@ -153,14 +156,6 @@
   }
   .cart-customer {
     padding: $spacing/3;
-  }
-  .list-actions {
-    > div {
-      padding-bottom: 0;
-      a {
-        margin-bottom: $spacing/3;
-      }
-    }
   }
   .cart-notes {
     > div {

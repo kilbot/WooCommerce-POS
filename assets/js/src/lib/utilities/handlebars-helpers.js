@@ -77,6 +77,14 @@ hbs.registerHelper('compare', function(left, operator, right, options) {
 });
 /*jshint +W071, +W074 */
 
+hbs.registerHelper('list', function(items, sep, options) {
+  if(_.isArray(items)){
+    var list = _.map(items, options.fn);
+    return list.join(sep);
+  }
+  return options.fn(items);
+});
+
 hbs.registerHelper('csv', function(items, options) {
   return options.fn(items.join(', '));
 });

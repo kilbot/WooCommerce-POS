@@ -139,6 +139,7 @@ describe('entities/cart/model.js', function () {
 
       // itemized
       var tax = this.model.get('tax');
+      expect(tax[1]).to.be.undefined;
       expect(tax[2].total).equal(0.1);
       expect(tax[2].subtotal).equal(0.15);
 
@@ -162,6 +163,7 @@ describe('entities/cart/model.js', function () {
 
       // itemized
       var tax = this.model.get('tax');
+      expect(tax[1]).to.be.undefined;
       expect(tax[2].total).equal(0.0952);
       expect(tax[2].subtotal).equal(0.1429);
 
@@ -318,6 +320,28 @@ describe('entities/cart/model.js', function () {
       expect(tax[4].subtotal).equal(0.2679);
       expect(tax[5].total).equal(0.0357);
       expect(tax[5].subtotal).equal(0.0536);
+
+    });
+
+    it("should calculate the correct compound exclusive tax on change to tax_class", function() {
+      this.model.tax = {
+        calc_taxes: 'yes',
+        prices_include_tax: 'no'
+      };
+
+      // dummy product id 99, quantity 2, regular price $3, on sale for $2
+      this.model.set({ 'taxable': true, 'tax_class': '' });
+      this.model.set({ 'tax_class': 'reduced-rate' });
+
+      expect(this.model.get('item_price')).equal(2);
+      expect(this.model.get('subtotal')).equal(3);
+      expect(this.model.get('subtotal_tax')).equal(0);
+      expect(this.model.get('total')).equal(2);
+      expect(this.model.get('total_tax')).equal(0);
+
+      // itemized
+      var tax = this.model.get('tax');
+      expect(tax).to.be.undefined;
 
     });
 

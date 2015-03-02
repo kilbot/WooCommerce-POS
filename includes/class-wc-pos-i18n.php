@@ -286,37 +286,48 @@ class WC_POS_i18n {
     $translations = array();
 
     $translations['titles'] = array(
-      'products'  => /* translators: woocommerce */ __( 'Products', 'woocommerce' ),
-      'orders'    => /* translators: woocommerce */ __( 'Orders', 'woocommerce' ),
-      'customers' => /* translators: woocommerce */ __( 'Customers', 'woocommerce' ),
-      'coupons'   => /* translators: woocommerce */ __( 'Coupons', 'woocommerce' ),
+      'browser'   => _x( 'Browser', 'system status: browser capabilities', 'woocommerce-pos' ),
       'cart'      => /* translators: woocommerce */ __( 'Cart', 'woocommerce' ),
       'checkout'  => /* translators: woocommerce */ __( 'Checkout', 'woocommerce' ),
-      'receipt'   => /* translators: woocommerce */ __( 'Receipt', 'woocommerce' ),
-      'browser'   => _x( 'Browser', 'system status: browser capabilities', 'woocommerce-pos' ),
+      'coupons'   => /* translators: woocommerce */ __( 'Coupons', 'woocommerce' ),
+      'customers' => /* translators: woocommerce */ __( 'Customers', 'woocommerce' ),
+      'fee'       => /* translators: woocommerce */ __( 'Fee Name', 'woocommerce' ),
       'hotkeys'   => _x( 'HotKeys', 'keyboard shortcuts', 'woocommerce-pos' ),
-      'to-pay'    => __( 'To Pay', 'woocommerce-pos' )
+      'order'     => /* translators: woocommerce */ __( 'Order', 'woocommerce' ),
+      'orders'    => /* translators: woocommerce */ __( 'Orders', 'woocommerce' ),
+      'products'  => /* translators: woocommerce */ __( 'Products', 'woocommerce' ),
+      'receipt'   => /* translators: woocommerce */ __( 'Receipt', 'woocommerce' ),
+      'shipping'  => /* translators: woocommerce */ __( 'Shipping Name', 'woocommerce' ),
+      'to-pay'    => __( 'To Pay', 'woocommerce-pos' ),
     );
 
     $translations['buttons'] = array(
-      'save'      => /* translators: woocommerce */ __( 'Save Changes', 'woocommerce' ),
-      'print'     => /* translators: wordpress   */ __( 'Print' ),
-      'email'     => /* translators: wordpress   */ __( 'Email' ),
-      'refresh'   => /* translators: wordpress   */ __( 'Refresh' ),
-      'new-order' => /* translators: woocommerce */ __( 'New Order', 'woocommerce' ),
-      'close'     => /* translators: wordpress   */ __( 'Close' ),
-      'send'      => /* translators: wordpress   */ __( 'Submit' ),
+      'checkout'  => /* translators: woocommerce */ __( 'Checkout', 'woocommerce' ),
       'clear'     => _x( 'Clear', 'system status: delete local records', 'woocommerce-pos' ),
+      'close'     => /* translators: wordpress   */ __( 'Close' ),
+      'coupon'    => /* translators: woocommerce */ __( 'Coupon', 'woocommerce' ),
+      'discount'  => __( 'Discount', 'woocommerce-pos' ),
+      'email'     => /* translators: wordpress   */ __( 'Email' ),
+      'fee'       => /* translators: woocommerce */ __( 'Fee', 'woocommerce' ),
+      'new-order' => /* translators: woocommerce */ __( 'New Order', 'woocommerce' ),
+      'note'      => /* translators: woocommerce */ __( 'Note', 'woocommerce' ),
+      'print'     => /* translators: wordpress   */ __( 'Print' ),
+      'process-payment' => __( 'Process Payment', 'woocommerce-pos' ),
+      'refresh'   => /* translators: wordpress   */ __( 'Refresh' ),
       'restore'   => _x( 'Restore defaults', 'restore default settings', 'woocommerce-pos' ),
+      'return'    => _x( 'return', 'Numpad return key', 'woocommerce-pos' ),
       'return-to-sale'  => __( 'Return to Sale', 'woocommerce-pos' ),
-      'process-payment' => __( 'Process Payment', 'woocommerce-pos' )
-    );
+      'save'      => /* translators: woocommerce */ __( 'Save Changes', 'woocommerce' ),
+      'send'      => /* translators: wordpress   */ __( 'Submit' ),
+      'shipping'  => /* translators: woocommerce */ __( 'Shipping', 'woocommerce' ),
+      'void'      => __( 'Void', 'woocommerce-pos' ),
+);
 
     $translations['messages'] = array(
-      'success'   => /* translators: woocommerce */ __( 'Your changes have been saved.', 'woocommerce' ),
+      'choose'    => /* translators: woocommerce */ __( 'Choose an option', 'woocommerce' ),
       'error'     => /* translators: woocommerce */ __( 'Sorry, there has been an error.', 'woocommerce' ),
       'loading'   => /* translators: wordpress   */ __( 'Loading&hellip;' ),
-      'choose'    => /* translators: woocommerce */ __( 'Choose an option', 'woocommerce' )
+      'success'   => /* translators: woocommerce */ __( 'Your changes have been saved.', 'woocommerce' ),
     );
 
     return $translations;

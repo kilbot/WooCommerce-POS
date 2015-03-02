@@ -8,6 +8,7 @@ var EntitiesService = require('entities/service');
 var HeaderService = require('apps/header/service');
 var ModalService = require('lib/components/modal/service');
 var PopoverService = require('lib/components/popover/service');
+//var LoggerService = require('lib/components/logger/service');
 
 /**
  * SubApps
@@ -51,6 +52,7 @@ app.modalService = new ModalService({
 });
 
 app.popoverService = new PopoverService();
+//app.loggerService = new LoggerService();
 
 /**
  * Attach app to window for third party plugins

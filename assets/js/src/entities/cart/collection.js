@@ -57,9 +57,10 @@ module.exports = Collection.extend({
   },
 
   // convenience method to sum attributes in collection
-  sum: function(attribute){
-    var array = this.pluck(attribute);
-    return _( array ).reduce( function(memo, num){ return memo + num; }, 0 );
+  sum: function(attribute, type){
+    var col = this.toJSON();
+    if(type){ col = _.where(col, {type: type}); }
+    return _.pluck(col, attribute).reduce(function(a, b){return a + b;}, 0);
   },
 
   /**
@@ -68,8 +69,12 @@ module.exports = Collection.extend({
    */
   addToCart: function(options){
     options = options || {};
-    var attributes = options.model ? options.model.toJSON() : options;
-    var model = this.findWhere({ product_id: attributes.id });
+    var model,
+        attributes = options.model ? options.model.toJSON() : options;
+
+    if(attributes.id){
+      model = this.findWhere({ product_id: attributes.id });
+    }
 
     var props = [
       'order',
@@ -101,17 +106,15 @@ module.exports = Collection.extend({
   },
 
   itemizedTax: function(){
-    var taxes = this.pluck('tax');
-
-    var obj = _.reduce(taxes, function(result, next){
-      return _.merge(result, next, function(a, b){
-        if(a){
-          b.total += a.total;
-          b.subtotal += a.subtotal;
-        }
-        return b;
+    var items = _.deepClone(this.toJSON());
+    var taxes = _.map(items, function(item){
+      if(!item.tax) { return; }
+      _.each(item.tax, function(tax){
+        tax.shipping = item.type === 'shipping' ? tax.total : 0 ;
       });
-    }, {});
+      return item.tax;
+    });
+    var obj = this.sumTaxes(taxes);
 
     // convert obj to array to be consistent with WC REST API output
     var arr = [];
@@ -121,7 +124,19 @@ module.exports = Collection.extend({
     });
 
     return arr;
+  },
 
+  sumTaxes: function(taxes){
+    return _.reduce(taxes, function(result, tax){
+      return _.merge(result, tax, function(a, b){
+        if(a){
+          b.total += a.total;
+          b.subtotal += a.subtotal;
+          b.shipping += a.shipping;
+        }
+        return b;
+      });
+    }, {});
   }
 
 });

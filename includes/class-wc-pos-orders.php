@@ -23,6 +23,8 @@ class WC_POS_Orders {
 
     add_filter( 'woocommerce_api_create_order_data', array( $this, 'create_order_data'), 10, 2 );
     add_action( 'woocommerce_order_add_product', array( $this, 'order_add_product'), 10, 5 );
+    add_action( 'woocommerce_order_add_shipping', array( $this, 'order_add_shipping'), 10, 3 );
+    add_action( 'woocommerce_order_add_fee', array( $this, 'order_add_fee'), 10, 3 );
     add_action( 'woocommerce_api_create_order', array( $this, 'create_order'), 10, 3 );
 
     // payment complete
@@ -102,7 +104,65 @@ class WC_POS_Orders {
       endif;
     endforeach;
 
-    return false;
+    return;
+  }
+
+  public function order_add_shipping($order_id, $item_id, $rate){
+    $shipping_line = $this->get_shipping_line($rate, $item_id);
+    if($shipping_line && isset($shipping_line['tax'])){
+      $taxes = array();
+      foreach($shipping_line['tax'] as $k => $tax){
+        $taxes[$k] = isset($tax['total']) ? $tax['total']: 0 ;
+      }
+      wc_update_order_item_meta( $item_id, 'taxes', $taxes );
+    }
+  }
+
+  /**
+   * Match $rate properties to raw data
+   * @param $rate
+   * @param $item_id
+   */
+  private function get_shipping_line($rate, $item_id){
+    if(!isset($this->data['shipping_lines']))
+      return;
+
+    $lines = $this->data['shipping_lines'];
+
+    foreach($lines as $k => $line):
+      if(
+        $line['method_id'] == $rate->method_id &&
+        $line['method_title'] == $rate->label &&
+        $line['total'] == $rate->cost
+      ):
+        $this->data['shipping_lines'][$k]['id'] = $item_id;
+        return $line;
+      endif;
+    endforeach;
+
+    return;
+  }
+
+  /**
+   * @param $order_id
+   * @param $item_id
+   * @param $fee
+   */
+  public function order_add_fee($order_id, $item_id, $fee){
+    if(!isset($this->data['fee_lines']))
+      return;
+
+    $lines = $this->data['fee_lines'];
+
+    foreach($lines as $k => $line):
+      if(
+        $line['title'] == $fee->name &&
+        $line['total'] == $fee->amount &&
+        $line['tax_class'] == $fee->tax_class
+      ):
+        $this->data['fee_lines'][$k]['id'] = $item_id;
+      endif;
+    endforeach;
   }
 
   /**
@@ -113,53 +173,78 @@ class WC_POS_Orders {
    */
   public function create_order( $order_id, $data, $WC_API_Orders ){
     $this->update_order_meta($order_id);
-    $this->update_line_items($order_id);
+    $this->update_lines($order_id, 'line_items');
+    $this->update_lines($order_id, 'fee_lines');
   }
 
   private function update_order_meta( $order_id ){
-    update_post_meta( $order_id, '_order_discount', $this->data['order_discount'] );
-    update_post_meta( $order_id, '_cart_discount', 	$this->data['cart_discount'] );
-    update_post_meta( $order_id, '_order_tax', 			$this->data['total_tax'] );
-    update_post_meta( $order_id, '_order_total', 		$this->data['total'] );
+    update_post_meta( $order_id, '_order_discount',    $this->data['order_discount'] );
+    update_post_meta( $order_id, '_cart_discount', 	   $this->data['cart_discount'] );
+    update_post_meta( $order_id, '_order_shipping_tax',$this->data['shipping_tax'] );
+    update_post_meta( $order_id, '_order_tax', 			   $this->data['total_tax'] - $this->data['shipping_tax'] );
+    update_post_meta( $order_id, '_order_total', 		   $this->data['total'] );
+
+    foreach($this->data['tax_lines'] as $tax){
+      $code = WC_Tax::get_rate_code( $tax['rate_id'] );
+      $tax_item_id = wc_add_order_item( $order_id, array(
+        'order_item_name' => $code,
+        'order_item_type' => 'tax'
+      ));
+      if($tax_item_id) {
+        wc_add_order_item_meta( $tax_item_id, 'rate_id', $tax['rate_id'] );
+        wc_add_order_item_meta( $tax_item_id, 'label', $tax['label'] );
+        wc_add_order_item_meta( $tax_item_id, 'compound', ( $tax['compound'] == 'yes' ? 1 : 0 ) );
+        wc_add_order_item_meta( $tax_item_id, 'tax_amount', $tax['total'] - $tax['shipping'] );
+        wc_add_order_item_meta( $tax_item_id, 'shipping_tax_amount', $tax['shipping'] );
+      }
+    }
+
+    // pos meta
+    update_post_meta( $order_id, '_pos', 1 );
+    update_post_meta( $order_id, '_pos_user', get_current_user_id() );
   }
 
   /**
-   * @param $order_id
+   *
    */
-  private function update_line_items( $order_id ){
+  private function update_lines( $order_id, $line ){
 
-    if(!isset($this->data['line_items']))
+    if(!isset($this->data[$line]))
       return;
 
-    foreach($this->data['line_items'] as $item){
+    foreach($this->data[$line] as $item){
       if(!isset($item['id']))
         return;
 
-      $line_taxes = array();
-      $line_subtotal_taxes = array();
-      foreach($item['tax'] as $key => $itemized){
-        $line_taxes[$key] = $itemized['total'];
-        $line_subtotal_taxes[$key] = $itemized['subtotal'];
-
-        $code = WC_Tax::get_rate_code( $key );
-        $tax_item_id = wc_add_order_item( $order_id, array(
-          'order_item_name' => $code,
-          'order_item_type' => 'tax'
-        ));
-        if($tax_item_id) {
-          wc_add_order_item_meta( $tax_item_id, 'rate_id', $key );
-          wc_add_order_item_meta( $tax_item_id, 'label', $itemized['label'] );
-          wc_add_order_item_meta( $tax_item_id, 'compound', ( $itemized['compound'] == 'yes' ? 1 : 0 ) );
-          wc_add_order_item_meta( $tax_item_id, 'tax_amount', $itemized['total'] );
-          wc_add_order_item_meta( $tax_item_id, 'shipping_tax_amount', 0 );
-        }
+      if(isset($item['tax'])){
+        $this->update_line_tax_data($item['id'], $item['tax']);
       }
 
-      wc_update_order_item_meta( $item['id'], '_line_subtotal_tax', $item['subtotal_tax'] );
-      wc_update_order_item_meta( $item['id'], '_line_tax', $item['total_tax'] );
-      wc_update_order_item_meta( $item['id'], '_line_tax_data', array( 'total' => $line_taxes, 'subtotal' => $line_subtotal_taxes ) );
+      $subtotal_tax = isset($item['subtotal_tax']) ? $item['subtotal_tax'] : 0;
+      $total_tax = isset($item['total_tax']) ? $item['total_tax'] : 0;
+
+      wc_update_order_item_meta( $item['id'], '_line_subtotal_tax', $subtotal_tax );
+      wc_update_order_item_meta( $item['id'], '_line_tax', $total_tax );
     }
 
+  }
+
+  /**
+   * @param $item_id
+   * @param $line_tax
+   */
+  private function update_line_tax_data($item_id, $line_tax){
+    if(!is_numeric($item_id) || !is_array($line_tax))
+      return;
+
+    $line_taxes = array();
+    $line_subtotal_taxes = array();
+    foreach($line_tax as $key => $itemized){
+      $line_taxes[$key] = isset($itemized['total']) ? $itemized['total']: 0 ;
+      $line_subtotal_taxes[$key] = isset($itemized['subtotal']) ? $itemized['subtotal'] : 0 ;
+    }
+
+    wc_update_order_item_meta( $item_id, '_line_tax_data', array( 'total' => $line_taxes, 'subtotal' => $line_subtotal_taxes ) );
   }
 
   /**

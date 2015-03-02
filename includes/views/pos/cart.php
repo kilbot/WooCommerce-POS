@@ -32,17 +32,17 @@
     {{else}}
     <strong data-name="title" contenteditable="true">{{title}}</strong>
     {{/if}}
-		{{#with attributes}}
-		<dl>
-			{{#each this}}
-			<dt>{{name}}:</dt>
-			<dd>{{option}}</dd>
-			{{/each}}
-		</dl>
-		{{/with}}
+    {{#with variation}}
+    <dl>
+      {{#each this}}
+      <dt>{{name}}:</dt>
+      <dd>{{option}}</dd>
+      {{/each}}
+    </dl>
+    {{/with}}
 		<a data-action="more" href="#" class="btn btn-default btn-circle-sm"><i class="icon icon-angle-down"></i></a>
 	</div>
-	<div class="price"><input type="text" name="item_price" data-label="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" class="btn autogrow"></div>
+	<div class="price"><input type="text" name="item_price" data-label="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" data-original="{{regular_price}}" class="btn autogrow"></div>
 	<div class="total"></div>
 	<div class="action"><a data-action="remove" class="btn btn-circle btn-danger" href="#"><i class="icon icon-times icon-lg"></i></a></div>
 </script>
@@ -136,14 +136,4 @@
 		<div class="total">{{{money total}}}</div>
 		<div class="action"></div>
 	</li>
-</script>
-
-<script type="text/template" id="tmpl-cart-actions">
-	<a href="#" class="btn btn-danger pull-left" data-action="void"><?php _e( 'Void', 'woocommerce-pos' ); ?></a>
-	<a href="#" class="btn btn-primary" data-action="fee" data-title="<?php /* translators: woocommerce */ _e( 'Fee Name', 'woocommerce' ); ?>"><?php /* translators: woocommerce */ _e( 'Fee', 'woocommerce' ); ?></a>
-	<a href="#" class="btn btn-primary" data-action="shipping" data-title="<?php /* translators: woocommerce */ _e( 'Shipping Name', 'woocommerce' ); ?>"><?php /* translators: woocommerce */ _e( 'Shipping', 'woocommerce' ); ?></a>
-<!--	<a href="#" class="btn btn-primary" data-action="coupon">--><?php ///* translators: woocommerce */ _e( 'Coupon', 'woocommerce' ); ?><!--</a>-->
-	<a href="#" class="btn btn-primary" data-action="discount"><?php _e( 'Discount', 'woocommerce-pos' ); ?></a>
-	<a href="#" class="btn btn-primary" data-action="note"><?php /* translators: woocommerce */ _e( 'Note', 'woocommerce' ); ?></a>
-	<a href="#" class="btn btn-success" data-action="checkout"><?php /* translators: woocommerce */ _e( 'Checkout', 'woocommerce' ); ?></a>
 </script>

@@ -3,17 +3,16 @@ var Radio = require('backbone.radio');
 //var debug = require('debug')('receipt');
 var POS = require('lib/utilities/global');
 var LayoutView = require('./views/layout');
+var ReceiptView = require('./views/receipt');
 var polyglot = require('lib/utilities/polyglot');
+var Buttons = require('lib/components/buttons/view');
 
 var CheckoutRoute = Route.extend({
 
   initialize: function( options ) {
     options = options || {};
     this.container = options.container;
-    this.collection = Radio.request('entities', 'get', {
-      type: 'collection',
-      name: 'orders'
-    });
+    this.collection = options.collection;
 
     // checkout label
     Radio.command('header', 'update:tab', {
@@ -23,33 +22,75 @@ var CheckoutRoute = Route.extend({
   },
 
   fetch: function() {
-
+    if(this.collection.isNew()){
+      return this.collection.fetch();
+    }
   },
-  //
-  //onFetch: function(id){
-  //  if(id){
-  //    this.order = this.collection.get(id);
-  //  } else if(this.collection.length > 0){
-  //    this.order = this.collection.at(0);
-  //  }
-  //
-  //  if(!this.order){
-  //    this.order = this.collection.add({});
-  //  }
-  //
-  //  this.collection.active = this.order;
-  //},
+
+  onFetch: function(id){
+    this.order = this.collection.findWhere({id: id});
+    if(!this.order){
+      console.log('no receipt found!');
+    }
+  },
 
   render: function() {
-    this.layout = new LayoutView({
-      order: this.collection.active
-    });
+    this.layout = new LayoutView();
 
     this.listenTo( this.layout, 'show', function() {
-
+      this.showStatus();
+      this.showReceipt();
+      this.showActions();
     });
 
     this.container.show( this.layout );
+  },
+
+  showStatus: function(){
+
+  },
+
+  showReceipt: function(){
+    var view = new ReceiptView({
+      model: this.model
+    });
+
+    this.layout.listRegion.show(view);
+  },
+
+  showActions: function(){
+    var view = new Buttons({
+      buttons: [{
+        action: 'print',
+        label: polyglot.t('buttons.print'),
+        className: 'btn-primary pull-left'
+      }, {
+        action: 'email',
+        label: polyglot.t('buttons.email'),
+        className: 'btn-primary pull-left'
+      }, {
+        action: 'new-order',
+        label: polyglot.t('buttons.new-order'),
+        className: 'btn-success'
+      }]
+    });
+
+    this.listenTo(view, {
+      'action:print': function(){
+
+      },
+      'action:email': function(){
+
+      },
+      'action:new-order': function(){
+        this.navigate('', {
+          trigger: true,
+          replace: true
+        });
+      }
+    });
+
+    this.layout.actionsRegion.show(view);
   }
 
 });

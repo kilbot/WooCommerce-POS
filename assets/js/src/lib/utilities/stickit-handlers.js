@@ -1,6 +1,14 @@
-//var Utils = require('./utils');
-//var bb = require('backbone');
-//var _ = require('lodash');
+var bb = require('backbone');
+
+/**
+ * AutoGrow
+ */
+bb.Stickit.addHandler({
+  selector: '.autogrow',
+  afterUpdate: function($el){
+    $el.trigger('input');
+  }
+});
 
 /**
  * Display localised string, eg: 2,55

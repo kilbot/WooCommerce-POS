@@ -6,7 +6,7 @@ var POS = require('lib/utilities/global');
 var AutoGrow = Behavior.extend({
 
   initialize: function(options){
-    this.options = options || (options = {});
+    this.options = options || {};
     _.defaults(this.options, {
       padding: 20
     });

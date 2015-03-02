@@ -1,19 +1,24 @@
 var LayoutView = require('lib/config/layout-view');
-var _ = require('lodash');
-var $ = require('jquery');
+var hbs = require('handlebars');
 
 module.exports = LayoutView.extend({
 
-  initialize: function(options){
-    options = options || {};
-    this.template = _.template( $('#tmpl-receipt').html() );
+  initialize: function(){
+    this.template = hbs.compile('' +
+      '<div class="list-header"></div>' +
+      '<div class="list"></div>' +
+      '<div class="list-actions"></div>' +
+      '<div class="list-footer"></div>'
+    );
   },
 
   tagName: 'section',
 
   regions: {
-    receiptRegion  : '.receipt',
-    actionsRegion  : '.receipt-actions'
+    headerRegion  : '.list-header',
+    listRegion    : '.list',
+    actionsRegion : '.list-actions',
+    footerRegion  : '.list-footer'
   },
 
   attributes: {

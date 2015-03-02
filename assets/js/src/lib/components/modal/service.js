@@ -1,7 +1,9 @@
 var Service = require('lib/config/service');
 var Backbone = require('backbone');
 var LayoutView = require('./views/layout');
+var AlertView = require('./views/alert');
 var $ = require('jquery');
+var globalChannel = require('backbone.radio').channel('global');
 
 module.exports = Service.extend({
   channelName: 'modal',
@@ -26,6 +28,10 @@ module.exports = Service.extend({
     this.channel.comply({
       'update': this.layout.update
     }, this.layout);
+
+    globalChannel.on({
+      'error'   : this.error
+    }, this);
 
     this.listenTo(Backbone.history, {
       'route' : this.onRoute
@@ -96,6 +102,23 @@ module.exports = Service.extend({
     } else {
       return $.Deferred().resolve();
     }
+  },
+
+  error: function(options){
+    options = options || {};
+
+    if(options.jqXHR){
+      options.raw = options.jqXHR.responseText
+    }
+
+    var view = new AlertView({
+      className : 'error',
+      title     : options.status,
+      message   : options.message,
+      raw       : options.raw
+    });
+
+    this.open(view);
   }
 
 });

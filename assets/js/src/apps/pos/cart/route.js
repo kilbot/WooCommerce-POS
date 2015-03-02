@@ -2,8 +2,8 @@ var Route = require('lib/config/route');
 var LayoutView = require('./views/layout');
 var ItemsView = require('./views/items');
 var TotalsView = require('./views/totals');
-var ActionsView = require('./views/actions');
 var NotesView = require('./views/notes');
+var Buttons = require('lib/components/buttons/view');
 var CustomerSelect = require('lib/components/customer-select/view');
 var Radio = require('backbone.radio');
 //var debug = require('debug')('cart');
@@ -145,35 +145,43 @@ var CartRoute = Route.extend({
 
   /**
    * Actions
-   * TODO: abstract as a collection of button models?
    */
   showActions: function() {
-    var view = new ActionsView();
+    var view = new Buttons({
+      buttons: [
+        {action: 'void',      className: 'btn-danger pull-left'},
+        {action: 'fee',       className: 'btn-primary'},
+        {action: 'shipping',  className: 'btn-primary'},
+        {action: 'discount',  className: 'btn-primary'},
+        {action: 'note',      className: 'btn-primary'},
+        {action: 'checkout',  className: 'btn-success'}
+      ]
+    });
 
     this.listenTo(view, {
-      'void': function(){
+      'action:void': function(){
         _.invoke( this.order.cart.toArray(), 'destroy');
       },
-      note: function(){
+      'action:note': function(){
         this.layout.notesRegion.currentView.showNoteField();
       },
-      discount: function(){
+      'action:discount': function(){
         this.layout.totalsRegion.currentView.showDiscountRow();
       },
-      fee: function(title){
+      'action:fee': function(){
         this.order.cart.addToCart({
           type  : 'fee',
-          title : title
+          title : polyglot.t('titles.fee')
         });
       },
-      shipping: function(title){
+      'action:shipping': function(){
         this.order.cart.addToCart({
           type        : 'shipping',
-          method_title: title,
-          method_id   : ''         // todo: settings
+          method_title: polyglot.t('titles.shipping'),
+          method_id   : '' // todo: settings
         });
       },
-      checkout: function(){
+      'action:checkout': function(){
         this.navigate('checkout/' + this.order.id, { trigger: true });
       }
     });

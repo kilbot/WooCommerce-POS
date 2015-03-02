@@ -18,8 +18,30 @@
 	span {
 		color: $inverse-text-color;
 	}
-	.input-group{
-		margin-left: $spacing/4;
+	.input-group {
+    margin-left: $spacing/4;
+  }
+  .input-toggle {
+    &:not(.toggle){
+      span:first-of-type a {
+        cursor: $cursor-disabled;
+        pointer-events: none; // Future-proof disabling of clicks
+        color: $text-color;
+      }
+      input:last-of-type {
+        display: none;
+      }
+    }
+    &.toggle {
+      span:last-of-type a {
+        cursor: $cursor-disabled;
+        pointer-events: none; // Future-proof disabling of clicks
+        color: $text-color;
+      }
+      input:first-of-type {
+        display: none;
+      }
+    }
 	}
 }
 

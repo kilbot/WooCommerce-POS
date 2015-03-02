@@ -77,7 +77,8 @@ var Router = Router.extend({
 
   showReceipt: function() {
     return new ReceiptRoute({
-      container : this.layout.rightRegion
+      container : this.layout.rightRegion,
+      collection: this.orders
     });
   },
 
