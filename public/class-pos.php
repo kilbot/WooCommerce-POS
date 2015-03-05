@@ -12,7 +12,7 @@
 class WooCommerce_POS {
 
 	/** Version numbers */
-	const VERSION = '0.3.2';
+	const VERSION = '0.3.5';
 	const JQUERY_VERSION = '2.1.1';
 
 	/** Development flag */
@@ -203,6 +203,9 @@ class WooCommerce_POS {
 		// bail if not pos
 		if( !$this->is_pos )
 			return;
+
+		// disable W3 Total Cache minify
+		define('DONOTMINIFY', true);
 
 		// set up $current_user for use in includes
 		global $current_user;

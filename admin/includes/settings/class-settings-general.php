@@ -123,7 +123,7 @@ class WC_POS_Settings_General extends WC_POS_Settings_Page {
 				minTermLength:  1,
 				data:           {
 					action:   'woocommerce_json_search_customers',
-					security: '" . wp_create_nonce( 'json-search-customers' ) . "'
+					security: '" . wp_create_nonce( 'search-customers' ) . "'
 				}
 			}, function ( data ) {
 

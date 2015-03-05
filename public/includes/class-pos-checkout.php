@@ -52,6 +52,10 @@ class WooCommerce_POS_Checkout {
 			'post_password'	=> uniqid( 'order_' )	// Protects the post just in case
 		) );
 
+		if( version_compare( WC()->version, '2.2.0' ) >= 0 ) {
+			$order_data['post_status'] = 'wc-pending';
+		}
+
 		$order_id = wp_insert_post( $order_data, true );
 
 		// set customer details
@@ -337,25 +341,25 @@ class WooCommerce_POS_Checkout {
 	 * Also add subtotal_tax to receipt which is not included for some reason
 	 */
 	public function add_receipt_fields( $order_data, $order, $fields, $server ) {
-		if( WC_POS()->is_pos ) {
-
-			// add any payment messages
-			$message = get_post_meta( $order->id, '_pos_payment_message', true );
-			if($message) {
-				$order_data['payment_details']['message'] = $message;
-			}
-
-			// add subtotal_tax
-			$subtotal_tax = 0;
-			foreach( $order_data['line_items'] as &$item ) {
-				$line_subtotal_tax = wc_get_order_item_meta( $item['id'], '_line_subtotal_tax', true );
-				$item['subtotal_tax'] = wc_format_decimal( $line_subtotal_tax, 2 );
-				$subtotal_tax += $line_subtotal_tax;
-			}
-			$order_data['subtotal_tax'] = wc_format_decimal( $subtotal_tax, 2 );
-
+		if( !WC_POS()->is_pos )
 			return $order_data;
+
+		// add any payment messages
+		$message = get_post_meta( $order->id, '_pos_payment_message', true );
+		if($message) {
+			$order_data['payment_details']['message'] = $message;
 		}
+
+		// add subtotal_tax
+		$subtotal_tax = 0;
+		foreach( $order_data['line_items'] as &$item ) {
+			$line_subtotal_tax = wc_get_order_item_meta( $item['id'], '_line_subtotal_tax', true );
+			$item['subtotal_tax'] = wc_format_decimal( $line_subtotal_tax, 2 );
+			$subtotal_tax += $line_subtotal_tax;
+		}
+		$order_data['subtotal_tax'] = wc_format_decimal( $subtotal_tax, 2 );
+
+		return $order_data;
 	}
 
 	/**
@@ -450,7 +454,7 @@ class WooCommerce_POS_Checkout {
 
 	/**
 	 * Bump post_modified & post_modified_gmt
-	 * @return [type] [description]
+	 * @param $order
 	 */
 	public function stock_modified( $order ) {
 

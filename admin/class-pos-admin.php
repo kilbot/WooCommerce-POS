@@ -217,8 +217,6 @@ class WooCommerce_POS_Admin {
 		// set the auto redirection on next page load
 		set_transient( 'woocommere_pos_welcome', 1, 30 );
 
-		// check _pos_visibility on upgrade
-		self::pos_visibility_check();
 	}
 
 	/**
@@ -303,9 +301,15 @@ class WooCommerce_POS_Admin {
 		// flush rewrite rules on upgrade
 		flush_rewrite_rules( false );
 
-		// check _pos_visibility on upgrade
-		$this->pos_visibility_check();
-
+		// if moving to WC v2.2
+		if( version_compare( $old, '0.3.3' ) < 0 && version_compare( WC()->version, '2.2.0' ) >= 0 ) {
+			// alert the user about order-status change
+			$error = array (
+				'msg_type' 	=> 'update-nag',
+				'msg' 		=> sprintf( __('WooCommerce 2.2 changed the way order statuses are handled which affected the display of POS orders in the admin. Please update any orders with status <em>Published</em> to the correct status (eg: <em>Completed</em>). <a class="button-primary" href="%s">Check your POS orders</a>', 'woocommerce-pos'), admin_url('edit.php?post_status=publish&post_type=shop_order') )
+			);
+			array_push( $this->notices, $error );
+		}
 	}
 
 	/**
@@ -337,27 +341,6 @@ class WooCommerce_POS_Admin {
 		} elseif( false === $enabled ) {
 			update_option( 'woocommerce_pos_enabled_gateways', array_slice( $defaults, 0, -1 ) );
 		}
-	}
-
-	/**
-	 * Check _pos_visibility postmeta
-	 */
-	public function pos_visibility_check() {
-		global $wpdb;
-	
-		$sql = "INSERT INTO $wpdb->postmeta (post_id, meta_key, meta_value)
-			SELECT DISTINCT pm.post_id, '_pos_visibility' AS meta_key, 'pos_and_online' AS meta_value
-			FROM $wpdb->postmeta pm
-			JOIN $wpdb->posts p ON (p.ID = pm.post_id)
-			WHERE pm.post_id NOT IN ( 
-				SELECT post_id
-				FROM $wpdb->postmeta
-				WHERE meta_key = '_pos_visibility'
-			)
-			AND p.post_type = 'product'
-			";
-
-		$wpdb->query($sql);
 	}
 
 	/**
@@ -427,14 +410,14 @@ class WooCommerce_POS_Admin {
 		if( !current_user_can( 'manage_woocommerce_pos' ) )
 			return;
 
-		add_menu_page( 
+		add_menu_page(
 			__( 'POS', 'woocommerce-pos' ),
-			__( 'POS', 'woocommerce-pos' ), 
-			'manage_woocommerce_pos', 
-			$this->plugin_slug, 
-			array( $this, 'display_upgrade_page' ), 
-			null, 
-			56 
+			__( 'POS', 'woocommerce-pos' ),
+			'manage_woocommerce_pos',
+			$this->plugin_slug,
+			array( $this, 'display_upgrade_page' ),
+			null,
+			'55.55'
 		);
 
 		add_submenu_page(

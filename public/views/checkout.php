@@ -35,8 +35,17 @@
 					</legend>
 					<div class="form-group">
 						<?php 
-							if( $gateway->has_fields() || $gateway->get_description() ) 
-								$gateway->payment_fields(); 
+							if( $gateway->has_fields() || $gateway->get_description() ) {
+								// remove any javascript
+								ob_start();
+								$gateway->payment_fields();
+								$html = ob_get_contents();
+								ob_end_clean();
+
+								// simple preg_replace
+								$html = preg_replace('/<script.+?<\/script>/im', '', $html);
+								echo $html;
+							}
 						?>
 					</div>
 				</fieldset>

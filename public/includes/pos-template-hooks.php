@@ -17,6 +17,7 @@ class WooCommerce_POS_Template_Hooks {
 		add_action( 'woocommerce_pos_head', array( $this, 'pos_print_css' ) );
 		add_action( 'woocommerce_pos_head', array( $this, 'print_head_js' ) );
 		add_action( 'woocommerce_pos_after', array( $this, 'print_footer_js' ) );
+
 	}
 
 	// public function svg_defs() {

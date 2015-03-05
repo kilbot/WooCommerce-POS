@@ -16,8 +16,8 @@
 	<div class="input-group-btn">
 		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="icon {{#is search_mode 'barcode'}}icon-barcode{{else}}icon-search{{/is}}"></i></button>
 		<ul class="dropdown-menu" role="menu">
-			<li><a href="#" class="action-search"><i class="icon icon-search"></i> Search</a></li>
-			<li><a href="#" class="action-barcode"><i class="icon icon-barcode"></i> Scan Barcode</a></li>
+			<li><a href="#" class="action-search"><i class="icon icon-search"></i> <?php _e( 'Search', 'woocommerce-pos' ); ?></a></li>
+			<li><a href="#" class="action-barcode"><i class="icon icon-barcode"></i> <?php _e( 'Scan Barcode', 'woocommerce-pos' ); ?></a></li>
 		</ul>
 	</div><!-- /btn-group -->
 	{{#is search_mode 'barcode'}}

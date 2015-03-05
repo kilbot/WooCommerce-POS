@@ -101,7 +101,7 @@ class POS_Gateway_Card extends WC_Payment_Gateway {
 
 		$cashback = isset( $_REQUEST['pos-cashback'] ) ? wc_format_decimal( $_REQUEST['pos-cashback'] ) : 0 ;
 		
-		if( $cashback !== 0 ) {
+		if( $cashback != 0 ) {
 
 			// add order meta
 			update_post_meta( $order_id, '_pos_card_cashback', $cashback );

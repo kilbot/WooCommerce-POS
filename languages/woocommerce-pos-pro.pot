@@ -1,0 +1,188 @@
+# Copyright (C) 2014 kilbot
+# This file is distributed under the Copyright The Kilbot Factory.
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce POS Pro 0.3.2\n"
+"Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
+"POT-Creation-Date: 2014-08-31 14:55:28+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Team Name <team@example.com>\n"
+"X-Generator: grunt-wp-i18n 0.4.5\n"
+
+#: admin/class-pro-admin.php:350
+msgid ""
+"<strong>WooCommerce POS Pro</strong> requires <a "
+"href=\"http://wordpress.org/plugins/woocommerce-pos/\">WooCommerce POS</a>. "
+"Please install and activate WooCommerce POS before activating WooCommerce "
+"POS Pro."
+msgstr ""
+
+#: admin/class-pro-admin.php:402
+msgid ""
+"<b>Warning!</b> You're blocking external requests which means you won't be "
+"able to get %s updates. Please add %s to %s."
+msgstr ""
+
+#: admin/class-pro-admin.php:475 admin/includes/class-pro-settings.php:48
+msgid "POS"
+msgstr ""
+
+#: admin/class-pro-admin.php:492
+msgid "Settings"
+msgstr ""
+
+#: admin/class-pro-admin.php:493
+msgid "Pro Support"
+msgstr ""
+
+#: admin/class-pro-admin.php:507
+msgid ""
+"The WooCommerce POS Pro License Key has not been activated, so the plugin "
+"is inactive! %sClick here%s to activate the license key and the plugin."
+msgstr ""
+
+#: admin/includes/class-pro-admin-hooks.php:58
+msgid "Enabled"
+msgstr ""
+
+#: admin/includes/class-pro-update.php:375
+msgid ""
+"The license key for %s has expired. You can reactivate or purchase a "
+"license key from your account <a href=\"%s\" "
+"target=\"_blank\">dashboard</a>."
+msgstr ""
+
+#: admin/includes/class-pro-update.php:390
+msgid ""
+"The subscription for %s is on-hold. You can reactivate the subscription "
+"from your account <a href=\"%s\" target=\"_blank\">dashboard</a>."
+msgstr ""
+
+#: admin/includes/class-pro-update.php:405
+msgid ""
+"The subscription for %s has been cancelled. You can renew the subscription "
+"from your account <a href=\"%s\" target=\"_blank\">dashboard</a>. A new "
+"license key will be emailed to you after your order has been completed."
+msgstr ""
+
+#: admin/includes/class-pro-update.php:420
+msgid ""
+"The subscription for %s has expired. You can reactivate the subscription "
+"from your account <a href=\"%s\" target=\"_blank\">dashboard</a>."
+msgstr ""
+
+#: admin/includes/class-pro-update.php:435
+msgid ""
+"The subscription for %s has been suspended. You can reactivate the "
+"subscription from your account <a href=\"%s\" "
+"target=\"_blank\">dashboard</a>."
+msgstr ""
+
+#: admin/includes/class-pro-update.php:450
+msgid ""
+"The subscription for %s is still pending. You can check on the status of "
+"the subscription from your account <a href=\"%s\" "
+"target=\"_blank\">dashboard</a>."
+msgstr ""
+
+#: admin/includes/class-pro-update.php:465
+msgid ""
+"The subscription for %s has been placed in the trash and will be deleted "
+"soon. You can purchase a new subscription from your account <a href=\"%s\" "
+"target=\"_blank\">dashboard</a>."
+msgstr ""
+
+#: admin/includes/class-pro-update.php:480
+msgid ""
+"A subscription for %s could not be found. You can purchase a subscription "
+"from your account <a href=\"%s\" target=\"_blank\">dashboard</a>."
+msgstr ""
+
+#: admin/includes/class-pro-update.php:495
+msgid ""
+"A license key for %s could not be found. Maybe you forgot to enter a "
+"license key when setting up %s, or the key was deactivated in your account. "
+"You can reactivate or purchase a license key from your account <a "
+"href=\"%s\" target=\"_blank\">dashboard</a>."
+msgstr ""
+
+#: admin/includes/class-pro-update.php:510
+msgid ""
+"Download permission for %s has been revoked possibly due to a license key "
+"or subscription expiring. You can reactivate or purchase a license key from "
+"your account <a href=\"%s\" target=\"_blank\">dashboard</a>."
+msgstr ""
+
+#: admin/includes/class-pro-update.php:525
+msgid ""
+"%s has not been activated. Go to the settings page and enter the license "
+"key and license email to activate %s."
+msgstr ""
+
+#: admin/includes/class-pro-update.php:540
+msgid ""
+"You changed the subscription for %s, so you will need to enter your new API "
+"License Key in the settings page. The License Key should have arrived in "
+"your email inbox, if not you can get it by logging into your account <a "
+"href=\"%s\" target=\"_blank\">dashboard</a>."
+msgstr ""
+
+#: admin/includes/settings/class-settings-license.php:24
+msgid "Pro License"
+msgstr ""
+
+#: admin/includes/settings/class-settings-license.php:50
+msgid "WooCommerce POS Pro License Activation"
+msgstr ""
+
+#: admin/includes/settings/class-settings-license.php:52
+msgid "License Key"
+msgstr ""
+
+#: admin/includes/settings/class-settings-license.php:61
+msgid "License Email"
+msgstr ""
+
+#: admin/includes/settings/class-settings-license.php:107
+msgid "Plugin activated. "
+msgstr ""
+
+#: admin/includes/settings/class-settings-license.php:186
+msgid ""
+"The license could not be deactivated. Use the License Deactivation button "
+"to manually deactivate the license before activating a new license."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WooCommerce POS Pro"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://woopos.com.au/pro"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "WooCommerce POS Pro adds extra functionality to the free plugin."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "kilbot"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.kilbot.com.au"
+msgstr ""
+
+#: admin/includes/class-pro-admin-hooks.php:41
+msgctxt "Payment gateway status"
+msgid "Online Store"
+msgstr ""
+
+#: admin/includes/class-pro-admin-hooks.php:42
+msgctxt "Payment gateway status"
+msgid "POS"
+msgstr ""

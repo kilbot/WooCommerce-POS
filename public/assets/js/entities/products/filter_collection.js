@@ -108,7 +108,7 @@ define([
 
 					if( attr === 'text' ) {
 						return _.some( arr, function( value ) {
-							return product.get( 'title' ).toLowerCase().indexOf( value ) !== -1;
+							return product.get( 'title' ).toLowerCase().indexOf( value.toLowerCase() ) !== -1;
 						});
 					}
 
@@ -118,7 +118,7 @@ define([
 							var categories = _( product.get('categories') ).map( function( category ) {
 								return category.toLowerCase();
 							});
-							return _( categories ).contains( value );							
+							return _( categories ).contains( value.toLowerCase() );
 						});
 					}
 
@@ -131,7 +131,7 @@ define([
 								var array = _( product.get( attr ) ).map( function( value ) {
 									return value.toLowerCase();
 								});
-								return _( array ).contains( value );							
+								return _( array ).contains( value.toLowerCase() );
 							});
 						}
 

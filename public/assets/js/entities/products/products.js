@@ -101,13 +101,18 @@ define([
 
 			},
 
-			destroy: function() {
-				var self = this,
-					ids = this.fullCollection.pluck('id');
-				$.when( this._removeProducts(ids) ).done( function() {
-					self.fullCollection.reset();
-				});
-			},
+            destroy: function() {
+                var self = this;
+                this.sync( 'delete', this, {
+                    success: function(resp) {
+                        if(POS.debug) console.log('Database cleared');
+                        self.fullCollection.reset();
+                    },
+                    error: function(resp) {
+                        if(POS.debug) console.warn('Could not clear database: ' + resp);
+                    }
+                });
+            },
 
 			// web worker to get updated products
 			_updateProducts: function() {

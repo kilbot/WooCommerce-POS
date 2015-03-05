@@ -17,6 +17,28 @@ Thanks to [Wordpress](http://wordpress.org) and [WooCommerce](http://woothemes.c
 
 ## Changelog ##
 
+### 0.3.5 ###
+* Note: this is a minor compatibility update for WooCommerce 2.3
+* Fix WC_Gateway_Mijireh error with WC 2.3
+* Fix for W3 Total Cache minify js conflict
+* Fix capitalization bug with product searches
+
+### 0.3.4 ###
+* Urgent Fix: performance issue downloading products
+* Fix: potential clash for admin menu position
+* Fix: bug affecting woocommerce_api_order_response
+* Fix: cashback entry on receipt
+* Improved: POS Only products
+
+### 0.3.3 ###
+* Urgent Fix: Compatibility with new order-status introduced in WooCommerce > 2.2
+* Fix: POS Only products improved, fixes 404 errors on imported products
+* Fix: IndexedDB now available on Safari 7.1, compatibility update to db
+* Fix: bug effecting default customer setting
+* Fix: added support for Simplify Commerce by Mastercard
+* Improved: product thumbnails, support for non-cropped thumbs
+* Improved: clearing local database improved for large stores
+
 ### 0.3.2 ###
 * Urgent Fix: POS bug causing problems with product display on some websites, eg: featured products
 * Fix: refresh button on offsite payment receipts
@@ -25,13 +47,13 @@ Thanks to [Wordpress](http://wordpress.org) and [WooCommerce](http://woothemes.c
 ### 0.3.1 ###
 * [read blog post](http://woopos.com.au/2014/08/version-0-3-1-released/)
 * New: choose which user roles have access to POS
-* New: set products as visible to POS Only or Online Only
+* New: set products as visible to [POS Only](http://woopos.com.au/docs/pos-only-products/) or Online Only
 * New: filter products in WP-Admin by POS Only or Online Only
 * New: filter orders in WP-Admin by POS or Online
 * New: hierarchical UI for variable products, improves experience for products with large number of variations
-* New: product filters, filter by category ( eg: cat:music ) or any attribute ( eg: in_stock:true )
+* New: [product filters](http://woopos.com.au/docs/product-searching-filtering/), filter by category ( eg: cat:music ) or any attribute ( eg: in_stock:true )
 * New: quick tabs for filtering products All, Featured ( featured:true ) and On Sale ( on_sale:true )
-* New: number pad for quick entry via mouse or touch
+* New: [number pad](http://woopos.com.au/docs/number-pads/) for quick entry via mouse or touch
 * New: Payment Gateway settings, enable POS only gateways and reorder through new settings tab
 * New: Payment Gateway processing (tested on some gateways but still experimental)
 * New: change calculated for Cash sales
@@ -49,14 +71,3 @@ Thanks to [Wordpress](http://wordpress.org) and [WooCommerce](http://woothemes.c
 * Fix: Bug effecting admin settings for translation users
 
 * Pro Feature: Pro users can enable any Payment Gateway. [Upgrade to Pro](http://woopos.com.au/pro)
-
-### 0.3 ###
-* New: Set default POS customer on new settings page
-* New: Add customer to order
-* New: Documentation for third party developers [http://kilbot.github.io/WooCommerce-POS/](http://kilbot.github.io/WooCommerce-POS/)
-* New: pt_BR translation thanks to Hermes Alves Dias Souza! [http://pt.woopos.com.au/pos](http://pt.woopos.com.au/pos)
-* New: Icons for mobile devices. Thanks [@sixthcore](https://github.com/kilbot/WooCommerce-POS/issues/11)!
-* Fix: stock is now synced after each order
-* Fix: Add-to-cart bug for particular tax settings (tax enabled + prices exclusive from tax + no tax rates set)
-* Fix: product display for sites where home_url != site_url
-* Fix: authentication test for subfolder wordpress installs
