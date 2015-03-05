@@ -5,7 +5,8 @@ define(['app'], function(POS){
 		Entities.Order = Backbone.Model.extend({
 			urlRoot: pos_params.wc_api_url + 'orders/',
 			defaults: {
-				status: 'pending'
+				status: 'pending',
+				pos: 1 // TODO: add ?pos=1 to all server requests instead?
 			},
 
 			sync: Backbone.ajaxSync,
@@ -41,16 +42,21 @@ define(['app'], function(POS){
 						subtotal_tax: model.get('line_subtotal_tax'),
 						subtotal 	: model.get('line_subtotal'),
 						total_tax	: model.get('line_tax'),
-						total 		: model.get('line_total')
+						total 		: model.get('line_total'),
+						tax_data 	: this._format_tax_data( model.get('tax_rates'), model.get('qty') )
 					}
 					return item;
-				});
+				}, this);
 
 				// create order
 				this.set(order);
 			},
 
 			process: function( gateway_data ){
+
+				this.set({ gateway_data: gateway_data });
+				this.save();
+				return;
 
 				// combine total model with checkout form data
 				var order = _.assign( this.toJSON(), gateway_data);
@@ -75,128 +81,24 @@ define(['app'], function(POS){
 
 			},
 
+			// WC API v2
+			_format_tax_data: function( rates, qty ) {
+				var tax_data = {
+					total: {},
+					subtotal: {}
+				};
+
+				_(rates).each( function(rate, key) {
+					tax_data.total[key] = rate.tax_amount;
+					tax_data.subtotal[key] = POS.round( rate.subtotal_tax * qty, 4 );
+				});
+
+				return tax_data;
+			}
+
 		});
 
 	});
 
 	return POS.Entities.Order;
 });
-
-
-// http://woothemes.github.io/woocommerce/rest-api/#get-orders-id
-// {
-//   "order" : {
-//     "completed_at" : "2013-12-10T18:59:30Z",
-//     "tax_lines" : [],
-//     "status" : "processing",
-//     "total" : "20.00",
-//     "cart_discount" : "0.00",
-//     "customer_ip" : "127.0.0.1",
-//     "total_discount" : "0.00",
-//     "updated_at" : "2013-12-10T18:59:30Z",
-//     "currency" : "USD",
-//     "total_shipping" : "0.00",
-//     "customer_user_agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36",
-//     "line_items" : [
-//       {
-//         "product_id" : 31,
-//         "quantity" : 1,
-//         "id" : 7,
-//         "subtotal" : "20.00",
-//         "tax_class" : null,
-//         "sku" : "",
-//         "total" : "20.00",
-//         "name" : "Ninja Silhouette",
-//         "total_tax" : "0.00"
-//       }
-//     ],
-//     "customer_id" : "4",
-//     "total_tax" : "0.00",
-//     "order_number" : "#113",
-//     "shipping_methods" : "Free Shipping",
-//     "shipping_address" : {
-//       "city" : "New York",
-//       "country" : "US",
-//       "address_1" : "512 First Avenue",
-//       "last_name" : "Draper",
-//       "company" : "SDCP",
-//       "postcode" : "12534",
-//       "address_2" : "",
-//       "state" : "NY",
-//       "first_name" : "Don"
-//     },
-//     "payment_details" : {
-//       "method_title" : "Cheque Payment",
-//       "method_id" : "cheque",
-//       "paid" : false
-//     },
-//     "id" : 113,
-//     "shipping_tax" : "0.00",
-//     "cart_tax" : "0.00",
-//     "fee_lines" : [],
-//     "total_line_items_quantity" : 1,
-//     "shipping_lines" : [
-//       {
-//         "method_title" : "Free Shipping",
-//         "id" : 8,
-//         "method_id" : "free_shipping",
-//         "total" : "0.00"
-//       }
-//     ],
-//     "customer" : {
-//       "id" : 4,
-//       "last_order_date" : "2013-12-10T18:58:00Z",
-//       "avatar_url" : "https://secure.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=96",
-//       "total_spent" : "0.00",
-//       "created_at" : "2013-12-10T18:58:07Z",
-//       "orders_count" : 0,
-//       "billing_address" : {
-//         "phone" : "215-523-4132",
-//         "city" : "New York",
-//         "country" : "US",
-//         "address_1" : "512 First Avenue",
-//         "last_name" : "Draper",
-//         "company" : "SDCP",
-//         "postcode" : "12534",
-//         "email" : "thedon@mailinator.com",
-//         "address_2" : "",
-//         "state" : "NY",
-//         "first_name" : "Don"
-//       },
-//       "shipping_address" : {
-//         "city" : "New York",
-//         "country" : "US",
-//         "address_1" : "512 First Avenue",
-//         "last_name" : "Draper",
-//         "company" : "SDCP",
-//         "postcode" : "12534",
-//         "address_2" : "",
-//         "state" : "NY",
-//         "first_name" : "Don"
-//       },
-//       "first_name" : "Don",
-//       "username" : "thedon",
-//       "last_name" : "Draper",
-//       "last_order_id" : "113",
-//       "email" : "thedon@mailinator.com"
-//     },
-//     "note" : "",
-//     "coupon_lines" : [],
-//     "order_discount" : "0.00",
-//     "created_at" : "2013-12-10T18:58:00Z",
-//     "view_order_url" : "https://www.example.com/my-account/view-order/113",
-//     "billing_address" : {
-//       "phone" : "215-523-4132",
-//       "city" : "New York",
-//       "country" : "US",
-//       "address_1" : "512 First Avenue",
-//       "last_name" : "Draper",
-//       "company" : "SDCP",
-//       "postcode" : "12534",
-//       "email" : "thedon@mailinator.com",
-//       "address_2" : "",
-//       "state" : "NY",
-//       "first_name" : "Don"
-//     }
-//   }
-// }

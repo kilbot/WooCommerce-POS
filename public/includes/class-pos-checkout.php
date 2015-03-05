@@ -4,8 +4,6 @@
  * Checkout Class
  *
  * Handles the checkout
- * TODO: hash cart and allow payment retries
- *
  * @class 	  WooCommerce_POS_Checkout
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>

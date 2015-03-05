@@ -14,7 +14,7 @@ class WooCommerce_POS_Currency {
 	/**
 	 *
 	 */
-	public function get_denomination($code = '') {
+	public static function get_denomination($code = '') {
 
 		$denominations = array(
 
