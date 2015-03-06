@@ -48,6 +48,7 @@ global $current_user;
 </div>
 
 <?php $this->js_tmpl(); ?>
+<?php $this->print_tmpl(); ?>
 <?php $this->footer(); ?>
 
 </body>

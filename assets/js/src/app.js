@@ -8,6 +8,7 @@ var EntitiesService = require('entities/service');
 var HeaderService = require('apps/header/service');
 var ModalService = require('lib/components/modal/service');
 var PopoverService = require('lib/components/popover/service');
+var PrintService = require('lib/components/print/service');
 //var LoggerService = require('lib/components/logger/service');
 
 /**
@@ -52,6 +53,7 @@ app.modalService = new ModalService({
 });
 
 app.popoverService = new PopoverService();
+app.printService = new PrintService();
 //app.loggerService = new LoggerService();
 
 /**

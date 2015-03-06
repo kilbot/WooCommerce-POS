@@ -11,22 +11,27 @@ module.exports = FormView.extend({
     );
   },
 
+  templateHelpers: function(){
+    return {
+      total: this.model.collection.order_total
+    }
+  },
+
   behaviors: {
     Numpad: {
       behaviorClass: Numpad
     }
   },
 
-  ui: {
+  onRender: function(){
+    var self = this;
 
-  },
-
-  events: {
-
-  },
-
-  bindings: {
-
+    this.$('input, select, textarea').each(function(){
+      var name = $(this).attr('name');
+      if(name){
+        self.addBinding(null, '*[name="' + name + '"]', name);
+      }
+    });
   },
 
   onShow: function() {

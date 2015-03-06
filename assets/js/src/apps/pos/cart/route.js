@@ -79,7 +79,7 @@ var CartRoute = Route.extend({
     console.log('update:tab');
     Radio.command('header', 'update:tab', {
       id: 'right',
-      label: polyglot.t('titles.cart') + ' - ' + accounting.formatMoney(value)
+      label: polyglot.t('titles.cart') + ': ' + accounting.formatMoney(value)
     });
   }, 100),
 

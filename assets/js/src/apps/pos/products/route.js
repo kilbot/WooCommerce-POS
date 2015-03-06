@@ -104,7 +104,7 @@ module.exports = Route.extend({
       Radio.request('popover', 'close');
     });
 
-    _.extend(options, { view: view }, view.popover);
+    _.extend(options, { view: view, parent: childview }, view.popover);
     Radio.request('popover', 'open', options);
   }
 

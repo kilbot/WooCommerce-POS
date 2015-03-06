@@ -52,7 +52,7 @@ class WC_POS_Gateways_Cash extends WC_Payment_Gateway {
         <label for="pos-cash-tendered" class="">'. __('Amount Tendered', 'woocommerce-pos') .'</label>
         <div class="input-group">
         '. $left_addon .'
-          <input type="text" class="input-text " name="pos-cash-tendered" id="pos-cash-tendered" placeholder="" maxlength="20" value="" data-numpad="cash" data-title="'. __('Amount Tendered', 'woocommerce-pos') .'" data-placement="bottom" data-original="{{total}}">
+          <input type="text" class="input-text" name="pos-cash-tendered" id="pos-cash-tendered" maxlength="20" data-numpad="cash" data-label="'. __('Amount Tendered', 'woocommerce-pos') .'" data-placement="bottom" data-original="{{total}}">
         '. $right_addon .'
         </div>
       </div>

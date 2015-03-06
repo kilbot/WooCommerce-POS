@@ -82,7 +82,7 @@ module.exports = POS.DualModel = Model.extend({
         jqXHR   : jqXHR,
         status  : textStatus,
         message : errorThrown
-      })
+      });
     };
 
     return bb.ajaxSync(method, this, options);

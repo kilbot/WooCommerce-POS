@@ -28,6 +28,7 @@ module.exports = LayoutView.extend({
     options = options || {};
     this.target = options.target;
     this.view = options.view;
+    this.parent = options.parent;
     this.render().setup(options);
 
     _.bindAll(this, 'open', 'close', 'show', 'shown', 'hide', 'hidden');
@@ -38,6 +39,9 @@ module.exports = LayoutView.extend({
       'hide.bs.popover'   : this.hide,
       'hidden.bs.popover' : this.hidden
     });
+
+    // if parent view is destroyed, then close
+    this.listenTo(this.parent, 'before:destroy', this.close);
   },
 
   setup: function(options){

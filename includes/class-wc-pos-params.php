@@ -144,22 +144,26 @@ class WC_POS_Params {
    * @return object $customer
    */
   static private function customers() {
-    $user = false;
     $general = new WC_POS_Admin_Settings_General();
     $settings = $general->get_data();
+    $user_id = false;
 
-    if(!empty($settings['logged_in_user'])){
-      $user = wp_get_current_user();
-    } elseif (!empty($settings['customer']['id'])){
-      $user = get_userdata( $settings['customer']['id'] );
+    if(isset($settings['customer']['id'])){
+      $user_id = $settings['customer']['id'];
     }
 
-    if( $user ) {
+    if(isset($settings['logged_in_user']) && $settings['logged_in_user']){
+      $user_id = get_current_user_id();
+    }
+
+    if( $user_id ) {
+      $user = get_userdata($user_id);
       $customers['default'] = array(
         'id' => $user->ID,
         'first_name'  => esc_html($user->first_name),
         'last_name'   => esc_html($user->last_name),
-        'email'       => esc_html($user->email)
+        'email'       => esc_html($user->user_email),
+        'username'    => esc_html($user->user_login)
       );
     }
 

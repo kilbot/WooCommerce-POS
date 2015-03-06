@@ -11,7 +11,7 @@ var Utils = require('lib/utilities/utils');
  */
 
 hbs.registerHelper('is', function (value, test, options) {
-  if ( value === test ) {
+  if ( value && _.includes(test.split('|'), value) ) {
     return options.fn(this);
   } else {
     return options.inverse(this);

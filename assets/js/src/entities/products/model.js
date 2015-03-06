@@ -17,7 +17,7 @@ module.exports = DualModel.extend({
     }
     var attrs = _.pluck(variations, attr);
     if(attrs.length > 0){
-      return _(attrs).compact().min().value();
+      return _(attrs).compact().min();
     }
     return this.get(attr);
   },
@@ -25,7 +25,7 @@ module.exports = DualModel.extend({
   max: function(attr){
     var attrs = _.pluck(this.get('variations'), attr);
     if(attrs.length > 0){
-      return _(attrs).compact().max().value();
+      return _(attrs).compact().max();
     }
     return this.get(attr);
   },

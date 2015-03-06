@@ -7,7 +7,7 @@ var ReceiptView = require('./views/receipt');
 var polyglot = require('lib/utilities/polyglot');
 var Buttons = require('lib/components/buttons/view');
 
-var CheckoutRoute = Route.extend({
+var ReceiptRoute = Route.extend({
 
   initialize: function( options ) {
     options = options || {};
@@ -76,9 +76,7 @@ var CheckoutRoute = Route.extend({
     });
 
     this.listenTo(view, {
-      'action:print': function(){
-
-      },
+      'action:print': this.print,
       'action:email': function(){
 
       },
@@ -91,9 +89,13 @@ var CheckoutRoute = Route.extend({
     });
 
     this.layout.actionsRegion.show(view);
+  },
+
+  print: function(){
+    Radio.request('print', 'print', {order: this.model});
   }
 
 });
 
-module.exports = CheckoutRoute;
-POS.attach('POSApp.Checkout.Route', CheckoutRoute);
+module.exports = ReceiptRoute;
+POS.attach('POSApp.Receipt.Route', ReceiptRoute);

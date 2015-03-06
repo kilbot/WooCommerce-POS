@@ -26,6 +26,14 @@ class WC_POS_Gateways {
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
   }
 
+  private function get_settings_data(){
+    if(empty($this->settings_data)){
+      $this->settings = new WC_POS_Admin_Settings_Checkout();
+      $this->settings_data = $this->settings->get_data();
+    }
+    return $this->settings_data;
+  }
+
   /**
    * Add POS gateways
    * @param $gateways
@@ -51,10 +59,12 @@ class WC_POS_Gateways {
   /**
    * Enable POS gateways
    * @param $gateway
+   * @return bool
    */
   public function pos_gateways( $gateway ) {
     if( in_array( $gateway->id, array( 'pos_cash', 'pos_card', 'paypal' ) ) )
-      $gateway->pos = true;
+      return true;
+    return false;
   }
 
   /**
@@ -81,11 +91,11 @@ class WC_POS_Gateways {
    * @param  object $gateway
    */
   public function pos_status( $gateway ) {
-
-    $enabled_gateways = (array) get_option( 'woocommerce_pos_enabled_gateways' );
+    $data = $this->get_settings_data();
+    $enabled = isset($data['enabled']) ? array_keys($data['enabled'], true) : array();
 
     echo '<td class="pos_status">';
-    if ( in_array( $gateway->id, $enabled_gateways ) )
+    if ( in_array( $gateway->id, $enabled ) )
       /* translators: woocommerce */
       echo '<span class="status-enabled tips" data-tip="' . __ ( 'Enabled', 'woocommerce' ) . '">' . __ ( 'Enabled', 'woocommerce-pos' ) . '</span>';
     else
@@ -114,39 +124,21 @@ class WC_POS_Gateways {
    * @return array
    */
   public function enabled_gateways(){
-    $this->settings      = new WC_POS_Admin_Settings_Checkout();
-    $this->settings_data = $this->settings->get_data();
-
     $_gateways  = array();
-    $data       = $this->settings_data;
-    $enabled    = isset($data['enabled']) ? $data['enabled'] : '';
+    $data       = $this->get_settings_data();
+    $enabled    = isset($data['enabled']) ? array_keys($data['enabled'], true) : array();
     $default    = isset($data['default_gateway']) ? $data['default_gateway'] : '';
-    $gateways   = WC()->payment_gateways->payment_gateways();
+    $gateways   = $this->settings->load_gateways();
 
-    if($enabled):
-      foreach(array_keys(array_filter($enabled)) as $gateway):
-        if(array_key_exists($gateway, $gateways)){
-          $_gateways[$gateway] = $this->sanitize( $gateways[$gateway] );
-          $_gateways[$gateway]->default = $gateway == $default;
-        }
-      endforeach;
-    endif;
+    if($gateways): foreach($gateways as $gateway):
+      $id = $gateway->id;
+      if(in_array($id, $enabled)){
+        $_gateways[$id] = $this->sanitize( $gateway );
+        $_gateways[$id]->default = $id == $default;
+      }
+    endforeach; endif;
 
-    return $this->order($_gateways);
-  }
-
-  /**
-   * @param array $gateways
-   * @return array
-   */
-  private function order(array $gateways){
-    if(isset($this->settings_data['gateway_order'])){
-      $order = $this->settings_data['gateway_order'];
-      $commonKeysInOrder = array_intersect_key($order, $gateways);
-      $commonKeysWithValue = array_intersect_key($gateways, $commonKeysInOrder);
-      $gateways = array_merge($commonKeysInOrder, $commonKeysWithValue);
-    }
-    return $gateways;
+    return $_gateways;
   }
 
   /**

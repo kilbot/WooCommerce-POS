@@ -1,4 +1,5 @@
 var bb = require('backbone');
+var _ = require('lodash');
 
 /**
  * AutoGrow
@@ -11,25 +12,15 @@ bb.Stickit.addHandler({
 });
 
 /**
- * Display localised string, eg: 2,55
- * Set float 2.55
+ * Multiple selects with Select2
+ * ... bit of a hack here due to strange model.set behavior with arrays
  */
-//bb.Stickit.addHandler({
-//  selector: 'input[data-numpad="discount"]',
-//  onGet: Utils.formatNumber,
-//  onSet: Utils.unformat,
-//  events: ['blur'],
-//  afterUpdate: function($el){
-//    $el.trigger('input');
-//  }
-//});
-//
-//bb.Stickit.addHandler({
-//  selector: 'input[data-numpad="quantity"]',
-//  onGet: Utils.formatNumber,
-//  onSet: Utils.unformat,
-//  events: ['blur'],
-//  afterUpdate: function($el){
-//    $el.trigger('input');
-//  }
-//});
+bb.Stickit.addHandler({
+  selector: 'select[multiple].select2',
+  onSet: function(val, opts){
+    if(_.isArray(val)){
+      this.model.unset(opts.observe, {silent:true});
+    }
+    return val;
+  }
+});

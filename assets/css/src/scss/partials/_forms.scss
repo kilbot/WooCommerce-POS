@@ -1,5 +1,5 @@
 // remove iOS rounded corners
-input {
+input[type="text"] {
   -webkit-appearance: none;
   @include border-radius(0);
   border: 1px solid $input-border-color;

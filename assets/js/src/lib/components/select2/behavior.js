@@ -14,7 +14,7 @@ var Select2 = Behavior.extend({
       'formatSelection'
     ];
 
-    _(methods).each(function(method){
+    _.each(methods, function(method){
       if( this.view[method] ){
         options[method] = _.bind(this.view[method], this.view);
       }

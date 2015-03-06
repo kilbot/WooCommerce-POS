@@ -14,26 +14,51 @@ var View = FormView.extend({
   initialize: function(options){
     options = options || {};
     this.target   = options.target;
-    this.bindings = options.parent.bindings;
+    this.parent   = options.parent;
     this.type     = options.target.data('numpad');
 
     if(this.type === 'discount'){
       this.discountSetup();
     }
+
+    if(this.type === 'cash'){
+      this.cashSetup();
+    }
+
+    // select input on open
+    _.bindAll(this, 'selectInput');
+    this.target.one('shown.bs.popover', this.selectInput);
+  },
+
+  bindings: function(){
+    var parent = this.parent || {};
+    // copy binding from parent
+    if(! _.isEmpty(parent.bindings) ){
+      return parent.bindings;
+    }
+    // .. or simple bind to target
+    var hash = {};
+    var name = this.target.attr('name');
+    hash['*[name="' + name + '"]'] = name;
+    return hash;
   },
 
   ui: {
     input   : '.numpad-header input',
     toggle  : '.numpad-header .input-group',
     common  : '.numpad-keys .common .btn',
-    discount: '.numpad-keys .discount .btn'
+    discount: '.numpad-keys .discount .btn',
+    cash    : '.numpad-keys .cash .btn',
+    keys    : '.numpad-keys .btn'
   },
 
   events: {
-    'click @ui.input'   : 'input',
     'click @ui.toggle a': 'toggle',
     'click @ui.common'  : 'commonKeys',
-    'click @ui.discount': 'discountKeys'
+    'click @ui.discount': 'discountKeys',
+    'click @ui.cash'    : 'cashKeys',
+    'keypress @ui.input': 'enter',
+    'mousedown @ui.keys': 'blur'
   },
 
   behaviors: {
@@ -52,6 +77,7 @@ var View = FormView.extend({
         decimal : accounting.settings.currency.decimal
       },
       discount_keys: this.discount_keys,
+      quick_keys: this.quick_keys,
       buttons: {
         'return': polyglot.t('buttons.return')
       }
@@ -76,37 +102,43 @@ var View = FormView.extend({
   commonKeys: function(e){
     e.preventDefault();
     var key = $(e.currentTarget).data('key'),
-        decimal,
-        newValue,
-        oldValue = this.ui.input.filter(":visible").val();
+        input = this.ui.input.filter(':visible'),
+        decimal = accounting.settings.currency.decimal,
+        oldValue = input.val().toString(),
+        newValue;
 
     switch(key) {
       case 'ret':
         this.target.popover('hide');
         return;
       case 'del':
-        newValue = oldValue.toString().slice(0, -1);
+        if(this.selection) { oldValue = ''; }
+        newValue = oldValue.slice(0, -1);
         break;
       case '+/-':
-        newValue = oldValue*-1;
+        newValue = Utils.unformat(oldValue)*-1;
+        break;
+      case '.':
+        var dec = oldValue.indexOf(decimal) === -1 ? decimal : '';
+        newValue = oldValue + dec;
         break;
       default:
-        oldValue = oldValue.toString();
-        decimal = this.decimal && oldValue.indexOf('.') === -1 ? '.' : '';
-        newValue = oldValue + decimal + key;
+        if(this.selection) { oldValue = ''; }
+        newValue = oldValue + key;
     }
 
     this.ui.input.filter(":visible").val(newValue).trigger('input');
   },
 
   discountSetup: function(){
+    var current = this.model.get(this.target.attr('name')),
+        original = this.model.get(this.target.data('original'));
+
     this.discount_keys = Radio.request('entities', 'get', {
       type: 'option',
       name: 'discount_keys'
     });
 
-    var current = this.model.get('item_price');
-    var original = this.model.get('regular_price');
     this.model.set({ percentage: this.calcDiscount(current, original) });
 
     this.bindings['input[name="percentage"]'] = {
@@ -115,7 +147,7 @@ var View = FormView.extend({
         return Utils.formatNumber(value, 0);
       },
       onSet: function (value) {
-        this.applyDiscount(value);
+        this.applyDiscount(value, original);
         return value;
       }
     };
@@ -134,10 +166,72 @@ var View = FormView.extend({
     return (1 - (a / b)) * 100;
   },
 
-  applyDiscount: function(value){
-    var original = this.model.get('regular_price');
+  applyDiscount: function(value, original){
     var newValue = (1 - (value/100)) * original;
     this.model.set({'item_price': newValue});
+  },
+
+  selectInput: function(){
+    this.ui.input.filter(':visible').select();
+  },
+
+  enter: function(e) {
+    if (e.which === 13) {
+      this.target.popover('hide');
+    }
+  },
+
+  cashSetup: function(){
+    var denominations = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'denominations'
+    }) || {},
+      amount = this.target.data('original') || 0,
+      keys = [],
+      x;
+
+    if(amount === 0) {
+      this.quick_keys = denominations.notes.slice(-4);
+      return;
+    }
+
+    // round for two coins
+    _.each( denominations.coins, function(coin) {
+      if( _.isEmpty(keys) ) {
+        x = Math.round( amount / coin );
+      } else {
+        x = Math.ceil( amount / coin );
+      }
+      keys.push( x * coin );
+    });
+
+    keys = _.uniq(keys, true).slice(0, 2);
+
+
+    // round for two notes
+    _.each( denominations.notes, function(note) {
+      x = Math.ceil( amount / note );
+      keys.push( x * note );
+    });
+
+    keys = _.uniq(keys, true).slice(0, 4);
+
+    this.quick_keys = keys;
+  },
+
+  cashKeys: function(e){
+    e.preventDefault();
+    var key = $(e.currentTarget).data('key');
+    this.model.set(this.target.attr('name'), key);
+  },
+
+  // everytime the input loses focus
+  blur: function(){
+    var sel = window.getSelection();
+    if(sel.toString().length > 0){
+      return this.selection = true;
+    }
+    return this.selection = false;
   }
 
 });

@@ -49,6 +49,9 @@ module.exports = DualModel.extend({
       this.attachGateways();
     }
     _.bindAll(this, 'onSaveSuccess', 'process');
+
+    // order_discount input
+    this.on('change:order_discount', this.calcTotals);
   },
 
   /**
@@ -93,7 +96,8 @@ module.exports = DualModel.extend({
         cart_discount_tax = 0,
         subtotal      = this.cart.sum('subtotal'),
         total         = this.cart.sum('total'),
-        cart_discount = subtotal - total;
+        cart_discount = subtotal - total,
+        order_discount = this.get('order_discount');
 
     if( this.tax.calc_taxes === 'yes' ) {
       total_tax         = this.cart.sum('total_tax');
@@ -103,6 +107,7 @@ module.exports = DualModel.extend({
     }
 
     total += total_tax;
+    total -= order_discount;
 
     // create totals object
     var totals = {

@@ -51,7 +51,7 @@ module.exports = {
       }
 
       if ( value ) {
-        _( value.split('|') ).each(function( value ){
+        _.each(value.split('|'), function( value ){
           var val = value.trim().toLowerCase();
           if( val ) {
             if( facets[key] ) {

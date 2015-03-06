@@ -42,7 +42,7 @@
     {{/with}}
 		<a data-action="more" href="#" class="btn btn-default btn-circle-sm"><i class="icon icon-angle-down"></i></a>
 	</div>
-	<div class="price"><input type="text" name="item_price" data-label="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" data-original="{{regular_price}}" class="btn autogrow"></div>
+	<div class="price"><input type="text" name="item_price" data-label="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" data-original="regular_price" class="btn autogrow"></div>
 	<div class="total"></div>
 	<div class="action"><a data-action="remove" class="btn btn-circle btn-danger" href="#"><i class="icon icon-times icon-lg"></i></a></div>
 </script>
@@ -52,7 +52,7 @@
 	{{#if product_id}}
 	<div class="col-1"><label for="regular_price"><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>:</label></div>
 	<div class="col-2">
-		<input name="regular_price" id="regular_price" class="autogrow btn" type="text" data-numpad="money" data-label="<?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>" />
+		<input name="regular_price" id="regular_price" class="autogrow btn" type="text" data-numpad="price" data-label="<?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>" />
 	</div>
 	{{/if}}
 
@@ -126,7 +126,7 @@
 	<li class="order-discount" {{#compare order_discount '===' 0}}style="display:none"{{/compare}}>
 		<div><?php /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</div>
 		<div class="total">
-			<input type="text" value="{{number order_discount}}" name="order_discount" data-original="{{order_discount}}" data-title="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-placement="left" data-numpad="discount" class="autogrow">
+			<input type="text" name="order_discount" data-original="total" data-label="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-placement="left" data-numpad="discount" class="btn autogrow">
 			<span class="amount">{{{money order_discount negative=true}}}</span>
 		</div>
 		<div class="action"></div>

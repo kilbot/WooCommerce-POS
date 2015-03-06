@@ -1,23 +1,23 @@
-var ItemView = require('lib/config/item-view');
+var FormView = require('lib/config/form-view');
 var _ = require('lodash');
 var $ = require('jquery');
 var bb = require('backbone');
 var hbs = require('handlebars');
 var AutoGrow = require('lib/components/autogrow/behavior');
 var Numpad = require('lib/components/numpad/behavior');
-var entitiesChannel = bb.Radio.channel('entities');
+var Radio = require('backbone.radio');
 var Utils = require('lib/utilities/utils');
 
-module.exports = ItemView.extend({
+module.exports = FormView.extend({
   tagName: 'ul',
 
   initialize: function() {
     this.template = hbs.compile( $('#tmpl-cart-totals').html() );
 
-    this.options = entitiesChannel.request('get', {
+    this.tax = Radio.request('entities', 'get', {
       type : 'option',
       name : 'tax'
-    });
+    }) || {};
   },
 
   behaviors: {
@@ -29,18 +29,34 @@ module.exports = ItemView.extend({
     }
   },
 
-  modelEvents: {
-    'change': 'render'
-  },
-
   ui: {
     discount: '.order-discount'
   },
 
   events: {
-    'click @ui.discount .total'   : 'edit',
-    'keypress @ui.discount input'   : 'saveOnEnter',
-    'blur @ui.discount input'     : 'onBlur'
+    'click @ui.discount'      : 'edit',
+    'blur @ui.discount input' : 'onBlur'
+  },
+
+  bindings: {
+    'input[name="order_discount"]': {
+      observe: 'order_discount',
+      onGet: Utils.formatNumber,
+      onSet: Utils.unformat
+    },
+    '.order-discount span.amount': {
+      observe: 'order_discount',
+      updateMethod: 'html',
+      onGet: function(val){
+        val = val*-1;
+        return Utils.formatMoney(val)
+      }
+    },
+    '.order-total .total': {
+      observe: 'total',
+      updateMethod: 'html',
+      onGet: Utils.formatMoney
+    }
   },
 
   /**
@@ -49,14 +65,14 @@ module.exports = ItemView.extend({
   templateHelpers: function(){
     var data = {};
 
-    if( this.options.tax_display_cart === 'incl' ) {
+    if( this.tax.tax_display_cart === 'incl' ) {
       data.subtotal = this.model.sum(['subtotal', 'subtotal_tax']);
       data.cart_discount = this.model.get('subtotal') - this.model.get('total');
       data.incl_tax = true;
     }
 
     // itemized
-    if( this.options.tax_total_display === 'itemized' ){
+    if( this.tax.tax_total_display === 'itemized' ){
       data.itemized = true;
     }
 
@@ -66,52 +82,22 @@ module.exports = ItemView.extend({
     return data;
   },
 
-  edit: function(e) {
-    $(e.currentTarget).addClass('editing')
-        .children('input')
-        .trigger('show:numpad');
-  },
+  edit: function() {
+    var container = this.ui.discount,
+        input = container.find('input');
 
-  save: function(e) {
-    var input   = $(e.target),
-      value   = input.val();
+    container.addClass('editing');
+    input.trigger('open:numpad');
 
-    // check for sensible input
-    if( _.isNaN( parseFloat( value ) ) ) {
-      input.select();
-      return;
-    }
+    input.one('hidden.bs.popover', function(){
+      container.removeClass('editing');
+    });
 
-    // always store numbers as float
-    if( value ){
-      value = Utils.unformat( value );
-      value = parseFloat( value );
-    }
-
-    // save
-    this.model.save({ order_discount: value });
-
-  },
-
-  saveOnEnter: function(e) {
-    if (e.which === 13) {
-      this.save(e);
-      this.model.trigger('change');
-    }
   },
 
   showDiscountRow: function() {
-    this.$('.order-discount')
-        .show()
-        .children('.total')
-        .trigger('click');
-  },
-
-  onBlur: function(e) {
-    if( $(e.target).attr('aria-describedby') === undefined ) {
-      this.save(e);
-      this.model.trigger('change');
-    }
+    this.ui.discount.show();
+    this.edit();
   }
 
 });

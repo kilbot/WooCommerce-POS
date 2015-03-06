@@ -7,16 +7,13 @@ var $ = require('jquery');
 
 var NumpadBehavior = Behavior.extend({
 
-  initialize: function() {
-
-  },
-
   ui: {
     input: '*[data-numpad]'
   },
 
   events: {
-    'click @ui.input'   : 'numpadPopover'
+    'click @ui.input' : 'numpadPopover',
+    'open:numpad @ui.input' : 'numpadPopover'
   },
 
   onShow: function() {
@@ -26,7 +23,8 @@ var NumpadBehavior = Behavior.extend({
   },
 
   numpadPopover: function(e){
-    var input = $(e.currentTarget);
+    var input = $(e.currentTarget),
+        placement = input.data('placement') || 'bottom';
 
     var numpad = new NumpadView({
       target    : input,
@@ -37,8 +35,9 @@ var NumpadBehavior = Behavior.extend({
     var options = {
       target    : input,
       view      : numpad,
+      parent    : this.view,
       className : 'popover popover-numpad popover-dark-bg',
-      placement : 'bottom'
+      placement : placement
     };
 
     Radio.request('popover', 'open', options);

@@ -13,4 +13,4 @@ var View = ItemView.extend({
 });
 
 module.exports = View;
-POS.attach('POSApp.Views.Receipt', View);
+POS.attach('POSApp.Receipt.Views.Receipt', View);

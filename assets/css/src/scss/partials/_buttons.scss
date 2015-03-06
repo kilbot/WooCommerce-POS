@@ -50,7 +50,7 @@
   }
 }
 
-input.btn {
+input[type="text"].btn {
 //  @include button-size($padding-base-vertical, $padding-base-horizontal, $font-size-base, $line-height-base, $border-radius-base);
   @include button-size(1px, 0, $font-size-base, $line-height-base, 16px);
   text-align: center;

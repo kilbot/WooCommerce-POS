@@ -11,7 +11,7 @@ module.exports = Collection.extend({
 
   getVariations: function(parent){
     var variations = [];
-    _( parent.get('variations') ).each( function(variation) {
+    _.each(parent.get('variations'), function(variation) {
       variation.type  = 'variation';
       variation.title = parent.get('title');
       variations.push(variation);

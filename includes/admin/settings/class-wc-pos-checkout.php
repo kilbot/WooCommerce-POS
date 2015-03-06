@@ -30,7 +30,7 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
     );
   }
 
-  protected function load_gateways() {
+  public function load_gateways() {
     $gateways = WC_Payment_Gateways::instance()->payment_gateways;
     $settings = get_option( WC_POS_Admin_Settings::DB_PREFIX . $this->id );
 
@@ -39,14 +39,14 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
     }
 
     // reorder
+    $i = count($gateways);
     foreach( $gateways as $gateway ) {
       if( isset( $order[$gateway->id] ) ) {
         $ordered_gateways[ $order[$gateway->id] ] = $gateway;
       } else {
-        $ordered_gateways[] = $gateway;
+        $ordered_gateways[ ++$i ] = $gateway;
       }
-      $gateway->pos = false;
-      apply_filters( 'woocommerce_pos_payment_gateways', $gateway );
+      $gateway->pos = apply_filters( 'woocommerce_pos_payment_gateways', $gateway );
     }
 
     ksort( $ordered_gateways, SORT_NUMERIC );

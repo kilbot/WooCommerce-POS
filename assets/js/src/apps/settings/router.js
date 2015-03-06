@@ -144,11 +144,11 @@ var SettingsRouter = Router.extend({
         {
           action    : 'save',
           className : 'button-primary'
-        },
-        {
-          action    : 'restore',
-          className : 'button pull-right'
         }
+        //{
+        //  action    : 'restore',
+        //  className : 'button pull-right'
+        //}
       ],
       msgPos: 'right'
     });
@@ -158,10 +158,10 @@ var SettingsRouter = Router.extend({
     this.listenTo(view, {
       'action:save': function(){
         options.model.save([], { buttons: view });
-      },
-      'action:restore': function(){
-        options.model.fetch({ buttons: view, restore: true });
       }
+      //'action:restore': function(){
+      //  options.model.fetch({ buttons: view, restore: true });
+      //}
     });
 
     this.layout.footer.show(view);

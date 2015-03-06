@@ -113,7 +113,8 @@ module.exports = FormView.extend({
     }.bind(this));
   },
 
-  removeItem: function() {
+  removeItem: function(e) {
+    e.preventDefault();
     this.model.destroy();
   }
 

@@ -58,7 +58,7 @@ module.exports = Model.extend({
 
     // make a copy of the tax rates for this product
     if(this.tax_rates[tax_class]){
-      rates = _.deepClone(this.tax_rates[tax_class]);
+      rates = _.cloneDeep(this.tax_rates[tax_class]);
     }
 
     // if shipping or fee
@@ -133,7 +133,7 @@ module.exports = Model.extend({
         rates = options.rates,
         qty = options.quantity;
 
-    _(rates).each( function(rate) {
+    _.each(rates, function(rate) {
       if ( rate.compound === 'yes' ) {
         compound_tax_rates = compound_tax_rates + parseFloat(rate.rate);
       } else {
@@ -145,7 +145,7 @@ module.exports = Model.extend({
     var compound_tax_rate   = 1 + ( compound_tax_rates / 100 );
     non_compound_price = price / compound_tax_rate;
 
-    _(rates).each( function(rate) {
+    _.each(rates, function(rate) {
       var the_rate = parseFloat(rate.rate) / 100;
       var the_price = 0;
 
@@ -191,7 +191,7 @@ module.exports = Model.extend({
         qty = options.quantity;
 
     // multiple taxes
-    _(rates).each( function(rate, key) {
+    _.each(rates, function(rate, key) {
       tax_amount = 0;
       if ( rate.compound !== 'yes' ) {
         tax_amount = price * ( parseFloat(rate.rate) / 100 );
@@ -204,7 +204,7 @@ module.exports = Model.extend({
     }
 
     // compound taxes
-    _(rates).each( function(rate, key) {
+    _.each(rates, function(rate, key) {
       if ( rate.compound === 'yes' ) {
         var the_price_inc_tax = price + pre_compound_total;
         taxes[ key ] = the_price_inc_tax * ( parseFloat(rate.rate) / 100 );

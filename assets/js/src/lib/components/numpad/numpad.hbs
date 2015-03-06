@@ -2,7 +2,7 @@
   <div class="numpad-header">
     <strong class="title">{{label}}</strong>
 
-    {{#is numpad 'price'}}
+    {{#is numpad 'price|cash'}}
 
     <div class="input-group">
       <span class="input-group-addon">{{{currency.symbol}}}</span>
@@ -65,21 +65,25 @@
 
       {{#is numpad 'discount'}}
 
+      {{#if discount_keys}}
       <div class="keys extra-keys discount">
         {{#each discount_keys}}
         <a href="#" data-key="{{this}}" class="btn">{{this}}%</a>
         {{/each}}
       </div>
+      {{/if}}
 
       {{/is}}
 
-      {{#is numpad 'tendered'}}
+      {{#is numpad 'cash'}}
 
-      <div class="keys extra-keys tendered">
-        {{#each quick_key}}
+      {{#if quick_keys}}
+      <div class="keys extra-keys cash">
+        {{#each quick_keys}}
             <a href="#" data-key="{{this}}" class="btn">{{{number this}}}</a>
         {{/each}}
       </div>
+      {{/if}}
 
       {{/is}}
 

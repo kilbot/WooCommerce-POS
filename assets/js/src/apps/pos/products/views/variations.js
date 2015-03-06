@@ -57,10 +57,6 @@ var Variations = ItemView.extend({
     return data;
   },
 
-  test: function(variation){
-    console.log(variation);
-  },
-
   ui: {
     add: '*[data-action="add"]',
     btn: '.btn-group .btn',

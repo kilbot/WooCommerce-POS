@@ -97,6 +97,7 @@ var View = ItemView.extend({
    */
   formatSelection: function( customer ) {
     var format = '{{first_name}} {{last_name}}';
+
     if( this.hasNoNames(customer) ){
       format = '{{username}}';
     }
