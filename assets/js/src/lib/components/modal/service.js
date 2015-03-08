@@ -108,7 +108,7 @@ module.exports = Service.extend({
     options = options || {};
 
     if(options.jqXHR){
-      options.raw = options.jqXHR.responseText
+      options.raw = options.jqXHR.responseText;
     }
 
     var view = new AlertView({

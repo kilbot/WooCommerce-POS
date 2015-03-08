@@ -7,7 +7,7 @@
 global $current_user;
 
 ?>
-<html class="no-js" <?php language_attributes(); ?>>
+<html class="no-js">
 <head>
   <title><?php _e('Point of Sale', 'woocommerce-pos') ?> - <?php bloginfo('name') ?></title>
   <?php include 'meta.php' ?>

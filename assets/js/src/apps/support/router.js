@@ -7,7 +7,6 @@ var Collection = require('lib/config/collection');
 var $ = require('jquery');
 
 module.exports = Router.extend({
-  columns: 2,
 
   routes: {
     'support' : 'show'

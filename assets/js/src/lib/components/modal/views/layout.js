@@ -113,7 +113,7 @@ module.exports = LayoutView.extend({
     _.each(actions, function(action){
       events['action:' + action] = function(){
         this.content.currentView.trigger('action:' + action);
-      }
+      };
     }, this);
 
     this.listenTo(view, events);

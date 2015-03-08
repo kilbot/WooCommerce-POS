@@ -34,22 +34,6 @@ module.exports = Application.extend({
     // bootstrap accounting settings
     accounting.settings = this.options.accounting;
 
-    // global ajax settings
-    bb.$.ajaxSetup({
-      data: {
-        security: function(){
-          return Radio.request('entities', 'get', {
-            type: 'option',
-            name: 'nonce'
-          });
-        }
-      },
-      beforeSend: function(xhr){
-        xhr.setRequestHeader('X-WC-POS', 1);
-      },
-      timeout: 50000
-    });
-
     // start header service
     this.headerService.start();
   },
@@ -69,9 +53,7 @@ module.exports = Application.extend({
     //});
   },
 
-  onEnterRoute: function(route) {
-    this.layout.columns(route.columns);
-
+  onEnterRoute: function() {
     this.transitioning = false;
     //this.$body.scrollTop(0);
     //nprogress.done();

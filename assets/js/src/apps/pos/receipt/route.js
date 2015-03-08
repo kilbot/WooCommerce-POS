@@ -92,7 +92,10 @@ var ReceiptRoute = Route.extend({
   },
 
   print: function(){
-    Radio.request('print', 'print', {order: this.model});
+    Radio.request('print', 'print', {
+      template: 'receipt',
+      model: this.model
+    });
   }
 
 });

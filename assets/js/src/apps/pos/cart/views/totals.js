@@ -1,7 +1,5 @@
 var FormView = require('lib/config/form-view');
-var _ = require('lodash');
 var $ = require('jquery');
-var bb = require('backbone');
 var hbs = require('handlebars');
 var AutoGrow = require('lib/components/autogrow/behavior');
 var Numpad = require('lib/components/numpad/behavior');
@@ -49,7 +47,7 @@ module.exports = FormView.extend({
       updateMethod: 'html',
       onGet: function(val){
         val = val*-1;
-        return Utils.formatMoney(val)
+        return Utils.formatMoney(val);
       }
     },
     '.order-total .total': {

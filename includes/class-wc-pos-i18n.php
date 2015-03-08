@@ -321,13 +321,17 @@ class WC_POS_i18n {
       'send'      => /* translators: wordpress   */ __( 'Submit' ),
       'shipping'  => /* translators: woocommerce */ __( 'Shipping', 'woocommerce' ),
       'void'      => __( 'Void', 'woocommerce-pos' ),
-);
+    );
 
     $translations['messages'] = array(
       'choose'    => /* translators: woocommerce */ __( 'Choose an option', 'woocommerce' ),
       'error'     => /* translators: woocommerce */ __( 'Sorry, there has been an error.', 'woocommerce' ),
       'loading'   => /* translators: wordpress   */ __( 'Loading&hellip;' ),
       'success'   => /* translators: woocommerce */ __( 'Your changes have been saved.', 'woocommerce' ),
+    );
+
+    $translations['plural'] = array(
+      'records'   => _x( 'record |||| records', 'eg: 23 records', 'woocommerce-pos' ),
     );
 
     return $translations;

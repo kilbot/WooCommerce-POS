@@ -1,6 +1,9 @@
 var POS = require('lib/utilities/global');
 var Application = require('apps/app/application');
 
+// sync config
+require('lib/config/sync');
+
 /**
  * Services
  */
@@ -36,8 +39,7 @@ app.entitiesService = new EntitiesService({
 
 app.headerService = new HeaderService({
   headerContainer : app.layout.headerRegion,
-  menuContainer   : app.layout.menuRegion,
-  tabsContainer   : app.layout.tabsRegion
+  menuContainer   : app.layout.menuRegion
 });
 
 app.posApp = new POSRouter({

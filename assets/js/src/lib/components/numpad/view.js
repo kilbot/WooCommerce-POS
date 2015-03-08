@@ -7,6 +7,8 @@ var AutoGrow = require('lib/components/autogrow/behavior');
 var Radio = require('backbone.radio');
 var polyglot = require('lib/utilities/polyglot');
 var Utils = require('lib/utilities/utils');
+var $ = require('jquery');
+var _ = require('lodash');
 
 var View = FormView.extend({
   template: hbs.compile(Tmpl),
@@ -127,7 +129,7 @@ var View = FormView.extend({
         newValue = oldValue + key;
     }
 
-    this.ui.input.filter(":visible").val(newValue).trigger('input');
+    this.ui.input.filter(':visible').val(newValue).trigger('input');
   },
 
   discountSetup: function(){
@@ -228,10 +230,7 @@ var View = FormView.extend({
   // everytime the input loses focus
   blur: function(){
     var sel = window.getSelection();
-    if(sel.toString().length > 0){
-      return this.selection = true;
-    }
-    return this.selection = false;
+    this.selection = sel.toString().length > 0;
   }
 
 });

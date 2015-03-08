@@ -1,6 +1,5 @@
 var DualModel = require('lib/config/dual-model');
 var Radio = require('backbone.radio');
-//var debug = require('debug')('orderModel');
 var $ = require('jquery');
 var _ = require('lodash');
 var Utils = require('lib/utilities/utils');

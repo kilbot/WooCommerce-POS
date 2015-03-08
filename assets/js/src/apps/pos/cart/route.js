@@ -37,6 +37,11 @@ var CartRoute = Route.extend({
       this.order = undefined;
     } else if(id){
       this.order = this.collection.get(id);
+      if(this.order.hasRemoteId()){
+        this.navigate('receipt/' + this.order.get('id'), {
+          trigger: true
+        });
+      }
     } else if(this.collection.length > 0){
       this.order = this.collection.at(0);
     }

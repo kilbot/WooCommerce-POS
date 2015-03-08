@@ -80,8 +80,9 @@ var StatusRoute = Route.extend({
   storageStatus: function(){
     return _.map(this.databases, function(db){
       var title = polyglot.t('titles.' + db),
-        count = this[db].length,
-        message = title + ': ' + count;
+          count = this[db].length,
+          message = title + ': ' + count + ' ' +
+            polyglot.t('plural.records', count);
       return {
         message : message,
         button  : {

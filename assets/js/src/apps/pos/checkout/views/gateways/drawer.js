@@ -14,7 +14,7 @@ module.exports = FormView.extend({
   templateHelpers: function(){
     return {
       total: this.model.collection.order_total
-    }
+    };
   },
 
   behaviors: {

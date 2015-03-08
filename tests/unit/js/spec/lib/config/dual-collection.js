@@ -1,10 +1,13 @@
 describe('lib/config/dual-collection.js', function () {
 
   beforeEach(function () {
-    var DualCollection = require('lib/config/dual-collection');
+    var DualCollection = proxyquire('lib/config/dual-collection', {
+      './idb-collection': Backbone.Collection
+    });
     this.collection = new DualCollection();
+    this.collection.name = 'test';
 
-    this.local = [
+    this['local'] = [
       {remoteId: 1},
       {remoteId: 2},
       {remoteId: 3}
@@ -17,10 +20,22 @@ describe('lib/config/dual-collection.js', function () {
     ];
   });
 
-  describe('new DualCollection', function () {
-    it('should be in a valid state', function() {
-      expect(this.collection).to.be.ok;
-    });
+  it('should be in a valid state', function() {
+    expect(this.collection).to.be.ok;
+  });
+
+  it('should be able to get/set state in localStorage', function() {
+    this.collection.setState({foo: 'bar', bat: 'man'});
+    expect(this.collection.getState('foo')).equals('bar');
+    this.collection.setState({foo: 'baz'});
+    expect(this.collection.getState()).eql({foo: 'baz', bat: 'man'});
+  });
+
+  it('should be able to remove state', function() {
+    this.collection.removeState('bat');
+    expect(this.collection.getState()).eql({foo: 'baz'});
+    this.collection.removeState();
+    expect(this.collection.getState()).to.be.undefined;
   });
 
   describe('firstSync()', function () {
@@ -79,30 +94,30 @@ describe('lib/config/dual-collection.js', function () {
       $.ajax.restore();
     });
 
-  }),
-
-  describe('auditRecords()', function () {
-
-    it('compare the local collection to the server collection', function() {
-
-      //var local = [
-      //  {remoteId: 1},
-      //  {remoteId: 2},
-      //  {remoteId: 3}
-      //];
-      //
-      //var remote = [
-      //  {id: 1},
-      //  {id: 3},
-      //  {id: 4}
-      //]
-      //
-      //this.collection.add(local);
-      //this.collection.auditRecords();
-      //expect(this.collection.pluck('remoteId')).equals([1,3,4]);
-
-    });
-
   });
+
+  //describe('auditRecords()', function () {
+  //
+  //  it('compare the local collection to the server collection', function() {
+  //
+  //    //var local = [
+  //    //  {remoteId: 1},
+  //    //  {remoteId: 2},
+  //    //  {remoteId: 3}
+  //    //];
+  //    //
+  //    //var remote = [
+  //    //  {id: 1},
+  //    //  {id: 3},
+  //    //  {id: 4}
+  //    //]
+  //    //
+  //    //this.collection.add(local);
+  //    //this.collection.auditRecords();
+  //    //expect(this.collection.pluck('remoteId')).equals([1,3,4]);
+  //
+  //  });
+  //
+  //});
 
 });

@@ -1,74 +1,55 @@
 /**
-This is a customised version of https://github.com/vincentmac/backbone-idb
-
-The MIT License (MIT)
-
-Copyright (c) 2013 Vincent Mac
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Backbone adapter for idb-wrapper api
  */
-
-var Backbone = require('backbone');
 var IDBStore = require('idb-wrapper');
 var _ = require('lodash');
-var $ = require('jquery');
+var debug = require('debug')('idb');
+var noop = function (){};
 
-var defaultErrorHandler = function (error) {
-  throw error;
-};
-
-var noop = function () {
-};
-
-Backbone.IndexedDB = function IndexedDB(options, parent) {
-  parent._isReady = $.Deferred();
+function IndexedDB(parent) {
 
   var defaultReadyHandler = function () {
-    // console.log('idb:ready this:', this);  // <IDBStore>
-    // console.log('idb:ready that:', that);  // <IndexedDB>
-
-    // By default, make the Backbone.IndexedDB available through
-    // `parent.indexedDB` that.parent.indexedDB = that;
-    // Fire ready event on parent model or collection
-    parent._isReady.resolve(parent);
+    debug(parent.name + ' ready');
     parent.trigger('idb:ready', parent);
   };
 
-  var defaults = {
-    storeName: 'Store',
-    storePrefix: '',
-    dbVersion: 1,
-    keyPath: 'id',
-    dualStorage: false,
-    autoIncrement: true,
-    onStoreReady: defaultReadyHandler,
-    onError: defaultErrorHandler,
-    indexes: []
+  var defaultErrorHandler = function (error) {
+    debug(error);
+    parent.trigger('idb:error', error);
   };
 
-  options = _.defaults(options || {}, defaults);
-  this.dbName = options.storePrefix + options.storeName;
-  this.store = new IDBStore(options);
-  this.keyPath = options.keyPath;
-  this.dualStorage = options.dualStorage;
-};
+  var defaults = {
+    storeName     : 'store',
+    storePrefix   : 'wc_pos_',
+    dbVersion     : 1,
+    keyPath       : 'local_id',
+    autoIncrement : true,
+    onStoreReady  : defaultReadyHandler,
+    onError       : defaultErrorHandler,
+    indexes       : [
+      {name: 'local_id', keyPath: 'local_id', unique: true},
+      {name: 'id', keyPath: 'id', unique: true},
+      {name: 'status', keyPath: 'status', unique: false}
+    ]
+  };
 
-Backbone.IndexedDB.prototype = {
+  this.options = _.defaults({
+    storeName     : parent.name,
+    dbVersion     : parent.dbVersion,
+    keyPath       : parent.keyPath,
+    autoIncrement : parent.autoIncrement,
+    indexes       : parent.indexes
+  }, defaults);
+
+  this.store = new IDBStore(this.options);
+
+  if(parent.storage && parent.storage === 'dual'){
+    this.dualStorage = true;
+    this.states = parent.states;
+  }
+}
+
+var methods = {
 
   /**
    * Add a new model to the store
@@ -79,15 +60,15 @@ Backbone.IndexedDB.prototype = {
    * @param {Function} [options.error] - overridable error callback
    */
   create: function(model, options) {
-    var data = model.attributes;
-    var that = this;
+    var data = model.attributes,
+        keyPath = this.options.keyPath;
 
     if(this.dualStorage){
-      model.set('status', model.states.CREATE_FAILED);
+      model.set('status', this.states.CREATE_FAILED);
     }
 
     this.store.put(data, function(insertedId) {
-      data[that.keyPath] = insertedId;
+      data[keyPath] = insertedId;
       options.success(data);
     }, options.error);
 
@@ -103,7 +84,7 @@ Backbone.IndexedDB.prototype = {
    */
   update: function(model, options) {
     if(this.dualStorage && model.hasRemoteId()) {
-      model.set('status', model.states.UPDATE_FAILED);
+      model.set('status', this.states.UPDATE_FAILED);
     }
     this.store.put(model.attributes, options.success, options.error);
   },
@@ -160,7 +141,7 @@ Backbone.IndexedDB.prototype = {
     }
 
     if(this.dualStorage && model.hasRemoteId()){
-      model.set('status', model.states.DELETE_FAILED);
+      model.set('status', this.states.DELETE_FAILED);
       this.store.put(model.attributes, options.success, options.error);
     } else {
       this.store.remove(model.id, options.success, options.error);
@@ -228,7 +209,7 @@ Backbone.IndexedDB.prototype = {
    */
   saveAll: function(onSuccess, onError) {
     onSuccess = onSuccess || noop;
-    onError = onError || defaultErrorHandler;
+    onError = onError || this.options.onError;
 
     this.store.putBatch(this.parent.toJSON(), onSuccess, onError);
   },
@@ -244,7 +225,7 @@ Backbone.IndexedDB.prototype = {
    */
   batch: function(dataArray, onSuccess, onError) {
     onSuccess = onSuccess || noop;
-    onError = onError || defaultErrorHandler;
+    onError = onError || this.options.onError;
 
     this.store.batch(dataArray, onSuccess, onError);
   },
@@ -259,7 +240,7 @@ Backbone.IndexedDB.prototype = {
    */
   putBatch: function(dataArray, onSuccess, onError) {
     onSuccess = onSuccess || noop;
-    onError = onError || defaultErrorHandler;
+    onError = onError || this.options.onError;
 
     this.store.putBatch(dataArray, onSuccess, onError);
   },
@@ -274,7 +255,7 @@ Backbone.IndexedDB.prototype = {
    */
   removeBatch: function(keyArray, onSuccess, onError) {
     onSuccess = onSuccess || noop;
-    onError = onError || defaultErrorHandler;
+    onError = onError || this.options.onError;
 
     this.store.removeBatch(keyArray, onSuccess, onError);
   },
@@ -287,7 +268,7 @@ Backbone.IndexedDB.prototype = {
    */
   clear: function(onSuccess, onError) {
     onSuccess = onSuccess || noop;
-    onError = onError || defaultErrorHandler;
+    onError = onError || this.options.onError;
 
     this.store.clear(onSuccess, onError);
   },
@@ -302,80 +283,5 @@ Backbone.IndexedDB.prototype = {
   // });
 };
 
-
-/**
- * Backbone.sync drop-in replacement
- *
- * This function replaces the model or collection's sync method and remains
- * compliant with Backbone's api.
- */
-/*jshint -W071, -W074*/
-Backbone.IndexedDB.sync = Backbone.idbSync = function(method, model, options) {
-  var deferred = new $.Deferred();
-  var db = model.indexedDB || model.collection.indexedDB;
-  // console.log('Backbone.IndexedDB.sync', method, model, options);
-  var success = options.success || noop;
-  var error = options.success || noop;
-  options.success = function (result) {
-    success.apply(this, arguments);
-    deferred.resolve(result);
-  };
-  options.error = function (result) {
-    error.apply(this, arguments);
-    deferred.reject(result);
-  };
-  switch (method) {
-
-    // Retrieve an individual model or entire collection from indexedDB
-    case 'read':
-      if(model.id !== undefined){
-        db.read(model, options);
-      } else {
-        db.getAll(options);
-      }
-      break;
-
-    case 'create':
-      if (model.id) {
-        db.update(model, options);
-      } else {
-        db.create(model, options);
-      }
-      break;
-
-    case 'update':
-      if (model.id) {
-        db.update(model, options);
-      } else {
-        db.create(model, options);
-      }
-      break;
-
-    case 'delete':
-      if (model.id) {
-        db.destroy(model, options);
-      }
-      break;
-  }
-  return deferred.promise();
-
-};
-/*jshint +W071, +W074*/
-
-// Reference original `Backbone.sync`
-Backbone.ajaxSync = Backbone.sync;
-
-// Override 'Backbone.sync' to default to idbSync,
-// the original 'Backbone.sync' is still available in 'Backbone.ajaxSync'
-Backbone.sync = function(method, model, options) {
-  var local = false;
-  if(model.indexedDB || (model.collection && model.collection.indexedDB)) {
-    local = true;
-  }
-  if(local && !options.remote){
-    return Backbone.idbSync.apply(this, [method, model, options]);
-  }
-  return Backbone.ajaxSync.apply(this, [method, model, options]);
-};
-
-module.exports = Backbone.IndexedDB;
+_.extend(IndexedDB.prototype, methods);
+module.exports = IndexedDB;

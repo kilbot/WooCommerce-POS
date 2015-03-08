@@ -3,9 +3,8 @@ describe('entities/cart/collection.js', function () {
   beforeEach(function () {
 
     var Collection = proxyquire('entities/cart/collection',{
-      'lib/config/collection': Backbone.Collection,
-      './model': Backbone.Model,
-      'lib/config/indexeddb': stub()
+      'lib/config/idb-collection': Backbone.Collection,
+      './model': Backbone.Model
     });
     this.collection = new Collection();
 

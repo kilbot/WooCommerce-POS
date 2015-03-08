@@ -1,14 +1,15 @@
-//var bb = require('backbone');
-var Collection = require('lib/config/collection');
+var IndexedDBCollection = require('lib/config/idb-collection');
 var Model = require('./model');
-//var Utils = require('lib/utilities/utils');
 var _ = require('lodash');
-//var Radio = require('backbone.radio');
-var IndexedDB = require('lib/config/indexeddb');
 
-module.exports = Collection.extend({
-  name: 'cart',
+module.exports = IndexedDBCollection.extend({
   model: Model,
+  name: 'cart',
+  indexes: [
+    {name: 'local_id', keyPath: 'local_id', unique: true},
+    {name: 'order', keyPath: 'order', unique: false},
+    {name: 'type', keyPath: 'type', unique: false}
+  ],
 
   comparator: function( model ){
     var type = model.get( 'type' );
@@ -20,20 +21,6 @@ module.exports = Collection.extend({
   initialize: function (models, options) {
     options = options || {};
     this.order_id = options.order_id;
-
-    this.indexedDB = new IndexedDB({
-      storeName: 'cart',
-      storePrefix: 'wc_pos_',
-      dbVersion: 1,
-      keyPath: 'local_id',
-      autoIncrement: true,
-      indexes: [
-        {name: 'local_id', keyPath: 'local_id', unique: true},
-        {name: 'order', keyPath: 'order', unique: false},
-        {name: 'type', keyPath: 'type', unique: false}
-      ]
-    }, this);
-
   },
 
   /**

@@ -1,7 +1,7 @@
 var Backbone = require('backbone');
 var Radio = Backbone.Radio;
 var debug = require('debug')('dualCollection');
-var Collection = require('./collection');
+var IndexedDBCollection = require('./idb-collection');
 var POS = require('lib/utilities/global');
 var _ = require('lodash');
 var $ = require('jquery');
@@ -17,7 +17,11 @@ var wrapError = function(model, options) {
   };
 };
 
-module.exports = POS.DualCollection = Collection.extend({
+var noop = function(){};
+
+module.exports = POS.DualCollection = IndexedDBCollection.extend({
+  storage: 'dual',
+
   states: {
     SYNCHRONIZED  : 'SYNCHRONIZED',
     SYNCHRONIZING : 'SYNCHRONIZING',
@@ -76,12 +80,28 @@ module.exports = POS.DualCollection = Collection.extend({
     }).call(this);
   },
 
-  mergeFirstSync: function(newData) {
-    return newData;
+  getState: function(key){
+    return Radio.request('entities', 'get', {
+      type: 'localStorage',
+      name: this.name,
+      key: key
+    });
   },
 
-  mergeFullSync: function(newData) {
-    return newData;
+  setState: function(options){
+    Radio.command('entities', 'set', {
+      type: 'localStorage',
+      name: this.name,
+      data: options
+    });
+  },
+
+  removeState: function(key){
+    Radio.command('entities', 'remove', {
+      type: 'localStorage',
+      name: this.name,
+      key: key
+    });
   },
 
   //firstSync: function(options) {
@@ -246,7 +266,7 @@ module.exports = POS.DualCollection = Collection.extend({
 
   serverSync: function(options){
     options = options || {};
-    var originalSuccess = options.success || $.noop,
+    var originalSuccess = options.success || noop,
         deferred = $.Deferred();
 
     var syncSuccess = function(){
@@ -257,8 +277,11 @@ module.exports = POS.DualCollection = Collection.extend({
   },
 
   firstSync: function(options){
+    var last_update = this.getState('last_update');
+
+
     options = options || {};
-    var originalError = options.error || $.noop;
+    var originalError = options.error || noop;
     var self = this;
 
     return this.fetch({

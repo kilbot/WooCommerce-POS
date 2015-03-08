@@ -9,8 +9,6 @@ var Radio = require('backbone.radio');
 var bb = require('backbone');
 
 var Router = Router.extend({
-  columns: 2,
-
   routes: {
     ''            : 'showCart',
     'cart'        : 'showCart',
@@ -46,9 +44,9 @@ var Router = Router.extend({
     }
 
     if(bb.history.getFragment() === ''){
-      Radio.command('header', 'update:tab', {id:'left', active: true});
+      this.layout.tabs.get('left').set({active: true});
     } else {
-      Radio.command('header', 'update:tab', {id:'right', active: true});
+      this.layout.tabs.get('right').set({active: true});
     }
 
     Radio.command('header', 'update:title', '');

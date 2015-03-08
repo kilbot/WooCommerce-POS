@@ -26,7 +26,8 @@ describe('apps/pos/cart/route.js', function () {
       // Order models have id = remoteId, local_id = idAttribute
       var Collection = Backbone.Collection.extend({
         model: Backbone.Model.extend({
-          idAttribute: 'local_id'
+          idAttribute: 'local_id',
+          hasRemoteId: stub()
         })
       });
 

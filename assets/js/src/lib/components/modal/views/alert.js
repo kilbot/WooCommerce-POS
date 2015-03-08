@@ -22,7 +22,7 @@ module.exports = View.extend({
           action: 'close'
         }]
       }
-    }
+    };
   },
 
   templateHelpers: function(){
