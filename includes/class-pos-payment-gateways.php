@@ -68,7 +68,7 @@ class WooCommerce_POS_Payment_Gateways {
 		$global_gateways = WC()->payment_gateways()->payment_gateways;
 
 		$this->gateways = array_merge( $pos_only_gateways, $global_gateways );
-		$pos_only_gateways[] = $global_gateways[0];
+		$pos_only_gateways[] = $global_gateways;
 		$this->available_gateways = $pos_only_gateways;
 	}
 
@@ -131,7 +131,7 @@ class WooCommerce_POS_Payment_Gateways {
     		}
     	}
 
-    	return $pos_gateways;	
+    	return $pos_gateways;
     }
 
     /**
