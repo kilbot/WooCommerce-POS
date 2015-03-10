@@ -33,6 +33,9 @@ module.exports = Application.extend({
 
     // bootstrap accounting settings
     accounting.settings = this.options.accounting;
+    if(this.options.debug){
+
+    }
 
     // start header service
     this.headerService.start();

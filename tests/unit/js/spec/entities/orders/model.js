@@ -1,14 +1,23 @@
 describe('entities/orders/model.js', function () {
 
+  /**
+   * TODO: cart & gateway collections  too coupled to order model
+   */
   beforeEach(function () {
+    var entitiesChannel = Backbone.Radio.channel('entities');
+    entitiesChannel.reply('get', function(){
+      var Collection = Backbone.Collection.extend({
+        url: '?',
+        sum: function(){},
+        itemizedTax: function(){}
+      });
+      return new Collection();
+    });
+
     var Model = require('entities/orders/model');
     this.order = new Model();
     this.order.save = stub();
-    this.order.cart.sum = function(prop){
-      if(prop === 'total') return 10;
-      if(prop === 'subtotal') return 12;
-    };
-    this.order.cart.itemizedTax = stub();
+
   });
 
   it('should be in a valid state', function() {
@@ -27,10 +36,6 @@ describe('entities/orders/model.js', function () {
     });
     var sum = arr.reduce(function(pv, cv) { return pv + cv; }, 0);
     expect(this.order.sum(['foo', 'bar', 'baz'])).equals(sum);
-  });
-
-  it('should attach a cart if hasRemoteId() is false', function() {
-    expect(this.order.cart).to.be.instanceof(Backbone.Collection);
   });
 
   it('should destroy itself when cart is empty', function() {
@@ -101,6 +106,10 @@ describe('entities/orders/model.js', function () {
       expect(totals.cart_discount).equals(2);
     });
 
+  });
+
+  afterEach(function(){
+    Backbone.Radio.reset();
   });
 
 

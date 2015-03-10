@@ -3,15 +3,12 @@ var _ = require('lodash');
 var debugFunc = require('debug');
 var $ = require('jquery');
 var Radio = require('backbone.radio');
-
-/**
- * check debugging flag
- */
-Radio.DEBUG = debugFunc().enabled;
+var debug = window.wc_pos_debug || debugFunc().enabled;
+Radio.DEBUG = debug;
 
 console.info(
   'Debugging is ' +
-  ( debugFunc().enabled ? 'on' : 'off' )  +
+  ( debug ? 'on' : 'off' )  +
   ', visit http://woopos.com.au/docs/debugging'
 );
 

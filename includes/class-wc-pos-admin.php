@@ -22,6 +22,7 @@ class WC_POS_Admin {
 //    add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 //    add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 //    add_action( 'admin_print_footer_scripts', array( $this, 'admin_print_footer_scripts' ) );
+    add_action( 'admin_print_scripts', array( $this, 'admin_print_scripts' ) );
 
   }
 
@@ -68,6 +69,15 @@ class WC_POS_Admin {
    */
   public function admin_print_footer_scripts() {
 
+  }
+
+  /**
+   *
+   */
+  public function admin_print_scripts(){
+    if(defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG){
+      echo '<script type="text/javascript">var wc_pos_debug = true;</script>';
+    }
   }
 
 }

@@ -100,4 +100,54 @@ describe('entities/service.js', function () {
     expect(foo.get('user')).equals('setting');
   });
 
+  it('should be able to get/set data in localStorage', function() {
+    this.module.channel.command('set', {
+      type: 'localStorage',
+      name: 'test',
+      data: {foo: 'bar', bat: 'man'}
+    });
+    var foo = this.module.channel.request('get', {
+      type: 'localStorage',
+      name: 'test',
+      key: 'foo'
+    });
+    expect(foo).equals('bar');
+    this.module.channel.command('set', {
+      type: 'localStorage',
+      name: 'test',
+      data: {foo: 'baz'}
+    });
+    var test = this.module.channel.request('get', {
+      type: 'localStorage',
+      name: 'test'
+    });
+    expect(test).eql({foo: 'baz', bat: 'man'});
+  });
+
+  it('should be able to remove data from localStorage', function() {
+    this.module.channel.command('remove', {
+      type: 'localStorage',
+      name: 'test',
+      key: 'bat'
+    });
+    var test = this.module.channel.request('get', {
+      type: 'localStorage',
+      name: 'test'
+    });
+    expect(test).eql({foo: 'baz'});
+    this.module.channel.command('remove', {
+      type: 'localStorage',
+      name: 'test'
+    });
+    test = this.module.channel.request('get', {
+      type: 'localStorage',
+      name: 'test'
+    });
+    expect(test).to.be.undefined;
+  });
+
+  afterEach(function () {
+    Backbone.Radio.reset();
+  });
+
 });

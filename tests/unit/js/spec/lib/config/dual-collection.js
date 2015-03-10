@@ -24,20 +24,6 @@ describe('lib/config/dual-collection.js', function () {
     expect(this.collection).to.be.ok;
   });
 
-  it('should be able to get/set state in localStorage', function() {
-    this.collection.setState({foo: 'bar', bat: 'man'});
-    expect(this.collection.getState('foo')).equals('bar');
-    this.collection.setState({foo: 'baz'});
-    expect(this.collection.getState()).eql({foo: 'baz', bat: 'man'});
-  });
-
-  it('should be able to remove state', function() {
-    this.collection.removeState('bat');
-    expect(this.collection.getState()).eql({foo: 'baz'});
-    this.collection.removeState();
-    expect(this.collection.getState()).to.be.undefined;
-  });
-
   describe('firstSync()', function () {
 
     it('should fetch records from local IndexedDB', function() {

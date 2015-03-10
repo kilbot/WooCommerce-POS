@@ -326,8 +326,9 @@ class WC_POS_i18n {
     $translations['messages'] = array(
       'choose'    => /* translators: woocommerce */ __( 'Choose an option', 'woocommerce' ),
       'error'     => /* translators: woocommerce */ __( 'Sorry, there has been an error.', 'woocommerce' ),
-      'loading'   => /* translators: wordpress   */ __( 'Loading&hellip;' ),
+      'loading'   => __( 'Loading&hellip;' ),
       'success'   => /* translators: woocommerce */ __( 'Your changes have been saved.', 'woocommerce' ),
+      'browser'   => __( 'Your browser is not supported!', 'woocommerce-pos' ),
     );
 
     $translations['plural'] = array(

@@ -13,7 +13,7 @@ module.exports = FormView.extend({
     this.tax = Radio.request('entities', 'get', {
       type: 'option',
       name: 'tax'
-    });
+    }) || {};
   },
 
   templateHelpers: function(){

@@ -64,11 +64,11 @@ module.exports = DualModel.extend({
       order_id  : this.id
     });
 
+    this.listenTo(this.cart, 'add remove change', this.calcTotals);
+
     $.when(this.cart._isReady).then(function(cart){
       if(cart){ cart.fetchCartItems(); }
     });
-
-    this.listenTo(this.cart, 'add remove change', this.calcTotals);
   },
 
   /**
@@ -80,6 +80,7 @@ module.exports = DualModel.extend({
       type : 'collection',
       name : 'gateways'
     });
+
     this.gateways.fetch();
   },
 

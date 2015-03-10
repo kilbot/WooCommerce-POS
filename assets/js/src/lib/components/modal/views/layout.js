@@ -106,7 +106,7 @@ module.exports = LayoutView.extend({
 
   modalFooter: function(options){
     var view = new Buttons(options),
-        actions = _.pluck(options.buttons, 'action'),
+        actions = _.pluck(view.data.buttons, 'action'),
         events = {};
 
     // register action events and pass them to the currentView
@@ -122,7 +122,7 @@ module.exports = LayoutView.extend({
   },
 
   modalTitle: function(title){
-    title = title || this.$('.modal-header h1').data('title');
+    //title = title || this.$('.modal-header h1').data('title');
     this.$('.modal-header h1').html(title);
   },
 

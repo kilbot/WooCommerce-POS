@@ -176,7 +176,7 @@ module.exports = function(grunt) {
 
     // minify js
     uglify: {
-      staging: {
+      dev: {
         files: {
           'assets/js/app.min.js': 'assets/js/app.build.js',
           'assets/js/admin.min.js': 'assets/js/admin.build.js'

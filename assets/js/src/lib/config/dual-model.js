@@ -85,7 +85,9 @@ module.exports = POS.DualModel = Model.extend({
       });
     };
 
-    return bb.ajaxSync(method, this, options);
+    options.remote = true;
+
+    return bb.sync(method, this, options);
   }
 
 });

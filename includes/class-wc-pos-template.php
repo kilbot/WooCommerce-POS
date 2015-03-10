@@ -86,7 +86,10 @@ class WC_POS_Template {
     );
     $styles = apply_filters( 'woocommerce_pos_head', $styles );
 
-    // tack on modernizr
+    // tack on debug & modernizr
+    if(defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG){
+      $styles['debug'] = '<script type="text/javascript">var wc_pos_debug = true;</script>';
+    }
     $styles['modernizr-js'] = '<script src="'. WC_POS_PLUGIN_URL .'assets/js/vendor/modernizr.custom.min.js?ver='. WC_POS_VERSION .'"></script>';
 
     foreach( $styles as $style ) {

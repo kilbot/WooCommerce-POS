@@ -178,11 +178,11 @@ class WC_POS_Orders {
   }
 
   private function update_order_meta( $order_id ){
-    update_post_meta( $order_id, '_order_discount',    $this->data['order_discount'] );
-    update_post_meta( $order_id, '_cart_discount', 	   $this->data['cart_discount'] );
-    update_post_meta( $order_id, '_order_shipping_tax',$this->data['shipping_tax'] );
-    update_post_meta( $order_id, '_order_tax', 			   $this->data['total_tax'] - $this->data['shipping_tax'] );
-    update_post_meta( $order_id, '_order_total', 		   $this->data['total'] );
+    update_post_meta( $order_id, '_order_discount',     $this->data['order_discount'] );
+    update_post_meta( $order_id, '_cart_discount',      $this->data['cart_discount'] );
+    update_post_meta( $order_id, '_order_shipping_tax', $this->data['shipping_tax'] );
+    update_post_meta( $order_id, '_order_tax',          $this->data['total_tax'] - $this->data['shipping_tax'] );
+    update_post_meta( $order_id, '_order_total',        $this->data['total'] );
 
     foreach($this->data['tax_lines'] as $tax){
       $code = WC_Tax::get_rate_code( $tax['rate_id'] );
@@ -258,14 +258,27 @@ class WC_POS_Orders {
   /**
    * Add any payment messages to API response
    * Also add subtotal_tax to receipt which is not included for some reason
-   * @param $order_data
+   * @param array $order_data
    * @param $order
    * @param $fields
    * @param $server
-   * @return
+   * @return array
    */
   public function order_response( $order_data, $order, $fields, $server ) {
+    $order_data['billing_address'] = $this->filter_address($order_data['billing_address'], $order);
+    $order_data['shipping_address'] = $this->filter_address($order_data['shipping_address'], $order, 'shipping');
     return $order_data;
+  }
+
+  private function filter_address( $address, $order, $type = 'billing' ){
+    $fields = apply_filters('woocommerce_admin_'.$type.'_fields', false);
+    if($fields){
+      $address = array();
+      foreach($fields as $key => $value){
+        $address[$key] = $order->{$type.'_'.$key};
+      }
+    }
+    return $address;
   }
 
 }

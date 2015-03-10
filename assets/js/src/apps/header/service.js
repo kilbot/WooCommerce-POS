@@ -4,6 +4,7 @@ var Menu = require('./views/menu');
 var POS = require('lib/utilities/global');
 var Radio = require('backbone.radio');
 var routerChannel = Radio.channel('router');
+var BrowserModal = require('./views/modals/browser');
 
 var Service = Service.extend({
   channelName: 'header',
@@ -13,8 +14,8 @@ var Service = Service.extend({
     this.header = options.headerContainer;
     this.menu = options.menuContainer;
 
-    this.listenTo(routerChannel, {
-      'before:enter': this.onBeforeEnter
+    this.listenToOnce(routerChannel, {
+      'route': this.browserCheck
     });
 
     this.channel.comply({
@@ -45,6 +46,16 @@ var Service = Service.extend({
     }, view);
 
     this.menu.show(view);
+  },
+
+  browserCheck: function(){
+    var props = ['flexbox', 'indexeddb', 'localstorage'],
+        pass = _.every(props, function(prop){ return Modernizr[prop]; });
+
+    if(!pass){
+      var view = new BrowserModal();
+      Radio.request('modal', 'open', view);
+    }
   },
 
   onStop: function(){
