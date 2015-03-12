@@ -182,6 +182,7 @@ class WooCommerce_POS_Template_Hooks {
 		$js_vars['user'] 		= $this->get_user_settings();
 		$js_vars['wc'] 			= $this->wc_settings();
 		$js_vars['wc_api_url']	= WC_POS()->wc_api_url;
+		$js_vars['WP_API_Settings'] = array( 'root' => esc_url_raw( get_json_url() ), 'nonce' => wp_create_nonce( 'wp_json' ) );
 
 		// switch for development
 		if( WC_POS()->development ) {

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce POS 0.3.5\n"
 "Report-Msgid-Bugs-To: https://github.com/kilbot/WooCommerce-POS/issues\n"
-"POT-Creation-Date: 2015-03-05 02:07:29+00:00\n"
+"POT-Creation-Date: 2015-03-12 20:34:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,20 +13,20 @@ msgstr ""
 "Language-Team: Team Name <team@example.com>\n"
 "X-Generator: grunt-wp-i18n 0.5.0\n"
 
-#: admin/class-pos-admin.php:274
+#: admin/class-pos-admin.php:273
 msgid ""
 "<strong>WooCommerce POS</strong> requires <a "
 "href=\"http://wordpress.org/plugins/woocommerce/\">WooCommerce</a>. Please "
 "install and activate WooCommerce before activating WooCommerce POS."
 msgstr ""
 
-#: admin/class-pos-admin.php:290
+#: admin/class-pos-admin.php:289
 msgid ""
 "<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks "
 "to work correctly. Please enable <a href=\"%s\">permalinks</a>."
 msgstr ""
 
-#: admin/class-pos-admin.php:309
+#: admin/class-pos-admin.php:308
 msgid ""
 "WooCommerce 2.2 changed the way order statuses are handled which affected "
 "the display of POS orders in the admin. Please update any orders with "
@@ -34,8 +34,8 @@ msgid ""
 "<a class=\"button-primary\" href=\"%s\">Check your POS orders</a>"
 msgstr ""
 
-#: admin/class-pos-admin.php:414 admin/class-pos-admin.php:415
-#: admin/class-pos-admin.php:441 admin/class-pro-admin.php:475
+#: admin/class-pos-admin.php:413 admin/class-pos-admin.php:414
+#: admin/class-pos-admin.php:440 admin/class-pro-admin.php:475
 #: admin/includes/class-pos-admin-hooks.php:120
 #: admin/includes/class-pro-settings.php:48
 #: admin/includes/settings/class-settings-checkout.php:260
@@ -43,19 +43,19 @@ msgstr ""
 msgid "POS"
 msgstr ""
 
-#: admin/class-pos-admin.php:425 admin/class-pos-admin.php:426
-#: admin/class-pos-admin.php:491 admin/class-pro-admin.php:492
+#: admin/class-pos-admin.php:424 admin/class-pos-admin.php:425
+#: admin/class-pos-admin.php:490 admin/class-pro-admin.php:492
 #: admin/includes/settings/class-settings-checkout.php:160
 #: admin/includes/settings/class-settings-checkout.php:164
 msgid "Settings"
 msgstr ""
 
-#: admin/class-pos-admin.php:432
+#: admin/class-pos-admin.php:431
 #: admin/includes/settings/class-settings-checkout.php:281
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: admin/class-pos-admin.php:433 admin/class-pos-admin.php:492
+#: admin/class-pos-admin.php:432 admin/class-pos-admin.php:491
 msgid "View POS"
 msgstr ""
 
@@ -285,7 +285,7 @@ msgid "The default customer for POS orders, eg: Guest or create a new customer."
 msgstr ""
 
 #: admin/includes/settings/class-settings-general.php:85
-#: public/includes/class-pos-ajax.php:227
+#: public/includes/class-pos-ajax.php:249
 #: public/includes/pos-template-hooks.php:71
 msgid "Guest"
 msgstr ""
@@ -432,37 +432,40 @@ msgstr ""
 msgid "Amount Tendered"
 msgstr ""
 
-#: public/class-pos.php:231
+#: public/class-pos.php:249
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: public/class-pos.php:248
+#: public/class-pos.php:266
 msgid "User not authorized to manage WooCommerce POS"
 msgstr ""
 
-#: public/includes/class-pos-checkout.php:47
+#: public/includes/class-pos-checkout.php:45
 msgid "Order &ndash; %s"
 msgstr ""
 
-#: public/includes/class-pos-checkout.php:249
-#: public/includes/class-pos-checkout.php:252
+#: public/includes/class-pos-checkout.php:247
+#: public/includes/class-pos-checkout.php:250
+#: public/includes/class-pos-orders.php:238
+#: public/includes/class-pos-orders.php:241
 msgid ""
 "You are now being redirected offsite to complete the payment.<br><a "
 "target=\"_blank\" href=\"%s\" data-redirect=\"true\">Click here</a> if you "
 "are not redirected automatically."
 msgstr ""
 
-#: public/includes/class-pos-checkout.php:288
+#: public/includes/class-pos-checkout.php:286
+#: public/includes/class-pos-orders.php:266
 msgid "There was an error processing the payment"
 msgstr ""
 
-#: public/includes/class-pos-checkout.php:378
-#: public/includes/class-pos-checkout.php:405
+#: public/includes/class-pos-checkout.php:376
+#: public/includes/class-pos-checkout.php:403
 msgid "Email sent"
 msgstr ""
 
-#: public/includes/class-pos-checkout.php:383
-#: public/includes/class-pos-checkout.php:410
+#: public/includes/class-pos-checkout.php:381
+#: public/includes/class-pos-checkout.php:408
 msgid "There was an error sending the email"
 msgstr ""
 
@@ -561,11 +564,11 @@ msgstr ""
 msgid "Customer"
 msgstr ""
 
-#: public/views/cart.php:107
+#: public/views/cart.php:107 public/views/customers.php:89
 msgid "Add new"
 msgstr ""
 
-#: public/views/cart.php:107
+#: public/views/cart.php:107 public/views/customers.php:89
 msgid "Add"
 msgstr ""
 
@@ -595,6 +598,10 @@ msgstr ""
 
 #: public/views/checkout.php:71
 msgid "Process Payment"
+msgstr ""
+
+#: public/views/customers.php:21
+msgid "No customers found"
 msgstr ""
 
 #: public/views/footer.php:5
@@ -921,7 +928,7 @@ msgctxt "Money returned from cash sale"
 msgid "Change"
 msgstr ""
 
-#: public/includes/class-pos-checkout.php:47
+#: public/includes/class-pos-checkout.php:45
 msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""

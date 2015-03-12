@@ -167,6 +167,7 @@ module.exports = function(grunt) {
 				files: {
 					'public/assets/js/plugins.min.js' : [
 						'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js',
+						'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js',
 						'public/assets/js/src/pushy.js'
 					]
 				}

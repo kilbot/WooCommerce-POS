@@ -5,6 +5,7 @@
 	<section id="right-panel" class="col rightcol"><div class="loading"></div></section><!-- /right col -->
 </main><!-- /main -->
 
+<?php include_once( 'customers.php' ); ?>
 <?php include_once( 'products.php' ); ?>
 <?php include_once( 'cart.php' ); ?>
 <?php include_once( 'checkout.php' ); ?>

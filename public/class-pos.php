@@ -16,7 +16,7 @@ class WooCommerce_POS {
 	const JQUERY_VERSION = '2.1.1';
 
 	/** Development flag */
-	public $development = true;
+	public $development = false;
 
 	/** Unique identifier */
 	protected $plugin_slug = 'woocommerce-pos';

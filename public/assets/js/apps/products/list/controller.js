@@ -27,7 +27,7 @@ define(['app', 'apps/products/list/view', 'entities/products'], function(POS, Vi
 				});
 
 				// show with loader
-				this.show( this.layout, { 
+				this.show( this.layout, {
 					region: POS.leftRegion,
 					loading: {
 						entities: products.fetch()
@@ -36,7 +36,7 @@ define(['app', 'apps/products/list/view', 'entities/products'], function(POS, Vi
 
 			},
 
-			_showProductsRegion: function( products ) {		
+			_showProductsRegion: function( products ) {
 				var view = new View.Products({
 					collection: products
 				});
@@ -56,7 +56,7 @@ define(['app', 'apps/products/list/view', 'entities/products'], function(POS, Vi
 					var newTab = {
 						label: args.model.get('title'),
 						value: 'parent:' + args.model.get('id'),
-						fixed: false					
+						fixed: false
 					};
 					this.trigger( 'add:new:tab', newTab );
 				});
@@ -108,13 +108,13 @@ define(['app', 'apps/products/list/view', 'entities/products'], function(POS, Vi
 
 				// listen to tab collection
 				this.listenTo( view.collection, 'change:active', function(tab) {
-					this.options.settings.set({ tab: tab.get('value') });				
+					this.options.settings.set({ tab: tab.get('value') });
 				});
 
 				// listen for new tabs
 				this.on( 'add:new:tab', function(tab) {
 					view.collection.add( tab ).set({ active: true });
-				}); 
+				});
 
 				// show tabs component
 				this.layout.tabsRegion.show( view );
@@ -142,7 +142,7 @@ define(['app', 'apps/products/list/view', 'entities/products'], function(POS, Vi
 					POS.Entities.channel.command('options:delete', '_syncing' );
 					products.destroy();
 				});
-				
+
 				// show
 				this.layout.paginationRegion.show(view);
 			},
@@ -152,7 +152,7 @@ define(['app', 'apps/products/list/view', 'entities/products'], function(POS, Vi
 			}
 
 		});
-		
+
 	});
 
 });

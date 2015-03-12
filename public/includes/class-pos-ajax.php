@@ -23,6 +23,7 @@ class WooCommerce_POS_AJAX {
 		$ajax_events = array(
 			'process_order'             => false,
 			'get_product_ids'			=> false,
+			'get_customer_ids' => false,
 			'get_modal'					=> false,
 			'json_search_customers'		=> false,
 			'set_product_visibilty' 	=> false,
@@ -169,6 +170,27 @@ class WooCommerce_POS_AJAX {
 		$this->json_headers();
 		echo json_encode( $ids );
 		die();
+	}
+
+	/**
+	 * Get all the customer ids
+	 * @return json
+	 */
+	public function get_customer_ids() {
+
+		// security
+		check_ajax_referer( 'woocommerce-pos', 'security' );
+
+		$users = get_users();
+		$ids = array_map( 'map_customer_ids', $users );
+
+		$this->json_headers();
+		echo json_encode( $ids );
+		die();
+	}
+
+	private function map_customer_ids($customer) {
+		return $customer->ID;
 	}
 
 	public function get_modal() {

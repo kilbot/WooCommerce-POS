@@ -29,7 +29,7 @@ requirejs.config({
 		spin 		: '../../../bower_components/spinjs/spin',
 		select2 	: '../../../bower_components/select2/select2.min',
 		'jquery-color': '../../../bower_components/jquery-color/jquery.color'
-		
+
 	},
 
 	shim: {
@@ -74,7 +74,7 @@ require([
 
 	// entities
 	'entities/options',
-	
+
 	// components
 	'lib/components/loading/controller',
 	'lib/components/modal/controller',
