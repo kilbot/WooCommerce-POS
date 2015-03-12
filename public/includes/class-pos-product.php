@@ -250,3 +250,5 @@ class WooCommerce_POS_Product {
 	}
 
 }
+
+new WooCommerce_POS_Product();

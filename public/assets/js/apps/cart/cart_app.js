@@ -1,5 +1,5 @@
 define(['app','apps/cart/list/controller', 'apps/cart/checkout/controller', 'apps/cart/receipt/controller'], function(POS){
-	
+
 	POS.module('CartApp', function(CartApp, POS, Backbone, Marionette, $, _){
 
 		/**

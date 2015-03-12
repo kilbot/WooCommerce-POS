@@ -167,6 +167,7 @@ module.exports = function(grunt) {
 				files: {
 					'public/assets/js/plugins.min.js' : [
 						'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js',
+						'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js',
 						'public/assets/js/src/pushy.js'
 					]
 				}
@@ -222,8 +223,8 @@ module.exports = function(grunt) {
 			msgmerge: {
 				command: _.map(locales, function(locale) {
 					var po = 'languages/woocommerce-pos-' + locale + '.po';
-					return 'if [ -f "' + po + '" ]; then\n' + 
-					'echo "Updating "' + po + '\n' + 
+					return 'if [ -f "' + po + '" ]; then\n' +
+					'echo "Updating "' + po + '\n' +
 					'msgmerge ' + po + ' languages/woocommerce-pos.pot > .new.po.tmp\n' +
 					'exitCode=$?\n' +
 					'if [ $exitCode -ne 0 ]; then\n' +
@@ -231,7 +232,7 @@ module.exports = function(grunt) {
 					'exit $exitCode\n' +
 					'fi\n' +
 					'mv .new.po.tmp ' + po + '\n' +
-					'else\n' + 
+					'else\n' +
 					'echo ' + po + '" not found"\n' +
 					'fi\n';
 				}).join('')

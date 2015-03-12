@@ -1,5 +1,5 @@
 define(['app', 'apps/products/list/controller'], function(POS){
-	
+
 	POS.module('ProductsApp', function(ProductsApp, POS, Backbone, Marionette, $, _){
 
 		/**

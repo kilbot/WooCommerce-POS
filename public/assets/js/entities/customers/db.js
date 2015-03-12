@@ -3,8 +3,8 @@ define(['app', 'indexeddb'], function(POS){
 	POS.module('Entities', function(Entities, POS, Backbone, Marionette, $, _){
 
 		Entities.DB = {
-			id: 'productsDB',
-			description: 'POS products database',
+			id: 'customersDB',
+			description: 'POS customers database',
 			nolog: true,
 			migrations : [
 				{
@@ -13,10 +13,10 @@ define(['app', 'indexeddb'], function(POS){
 					// 	next();
 					// },
 					migrate: function(transaction, next) {
-						
+
 						var store;
-						if( !transaction.db.objectStoreNames.contains( 'products' ) ){
-							store = transaction.db.createObjectStore( 'products', { keyPath: 'id' } );
+						if( !transaction.db.objectStoreNames.contains( 'customers' ) ){
+							store = transaction.db.createObjectStore( 'customers', { keyPath: 'id' } );
 						}
 						next();
 					}

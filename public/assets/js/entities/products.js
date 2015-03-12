@@ -1,9 +1,9 @@
 define([
-	'app', 
-	'entities/products/product', 
-	'entities/products/products', 
-	'entities/products/filter_collection', 
-	'entities/products/fallback_products', 
+	'app',
+	'entities/products/product',
+	'entities/products/products',
+	'entities/products/filter_collection',
+	'entities/products/fallback_products',
 	'entities/user'
 ], function(
 	POS
@@ -18,7 +18,7 @@ define([
 			var products;
 
 			if(Modernizr.indexeddb) {
-				products = new Entities.Products( [], options );	
+				products = new Entities.Products( [], options );
 			} else {
 				products = new Entities.FallbackProductCollection( [], options );
 			}

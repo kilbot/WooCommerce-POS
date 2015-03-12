@@ -1,7 +1,7 @@
 define([
-	'app', 
-	'paginator', 
-	'entities/products/db', 
+	'app',
+	'paginator',
+	'entities/products/db',
 	'entities/products/product'
 ], function(
 	POS,
@@ -19,7 +19,7 @@ define([
 			state: {
 				pageSize: 5,
 			},
-			
+
 			initialize: function(models, options) {
 				// this.on('all', function(e) { console.log("Product Collection event: " + e); }); // debug
 
@@ -30,7 +30,7 @@ define([
 				// init filterCollection
 				this.once('sync', function () {
 					this.filterCollection.reset( this.fullCollection.models );
-									
+
 					// sort list by user setting (default: updated_at)
 					this.setSorting('updated_at', 1);
 					this.fullCollection.sort();
@@ -64,7 +64,7 @@ define([
 				var self = this;
 
 				// make sure a sync is not already in progress
-				if( POS.Entities.channel.request('options:get', '_syncing') ) { 
+				if( POS.Entities.channel.request('options:get', '_syncing') ) {
 
 					// if it's been longer than 10 mins, force sync
 					var last_update = POS.Entities.channel.request('options:get', 'last_update');
@@ -72,7 +72,7 @@ define([
 						POS.Entities.channel.command('options:delete', '_syncing');
 					} else {
 						if(POS.debug) console.warn('Sync already in progress');
-						return; 
+						return;
 					}
 
 				}
@@ -101,18 +101,18 @@ define([
 
 			},
 
-            destroy: function() {
-                var self = this;
-                this.sync( 'delete', this, {
-                    success: function(resp) {
-                        if(POS.debug) console.log('Database cleared');
-                        self.fullCollection.reset();
-                    },
-                    error: function(resp) {
-                        if(POS.debug) console.warn('Could not clear database: ' + resp);
-                    }
-                });
-            },
+			destroy: function() {
+				var self = this;
+				this.sync( 'delete', this, {
+					success: function(resp) {
+						if(POS.debug) console.log('Database cleared');
+						self.fullCollection.reset();
+					},
+					error: function(resp) {
+						if(POS.debug) console.warn('Could not clear database: ' + resp);
+					}
+				});
+			},
 
 			// web worker to get updated products
 			_updateProducts: function() {
@@ -141,7 +141,7 @@ define([
 								if( e.data.total > 0 ) {
 									POS.Components.ProgressBar.channel.trigger( 'update:progress', e.data.progress );
 								}
-								
+
 								// complete
 								if( e.data.progress === e.data.total ) {
 									if(POS.debug) console.log(e.data.total + ' products saved in total');
@@ -158,10 +158,10 @@ define([
 
 				// format the last-update and start the worker
 				var updated_at_min = this._formatLastUpdateFilter( POS.Entities.channel.request('options:get', 'last_update') );
-				worker.postMessage({ 
-					'cmd': 'update', 
-					'last_update': updated_at_min, 
-					'wc_api_url': pos_params.wc_api_url 
+				worker.postMessage({
+					'cmd': 'update',
+					'last_update': updated_at_min,
+					'wc_api_url': pos_params.wc_api_url
 				});
 
 				// return promise
@@ -185,7 +185,7 @@ define([
 					if(POS.debug) console.log(server_ids.length + ' products stored on server');
 
 				 	var diff = _.difference( local_ids, server_ids );
-				 	
+
 				 	if( diff.length > 0 ) {
 				 		return $.when( self._removeProducts( diff ) );
 				 	} else {
@@ -206,16 +206,16 @@ define([
 				.always( function() {
 					defer.resolve();
 				});
-				
+
 				return defer.promise();
 			},
 
 			// Gets array of all product ids via ajax
 			_getServerIds: function() {
 
-				var product_ids = $.getJSON( 
-					pos_params.ajax_url, 
-					{ 
+				var product_ids = $.getJSON(
+					pos_params.ajax_url,
+					{
 						'action': 'pos_get_product_ids',
 						'security': pos_params.nonce,
 						'pos': 1
@@ -291,7 +291,7 @@ define([
 			},
 
 			/*
-			 * Helper function to format the last_update timestamp to 
+			 * Helper function to format the last_update timestamp to
 			 * updated_at_min as required by WC REST API
 			 * TODO: move to common helper functions
 			 */
@@ -302,7 +302,7 @@ define([
 					if(value < 10){
 						return "0" + value.toString();
 					}
-					return value.toString();    
+					return value.toString();
 				}
 
 				// test for valid timestamps

@@ -79,16 +79,68 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 				})
 				.fail( function() {
 					if(POS.debug) console.warn('problem receipt template');
-				});				
+				});
 			},
 
 			fetchTemplate: function() {
-				return $.get( 
-					pos_params.ajax_url , { 
-						action: 'pos_get_print_template', 
+				return $.get(
+					pos_params.ajax_url , {
+						action: 'pos_get_print_template',
 						template: 'receipt',
-						security: pos_params.nonce 
-					} 
+						security: pos_params.nonce
+					}
+				);
+			},
+
+		});
+
+		View.EmailSentModal = Marionette.ItemView.extend({
+			initialize: function (options) {
+				var self = this;
+
+				if(POS.debug) console.log('fetching modal email receipt sent template');
+
+				$.when( this.fetchTemplate() )
+				.done( function( data ) {
+					self.template = _.template(data);
+					self.trigger('modal:open');
+				})
+				.fail( function() {
+					if(POS.debug) console.warn('problem fetching email receipt sent template');
+				});
+			},
+
+			render: function(options) {
+				options || ( options = {} );
+				_.defaults( options, {
+					result: false,
+					message: ''
+				});
+				this.$el.html( this.template(options) );
+				return this;
+			},
+
+			behaviors: {
+				Modal: {}
+			},
+
+			events: {
+				'click .close' 		 : 'cancel',
+				'click .action-close': 'cancel'
+			},
+
+			cancel: function () {
+				this.trigger('modal:close');
+			},
+
+			fetchTemplate: function() {
+				return $.get(
+					pos_params.ajax_url , {
+						action: 'pos_get_modal',
+						template: 'email-receipt-sent',
+						security: pos_params.nonce
+						// don't send pos flag with this
+					}
 				);
 			},
 
@@ -138,13 +190,13 @@ define(['app', 'handlebars'], function(POS, Handlebars){
 			},
 
 			fetchTemplate: function() {
-				return $.get( 
-					pos_params.ajax_url , { 
-						action: 'pos_get_modal', 
+				return $.get(
+					pos_params.ajax_url , {
+						action: 'pos_get_modal',
 						template: 'email-receipt',
 						security: pos_params.nonce
 						// don't send pos flag with this
-					} 
+					}
 				);
 			},
 

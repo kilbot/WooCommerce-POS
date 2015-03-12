@@ -2,7 +2,7 @@
 
 /**
  * The main POS Class
- * 
+ *
  * @class 	  WooCommerce_POS
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
@@ -36,9 +36,6 @@ class WooCommerce_POS {
 	public $is_pos = false;
 	public $template = null;
 
-	/** @var object WooCommerce_POS_Product */
-	public $product = null;
-
 	/** @var object WooCommerce_POS_Checkout */
 	public $checkout = null;
 
@@ -54,12 +51,15 @@ class WooCommerce_POS {
 	 */
 	private function __construct() {
 
-		// set is_pos flag for AJAX, API requests
-		if( isset( $_REQUEST['pos'] ) && $_REQUEST['pos'] == 1 )
-			$this->is_pos = true;
-		
-		// settings
-		$this->wc_api_url = home_url('/wc-api/v1/', 'relative');
+		// set is_pos flag for POS requests
+		$this->is_pos();
+
+		// REST API version
+		if( version_compare( WC()->version, '2.2.0' ) >= 0 ) {
+			$this->wc_api_url = home_url('/wc-api/v2/', 'relative');
+		} else {
+			$this->wc_api_url = home_url('/wc-api/v1/', 'relative');
+		}
 
 		$this->plugin_path 	= trailingslashit( dirname( dirname(__FILE__) ) );
 		$this->plugin_dir 	= trailingslashit( basename( $this->plugin_path ) );
@@ -79,6 +79,23 @@ class WooCommerce_POS {
 
 		// allow access to the WC REST API
 		add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 1 );
+	}
+
+	/**
+	 * Set flag to determine if requests are from POS
+	 * TODO: bake pos=1 into all server requests from the app
+	 * @return boolean [description]
+	 */
+	public function is_pos() {
+		// set is_pos flag for GET, POS requests
+		if( isset( $_REQUEST['pos'] ) && $_REQUEST['pos'] == 1 )
+			$this->is_pos = true;
+
+		// set is_pos flag for PUT, DELETE requests
+		$json_data = json_decode(trim(file_get_contents('php://input')), true);
+		if( isset( $json_data['pos'] ) && $json_data['pos'] == 1 )
+			$this->is_pos = true;
+
 	}
 
 	/**
@@ -121,7 +138,6 @@ class WooCommerce_POS {
 	 */
 	private function includes() {
 		include_once( 'includes/class-pos-product.php' );
-		include_once( 'includes/class-pos-checkout.php' );
 		include_once( $this->plugin_path . 'includes/class-pos-payment-gateways.php' );
 		include_once( $this->plugin_path . 'includes/class-pos-support.php' );
 		if ( defined( 'DOING_AJAX' ) ) {
@@ -130,6 +146,13 @@ class WooCommerce_POS {
 
 		include_once( $this->plugin_path . 'includes/class-pos-currency.php' );
 		include_once( 'includes/pos-template-hooks.php' );
+
+		if( version_compare( WC()->version, '2.2.0' ) >= 0 ) {
+			include_once( 'includes/class-pos-orders.php' );
+		} else {
+			include_once( 'includes/class-pos-checkout.php' );
+			$this->checkout = new WooCommerce_POS_Checkout();
+		}
 	}
 
 	/**
@@ -137,18 +160,13 @@ class WooCommerce_POS {
 	 */
 	public function init() {
 		global $current_user;
-		
+
 		// get and set current user for api auth
 		if ( isset( $current_user ) && ( $current_user instanceof WP_User ) && $current_user->ID != 0 )
 			$this->logged_in_user = $current_user;
 
 		// Set up localisation
 		$this->load_plugin_textdomain();
-
-		// Load class instances
-		$this->product = new WooCommerce_POS_Product();
-		$this->checkout = new WooCommerce_POS_Checkout();
-		$this->currency = new WooCommerce_POS_Currency();
 	}
 
 	/**
@@ -184,7 +202,7 @@ class WooCommerce_POS {
 			$this->template = isset( $wp->query_vars['pos_template'] ) ? $wp->query_vars['pos_template'] : 'main';
 		}
 	}
-	
+
 	/**
 	 * Filter that inserts the custom_page variable into $wp_query
 	 * @param  array $public_query_vars
@@ -201,7 +219,7 @@ class WooCommerce_POS {
 	 */
 	public function template_redirect() {
 		// bail if not pos
-		if( !$this->is_pos ) 
+		if( !$this->is_pos )
 			return;
 
 		// disable W3 Total Cache minify
@@ -223,10 +241,10 @@ class WooCommerce_POS {
 			// else: default to main page
 			else {
 				include_once( 'views/pos.php' );
-			}			
+			}
 			exit;
 
-		// insufficient privileges 
+		// insufficient privileges
 		} elseif ( is_user_logged_in() && !current_user_can('manage_woocommerce_pos') ) {
 			wp_die( __('You do not have sufficient permissions to access this page.') );
 
@@ -247,7 +265,7 @@ class WooCommerce_POS {
 			if( !user_can( $user->ID, 'manage_woocommerce_pos' ) ) {
 				$user = new WP_Error( 'woocommerce_pos_authentication_error', __( 'User not authorized to manage WooCommerce POS', 'woocommerce-pos' ), array( 'code' => 500 ) );
 			}
-		} 
+		}
 
 		return $user;
 	}

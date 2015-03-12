@@ -19,6 +19,37 @@ define([
 	});
 
 	/**
+	 * Routes
+	 */
+	POS.POSRouting = function(){
+	  var POSRouting = {};
+
+	  POSRouting.Router = Backbone.Marionette.AppRouter.extend({
+	    appRoutes: {
+	      "": "products",
+	      "products": "products",
+	      "customers": "customers"
+	    }
+	  });
+
+	  POS.addInitializer(function(){
+	    POSRouting.router = new POSRouting.Router({
+	      controller: POS
+	    });
+	  });
+
+	  return POSRouting;
+	}();
+
+	POS.products = function(){
+		POS.module('ProductsApp').stop();
+		POS.module('ProductsApp').start();
+	};
+	POS.customers = function(){
+		POS.module('CustomerApp').show();
+	};
+
+	/**
 	 * Behaviors
 	 */
 	Marionette.Behaviors.getBehaviorClass = function(options, key) {
@@ -55,9 +86,6 @@ define([
 		} else {
 			console.info('Debugging is off, visit http://woopos.com.au/docs/debugging');
 		}
-
-		// show products 
-		POS.module('ProductsApp').start();
 
 		POS.startHistory();
 		if( !POS.getCurrentRoute() ){

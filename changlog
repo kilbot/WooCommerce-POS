@@ -1,0 +1,14 @@
+= future = 
+* TODO: add customer
+* TODO: parked carts
+* TODO: settings: choose which field is used for barcode (PRO USERS)
+* TODO: settings: change pos url slug (PRO USERS)
+
+= 0.3.2 = 
+* Urgent bug fix for international Pro users which prevented License tab from showing
+
+= 0.3.1 =
+* Pro Feature: Pro users can enable any Payment Gateway.
+
+= 0.3 =
+* Initial release

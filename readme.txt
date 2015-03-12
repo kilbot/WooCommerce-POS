@@ -13,10 +13,10 @@ Finally, a Point of Sale plugin for WooCommerce! Sell online and in your physica
 
 WooCommerce POS is a simple interface for taking orders at the Point of Sale using your [WooCommerce](http://www.woothemes.com/woocommerce/) store. WooCommerce POS provides an alternative to Vend or Shopify POS - no need to sync inventory and no monthly subscription fees.
 
-= DEMO = 
+= DEMO =
 You can see a demo of the WooCommerce POS plugin in action by going to [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos) with `login/pass` : `demo/demo`
 
-= MORE INFO = 
+= MORE INFO =
 * Website: http://woopos.com.au
 * Roadmap: http://woopos.com.au/roadmap
 * GitHub: https://github.com/kilbot/WooCommerce-POS
@@ -34,13 +34,13 @@ If your browser does not support IndexedDB, WooCommerce POS will fallback to usi
 
 == Installation ==
 
-= Automatic installation = 
+= Automatic installation =
 1. Go to Plugins screen and select Add New.
 2. Search for "WooCommerce POS" in the WordPress Plugin Directory.
 3. Install the plugin
 4. Click Activate Plugin to activate it.
 
-= Pro installation = 
+= Pro installation =
 If you have purchased a license for [WooCommerce POS Pro](http://woopos.com.au/pro) please follow the steps below to install and activate the plugin:
 
 1. Go to: http://woopos.com.au/my-account/
@@ -49,7 +49,7 @@ If you have purchased a license for [WooCommerce POS Pro](http://woopos.com.au/p
 4. Upload the plugin zip file from your desktop and activate.
 5. Next, go to the POS Settings page and enter your License Key and License Email to complete the activation.
 
-= Manual installation = 
+= Manual installation =
 To install a WordPress Plugin manually:
 
 1. Download the WooCommerce POS plugin to your desktop.

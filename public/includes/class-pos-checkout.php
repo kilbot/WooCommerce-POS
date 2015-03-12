@@ -4,8 +4,6 @@
  * Checkout Class
  *
  * Handles the checkout
- * TODO: hash cart and allow payment retries
- * 
  * @class 	  WooCommerce_POS_Checkout
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
@@ -176,7 +174,7 @@ class WooCommerce_POS_Checkout {
 			wc_add_order_item_meta( $item_id, '_product_id', $item['product_id'] );
 			wc_add_order_item_meta( $item_id, '_variation_id', $item['variation_id'] );
 			wc_add_order_item_meta( $item_id, '_line_subtotal', $item['line_subtotal'] );
-			wc_add_order_item_meta( $item_id, '_line_subtotal_tax', $item['line_subtotal_tax'] ); 
+			wc_add_order_item_meta( $item_id, '_line_subtotal_tax', $item['line_subtotal_tax'] );
 			wc_add_order_item_meta( $item_id, '_line_total', $item['line_total'] );
 			wc_add_order_item_meta( $item_id, '_line_tax', $item['line_tax'] );
 
@@ -210,7 +208,7 @@ class WooCommerce_POS_Checkout {
 
 		// load the gateway
 		foreach( $enabled_gateways as $gateway ) {
-			if( $payment_method == $gateway->id ) 
+			if( $payment_method == $gateway->id )
 				$payment_gateway = $gateway;
 		}
 
@@ -238,11 +236,11 @@ class WooCommerce_POS_Checkout {
 			// check if redirect is needed
 			if( isset( $response['redirect'] ) ) {
 
-				// 
+				//
 				$success_url = wc_get_endpoint_url( 'order-received', $order_id, get_permalink( wc_get_page_id( 'checkout' ) ) );
 				$success_frag = parse_url( $success_url );
-				
-				// 
+
+				//
 				$redirect_frag = parse_url( $response['redirect'] );
 
 				if( $success_frag['host'] !== $redirect_frag['host'] ) {
@@ -287,7 +285,7 @@ class WooCommerce_POS_Checkout {
 			if( empty( $response['messages'] ) ) {
 				$response['messages'] = __( 'There was an error processing the payment', 'woocommerce-pos');
 			}
-			
+
 		}
 
 		return $response;
@@ -331,7 +329,7 @@ class WooCommerce_POS_Checkout {
 			}
 		}
 
-		// pos meta 
+		// pos meta
 		update_post_meta( $order_id, '_pos', 1 );
 		update_post_meta( $order_id, '_pos_user', get_current_user_id() );
 	}
@@ -388,6 +386,33 @@ class WooCommerce_POS_Checkout {
 	}
 
 	/**
+	 * Send email receipt now
+	 */
+	public function email_receipt_now() {
+		$response 	= '';
+		$order_id 	= isset($_REQUEST['order_id']) ? $_REQUEST['order_id'] : '';
+		$user_id 		= isset($_REQUEST['user_id']) ? $_REQUEST['user_id'] : '';
+
+    $email = get_userdata($user_id)->user_email;
+
+		if( $order_id != '' && $email != '' ) {
+			update_post_meta( $order_id, '_billing_email', $email );
+			WC()->mailer()->customer_invoice( $order_id );
+			$response = array(
+				'result' => 'success',
+				'message' => __( 'Email sent', 'woocommerce-pos')
+			);
+		} else {
+			$response = array(
+				'result' => 'failure',
+				'message' => __( 'There was an error sending the email', 'woocommerce-pos')
+			);
+		}
+
+		return $response;
+	}
+
+	/**
 	 * Stop WC sending email notifications
 	 */
 	public function remove_new_order_emails( WC_Emails $wc_emails ) {
@@ -402,7 +427,7 @@ class WooCommerce_POS_Checkout {
 
 
 		// ADMIN EMAILS
-		
+
 		// send 'woocommerce_low_stock_notification'
 		// send 'woocommerce_no_stock_notification'
 		// send 'woocommerce_product_on_backorder_notification'
@@ -416,7 +441,7 @@ class WooCommerce_POS_Checkout {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public function payment_complete( $order_id ) {
 		// payment has been received so we can remove any payment messages
@@ -430,7 +455,7 @@ class WooCommerce_POS_Checkout {
 	 * @param $order
 	 */
 	public function stock_modified( $order ) {
-		
+
 		$post_modified     = current_time( 'mysql' );
 		$post_modified_gmt = current_time( 'mysql', 1 );
 
