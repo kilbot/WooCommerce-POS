@@ -2,24 +2,76 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce POS 0.4\n"
+"Project-Id-Version: WooCommerce POS 0.4-alpha\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2015-02-15 13:31:10+00:00\n"
+"POT-Creation-Date: 2015-03-13 04:49:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Team Name <team@example.com>\n"
-"X-Generator: grunt-wp-i18n 0.4.9\n"
+"X-Generator: grunt-wp-i18n 0.5.0\n"
 
-#: includes/class-wc-pos-gateways.php:67
+#: includes/class-wc-pos-ajax.php:127
+msgid "There is no settings id"
+msgstr ""
+
+#: includes/class-wc-pos-ajax.php:137
+msgid "No handler found for %s settings"
+msgstr ""
+
+#: includes/class-wc-pos-ajax.php:157
+msgid "Settings error"
+msgstr ""
+
+#: includes/class-wc-pos-ajax.php:177
+msgid "Email sent!"
+msgstr ""
+
+#: includes/class-wc-pos-ajax.php:181
+msgid "Error sending email"
+msgstr ""
+
+#: includes/class-wc-pos-ajax.php:197
+msgid "Invalid security nonce"
+msgstr ""
+
+#: includes/class-wc-pos-gateways.php:81
 msgid "Online Store"
 msgstr ""
 
-#: includes/class-wc-pos-gateways.php:68 includes/class-wc-pos-template.php:135
+#: includes/class-wc-pos-gateways.php:82 includes/class-wc-pos-template.php:144
 msgid "POS"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:301
+msgid "To Pay"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:309 includes/views/pos/cart.php:129
+msgid "Discount"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:315
+msgid "Process Payment"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:319
+msgid "Return to Sale"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:323
+msgid "Void"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:329
+msgid "Loading&hellip;"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:331
+msgid "Your browser is not supported!"
 msgstr ""
 
 #: includes/class-wc-pos-status.php:19
@@ -42,7 +94,7 @@ msgstr ""
 msgid "Access to the REST API is required"
 msgstr ""
 
-#: includes/class-wc-pos.php:107
+#: includes/class-wc-pos.php:110
 msgid "User not authorized to access WooCommerce POS"
 msgstr ""
 
@@ -79,76 +131,53 @@ msgstr ""
 msgid "Online Only"
 msgstr ""
 
-#: includes/views/modals/browser.php:1
-msgid "Your browser is not supported!"
-msgstr ""
-
-#: includes/views/modals/browser.php:4
+#: includes/views/modals/browser.php:2
 msgid "Sorry, it seems your browser is not supported by WooCommerce POS. "
 msgstr ""
 
-#: includes/views/modals/browser.php:5
+#: includes/views/modals/browser.php:3
 msgid ""
 "If possible, please <a href=\"http://browsehappy.com/\">update your "
 "browser</a>, we recommend either Chrome or Firefox."
 msgstr ""
 
-#: includes/views/modals/browser.php:8
+#: includes/views/modals/browser.php:7
 msgid ""
 "If you believe you have received this message in error please contact "
-"support at <a href=\"http://woopos.com.au\">woopos.com.au</a>"
+"support via <a "
+"href=\"mailto:support@woopos.com.au\">support@woopos.com.au</a>"
 msgstr ""
 
-#: includes/views/pos/cart.php:123 includes/views/pos/cart.php:140
-msgid "Discount"
-msgstr ""
-
-#: includes/views/pos/cart.php:136
-msgid "Void"
-msgstr ""
-
-#: includes/views/pos/checkout.php:8 includes/views/pos/receipt.php:14
-msgid "To Pay"
-msgstr ""
-
-#: includes/views/pos/checkout.php:30
+#: includes/views/pos/checkout.php:26
 msgid "No payment gateways enabled."
 msgstr ""
 
-#: includes/views/pos/checkout.php:34
-msgid "Return to Sale"
-msgstr ""
-
-#: includes/views/pos/checkout.php:35
-msgid "Process Payment"
-msgstr ""
-
-#: includes/views/pos/products.php:13 includes/views/pos/products.php:17
+#: includes/views/pos/products.php:13
 msgid "Scan Barcode"
 msgstr ""
 
-#: includes/views/pos/products.php:74
-msgid "Page %s of %s"
+#: includes/views/print/receipt.php:98
+msgid "Billing Address"
 msgstr ""
 
-#: includes/views/pos/products.php:75
-msgid "Showing %s of %s products"
+#: includes/views/print/receipt.php:101
+msgid "Shipping Address"
 msgstr ""
 
-#: includes/views/pos/products.php:78
-msgid "sync"
+#: includes/views/print/receipt.php:106
+msgid "Order Number"
 msgstr ""
 
-#: includes/views/pos/products.php:78
-msgid "clear"
+#: includes/views/print/receipt.php:110
+msgid "Order Date"
 msgstr ""
 
-#: includes/views/pos/products.php:80
-msgid "Your browser does not support indexeddb"
+#: includes/views/print/receipt.php:114
+msgid "Payment Method"
 msgstr ""
 
-#: includes/views/pos/receipt.php:12
-msgid "Paid"
+#: includes/views/print/receipt.php:125
+msgid "Telephone"
 msgstr ""
 
 #: includes/views/support.php:11
@@ -174,12 +203,12 @@ msgid ""
 "href=\"http://wordpress.org/plugins/woocommerce/\">WooCommerce</a>."
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:278
+#: includes/class-wc-pos-i18n.php:289
 msgctxt "system status: browser capabilities"
 msgid "Browser"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:279
+#: includes/class-wc-pos-i18n.php:295
 msgctxt "keyboard shortcuts"
 msgid "HotKeys"
 msgstr ""
@@ -189,17 +218,27 @@ msgctxt "keyboard shortcuts"
 msgid "Hotkeys"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:291
+#: includes/class-wc-pos-i18n.php:306
 msgctxt "system status: delete local records"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:292
+#: includes/class-wc-pos-i18n.php:317
 msgctxt "restore default settings"
 msgid "Restore defaults"
 msgstr ""
 
-#: includes/class-wc-pos-params.php:71
+#: includes/class-wc-pos-i18n.php:318
+msgctxt "Numpad return key"
+msgid "return"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:335
+msgctxt "eg: 23 records"
+msgid "record |||| records"
+msgstr ""
+
+#: includes/class-wc-pos-params.php:75
 msgctxt "Product tab: 'On Sale' products"
 msgid "On Sale"
 msgstr ""
@@ -214,8 +253,9 @@ msgctxt "Abbreviation of Quantity"
 msgid "Qty"
 msgstr ""
 
-#: includes/views/pos/cart.php:102 includes/views/pos/cart.php:112
-#: includes/views/pos/receipt.php:84 includes/views/pos/receipt.php:93
+#: includes/views/pos/cart.php:107 includes/views/pos/cart.php:118
+#: includes/views/pos/receipt.php:65 includes/views/pos/receipt.php:74
+#: includes/views/print/receipt.php:186 includes/views/print/receipt.php:195
 msgctxt "abbreviation for includes (tax)"
 msgid "incl."
 msgstr ""

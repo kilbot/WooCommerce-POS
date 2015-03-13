@@ -5,6 +5,8 @@ var POS = require('lib/utilities/global');
 var Radio = require('backbone.radio');
 var routerChannel = Radio.channel('router');
 var BrowserModal = require('./views/modals/browser');
+var _ = require('lodash');
+var Modernizr = global['Modernizr'];
 
 var Service = Service.extend({
   channelName: 'header',

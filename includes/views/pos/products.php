@@ -6,18 +6,14 @@
 
 <script type="text/template" id="tmpl-products-filter">
 	<div class="input-group">
-		<div class="input-group-btn dropdown">
-			<a href="#" data-toggle="dropdown"><i class="icon {{#is search_mode 'barcode'}}icon-barcode{{else}}icon-search{{/is}}"></i></a>
+		<div class="input-group-btn dropdown mode">
+			<a href="#" data-toggle="dropdown"><i class="icon icon-search"></i></a>
 			<ul class="dropdown-menu" role="menu">
-				<li><a href="#" class="action-search"><i class="icon icon-search"></i> <?php /* translators: wordpress */ _e( 'Search' ); ?></a></li>
-				<li><a href="#" class="action-barcode"><i class="icon icon-barcode"></i> <?php _e( 'Scan Barcode', 'woocommerce-pos' ); ?></a></li>
+				<li><a href="#" data-action="search"><i class="icon icon-search"></i> <?php /* translators: woocommerce */ _e( 'Search Products', 'woocommerce' ); ?></a></li>
+				<li><a href="#" data-action="barcode"><i class="icon icon-barcode"></i> <?php _e( 'Scan Barcode', 'woocommerce-pos' ); ?></a></li>
 			</ul>
 		</div>
-		{{#is search_mode 'barcode'}}
-		<input type="search" placeholder="<?php _e( 'Scan Barcode', 'woocommerce-pos' ); ?>" tabindex="1"  autofocus="autofocus" class="form-control">
-		{{else}}
-		<input type="search" placeholder="<?php /* translators: woocommerce */ _e( 'Search Products', 'woocommerce' ); ?>" tabindex="1"  autofocus="autofocus" class="form-control">
-		{{/is}}
+		<input type="search" tabindex="1"  autofocus="autofocus" class="form-control">
 		<a class="clear" href="#"><i class="icon icon-times-circle icon-lg"></i></a>
 		<span class="input-group-btn"><a href="#" data-action="sync"><i class="icon icon-refresh"></i></a></span>
 	</div>

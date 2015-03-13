@@ -17,18 +17,18 @@ module.exports = function(grunt) {
         src: 'assets/js/src',
         build: 'assets/js'
       },
-
-      // point to staging folder
-      staging : '/Users/kilbot/Sites/staging.woopos.com.au/wp-content/plugins/woocommerce-pos',
+      tmp: '/tmp/woocommerce-pos',
 
       // files to package for staging
       include: [
         '**/*',
         '!node_modules/**',
-        '!test/**',
+        '!tests/**',
         '!Gruntfile.js',
         '!package.json',
         '!locales.json',
+        '!phpunit.xml',
+        '!pioneer.json',
         '!<%= app.css.src %>/**',
         '!<%= app.js.src %>/**',
         '!README.md'
@@ -166,7 +166,7 @@ module.exports = function(grunt) {
         devtool: 'eval-source-map',
         debug: true
       },
-      staging: {
+      deploy: {
         output: {
           path: './<%= app.js.build %>/',
           filename: '[name].build.js'
@@ -176,7 +176,7 @@ module.exports = function(grunt) {
 
     // minify js
     uglify: {
-      dev: {
+      deploy: {
         files: {
           'assets/js/app.min.js': 'assets/js/app.build.js',
           'assets/js/admin.min.js': 'assets/js/admin.build.js'
@@ -265,12 +265,12 @@ module.exports = function(grunt) {
 
     // copy staging build to staging site, excluding dev files
     copy: {
-      staging: {
+      deploy: {
         files: [
           {
             expand: true,
             src: ['<%= app.include %>'],
-            dest: '<%= app.staging %>'
+            dest: '<%= app.tmp %>'
           }
         ]
       }
@@ -316,6 +316,29 @@ module.exports = function(grunt) {
           }
         ]
       }
+    },
+
+    // Zip
+    compress: {
+      main: {
+        options: {
+          archive: '../woocommerce-pos-<%= pkg.version %>.zip'
+        },
+        files: [
+          {
+            expand: true,
+            cwd: '<%= app.tmp %>',
+            src: ['**/*']
+          }
+        ]
+      }
+    },
+
+    clean: {
+      options: {
+        force: true
+      },
+      deploy: ['<%= app.tmp %>']
     }
 
   });
@@ -324,10 +347,10 @@ module.exports = function(grunt) {
   grunt.registerTask('test', 'Run unit tests', ['symlink', 'simplemocha']);
 
   // dev
-  grunt.registerTask('dev', 'Development build', ['compass', 'cssmin', 'jshint', 'test', 'webpack:dev', 'watch']);
+  grunt.registerTask('dev', 'Development build', ['compass', 'cssmin', 'jshint', 'test', 'webpack:dev', 'uglify', 'watch']);
 
-  // staging
-  grunt.registerTask('staging', 'Production build', ['test', 'makepot', 'js_locales', 'webpack:staging', 'uglify:staging', 'copy']);
+  // deploy
+  grunt.registerTask('deploy', 'Production build', ['test', 'makepot', 'webpack:deploy', 'js_locales', 'uglify:deploy', 'copy', 'compress', 'clean']);
 
   // default = test
   grunt.registerTask('default', ['test']);

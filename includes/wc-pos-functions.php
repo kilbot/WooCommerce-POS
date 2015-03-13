@@ -37,8 +37,9 @@ function is_pos( $type = false ) {
   // also matches $_GET & $_POST for pos=1
   if( $type == 'template' || !$type ){
     global $wp;
-    if( isset( $wp->query_vars['pos'] ) && $wp->query_vars['pos'] == 1 )
+    if( isset( $wp->query_vars['pos'] ) && $wp->query_vars['pos'] == 1 ){
       return true;
+    }
   }
 
   // test for WC REST API requests, ie: matched request header

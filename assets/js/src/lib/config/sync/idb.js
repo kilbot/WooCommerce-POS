@@ -14,7 +14,8 @@ function IndexedDB(parent) {
   };
 
   var defaultErrorHandler = function (error) {
-    debug(error);
+    error = error || {};
+    debug(error.type, error);
     parent.trigger('idb:error', error);
   };
 
@@ -247,7 +248,7 @@ var methods = {
 
   /**
    * Perform a batch operation to remove models from indexedDB. This is a
-   * proxy to the idbstore `removeBtch` method
+   * proxy to the idbstore `removeBatch` method
    *
    * @param {Array} keyArray - keyArray An array of keys to remove
    * @param {Function} [onSuccess] - success callback

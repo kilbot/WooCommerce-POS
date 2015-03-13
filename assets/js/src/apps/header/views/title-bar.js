@@ -5,8 +5,6 @@ var Dropdown = require('lib/components/dropdown/behavior');
 var Radio = require('backbone.radio');
 var HelpModal = require('./modals/help');
 var $ = require('jquery');
-var _ = require('lodash');
-var Modernizr = global['Modernizr'];
 
 var View = ItemView.extend({
   template: function(){

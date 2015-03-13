@@ -6,7 +6,7 @@ module.exports = FormView.extend({
   template: '#tmpl-support-form',
 
   ui: {
-    toggle: '.toggle'
+    toggle  : '.toggle'
   },
 
   events: {
@@ -23,7 +23,11 @@ module.exports = FormView.extend({
     '*[name="email"]': 'email',
     '*[name="message"]': {
       observe: 'message',
+      initialize: function(){
+        debugger;
+      },
       onGet: function (value) {
+        debugger;
         return value;
       },
       onSet: function (value) {

@@ -4,7 +4,7 @@ var hbs = require('handlebars');
 module.exports = View.extend({
   template: hbs.compile('' +
     '{{message}}' +
-    '{{{raw}}}'
+    '<div class="raw-output">{{{raw}}}</div>'
   ),
 
   initialize: function(options){

@@ -101,6 +101,9 @@ class WC_POS_Template {
    * Output the footer scripts
    */
   protected function footer() {
+    //
+    $build = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'build' : 'min';
+
     // required scripts
     $scripts = array(
       'jquery'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>',
@@ -114,7 +117,7 @@ class WC_POS_Template {
       'moment'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>',
       'accounting'   => '<script src="//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>',
       'jquery.color' => '<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js"></script>',
-      'app'          => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/app.build.js?ver='. WC_POS_VERSION .'"></script>'
+      'app'          => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION .'"></script>'
     );
 
     // get locale translation if available

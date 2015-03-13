@@ -28,7 +28,7 @@ module.exports = Route.extend({
 
   fetch: function() {
     if (this.collection.isNew()) {
-      return this.collection.fetch();
+      return this.collection.fullSync();
     }
   },
 
@@ -47,10 +47,6 @@ module.exports = Route.extend({
   showActions: function() {
     var view = new Actions({
       collection: this.filtered
-    });
-
-    this.listenTo(view, 'sync:products', function() {
-      this.collection.firstSync();
     });
 
     this.layout.actionsRegion.show(view);

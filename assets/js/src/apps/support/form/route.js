@@ -50,7 +50,6 @@ var FormRoute = Route.extend({
     });
 
     this.listenTo(view, 'action:send', function(){
-      console.log(this.model);
       this.model.save([], { buttons: view });
     });
 

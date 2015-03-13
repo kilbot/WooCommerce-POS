@@ -141,6 +141,9 @@ class WC_POS_Admin_Settings {
    */
   public function enqueue_admin_scripts() {
 
+    //
+    $build = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'build' : 'min';
+
     wp_enqueue_script( 'jquery-ui-sortable' );
 
     wp_enqueue_script(
@@ -201,7 +204,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       WC_POS_PLUGIN_NAME . '-admin-app',
-      WC_POS_PLUGIN_URL . 'assets/js/admin.build.js',
+      WC_POS_PLUGIN_URL . 'assets/js/admin.'. $build .'.js',
       array('backbone', 'backbone.radio', 'marionette', 'handlebars', 'idb-wrapper', 'accounting', 'moment', 'select2'),
       WC_POS_VERSION,
       true

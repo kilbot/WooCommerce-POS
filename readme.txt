@@ -2,8 +2,8 @@
 Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
 Requires at least: 3.8 & WooCommerce 2.1
-Tested up to: 4.0
-Stable tag: 0.3.4
+Tested up to: 0.4.0-alpha
+Stable tag: 0.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -115,6 +115,12 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: set custom permalink for POS front-end, eg: http://yourstore.com/custom-slug/
 * Fix: conflict with W3 Total Cache js minify
 * Fix: removed all cases of php echo shorthand for short_open_tag=off
+
+= 0.3.5 =
+* Note: this is a minor compatibility update for WooCommerce 2.3
+* Fix WC_Gateway_Mijireh error with WC 2.3
+* Fix for W3 Total Cache minify js conflict
+* Fix capitalization bug with product searches
 
 = 0.3.4 =
 * Urgent Fix: performance issue downloading products

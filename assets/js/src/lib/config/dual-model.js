@@ -1,9 +1,6 @@
 var Model = require('./model');
 var POS = require('lib/utilities/global');
-var bb = require('backbone');
-//var $ = require('jquery');
 var _ = require('lodash');
-var Radio = require('backbone.radio');
 
 module.exports = POS.DualModel = Model.extend({
   idAttribute: 'local_id',
@@ -77,17 +74,9 @@ module.exports = POS.DualModel = Model.extend({
       return self.save(data);
     };
 
-    options.error = function(jqXHR, textStatus, errorThrown){
-      Radio.trigger('global', 'error', {
-        jqXHR   : jqXHR,
-        status  : textStatus,
-        message : errorThrown
-      });
-    };
-
     options.remote = true;
 
-    return bb.sync(method, this, options);
+    return this.sync(method, this, options);
   }
 
 });

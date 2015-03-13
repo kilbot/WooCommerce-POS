@@ -5,22 +5,11 @@ var IndexedDBCollection = require('./idb-collection');
 var POS = require('lib/utilities/global');
 var _ = require('lodash');
 var $ = require('jquery');
-
-var wrapError = function(model, options) {
-  var error;
-  error = options.error;
-  return options.error = function(resp) {
-    if (error) {
-      error(model, resp, options);
-    }
-    return model.trigger('error', model, resp, options);
-  };
-};
-
-var noop = function(){};
+var moment = require('moment');
 
 module.exports = POS.DualCollection = IndexedDBCollection.extend({
   storage: 'dual',
+  queue: [],
 
   states: {
     SYNCHRONIZED  : 'SYNCHRONIZED',
@@ -28,6 +17,12 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     UPDATE_FAILED : 'UPDATE_FAILED',
     CREATE_FAILED : 'CREATE_FAILED',
     DELETE_FAILED : 'DELETE_FAILED'
+  },
+
+  methods: {
+    UPDATE_FAILED : 'create',
+    CREATE_FAILED : 'update',
+    DELETE_FAILED : 'delete'
   },
 
   eventNames: {
@@ -62,22 +57,19 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     };
   },
 
-  parse: function (resp) {
+  parse: function (resp){
     return resp[this.name] ? resp[this.name] : resp ;
   },
 
+  parseProp: function(resp, prop){
+    var array = this.parse(resp);
+    return _.pluck(array, prop);
+  },
+
   getSyncMethodsByState: function(state){
-    var method;
-    return method = (function() {
-      switch (false) {
-        case this.states.CREATE_FAILED !== state:
-          return 'create';
-        case this.states.UPDATE_FAILED !== state:
-          return 'update';
-        case this.states.DELETE_FAILED !== state:
-          return 'delete';
-      }
-    }).call(this);
+    if(this.methods[state]){
+      return this.methods[state];
+    }
   },
 
   getState: function(key){
@@ -104,65 +96,56 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     });
   },
 
-  //firstSync: function(options) {
-  //  var event, fetchSuccess, originalSuccess, syncError, syncSuccess;
-  //  options = options || {};
-  //  originalSuccess = options.success || $.noop;
-  //  event = _.extend({}, Backbone.Events);
-  //  syncSuccess = (function(_this) {
-  //    return function(response) {
-  //      var data, method;
-  //      data = _this.mergeFirstSync(_this.parse(response));
-  //      event.trigger(_this.eventNames.REMOTE_SYNC_SUCCESS);
-  //      method = options.reset ? 'reset' : 'set';
-  //      _this[method](data, options);
-  //      originalSuccess(_this, data, options);
-  //      _this.trigger('sync', _this, data, options);
-  //      wrapError(_this, options);
-  //      return _this.save().done(function() {
-  //        return _this.fetch().done(function() {
-  //          return event.trigger(_this.eventNames.SYNCHRONIZED);
-  //        });
-  //      });
-  //    };
-  //  })(this);
-  //  syncError = (function(_this) {
-  //    return function(error) {
-  //      return event.trigger(_this.eventNames.REMOTE_SYNC_FAIL, error, options);
-  //    };
-  //  })(this);
-  //  fetchSuccess = (function(_this) {
-  //    return function(data) {
-  //      options.success = syncSuccess;
-  //      options.error = syncError;
-  //      event.trigger(_this.eventNames.LOCAL_SYNC_SUCCESS, data);
-  //      return Backbone.ajaxSync('read', _this, options);
-  //    };
-  //  })(this);
-  //  this.fetch({
-  //    success: fetchSuccess,
-  //    error: function(error) {
-  //      return event.trigger(this.eventNames.LOCAL_SYNC_FAIL, error);
-  //    }
-  //  });
-  //  return event;
-  //},
+  /**
+   * Full sync
+   * - Get list of server ids since last update
+   * - Compare to idb keyPath 'id'
+   * - Delete local records if necessary
+   * - Queue ids, download first page
+   * - Next, check for delayed local records
+   * - Sync delayed to server
+   */
+  fullSync: function(){
+    var self = this;
 
-  removeGarbage: function(delayedData) {
-    var deferred, idsForRemove, key;
-    deferred = new $.Deferred();
-    key = this.indexedDB.keyPath;
-    idsForRemove = _.map(delayedData, function(item) {
-      return item[key];
+    if(this._syncing){
+      debug('sync already in progress');
+      return;
+    }
+
+    this._syncing = true;
+
+    $.when( this.fetch() )
+    .then(function(){
+      self.trigger('fullSync:start');
+      return self.auditRecords();
+    })
+    .then(function(){ return self.processQueue(); })
+    .then(function(){ return self.syncDelayedData(); })
+    .done(function(){
+      debug('fullSync complete');
+    })
+    .fail(function(){
+      debug('fullSync failed');
+    })
+    .always(function(){
+      self._syncing = false;
+      self.trigger('fullSync:end');
     });
-    this.indexedDB.removeBatch(idsForRemove, (function() {
-      return deferred.resolve();
-    }), (function() {
-      return deferred.reject();
-    }));
-    return deferred.promise();
   },
 
+  syncDelayedData: function(){
+
+  },
+
+  /**
+   * Load more
+   * - if no more in local and ids in queue, download next page
+   */
+
+  /**
+   *
+   */
   _getDelayedData: function(status) {
     var data, deferred, keyRange, options;
     deferred = new $.Deferred();
@@ -184,6 +167,9 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     return deferred.promise();
   },
 
+  /**
+   *
+   */
   getDelayedData: function() {
     var created, deferred, deleted, updated;
     deferred = new $.Deferred();
@@ -196,190 +182,219 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     return deferred.promise();
   },
 
-  fullSync: function() {
-    var deferred;
-    deferred = new $.Deferred();
-    this.getDelayedData().done((function(_this) {
-      return function(delayedData) {
-        var count, done;
-        debug('start full sync', delayedData);
-        count = 0;
-        done = function() {
-          count++;
-          if (count === delayedData.length) {
-            return _this.fetch().done(function() {
-              return deferred.resolve();
-            });
-          }
-        };
-        return _.each(delayedData, function(item) {
-          var method, model, status;
-          status = item.status;
-          method = _this.getSyncMethodsByState(status);
-          delete item.status;
-          model = new _this.model(item);
-          debug('full sync model', item, method);
-          model.url = model.getUrlForSync(_.result(_this, 'url'), method);
-          return Backbone.ajaxSync(method, model, {
-            success: (function(response) {
-              var data;
-              if (status === _this.states.DELETE_FAILED) {
-                return _this.removeGarbage([item]).done(done());
-              } else {
-                data = _this.mergeFullSync(model.parse(response));
-                if (!data.status) {
-                  data.status = '';
-                }
-                model = _this.get(item[_this.indexedDB.keyPath]).set(data);
-                return _this.indexedDB.store.put(model.attributes, done, done);
-              }
-            }),
-            error: function(jqXHR, textStatus, errorThrown) {
-              var collection;
-              if (method === 'update') {
-                collection = _this;
-                model.fetch({
-                  success: function(model) {
-                    return collection.indexedDB.store.put(model.attributes);
-                  }
-                });
-              }
-              return deferred.reject(item, jqXHR, textStatus, errorThrown);
-            }
-          });
-        });
-      };
-    })(this));
-    return deferred.promise();
-  },
-
-  save: function() {
-    var deferred;
-    deferred = new $.Deferred();
-    this.indexedDB.saveAll((function() {
-      return deferred.resolve();
-    }), (function() {
-      return deferred.reject();
-    }));
-    return deferred.promise();
-  },
-
-  serverSync: function(options){
-    options = options || {};
-    var originalSuccess = options.success || noop,
-        deferred = $.Deferred();
-
-    var syncSuccess = function(){
-
-    };
-
-    return Backbone.ajaxSync('read', this, options);
-  },
-
-  firstSync: function(options){
-    var last_update = this.getState('last_update');
-
-
-    options = options || {};
-    var originalError = options.error || noop;
-    var self = this;
-
-    return this.fetch({
-      success: function(data){
-        self.trigger(self.eventNames.LOCAL_SYNC_SUCCESS, data);
-        self.auditRecords(options);
-      },
-      error: function(error) {
-        self.trigger(self.eventNames.LOCAL_SYNC_FAIL, error);
-        Radio.command('error', self.eventNames.LOCAL_SYNC_FAIL, error);
-        originalError(error);
-      }
-    });
-  },
-
-  auditRecords: function(options){
-    var local = this.pluck('id'),
+  auditRecords: function(){
+    var deferred = $.Deferred(),
+        local = this.pluck('id'),
         self = this;
 
-    this.getRemoteIds().done(function(remote){
-      var diff = _.difference(local, remote);
-      if( diff.length > 0 ) {
-        return self.removeRecords(diff);
-      }
-    }).then(function(remote){
-      var diff = _.difference(remote, local);
-      self.queue(diff);
-      self.processQueue();
-    });
+    $.when( this.getRemoteIds() )
+    .then(function(remote){
+      var add = _.difference(remote, local),
+          remove = _.difference(local, remote);
+      self.enqueue(add);
+      self.dequeue(remove);
+      return self.removeGarbage(remove);
+    })
+    .done(deferred.resolve)
+    .fail(deferred.reject);
+
+    return deferred;
   },
 
+  /**
+   * Returns a promise for an array of ids since last update
+   * TODO: revert to more performant AJAX request
+   */
   getRemoteIds: function(){
-    var ajaxurl = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'ajaxurl'
-    });
+    var deferred = $.Deferred(),
+        last_update = this.getState('last_update'),
+        self = this, ids, options = {};
 
-    return $.getJSON( ajaxurl, {
-      'action': 'wc_pos_get_all_ids',
-      'type'  : this.name
-    });
-    //.done(function(response) {
-    //  var err;
-    //  if(response === 0){ err = 'wp_ajax error: no method found'; }
-    //  if(response === -1){ err = 'wp_ajax error: authentication error'; }
-    //  if(err){
-    //    debug(err);
-    //    Radio.command('error', self.eventNames.REMOTE_SYNC_FAIL, err);
-    //    deferred.fail(err);
-    //  } else {
-    //    deferred.resolve(response);
-    //  }
-    //})
-    //.fail(function( jqxhr, textStatus, error ) {
-    //  var err = textStatus + ", " + error;
-    //  debug(err);
-    //  Radio.command('error', self.eventNames.REMOTE_SYNC_FAIL, err);
-    //  deferred.fail(err);
-    //});
+    options.data = {
+      fields: 'id',
+      filter: {
+        limit: -1,
+        updated_at_min: this.formatDate(last_update)
+      }
+    };
+
+    options.success = function(resp){
+      ids = self.parseProp(resp, 'id');
+      debug(ids.length + ' remote ids');
+      deferred.resolve(ids);
+    };
+
+    options.error = function(jqXHR, textStatus, errorThrown){
+      self.trigger('error', jqXHR, textStatus, errorThrown);
+      debug('error fetching ids ', textStatus);
+    };
+
+    this.setState({last_update: Date.now()});
+
+    this.remoteSync('read', this, options);
+
+    return deferred;
   },
 
-  removeRecords: function(ids){
-    var dfd = $.Deferred();
+  //getRemoteIds: function(){
+  //  var ajaxurl = Radio.request('entities', 'get', {
+  //    type: 'option',
+  //    name: 'ajaxurl'
+  //  });
+  //
+  //  return $.getJSON( ajaxurl, {
+  //    'action': 'wc_pos_get_all_ids',
+  //    'type'  : this.name
+  //  });
+  //},
 
-    _.each( ids, function(id, index) {
-      var model = this.get(id);
-      model.destroy({
-        success: function(model, response) {
-          debug(response.title + 'deleted');
-          if( index++ === ids.length ) {
-            dfd.resolve();
-          }
-        },
-        error: function(model, response) {
-          debug('problem deleting ' + response.title);
-        }
-      });
+  /**
+   * Sync to server
+   */
+  remoteSync: function(method, model, options){
+    options = options || {};
+    options.remote = true;
+    this.sync(method, model, options);
+  },
+
+  /**
+   * Returns a promise for an array of ids from IndexedDB
+   * note: this.fetch + this.pluck('id') should give same result
+   */
+  getLocalIds: function(){
+    var deferred = $.Deferred(),
+        ids = [];
+
+    var onItem = function(item){
+      ids.push(item.id);
+    };
+
+    var onEnd = function(){
+      deferred.resolve(ids);
+    };
+
+    this.indexedDB.store.iterate(onItem, {
+      index: 'id',
+      onEnd: onEnd
+    });
+
+    return deferred;
+  },
+
+  /**
+   * Remove garbage records
+   * - records which have been deleted from server
+   */
+  removeGarbage: function(ids){
+    var deferred = $.Deferred(),
+        models = this.getModelsByRemoteIds(ids);
+
+    if(models.length === 0){ return; }
+
+    // remove from collection
+    this.remove(models);
+
+    // purge from indexeddb
+    this.indexedDB.store.removeBatch(
+      _.pluck(models, 'local_id'),
+      deferred.resolve,
+      deferred.reject
+    );
+
+    return deferred;
+  },
+
+  /**
+   * Turn ids array into array of models
+   * note: idAttribute for dual models is 'local_id'
+   */
+  getModelsByRemoteIds: function(ids){
+    var models = [];
+    _.each(ids, function(id){
+      models.push(this.findWhere({id: id}));
     }, this);
-
-    return dfd;
+    return models;
   },
 
-  queue: function(ids){
-    this._queue = ids;
-  },
-
-  processQueue: function(collection, response){
-    if(response){
-      this.indexedDB.putBatch(this.parse(response));
+  /**
+   * Add ids to queue for potential download
+   */
+  enqueue: function(ids){
+    if(!_.isArray(ids)){
+      return this.queue.push(ids);
     }
-    if(this._queue.length > 0){
-      var ids = this._queue.splice(0, 10)
-      this.fetch({
-        remote  : true,
-        success : this.processQueue.bind(this),
-        data    : { filter: { limit: -1, post__in: ids.join(',') } },
-        remove  : false
-      });
+    this.queue = _.union(this.queue, ids);
+    debug(ids.length + ' ids added to queue');
+  },
+
+  /**
+   * Remove ids from queue
+   */
+  dequeue: function(ids){
+    if(!_.isArray(ids)){
+      this.queue = _.without(this.queue, ids);
+    } else {
+      this.queue = _.difference(this.queue, ids);
+    }
+    debug(ids.length + ' ids removed from queue');
+  },
+
+  /**
+   *
+   */
+  hasAllRecords: function(){
+    return (this.queue.length === 0);
+  },
+
+  /**
+   *
+   */
+  processQueue: function(){
+    var self = this;
+
+    if(this.hasAllRecords()){
+      return;
+    }
+
+    return this.fetch({
+      remote: true,
+      remove: false,
+      data: {
+        filter: {
+          limit: -1,
+          'in': this.queue.splice(0, this.state.pageSize).join(',')
+        }
+      },
+      success: function(collection, response){
+        self.indexedDB.putBatch(self.parse(response));
+        if(self.name === 'products'){
+          _.delay(function(){
+            self.processQueue();
+          }, self.getDelay());
+        }
+      }
+    });
+  },
+
+  /**
+   * Allows delay to be added for large downloads
+   */
+  getDelay: function(){
+    return Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'delay'
+    }) || 0;
+  },
+
+  /*
+   * Helper function to format Date.now() to RFC3339
+   * - returns 2015-03-11T02:30:43.925Z (with millisenconds)
+   * - undefined if no timestamp
+   */
+  formatDate: function(timestamp) {
+    if(timestamp){
+      //return moment(timestamp).utc().format('YYYY-MM-DDTHH:mm:ss') + 'Z';
+      return moment(timestamp).toISOString();
     }
   }
 

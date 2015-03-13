@@ -30,8 +30,7 @@ class WC_POS_Params {
       'tax_labels'    => self::tax_labels(),
       'tax_rates'     => self::tax_rates(),
       'user'          => self::user(),
-      'wc_api'        => get_woocommerce_api_url( '' ),
-      'worker'        => WC_POS_PLUGIN_URL .'public/assets/js/worker.min.js?ver='. WC_POS_VERSION
+      'wc_api'        => get_woocommerce_api_url( '' )
     );
 
     return apply_filters( 'woocommerce_pos_params', $param );

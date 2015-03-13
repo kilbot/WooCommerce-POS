@@ -21,6 +21,10 @@ module.exports = ItemView.extend({
     this.$el.prepend( $('#tmpl-pos-status').html() );
   },
 
+  onShow: function(){
+
+  },
+
   templateHelpers: function(){
     var data = this.collection.toJSON();
     return { tests: data };
@@ -37,7 +41,7 @@ module.exports = ItemView.extend({
 
     if(key){
       e.preventDefault();
-      this.trigger('action:' + key, action);
+      this.trigger('action:' + key, action[0]);
     }
   }
 

@@ -25,7 +25,7 @@ global $current_user;
   </li>
   <li class="form-group">
     <div class="label"><?php /* translators: wordpress */ _e( 'Message' ); ?>:</div>
-    <div class="input" data-name="message" contenteditable><?php _e('Describe your problem here ...', 'woocommerce-pos') ?></div>
+    <div class="input" data-name="message" data-placeholder="<?php _e('Describe your problem here ...', 'woocommerce-pos') ?>" contenteditable></div>
   </li>
   <li class="no-border">
     <div>

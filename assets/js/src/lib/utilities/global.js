@@ -3,9 +3,13 @@ var _ = require('lodash');
 var debugFunc = require('debug');
 var $ = require('jquery');
 var Radio = require('backbone.radio');
-var debug = window.wc_pos_debug || debugFunc().enabled;
-Radio.DEBUG = debug;
 
+if(window.wc_pos_debug){
+  debugFunc.enable('*');
+}
+
+var debug = debugFunc().enabled;
+Radio.DEBUG = debug;
 console.info(
   'Debugging is ' +
   ( debug ? 'on' : 'off' )  +

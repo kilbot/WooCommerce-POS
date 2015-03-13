@@ -3,13 +3,13 @@
 /**
  * POS Orders Class
  *
- * @class    WC_POS_Orders
+ * @class    WC_POS_API_Orders
  * @package  WooCommerce POS
  * @author   Paul Kilmurray <paul@kilbot.com.au>
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_Orders {
+class WC_POS_API_Orders {
 
   /** @var array Contains the raw order data */
   private $data = array();
@@ -18,9 +18,6 @@ class WC_POS_Orders {
    * Constructor
    */
   public function __construct() {
-    if( ! is_pos() )
-      return;
-
     add_filter( 'woocommerce_api_create_order_data', array( $this, 'create_order_data'), 10, 2 );
     add_action( 'woocommerce_order_add_product', array( $this, 'order_add_product'), 10, 5 );
     add_action( 'woocommerce_order_add_shipping', array( $this, 'order_add_shipping'), 10, 3 );

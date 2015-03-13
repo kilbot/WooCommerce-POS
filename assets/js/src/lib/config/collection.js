@@ -1,5 +1,6 @@
 var bb = require('backbone');
 var POS = require('lib/utilities/global');
+var Radio = require('backbone.radio');
 
 module.exports = POS.Collection = bb.Collection.extend({
   constructor: function() {
@@ -7,6 +8,14 @@ module.exports = POS.Collection = bb.Collection.extend({
     this._isNew = true;
     this.once('sync', function() {
       this._isNew = false;
+    });
+
+    this.on('error', function(jqXHR, textStatus, errorThrown){
+      Radio.trigger('global', 'error', {
+        jqXHR   : jqXHR,
+        status  : textStatus,
+        message : errorThrown
+      });
     });
   },
 

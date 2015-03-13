@@ -23,14 +23,8 @@ var StatusRoute = Route.extend({
 
   fetch: function(){
     // if not fetched, need to fetch all local records
-    var dfd = $.Deferred(),
-        fetched = _.map(this.databases, this.fetchDB, this);
-
-    $.when.apply($, fetched).done(function(){
-      dfd.resolve();
-    });
-
-    return dfd;
+    var fetched = _.map(this.databases, this.fetchDB, this);
+    return $.when.apply($, fetched);
   },
 
   render: function(){
@@ -107,11 +101,21 @@ var StatusRoute = Route.extend({
   clearDB: function(db){
     var collection = this[db],
         self = this;
+
+    this.removeState(db);
+
     collection.indexedDB.clear(function(){
       collection.reset();
       self.render();
     },function(){
       debug('Could not clear ' + db, arguments);
+    });
+  },
+
+  removeState: function(name){
+    Radio.command('entities', 'remove', {
+      type: 'localStorage',
+      name: name
     });
   }
 

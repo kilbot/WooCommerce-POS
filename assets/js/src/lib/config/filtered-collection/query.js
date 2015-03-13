@@ -80,6 +80,14 @@ module.exports = {
 
     }, this);
 
+  },
+
+  productSearch: function(){
+
+  },
+
+  barcodeSearch: function(){
+
   }
 
 //barcodeSearch: function( barcode ) {

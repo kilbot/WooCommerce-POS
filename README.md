@@ -44,8 +44,10 @@ Once you have installed the project you will have all the files necessary to bui
 grunt dev
 ```
 
-To create a minified version of the project ready to deploy, you should first change the app.staging directory in [Gruntfile.js](Gruntfile.js) and then build again using Grunt.
+To create a minified version of the project ready to deploy, use:
 
 ```sh
-grunt staging
+grunt deploy
 ```
+
+This will create a zip archive of the plugin which you can then install via WordPress admin.
