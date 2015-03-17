@@ -1,3 +1,44 @@
+= 0.4.0 =
+* Note: this is a major code refactor. Almost every line of code has been rewritten
+-
+* Products: Variation display has been changed to popover
+* Products: Infinite scroll
+* Products: Hotkey for barcode search
+* Products: Attributes now show in tooltip
+* Cart: Tax settings can now be changed per cart item
+* Cart: Meta data can be added to cart items
+* Cart: Ability to add shipping line item
+* Cart: Ability to fee line item
+* Hotkeys: Use hotkey '?' to display a list of available hotkeys
+* Translations: WooCommerce POS now uses automatic downloads
+* New: Set custom permalink for POS front-end
+* Improved: Responsive design for tablets & mobile
+-
+* Pro: Add customer during checkout
+* Pro: Open multiple carts
+* Pro: Hotkey for credit card readers
+* Pro: New product page for quick product management
+* Pro: New customer page for quick add/edit customers
+* Pro: New order page
+* Pro: New coupon page
+* Pro: Multiple stores
+-
+* Fix: removed all cases of php echo shorthand for short_open_tag=off
+* Fix: numerous bugs with the number pad
+
+= 0.3.5 =
+* Note: this is a minor compatibility update for WooCommerce 2.3
+* Fix WC_Gateway_Mijireh error with WC 2.3
+* Fix for W3 Total Cache minify js conflict
+* Fix capitalization bug with product searches
+
+= 0.3.4 =
+* Urgent Fix: performance issue downloading products
+* Fix: potential clash for admin menu position
+* Fix: bug affecting woocommerce_api_order_response
+* Fix: cashback entry on receipt
+* Improved: POS Only products
+
 = 0.3.3 =
 * Urgent Fix: Compatibility with new order-status introduced in WooCommerce > 2.2
 * Fix: POS Only products improved, fixes 404 errors on imported products

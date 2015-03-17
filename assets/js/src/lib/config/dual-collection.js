@@ -205,9 +205,8 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
    * Returns a promise for an array of ids since last update
    * TODO: revert to more performant AJAX request
    */
-  getRemoteIds: function(){
+  getRemoteIds: function(last_update){
     var deferred = $.Deferred(),
-        last_update = this.getState('last_update'),
         self = this, ids, options = {};
 
     options.data = {

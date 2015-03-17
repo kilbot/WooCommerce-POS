@@ -9,13 +9,24 @@ Development repository for WooCommerce POS - the Point of Sale plugin for [WooCo
 * **Demo:** [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos)
 * **Website:** [http://woopos.com.au](http://woopos.com.au)
 
+## IMPORTANT NOTICE TO DEVELOPERS
+
+This branch is in development, many features are incomplete and contain known bugs. 
+**You should not build this branch expecting to use it in production.** 
+
+* **[0.4 Milestone](https://github.com/kilbot/WooCommerce-POS/milestones/0.4):** Current outstanding issues for the next release.
+* **[Changelog](./changelog):** A list of notable changes.
+* **[Sneak Peek](http://beta.woopos.com.au/pos):** Updated with each build. Use login/pass: demo/demo.
+
 ## Report a bug
 
 Please report all bugs [here](https://github.com/kilbot/WooCommerce-POS/issues) or contact support via [support@woopos.com.au](mailto:support@woopos.com.au)
 
-## Developing locally
+## Translations
 
-**This branch is currently being refactored, do not build this branch until it is renamed to master!!**
+If you would like to help translate WooCommerce POS into your language please check out the [WooCommerce POS Language Packs](https://github.com/kilbot/WooCommerce-POS-Language-Packs) repository.
+
+## Developing locally
 
 WooCommerce POS is a WordPress plugin which requires [WordPress](http://wordpress.org) 3.8+ and [WooCommerce](wordpress.org/plugins/woocommerce) 2.2+.
 
@@ -50,4 +61,4 @@ To create a minified version of the project ready to deploy, use:
 grunt deploy
 ```
 
-This will create a zip archive of the plugin which you can then install via WordPress admin.
+This will create a zip archive of the plugin which you can then install via your WordPress admin.
