@@ -1,0 +1,18 @@
+{{#each tests}}
+<li>
+  {{#if icon}}
+  <div class="shrink">
+    <i class="icon icon-{{icon}} icon-lg"></i>
+  </div>
+  {{/if}}
+  {{#if title}}
+  <div class="title">{{title}}</div>
+  {{/if}}
+  <div class="message">
+    {{{message}}}
+    {{#if button}}
+      <button class="btn btn-default" data-action="{{button.action}}">{{button.label}}</button>
+    {{/if}}
+  </div>
+</li>
+{{/each}}

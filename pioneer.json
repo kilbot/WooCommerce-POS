@@ -1,0 +1,28 @@
+{
+  "feature": "tests/integration/features",
+  "require": [
+    "tests/integration/steps",
+    "tests/integration/widgets"
+  ],
+  "format": "pioneerformat.js",
+  "driver": "chrome",
+  "error_formatter": "errorformat.js",
+  "preventReload": false,
+  "coffee": false,
+  "verbose": true,
+  "capabilities": {
+    "human"           : "Chrome 39 on Windows 8.1",
+    "browser_version" : "39.0",
+    "browser"         : "Chrome",
+    "os"              : "Windows",
+    "os_version"      : "8.1",
+    "browserName"       : "",
+    "platform"          : "",
+    "name"              : "",
+    "build"             : "0.4-beta",
+    "browserstack.user" : "***",
+    "browserstack.key"  : "***",
+    "browserstack.debug": true
+  },
+  "server": "http://hub.browserstack.com/wd/hub"
+}

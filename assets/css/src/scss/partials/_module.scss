@@ -1,0 +1,135 @@
+.module {
+  width: 100%;
+  @include display-flex;
+  @include flex-direction(column);
+  > div {
+    background: white; /* default module background */
+    @include flex-shrink(0); /* default don't shrink */
+  }
+  .list-actions {
+    border-top: 2px solid darken( $list-border-color, 5% );
+    text-align: right;
+    >div {
+      padding: $spacing/3;
+      p.message {
+        display: inline;
+      }
+      .btn.pull-left {
+        margin-right: $spacing/4;
+      }
+    }
+  }
+  .list-actions:first-of-type {
+    border-top: 0;
+    > div {
+      background: nth( $primaryPalette, 8 );
+      > .btn {
+        float: right;
+        margin-left: $spacing/3;
+      }
+    }
+  }
+  .list-header {
+    @include display-flex;
+    background-color: nth( $primaryPalette, 6 );
+    color: $inverse-text-color;
+    //    padding-right: 16px;
+    > div {
+      padding: $spacing/3;
+      @include flex(1);
+    }
+    h4 {
+      text-align: center;
+      width: 100%;
+    }
+  }
+  .list {
+    @include flex-shrink(1);
+    overflow: auto;
+    @include display-flex;
+    ul {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      li {
+        border-bottom: 1px solid $list-border-color;
+        @include display-flex;
+        @include align-items(center);
+        > div {
+          padding: $spacing/3;
+          @include flex(1);
+          &.shrink {
+            @include flex(0 1 auto);
+          }
+        }
+        &:last-of-type {
+          border-bottom: none;
+        }
+        &.sub-heading {
+          background-color: nth( $primaryPalette, 6 );
+          color: $inverse-text-color;
+          text-align: center;
+          h5 {
+            width: 100%;
+          }
+        }
+      }
+    }
+    ul.striped {
+      li:nth-of-type(even) {
+        background: $alternate-bg;
+      }
+    }
+    > div.infinite-list {
+      width: 100%;
+      > div {
+        background: $drawer-bg;
+        text-align: center;
+        padding: $spacing/3;
+        box-shadow: inset 0 0 $spacing/3 0 rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+      &.pull {
+        > div:first-of-type {
+          display: block;
+        }
+      }
+      &.loading {
+        > div:last-of-type {
+          display: block;
+        }
+      }
+    }
+  }
+  .list-totals {
+    ul {
+      width: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      border-top: 2px solid darken($list-border-color, 6%);
+      border-bottom: 2px solid darken($list-border-color, 6%);
+      li {
+        border-bottom: 1px solid $list-border-color;
+        @include display-flex;
+        @include align-items(center);
+        > div {
+          padding: $spacing/3;
+          &:first-of-type {
+            font-weight: bold;
+            @include flex(1);
+          }
+          &.total {
+            white-space: nowrap;
+          }
+        }
+        &:last-of-type {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+  .list-footer {
+    background: nth( $primaryPalette, 2 );
+  }
+}

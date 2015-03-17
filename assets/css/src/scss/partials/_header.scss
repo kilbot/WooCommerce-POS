@@ -1,0 +1,81 @@
+#header {
+  color: $header-text-color;
+  background-color: $header-bg;
+  > div {
+    @include display-flex;
+    @include box-shadow(0 2px 5px rgba(0, 0, 0, 0.26));
+    > div, > h1 {
+      @include flex(1);
+    }
+    > div:last-of-type {
+      text-align: right;
+    }
+    h1 {
+      font-size: 14px;
+      text-align: center;
+      line-height: 38px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    a {
+      color: $header-text-color;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 38px;
+      outline: 0;
+      &:hover {
+        color: darken($link-color, 5%);
+      }
+      &.btn-header {
+        color: $header-text-color;
+        background-color: $header-bg;
+        padding: 0 $spacing/2;
+        display: inline-block;
+        &:hover {
+          background-color: darken($link-color, 5%);
+          text-decoration: none;
+        }
+        img {
+          width: 20px;
+          height: 20px;
+          vertical-align: bottom;
+        }
+        span {
+          display: none;
+        }
+        @include breakpoint($tablet) {
+          span {
+            display: inline-block;
+          }
+        }
+      }
+    }
+    #user-btn {
+      img {
+        margin: 9px 0;
+      }
+      span {
+        margin-left: 2px;
+      }
+    }
+    .dropdown-menu {
+      margin: 0;
+      padding: 0;
+      background-color: $header-bg;
+      border: none;
+      @include border-radius(0);
+      a {
+        color: $header-text-color;
+        padding: 0 $spacing/2;
+        line-height: 38px;
+      }
+      a:hover {
+        background-color: darken($link-color, 5%);
+        color: $header-text-color;
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+// Headings
+// -------------------------
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: $headings-font-family;
+  font-weight: $headings-font-weight;
+  line-height: $headings-line-height;
+}
+
+h1, .h1 { font-size: floor(($font-size-base * 2.6)); }   // ~36px
+h2, .h2 { font-size: floor(($font-size-base * 2.15)); }  // ~30px
+h3, .h3 { font-size: ceil(($font-size-base * 1.7)); }    // ~24px
+h4, .h4 { font-size: ceil(($font-size-base * 1.25)); }   // ~18px
+h5, .h5 { font-size: $font-size-base; }
+h6, .h6 { font-size: ceil(($font-size-base * 0.85)); }   // ~12px
+
+// Links
+// -------------------------
+
+a {
+  color: $link-color;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: $link-hover-color;
+    text-decoration: none;
+  }
+
+//  &:focus {
+//    @include tab-focus;
+//  }
+}
+
+// Emphasis & misc
+// -------------------------
+
+// Ex: (12px small font / 14px base font) * 100% = about 85%
+small,
+.small {
+  font-size: floor((100% * $font-size-small / $font-size-base));
+}
+
+mark,
+.mark {
+  background-color: $state-warning-bg;
+  padding: .2em;
+}
+
+// Alignment
+.text-left           { text-align: left; }
+.text-right          { text-align: right; }
+.text-center         { text-align: center; }
+.text-justify        { text-align: justify; }
+.text-nowrap         { white-space: nowrap; }
+
+// Transformation
+.text-lowercase      { text-transform: lowercase; }
+.text-uppercase      { text-transform: uppercase; }
+.text-capitalize     { text-transform: capitalize; }
+
+// Contextual colors
+.text-muted {
+  color: $text-muted;
+}
+
+// Horizontal Rule
+// -------------------------
+hr {
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}

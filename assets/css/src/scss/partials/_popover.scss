@@ -1,0 +1,28 @@
+.popover-dark-bg {
+  background-color: $numpad-bg;
+  &.top > .arrow {
+    border-top-color: $numpad-bg;
+    &:after {
+      border-top-color: $numpad-bg;
+    }
+  }
+  &.right > .arrow {
+    border-right-color: $numpad-bg;
+    &:after {
+      border-right-color: $numpad-bg;
+    }
+  }
+  &.bottom > .arrow {
+    border-bottom-color: $numpad-bg;
+    &:after {
+      border-bottom-color: $numpad-bg;
+    }
+  }
+
+  &.left > .arrow {
+    border-left-color: $numpad-bg;
+    &:after {
+      border-left-color: $numpad-bg;
+    }
+  }
+}

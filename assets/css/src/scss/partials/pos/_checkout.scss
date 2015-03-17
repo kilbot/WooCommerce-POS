@@ -1,0 +1,66 @@
+.checkout-module {
+	.list-header {
+		display: block;
+	}
+	.list {
+		ul {
+			li {
+				display: block;
+				> div {
+					display: block;
+					padding: 0;
+					&.gateway {
+						color: nth($primaryPalette, 6);
+						background: $input-border-color;
+						&:hover {
+							color: nth($primaryPalette, 8);
+						}
+						h5 {
+							padding: $spacing/3;
+							margin: 0;
+							font-size: 18px;
+							line-height: 25px;
+							cursor: pointer;
+							input[type="radio"] {
+								width: auto;
+								margin: 0 $spacing/3 0 0;
+							}
+							img {
+								max-height: 25px;
+								vertical-align: middle;
+								margin-left: $spacing/3;
+							}
+						}
+					}
+					&.drawer {
+						> div {
+							padding: $spacing/3;
+							.form-row {
+								@include clearfix();
+								label {
+									float: left;
+									margin-right: $spacing/3;
+                  line-height: 2.4;
+								}
+							}
+						}
+					}
+				}
+				&.active {
+					> div {
+						&.gateway {
+							color: $btn-success-color;
+							background: $btn-success-bg
+						}
+					}
+				}
+				&.empty {
+					p {
+						padding: $spacing/3;
+						margin: 0;
+					}
+				}
+			}
+		}
+	}
+}

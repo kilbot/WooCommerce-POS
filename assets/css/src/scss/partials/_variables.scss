@@ -1,0 +1,90 @@
+// Font
+$font-family-sans-serif: 'Open Sans', Sans-Serif;
+
+// Colors
+$brand-primary        :	nth( $paletteBlueGrey, 6 );
+$brand-success        :	nth( $paletteGreen, 6 );
+$brand-info           :	nth( $paletteLightBlue, 6 );
+$brand-warning        :	nth( $paletteDeepOrange, 6 );
+$brand-danger         :	nth( $paletteRed, 6 );
+
+$base-text-color      : black;
+$text-color           : lighten($base-text-color, 13%);
+$secondary-text-color : lighten($base-text-color, 46%);
+$tertiary-text-color  : lighten($base-text-color, 74%);
+$header-text-color    : rgba(255,255,255,0.9);
+$menu-text-color      : $header-text-color;
+$inverse-text-color   : $header-text-color;
+
+$link-color           : $brand-primary !default;
+
+$border-color         : lighten($base-text-color, 91%);
+$list-border-color    : $border-color;
+$table-border-color   : $border-color;
+$input-border-color   : darken($border-color, 5%);
+
+$body-bg              : #e8e5df;
+$numpad-bg            : nth( $primaryPalette, 8 );
+$header-bg            : nth( $primaryPalette, 10 );
+$menu-bg              : $header-bg;
+$input-bg             : #f9f9f9;
+$drawer-bg            : $list-border-color;
+
+$btn-default-color    : #333;
+$btn-default-bg       : #f3f3f3;
+$btn-default-border   : $input-border-color;
+
+$alternate-bg         : #f9f9f9;
+
+// Widths & Spacing
+$font-size-base       : 14px !default;
+
+$spacing              : 24px;
+$menu-panel-width     : 200px;
+
+$mobile               : 320px;
+$mobile-horizontal    : 480px;
+$tablet               : 769px; // 768
+$tablet-horizontal    : 1024px;
+$desktop              : 1280px;
+$desktop-wide         : 1500px;
+
+// Rounded corners
+$border-radius-base   : 3px !default;
+$border-radius-large  : 10px !default;
+$border-radius-small  : 3px !default;
+
+$cursor-disabled:       not-allowed !default;
+
+//== Form states and alerts
+//
+//## Define colors for form feedback states and, by default, alerts.
+
+$state-success-text:             #3c763d !default;
+$state-success-bg:               #dff0d8 !default;
+$state-success-border:           darken(adjust-hue($state-success-bg, -10), 5%) !default;
+
+$state-info-text:                #31708f !default;
+$state-info-bg:                  #d9edf7 !default;
+$state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%) !default;
+
+$state-warning-text:             #8a6d3b !default;
+$state-warning-bg:               #fcf8e3 !default;
+$state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%) !default;
+
+$state-danger-text:              #a94442 !default;
+$state-danger-bg:                #f2dede !default;
+$state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%) !default;
+
+// Select 2
+$select2-spacing      : 3px;
+$select2-text-color   : $text-color;
+$select2-border-color : darken($border-color, 10%);
+$select2-border-radius: $border-radius-base;
+$select2-input-bg     : $alternate-bg;
+$select2-arrow-bg     : $border-color;
+$select2-drop-bg      : $border-color;
+$select2-disabled-text: $secondary-text-color;
+$select2-disabled-bg  : #f4f4f4;
+$select2-error-text-color: $state-danger-text;
+$select2-close-color  : $secondary-text-color;

@@ -1,0 +1,17 @@
+// hotkeys
+ul.hotkeys, ul.wc-pos-hotkeys {
+  @include columns(3 200px);
+  padding: 0;
+  margin: 0;
+  li {
+    padding: $spacing/4 0;
+    input {
+      text-align: center;
+      max-width: 80px;
+      margin-right: $spacing/2;
+    }
+  }
+}
+ul.wc-pos-hotkeys {
+  @include columns(3 200px);
+}

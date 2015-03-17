@@ -1,0 +1,15 @@
+<phpunit
+  bootstrap="tests/unit/php/bootstrap.php"
+  backupGlobals="false"
+  colors="true"
+  convertErrorsToExceptions="true"
+  convertNoticesToExceptions="true"
+  convertWarningsToExceptions="true"
+  verbose="true"
+  >
+  <testsuites>
+    <testsuite name="WooCommerce POS Test Suite">
+      <directory prefix="test-" suffix=".php">./tests/unit/php/spec/</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>

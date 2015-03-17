@@ -1,0 +1,47 @@
+.tabs {
+	ul {
+        background: nth( $primaryPalette, 2 );
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		li {
+		  	vertical-align: bottom; /* hack for icon alignment */
+			display: inline-block;
+			background: $btn-default-bg;
+			padding: $spacing/4 $spacing/2;
+			margin: 0 1px 0 0;
+			cursor: pointer;
+			a {
+				color: $text-color;
+			    margin-right: $spacing/4;
+				&:hover {
+					color: $brand-danger;
+				}
+			}
+			&.active {
+				background: white;
+			}
+			&:hover {
+
+			}
+		}
+	}
+}
+.infinite-tabs {
+	overflow-x: hidden;
+}
+
+/* Page column tabs */
+#tabs {
+  ul {
+    li {
+      background: darken($body-bg, 10%);
+      width: 50%;
+      margin: 0;
+      text-align: center;
+      &.active {
+        background: $body-bg;
+      }
+    }
+  }
+}

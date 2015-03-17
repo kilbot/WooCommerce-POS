@@ -1,0 +1,19 @@
+{{#if positionLeft}}
+  <p class="message {{message.type}}">
+    <i class="icon icon-{{message.icon}}"></i>
+    {{message.text}}
+  </p>
+{{/if}}
+
+{{#each buttons}}
+  <button class="btn {{this.className}}" data-action="{{this.action}}" {{#if this.disabled}}disabled{{/if}}>
+    {{this.label}}
+  </button>
+{{/each}}
+
+{{#unless positionLeft}}
+  <p class="message {{message.type}}">
+    <i class="icon icon-{{message.icon}}"></i>
+    {{message.text}}
+  </p>
+{{/unless}}

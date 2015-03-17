@@ -2,8 +2,8 @@
 Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
 Requires at least: 3.8 & WooCommerce 2.1
-Tested up to: 4.0
-Stable tag: 0.3.2
+Tested up to: 0.4.0-alpha
+Stable tag: 0.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,27 +82,52 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
-= 0.3.3 =
-* TODO: Multi-stores
-* TODO: store widgets and shortcodes
-* TODO: hotkeys
+= 0.4 =
+* TODO: floating point numbers as qty
 * TODO: custom receipts
 * TODO: add Cash and Card to order drop down
 * TODO: custom barcode field
-* TODO: fix customer serach for network blogs
-* TODO: coupons?
-* Improved: clearing local database improved for large stores
-* Improved: product thumbnails, support for non-cropped thumbs
-* TODO: fix product attribute display
+* TODO: fix customer search for network blogs
 * TODO: https support
-* TODO: non variable attributes??
-* TODO: WooCommerce 2.2 compatibility order status
 * TODO: check email template, customer name
 * TODO: check stock reduction
 * TODO: percentage bug
-* Fix: bug effecting default customer setting
+* TODO: support for Simplify Commerce by MasterCard
+* TODO: look at POS Only issue with categories
+* TODO: POS orders in trash
+* TODO: pos only where called twice?
+* TODO: change change bug 1,000+
+* TODO: make image src protocol-relative
+* TODO: strip script tags from checkout template: using
+* TODO: remove 0.00 discount from receipt
+* TODO: two tabs open, remove database, both try to update
+* TODO: harden against CORS w/ relative urls
+* TODO: add amount tendered and change to receipt
+* TODO: price set to 0.001 with 3 decimal precision shows 0.00 in cart
+* New: set custom permalink for POS front-end, eg: http://yourstore.com/custom-slug/
+* Fix: removed all cases of php echo shorthand for short_open_tag=off
+
+= 0.3.5 =
+* Note: this is a minor compatibility update for WooCommerce 2.3
+* Fix WC_Gateway_Mijireh error with WC 2.3
+* Fix for W3 Total Cache minify js conflict
+* Fix capitalization bug with product searches
+
+= 0.3.4 =
+* Urgent Fix: performance issue downloading products
+* Fix: potential clash for admin menu position
+* Fix: bug affecting woocommerce_api_order_response
+* Fix: cashback entry on receipt
+* Improved: POS Only products
+
+= 0.3.3 =
+* Urgent Fix: Compatibility with new order-status introduced in WooCommerce > 2.2
 * Fix: POS Only products improved, fixes 404 errors on imported products
 * Fix: IndexedDB now available on Safari 7.1, compatibility update to db
+* Fix: bug effecting default customer setting
+* Fix: added support for Simplify Commerce by Mastercard
+* Improved: product thumbnails, support for non-cropped thumbs
+* Improved: clearing local database improved for large stores
 
 = 0.3.2 =
 * Urgent Fix: POS bug causing problems with product display on some websites, eg: featured products
