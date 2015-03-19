@@ -4,6 +4,8 @@ var $ = require('jquery');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
 var LoadingService = require('lib/components/loading/service');
+var Radio = require('backbone.radio');
+var globalChannel = Radio.channel('global');
 
 module.exports = POS.Route = Mn.Object.extend({
   constructor: function() {
@@ -53,5 +55,10 @@ module.exports = POS.Route = Mn.Object.extend({
   },
 
   fetch  : function() {},
-  render : function() {}
+  render : function() {},
+
+  setTabLabel: function(options){
+    globalChannel.trigger('tab:label', options);
+  }
+
 });

@@ -6,51 +6,91 @@ var Utils = require('lib/utilities/utils');
 
 module.exports = DualModel.extend({
   name: 'order',
+
+  /**
+   * Orders with the following status are closed for editing
+   */
+  closedStatus: [
+    'completed',
+    'on-hold',
+    'cancelled',
+    'refunded',
+    'processing'
+  ],
+
+  /**
+   *
+   */
   defaults: function(){
-    var defaults = {
-          note: '',
-          order_discount: 0
-        },
-        customers,
-        default_customer;
-
-    customers = Radio.request('entities', 'get', {
-      type : 'option',
-      name : 'customers'
+    var defaults = this.defaultCustomer();
+    return _.extend(defaults, {
+      note: '',
+      order_discount: 0
     });
-
-    if(customers){
-      default_customer = customers['default'] || customers.guest;
-    }
-
-    if(default_customer){
-      defaults.customer_id = default_customer.id;
-      defaults.customer = default_customer;
-    }
-
-    return defaults;
   },
 
+  /**
+   *
+   */
+  defaultCustomer: function(){
+    var default_customer;
+
+    var customers = Radio.request('entities', 'get', {
+      type : 'option',
+      name : 'customers'
+    }) || {};
+
+    default_customer = customers['default'] || customers.guest;
+
+    if(default_customer){
+      return {
+        customer_id : default_customer.id,
+        customer    : default_customer
+      };
+    }
+  },
+
+  /**
+   * is order open?
+   */
+  isEditable: function(){
+    return !_.contains(this.closedStatus, this.get('status'));
+  },
+
+  /**
+   * - attach tax settings
+   * - attach cart & gateways if order is open
+   */
   initialize: function(){
 
-    // attach tax settings
     this.tax = Radio.request('entities', 'get', {
       type: 'option',
       name: 'tax'
     }) || {};
+
     this.tax_rates = Radio.request('entities', 'get', {
       type: 'option',
       name: 'tax_rates'
     }) || {};
 
-    if( !this.hasRemoteId() ){
+    if( this.isEditable() ){
       this.attachCart();
       this.attachGateways();
     }
-    _.bindAll(this, 'onSaveSuccess', 'process');
 
     // order_discount input
     this.on('change:order_discount', this.calcTotals);
+  },
+
+  /**
+   * Remove items from cart before destroy
+   */
+  destroy: function(options){
+    if(this.cart.length > 0){
+      _.invoke( this.cart.toArray(), 'destroy');
+    } else {
+      return DualModel.prototype.destroy.call(this, options);
+    }
   },
 
   /**
@@ -60,14 +100,17 @@ module.exports = DualModel.extend({
     this.cart = Radio.request('entities', 'get', {
       init : true,
       type : 'collection',
-      name : 'cart',
-      order_id  : this.id
+      name : 'cart'
+    });
+    this.cart.order_id = this.id;
+
+    this.listenTo(this.cart, {
+      'add change': this.calcTotals,
+      'remove'    : this.itemRemoved
     });
 
-    this.listenTo(this.cart, 'add remove change', this.calcTotals);
-
     $.when(this.cart._isReady).then(function(cart){
-      if(cart){ cart.fetchCartItems(); }
+      if(cart) { cart.fetchCartItems(); }
     });
   },
 
@@ -84,12 +127,20 @@ module.exports = DualModel.extend({
     this.gateways.fetch();
   },
 
-  calcTotals: function(){
-    // special case, no items in cart
-    if(this.cart.length === 0){
-      return this.destroy();
+  /**
+   *
+   */
+  itemRemoved: function(){
+    if(this.cart.length > 0){
+      return this.calcTotals();
     }
+    return this.destroy();
+  },
 
+  /**
+   *
+   */
+  calcTotals: function(){
     var total_tax     = 0,
         subtotal_tax  = 0,
         shipping_tax  = 0,
@@ -121,20 +172,7 @@ module.exports = DualModel.extend({
       'tax_lines'         : this.cart.itemizedTax()
     };
 
-    this.save(totals, { success: this.onSaveSuccess, wait: true });
-  },
-
-  /**
-   * special case, first save, update order_id
-   */
-  onSaveSuccess: function(){
-    if(this.cart.order_id){
-      return;
-    }
-    this.cart.order_id = this.id;
-    this.cart.each(function(model) {
-      model.save({order: this.id}, {silent: true});
-    }, this);
+    this.save(totals);
   },
 
   /**
@@ -156,6 +194,9 @@ module.exports = DualModel.extend({
     this.serverSync();
   },
 
+  /**
+   *
+   */
   processCart: function(){
     var obj = {
       product : [],

@@ -9,7 +9,7 @@ var $ = require('jquery');
 module.exports = Router.extend({
 
   routes: {
-    'support' : 'show'
+    'support' : 'showStatus'
   },
 
   initialize: function(options) {
@@ -20,32 +20,28 @@ module.exports = Router.extend({
   onBeforeEnter: function() {
     this.layout = new LayoutView();
     this.container.show(this.layout);
+    this.updateTitle();
+    this.showForm();
   },
 
-  onBeforeRoute: function(){
+  updateTitle: function(){
     // TODO: put menu into params
     var title = $('#menu li.support').text();
     Radio.command('header', 'update:title', title);
-    Radio.command('header', 'update:tab', {id: 'left', active: true});
-  },
-
-  show: function(){
-    this.execute(this.showForm);
-    this.showStatus();
   },
 
   showForm: function(){
-    return new FormRoute({
+    var route = new FormRoute({
       container  : this.layout.leftRegion
     });
+    route.enter();
   },
 
   showStatus: function(){
-    var route = new StatusRoute({
+    return new StatusRoute({
       container  : this.layout.rightRegion,
       collection : this.collection
     });
-    route.enter();
   }
 
 });

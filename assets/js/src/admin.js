@@ -6,6 +6,7 @@ var Application = require('apps/admin/application');
  */
 var EntitiesService = require('entities/service');
 var ModalService = require('lib/components/modal/service');
+var TabsService = require('lib/components/tabs/service');
 
 /**
  * SubApps
@@ -31,6 +32,8 @@ app.settingsApp = new SettingsRouter({
 app.modalApp = new ModalService({
   container: app.layout.modalRegion
 });
+
+app.tabsService = new TabsService();
 
 /**
  * Attach app to window for third party plugins

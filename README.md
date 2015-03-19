@@ -3,7 +3,7 @@
 [![Code Climate](https://codeclimate.com/github/kilbot/WooCommerce-POS/badges/gpa.svg)](https://codeclimate.com/github/kilbot/WooCommerce-POS)
 [![Dependency Status](https://david-dm.org/kilbot/WooCommerce-POS.svg)](https://david-dm.org/kilbot/WooCommerce-POS)
 
-Development repository for WooCommerce POS - the Point of Sale plugin for [WooCommerce](woothemes.com/woocommerce/).
+Development repository for WooCommerce POS - the Point of Sale plugin for [WooCommerce](http://woothemes.com/woocommerce/).
 
 * **Download:** [http://wordpress.org/plugins/woocommerce-pos](http://wordpress.org/plugins/woocommerce-pos)
 * **Demo:** [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos)
@@ -14,9 +14,9 @@ Development repository for WooCommerce POS - the Point of Sale plugin for [WooCo
 This branch is in development, many features are incomplete and contain known bugs. 
 **You should not build this branch expecting to use it in production.** 
 
-* **[0.4 Milestone](https://github.com/kilbot/WooCommerce-POS/milestones/0.4):** Current outstanding issues for the next release.
-* **[Changelog](./changelog):** A list of notable changes.
-* **[Sneak Peek](http://beta.woopos.com.au/pos):** Updated with each build. Use login/pass: demo/demo.
+* [0.4 Milestone](https://github.com/kilbot/WooCommerce-POS/milestones/0.4): Current outstanding issues for the next release.
+* [Changelog](./changelog): A list of notable changes.
+* [Sneak Peek](http://beta.woopos.com.au/pos): Beta demo site, updated with each build. Use login/pass: demo/demo.
 
 ## Report a bug
 

@@ -5,24 +5,21 @@ var TotalsView = require('./views/totals');
 var NotesView = require('./views/notes');
 var Buttons = require('lib/components/buttons/view');
 var CustomerSelect = require('lib/components/customer-select/view');
-var Radio = require('backbone.radio');
 //var debug = require('debug')('cart');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
-var accounting = require('accounting');
 var polyglot = require('lib/utilities/polyglot');
 
 var CartRoute = Route.extend({
+  cartRoute: true, // used by add to cart service
 
   initialize: function( options ) {
     options = options || {};
     this.container  = options.container;
     this.collection = options.collection;
-
-    // cart label
-    Radio.command('header', 'update:tab', {
-      id: 'right',
-      label: polyglot.t('titles.cart')
+    this.setTabLabel({
+      tab   : 'right',
+      label : polyglot.t('titles.cart')
     });
   },
 
@@ -33,26 +30,7 @@ var CartRoute = Route.extend({
   },
 
   onFetch: function(id){
-    if(id === 'new'){
-      this.order = undefined;
-    } else if(id){
-      this.order = this.collection.get(id);
-      if(this.order.hasRemoteId()){
-        this.navigate('receipt/' + this.order.get('id'), {
-          trigger: true
-        });
-      }
-    } else if(this.collection.length > 0){
-      this.order = this.collection.at(0);
-    }
-
-    // set active order: important for addToCart
-    this.collection.active = this.order;
-
-    // update tab with order total
-    if(this.order){
-      this.listenTo(this.order, 'change:total', this.updateTabLabel);
-    }
+    this.order = this.collection.setActiveOrder(id);
   },
 
   render: function() {
@@ -76,17 +54,6 @@ var CartRoute = Route.extend({
     this.showActions();
     this.showNotes();
   },
-
-  /**
-   * Add/update tab label
-   */
-  updateTabLabel: _.debounce(function(model, value) {
-    console.log('update:tab');
-    Radio.command('header', 'update:tab', {
-      id: 'right',
-      label: polyglot.t('titles.cart') + ': ' + accounting.formatMoney(value)
-    });
-  }, 100),
 
   /**
    * Empty Cart
@@ -165,7 +132,7 @@ var CartRoute = Route.extend({
 
     this.listenTo(view, {
       'action:void': function(){
-        _.invoke( this.order.cart.toArray(), 'destroy');
+        this.order.destroy();
       },
       'action:note': function(){
         this.layout.notesRegion.currentView.showNoteField();

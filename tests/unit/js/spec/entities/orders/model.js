@@ -57,34 +57,34 @@ describe('entities/orders/model.js', function () {
     expect(this.order.destroy).to.have.been.calledTwice;
   });
 
-  describe('onSaveSuccess()', function () {
-    before(function () {
-      expect(this.order).to.respondTo('onSaveSuccess');
-    });
-
-    beforeEach(function(){
-      var CartItem = Backbone.Model.extend({
-        url: '?'
-      });
-      this.order.cart = new Backbone.Collection([
-        new CartItem({ title: 'foo' }),
-        new CartItem({ title: 'bar' })
-      ]);
-    });
-
-    it('should set cart.order_id if undefined', function() {
-      this.order.set({local_id: 1});
-      this.order.onSaveSuccess();
-      expect(this.order.cart.order_id).equals(1);
-    });
-
-    it('should update cart items with order_id', function() {
-      this.order.set({local_id: 1});
-      this.order.onSaveSuccess();
-      expect(this.order.cart.where({order: 1})).to.have.length(2);
-    });
-
-  });
+  //describe('onSaveSuccess()', function () {
+  //  before(function () {
+  //    expect(this.order).to.respondTo('onSaveSuccess');
+  //  });
+  //
+  //  beforeEach(function(){
+  //    var CartItem = Backbone.Model.extend({
+  //      url: '?'
+  //    });
+  //    this.order.cart = new Backbone.Collection([
+  //      new CartItem({ title: 'foo' }),
+  //      new CartItem({ title: 'bar' })
+  //    ]);
+  //  });
+  //
+  //  it('should set cart.order_id if undefined', function() {
+  //    this.order.set({local_id: 1});
+  //    this.order.onSaveSuccess();
+  //    expect(this.order.cart.order_id).equals(1);
+  //  });
+  //
+  //  it('should update cart items with order_id', function() {
+  //    this.order.set({local_id: 1});
+  //    this.order.onSaveSuccess();
+  //    expect(this.order.cart.where({order: 1})).to.have.length(2);
+  //  });
+  //
+  //});
 
   describe('calcTotals()', function () {
 

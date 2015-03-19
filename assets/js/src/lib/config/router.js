@@ -23,6 +23,7 @@ module.exports = POS.Router = Mn.AppRouter.extend({
       this.active = true;
     } else {
       this.active = false;
+      this._currentRoute = undefined;
     }
   },
 
@@ -46,6 +47,7 @@ module.exports = POS.Router = Mn.AppRouter.extend({
 
   _execute: function(callback, args) {
     var route = callback.apply(this, args);
+    this._currentRoute = route;
 
     if (route instanceof Route) {
       route.router = this;

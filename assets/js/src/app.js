@@ -12,6 +12,7 @@ var HeaderService = require('apps/header/service');
 var ModalService = require('lib/components/modal/service');
 var PopoverService = require('lib/components/popover/service');
 var PrintService = require('lib/components/print/service');
+var TabsService = require('lib/components/tabs/service');
 //var LoggerService = require('lib/components/logger/service');
 
 /**
@@ -56,6 +57,7 @@ app.modalService = new ModalService({
 
 app.popoverService = new PopoverService();
 app.printService = new PrintService();
+app.tabsService = new TabsService();
 //app.loggerService = new LoggerService();
 
 /**

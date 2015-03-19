@@ -16,9 +16,10 @@ var StatusRoute = Route.extend({
   initialize: function(options){
     this.container = options.container;
     this.collection = options.collection;
-
-    var label = $('#tmpl-pos-status').data('title');
-    Radio.command('header', 'update:tab', {id: 'right', label: label});
+    this.setTabLabel({
+      tab   : 'right',
+      label : $('#tmpl-pos-status').data('title')
+    });
   },
 
   fetch: function(){

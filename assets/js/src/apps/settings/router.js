@@ -6,7 +6,6 @@ var Checkout = require('./checkout/route');
 var HotKeys = require('./hotkeys/route');
 var Access = require('./access/route');
 var Tools = require('./tools/route');
-var Tabs = require('lib/components/tabs/view');
 var Buttons = require('lib/components/buttons/view');
 var bb = require('backbone');
 var Radio = bb.Radio;
@@ -71,8 +70,11 @@ var SettingsRouter = Router.extend({
 
   showTabs: function(){
 
-    var view = new Tabs({
-      collection: this.tabsArray
+    //var view = new Tabs({
+    //  collection: this.tabsArray
+    //});
+    var view = Radio.request('tabs', 'view', {
+      tabs: this.tabsArray
     });
 
     this.listenTo(view, 'show', function(){

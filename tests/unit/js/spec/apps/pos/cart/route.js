@@ -39,19 +39,19 @@ describe('apps/pos/cart/route.js', function () {
 
     });
 
-    it('should attach the correct order if id given', function() {
-      this.route.onFetch(2);
-      var active = this.route.collection.active;
-      expect(active).to.be.instanceof(Backbone.Model);
-      expect(active.get('local_id')).equals(2);
-    });
-
-    it('should attach the first order if id not given', function() {
-      this.route.onFetch();
-      var active = this.route.collection.active;
-      expect(active).to.be.instanceof(Backbone.Model);
-      expect(active.get('local_id')).equals(1);
-    });
+    //it('should attach the correct order if id given', function() {
+    //  this.route.onFetch(2);
+    //  var active = this.route.collection.active;
+    //  expect(active).to.be.instanceof(Backbone.Model);
+    //  expect(active.get('local_id')).equals(2);
+    //});
+    //
+    //it('should attach the first order if id not given', function() {
+    //  this.route.onFetch();
+    //  var active = this.route.collection.active;
+    //  expect(active).to.be.instanceof(Backbone.Model);
+    //  expect(active.get('local_id')).equals(1);
+    //});
 
   });
 

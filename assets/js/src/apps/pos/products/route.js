@@ -3,7 +3,6 @@ var Layout = require('./views/layout');
 var Actions = require('./views/actions');
 var List = require('./views/list');
 var Variations = require('./views/variations');
-var Tabs = require('lib/components/tabs/view');
 var Radio = require('backbone.radio');
 var _ = require('lodash');
 var polyglot = require('lib/utilities/polyglot');
@@ -18,10 +17,8 @@ module.exports = Route.extend({
       perPage: 10
     });
     this.collection = this.filtered.superset();
-
-    // products label
-    Radio.command('header', 'update:tab', {
-      id    : 'left',
+    this.setTabLabel({
+      tab   : 'left',
       label : polyglot.t('titles.products')
     });
   },
@@ -54,16 +51,12 @@ module.exports = Route.extend({
 
   showTabs: function() {
 
-    // tabs component
-    var view = new Tabs({
-      collection: Radio.request('entities', 'get', {
-        type: 'option',
-        name: 'tabs'
-      })
+    var view = Radio.request('tabs', 'view', {
+      tabs: this.tabsArray()
     });
 
-    this.listenTo(view.collection, 'change:active', function (model, active) {
-      if(active){ this.filtered.query(model.id, 'tab'); }
+    this.listenTo(view.collection, 'active:tab', function(model) {
+      this.filtered.query(model.id, 'tab');
     });
 
     // show tabs component
@@ -102,6 +95,14 @@ module.exports = Route.extend({
 
     _.extend(options, { view: view, parent: childview }, view.popover);
     Radio.request('popover', 'open', options);
+  },
+
+  tabsArray: function(){
+    var tabs = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'tabs'
+    });
+    return _.map(tabs);
   }
 
   //showPagination: function(){

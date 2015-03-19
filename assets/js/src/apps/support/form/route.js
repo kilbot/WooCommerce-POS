@@ -14,9 +14,10 @@ var FormRoute = Route.extend({
       type: 'model',
       name: 'supportForm'
     });
-
-    var label = $('#tmpl-support-form').data('title');
-    Radio.command('header', 'update:tab', {id: 'left', label: label});
+    this.setTabLabel({
+      tab   : 'left',
+      label : $('#tmpl-support-form').data('title')
+    });
   },
 
   fetch: function(){

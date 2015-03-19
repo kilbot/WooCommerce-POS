@@ -1,5 +1,5 @@
 = 0.4.0 =
-* Note: this is a major code refactor. Almost every line of code has been rewritten
+* Note: this is a major code refactor, almost every line of code has been rewritten
 -
 * Products: Variation display has been changed to popover
 * Products: Infinite scroll

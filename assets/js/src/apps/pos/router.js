@@ -20,39 +20,51 @@ var Router = Router.extend({
 
   initialize: function(options) {
     this.container = options.container;
-    this.channel.comply('show:cart', this.showCart, this);
+    this.channel.comply({
+      'show:cart'     : this.showCart,
+      'show:checkout' : this.showCheckout,
+      'show:receipt'  : this.showReceipt
+    }, this);
   },
 
   onBeforeEnter: function() {
     this.layout = new LayoutView();
     this.container.show(this.layout);
+    this.initOrders();
+  },
 
+  initOrders: function(){
+    if(this.orders){ return; }
+
+    // attach orders
     this.orders = Radio.request('entities', 'get', {
       type: 'collection',
       name: 'orders'
     });
 
+    // listen for add/remove events
     this.listenTo(this.orders, 'add remove', function(){
-      if(this.orders.isNew()){ return; }
-      this.execute(this.showCart);
+      if( !this.orders.isNew() && this._currentRoute.cartRoute ){
+        this.execute( this.showCart );
+      }
     });
   },
 
   onBeforeRoute: function(){
-    if(!this.layout.leftRegion.hasView()){
-      this.showProducts();
-    }
-
-    if(bb.history.getFragment() === ''){
-      this.layout.tabs.get('left').set({active: true});
-    } else {
-      this.layout.tabs.get('right').set({active: true});
-    }
-
+    this.setActiveTab();
+    this.showProducts();
     Radio.command('header', 'update:title', '');
   },
 
+  setActiveTab: function(){
+    var tab = bb.history.getFragment() === '' ? 'left' : 'right';
+    this.container.tabs.setActive(tab);
+  },
+
   showProducts: function(){
+    if( this.layout.leftRegion.hasView() ){
+      return;
+    }
     var products = new Products({
       container : this.layout.leftRegion
     });
@@ -77,13 +89,6 @@ var Router = Router.extend({
     return new ReceiptRoute({
       container : this.layout.rightRegion,
       collection: this.orders
-    });
-  },
-
-  getCollection: function(name){
-    return Radio.request('entities', 'get', {
-      type: 'collection',
-      name: name
     });
   }
 

@@ -13,11 +13,9 @@ var ReceiptRoute = Route.extend({
     options = options || {};
     this.container = options.container;
     this.collection = options.collection;
-
-    // checkout label
-    Radio.command('header', 'update:tab', {
-      id: 'right',
-      label: polyglot.t('title.receipt')
+    this.setTabLabel({
+      tab   : 'right',
+      label : polyglot.t('title.receipt')
     });
   },
 

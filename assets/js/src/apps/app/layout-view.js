@@ -1,8 +1,8 @@
 var LayoutView = require('lib/config/layout-view');
 var _ = require('lodash');
 var $ = require('jquery');
-var Tabs = require('lib/components/tabs/view');
-var TabsCollection = require('lib/components/tabs/entities');
+var Radio = require('backbone.radio');
+var globalChannel = Radio.channel('global');
 
 module.exports = LayoutView.extend({
   el: '#page',
@@ -18,28 +18,38 @@ module.exports = LayoutView.extend({
   },
 
   initialize: function(){
-    var tabs = new TabsCollection([{id: 'left'}, {id: 'right'}]);
-
-    this.listenTo(tabs, 'change:active', this.toggleTabs);
-
-    this.listenTo(this.mainRegion, 'show', function(layout){
-      if(layout.columns && layout.columns === 2){
-        this.$el.addClass('two-column');
-        this.tabsRegion.show(new Tabs({
-          collection: tabs
-        }));
-        layout.tabs = tabs;
-      } else {
-        this.$el.removeClass('two-column');
-        this.tabsRegion.empty();
-      }
-    });
+    this.mainRegion.on('show', this.setup, this);
+    globalChannel.on('tab:label', this.updateTabLabel, this);
   },
 
-  toggleTabs: function(model, active){
-    if(active){
-      $('#main').removeClass('left-active right-active');
-      $('#main').addClass(model.id + '-active');
+  setup: function(layout){
+    if(layout.columns && layout.columns === 2){
+      this.$el.addClass('two-column');
+      this.showTabs();
+    } else {
+      this.$el.removeClass('two-column');
+      this.tabsRegion.empty();
     }
+  },
+
+  showTabs: function(){
+    var tabs = this.mainRegion.tabs = Radio.request('tabs', 'view', {
+      tabs: [
+        {id: 'left'},
+        {id: 'right'}
+      ]
+    });
+    this.listenTo(tabs.collection, 'active:tab', this.toggleLayout);
+    this.tabsRegion.show(tabs);
+  },
+
+  toggleLayout: function(model){
+    $('#main').removeClass('left-active right-active');
+    $('#main').addClass(model.id + '-active');
+  },
+
+  updateTabLabel: function(options){
+    this.mainRegion.tabs.setLabel(options);
   }
+
 });

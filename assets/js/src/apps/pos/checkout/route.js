@@ -1,5 +1,4 @@
 var Route = require('lib/config/route');
-var Radio = require('backbone.radio');
 //var debug = require('debug')('checkout');
 var POS = require('lib/utilities/global');
 var LayoutView = require('./views/layout');
@@ -14,11 +13,9 @@ var CheckoutRoute = Route.extend({
     options = options || {};
     this.container = options.container;
     this.collection = options.collection;
-
-    // checkout label
-    Radio.command('header', 'update:tab', {
-      id: 'right',
-      label: polyglot.t('titles.checkout')
+    this.setTabLabel({
+      tab   : 'right',
+      label : polyglot.t('titles.checkout')
     });
   },
 
@@ -29,13 +26,7 @@ var CheckoutRoute = Route.extend({
   },
 
   onFetch: function(id){
-    if(id){
-      this.order = this.collection.get(id);
-    } else if(this.collection.length > 0){
-      this.order = this.collection.at(0);
-    }
-
-    this.collection.active = this.order;
+    this.order = this.collection.setActiveOrder(id);
   },
 
   render: function(){

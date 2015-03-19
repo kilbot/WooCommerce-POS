@@ -143,10 +143,20 @@ module.exports = POS.Entities = Service.extend({
     }
   },
 
+  /**
+   * todo: improve this!
+   * - it should only add to cart of cartRoute is active
+   * - save order to make sure it has a local_id
+   * - make sure cart is ready
+   */
   addToCart: function(options) {
+    if(!this.app.posApp._currentRoute.cartRoute){
+      return;
+    }
     var order = this.getCollection({ name: 'orders' }).getActiveOrder();
-    $.when(order.cart._isReady).then(function() {
-      order.cart.addToCart(options);
+    $.when(order.cart._isReady, order.save()).then(function(cart) {
+      cart.order_id = order.id;
+      cart.addToCart(options);
     });
   },
 

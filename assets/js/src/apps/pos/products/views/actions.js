@@ -33,14 +33,14 @@ var Actions = FilterView.extend({
 
   barcodeModeOn: function(e){
     if(e) { e.preventDefault(); }
-    this.collection._mode = 'barcode'
+    this.collection._mode = 'barcode';
     this.ui.modeIcon.removeClass('icon-search').addClass('icon-barcode');
     this.ui.searchField.attr('placeholder', this.ui.barcodeBtn.text());
   },
 
   barcodeModeOff: function(e){
     if(e) { e.preventDefault(); }
-    this.collection._mode = undefined
+    this.collection._mode = undefined;
     this.ui.modeIcon.removeClass('icon-barcode').addClass('icon-search');
     this.ui.searchField.attr('placeholder', this.ui.searchBtn.text());
   }

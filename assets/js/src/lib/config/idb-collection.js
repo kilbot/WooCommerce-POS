@@ -1,4 +1,3 @@
-var bb = require('backbone');
 var Collection = require('./collection');
 var debug = require('debug')('idbCollection');
 var POS = require('lib/utilities/global');
@@ -23,7 +22,7 @@ module.exports = POS.IndexedDBCollection = Collection.extend({
     var self = this;
     return $.when(this._isReady).then(function() {
       debug('fetching ' + self.name);
-      return bb.Collection.prototype.fetch.call(self, options);
+      return Collection.prototype.fetch.call(self, options);
     });
   }
 

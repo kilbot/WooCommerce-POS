@@ -11,16 +11,31 @@ module.exports = IndexedDBCollection.extend({
     {name: 'type', keyPath: 'type', unique: false}
   ],
 
+  /**
+   * Whitelist of attributes taken from product model
+   */
+  productAttributes: [
+    'order',
+    'title',
+    'local_id',
+    'product_id',
+    'type',
+    'price',
+    'regular_price',
+    'sale_price',
+    'taxable',
+    'tax_status',
+    'tax_class',
+    'attributes',
+    'method_title', // shipping
+    'method_id'     // shipping
+  ],
+
   comparator: function( model ){
     var type = model.get( 'type' );
     if( type === 'fee' ) { return 2; }
     if( type === 'shipping' ) { return 1; }
     return 0;
-  },
-
-  initialize: function (models, options) {
-    options = options || {};
-    this.order_id = options.order_id;
   },
 
   /**
@@ -63,30 +78,13 @@ module.exports = IndexedDBCollection.extend({
       model = this.findWhere({ product_id: attributes.id });
     }
 
-    var props = [
-      'order',
-      'title',
-      'local_id',
-      'product_id',
-      'type',
-      'price',
-      'regular_price',
-      'sale_price',
-      'taxable',
-      'tax_status',
-      'tax_class',
-      'attributes',
-      'method_title', // shipping
-      'method_id'     // shipping
-    ];
-
     if(model){
       model.quantity('increase');
     } else {
       attributes.order = this.order_id;
       attributes.product_id = attributes.id;
       delete attributes.id;
-      model = this.add(_.pick(attributes, props));
+      model = this.add(_.pick(attributes, this.productAttributes));
     }
 
     model.trigger('focus');
