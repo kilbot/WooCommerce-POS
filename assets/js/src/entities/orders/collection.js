@@ -39,10 +39,22 @@ module.exports = DualCollection.extend({
    *
    */
   getActiveOrder: function(){
-    if(this.active){
-      return this.active;
+    if(!this.active){
+      this.active = this.add({});
     }
-    return this.add({});
+    return this.active;
+  },
+
+  addToCart: function(options){
+    var order = this.getActiveOrder();
+    var self = this;
+    $.when(order.cart._isReady, order.save({}, {wait:true})).then(function(cart) {
+      cart.order_id = order.id;
+      cart.addToCart(options);
+      if(cart.isNew()){
+        self.trigger('new:order', order);
+      }
+    });
   },
 
   /**

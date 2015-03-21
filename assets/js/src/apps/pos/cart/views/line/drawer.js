@@ -36,6 +36,10 @@ module.exports = FormView.extend({
     'blur @ui.metaValue'    : 'updateMeta'
   },
 
+  modelEvents: {
+    'pulse': 'pulse'
+  },
+
   bindings: {
     'input[name="regular_price"]'   : {
       observe: 'regular_price',
@@ -72,10 +76,10 @@ module.exports = FormView.extend({
     this.$el.hide().slideDown(250);
   },
 
-  remove: function() {
-    this.$el.slideUp( 250, function() {
-      bb.Marionette.ItemView.prototype.remove.call(this);
-    }.bind(this));
+  pulse: function(type){
+    if(type === 'remove'){
+      return this.$el.slideUp(250);
+    }
   },
 
   updateMeta: function(e) {

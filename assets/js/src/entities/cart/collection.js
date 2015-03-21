@@ -87,7 +87,7 @@ module.exports = IndexedDBCollection.extend({
       model = this.add(_.pick(attributes, this.productAttributes));
     }
 
-    model.trigger('focus');
+    model.trigger('pulse');
   },
 
   itemizedTax: function(){

@@ -16,6 +16,7 @@ var $ = require('jquery');
 var _ = require('lodash');
 var storage = global.localStorage || window.localStorage;
 var JSON = global.JSON || window.JSON;
+var Radio = require('backbone.radio');
 
 module.exports = POS.Entities = Service.extend({
   channelName: 'entities',
@@ -25,7 +26,6 @@ module.exports = POS.Entities = Service.extend({
     this.channel.comply('set', this.set, this);
     this.channel.comply('remove', this.remove, this);
     this.channel.comply('set:filter', this.setFilter, this);
-    this.channel.comply('add:to:cart', this.addToCart, this);
   },
 
   collections: {
@@ -141,23 +141,6 @@ module.exports = POS.Entities = Service.extend({
     if( this[filteredProp] ){
       this[filteredProp].filterBy('search', options.filter);
     }
-  },
-
-  /**
-   * todo: improve this!
-   * - it should only add to cart of cartRoute is active
-   * - save order to make sure it has a local_id
-   * - make sure cart is ready
-   */
-  addToCart: function(options) {
-    if(!this.app.posApp._currentRoute.cartRoute){
-      return;
-    }
-    var order = this.getCollection({ name: 'orders' }).getActiveOrder();
-    $.when(order.cart._isReady, order.save()).then(function(cart) {
-      cart.order_id = order.id;
-      cart.addToCart(options);
-    });
   },
 
   getLocalStorage: function(options){

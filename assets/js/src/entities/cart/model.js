@@ -1,11 +1,12 @@
 var Model = require('lib/config/model');
-//var debug = require('debug')('cartModel');
+var debug = require('debug')('cartItem');
 var Utils = require('lib/utilities/utils');
 var _ = require('lodash');
 var Radio = require('backbone.radio');
 
 module.exports = Model.extend({
   idAttribute: 'local_id',
+  pulseDelay: 500,
 
   defaults : {
     'subtotal'      : 0,
@@ -86,7 +87,8 @@ module.exports = Model.extend({
       item_price -= item_tax;
     }
 
-    this.save({
+    // create totals object
+    var totals = {
       'item_subtotal'     : Utils.round( regular_price, 4 ),
       'item_subtotal_tax' : Utils.round( item_subtotal_tax, 4 ),
       'item_tax'          : Utils.round( item_tax, 4 ),
@@ -94,8 +96,10 @@ module.exports = Model.extend({
       'subtotal_tax'      : Utils.round( item_subtotal_tax * quantity, 4 ),
       'total_tax'         : Utils.round( item_tax * quantity, 4 ),
       'total'             : Utils.round( item_price * quantity, 4 )
-    });
+    };
 
+    this.save(totals);
+    debug('update totals', totals);
   },
 
   /**
@@ -240,6 +244,19 @@ module.exports = Model.extend({
       sum += this.get(array[i]);
     }
     return Utils.round(sum, 4);
+  },
+
+  /**
+   * delay destroy for cart item pulse
+   */
+  destroy: function(options){
+    var self = this;
+    options = options || {};
+    options.wait = true;
+    this.trigger('pulse', 'remove');
+    return _.delay(function(){
+      return Model.prototype.destroy.call(self, options);
+    }, this.pulseDelay);
   }
 
 });

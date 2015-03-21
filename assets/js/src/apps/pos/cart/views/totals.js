@@ -36,6 +36,12 @@ module.exports = FormView.extend({
     'blur @ui.discount input' : 'onBlur'
   },
 
+  // todo: why is this necessary?!
+  // view should re-render on model change
+  modelEvents: {
+    'change': 'render'
+  },
+
   bindings: {
     'input[name="order_discount"]': {
       observe: 'order_discount',

@@ -72,7 +72,7 @@ module.exports = Route.extend({
 
     this.listenTo(view,{
       'childview:add:to:cart': function(childview, args){
-        Radio.command('entities', 'add:to:cart', {model: args.model});
+        Radio.command('router', 'add:to:cart', {model: args.model});
       },
       'childview:show:variations': this.showVariations
     });
@@ -89,7 +89,7 @@ module.exports = Route.extend({
 
     this.listenTo(view, 'add:to:cart', function(args){
       var product = args.collection.models[0].toJSON();
-      Radio.command('entities', 'add:to:cart', product);
+      Radio.command('router', 'add:to:cart', product);
       Radio.request('popover', 'close');
     });
 

@@ -3,6 +3,7 @@ var Radio = require('backbone.radio');
 var $ = require('jquery');
 var _ = require('lodash');
 var Utils = require('lib/utilities/utils');
+var debug = require('debug')('order');
 
 module.exports = DualModel.extend({
   name: 'order',
@@ -105,8 +106,8 @@ module.exports = DualModel.extend({
     this.cart.order_id = this.id;
 
     this.listenTo(this.cart, {
-      'add change': this.calcTotals,
-      'remove'    : this.itemRemoved
+      'add change' : this.calcTotals,
+      'remove'     : this.itemRemoved
     });
 
     $.when(this.cart._isReady).then(function(cart){
@@ -173,6 +174,7 @@ module.exports = DualModel.extend({
     };
 
     this.save(totals);
+    debug('update totals', totals);
   },
 
   /**

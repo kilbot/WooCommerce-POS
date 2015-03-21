@@ -23,7 +23,8 @@ var Router = Router.extend({
     this.channel.comply({
       'show:cart'     : this.showCart,
       'show:checkout' : this.showCheckout,
-      'show:receipt'  : this.showReceipt
+      'show:receipt'  : this.showReceipt,
+      'add:to:cart'   : this.addToCart
     }, this);
   },
 
@@ -42,16 +43,15 @@ var Router = Router.extend({
       name: 'orders'
     });
 
-    // listen for add/remove events
-    this.listenTo(this.orders, 'add remove', function(){
-      if( !this.orders.isNew() && this._currentRoute.cartRoute ){
-        this.execute( this.showCart );
-      }
-    });
+    // listen to order collection
+    this.listenTo(this.orders, {
+      'new:order' : this.addOrder,
+      'remove'    : this.removeOrder
+    })
   },
 
   onBeforeRoute: function(){
-    this.setActiveTab();
+    //this.setActiveTab();
     this.showProducts();
     Radio.command('header', 'update:title', '');
   },
@@ -90,6 +90,27 @@ var Router = Router.extend({
       container : this.layout.rightRegion,
       collection: this.orders
     });
+  },
+
+  /**
+   * Add to cart only when cart route is active
+   */
+  addToCart: function(options){
+    if(this._currentRoute instanceof CartRoute){
+      this.orders.addToCart(options);
+    }
+  },
+
+  addOrder: function(order){
+    if(this._currentRoute instanceof CartRoute){
+      bb.history.navigate('cart/' + order.id, {trigger: true});
+    }
+  },
+
+  removeOrder: function(){
+    if(this._currentRoute instanceof CartRoute){
+      bb.history.navigate('', {trigger: true});
+    }
   }
 
 });

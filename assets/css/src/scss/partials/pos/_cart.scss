@@ -20,11 +20,6 @@
   }
   .list {
     ul {
-      &.animating {
-        li.empty {
-          display: none;
-        }
-      }
       > li.shipping, > li.fee {
         border-top: 1px solid $list-border-color;
 //        background: $alternate-bg;

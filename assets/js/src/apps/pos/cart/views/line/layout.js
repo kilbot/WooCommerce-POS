@@ -15,7 +15,7 @@ module.exports = LayoutView.extend({
   },
 
   modelEvents: {
-    'focus:row': 'focusRow'
+    'pulse': 'pulse'
   },
 
   onRender: function(){
@@ -26,18 +26,7 @@ module.exports = LayoutView.extend({
     this.listenTo( view, 'drawer:toggle', this.toggleDrawer );
 
     this.itemRegion.show(view);
-
-    this.listenToOnce(
-      this.itemRegion.currentView,
-      'animation:finished',
-      function(){
-        bb.Marionette.ItemView.prototype.remove.call(this);
-      }
-    );
   },
-
-  // remove is triggered once item has finished animating
-  remove: function(){},
 
   openDrawer: function(){
     var view = new DrawerView({ model: this.model });
@@ -58,7 +47,8 @@ module.exports = LayoutView.extend({
     }
   },
 
-  focusRow: function() {
+  pulse: function(type) {
+    if(type === 'remove'){ return; }
     var self = this,
         list        = this.$el.closest('.list'),
         scrollTop   = list.scrollTop(),

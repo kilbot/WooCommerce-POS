@@ -59,7 +59,8 @@ module.exports = FormView.extend({
 
   modelEvents: {
     'change:title'        : 'save',
-    'change:method_title' : 'save'
+    'change:method_title' : 'save',
+    'pulse'               : 'pulse'
   },
 
   bindings: {
@@ -97,20 +98,16 @@ module.exports = FormView.extend({
     this.model.save();
   },
 
-  remove: function() {
-    // Remove the validation binding
-    bb.Validation.unbind(this);
+  pulse: function(type){
+    if(type === 'remove'){
+      return this.fadeOut();
+    }
+  },
 
-    // disable button
-    this.$('[data-action="remove"]').attr( 'disabled', 'true' );
-
-    // add bg colour and fade out
-    this.$el.addClass('bg-danger').closest('ul').addClass('animating');
-    this.$el.fadeOut( 500, function() {
-      this.$el.closest('ul').removeClass('animating');
-      this.trigger('animation:finished');
-      bb.Marionette.ItemView.prototype.remove.call(this);
-    }.bind(this));
+  fadeOut: function(){
+    this.ui.remove.attr('disabled', 'true');
+    this.$el.addClass('bg-danger');
+    this.$el.fadeOut(this.model.pulseDelay);
   },
 
   removeItem: function(e) {
