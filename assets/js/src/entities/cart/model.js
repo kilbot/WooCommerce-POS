@@ -9,6 +9,7 @@ module.exports = Model.extend({
   pulseDelay: 500,
 
   defaults : {
+    'id'            : null, // important for edit
     'subtotal'      : 0,
     'subtotal_tax'  : 0,
     'total_tax'     : 0,
@@ -47,6 +48,8 @@ module.exports = Model.extend({
     }
   },
 
+  /* jshint -W071, -W074 */
+  /* todo: too many statements, too complex */
   updateLineTotals: function() {
     var quantity        = this.get('quantity'),
         item_price      = this.get('item_price'),
@@ -101,6 +104,7 @@ module.exports = Model.extend({
     this.save(totals);
     debug('update totals', totals);
   },
+  /* jshint +W071, +W074 */
 
   /**
    * Calculate the line item tax total
@@ -149,6 +153,8 @@ module.exports = Model.extend({
     var compound_tax_rate   = 1 + ( compound_tax_rates / 100 );
     non_compound_price = price / compound_tax_rate;
 
+    /* jshint -W071 */
+    /* todo: too many statements */
     _.each(rates, function(rate) {
       var the_rate = parseFloat(rate.rate) / 100;
       var the_price = 0;
@@ -172,6 +178,7 @@ module.exports = Model.extend({
       item_tax += tax_amount;
 
     }, this);
+    /* jshint +W071 */
 
     // itemized tax
     this.set('tax', rates);

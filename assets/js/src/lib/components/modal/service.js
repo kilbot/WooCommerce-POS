@@ -107,7 +107,7 @@ module.exports = Service.extend({
   error: function(options){
     options = options || {};
 
-    if(options.jqXHR){
+    if(options.jqXHR && options.jqXHR.responseText){
       options.raw = options.jqXHR.responseText;
     }
 

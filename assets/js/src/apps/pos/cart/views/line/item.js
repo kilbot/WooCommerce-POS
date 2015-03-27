@@ -24,9 +24,7 @@ module.exports = FormView.extend({
       data.total = this.model.sum(['total', 'total_tax']);
     }
 
-    if( this.model.get('total') !== this.model.get('subtotal') ){
-      data.discount = true;
-    }
+    data.discount = this.model.get('total') !== this.model.get('subtotal');
 
     if( this.model.get('type') === 'variation'){
       data.variation = this.model.get('attributes');

@@ -76,9 +76,7 @@ module.exports = FormView.extend({
     }
 
     // itemized
-    if( this.tax.tax_total_display === 'itemized' ){
-      data.itemized = true;
-    }
+    data.itemized = this.tax.tax_total_display === 'itemized';
 
     // original total for calculating percentage discount
     data.original = this.model.sum(['total', 'order_discount']);

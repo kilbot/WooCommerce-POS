@@ -9,11 +9,15 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
     return '<div><i class="icon icon-pull-arrow"></i>' +
       '<i class="icon icon-spinner"></i></div>' +
       '<ul class="striped"></ul>' +
-      '<div><i class="icon icon-spinner"></i></div>';
+      '<div><i class="icon icon-spinner"></i>';
   },
 
   initialize: function(){
-    _.bindAll(this, 'loadMore');
+    this.listenTo(this.collection.superset(), {
+      'loading': this.toggleLoading,
+      'fullSync:end': this.checkBottom
+    });
+    _.bindAll(this, 'onScroll', 'loadMore', 'bottomOverflow');
   },
 
   // Marionette's default implementation ignores the index, always
@@ -28,23 +32,41 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
 
   onShow: function(){
     this._parent.$el.scroll(this.onScroll);
-    this._parent.$el.on('load:more', this.loadMore);
   },
 
-  onScroll: _.throttle(function(e){
-    var sH = e.target.scrollHeight,
-        cH = e.target.clientHeight,
-        sT = e.target.scrollTop;
-
-    if((sH - cH - sT) < 100){
-      $(e.target).trigger('load:more');
+  onScroll: _.throttle(function(){
+    if(this.bottomOverflow() < 100){
+      this.loadMore();
     }
   }, 20),
 
-  loadMore: function(){
-    if(this.collection.hasNextPage()){
-      this.collection.appendNextPage();
+  bottomOverflow: function(){
+    var sH = this._parent.el.scrollHeight,
+        cH = this._parent.el.clientHeight,
+        sT = this._parent.el.scrollTop;
+    return sH - cH - sT;
+  },
+
+  checkBottom: function(){
+    if(this.bottomOverflow() === 0){
+      this.loadMore();
     }
+  },
+
+  loadMore: function(){
+    // get next page from filtered collection
+    if(this.collection.hasNextPage()){
+      return this.collection.appendNextPage();
+    }
+
+    // load more from queue
+    if(this.collection.superset().queue.length > 0){
+      this.collection.superset().processQueue();
+    }
+  },
+
+  toggleLoading: function(loading){
+    this.$el.toggleClass('loading', loading);
   }
 
 });

@@ -2,8 +2,9 @@ var DualCollection = require('lib/config/dual-collection');
 var Model = require('./model');
 var debug = require('debug')('ordersCollection');
 var $ = require('jquery');
-var Radio = require('backbone.radio');
+//var Radio = require('backbone.radio');
 var _ = require('lodash');
+var bb = require('backbone');
 
 module.exports = DualCollection.extend({
   model: Model,
@@ -27,8 +28,8 @@ module.exports = DualCollection.extend({
       order = _.first( this.openOrders() );
     }
 
-    if( order && !order.isEditable() ){
-      Radio.command('router', 'show:receipt', id);
+    if( order && !order._open ){
+      bb.navigate('receipt/' + order.id, { trigger: true });
     }
 
     this.active = order;
@@ -48,13 +49,24 @@ module.exports = DualCollection.extend({
   addToCart: function(options){
     var order = this.getActiveOrder();
     var self = this;
-    $.when(order.cart._isReady, order.save({}, {wait:true})).then(function(cart) {
-      cart.order_id = order.id;
-      cart.addToCart(options);
-      if(cart.isNew()){
-        self.trigger('new:order', order);
-      }
-    });
+    $.when(order.cart.indexedDB.open(), order.getLocalId())
+      .then(function() {
+        order.cart.order_id = order.id;
+        order.cart.addToCart(options);
+        if(order.cart.isNew()){
+          self.trigger('new:order', order);
+        }
+      });
+  },
+
+  getReceipt: function(id){
+    var order = this.get(id);
+
+    if(order && order._open){
+      bb.navigate('checkout/' + order.id, { trigger: true });
+    }
+
+    return order;
   },
 
   /**
@@ -62,7 +74,7 @@ module.exports = DualCollection.extend({
    */
   openOrders: function(){
     return this.filter(function(model){
-      return model.isEditable();
+      return model._open;
     });
   },
 

@@ -47,7 +47,7 @@ var Router = Router.extend({
     this.listenTo(this.orders, {
       'new:order' : this.addOrder,
       'remove'    : this.removeOrder
-    })
+    });
   },
 
   onBeforeRoute: function(){

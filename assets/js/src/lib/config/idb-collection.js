@@ -1,29 +1,47 @@
+/**
+ * TODO: merge sync/idb.js & sync/idbsync.js
+ */
+
 var Collection = require('./collection');
-var debug = require('debug')('idbCollection');
+//var debug = require('debug')('idbCollection');
 var POS = require('lib/utilities/global');
 var $ = require('jquery');
+var _ = require('lodash');
 var IndexedDB = require('./sync/idb');
 
 module.exports = POS.IndexedDBCollection = Collection.extend({
 
   constructor: function() {
     Collection.apply(this, arguments);
-
-    this._isReady = $.Deferred();
-
-    this.once('idb:ready', function(){
-      this._isReady.resolve(this);
-    }, this);
-
     this.indexedDB = new IndexedDB(this);
+    this.indexedDB.open();
   },
 
-  fetch: function(options){
+  /**
+   *
+   */
+  mergeRecords: function(records){
+    var merge = _.map(records, this.mergeRecord, this);
+    return $.when.apply(this, merge);
+  },
+
+  /**
+   *
+   */
+  mergeRecord: function(record){
     var self = this;
-    return $.when(this._isReady).then(function() {
-      debug('fetching ' + self.name);
-      return Collection.prototype.fetch.call(self, options);
-    });
+    return $.when(
+      this.indexedDB.getByAttribute({ id: record.id })
+    ).then(function(local){
+        if(local[0]){
+          record[self.keyPath] = local[0][self.keyPath];
+        }
+        return self.indexedDB.put(record);
+      }).then(function(id){
+        return self.indexedDB.get(id);
+      }).then(function(model){
+        self.add(model, {merge: true});
+      });
   }
 
 });

@@ -41,13 +41,13 @@ module.exports = FormView.extend({
   },
 
   bindings: {
-    'input[name="regular_price"]'   : {
+    'input[name="regular_price"]' : {
       observe: 'regular_price',
       onGet: Utils.formatNumber,
       onSet: Utils.unformat
     },
-    'input[name="taxable"]'         : 'taxable',
-    'select[name="tax_class"]'      : {
+    'input[name="taxable"]' : 'taxable',
+    'select[name="tax_class"]' : {
       observe: 'tax_class',
       selectOptions: {
         collection: function(){
@@ -76,6 +76,12 @@ module.exports = FormView.extend({
     this.$el.hide().slideDown(250);
   },
 
+  remove: function() {
+    this.$el.slideUp( 250, function() {
+      FormView.prototype.remove.call(this);
+    }.bind(this));
+  },
+
   pulse: function(type){
     if(type === 'remove'){
       return this.$el.slideUp(250);
@@ -87,12 +93,12 @@ module.exports = FormView.extend({
         name      = el.attr('name').split('.'),
         attribute = name[0],
         value     = el.val(),
-        data      = {};
+        data      = {},
+        self      = this;
 
-    // special case product meta
-    if( name.length > 1 && attribute === 'meta' ) {
+    var newValue = function(){
       var key = el.parent('span').data('key');
-      var meta = ( this.model.get('meta') || [] );
+      var meta = ( self.model.get('meta') || [] );
 
       // select row (or create new one)
       var row = _.where( meta, { 'key': key } );
@@ -101,7 +107,11 @@ module.exports = FormView.extend({
 
       // add the change row and make unique on key
       meta.push(row);
-      value = _.uniq( meta, 'key' );
+      return _.uniq( meta, 'key' );
+    };
+
+    if( name.length > 1 && attribute === 'meta' ) {
+      value = newValue();
     }
 
     data[ attribute ] = value;

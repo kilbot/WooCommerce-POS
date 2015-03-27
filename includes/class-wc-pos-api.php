@@ -11,24 +11,21 @@
 
 class WC_POS_API {
 
-  /**
-   * Constructor
-   */
-  public function __construct() {
+  private $products;
+  private $orders;
+  private $customers;
+  private $coupons;
+
+  public function __construct( WC_POS_Gateways $gateways ) {
     if( ! is_pos() )
       return;
 
-    $this->init();
-    add_filter( 'woocommerce_api_query_args', array( $this, 'woocommerce_api_query_args' ), 10, 2 );
-  }
+    $this->products   = new WC_POS_API_Products();
+    $this->orders     = new WC_POS_API_Orders( $gateways );
+    $this->customers  = new WC_POS_API_Customers();
+    $this->coupons    = new WC_POS_API_Coupons();
 
-  /**
-   * Load subclasses
-   */
-  private function init() {
-    new WC_POS_API_Products();
-    new WC_POS_API_Orders();
-    new WC_POS_API_Customers();
+    add_filter( 'woocommerce_api_query_args', array( $this, 'woocommerce_api_query_args' ), 10, 2 );
   }
 
   /**
@@ -45,6 +42,32 @@ class WC_POS_API {
     }
 
     return $args;
+  }
+
+  /**
+   * Get all the ids for a given post_type
+   * @return json
+   */
+  public function get_all_ids() {
+    $entity = isset($_REQUEST['type']) ? $_REQUEST['type'] : false;
+    $updated_at_min = isset($_REQUEST['updated_at_min']) ? $_REQUEST['updated_at_min'] : false;
+
+    $has_method = property_exists($this, $entity) &&
+      is_object($this->{$entity}) &&
+      method_exists($this->{$entity}, 'get_ids');
+
+    if($has_method){
+      $result = $this->{$entity}->get_ids($updated_at_min);
+    } else {
+      $result = new WP_Error(
+        'woocommerce_pos_get_ids_error',
+        /* translators: woocommerce */
+        sprintf( __( 'There was an error calling %s::%s', 'woocommerce' ), 'WC_POS_API', $entity ),
+        array( 'status' => 500 )
+      );
+    }
+
+    WC_POS_AJAX::serve_response($result);
   }
 
 }

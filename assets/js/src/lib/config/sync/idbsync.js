@@ -48,9 +48,12 @@ module.exports = function(method, model, options) {
     deferred.reject(result);
   };
 
-  if(methods[method]){
-    methods[method](model, options, db);
-  }
+  db.open()
+    .then(function(){
+      if(methods[method]){
+        methods[method](model, options, db);
+      }
+    });
 
   return deferred.promise();
 };

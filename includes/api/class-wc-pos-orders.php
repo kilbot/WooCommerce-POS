@@ -2,6 +2,9 @@
 
 /**
  * POS Orders Class
+ * duck punches the WC REST API
+ * note: editing orders is no currently supported
+ *
  *
  * @class    WC_POS_API_Orders
  * @package  WooCommerce POS
@@ -16,16 +19,23 @@ class WC_POS_API_Orders {
 
   /**
    * Constructor
+   * @param WC_POS_Gateways $gateways
    */
-  public function __construct() {
-    add_filter( 'woocommerce_api_create_order_data', array( $this, 'create_order_data'), 10, 2 );
+  public function __construct( WC_POS_Gateways $gateways ) {
+
+    // gateways class
+    $this->gateways = $gateways;
+
+    add_filter( 'woocommerce_api_create_order_data', array( $this, 'order_data'), 10, 2 );
+    add_filter( 'woocommerce_api_edit_order_data', array( $this, 'edit_order_data'), 10, 3 );
     add_action( 'woocommerce_order_add_product', array( $this, 'order_add_product'), 10, 5 );
     add_action( 'woocommerce_order_add_shipping', array( $this, 'order_add_shipping'), 10, 3 );
     add_action( 'woocommerce_order_add_fee', array( $this, 'order_add_fee'), 10, 3 );
     add_action( 'woocommerce_api_create_order', array( $this, 'create_order'), 10, 3 );
+    add_action( 'woocommerce_api_edit_order', array( $this, 'create_order'), 10, 3 );
 
     // payment complete
-    add_action( 'woocommerce_payment_complete', array( $this, 'payment_complete' ), 10, 1 );
+//    add_action( 'woocommerce_payment_complete', array( $this, 'payment_complete' ), 10, 1 );
 
     // add payment info to order response
     add_filter( 'woocommerce_api_order_response', array( $this, 'order_response' ), 10, 4 );
@@ -33,14 +43,12 @@ class WC_POS_API_Orders {
 
   /**
    * Store raw data for use by payment gateways
-   * @param $data
-   * @param $WC_API_Orders
    * @return array data
    */
-  public function create_order_data( $data, $WC_API_Orders ) {
+  public function order_data($data, $WC_API_Orders) {
 
     // get raw data from request body
-    $data = json_decode(trim(file_get_contents('php://input')), true);
+    $data = json_decode(trim($this->get_raw_data()), true);
 
     // store raw data
     $this->data = $data;
@@ -52,6 +60,20 @@ class WC_POS_API_Orders {
     }
 
     return $data;
+  }
+
+  /**
+   * Edit order
+   * - delete all order data
+   *
+   * @param $data
+   * @param $order_id
+   * @param $WC_API_Orders
+   * @return array
+   */
+  public function edit_order_data($data, $order_id, $WC_API_Orders){
+    $this->delete_order_items($order_id);
+    return $this->order_data($data, $WC_API_Orders);
   }
 
   /**
@@ -172,6 +194,7 @@ class WC_POS_API_Orders {
     $this->update_order_meta($order_id);
     $this->update_lines($order_id, 'line_items');
     $this->update_lines($order_id, 'fee_lines');
+    $this->process_payment($order_id, $data);
   }
 
   private function update_order_meta( $order_id ){
@@ -202,7 +225,8 @@ class WC_POS_API_Orders {
   }
 
   /**
-   *
+   * @param $order_id
+   * @param $line
    */
   private function update_lines( $order_id, $line ){
 
@@ -246,10 +270,76 @@ class WC_POS_API_Orders {
 
   /**
    * @param $order_id
+   * @param $data
    */
-  public function payment_complete( $order_id ) {
+  private function process_payment( $order_id, $data ){
+
+    if(!isset($data['payment_details'])){
+      return;
+    }
+
+    $this->parse_payment_details($data['payment_details']);
+
+    // some gateways check if a user is signed in, so let's switch to customer
+    $logged_in_user = get_current_user_id();
+    wp_set_current_user( $data['customer_id'] );
+
+    // load the gateways
+    $gateway_id = $data['payment_details']['method_id'];
+    add_filter('option_woocommerce_'. $gateway_id .'_settings', array($this, 'force_enable_gateway'));
+    $gateways = $this->gateways->enabled_gateways();
+    $result = $gateways[ $gateway_id ]->process_payment( $order_id );
+
+    // switch back to logged in user
+    wp_set_current_user( $logged_in_user );
 
   }
+
+  /**
+   * @param $data
+   * @return mixed
+   */
+  public function force_enable_gateway($data){
+    if(isset($data['enabled'])){
+      $data['enabled'] = 'yes';
+    }
+    return $data;
+  }
+
+  /**
+   * Normalize cc data
+   * @param $payment_details
+   */
+  private function parse_payment_details($payment_details){
+
+    foreach($payment_details as $key => $value){
+
+      // match credit card number
+      if(strpos($key, 'number') !== false){
+        $_POST['number'] = $value;
+
+      // match expiry month
+      } elseif(strpos($key, 'month') !== false){
+        $_POST['month'] = $value;
+
+      // match expiry year
+      } elseif(strpos($key, 'year') !== false){
+        $_POST['year'] = $value;
+
+      // match cvv
+      } elseif(strpos($key, 'cvv') !== false){
+        $_POST['cvv'] = $value;
+      }
+    }
+
+  }
+
+  /**
+   * @param $order_id
+   */
+//  public function payment_complete( $order_id ) {
+//
+//  }
 
 
   /**
@@ -276,6 +366,59 @@ class WC_POS_API_Orders {
       }
     }
     return $address;
+  }
+
+  /**
+   * Returns array of all order ids
+   * optionally return ids updated_at_min
+   * @param $updated_at_min
+   * @return array
+   */
+  public function get_ids($updated_at_min){
+    $args = array(
+      'post_type'     => array('shop_order'),
+      'post_status'   => array('any'),
+      'posts_per_page'=>  -1,
+      'fields'        => 'ids'
+    );
+
+    if($updated_at_min){
+      $args['date_query'][] = array(
+        'column'    => 'post_modified_gmt',
+        'after'     => $updated_at_min,
+        'inclusive' => false
+      );
+    }
+
+    $query = new WP_Query( $args );
+    return array_map( 'intval', $query->posts );
+  }
+
+  /**
+   * @return string
+   */
+  public function get_raw_data() {
+    global $HTTP_RAW_POST_DATA;
+    if ( !isset( $HTTP_RAW_POST_DATA ) ) {
+      $HTTP_RAW_POST_DATA = file_get_contents( 'php://input' );
+    }
+    return $HTTP_RAW_POST_DATA;
+  }
+
+  /**
+   * @param $order_id
+   */
+  private function delete_order_items($order_id){
+    global $wpdb;
+    $order_item_ids = $wpdb->get_col( $wpdb->prepare( "
+			SELECT      order_item_id
+			FROM        {$wpdb->prefix}woocommerce_order_items
+			WHERE       order_id = %d
+		", $order_id ) );
+
+    foreach($order_item_ids as $item_id){
+      wc_delete_order_item($item_id);
+    }
   }
 
 }

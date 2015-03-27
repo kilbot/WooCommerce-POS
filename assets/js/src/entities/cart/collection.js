@@ -71,23 +71,24 @@ module.exports = IndexedDBCollection.extend({
    */
   addToCart: function(options){
     options = options || {};
-    var model,
-        attributes = options.model ? options.model.toJSON() : options;
+    var attributes = options.model ? options.model.toJSON() : options;
 
-    if(attributes.id){
-      model = this.findWhere({ product_id: attributes.id });
-    }
+    var model = this.findWhere({ product_id: attributes.id });
 
     if(model){
       model.quantity('increase');
     } else {
-      attributes.order = this.order_id;
-      attributes.product_id = attributes.id;
-      delete attributes.id;
-      model = this.add(_.pick(attributes, this.productAttributes));
+      model = this._addToCart(attributes);
     }
 
     model.trigger('pulse');
+  },
+
+  _addToCart: function(attributes){
+    attributes.order = this.order_id;
+    attributes.product_id = attributes.id;
+    delete attributes.id;
+    return this.add(_.pick(attributes, this.productAttributes));
   },
 
   itemizedTax: function(){

@@ -2,6 +2,7 @@
 
 /**
  * POS Product Class
+ * duck punches the WC REST API
  *
  * @class    WC_POS_API_Products
  * @package  WooCommerce POS
@@ -11,24 +12,8 @@
 
 class WC_POS_API_Products {
 
-  /**
-   * Constructor
-   */
   public function __construct() {
-    $this->init();
     add_filter( 'woocommerce_api_product_response', array( $this, 'filter_product_response' ), 10, 4 );
-  }
-
-  /**
-   * Load Product subclasses
-   */
-  private function init() {
-
-    // pos only products
-    $settings = get_option( WC_POS_Admin_Settings::DB_PREFIX . 'general' );
-    if( isset( $settings['pos_only_products'] ) && $settings['pos_only_products'] ) {
-      new WC_POS_Products_Visibility();
-    }
   }
 
   /**
@@ -118,6 +103,31 @@ class WC_POS_API_Products {
     }
 
     return $product_data;
+  }
+
+  /**
+   * Returns array of all product ids
+   * @param $updated_at_min
+   * @return array
+   */
+  public function get_ids($updated_at_min){
+    $args = array(
+      'post_type'     => array('product'),
+      'post_status'   => array('publish'),
+      'posts_per_page'=>  -1,
+      'fields'        => 'ids'
+    );
+
+    if($updated_at_min){
+      $args['date_query'][] = array(
+        'column'    => 'post_modified_gmt',
+        'after'     => $updated_at_min,
+        'inclusive' => false
+      );
+    }
+
+    $query = new WP_Query( $args );
+    return array_map( 'intval', $query->posts );
   }
 
 }

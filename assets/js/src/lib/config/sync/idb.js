@@ -2,22 +2,12 @@
  * Backbone adapter for idb-wrapper api
  */
 var IDBStore = require('idb-wrapper');
+var $ = require('jquery');
 var _ = require('lodash');
 var debug = require('debug')('idb');
 var noop = function (){};
 
 function IndexedDB(parent) {
-
-  var defaultReadyHandler = function () {
-    debug(parent.name + ' ready');
-    parent.trigger('idb:ready', parent);
-  };
-
-  var defaultErrorHandler = function (error) {
-    error = error || {};
-    debug(error.type, error);
-    parent.trigger('idb:error', error);
-  };
 
   var defaults = {
     storeName     : 'store',
@@ -25,8 +15,6 @@ function IndexedDB(parent) {
     dbVersion     : 1,
     keyPath       : 'local_id',
     autoIncrement : true,
-    onStoreReady  : defaultReadyHandler,
-    onError       : defaultErrorHandler,
     indexes       : [
       {name: 'local_id', keyPath: 'local_id', unique: true},
       {name: 'id', keyPath: 'id', unique: true},
@@ -42,12 +30,11 @@ function IndexedDB(parent) {
     indexes       : parent.indexes
   }, defaults);
 
-  this.store = new IDBStore(this.options);
-
   if(parent.storage && parent.storage === 'dual'){
     this.dualStorage = true;
     this.states = parent.states;
   }
+
 }
 
 var methods = {
@@ -279,7 +266,126 @@ var methods = {
    */
   deleteDatabase: function() {
     this.store.deleteDatabase();
+  },
+
+  /**
+   * Promisify
+   */
+  open: function () {
+    if(this._open){ return this._open; }
+    var deferred = new $.Deferred(),
+        options = this.options || {};
+
+    options.onStoreReady = function () {
+      debug(options.storeName + ' open');
+      deferred.resolve();
+    };
+
+    options.onError = function (err) {
+      debug(err.type, err);
+      deferred.reject(err);
+    };
+
+    this.store = new IDBStore(options);
+
+    this._open = deferred.promise();
+    return this._open;
+  },
+
+  put: function (key, value) {
+    var deferred = new $.Deferred();
+    var onSuccess = function (result) {
+      deferred.resolve(result);
+    };
+    var onError = function (err) {
+      deferred.reject(err);
+    };
+
+    if (this.options.keyPath !== null) {
+      // in-line keys: one arg only (key == value)
+      this.store.put(key, onSuccess, onError);
+    } else {
+      // out-of-line keys: two args
+      this.store.put(key, value, onSuccess, onError);
+    }
+
+    return deferred.promise();
+  },
+
+  get: function (key) {
+    var deferred = new $.Deferred();
+    var onSuccess = function (result) {
+      deferred.resolve(result);
+    };
+    var onError = function (err) {
+      deferred.reject(err);
+    };
+
+    this.store.get(key, onSuccess, onError);
+
+    return deferred.promise();
+  },
+
+  remove: function (key) {
+    var deferred = new $.Deferred();
+    var onSuccess = function (result) {
+      deferred.resolve(result);
+    };
+    var onError = function (err) {
+      deferred.reject(err);
+    };
+
+    this.store.remove(key, onSuccess, onError);
+
+    return deferred.promise();
+  },
+
+  /**
+   * select records by {key: value}
+   */
+  getByAttribute: function(attribute){
+    var deferred = new $.Deferred();
+    var onSuccess = function (result) {
+      deferred.resolve(result);
+    };
+    var onError = function (err) {
+      deferred.reject(err);
+    };
+
+    var keyRange = this.store.makeKeyRange({
+      only: _.chain(attribute).values().first().value()
+    });
+
+    this.store.query(onSuccess, {
+      index: _.chain(attribute).keys().first().value(),
+      keyRange: keyRange,
+      onError: onError
+    });
+
+    return deferred.promise();
   }
+
+  /**
+   * returns latest `updated_at`
+   */
+  //getLastUpdate: function(){
+  //  var deferred = new $.Deferred();
+  //  var onItem = function (item) {
+  //    debugger;
+  //    return deferred.resolve(item.updated_at, item);
+  //  };
+  //  var onError = function (err) {
+  //    deferred.reject(err);
+  //  };
+  //
+  //  this.store.iterate(onItem, {
+  //    index: 'updated_at',
+  //    order: 'DESC',
+  //    onError: onError
+  //  });
+  //
+  //  return deferred.promise();
+  //}
 
   // });
 };

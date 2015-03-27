@@ -12,9 +12,9 @@ module.exports = Route.extend({
   initialize: function (options) {
     this.container  = options.container;
     this.filtered   = Radio.request('entities', 'get', {
-      type: 'filtered',
-      name: 'products',
-      perPage: 10
+      type    : 'filtered',
+      name    : 'products',
+      perPage : 10
     });
     this.collection = this.filtered.superset();
     this.setTabLabel({
@@ -25,7 +25,7 @@ module.exports = Route.extend({
 
   fetch: function() {
     if (this.collection.isNew()) {
-      return this.collection.fullSync();
+      return this.collection.fetch({fullSync: true});
     }
   },
 

@@ -15,9 +15,11 @@ var View = FormView.extend({
 
   initialize: function(options){
     options = options || {};
-    this.target   = options.target;
-    this.parent   = options.parent;
-    this.type     = options.target.data('numpad');
+    _.extend(this, {
+      target : options.target,
+      parent : options.parent,
+      type   : options.target.data('numpad')
+    });
 
     if(this.type === 'discount'){
       this.discountSetup();
@@ -101,6 +103,8 @@ var View = FormView.extend({
     }
   },
 
+  /* jshint -W074 */
+  /* todo: too complex */
   commonKeys: function(e){
     e.preventDefault();
     var key = $(e.currentTarget).data('key'),
@@ -131,6 +135,7 @@ var View = FormView.extend({
 
     this.ui.input.filter(':visible').val(newValue).trigger('input');
   },
+  /* jshint +W074 */
 
   discountSetup: function(){
     var current = this.model.get(this.target.attr('name')),
@@ -183,6 +188,8 @@ var View = FormView.extend({
     }
   },
 
+  /* jshint -W071 */
+  /* todo: too many statements */
   cashSetup: function(){
     var denominations = Radio.request('entities', 'get', {
       type: 'option',
@@ -220,6 +227,7 @@ var View = FormView.extend({
 
     this.quick_keys = keys;
   },
+  /* jshint +W071 */
 
   cashKeys: function(e){
     e.preventDefault();

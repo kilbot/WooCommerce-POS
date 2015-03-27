@@ -17,11 +17,12 @@ class WC_POS_AJAX {
    * Hook into ajax events
    *
    * @param WC_POS_i18n $i18n
+   * @param WC_POS_API $api
    */
-  public function __construct(WC_POS_i18n $i18n) {
+  public function __construct(WC_POS_i18n $i18n, WC_POS_API $api) {
 
     $ajax_events = array(
-      'get_all_ids'           => $this,
+      'get_all_ids'           => $api,
       'get_modal'             => $this,
       'get_print_template'    => $this,
       'set_product_visibilty' => $this,
@@ -39,28 +40,28 @@ class WC_POS_AJAX {
     }
   }
 
-  /**
-   * Get all the ids for a given post_type
-   * @return json
-   */
-  public function get_all_ids() {
-
-    if(empty( $_REQUEST['type'] )) {
-      die();
-    }
-
-    $args = array(
-      'post_type'     => array('product'),
-      'post_status'   => array('publish'),
-      'posts_per_page'=>  -1,
-      'fields'        => 'ids'
-    );
-
-    $query = new WP_Query( $args );
-    $ids = array_map( 'intval', $query->posts );
-
-    $this->serve_response($ids);
-  }
+//  /**
+//   * Get all the ids for a given post_type
+//   * @return json
+//   */
+//  public function get_all_ids() {
+//
+//    if(empty( $_REQUEST['type'] )) {
+//      die();
+//    }
+//
+//    $args = array(
+//      'post_type'     => array('product'),
+//      'post_status'   => array('publish'),
+//      'posts_per_page'=>  -1,
+//      'fields'        => 'ids'
+//    );
+//
+//    $query = new WP_Query( $args );
+//    $ids = array_map( 'intval', $query->posts );
+//
+//    $this->serve_response($ids);
+//  }
 
   public function get_modal() {
 
@@ -209,7 +210,7 @@ class WC_POS_AJAX {
    * Output the result
    * @param $result
    */
-  private function serve_response($result){
+  static public function serve_response($result){
 
     header( 'Content-Type: application/json; charset=utf-8' );
 
@@ -218,7 +219,7 @@ class WC_POS_AJAX {
       if ( is_array( $data ) && isset( $data['status'] ) ) {
         status_header( $data['status'] );
       }
-      $result = $this->error_to_array( $result );
+      $result = self::error_to_array( $result );
     }
 
     echo json_encode( $result );
@@ -230,7 +231,7 @@ class WC_POS_AJAX {
    * @param $error
    * @return array
    */
-  private function error_to_array( $error ) {
+  static private function error_to_array( $error ) {
     $errors = array();
     foreach ( (array) $error->errors as $code => $messages ) {
       foreach ( (array) $messages as $message ) {

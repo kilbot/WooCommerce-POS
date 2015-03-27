@@ -2,6 +2,9 @@
 // - queue which prioritises tasks
 // - retry for server timeouts
 
+// DO NOT include this file in wp-admin
+// changes are made to the global $.ajax & bb.sync
+
 var bb = require('backbone');
 var Radio = require('backbone.radio');
 
@@ -15,7 +18,19 @@ bb.$.ajaxSetup({
       });
     }
   },
+  beforeSend: function(xhr){
+    xhr.setRequestHeader('X-WC-POS', 1);
+  },
   timeout: 50000 // 50 seconds
+});
+
+// global ajax error handler
+bb.$( document ).ajaxError(function( event, request ) {
+  Radio.trigger('global', 'error', {
+    jqXHR   : request,
+    status  : request.statusText
+    //message : request.responseText
+  });
 });
 
 // reference to Backbone.sync

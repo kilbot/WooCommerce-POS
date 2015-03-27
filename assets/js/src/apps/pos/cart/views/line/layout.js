@@ -1,7 +1,7 @@
 var LayoutView = require('lib/config/layout-view');
 var ItemView = require('./item');
 var DrawerView = require('./drawer');
-var bb = require('backbone');
+//var bb = require('backbone');
 
 module.exports = LayoutView.extend({
   tagName: 'li',
@@ -47,8 +47,8 @@ module.exports = LayoutView.extend({
     }
   },
 
-  pulse: function(type) {
-    if(type === 'remove'){ return; }
+  pulse: function(opt) {
+    if(opt === 'remove'){ return; }
     var self = this,
         list        = this.$el.closest('.list'),
         scrollTop   = list.scrollTop(),

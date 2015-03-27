@@ -3,6 +3,7 @@ var Radio = require('backbone.radio');
 //var debug = require('debug')('receipt');
 var POS = require('lib/utilities/global');
 var LayoutView = require('./views/layout');
+var StatusView = require('./views/status');
 var ReceiptView = require('./views/receipt');
 var polyglot = require('lib/utilities/polyglot');
 var Buttons = require('lib/components/buttons/view');
@@ -26,10 +27,7 @@ var ReceiptRoute = Route.extend({
   },
 
   onFetch: function(id){
-    this.order = this.collection.findWhere({id: id});
-    if(!this.order){
-      console.log('no receipt found!');
-    }
+    this.order = this.collection.get(id);
   },
 
   render: function() {
@@ -45,12 +43,15 @@ var ReceiptRoute = Route.extend({
   },
 
   showStatus: function(){
-
+    var view = new StatusView({
+      model: this.order
+    });
+    this.layout.headerRegion.show(view);
   },
 
   showReceipt: function(){
     var view = new ReceiptView({
-      model: this.model
+      model: this.order
     });
 
     this.layout.listRegion.show(view);
@@ -92,7 +93,7 @@ var ReceiptRoute = Route.extend({
   print: function(){
     Radio.request('print', 'print', {
       template: 'receipt',
-      model: this.model
+      model: this.order
     });
   }
 

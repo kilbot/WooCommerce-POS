@@ -5,7 +5,7 @@ var hbs = require('handlebars');
 module.exports = ItemView.extend({
   tagName: 'h5',
   template: hbs.compile('' +
-    '{{title}}' +
+    '{{method_title}}' +
     '{{#if icon}}<img src="{{icon}}">{{/if}}'
   ),
 

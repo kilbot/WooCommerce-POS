@@ -24,10 +24,10 @@ module.exports = FormView.extend({
     '*[name="message"]': {
       observe: 'message',
       initialize: function(){
-        debugger;
+        //debugger;
       },
       onGet: function (value) {
-        debugger;
+        //debugger;
         return value;
       },
       onSet: function (value) {

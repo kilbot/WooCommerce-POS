@@ -5,10 +5,10 @@ var $ = require('jquery');
 var gateways = [];
 $('.tmpl-checkout-gateways').each(function(){
   gateways.push({
-    id    : $(this).data('gateway'),
-    title : $(this).data('title'),
-    icon  : $(this).data('icon'),
-    active: (1 === $(this).data('default'))
+    method_id    : $(this).data('gateway'),
+    method_title : $(this).data('title'),
+    icon         : $(this).data('icon'),
+    active       : (1 === $(this).data('default'))
   });
 });
 

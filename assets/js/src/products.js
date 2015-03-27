@@ -1,7 +1,8 @@
 /**
  * Handles the Product Edit page
+ * todo: refactor
  */
-
+/* jshint -W071 */
 (function () {
 
   'use strict';
@@ -105,7 +106,8 @@
   });
 
   $( document ).ready(function() {
-    var app = new View();
+    return new View();
   });
 
 })();
+/* jshint +W071 */

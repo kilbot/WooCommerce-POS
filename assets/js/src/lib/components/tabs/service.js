@@ -1,7 +1,7 @@
 var Service = require('lib/config/service');
 var TabsView = require('./views/tabs');
 var TabsCollection = require('./entities/collection');
-var _ = require('lodash');
+//var _ = require('lodash');
 
 module.exports = Service.extend({
   channelName: 'tabs',

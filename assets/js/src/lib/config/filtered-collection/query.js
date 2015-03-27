@@ -34,6 +34,8 @@ module.exports = {
 
   matchMaker: function( criterion, model ){
 
+    /* jshint -W074 */
+    /* todo: too complex */
     return _.all( criterion, function( array, key ) {
 
       if( key === '' ) {
@@ -79,6 +81,7 @@ module.exports = {
       return false;
 
     }, this);
+    /* jshint +W074 */
 
   },
 

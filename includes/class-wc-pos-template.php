@@ -120,7 +120,13 @@ class WC_POS_Template {
       'app'          => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION .'"></script>'
     );
 
-    // get locale translation if available
+    // cdn bundle for local dev
+//    $scripts = array(
+//      'bundle'       => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/vendor.bundle.js?ver='. WC_POS_VERSION .'"></script>',
+//      'app'          => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION .'"></script>'
+//    );
+
+      // get locale translation if available
     $locale_js = WC_POS_i18n::locale_js();
     if( $locale_js )
       $scripts['locale'] = '<script src="'. $locale_js .'?ver='. WC_POS_VERSION .'"></script>';

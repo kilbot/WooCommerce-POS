@@ -2,6 +2,7 @@
 
 /**
  * POS Customer Class
+ * duck punches the WC REST API
  *
  * @class    WC_POS_API_Customers
  * @package  WooCommerce POS
@@ -15,17 +16,14 @@ class WC_POS_API_Customers {
    * Constructor
    */
   public function __construct() {
-    $this->init();
     add_action( 'pre_user_query', array( $this, 'pre_user_query' ) );
+    add_filter( 'woocommerce_api_customer_response', array( $this, 'customer_response' ), 10, 4 );
   }
 
   /**
-   * Load Customer subclasses
+   *
+   * @param $wp_user_query
    */
-  private function init() {
-
-  }
-
   public function pre_user_query( $wp_user_query ) {
 
     // only target requests from POS
@@ -67,6 +65,32 @@ class WC_POS_API_Customers {
     }
 
     return $wp_user_query;
+  }
+
+  /**
+   * Returns array of all user ids
+   * @return array
+   */
+  public function get_ids(){
+    $args = array(
+      'fields' => 'ID'
+    );
+
+    $query = new WP_User_Query( $args );
+    return array_map( 'intval', $query->results );
+  }
+
+  /**
+   * - add `updated_at` to customer data
+   *
+   * @param $customer_data
+   * @param $customer
+   * @param $fields
+   * @param $server
+   * @return mixed
+   */
+  public function customer_response($customer_data, $customer, $fields, $server){
+    return $customer_data;
   }
 
 }

@@ -1,6 +1,6 @@
 var DualModel = require('lib/config/dual-model');
 var Radio = require('backbone.radio');
-var $ = require('jquery');
+//var $ = require('jquery');
 var _ = require('lodash');
 var Utils = require('lib/utilities/utils');
 var debug = require('debug')('order');
@@ -52,13 +52,6 @@ module.exports = DualModel.extend({
   },
 
   /**
-   * is order open?
-   */
-  isEditable: function(){
-    return !_.contains(this.closedStatus, this.get('status'));
-  },
-
-  /**
    * - attach tax settings
    * - attach cart & gateways if order is open
    */
@@ -80,7 +73,28 @@ module.exports = DualModel.extend({
     }
 
     // order_discount input
-    this.on('change:order_discount', this.calcTotals);
+    this.on({
+      'change:order_discount': this.calcTotals,
+      'change:status': this.isEditable
+    });
+  },
+
+  /**
+   *
+   */
+  getLocalId: function(){
+    if(this.id){
+      return this.id;
+    }
+    return this.save({}, {wait:true});
+  },
+
+  /**
+   * is order editable method, sets _open true or false
+   */
+  isEditable: function(){
+    this._open = !_.contains(this.closedStatus, this.get('status'));
+    return this._open;
   },
 
   /**
@@ -88,31 +102,37 @@ module.exports = DualModel.extend({
    */
   destroy: function(options){
     if(this.cart.length > 0){
-      _.invoke( this.cart.toArray(), 'destroy');
-    } else {
-      return DualModel.prototype.destroy.call(this, options);
+
+      this.cart.indexedDB.removeBatch( this.cart.pluck('local_id') );
+      //_.invoke( this.cart.toArray(), 'destroy' );
     }
+    return DualModel.prototype.destroy.call(this, options);
   },
 
   /**
    * Attach cart
    */
   attachCart: function(){
-    this.cart = Radio.request('entities', 'get', {
+    var cart = Radio.request('entities', 'get', {
       init : true,
       type : 'collection',
       name : 'cart'
     });
-    this.cart.order_id = this.id;
 
-    this.listenTo(this.cart, {
+    cart.order_id = this.id;
+
+    this.listenTo(cart, {
       'add change' : this.calcTotals,
       'remove'     : this.itemRemoved
     });
 
-    $.when(this.cart._isReady).then(function(cart){
-      if(cart) { cart.fetchCartItems(); }
-    });
+    if(cart.indexedDB){
+      cart.indexedDB.open().then(function(){
+        cart.fetchCartItems();
+      });
+    }
+
+    this.cart = cart;
   },
 
   /**
@@ -139,8 +159,10 @@ module.exports = DualModel.extend({
   },
 
   /**
-   *
+   * Sum cart totals
+   * todo: too many statements
    */
+  /* jshint -W071 */
   calcTotals: function(){
     var total_tax     = 0,
         subtotal_tax  = 0,
@@ -176,6 +198,7 @@ module.exports = DualModel.extend({
     this.save(totals);
     debug('update totals', totals);
   },
+  /* jshint +W071 */
 
   /**
    * Convenience method to sum attributes
@@ -193,6 +216,7 @@ module.exports = DualModel.extend({
    */
   process: function(){
     this.processCart();
+    this.processGateway();
     this.serverSync();
   },
 
@@ -217,7 +241,18 @@ module.exports = DualModel.extend({
     this.set({
       line_items    : obj.product,
       shipping_lines: obj.shipping,
-      fee_lines     : obj.fee
+      fee_lines     : obj.fee,
+      tax_lines     : this.cart.itemizedTax() // reset for retry
+    });
+  },
+
+  /**
+   *
+   */
+  processGateway: function(){
+    var data = this.gateways.findWhere({ active: true }).toJSON();
+    this.set({
+      payment_details: data
     });
   }
 

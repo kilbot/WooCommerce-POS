@@ -12,11 +12,11 @@ var FilteredCollection = require('lib/config/filtered-collection');
 var SupportForm = require('./support/form');
 var debug = require('debug')('entities');
 var POS = require('lib/utilities/global');
-var $ = require('jquery');
+//var $ = require('jquery');
 var _ = require('lodash');
 var storage = global.localStorage || window.localStorage;
 var JSON = global.JSON || window.JSON;
-var Radio = require('backbone.radio');
+//var Radio = require('backbone.radio');
 
 module.exports = POS.Entities = Service.extend({
   channelName: 'entities',

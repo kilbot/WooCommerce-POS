@@ -59,7 +59,8 @@ class WC_POS {
     // global
     $i18n     = new WC_POS_i18n();
     $gateways = new WC_POS_Gateways();
-    new WC_POS_API();
+    $api      = new WC_POS_API( $gateways );
+    new WC_POS_Products();
 
     // frontend only
     if (!is_admin()) {
@@ -73,7 +74,7 @@ class WC_POS {
 
     // ajax only
     if (is_admin() && defined('DOING_AJAX') && DOING_AJAX ) {
-      new WC_POS_AJAX( $i18n );
+      new WC_POS_AJAX( $i18n, $api );
     }
 
   }
