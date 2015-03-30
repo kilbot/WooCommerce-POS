@@ -8,6 +8,7 @@ var CustomerSelect = require('lib/components/customer-select/view');
 //var debug = require('debug')('cart');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
+var Utils = require('lib/utilities/utils');
 var polyglot = require('lib/utilities/polyglot');
 
 var CartRoute = Route.extend({
@@ -31,6 +32,20 @@ var CartRoute = Route.extend({
 
   onFetch: function(id){
     this.order = this.collection.setActiveOrder(id);
+
+    if(this.order){
+      this.setTabLabel({
+        tab   : 'right',
+        label : this.tabLabel(this.order)
+      });
+
+      this.listenTo( this.order, 'change:total', function(model){
+        this.setTabLabel({
+          tab   : 'right',
+          label : this.tabLabel(model)
+        });
+      });
+    }
   },
 
   render: function() {
@@ -41,6 +56,12 @@ var CartRoute = Route.extend({
     this.listenTo( this.layout, 'show', this.onShow );
 
     this.container.show( this.layout );
+  },
+
+  onRender: function(){
+    if( this.order && !this.order._open ){
+      this.navigate('receipt/' + this.order.id, { trigger: true });
+    }
   },
 
   onShow: function(){
@@ -170,6 +191,14 @@ var CartRoute = Route.extend({
     });
     this.on( 'note:clicked', view.showNoteField );
     this.layout.notesRegion.show( view );
+  },
+
+  tabLabel: function(order){
+    var prefix = polyglot.t('titles.cart'),
+      total = order.get('total'),
+      formatTotal = Utils.formatMoney(total);
+
+    return prefix + ': ' + formatTotal;
   }
 
 });

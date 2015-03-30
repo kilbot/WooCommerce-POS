@@ -8,11 +8,13 @@ var View = ItemView.extend({
   tagName: 'h4',
 
   initialize: function(){
-    var status = polyglot.t('titles.to-pay');
-    this.template = hbs.compile( status + ': {{{money total}}}' );
+    var status = this.model.get('payment_details').paid ? 'paid' : 'unpaid';
+    this.template = hbs.compile(
+      polyglot.t('titles.' + status) + ': {{{money total}}}'
+    );
   }
 
 });
 
 module.exports = View;
-POS.attach('POSApp.Checkout.Views.Status', View);
+POS.attach('POSApp.Receipt.Views.Status', View);

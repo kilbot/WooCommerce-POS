@@ -1,13 +1,11 @@
 var LayoutView = require('lib/config/layout-view');
-var _ = require('lodash');
-var $ = require('jquery');
 
 module.exports = LayoutView.extend({
+  template: '#tmpl-cart',
 
   initialize: function(options){
     options = options || {};
     this.order = options.order;
-    this.template = _.template( $('#tmpl-cart').html() );
   },
 
   tagName: 'section',

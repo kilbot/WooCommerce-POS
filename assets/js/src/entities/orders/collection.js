@@ -28,10 +28,6 @@ module.exports = DualCollection.extend({
       order = _.first( this.openOrders() );
     }
 
-    if( order && !order._open ){
-      bb.navigate('receipt/' + order.id, { trigger: true });
-    }
-
     this.active = order;
     return order;
   },

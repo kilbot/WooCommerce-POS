@@ -4,94 +4,91 @@
  */
 ?>
 
-<script type="text/x-handlebars-template" id="tmpl-receipt">
+<script type="text/template" id="tmpl-receipt">
+  <div class="status"></div>
+  <div class="list-header">
+    <div class="qty"><?php _ex( 'Qty', 'Abbreviation of Quantity', 'woocommerce-pos' ); ?></div>
+    <div class="title"><?php /* translators: woocommerce */ _e( 'Product', 'woocommerce' ); ?></div>
+    <div class="price"><?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?></div>
+    <div class="total"><?php /* translators: woocommerce */ _e( 'Total', 'woocommerce' ); ?></div>
+  </div>
+  <div class="list"></div>
+  <div class="list-totals"></div>
+  <div class="list-actions"></div>
+</script>
 
-  <table class="table">
-    <thead>
-    <tr>
-      <th><?php /* translators: woocommerce */ _e( 'Product', 'woocommerce' ); ?></th>
-      <th><?php /* translators: woocommerce */ _e( 'Qty', 'woocommerce' ); ?></th>
-      <th><?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?></th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#each line_items}}
-    <tr>
-      <td class="name">
-        {{name}}
-        {{#with attributes}}
-        <dl>
-          {{#each this}}
-          <dt>{{name}}:</dt>
-          <dd>{{option}}</dd>
-          {{/each}}
-        </dl>
-        {{/with}}
-      </td>
-      <td class="qty">{{quantity}}</td>
-      <td class="total">
-        {{#compare total '!==' subtotal}}
-        <del>{{{money subtotal}}}</del>
-        <ins>{{{money total}}}</ins>
-        {{else}}
-        {{{money total}}}
-        {{/compare}}
-      </td>
-    </tr>
-    {{/each}}
-    </tbody>
-    <tfoot>
-    <tr class="subtotal">
-      <th colspan="2"><?php /* translators: woocommerce */ _e( 'Cart Subtotal', 'woocommerce' ); ?>:</th>
-      <td colspan="1">{{{money subtotal}}}</td>
-    </tr>
-    {{#compare cart_discount '!==' 0}}
-    <tr class="cart-discount">
-      <th colspan="2"><?php /* translators: woocommerce */ _e( 'Cart Discount', 'woocommerce' ); ?>:</th>
-      <td colspan="1">{{{money cart_discount negative=true}}}</td>
-    </tr>
-    {{/compare}}
-    {{#each fee_lines}}
-    <tr class="fee">
-      <th colspan="2">{{title}}:</th>
-      <td colspan="1">{{{money total}}}</td>
-    </tr>
-    {{/each}}
-    {{#compare total_tax '!==' 0}}
-    {{#if show_itemized}}
-    {{#each tax_lines}}
-    <tr class="tax">
-      <th colspan="2">
-        {{#if ../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
-        {{title}}:
-      </th>
-      <td colspan="1">{{{money total}}}</td>
-    </tr>
-    {{/each}}
-    {{else}}
-    <tr class="tax">
-      <th colspan="2">
-        {{#if incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
-        <?php echo esc_html( WC()->countries->tax_or_vat() ); ?>
-      </th>
-      <td colspan="1">{{{money total_tax}}}</td>
-    </tr>
-    {{/if}}
-    {{/compare}}
-    {{#compare order_discount '!==' 0}}
-    <tr class="order-discount">
-      <th colspan="2"><?php /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</th>
-      <td colspan="1">{{{money order_discount negative=true}}}</td>
-    </tr>
-    {{/compare}}
-    <tr class="order-total">
-      <th colspan="2"><?php /* translators: woocommerce */ _e( 'Order Total', 'woocommerce' ); ?>:</th>
-      <td colspan="1">{{{money total}}}</td>
-    </tr>
-    <tr class="note" {{#unless note}}style="display:none"{{/unless}}>
-    <td colspan="5">{{note}}</td>
-    </tr>
-    </tfoot>
-  </table>
+<script type="text/x-handlebars-template" id="tmpl-receipt-items">
+  {{#each []}}
+  <li>
+    <div class="qty">{{quantity}}</div>
+    <div class="title">{{#if method_title}}{{method_title}}{{else}}{{name}}{{/if}}</div>
+    <div class="price">
+      {{#if on_sale}}
+      <del>{{{money regular_price}}}</del>
+      <ins>{{{money price}}}</ins>
+      {{else}}
+      {{{money price}}}
+      {{/if}}
+    </div>
+    <div class="total">
+      {{#if on_sale}}
+      <del>{{{money subtotal}}}</del>
+      <ins>{{{money total}}}</ins>
+      {{else}}
+      {{{money total}}}
+      {{/if}}
+    </div>
+  </li>
+  {{/each}}
+</script>
 
+<script type="text/x-handlebars-template" id="tmpl-receipt-totals">
+  <li class="subtotal">
+    <div><?php /* translators: woocommerce */ _e( 'Cart Subtotal', 'woocommerce' ); ?>:</div>
+    <div class="total">{{{money subtotal}}}</div>
+  </li>
+  {{#compare cart_discount '!==' 0}}
+  <li class="cart-discount">
+    <div><?php /* translators: woocommerce */ _e( 'Cart Discount', 'woocommerce' ); ?>:</div>
+    <div class="total">{{{money cart_discount negative=true}}}</div>
+  </li>
+  {{/compare}}
+  {{#compare total_tax '!==' 0}}
+  {{#if itemized}}
+  {{#each tax_lines}}
+  {{#compare total '!==' 0}}
+  <li class="tax">
+    <div>
+      {{#if ../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
+      {{label}}:
+    </div>
+    <div class="total">{{{money total}}}</div>
+  </li>
+  {{/compare}}
+  {{/each}}
+  {{else}}
+  <li class="tax">
+    <div>
+      {{#if incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
+      <?php echo esc_html( WC()->countries->tax_or_vat() ); ?>:
+    </div>
+    <div class="total">{{{money total_tax}}}</div>
+  </li>
+  {{/if}}
+  {{/compare}}
+  {{#compare order_discount '!==' 0}}
+  <li class="order-discount">
+    <div><?php /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</div>
+    <div class="total">{{{money order_discount negative=true}}}</div>
+  </li>
+  {{/compare}}
+  <li class="order-total">
+    <div><?php /* translators: woocommerce */ _e( 'Order Total', 'woocommerce' ); ?>:</div>
+    <div class="total">{{{money total}}}</div>
+  </li>
+  {{#if note}}
+  <li class="note">
+    <div>{{note}}</div>
+  </li>
+  {{/if}}
 </script>

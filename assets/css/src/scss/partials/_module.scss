@@ -29,7 +29,7 @@
       }
     }
   }
-  .list-header {
+  .list-header, > .status {
     @include display-flex;
     background-color: nth( $primaryPalette, 6 );
     color: $inverse-text-color;

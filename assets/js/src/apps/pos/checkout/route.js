@@ -27,6 +27,14 @@ var CheckoutRoute = Route.extend({
 
   onFetch: function(id){
     this.order = this.collection.setActiveOrder(id);
+
+    if(this.order){
+      this.listenTo( this.order, 'change:status', function(model){
+        if(!model._open && model.get('status') !== 'failed'){
+          this.navigate('receipt/' + model.id, { trigger: true });
+        }
+      });
+    }
   },
 
   render: function(){
@@ -39,6 +47,12 @@ var CheckoutRoute = Route.extend({
     });
 
     this.container.show(this.layout);
+  },
+
+  onRender: function(){
+    if( this.order && !this.order._open ){
+      this.navigate('receipt/' + this.order.id, { trigger: true });
+    }
   },
 
   showStatus: function(){

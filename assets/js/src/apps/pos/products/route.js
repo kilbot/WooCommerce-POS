@@ -24,8 +24,10 @@ module.exports = Route.extend({
   },
 
   fetch: function() {
-    if (this.collection.isNew()) {
-      return this.collection.fetch({fullSync: true});
+    if( this.collection.isNew() ){
+      return this.collection.fetch();
+    } else {
+      this.filtered.setPage(1);
     }
   },
 

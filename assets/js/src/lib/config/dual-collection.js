@@ -115,7 +115,7 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     var localFetch = IndexedDBCollection.prototype.fetch.call(this, options);
 
     // start fullSync
-    if(options.fullSync){
+    if(this.isNew()){
       localFetch.done(function(){
         self.fullSync();
       });
@@ -169,7 +169,7 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     }
 
     //var last_update = this.formatDate( this.getState('last_update') );
-    var last_update = this.pluck('updated_at').sort().pop();
+    var last_update = _.compact( this.pluck('updated_at') ).sort().pop();
 
     //
     return $.when( this.getRemoteIds(last_update) )

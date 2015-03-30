@@ -4,14 +4,9 @@ var hbs = require('handlebars');
 var $ = require('jquery');
 
 var View = ItemView.extend({
-  template: hbs.compile( $('#tmpl-receipt').html() ),
-
-  initialize: function(){
-
-  }
-
-
+  tagName: 'ul',
+  template: hbs.compile( $('#tmpl-receipt-totals').html() )
 });
 
 module.exports = View;
-POS.attach('POSApp.Receipt.Views.Receipt', View);
+POS.attach('POSApp.Receipt.Views.Totals', View);

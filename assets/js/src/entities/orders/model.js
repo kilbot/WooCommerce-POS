@@ -16,7 +16,8 @@ module.exports = DualModel.extend({
     'on-hold',
     'cancelled',
     'refunded',
-    'processing'
+    'processing',
+    'failed'
   ],
 
   /**

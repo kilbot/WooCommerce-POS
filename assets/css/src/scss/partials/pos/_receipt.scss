@@ -1,0 +1,27 @@
+.receipt-module {
+  .list-header, .list, .list-totals {
+    .qty {
+      @include flex(0 1 15%);
+    }
+    .title {
+      @include flex(1);
+    }
+    .price {
+      text-align: right;
+      @include flex(0 1 20%);
+    }
+    .total {
+      text-align: right;
+      @include flex(0 1 20%);
+    }
+    .action {
+      @include flex(0 1 52px);
+    }
+  }
+  .list-totals {
+    text-align: right;
+    .order-total {
+      font-size: 1.4em;
+    }
+  }
+}

@@ -299,6 +299,10 @@ class WC_POS_i18n {
       'receipt'   => /* translators: woocommerce */ __( 'Receipt', 'woocommerce' ),
       'shipping'  => /* translators: woocommerce */ __( 'Shipping Name', 'woocommerce' ),
       'to-pay'    => __( 'To Pay', 'woocommerce-pos' ),
+      'paid'      => __( 'Paid', 'woocommerce-pos' ),
+      'unpaid'    => __( 'Unpaid', 'woocommerce-pos' ),
+      'email-receipt' => __( 'Email Receipt', 'woocommerce-pos' ),
+      'open'      => _x( 'Open', 'order status, ie: open order in cart', 'woocommerce-pos' ),
     );
 
     $translations['buttons'] = array(

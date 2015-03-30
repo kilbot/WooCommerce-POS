@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4.0-alpha\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2015-03-27 15:06:13+00:00\n"
+"POT-Creation-Date: 2015-03-30 11:46:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,6 +13,17 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Team Name <team@example.com>\n"
 "X-Generator: grunt-wp-i18n 0.5.0\n"
+
+#: includes/api/class-wc-pos-orders.php:348
+msgid "There was an error processing the payment"
+msgstr ""
+
+#: includes/api/class-wc-pos-orders.php:374
+msgid ""
+"You are now being redirected offsite to complete the payment.<br><a "
+"target=\"_blank\" href=\"%s\">Click here</a> if you are not redirected "
+"automatically."
+msgstr ""
 
 #: includes/class-wc-pos-ajax.php:128
 msgid "There is no settings id"
@@ -50,27 +61,39 @@ msgstr ""
 msgid "To Pay"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:309 includes/views/pos/cart.php:129
+#: includes/class-wc-pos-i18n.php:302
+msgid "Paid"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:303
+msgid "Unpaid"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:304
+msgid "Email Receipt"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:313 includes/views/pos/cart.php:129
 msgid "Discount"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:315
+#: includes/class-wc-pos-i18n.php:319
 msgid "Process Payment"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:319
+#: includes/class-wc-pos-i18n.php:323
 msgid "Return to Sale"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:323
+#: includes/class-wc-pos-i18n.php:327
 msgid "Void"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:329
+#: includes/class-wc-pos-i18n.php:333
 msgid "Loading&hellip;"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:331
+#: includes/class-wc-pos-i18n.php:335
 msgid "Your browser is not supported!"
 msgstr ""
 
@@ -180,6 +203,10 @@ msgstr ""
 msgid "Telephone"
 msgstr ""
 
+#: includes/views/print/receipt.php:134
+msgid "Qty"
+msgstr ""
+
 #: includes/views/support.php:11
 msgid "Support Form"
 msgstr ""
@@ -218,22 +245,27 @@ msgctxt "keyboard shortcuts"
 msgid "Hotkeys"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:306
+#: includes/class-wc-pos-i18n.php:305
+msgctxt "order status, ie: open order in cart"
+msgid "Open"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:310
 msgctxt "system status: delete local records"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:317
+#: includes/class-wc-pos-i18n.php:321
 msgctxt "restore default settings"
 msgid "Restore defaults"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:318
+#: includes/class-wc-pos-i18n.php:322
 msgctxt "Numpad return key"
 msgid "return"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:335
+#: includes/class-wc-pos-i18n.php:339
 msgctxt "eg: 23 records"
 msgid "record |||| records"
 msgstr ""
@@ -248,13 +280,13 @@ msgctxt "Money returned from cash sale"
 msgid "Change"
 msgstr ""
 
-#: includes/views/pos/cart.php:9
+#: includes/views/pos/cart.php:9 includes/views/pos/receipt.php:10
 msgctxt "Abbreviation of Quantity"
 msgid "Qty"
 msgstr ""
 
 #: includes/views/pos/cart.php:107 includes/views/pos/cart.php:118
-#: includes/views/pos/receipt.php:65 includes/views/pos/receipt.php:74
+#: includes/views/pos/receipt.php:62 includes/views/pos/receipt.php:72
 #: includes/views/print/receipt.php:186 includes/views/print/receipt.php:195
 msgctxt "abbreviation for includes (tax)"
 msgid "incl."

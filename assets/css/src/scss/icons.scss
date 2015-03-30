@@ -197,6 +197,45 @@
 .icon-more-vert:before {
   content: "\e609";
 }
+.icon-note:before {
+  content: "\e026";
+}
+
+/**
+ * Order status
+ */
+.icon-pending:before {
+  content: "\e012";
+  color: #ffba00;
+}
+.icon-completed:before {
+  content: "\e015";
+  color: #2ea2cc;
+}
+.icon-on-hold:before {
+  content: "\e033";
+  color: #999;
+}
+.icon-failed:before {
+  content: "\e016";
+  color: #d0c21f;
+}
+.icon-cancelled:before {
+  content: "\e013";
+  color: #a00;
+}
+.icon-processing:before {
+  content: "\e011";
+  color: #73a724;
+}
+.icon-refunded:before {
+  content: "\e014";
+  color: #999;
+}
+.icon-open:before {
+  content: "\e01d";
+  color: #73a724;
+}
 
 /**
  * Loading & Fail
