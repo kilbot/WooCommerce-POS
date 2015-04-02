@@ -10,7 +10,7 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_API_Products {
+class WC_POS_API_Products extends WC_POS_API_Abstract {
 
   public function __construct() {
     add_filter( 'woocommerce_api_product_response', array( $this, 'filter_product_response' ), 10, 4 );

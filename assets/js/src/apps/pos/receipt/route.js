@@ -2,7 +2,7 @@ var Route = require('lib/config/route');
 var Radio = require('backbone.radio');
 //var debug = require('debug')('receipt');
 var POS = require('lib/utilities/global');
-var LayoutView = require('./views/layout');
+var LayoutView = require('./layout');
 var StatusView = require('./views/status');
 var ItemsView = require('./views/items');
 var TotalsView = require('./views/totals');
@@ -51,7 +51,7 @@ var ReceiptRoute = Route.extend({
     var view = new StatusView({
       model: this.order
     });
-    this.layout.status.show(view);
+    this.layout.getRegion('status').show(view);
   },
 
   showItems: function(){
@@ -59,7 +59,7 @@ var ReceiptRoute = Route.extend({
       order: this.order
     });
 
-    this.layout.list.show(view);
+    this.layout.getRegion('list').show(view);
   },
 
   showTotals: function(){
@@ -67,7 +67,7 @@ var ReceiptRoute = Route.extend({
       model: this.order
     });
 
-    this.layout.totals.show(view);
+    this.layout.getRegion('totals').show(view);
   },
 
   showActions: function(){
@@ -98,7 +98,7 @@ var ReceiptRoute = Route.extend({
       }
     });
 
-    this.layout.actions.show(view);
+    this.layout.getRegion('actions').show(view);
   },
 
   print: function(){

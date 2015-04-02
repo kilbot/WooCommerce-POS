@@ -1,5 +1,5 @@
 var Router = require('lib/config/router');
-var LayoutView = require('./layout-view');
+var LayoutView = require('./layout');
 var FormRoute = require('./form/route');
 var StatusRoute = require('./status/route');
 var Radio = require('backbone.radio');
@@ -32,14 +32,14 @@ module.exports = Router.extend({
 
   showForm: function(){
     var route = new FormRoute({
-      container  : this.layout.leftRegion
+      container  : this.layout.getRegion('left')
     });
     route.enter();
   },
 
   showStatus: function(){
     return new StatusRoute({
-      container  : this.layout.rightRegion,
+      container  : this.layout.getRegion('right'),
       collection : this.collection
     });
   }

@@ -39,20 +39,20 @@ app.entitiesService = new EntitiesService({
 });
 
 app.headerService = new HeaderService({
-  headerContainer : app.layout.headerRegion,
-  menuContainer   : app.layout.menuRegion
+  headerContainer : app.layout.getRegion('header'),
+  menuContainer   : app.layout.getRegion('menu')
 });
 
 app.posApp = new POSRouter({
-  container: app.layout.mainRegion
+  container: app.layout.getRegion('main')
 });
 
 app.supportApp = new SupportRouter({
-  container: app.layout.mainRegion
+  container: app.layout.getRegion('main')
 });
 
 app.modalService = new ModalService({
-  container: app.layout.modalRegion
+  container: app.layout.getRegion('modal')
 });
 
 app.popoverService = new PopoverService();

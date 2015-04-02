@@ -65,7 +65,7 @@ var SettingsRouter = Router.extend({
   },
 
   onBeforeRoute: function() {
-    this.layout.footer.empty();
+    this.layout.getRegion('footer').empty();
   },
 
   showTabs: function(){
@@ -94,14 +94,14 @@ var SettingsRouter = Router.extend({
       }
     });
 
-    this.layout.tabs.show(view);
+    this.layout.getRegion('tabs').show(view);
   },
 
   showGeneral: function(){
     var model = this.collection.get('general');
     this.showFooter({model: model});
     return new General({
-      container : this.layout.settings,
+      container : this.layout.getRegion('settings'),
       model: model
     });
   },
@@ -110,7 +110,7 @@ var SettingsRouter = Router.extend({
     var model = this.collection.get('checkout');
     this.showFooter({model: model});
     return new Checkout({
-      container : this.layout.settings,
+      container : this.layout.getRegion('settings'),
       model: model
     });
   },
@@ -119,7 +119,7 @@ var SettingsRouter = Router.extend({
     var model = this.collection.get('hotkeys');
     this.showFooter({model: model});
     return new HotKeys({
-      container : this.layout.settings,
+      container : this.layout.getRegion('settings'),
       model: model
     });
   },
@@ -128,14 +128,14 @@ var SettingsRouter = Router.extend({
     var model = this.collection.get('access');
     this.showFooter({model: model});
     return new Access({
-      container : this.layout.settings,
+      container : this.layout.getRegion('settings'),
       model: model
     });
   },
 
   showTools: function(){
     return new Tools({
-      container : this.layout.settings
+      container : this.layout.getRegion('settings')
     });
   },
 
@@ -166,7 +166,7 @@ var SettingsRouter = Router.extend({
       //}
     });
 
-    this.layout.footer.show(view);
+    this.layout.getRegion('footer').show(view);
   }
 
 });

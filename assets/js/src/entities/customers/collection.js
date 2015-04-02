@@ -14,7 +14,14 @@ module.exports = Collection.extend({
   },
 
   initialize: function(){
-
+    var settings = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'customers'
+    });
+    if(settings){
+      this._guest = settings.guest;
+      this._default = settings['default'] || settings.guest;
+    }
   },
 
   parse: function (resp) {

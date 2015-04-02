@@ -16,21 +16,10 @@ var View = ItemView.extend({
   initialize: function(options){
     options = options || {};
     this.model = options.model;
-
-    this.collection = Radio.request('entities', 'get', {
+    this.customers = Radio.request('entities', 'get', {
       type: 'collection',
       name: 'customers'
     });
-
-    var customers = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'customers'
-    });
-
-    if(customers){
-      this.guest_customer = customers.guest;
-      this.default_customer = customers['default'] || customers.guest;
-    }
   },
 
   behaviors: {
@@ -49,23 +38,33 @@ var View = ItemView.extend({
   },
 
   /**
-   *
+   * using collection and Select2 query
+   * todo: when updating to v4 use Select2 ajax api, eg:
+   * ajax: {
+        url: "wc_api_url/customers",
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+            return {filter[q]: term};
+        },
+        results: function (data, page) {
+            return { results: data.customers };
+        },
+        cache: true
+    },
    */
-  query: function(query){
-    var self = this;
-    this.collection
+  query: _.debounce(function(query){
+    var onSuccess = function(customers){
+      var results = customers.toJSON();
+      results.unshift(customers._guest);
+      query.callback({ results: results });
+    };
+    this.customers
       .fetch({
         data: 'filter[q]=' + query.term,
-        beforeSend: function(xhr){
-          xhr.setRequestHeader('X-WC-POS', 1);
-        }
-      })
-      .done(function(){
-        var results = self.collection.toJSON();
-        results.unshift(self.guest_customer);
-        query.callback({ results: results });
+        success: onSuccess
       });
-  },
+  }, 250),
 
   /**
    *
@@ -73,7 +72,7 @@ var View = ItemView.extend({
   initSelection: function( element, callback ) {
     var customer;
     if(this.model){ customer = this.model.get('customer'); }
-    if(!customer){ customer = this.default_customer; }
+    if(!customer){ customer = this.customers._default; }
     callback( customer );
   },
 

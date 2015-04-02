@@ -1,6 +1,6 @@
 var POS = require('lib/utilities/global');
 var Router = require('lib/config/router');
-var LayoutView = require('./layout-view');
+var LayoutView = require('./layout');
 var Products = require('./products/route');
 var CartRoute = require('./cart/route');
 var CheckoutRoute = require('./checkout/route');
@@ -10,12 +10,9 @@ var bb = require('backbone');
 
 var Router = Router.extend({
   routes: {
-    ''            : 'showCart',
-    'cart'        : 'showCart',
-    'cart/:id'    : 'showCart',
-    'checkout'    : 'showCheckout',
-    'checkout/:id': 'showCheckout',
-    'receipt/:id' : 'showReceipt'
+    '(cart)(/:id)(/)'  : 'showCart',
+    'checkout(/:id)(/)': 'showCheckout',
+    'receipt(/:id)(/)' : 'showReceipt'
   },
 
   initialize: function(options) {
@@ -62,32 +59,32 @@ var Router = Router.extend({
   },
 
   showProducts: function(){
-    if( this.layout.leftRegion.hasView() ){
+    if( this.layout.getRegion('left').hasView() ){
       return;
     }
     var products = new Products({
-      container : this.layout.leftRegion
+      container : this.layout.getRegion('left')
     });
     products.enter();
   },
 
   showCart: function() {
     return new CartRoute({
-      container : this.layout.rightRegion,
+      container : this.layout.getRegion('right'),
       collection: this.orders
     });
   },
 
   showCheckout: function() {
     return new CheckoutRoute({
-      container : this.layout.rightRegion,
+      container : this.layout.getRegion('right'),
       collection: this.orders
     });
   },
 
   showReceipt: function() {
     return new ReceiptRoute({
-      container : this.layout.rightRegion,
+      container : this.layout.getRegion('right'),
       collection: this.orders
     });
   },

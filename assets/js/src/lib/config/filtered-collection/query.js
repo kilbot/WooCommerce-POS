@@ -4,6 +4,8 @@ var Parser = require('./parser');
 module.exports = {
 
   query: function( query, label ){
+    this._query = query; // raw query used for auto-populating search field
+
     label = label || 'search';
     var criterion = Parser.parse( query );
 

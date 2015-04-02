@@ -1,5 +1,5 @@
 var Route = require('lib/config/route');
-var LayoutView = require('./views/layout');
+var LayoutView = require('./layout');
 var ItemsView = require('./views/items');
 var TotalsView = require('./views/totals');
 var NotesView = require('./views/notes');
@@ -81,7 +81,7 @@ var CartRoute = Route.extend({
    */
   noActiveOrder: function(){
     var view = new ItemsView();
-    this.layout.listRegion.show(view);
+    this.layout.getRegion('list').show(view);
     _.invoke([
       this.layout.totalsRegion,
       this.layout.customerRegion,
@@ -97,7 +97,7 @@ var CartRoute = Route.extend({
     var view = new ItemsView({
       collection: this.order.cart
     });
-    this.layout.listRegion.show(view);
+    this.layout.getRegion('list').show(view);
   },
 
   /**
@@ -108,7 +108,7 @@ var CartRoute = Route.extend({
       model: this.order
     });
     this.on('discount:clicked', view.showDiscountRow);
-    this.layout.totalsRegion.show(view);
+    this.layout.getRegion('totals').show(view);
   },
 
   /**
@@ -133,7 +133,7 @@ var CartRoute = Route.extend({
       view.$el.prepend( label );
     });
 
-    this.layout.customerRegion.show( view );
+    this.layout.getRegion('customer').show( view );
   },
 
   /**
@@ -179,7 +179,7 @@ var CartRoute = Route.extend({
       }
     });
 
-    this.layout.actionsRegion.show( view );
+    this.layout.getRegion('actions').show( view );
   },
 
   /**
@@ -190,7 +190,7 @@ var CartRoute = Route.extend({
       model: this.order
     });
     this.on( 'note:clicked', view.showNoteField );
-    this.layout.notesRegion.show( view );
+    this.layout.getRegion('note').show( view );
   },
 
   tabLabel: function(order){

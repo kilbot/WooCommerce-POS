@@ -1,7 +1,7 @@
 var Route = require('lib/config/route');
 var POS = require('lib/utilities/global');
 var Layout = require('./layout');
-var Status = require('./status');
+var Status = require('./views/status');
 var $ = require('jquery');
 var _ = require('lodash');
 var Modernizr = global['Modernizr'];
@@ -49,7 +49,7 @@ var StatusRoute = Route.extend({
 
     this.listenTo(view, 'action:clear', this.clearDB);
 
-    this.layout.status.show( view );
+    this.layout.getRegion('status').show( view );
   },
 
   browserStatus: function(){

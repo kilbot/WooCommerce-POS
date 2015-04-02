@@ -35,6 +35,15 @@ var Filter = Behavior.extend({
     } else {
       this.ui.clearBtn.show();
     }
+  },
+
+  onRender: function(){
+    if(this.view.collection.hasFilter('search')){
+      var queryStr = this.view.collection._filtered._query;
+      if(queryStr){
+        this.ui.searchField.val(queryStr).trigger('keyup');
+      }
+    }
   }
 
 });

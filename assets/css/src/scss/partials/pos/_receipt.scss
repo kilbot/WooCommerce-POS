@@ -23,5 +23,11 @@
     .order-total {
       font-size: 1.4em;
     }
+    .note {
+      div:first-of-type {
+        text-align: left;
+        font-weight: normal;
+      }
+    }
   }
 }

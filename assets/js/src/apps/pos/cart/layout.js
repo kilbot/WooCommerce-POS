@@ -11,12 +11,12 @@ module.exports = LayoutView.extend({
   tagName: 'section',
 
   regions: {
-    listRegion      : '.list',
-    totalsRegion    : '.list-totals',
-    customerRegion  : '.cart-customer',
-    actionsRegion   : '.list-actions',
-    notesRegion     : '.cart-notes',
-    footerRegion    : '.list-footer'
+    list      : '.list',
+    totals    : '.list-totals',
+    customer  : '.cart-customer',
+    actions   : '.list-actions',
+    note      : '.cart-notes',
+    footer    : '.list-footer'
   },
 
   attributes: {

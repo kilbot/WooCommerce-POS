@@ -16,10 +16,10 @@ var Layout = LayoutView.extend({
   tagName: 'section',
 
   regions: {
-    headerRegion  : '.list-header',
-    listRegion    : '.list',
-    actionsRegion : '.list-actions',
-    footerRegion  : '.list-footer'
+    header  : '.list-header',
+    list    : '.list',
+    actions : '.list-actions',
+    footer  : '.list-footer'
   },
 
   attributes: {

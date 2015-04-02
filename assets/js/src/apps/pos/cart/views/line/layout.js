@@ -1,6 +1,6 @@
 var LayoutView = require('lib/config/layout-view');
-var ItemView = require('./item');
-var DrawerView = require('./drawer');
+var ItemView = require('./views/item');
+var DrawerView = require('./views/drawer');
 //var bb = require('backbone');
 
 module.exports = LayoutView.extend({

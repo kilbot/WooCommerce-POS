@@ -1,7 +1,7 @@
 var Route = require('lib/config/route');
 //var debug = require('debug')('checkout');
 var POS = require('lib/utilities/global');
-var LayoutView = require('./views/layout');
+var LayoutView = require('./layout');
 var StatusView = require('./views/status');
 var GatewaysView = require('./views/gateways');
 var Buttons = require('lib/components/buttons/view');
@@ -59,7 +59,7 @@ var CheckoutRoute = Route.extend({
     var view = new StatusView({
       model: this.order
     });
-    this.layout.headerRegion.show(view);
+    this.layout.getRegion('header').show(view);
   },
 
   showGateways: function(){
@@ -67,7 +67,7 @@ var CheckoutRoute = Route.extend({
     var view = new GatewaysView({
       collection: this.order.gateways
     });
-    this.layout.listRegion.show(view);
+    this.layout.getRegion('list').show(view);
   },
 
   showActions: function(){
@@ -93,7 +93,7 @@ var CheckoutRoute = Route.extend({
       }
     });
 
-    this.layout.actionsRegion.show(view);
+    this.layout.getRegion('actions').show(view);
   }
 
 });

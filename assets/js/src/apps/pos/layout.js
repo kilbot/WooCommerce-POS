@@ -10,7 +10,7 @@ module.exports = LayoutView.extend({
   },
 
   regions: {
-    leftRegion: '#left',
-    rightRegion: '#right'
+    left: '#left',
+    right: '#right'
   }
 });

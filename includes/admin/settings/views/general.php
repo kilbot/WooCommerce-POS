@@ -18,6 +18,17 @@
     </td>
   </tr>
 
+  <tr>
+    <th scope="row">
+      <label for="decimal_qty"><?php _e( 'Allow Decimal Quantity', 'woocommerce-pos' ) ?></label>
+      <img title="<?php _e( 'Allows items to have decimal values in the quantity field, eg: 0.25', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="tooltip">
+    </th>
+    <td>
+      <input type="checkbox" name="decimal_qty" id="decimal_qty" />
+      <?php /* translators: wordpress */ _e('Enable'); ?>
+    </td>
+  </tr>
+
   <tr class="default_customer">
     <th scope="row">
       <label><?php _e( 'Default POS Customer', 'woocommerce-pos' ); ?></label>

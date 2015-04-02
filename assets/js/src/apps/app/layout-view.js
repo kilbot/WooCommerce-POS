@@ -10,15 +10,15 @@ module.exports = LayoutView.extend({
   template: _.template( $('#page').html() ),
 
   regions: {
-    headerRegion: '#header',
-    menuRegion  : '#menu',
-    tabsRegion  : '#tabs',
-    mainRegion  : '#main',
-    modalRegion : '#modal'
+    header: '#header',
+    menu  : '#menu',
+    tabs  : '#tabs',
+    main  : '#main',
+    modal : '#modal'
   },
 
   initialize: function(){
-    this.mainRegion.on('show', this.setup, this);
+    this.getRegion('main').on('show', this.setup, this);
     globalChannel.on('tab:label', this.updateTabLabel, this);
   },
 
@@ -28,19 +28,19 @@ module.exports = LayoutView.extend({
       this.showTabs();
     } else {
       this.$el.removeClass('two-column');
-      this.tabsRegion.empty();
+      this.getRegion('tabs').empty();
     }
   },
 
   showTabs: function(){
-    var tabs = this.mainRegion.tabs = Radio.request('tabs', 'view', {
+    var tabs = this.getRegion('main').tabs = Radio.request('tabs', 'view', {
       tabs: [
         {id: 'left'},
         {id: 'right'}
       ]
     });
     this.listenTo(tabs.collection, 'active:tab', this.toggleLayout);
-    this.tabsRegion.show(tabs);
+    this.getRegion('tabs').show(tabs);
   },
 
   toggleLayout: function(model){
@@ -49,7 +49,7 @@ module.exports = LayoutView.extend({
   },
 
   updateTabLabel: function(options){
-    this.mainRegion.tabs.setLabel(options);
+    this.getRegion('main').tabs.setLabel(options);
   }
 
 });

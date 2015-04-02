@@ -10,7 +10,7 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_API_Coupons {
+class WC_POS_API_Coupons extends WC_POS_API_Abstract {
 
   /**
    * Returns array of all coupon ids

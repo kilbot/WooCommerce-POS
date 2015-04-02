@@ -36,7 +36,7 @@ module.exports = POS.Route = Mn.Object.extend({
       }
     });
 
-    return $.when(this.fetch.apply(this, args)).then(function() {
+    return $.when(this.fetch.call(this, args)).then(function() {
       self._triggerMethod('fetch', args);
       self._triggerMethod('before:render', args);
     }).then(function() {

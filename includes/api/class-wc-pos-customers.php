@@ -10,29 +10,44 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_API_Customers {
+class WC_POS_API_Customers extends WC_POS_API_Abstract {
 
   /**
    * Constructor
    */
   public function __construct() {
+    add_action( 'pre_get_users', array( $this, 'pre_get_users' ) );
     add_action( 'pre_user_query', array( $this, 'pre_user_query' ) );
-    add_filter( 'woocommerce_api_customer_response', array( $this, 'customer_response' ), 10, 4 );
   }
 
   /**
-   *
+   * Removes the role='customer' restraint
+   * todo: settings
+   * @param $wp_user_query
+   */
+  public function pre_get_users( $wp_user_query ) {
+    $wp_user_query->query_vars['role'] = '';
+  }
+
+  /**
    * @param $wp_user_query
    */
   public function pre_user_query( $wp_user_query ) {
 
-    // only target requests from POS
-    if( ! is_pos() ) {
-      return;
-    }
-
-    global $wpdb;
+    // customer search
     $term = $wp_user_query->query_vars['search'];
+    if (!empty($term)){
+      $this->customer_search($term, $wp_user_query);
+    }
+  }
+
+  /**
+   * Extends customer search
+   * @param $term
+   * @param $wp_user_query
+   */
+  private function customer_search($term, $wp_user_query){
+    global $wpdb;
 
     // search usermeta table
     $usermeta_ids = $wpdb->get_col("
@@ -63,8 +78,6 @@ class WC_POS_API_Customers {
         $wp_user_query->query_where
       );
     }
-
-    return $wp_user_query;
   }
 
   /**
@@ -78,19 +91,6 @@ class WC_POS_API_Customers {
 
     $query = new WP_User_Query( $args );
     return array_map( 'intval', $query->results );
-  }
-
-  /**
-   * - add `updated_at` to customer data
-   *
-   * @param $customer_data
-   * @param $customer
-   * @param $fields
-   * @param $server
-   * @return mixed
-   */
-  public function customer_response($customer_data, $customer, $fields, $server){
-    return $customer_data;
   }
 
 }

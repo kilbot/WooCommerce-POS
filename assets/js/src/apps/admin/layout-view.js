@@ -5,13 +5,14 @@ module.exports = LayoutView.extend({
   el: '#wpbody-content .wrap',
 
   template: function(){
-    return '<div id="wc-pos-admin"></div>' +
+    return '' +
+      '<div id="wc-pos-admin"></div>' +
       '<div id="wc-pos-modal"></div>';
   },
 
   regions: {
-    mainRegion : '#wc-pos-admin',
-    modalRegion: '#wc-pos-modal'
+    main : '#wc-pos-admin',
+    modal: '#wc-pos-modal'
   }
 
 });

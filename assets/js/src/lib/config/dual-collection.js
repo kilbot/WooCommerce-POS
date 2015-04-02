@@ -115,7 +115,7 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     var localFetch = IndexedDBCollection.prototype.fetch.call(this, options);
 
     // start fullSync
-    if(this.isNew()){
+    if(options.fullSync){
       localFetch.done(function(){
         self.fullSync();
       });

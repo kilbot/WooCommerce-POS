@@ -1,5 +1,5 @@
 var Route = require('lib/config/route');
-var Layout = require('./views/layout');
+var Layout = require('./layout');
 var Actions = require('./views/actions');
 var List = require('./views/list');
 var Variations = require('./views/variations');
@@ -25,9 +25,9 @@ module.exports = Route.extend({
 
   fetch: function() {
     if( this.collection.isNew() ){
-      return this.collection.fetch();
+      return this.collection.fetch({ fullSync: true });
     } else {
-      this.filtered.setPage(1);
+      this.filtered.setPage(0);
     }
   },
 
@@ -48,11 +48,10 @@ module.exports = Route.extend({
       collection: this.filtered
     });
 
-    this.layout.actionsRegion.show(view);
+    this.layout.getRegion('actions').show(view);
   },
 
   showTabs: function() {
-
     var view = Radio.request('tabs', 'view', {
       tabs: this.tabsArray()
     });
@@ -62,12 +61,11 @@ module.exports = Route.extend({
     });
 
     // show tabs component
-    this.layout.tabsRegion.show(view);
+    this.layout.getRegion('tabs').show(view);
     this.tabs = view;
   },
 
   showProducts: function() {
-
     var view = new List({
       collection: this.filtered
     });
@@ -80,8 +78,7 @@ module.exports = Route.extend({
     });
 
     // show
-    this.layout.listRegion.show(view);
-
+    this.layout.getRegion('list').show(view);
   },
 
   showVariations: function(childview, options){

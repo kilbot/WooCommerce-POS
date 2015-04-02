@@ -39,10 +39,21 @@ bb.ajaxSync = bb.sync;
 // sync method for IndexedDB
 bb.idbSync = require('./sync/idbsync');
 
+// test for indexedDB
+var hasIndexedDB = function(entity){
+  if(entity.indexedDB){
+    return true;
+  }
+  if(entity.collection && entity.collection.indexedDB){
+    return true;
+  }
+  return false;
+};
+
 // override Backbone.sync
 bb.sync = function(method, model, options) {
   // idb
-  if((model.indexedDB || model.collection.indexedDB) && !options.remote){
+  if(hasIndexedDB(model) && !options.remote){
     return bb.idbSync.apply(this, [method, model, options]);
   }
   // server

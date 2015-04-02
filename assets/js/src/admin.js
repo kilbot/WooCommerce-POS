@@ -26,11 +26,11 @@ app.entities = new EntitiesService({
 });
 
 app.settingsApp = new SettingsRouter({
-  container: app.layout.mainRegion
+  container: app.layout.getRegion('main')
 });
 
 app.modalApp = new ModalService({
-  container: app.layout.modalRegion
+  container: app.layout.getRegion('modal')
 });
 
 app.tabsService = new TabsService();

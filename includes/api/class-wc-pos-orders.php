@@ -12,10 +12,17 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_API_Orders {
+class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
   /** @var array Contains the raw order data */
   private $data = array();
+
+  /** @var array Contains the settings data */
+  private $settings = array();
+
+  /** @var bool Flag for decimal quantity setting */
+  private $allow_decimal_qty = false;
+  private $completed_order_status = 'completed';
 
   /**
    * Constructor
@@ -26,6 +33,9 @@ class WC_POS_API_Orders {
     // gateways class
     $this->gateways = $gateways;
 
+    // settings
+    $this->get_settings();
+
     add_filter( 'woocommerce_api_create_order_data', array( $this, 'order_data'), 10, 2 );
     add_filter( 'woocommerce_api_edit_order_data', array( $this, 'edit_order_data'), 10, 3 );
     add_action( 'woocommerce_order_add_product', array( $this, 'order_add_product'), 10, 5 );
@@ -34,11 +44,40 @@ class WC_POS_API_Orders {
     add_action( 'woocommerce_api_create_order', array( $this, 'create_order'), 10, 3 );
     add_action( 'woocommerce_api_edit_order', array( $this, 'create_order'), 10, 3 );
 
-    // payment complete
+    // payment
+    add_action( 'woocommerce_pos_process_payment', array( $this, 'process_payment' ), 10, 2 );
     add_action( 'woocommerce_payment_complete', array( $this, 'payment_complete' ), 10, 1 );
 
     // add payment info to order response
     add_filter( 'woocommerce_api_order_response', array( $this, 'order_response' ), 10, 4 );
+
+    // allow decimals for qty
+    if( $this->allow_decimal_qty ){
+      remove_filter('woocommerce_stock_amount', 'intval');
+      add_filter( 'woocommerce_stock_amount', 'floatval' );
+    }
+  }
+
+  private function get_settings(){
+    $settings = array();
+
+    // general settings
+    $general = new WC_POS_Admin_Settings_General();
+    $settings['general'] = $general->get_data();
+
+    if( isset($settings['general']['decimal_qty']) && $settings['general']['decimal_qty']){
+      $this->allow_decimal_qty = true;
+    }
+
+    // checkout settings
+    $checkout = new WC_POS_Admin_Settings_Checkout();
+    $settings['checkout'] = $checkout->get_data();
+
+    if( isset($settings['checkout']['order_status']) ){
+      $this->completed_order_status = $settings['checkout']['order_status'];
+    }
+
+    $this->settings = $settings;
   }
 
   /**
@@ -126,6 +165,11 @@ class WC_POS_API_Orders {
     return;
   }
 
+  /**
+   * @param $order_id
+   * @param $item_id
+   * @param $rate
+   */
   public function order_add_shipping($order_id, $item_id, $rate){
     $shipping_line = $this->get_shipping_line($rate, $item_id);
     if($shipping_line && isset($shipping_line['tax'])){
@@ -194,9 +238,12 @@ class WC_POS_API_Orders {
     $this->update_order_meta($order_id);
     $this->update_lines($order_id, 'line_items');
     $this->update_lines($order_id, 'fee_lines');
-    $this->process_payment($order_id, $data);
+    do_action( 'woocommerce_pos_process_payment', $order_id, $data);
   }
 
+  /**
+   * @param $order_id
+   */
   private function update_order_meta( $order_id ){
     update_post_meta( $order_id, '_order_discount',     $this->data['order_discount'] );
     update_post_meta( $order_id, '_cart_discount',      $this->data['cart_discount'] );
@@ -277,9 +324,6 @@ class WC_POS_API_Orders {
     if(!isset($data['payment_details'])){
       return;
     }
-
-    // prepare payment data
-    $this->parse_payment_details($data['payment_details']);
 
     // some gateways check if a user is signed in, so let's switch to customer
     $logged_in_user = get_current_user_id();
@@ -378,34 +422,6 @@ class WC_POS_API_Orders {
   }
 
   /**
-   * Normalize cc data
-   * @param $payment_details
-   */
-  private function parse_payment_details($payment_details){
-
-    foreach($payment_details as $key => $value){
-
-      // match credit card number
-      if(strpos($key, 'number') !== false){
-        $_POST['number'] = $value;
-
-      // match expiry month
-      } elseif(strpos($key, 'month') !== false){
-        $_POST['month'] = $value;
-
-      // match expiry year
-      } elseif(strpos($key, 'year') !== false){
-        $_POST['year'] = $value;
-
-      // match cvv
-      } elseif(strpos($key, 'cvv') !== false){
-        $_POST['cvv'] = $value;
-      }
-    }
-
-  }
-
-  /**
    * @param $order_id
    */
   public function payment_complete( $order_id ) {
@@ -413,11 +429,11 @@ class WC_POS_API_Orders {
     // update order status
     $order = new WC_Order( $order_id );
     if( $order->status == 'processing' ) {
-      $order->update_status( 'completed', 'POS Transaction completed.' );
+      $message = __('POS Transaction completed.', 'woocommerce-pos');
+      $order->update_status( $this->completed_order_status, $message );
     }
 
   }
-
 
   /**
    * Add any payment messages to API response
@@ -439,9 +455,21 @@ class WC_POS_API_Orders {
     $order_data['billing_address'] = $this->filter_address($order_data['billing_address'], $order);
     $order_data['shipping_address'] = $this->filter_address($order_data['shipping_address'], $order, 'shipping');
 
+    // allow decimal quantity
+    // fixed in WC 2.4+
+    if( version_compare( WC()->version, '2.4' ) <= 0 && $this->allow_decimal_qty ){
+      $order_data['line_items'] = $this->filter_qty($order_data['line_items']);
+    }
+
     return $order_data;
   }
 
+  /**
+   * @param $address
+   * @param $order
+   * @param string $type
+   * @return array
+   */
   private function filter_address( $address, $order, $type = 'billing' ){
     $fields = apply_filters('woocommerce_admin_'.$type.'_fields', false);
     if($fields){
@@ -451,6 +479,18 @@ class WC_POS_API_Orders {
       }
     }
     return $address;
+  }
+
+  /**
+   * @param $line_items
+   * @return mixed
+   */
+  private function filter_qty($line_items){
+    foreach( $line_items as &$item ){
+      $qty = wc_get_order_item_meta( $item['id'], '_qty' );
+      $item['quantity'] = wc_stock_amount( $qty );
+    }
+    return $line_items;
   }
 
   /**
@@ -477,17 +517,6 @@ class WC_POS_API_Orders {
 
     $query = new WP_Query( $args );
     return array_map( 'intval', $query->posts );
-  }
-
-  /**
-   * @return string
-   */
-  public function get_raw_data() {
-    global $HTTP_RAW_POST_DATA;
-    if ( !isset( $HTTP_RAW_POST_DATA ) ) {
-      $HTTP_RAW_POST_DATA = file_get_contents( 'php://input' );
-    }
-    return $HTTP_RAW_POST_DATA;
   }
 
   /**
