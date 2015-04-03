@@ -4,6 +4,7 @@ var Radio = require('backbone.radio');
 
 module.exports = Collection.extend({
   model: Model,
+  name: 'customers',
 
   url: function(){
     var wc_api = Radio.request('entities', 'get', {
@@ -22,9 +23,5 @@ module.exports = Collection.extend({
       this._guest = settings.guest;
       this._default = settings['default'] || settings.guest;
     }
-  },
-
-  parse: function (resp) {
-    return resp.customers ? resp.customers : resp ;
   }
 });

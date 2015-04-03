@@ -21,6 +21,10 @@ module.exports = POS.Collection = bb.Collection.extend({
 
   isNew: function() {
     return this._isNew;
+  },
+
+  parse: function (resp){
+    return resp && resp[this.name] ? resp[this.name] : resp ;
   }
 
 });

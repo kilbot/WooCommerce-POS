@@ -41,7 +41,7 @@ describe('lib/config/dual-collection.js', function () {
   });
 
   it('should turn an array of remote ids to an array of models', function() {
-    this.collection.add(this.collection.parse(this.remote));
+    this.collection.add(this.remote.test);
     var models = this.collection.getModelsByRemoteIds([2,4,6]);
     models.should.have.length(3);
     models[0].should.be.instanceof(Backbone.Model);

@@ -9,6 +9,7 @@ var bb = require('backbone');
 module.exports = DualCollection.extend({
   model: Model,
   name: 'orders',
+  _syncDelayed: false,
 
   /**
    * Open orders first

@@ -1,15 +1,12 @@
 var Model = require('./model');
 var POS = require('lib/utilities/global');
 var _ = require('lodash');
+var debug = require('debug')('dualModel');
 
 module.exports = POS.DualModel = Model.extend({
   idAttribute: 'local_id',
   remoteIdAttribute: 'id',
   fields: ['title'],
-
-  parse: function (resp) {
-    return resp[this.name] ? resp[this.name] : resp ;
-  },
 
   url: function(){
     var remoteId = this.get(this.remoteIdAttribute),
@@ -60,23 +57,57 @@ module.exports = POS.DualModel = Model.extend({
            status === this.states.CREATE_FAILED;
   },
 
-  serverSync: function(){
-    var method, status, self = this, options = {};
-    status = this.get('status');
-    method = this.getSyncMethodsByState(status);
-
-    options.success = function(response){ // (response, textStatus, jqXHR)
-      if (method === 'delete') {
-        return self.destroy();
-      }
-      var data = self.parse(response);
-      if (!data.status) { data.status = ''; }
-      return self.save(data);
-    };
+  remoteSync: function(options){
+    options = options || {};
+    var self      = this,
+        status    = this.get('status'),
+        method    = this.getSyncMethodsByState(status),
+        keyPath   = this.collection.keyPath,
+        local_id  = this.get(keyPath);
 
     options.remote = true;
 
-    return this.sync(method, this, options);
+    return this.sync(method, this, options)
+      .then(function(response){
+        if (method === 'delete') {
+          return self.destroy();
+        }
+        var attributes = self.parse(response);
+        if(local_id){ attributes[keyPath] = local_id; }
+        if(!attributes.status) { attributes.status = ''; }
+        return self.collection.mergeRecord(attributes);
+      })
+      .done(function(model){
+        debug('remote sync done', model);
+      })
+      .fail(function(err){
+        debug('remote sync fail', err);
+      });
+
+  },
+
+  save: function(attributes, options){
+    options = options || {};
+    var self = this, remote;
+
+    if(options.remote){
+      remote = true;
+      options.remote = undefined; // prevent remote flag going through to sync
+    }
+
+    return Model.prototype.save.call(this, attributes, options)
+      .then(function(){
+        if(remote){
+          return self.remoteSync();
+        }
+      })
+      .done(function(model){
+        debug('model saved', model);
+      })
+      .fail(function(err){
+        debug('error saving model', err);
+      });
+
   }
 
 });

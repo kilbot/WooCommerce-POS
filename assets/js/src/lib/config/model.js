@@ -15,5 +15,9 @@ module.exports = POS.Model = bb.Model.extend({
         message : errorThrown
       });
     });
+  },
+
+  parse: function (resp){
+    return resp && resp[this.name] ? resp[this.name] : resp ;
   }
 });

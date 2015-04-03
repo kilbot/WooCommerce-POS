@@ -294,12 +294,8 @@ var methods = {
 
   put: function (key, value) {
     var deferred = new $.Deferred();
-    var onSuccess = function (result) {
-      deferred.resolve(result);
-    };
-    var onError = function (err) {
-      deferred.reject(err);
-    };
+    var onSuccess = deferred.resolve;
+    var onError = deferred.reject;
 
     if (this.options.keyPath !== null) {
       // in-line keys: one arg only (key == value)
@@ -314,12 +310,8 @@ var methods = {
 
   get: function (key) {
     var deferred = new $.Deferred();
-    var onSuccess = function (result) {
-      deferred.resolve(result);
-    };
-    var onError = function (err) {
-      deferred.reject(err);
-    };
+    var onSuccess = deferred.resolve;
+    var onError = deferred.reject;
 
     this.store.get(key, onSuccess, onError);
 
@@ -328,12 +320,8 @@ var methods = {
 
   remove: function (key) {
     var deferred = new $.Deferred();
-    var onSuccess = function (result) {
-      deferred.resolve(result);
-    };
-    var onError = function (err) {
-      deferred.reject(err);
-    };
+    var onSuccess = deferred.resolve;
+    var onError = deferred.reject;
 
     this.store.remove(key, onSuccess, onError);
 

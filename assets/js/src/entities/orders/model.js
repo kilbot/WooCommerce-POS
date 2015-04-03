@@ -218,7 +218,7 @@ module.exports = DualModel.extend({
   process: function(){
     this.processCart();
     this.processGateway();
-    this.serverSync();
+    this.remoteSync();
   },
 
   /**

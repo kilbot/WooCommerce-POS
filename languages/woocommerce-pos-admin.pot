@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4.0-alpha\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2015-03-30 11:46:49+00:00\n"
+"POT-Creation-Date: 2015-04-03 12:54:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -142,18 +142,26 @@ msgid "Enable <a href=\"%s\">POS Only products</a>"
 msgstr ""
 
 #: includes/admin/settings/views/general.php:23
-msgid "Default POS Customer"
+msgid "Allow Decimal Quantity"
 msgstr ""
 
 #: includes/admin/settings/views/general.php:24
-msgid "The default customer for POS orders, eg: Guest or create a new customer."
+msgid "Allows items to have decimal values in the quantity field, eg: 0.25"
+msgstr ""
+
+#: includes/admin/settings/views/general.php:34
+msgid "Default POS Customer"
 msgstr ""
 
 #: includes/admin/settings/views/general.php:35
+msgid "The default customer for POS orders, eg: Guest or create a new customer."
+msgstr ""
+
+#: includes/admin/settings/views/general.php:46
 msgid "Discount Quick Keys"
 msgstr ""
 
-#: includes/admin/settings/views/general.php:36
+#: includes/admin/settings/views/general.php:47
 msgid "Configure discount keys for quick numpad entry"
 msgstr ""
 
@@ -212,7 +220,7 @@ msgctxt "POS checkout settings"
 msgid "Show payment gateway icon."
 msgstr ""
 
-#: includes/admin/settings/views/general.php:29
+#: includes/admin/settings/views/general.php:40
 msgctxt "Default customer setting"
 msgid "Use cashier account"
 msgstr ""

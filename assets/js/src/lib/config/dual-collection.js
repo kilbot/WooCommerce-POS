@@ -15,6 +15,7 @@ var moment = require('moment');
 module.exports = POS.DualCollection = IndexedDBCollection.extend({
   storage: 'dual',
   keyPath: 'local_id',
+  _syncDelayed: true,
 
   /**
    * Items for download will be placed in queue
@@ -69,10 +70,6 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     };
   },
 
-  parse: function (resp){
-    return resp[this.name] ? resp[this.name] : resp ;
-  },
-
   parseProp: function(resp, prop){
     var array = this.parse(resp);
     return _.pluck(array, prop);
@@ -84,44 +81,42 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     }
   },
 
-  getState: function(key){
-    return Radio.request('entities', 'get', {
-      type: 'localStorage',
-      name: this.name,
-      key: key
-    });
-  },
-
-  setState: function(options){
-    Radio.command('entities', 'set', {
-      type: 'localStorage',
-      name: this.name,
-      data: options
-    });
-  },
-
-  removeState: function(key){
-    Radio.command('entities', 'remove', {
-      type: 'localStorage',
-      name: this.name,
-      key: key
-    });
-  },
+  //getState: function(key){
+  //  return Radio.request('entities', 'get', {
+  //    type: 'localStorage',
+  //    name: this.name,
+  //    key: key
+  //  });
+  //},
+  //
+  //setState: function(options){
+  //  Radio.command('entities', 'set', {
+  //    type: 'localStorage',
+  //    name: this.name,
+  //    data: options
+  //  });
+  //},
+  //
+  //removeState: function(key){
+  //  Radio.command('entities', 'remove', {
+  //    type: 'localStorage',
+  //    name: this.name,
+  //    key: key
+  //  });
+  //},
 
   fetch: function(options){
     options = options || {};
     var self = this;
 
-    var localFetch = IndexedDBCollection.prototype.fetch.call(this, options);
-
-    // start fullSync
-    if(options.fullSync){
-      localFetch.done(function(){
-        self.fullSync();
-      });
-    }
-
-    return localFetch;
+    return IndexedDBCollection.prototype.fetch.call(this, options)
+      .then(function(){
+        if(options.fullSync){
+          self.fullSync();
+        }
+      })
+      .done(function(){ debug('idb fetch complete'); })
+      .fail(function(err){ debug('idb fetch failed', err); });
   },
 
   /**
@@ -142,11 +137,17 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     debug('fullSync started');
     this.trigger('fullSync:start');
 
-    $.when( this.fetchUpdated() )
-      .then(function(){ return self.auditRecords(); })
-      .then(function(){ return self.syncDelayedData(); })
+    this.fetchUpdated()
+      .then(function(){
+        return self.auditRecords();
+      })
+      .then(function(){
+        if(self._syncDelayed){
+          return self.syncDelayed();
+        }
+      })
       .done(function(){ debug('fullSync complete'); })
-      .fail(function(){ debug('fullSync failed'); })
+      .fail(function(err){ debug('fullSync failed', err); })
       .always(function(){
         self._syncing = false;
         self.trigger('fullSync:end');
@@ -172,11 +173,13 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     var last_update = _.compact( this.pluck('updated_at') ).sort().pop();
 
     //
-    return $.when( this.getRemoteIds(last_update) )
+    return this.getRemoteIds(last_update)
       .then(function(ids){
         self.enqueue(ids);
         return self.processQueue(true);
-      });
+      })
+      .done(function(){ debug('fetch updated complete'); })
+      .fail(function(err){ debug('fetch updated failed', err); });
 
   },
 
@@ -188,40 +191,40 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
   remoteFetch: function(options){
     options = options || {};
     var self = this;
-    var deferred = new $.Deferred();
 
-    options.success = function(resp){
-      var records = self.parse(resp);
-      self.mergeRecords(records).done(function(){
-        deferred.resolve();
-      });
-    };
-
-    this.remoteSync('read', this, options);
-
-    return deferred.promise();
-  },
-
-  /**
-   *
-   */
-  syncDelayedData: function(){
+    return this.remoteSync('read', this, options)
+      .then(function(resp){
+        var records = self.parse(resp);
+        return self.mergeRecords(records);
+      })
+      .done(function(){ debug('remote fetch complete'); })
+      .fail(function(err){ debug('remote fetch failed', err); });
 
   },
 
   /**
-   * Load more
-   * - if no more in local and ids in queue, download next page
+   * get delayed models and remote create/update
    */
+  syncDelayed: function(){
+    var models = this.getDelayedModels();
+    _.each(models, function(model){
+      model.remoteSync();
+    }, this);
+  },
 
   /**
-   *
+   * returns array of all delayed records
    */
   getDelayedModels: function() {
-    var deleted = this.where({ status: this.states.DELETE_FAILED });
-    var created = this.where({ status: this.states.CREATE_FAILED });
-    var updated = this.where({ status: this.states.UPDATE_FAILED });
-    return _.union(deleted, created, updated);
+    var delayed = [
+      this.states.DELETE_FAILED,
+      this.states.CREATE_FAILED,
+      this.states.UPDATE_FAILED
+    ];
+
+    return this.filter(function(model){
+      return delayed.indexOf( model.get('status') ) !== -1;
+    });
   },
 
   /**
@@ -232,22 +235,20 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
    * - remove any garbage records
    */
   auditRecords: function(){
-    var deferred = $.Deferred(),
-        local = this.pluck('id'),
+    var local = this.pluck('id'),
         self = this;
 
-    $.when( this.getRemoteIds() )
-    .then(function(remote){
-      var add = _.chain(remote).difference(local).compact().value(),
-          remove = _.chain(local).difference(remote).compact().value();
-      self.enqueue(add);
-      self.dequeue(remove);
-      return self.removeGarbage(remove);
-    })
-    .done(deferred.resolve)
-    .fail(deferred.reject);
+    return this.getRemoteIds()
+      .then(function(remote){
+        var add = _.chain(remote).difference(local).compact().value(),
+            remove = _.chain(local).difference(remote).compact().value();
+        self.enqueue(add);
+        self.dequeue(remove);
+        return self.removeGarbage(remove);
+      })
+      .done(function(){ debug('audit complete'); })
+      .fail(function(err){ debug('audit failed', err); });
 
-    return deferred;
   },
 
 
@@ -310,16 +311,12 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
   },
 
   /**
-   *
-   */
-
-  /**
    * Sync to server
    */
   remoteSync: function(method, model, options){
     options = options || {};
     options.remote = true;
-    this.sync(method, model, options);
+    return this.sync(method, model, options);
   },
 
   /**
@@ -348,9 +345,10 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
 
   /**
    * Remove garbage records, ie: records deleted on server
+   * todo: promisify removeBatch
    */
   removeGarbage: function(ids){
-    var deferred = $.Deferred(),
+    var deferred = new $.Deferred(),
         models = this.getModelsByRemoteIds(ids);
 
     if(models.length === 0){ return; }
@@ -365,7 +363,7 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
       deferred.reject
     );
 
-    return deferred;
+    return deferred.promise();
   },
 
   /**
@@ -425,9 +423,9 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
         cont = all && this.queue.length > 0;
 
     var done = function(){
+      self.trigger('loading', false);
       if(cont){
         deferred.progress(ids);
-        self.trigger('loading', false);
         _.delay(self.processQueue.bind(self), self.getDelay(), all);
       } else {
         deferred.resolve(ids);
