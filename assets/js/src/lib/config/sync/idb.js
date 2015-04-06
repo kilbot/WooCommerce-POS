@@ -333,12 +333,8 @@ var methods = {
    */
   getByAttribute: function(attribute){
     var deferred = new $.Deferred();
-    var onSuccess = function (result) {
-      deferred.resolve(result);
-    };
-    var onError = function (err) {
-      deferred.reject(err);
-    };
+    var onSuccess = deferred.resolve;
+    var onError = deferred.reject;
 
     var keyRange = this.store.makeKeyRange({
       only: _.chain(attribute).values().first().value()

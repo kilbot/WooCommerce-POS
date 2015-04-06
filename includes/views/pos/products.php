@@ -34,7 +34,7 @@
     "></i>
     {{/with}}
     {{#with product_variations}}
-    <dl>
+    <dl class="variations">
       {{#each this}}
       <dt>{{name}}:</dt>
       <dd>{{#list options ', '}}{{this}}{{/list}}</dd>

@@ -187,6 +187,7 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
    * Remote fetch
    * - fetch records from server
    * - merge records with local collection
+   * todo add(records)
    */
   remoteFetch: function(options){
     options = options || {};

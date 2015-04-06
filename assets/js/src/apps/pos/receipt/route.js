@@ -113,10 +113,6 @@ var ReceiptRoute = Route.extend({
       email: this.order.get('customer').email
     });
 
-    this.listenTo(view, 'action:send', function(){
-      console.log('send!');
-    });
-
     Radio.request('modal', 'open', view);
   }
 

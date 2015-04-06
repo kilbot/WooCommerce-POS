@@ -1,4 +1,4 @@
-describe('lib/utilities/global.js', function(){
+describe('lib/utilities/utils.js', function(){
 
   var Utils = require('lib/utilities/utils');
 

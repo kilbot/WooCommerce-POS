@@ -29,11 +29,6 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    */
   public function filter_product_response( $product_data, $product, $fields, $server ) {
 
-    // only filter requests from POS
-    if( ! is_pos() ) {
-      return $product_data;
-    }
-
     // remove some unnecessary keys
     // - saves storage space in IndexedDB
     // - saves bandwidth transferring the data

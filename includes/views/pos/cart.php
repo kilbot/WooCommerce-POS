@@ -32,14 +32,14 @@
     {{else}}
     <strong data-name="title" contenteditable="true">{{title}}</strong>
     {{/if}}
-    {{#with variation}}
-    <dl>
-      {{#each this}}
+    {{#is type 'variation'}}
+    <dl class="variant">
+      {{#each attributes}}
       <dt>{{name}}:</dt>
       <dd>{{option}}</dd>
       {{/each}}
     </dl>
-    {{/with}}
+    {{/is}}
 		<a data-action="more" href="#" class="btn btn-default btn-circle-sm"><i class="icon icon-angle-down"></i></a>
 	</div>
 	<div class="price"><input type="text" name="item_price" data-label="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" data-original="regular_price" class="btn autogrow"></div>

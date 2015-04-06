@@ -5,8 +5,8 @@
  *
  * This class defines all code necessary to run during the plugin's activation.
  *
- * @class     WooCommerce_POS_Pro_Activator
- * @package   WooCommerce POS Pro
+ * @class     WC_POS_Deactivator
+ * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
  * @link      http://www.woopos.com.au
  */

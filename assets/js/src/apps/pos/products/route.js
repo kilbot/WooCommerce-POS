@@ -57,7 +57,7 @@ module.exports = Route.extend({
     });
 
     this.listenTo(view.collection, 'active:tab', function(model) {
-      this.filtered.query(model.id, 'tab');
+      this.filtered.query('tab', model.id);
     });
 
     // show tabs component

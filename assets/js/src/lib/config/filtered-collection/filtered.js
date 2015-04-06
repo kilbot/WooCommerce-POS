@@ -164,11 +164,25 @@ var methods = {
     this._superset = this._collection;
     this.length = 0;
     this.trigger('filtered:destroy');
+  },
+
+  /**
+   *
+   */
+  query: function (filterName, filter) {
+    if( _.isUndefined(filter) ) {
+      filter = filterName;
+      filterName = 'search';
+    }
+    this._query = filter; // raw query used for auto-populating search field
+    if( filter === '' ){
+      return this.removeFilter(filterName);
+    }
+    return this.filterBy(filterName, _.partial( query, filter ));
   }
 };
 
 _.extend(Filtered.prototype, methods, Backbone.Events);
-_.extend(Filtered.prototype, query);
 
 module.exports = Filtered;
 /* jshint +W071, +W073, +W074 */

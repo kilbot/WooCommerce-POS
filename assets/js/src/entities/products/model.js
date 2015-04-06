@@ -51,6 +51,20 @@ module.exports = DualModel.extend({
 
   productVariations: function(){
     return _.where(this.get('attributes'), {variation: true});
+  },
+
+  /**
+   * Special cases for product model filter
+   */
+  matchMaker: function(query, methods){
+
+    return _.all(query, function(q){
+      if(q.type === 'prefix' && q.prefix === 'cat'){
+        q.prefix = 'categories';
+        return methods.prefix(q, this);
+      }
+    }, this);
+
   }
 
 });

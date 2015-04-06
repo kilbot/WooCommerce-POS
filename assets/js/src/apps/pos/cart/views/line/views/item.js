@@ -26,10 +26,6 @@ module.exports = FormView.extend({
 
     data.discount = this.model.get('total') !== this.model.get('subtotal');
 
-    if( this.model.get('type') === 'variation'){
-      data.variation = this.model.get('attributes');
-    }
-
     return data;
   },
 

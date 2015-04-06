@@ -78,4 +78,26 @@ Utils.parseErrorResponse = function( jqXHR ){
   return jqXHR.responseText;
 };
 
+/**
+ * returns the variable type
+ * http://wp.me/pQpop-JM
+ *
+ *
+toType({a: 4}); //"object"
+toType([1, 2, 3]); //"array"
+(function() {console.log(toType(arguments))})(); //arguments
+toType(new ReferenceError); //"error"
+toType(new Date); //"date"
+toType(/a-z/); //"regexp"
+toType(Math); //"math"
+toType(JSON); //"json"
+toType(new Number(4)); //"number"
+toType(new String("abc")); //"string"
+toType(new Boolean(true)); //"boolean"
+
+ */
+Utils.toType = function(obj) {
+  return ({}).toString.call(obj).match(/\s([a-z|A-Z]+)/)[1].toLowerCase();
+};
+
 module.exports = POS.Utils = Utils;

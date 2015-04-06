@@ -325,6 +325,8 @@ class WC_POS_i18n {
       'send'      => /* translators: wordpress   */ __( 'Submit' ),
       'shipping'  => /* translators: woocommerce */ __( 'Shipping', 'woocommerce' ),
       'void'      => __( 'Void', 'woocommerce-pos' ),
+      'expand-all'=> /* translators: woocommerce */ __( 'Expand all', 'woocommerce' ),
+      'close-all' => /* translators: woocommerce */ __( 'Close all', 'woocommerce' ),
     );
 
     $translations['messages'] = array(

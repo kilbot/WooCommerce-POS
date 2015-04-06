@@ -40,8 +40,7 @@
     "lodash": "^3.5.0",
     "moment": "^2.9.0",
     "node-polyglot": "^0.4.1",
-    "select2": "^3.5.2-browserify",
-    "underscore": "^1.8.2"
+    "select2": "^3.5.2-browserify"
   },
   "devDependencies": {
     "chai": "^2.1.0",

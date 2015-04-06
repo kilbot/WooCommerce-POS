@@ -6,8 +6,7 @@ var $ = require('jquery');
 module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
   className: 'infinite-list',
   template: function(){
-    return '<div><i class="icon icon-pull-arrow"></i>' +
-      '<i class="icon icon-spinner"></i></div>' +
+    return '<div></div>' +
       '<ul class="striped"></ul>' +
       '<div><i class="icon icon-spinner"></i>';
   },
@@ -32,6 +31,7 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
 
   onShow: function(){
     this._parent.$el.scroll(this.onScroll);
+    this.checkBottom();
   },
 
   onScroll: _.throttle(function(){

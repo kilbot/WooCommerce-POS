@@ -39,6 +39,9 @@
           float: left;
           margin: 0;
         }
+        &.variations, &.variant {
+          margin: $spacing/3 0 0 0;
+        }
       }
     }
     .price {
