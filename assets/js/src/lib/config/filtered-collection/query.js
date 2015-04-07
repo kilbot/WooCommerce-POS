@@ -60,6 +60,7 @@ module.exports = function(filter, model){
     if(match === true){
       return true;
     }
+    // halt or continue?
   }
 
   // any = OR?

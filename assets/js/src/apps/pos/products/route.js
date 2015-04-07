@@ -2,7 +2,6 @@ var Route = require('lib/config/route');
 var Layout = require('./layout');
 var Actions = require('./views/actions');
 var List = require('./views/list');
-var Variations = require('./views/variations');
 var Radio = require('backbone.radio');
 var _ = require('lodash');
 var polyglot = require('lib/utilities/polyglot');
@@ -69,31 +68,7 @@ module.exports = Route.extend({
     var view = new List({
       collection: this.filtered
     });
-
-    this.listenTo(view,{
-      'childview:add:to:cart': function(childview, args){
-        Radio.command('router', 'add:to:cart', {model: args.model});
-      },
-      'childview:show:variations': this.showVariations
-    });
-
-    // show
     this.layout.getRegion('list').show(view);
-  },
-
-  showVariations: function(childview, options){
-    options = options || {};
-
-    var view = new Variations(options);
-
-    this.listenTo(view, 'add:to:cart', function(args){
-      var product = args.collection.models[0].toJSON();
-      Radio.command('router', 'add:to:cart', product);
-      Radio.request('popover', 'close');
-    });
-
-    _.extend(options, { view: view, parent: childview }, view.popover);
-    Radio.request('popover', 'open', options);
   },
 
   tabsArray: function(){

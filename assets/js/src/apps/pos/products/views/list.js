@@ -1,6 +1,6 @@
 var ItemView = require('lib/config/item-view');
 var InfiniteListView = require('lib/config/infinite-list-view');
-var Item = require('./item');
+var Item = require('./item/layout');
 var POS = require('lib/utilities/global');
 
 var Empty = ItemView.extend({
