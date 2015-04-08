@@ -51,8 +51,7 @@ var methods = {
 };
 
 module.exports = function(filter, model){
-
-  var query = parser.parse(filter);
+  var query = _.isArray(filter) ? filter : parser.parse(filter);
 
   // allow model specific match maker
   if(model.matchMaker){

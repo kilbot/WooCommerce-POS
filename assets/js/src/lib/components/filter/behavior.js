@@ -16,8 +16,24 @@ var Filter = Behavior.extend({
 
   query: _.debounce( function(){
     var value = this.ui.searchField.val();
+    if( value === ''){
+      return this.view.collection.removeFilter('search');
+    }
+
     this.showClearButtonMaybe( value );
-    this.view.collection.query(value);
+
+    // special case, filter mode, eg: barcode
+    if(this.view._mode){
+      this.view.collection.query([{
+        type: 'prefix',
+        prefix: this.view._mode,
+        query: value
+      }]);
+
+    } else {
+      this.view.collection.query(value);
+    }
+
     this.view.collection.firstPage();
   }, 149),
 

@@ -59,12 +59,71 @@ module.exports = DualModel.extend({
   matchMaker: function(query, methods){
 
     return _.all(query, function(q){
+
+      // barcode
+      if( q.type === 'prefix' && q.prefix === 'barcode' ){
+        if(q.query){ return this.barcodeMatch(q.query); }
+      }
+
+      // cat
       if(q.type === 'prefix' && q.prefix === 'cat'){
         q.prefix = 'categories';
         return methods.prefix(q, this);
       }
     }, this);
 
+  },
+
+  barcodeMatch: function(barcode){
+    var type = this.get('type'),
+        test = this.get('barcode').toLowerCase(),
+        value = barcode.toString().toLowerCase();
+
+    if(test === value) {
+      this.trigger('found:barcode', this);
+      return true;
+    }
+
+    if(type !== 'variable'){
+      return this.partialBarcodeMatch(test, value);
+    }
+
+    return this.variableBarcodeMatch(test, value);
+  },
+
+  partialBarcodeMatch: function(test, value){
+    if(test.indexOf( value ) !== -1) {
+      return true;
+    }
+    return false;
+  },
+
+  variableBarcodeMatch: function(test, value){
+    var variations = this.get('variations'),
+        match;
+
+    _.each(variations, function(variation){
+      if(variation.barcode){
+        var test = variation.barcode.toLowerCase();
+        if(test === value){
+          match = variation;
+          return;
+        }
+        if(test.indexOf( value ) !== -1) {
+          match = 'partial';
+          return;
+        }
+      }
+    });
+
+    if(match){
+      if(match !== 'partial'){
+        this.trigger('found:barcode', match, this);
+      }
+      return true;
+    }
+
+    return this.partialBarcodeMatch(test, value);
   }
 
 });

@@ -1,6 +1,10 @@
 {
   "feature": "tests/integration/features",
+  "tags": [
+    "@products, @barcode"
+  ],
   "require": [
+    "tests/integration/util",
     "tests/integration/steps",
     "tests/integration/widgets"
   ],
