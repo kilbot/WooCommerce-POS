@@ -1,9 +1,8 @@
 var FormView = require('lib/config/form-view');
 var $ = require('jquery');
 var POS = require('lib/utilities/global');
-//var Select2 = require('lib/components/select2/behavior');
-var Tooltip = require('lib/components/tooltip/behavior');
-var Sortable = require('lib/components/sortable/behavior');
+var Tooltip = require('lib/behaviors/tooltip');
+var Sortable = require('lib/behaviors/sortable');
 
 var View = FormView.extend({
   attributes: {
@@ -36,9 +35,6 @@ var View = FormView.extend({
   },
 
   behaviors: {
-    //Select2: {
-    //  behaviorClass: Select2
-    //},
     Tooltip: {
       behaviorClass: Tooltip
     },

@@ -1,7 +1,7 @@
 var FormView = require('lib/config/form-view');
 var $ = require('jquery');
 var POS = require('lib/utilities/global');
-var Tooltip = require('lib/components/tooltip/behavior');
+var Tooltip = require('lib/behaviors/tooltip');
 
 var View = FormView.extend({
   attributes: {

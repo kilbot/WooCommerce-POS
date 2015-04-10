@@ -1,8 +1,19 @@
-var FilterView = require('lib/config/filter-view');
+var View = require('lib/config/item-view');
 var POS = require('lib/utilities/global');
+var Filter = require('lib/behaviors/filter');
+var HotKeys = require('lib/behaviors/hotkeys');
 
-var Actions = FilterView.extend({
+var Actions = View.extend({
   template: '#tmpl-products-filter',
+
+  behaviors: {
+    Filter: {
+      behaviorClass: Filter
+    },
+    HotKeys: {
+      behaviorClass: HotKeys
+    }
+  },
 
   keyEvents: {
     'barcode': 'toggleBarcodeMode'
@@ -25,7 +36,7 @@ var Actions = FilterView.extend({
   },
 
   toggleBarcodeMode: function(){
-    if(this.collection._mode === 'barcode'){
+    if(this._mode === 'barcode'){
       return this.barcodeModeOff();
     }
     this.barcodeModeOn();
@@ -34,15 +45,25 @@ var Actions = FilterView.extend({
   barcodeModeOn: function(e){
     if(e) { e.preventDefault(); }
     this._mode = 'barcode';
-    this.ui.modeIcon.removeClass('icon-search').addClass('icon-barcode');
-    this.ui.searchField.attr('placeholder', this.ui.barcodeBtn.text());
+    this.ui.modeIcon
+      .removeClass('icon-search')
+      .addClass('icon-barcode');
+    this.ui.searchField
+      .attr('placeholder', this.ui.barcodeBtn.text())
+      .focus()
+      .trigger('keyup');
   },
 
   barcodeModeOff: function(e){
     if(e) { e.preventDefault(); }
     this._mode = undefined;
-    this.ui.modeIcon.removeClass('icon-barcode').addClass('icon-search');
-    this.ui.searchField.attr('placeholder', this.ui.searchBtn.text());
+    this.ui.modeIcon
+      .removeClass('icon-barcode')
+      .addClass('icon-search');
+    this.ui.searchField
+      .attr('placeholder', this.ui.searchBtn.text())
+      .focus()
+      .trigger('keyup');
   }
 });
 

@@ -38,7 +38,7 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
     if(this.bottomOverflow() < 100){
       this.loadMore();
     }
-  }, 20),
+  }, 200),
 
   bottomOverflow: function(){
     var sH = this._parent.el.scrollHeight,
@@ -61,8 +61,14 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
 
     // load more from queue
     if(this.collection.superset().queue.length > 0){
-      this.collection.superset().processQueue();
+      this.remoteLoadMore();
     }
+  },
+
+  remoteLoadMore: function(){
+    var options = {};
+    options.filter = this.collection.getTokens();
+    this.collection.superset().processQueue(options);
   },
 
   toggleLoading: function(loading){

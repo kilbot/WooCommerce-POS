@@ -159,4 +159,8 @@ describe('entities/products/model.js', function () {
 
   });
 
+  describe('barcode match', function () {
+
+  });
+
 });

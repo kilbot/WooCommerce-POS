@@ -1,5 +1,5 @@
 var ItemView = require('lib/config/item-view');
-var Tooltip = require('lib/components/tooltip/behavior');
+var Tooltip = require('lib/behaviors/tooltip');
 var Tmpl = require('./hotkeys.hbs');
 var hbs = require('handlebars');
 var Radio = require('backbone.radio');

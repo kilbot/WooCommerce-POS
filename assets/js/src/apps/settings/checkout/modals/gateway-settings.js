@@ -1,6 +1,6 @@
 var FormView = require('lib/config/form-view');
 var $ = require('jquery');
-var Tooltip = require('lib/components/tooltip/behavior');
+var Tooltip = require('lib/behaviors/tooltip');
 var Radio = require('backbone.radio');
 
 module.exports = FormView.extend({

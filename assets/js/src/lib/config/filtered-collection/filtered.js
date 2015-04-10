@@ -174,11 +174,19 @@ var methods = {
       filter = filterName;
       filterName = 'search';
     }
-    this._query = filter; // raw query used for auto-populating search field
+    this._query = filter;
     if( filter === '' ){
       return this.removeFilter(filterName);
     }
-    return this.filterBy(filterName, _.partial( query, filter ));
+    return this.filterBy(filterName,
+      _.bind( query, this, filter )
+    );
+  },
+  getQuery: function(){
+    return this._query;
+  },
+  getTokens: function(){
+    return this._tokens;
   }
 };
 

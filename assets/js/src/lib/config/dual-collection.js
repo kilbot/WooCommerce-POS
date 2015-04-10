@@ -204,6 +204,28 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
   },
 
   /**
+   * Create new record & wait for local_id
+   * Remote fetch to populate the rest if the attributes
+   */
+  remoteGet: function(options){
+    options = options || {};
+    var deferred = $.Deferred();
+
+    this.create({
+      id: options.remote_id,
+      status: 'completed' // placeholder status, ie: closed order
+    }, {
+      wait: true,
+      success: function(model){
+        model.remoteFetch().done( deferred.resolve );
+      },
+      error: deferred.reject
+    });
+
+    return deferred.promise();
+  },
+
+  /**
    * get delayed models and remote create/update
    */
   syncDelayed: function(){
@@ -414,20 +436,28 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
    * - take slice of ids from queue and remote fetch
    * - optionally keep processing queue until empty
    */
-  processQueue: function(all){
+  processQueue: function(options){
     if(this.queue.length === 0){ return; }
     this.trigger('loading', true);
+
+    //if(options.filter){
+    //  // - fetch remote ids with filter
+    //  // - compare to queue
+    //  // - resort queue with ids at front?
+    //  // - or store queue with a unique id
+    //  console.log(options.filter);
+    //}
 
     var self = this,
         deferred = new $.Deferred(),
         ids = this.queue.splice(0, this.state.pageSize).join(','),
-        cont = all && this.queue.length > 0;
+        cont = options.all && this.queue.length > 0;
 
     var done = function(){
       self.trigger('loading', false);
       if(cont){
         deferred.progress(ids);
-        _.delay(self.processQueue.bind(self), self.getDelay(), all);
+        _.delay(self.processQueue.bind(self), self.getDelay(), options.all);
       } else {
         deferred.resolve(ids);
       }

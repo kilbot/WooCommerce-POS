@@ -1,6 +1,6 @@
 var ItemView = require('lib/config/item-view');
 var POS = require('lib/utilities/global');
-//var Tooltip = require('lib/components/tooltip/behavior');
+//var Tooltip = require('lib/behaviors/tooltip');
 var $ = require('jquery');
 
 var View = ItemView.extend({

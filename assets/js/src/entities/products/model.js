@@ -55,22 +55,33 @@ module.exports = DualModel.extend({
 
   /**
    * Special cases for product model filter
+   * @param {Array} tokens An array of query tokens, see QParser
+   * @param {Object} methods Helper match methods
+   * @param {Function} callback
    */
-  matchMaker: function(query, methods){
+  matchMaker: function(tokens, methods, callback){
 
-    return _.all(query, function(q){
+    var match = _.all(tokens, function(token){
 
       // barcode
-      if( q.type === 'prefix' && q.prefix === 'barcode' ){
-        if(q.query){ return this.barcodeMatch(q.query); }
+      if( token.type === 'prefix' && token.prefix === 'barcode' ){
+        if(token.query){ return this.barcodeMatch(token.query); }
       }
 
       // cat
-      if(q.type === 'prefix' && q.prefix === 'cat'){
-        q.prefix = 'categories';
-        return methods.prefix(q, this);
+      if( token.type === 'prefix' && token.prefix === 'cat' ){
+        token.prefix = 'categories';
+        return methods.prefix(token, this);
       }
+
     }, this);
+
+    if(match){
+      return match;
+    }
+
+    // the original matchMaker
+    return callback(tokens, this);
 
   },
 
@@ -104,12 +115,12 @@ module.exports = DualModel.extend({
 
     _.each(variations, function(variation){
       if(variation.barcode){
-        var test = variation.barcode.toLowerCase();
-        if(test === value){
+        var vtest = variation.barcode.toLowerCase();
+        if(vtest === value){
           match = variation;
           return;
         }
-        if(test.indexOf( value ) !== -1) {
+        if(vtest.indexOf( value ) !== -1) {
           match = 'partial';
           return;
         }

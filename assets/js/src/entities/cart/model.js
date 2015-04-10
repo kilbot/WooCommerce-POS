@@ -9,7 +9,6 @@ module.exports = Model.extend({
   pulseDelay: 500,
 
   defaults : {
-    'id'            : null, // important for edit
     'subtotal'      : 0,
     'subtotal_tax'  : 0,
     'total_tax'     : 0,

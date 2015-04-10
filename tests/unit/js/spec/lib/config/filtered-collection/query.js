@@ -4,7 +4,7 @@ describe('lib/config/filtered-collection/query.js', function () {
     this.query = require('lib/config/filtered-collection/query');
     this.model = new Backbone.Model({
       title: 'Woo Logo',
-      number: 5,
+      id: 5,
       bool: true,
       boolean: false,
       barcode: 'SKU12345',
@@ -62,13 +62,13 @@ describe('lib/config/filtered-collection/query.js', function () {
     });
 
     it('should match an attribute with string value', function () {
-      this.query('title:woo', this.model).should.be.true;
-      this.query('title:foo', this.model).should.be.false;
+      this.query('barcode:sku12345', this.model).should.be.true;
+      this.query('barcode:sku', this.model).should.be.false;
     });
 
     it('should match an attribute with numeric value', function () {
-      this.query('number:5', this.model).should.be.true;
-      this.query('number:6', this.model).should.be.false;
+      this.query('id:5', this.model).should.be.true;
+      this.query('id:6', this.model).should.be.false;
     });
 
     it('should match an attribute with boolean value', function () {
@@ -85,6 +85,20 @@ describe('lib/config/filtered-collection/query.js', function () {
       this.query('categories:Music', this.model).should.be.true;
       this.query('categories:Mus', this.model).should.be.false;
       this.query('categories:posters', this.model).should.be.true;
+    });
+
+  });
+
+  describe('complex queries', function(){
+
+    it('should match piped queries on title', function () {
+      this.query('woo|foo', this.model).should.be.true;
+      this.query('foo|bar', this.model).should.be.false;
+    });
+
+    it('should match piped queries on attribute', function () {
+      this.query('id:5|id:6', this.model).should.be.true;
+      this.query('id:1|id:7', this.model).should.be.false;
     });
 
   });

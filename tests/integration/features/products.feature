@@ -9,13 +9,18 @@ Scenario: Viewing products list
   Then I should count at least 10 products
 
   When I scroll down
-#  Then I should see more products
-#
-#  When I scroll down again
-#  Then I should see a total of 23 products
+  Then I should see more products
+
+  When I scroll down again
+  Then I should see a total of 23 products
 #
 #  When I click the 'On Sale' tab
 #  Then I should see 5 products
 
   When I search for 'happy'
   Then I should see 2 products
+
+@tabs
+Scenario: Viewing products list
+  When I click on the 'On Sale' tab
+  Then I should see 5 products

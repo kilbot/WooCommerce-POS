@@ -1,8 +1,8 @@
 === WooCommerce Point of Sale (POS) ===
 Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
-Requires at least: 3.8 & WooCommerce 2.1
-Tested up to: 0.4.0-alpha
+Requires at least: 4.0 & WooCommerce 2.2
+Tested up to: 4.2
 Stable tag: 0.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html

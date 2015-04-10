@@ -20,4 +20,8 @@ module.exports = function() {
   Widget.ProductFilter = Widget.extend({
     root: '.products-module .list-actions'
   });
+
+  Widget.ProductTabs = Widget.extend({
+    root: '.products-module .list-tabs'
+  });
 };

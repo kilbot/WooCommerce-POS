@@ -8,6 +8,17 @@ module.exports = POS.DualModel = Model.extend({
   remoteIdAttribute: 'id',
   fields: ['title'],
 
+  validate: function(attrs){
+    var obj = {};
+    if(attrs[this.idAttribute]) {
+      obj[this.idAttribute] = parseInt(attrs[this.idAttribute], 10);
+    }
+    if(attrs[this.remoteIdAttribute]){
+      obj[this.remoteIdAttribute] = parseInt(attrs[this.remoteIdAttribute], 10);
+    }
+    this.set(obj, {silent: true});
+  },
+
   url: function(){
     var remoteId = this.get(this.remoteIdAttribute),
         urlRoot = _.result(this.collection, 'url');
@@ -108,6 +119,23 @@ module.exports = POS.DualModel = Model.extend({
         debug('error saving model', err);
       });
 
+  },
+
+  /**
+   *
+   */
+  remoteFetch: function(options){
+    options = options || {};
+    options.remote = true;
+    var self = this;
+
+    return this.sync('read', this, options)
+      .then(function(resp){
+        var record = self.parse(resp);
+        return self.collection.mergeRecord(record);
+      })
+      .done(function(){ debug('remote fetch complete'); })
+      .fail(function(err){ debug('remote fetch failed', err); });
   }
 
 });

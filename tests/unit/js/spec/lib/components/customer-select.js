@@ -8,7 +8,7 @@ describe('lib/components/customer-select/view.js', function () {
     this.customer = dummy.customers[0];
 
     var View = proxyquire('lib/components/customer-select/view',{
-      'lib/components/select2/behavior': stub(),
+      'lib/behaviors/select2': stub(),
       'lib/config/item-view': Backbone.View
     });
     this.view = new View();

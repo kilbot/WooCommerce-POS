@@ -3,7 +3,7 @@ var POS = require('lib/utilities/global');
 var hbs = require('handlebars');
 var $ = require('jquery');
 var _ = require('lodash');
-var Tooltip = require('lib/components/tooltip/behavior');
+var Tooltip = require('lib/behaviors/tooltip');
 var Radio = require('backbone.radio');
 var Variations = require('./popover/variations');
 

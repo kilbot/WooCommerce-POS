@@ -1,5 +1,5 @@
 /**
- * TODO: merge sync/idb.js & sync/idbsync.js
+ * TODO: merge sync/idb.js & sync/idbsync.js?
  */
 
 var Collection = require('./collection');

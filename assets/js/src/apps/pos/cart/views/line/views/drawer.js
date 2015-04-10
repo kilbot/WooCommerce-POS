@@ -1,6 +1,6 @@
 var FormView = require('lib/config/form-view');
 var Utils = require('lib/utilities/utils');
-var AutoGrow = require('lib/components/autogrow/behavior');
+var AutoGrow = require('lib/behaviors/autogrow');
 var Numpad = require('lib/components/numpad/behavior');
 var hbs = require('handlebars');
 var $ = require('jquery');

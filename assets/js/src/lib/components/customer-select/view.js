@@ -1,5 +1,5 @@
 var ItemView = require('lib/config/item-view');
-var Select2 = require('lib/components/select2/behavior');
+var Select2 = require('lib/behaviors/select2');
 var _ = require('lodash');
 var Radio = require('backbone.radio');
 var hbs = require('handlebars');

@@ -18,8 +18,9 @@ var HotKeys = Behavior.extend({
   },
 
   // todo: this.element => this.view.el
+  // todo: refactor!
   onRender: function(){
-    var element = this.element || document,
+    var element = this.element || document.documentElement,
         _view = this.view;
 
     this.combokeys = new Combokeys(element);

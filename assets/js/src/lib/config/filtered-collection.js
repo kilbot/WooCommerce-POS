@@ -49,7 +49,9 @@ var filteredMethods = [
   'refilter',
   'hasFilter',
   'getFilters',
-  'query'
+  'query',
+  'getQuery',
+  'getTokens'
 ];
 var filteredEvents = [
   'filtered:add',

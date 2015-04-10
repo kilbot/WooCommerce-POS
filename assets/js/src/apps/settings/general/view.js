@@ -1,8 +1,8 @@
 var FormView = require('lib/config/form-view');
 var $ = require('jquery');
 var POS = require('lib/utilities/global');
-var Select2 = require('lib/components/select2/behavior');
-var Tooltip = require('lib/components/tooltip/behavior');
+var Select2 = require('lib/behaviors/select2');
+var Tooltip = require('lib/behaviors/tooltip');
 var CustomerSelect = require('lib/components/customer-select/view');
 
 var View = FormView.extend({

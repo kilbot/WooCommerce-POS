@@ -53,7 +53,7 @@ var hasIndexedDB = function(entity){
 // override Backbone.sync
 bb.sync = function(method, model, options) {
   // idb
-  if(hasIndexedDB(model) && !options.remote){
+  if(!options.remote && hasIndexedDB(model)){
     return bb.idbSync.apply(this, [method, model, options]);
   }
   // server

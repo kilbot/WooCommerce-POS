@@ -416,7 +416,30 @@ describe('lib/config/filtered-collection/parser.js', function () {
 
     describe('nested queries', function() {
 
-      //it('should parse nested queries', function() {
+      //it('should parse prefix:piped queries', function() {
+      //  this.parser.parse("id:123|456|789").should.eql([
+      //    {
+      //      type: 'or',
+      //      queries: [{
+      //        type: 'prefix',
+      //        prefix: 'id',
+      //        query: '123'
+      //      }
+      //    }, {
+      //        type: 'prefix',
+      //        prefix: 'id',
+      //        query: '456'
+      //      }
+      //    }, {
+      //        type: 'prefix',
+      //        prefix: 'id',
+      //        query: '789'
+      //      }
+      //    }]
+      //  ]);
+      //});
+
+      //it('should parse nested prefix queries', function() {
       //  this.parser.parse("address:postcode:90210").should.eql([
       //    {
       //      type: 'nested',
