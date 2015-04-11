@@ -11,6 +11,8 @@
 
 class WC_POS_Admin_Settings_HotKeys extends WC_POS_Admin_Settings_Abstract {
 
+  private $labels;
+
   /**
    * Each settings tab requires an id and label
    */
@@ -21,23 +23,45 @@ class WC_POS_Admin_Settings_HotKeys extends WC_POS_Admin_Settings_Abstract {
     $this->default_settings = array(
       'hotkeys' => array(
         'help' => array(
-          'label' => __( 'Help screen', 'woocommerce-pos' ),
           'key' => '?'
         ),
         'barcode' => array(
-          'label' => __( 'Barcode search', 'woocommerce-pos' ),
-          'key' => 'ctrl+b'
+          'key' => 'B'
+        ),
+        'search' => array(
+          'key' => 'V'
+        ),
+        'new' => array(
+          'key' => 'N'
         ),
         'sync' => array(
-          'label' => __( 'Sync with server', 'woocommerce-pos' ),
-          'key' => 'ctrl+s'
+          'key' => 'S'
         )
       )
     );
+
+    $this->labels = array(
+      'help'    => __( 'Help screen', 'woocommerce-pos' ),
+      'barcode' => __( 'Barcode search', 'woocommerce-pos' ),
+      'search'  => /* translators: woocommerce */__( 'Search', 'woocommerce' ),
+      'new'     => __( 'New order', 'woocommerce-pos' ),
+      'sync'    => __( 'Sync with server', 'woocommerce-pos' )
+    );
   }
 
-//  public function get_data(){
-//    apply_filters( 'woocommerce_pos_hotkeys', $keys );
-//  }
+  public function get_data($key = false){
+    $data = $this->stored_data() ? $this->stored_data() : $this->default_settings;
+    $data['hotkeys'] = array_merge($this->default_settings['hotkeys'], $data['hotkeys']);
+
+    foreach($data['hotkeys'] as $slug => &$arr){
+      $arr['label'] = $this->labels[$slug];
+    }
+
+    if($key && is_array($data)) {
+      $data = array_key_exists($key, $data) ? $data[$key] : false;
+    }
+
+    return $data;
+  }
 
 }

@@ -2,6 +2,7 @@ var IndexedDBCollection = require('lib/config/idb-collection');
 var Model = require('./model');
 var _ = require('lodash');
 
+
 module.exports = IndexedDBCollection.extend({
   model: Model,
   name: 'cart',
@@ -92,7 +93,7 @@ module.exports = IndexedDBCollection.extend({
   },
 
   itemizedTax: function(){
-    var items = _.deepClone(this.toJSON());
+    var items = _.clone(this.toJSON(), true);
     var taxes = _.map(items, function(item){
       if(!item.tax) { return; }
       _.each(item.tax, function(tax){

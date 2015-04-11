@@ -9,7 +9,6 @@ var SettingsCollection = require('./settings/collection');
 var Gateways = require('./gateways/collection');
 var Variations = require('./variations/collection');
 var FilteredCollection = require('lib/config/filtered-collection');
-var SupportForm = require('./support/form');
 var debug = require('debug')('entities');
 var POS = require('lib/utilities/global');
 //var $ = require('jquery');
@@ -37,10 +36,6 @@ module.exports = POS.Entities = Service.extend({
     gateways  : Gateways,
     variations: Variations,
     settings  : SettingsCollection
-  },
-
-  models: {
-    supportForm : SupportForm
   },
 
   getMethods: {

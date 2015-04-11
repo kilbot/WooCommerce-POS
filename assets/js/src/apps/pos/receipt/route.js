@@ -110,10 +110,29 @@ var ReceiptRoute = Route.extend({
 
   email: function(){
     var view = new EmailView({
-      email: this.order.get('customer').email
+      order_id: this.order.get('id'),
+      email: this.order.get('customer.email')
     });
 
-    Radio.request('modal', 'open', view);
+    var modal = Radio.request('modal', 'open', view);
+    var self = this;
+
+    modal.done(function(){
+      self.buttons(view, this.footer.currentView);
+    });
+  },
+
+  buttons: function(emailView, buttonsView){
+    this.listenTo(emailView, {
+      'action:send': function(){
+        buttonsView.triggerMethod('Update', {message: 'spinner'});
+      },
+      'complete:send': function(message){
+        buttonsView.triggerMethod('Update', {
+          message: message
+        });
+      }
+    });
   }
 
 });

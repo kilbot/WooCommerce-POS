@@ -31,7 +31,7 @@ abstract class WC_POS_Admin_Settings_Abstract {
     return $data;
   }
 
-  private function stored_data(){
+  protected function stored_data(){
     return get_option(WC_POS_Admin_Settings::DB_PREFIX . $this->id);
   }
 

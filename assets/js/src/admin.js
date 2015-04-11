@@ -1,3 +1,4 @@
+require('lib/utilities/underscore-mixins');
 var POS = require('lib/utilities/global');
 var Application = require('apps/admin/application');
 

@@ -1,9 +1,9 @@
-var Model = require('./model');
+var DeepModel = require('./deep-model');
 var POS = require('lib/utilities/global');
 var _ = require('lodash');
 var debug = require('debug')('dualModel');
 
-module.exports = POS.DualModel = Model.extend({
+module.exports = POS.DualModel = DeepModel.extend({
   idAttribute: 'local_id',
   remoteIdAttribute: 'id',
   fields: ['title'],
@@ -106,7 +106,7 @@ module.exports = POS.DualModel = Model.extend({
       options.remote = undefined; // prevent remote flag going through to sync
     }
 
-    return Model.prototype.save.call(this, attributes, options)
+    return DeepModel.prototype.save.call(this, attributes, options)
       .then(function(){
         if(remote){
           return self.remoteSync();

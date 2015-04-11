@@ -16,9 +16,14 @@ var methods = {
     token = token || {};
     if(!_.isString(token.query)){ return false; }
 
-    var attributes = _.pick(model.attributes, (model.fields || 'title'));
+    var attributes = _.chain(model.fields || ['title'])
+      .map(function(key){
+        return model.get(key); // allows nested get
+      })
+      .compact()
+      .value();
 
-    return _.any( _.values( attributes ), function( attribute ) {
+    return _.any( attributes, function( attribute ) {
       return this._partialString(attribute, token.query.toLowerCase());
     }, this);
   },

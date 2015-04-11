@@ -7,6 +7,11 @@ var debug = require('debug')('order');
 
 module.exports = DualModel.extend({
   name: 'order',
+  fields: [
+    'customer.first_name',
+    'customer.last_name',
+    'customer.email'
+  ],
 
   /**
    * Orders with the following status are closed for editing

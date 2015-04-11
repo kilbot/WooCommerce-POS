@@ -25,7 +25,7 @@
   <tr class="order_emails">
     <th scope="row">
       <?php _e( 'Order Emails', 'woocommerce-pos' ); ?>
-      <img title="<?php _e( 'blah', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="tooltip">
+      <img title="<?php _e( 'Send WooCommerce notification emails for POS orders', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="tooltip">
     </th>
     <td>
       <input type="checkbox" name="admin_emails" id="admin_emails" />

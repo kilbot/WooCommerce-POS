@@ -49,13 +49,39 @@ function execFilterOnModel(model) {
   return true;
 }
 
-function execFilter() {
+//function execFilter() {
+//  var filtered = [];
+//  if (this._superset) {
+//    filtered = this._superset.filter(_.bind(execFilterOnModel, this));
+//  }
+//  this._collection.reset(filtered);
+//  this.length = this._collection.length;
+//}
+
+function execFilter(options) {
+  options = options || {};
+
   var filtered = [];
   if (this._superset) {
     filtered = this._superset.filter(_.bind(execFilterOnModel, this));
   }
-  this._collection.reset(filtered);
+
+  if (options.reset) {
+    this._collection.reset(filtered);
+  } else {
+    this._collection.set(filtered);
+  }
+
   this.length = this._collection.length;
+}
+
+function onReset() {
+  execFilter.call(this, {reset: true});
+}
+
+function onSort() {
+  var hasComparator = !!(this._superset && this._superset.comparator);
+  execFilter.call(this, {reset: hasComparator});
 }
 
 function onAddChange(model) {
@@ -108,7 +134,9 @@ function Filtered(superset) {
   this._collection = new Backbone.Collection(superset.toArray());
   proxyCollection(this._collection, this);
   this.resetFilters();
-  this.listenTo(this._superset, 'reset sort', execFilter);
+  //this.listenTo(this._superset, 'reset sort', execFilter);
+  this.listenTo(this._superset, 'reset', onReset);
+  this.listenTo(this._superset, 'sort', onSort);
   this.listenTo(this._superset, 'add change', onAddChange);
   this.listenTo(this._superset, 'remove', onModelRemove);
   this.listenTo(this._superset, 'all', onAll);

@@ -4,6 +4,7 @@ var hbs = require('handlebars');
 var polyglot = require('lib/utilities/polyglot');
 var Radio = require('backbone.radio');
 var $ = require('jquery');
+var _ = require('lodash');
 
 var View = ItemView.extend({
 
@@ -14,10 +15,7 @@ var View = ItemView.extend({
     '</div>'
   ),
 
-  initialize: function(options){
-    options = options || {};
-    this.email = options.email;
-
+  initialize: function(){
     this.modal = {
       header: {
         title: polyglot.t('titles.email-receipt')
@@ -41,21 +39,56 @@ var View = ItemView.extend({
 
   templateHelpers: function(){
     var data = {
-      email: this.email
+      email: this.getOption('email')
     };
     return data;
   },
 
   sendEmail: function(){
-    var ajaxurl = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'ajaxurl'
-    });
+    var self = this,
+        email = this.ui.email.val(),
+        order_id = this.getOption('order_id'),
+        ajaxurl = Radio.request('entities', 'get', {
+          type: 'option',
+          name: 'ajaxurl'
+        });
+
+    if(email === ''){
+      email = this.getOption('email');
+    }
+
+    if(!order_id || email === ''){
+      return;
+    }
+
+    var onError = function(message){
+      var obj = { type: 'error' };
+      if(message){
+        obj.text = message;
+      }
+      self.trigger('complete:send', obj);
+    };
+
+    var onSuccess = function(data){
+      var obj = { type: 'success'},
+          message;
+
+      if(!_.isObject(data) || data.result !== 'success'){
+        if(data.message){ message = data.message; }
+        return onError(message);
+      }
+
+      obj.text = data.message;
+      self.trigger('complete:send', obj);
+    };
 
     $.getJSON( ajaxurl, {
       action: 'wc_pos_email_receipt',
-      email : this.ui.email.val()
-    });
+      order_id: order_id,
+      email : email
+    })
+    .done(onSuccess)
+    .fail(onError);
   }
 
 });

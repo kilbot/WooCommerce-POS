@@ -1,12 +1,12 @@
 /**
- * Based on https://github.com/powmedia/backbone-deep-model
+ * Based on https://github.com/kahwee/backbone-deep-model
  *
  * Copyright (c) 2013 Charles Davison
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ to use, copy, modify, _.merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
 
@@ -26,9 +26,7 @@
 
 var Model = require('./model');
 var POS = require('lib/utilities/global');
-require('lib/utilities/mixins');
-
-var keyPathSeparator = '.';
+var _ = require('lodash');
 
 /**
  * Takes a nested object and returns a shallow object keyed with the path names
@@ -39,7 +37,7 @@ var keyPathSeparator = '.';
  */
 function objToPaths(obj) {
   var ret = {},
-    separator = keyPathSeparator;
+    separator = DeepModel.keyPathSeparator;
 
   for (var key in obj) {
     var val = obj[key];
@@ -62,12 +60,14 @@ function objToPaths(obj) {
 }
 
 /**
- * @param {Object}  Object to fetch attribute from
- * @param {String}  Object path e.g. 'user.name'
- * @return {Mixed}
+ * [getNested description]
+ * @param  {object} obj           to fetch attribute from
+ * @param  {string} path          path e.g. 'user.name'
+ * @param  {[type]} return_exists [description]
+ * @return {mixed}                [description]
  */
 function getNested(obj, path, return_exists) {
-  var separator = keyPathSeparator;
+  var separator = DeepModel.keyPathSeparator;
 
   var fields = path ? path.split(separator) : [];
   var result = obj;
@@ -83,19 +83,19 @@ function getNested(obj, path, return_exists) {
     }
 
     if (typeof result === 'undefined') {
-      if (return_exists)
-      {
+      if (return_exists) {
         return true;
       }
       return result;
     }
   }
-  if (return_exists)
-  {
+  if (return_exists) {
     return true;
   }
   return result;
 }
+
+
 
 /**
  * @param {Object} obj                Object to fetch attribute from
@@ -107,11 +107,11 @@ function getNested(obj, path, return_exists) {
 function setNested(obj, path, val, options) {
   options = options || {};
 
-  var separator = keyPathSeparator;
+  var separator = DeepModel.keyPathSeparator;
 
   var fields = path ? path.split(separator) : [];
   var result = obj;
-  for (var i = 0, n = fields.length; i < n && result !== undefined ; i++) {
+  for (var i = 0, n = fields.length; i < n && result !== undefined; i++) {
     var field = fields[i];
 
     //If the last in the path, set the value
@@ -119,8 +119,15 @@ function setNested(obj, path, val, options) {
       options.unset ? delete result[field] : result[field] = val;
     } else {
       //Create the child object if it doesn't exist, or isn't an object
-      if (typeof result[field] === 'undefined' || ! _.isObject(result[field])) {
-        var nextField = fields[i+1];
+      if (typeof result[field] === 'undefined' || !_.isObject(result[field])) {
+        // If trying to remove a field that doesn't exist, then there's no need
+        // to create its missing parent (doing so causes a problem with
+        // hasChanged()).
+        if (options.unset) {
+          delete result[field]; // in case parent exists but is not an object
+          return;
+        }
+        var nextField = fields[i + 1];
 
         // create array if next field is integer, else create object
         result[field] = /^\d+$/.test(nextField) ? [] : {};
@@ -133,38 +140,30 @@ function setNested(obj, path, val, options) {
 }
 
 function deleteNested(obj, path) {
-  setNested(obj, path, null, { unset: true });
+  setNested(obj, path, null, {
+    unset: true
+  });
 }
 
-module.exports = POS.DeepModel = Model.extend({
+var DeepModel = Model.extend({
 
   // Override constructor
   // Support having nested defaults by using _.deepExtend instead of _.extend
   constructor: function(attributes, options) {
-    var defaults;
     var attrs = attributes || {};
     this.cid = _.uniqueId('c');
     this.attributes = {};
     if (options && options.collection) this.collection = options.collection;
     if (options && options.parse) attrs = this.parse(attrs, options) || {};
-    if (defaults = _.result(this, 'defaults')) {
-      //<custom code>
-      // Replaced the call to _.defaults with _.deepExtend.
-      attrs = _.deepExtend({}, defaults, attrs);
-      //</custom code>
-    }
+    attrs = _.merge({}, _.result(this, 'defaults'), attrs);
     this.set(attrs, options);
     this.changed = {};
-
-    // do POS.Model.constructor
-    Model.apply(this, arguments);
-
-    //this.initialize.apply(this, arguments);
+    this.initialize.apply(this, arguments);
   },
 
   // Return a copy of the model's `attributes` object.
   toJSON: function(options) {
-    return _.deepClone(this.attributes);
+    return _.merge({}, this.attributes);
   },
 
   // Override get
@@ -193,14 +192,14 @@ module.exports = POS.DeepModel = Model.extend({
     if (!this._validate(attrs, options)) return false;
 
     // Extract attributes and options.
-    unset           = options.unset;
-    silent          = options.silent;
-    changes         = [];
-    changing        = this._changing;
-    this._changing  = true;
+    unset = options.unset;
+    silent = options.silent;
+    changes = [];
+    changing = this._changing;
+    this._changing = true;
 
     if (!changing) {
-      this._previousAttributes = _.deepClone(this.attributes); //<custom>: Replaced _.clone with _.deepClone
+      this._previousAttributes = _.merge({}, this.attributes); //<custom>: Replaced _.clone with _.deepClone
       this.changed = {};
     }
     current = this.attributes, prev = this._previousAttributes;
@@ -232,7 +231,7 @@ module.exports = POS.DeepModel = Model.extend({
       if (changes.length) this._pending = true;
 
       //<custom code>
-      var separator = keyPathSeparator;
+      var separator = DeepModel.keyPathSeparator;
       var alreadyTriggered = {}; // * @restorer
 
       for (var i = 0, l = changes.length; i < l; i++) {
@@ -246,8 +245,8 @@ module.exports = POS.DeepModel = Model.extend({
         var fields = key.split(separator);
 
         //Trigger change events for parent keys with wildcard (*) notation
-        for(var n = fields.length - 1; n > 0; n--) {
-          var parentKey = _.first(fields, n).join(separator),
+        for (var n = fields.length - 1; n > 0; n--) {
+          var parentKey = fields.slice(0, n).join(separator),
             wildcardKey = parentKey + separator + '*';
 
           if (!alreadyTriggered.hasOwnProperty(wildcardKey) || !alreadyTriggered[wildcardKey]) { // * @restorer
@@ -284,13 +283,17 @@ module.exports = POS.DeepModel = Model.extend({
     var attrs = {};
     var shallowAttributes = objToPaths(this.attributes);
     for (var key in shallowAttributes) attrs[key] = void 0;
-    return this.set(attrs, _.extend({}, options, {unset: true}));
+    return this.set(attrs, _.extend({}, options, {
+      unset: true
+    }));
   },
 
   // Determine if the model has changed since the last `"change"` event.
   // If you specify an attribute name, determine if that attribute has changed.
   hasChanged: function(attr) {
-    if (attr == null) return !_.isEmpty(this.changed);
+    if (attr == null) {
+      return !_.isEmpty(this.changed);
+    }
     return getNested(this.changed, attr) !== undefined;
   },
 
@@ -323,8 +326,9 @@ module.exports = POS.DeepModel = Model.extend({
   // Get the previous value of an attribute, recorded at the time the last
   // `"change"` event was fired.
   previous: function(attr) {
-    if (attr == null || !this._previousAttributes) return null;
-
+    if (attr == null || !this._previousAttributes) {
+      return null;
+    }
     //<custom code>
     return getNested(this._previousAttributes, attr);
     //</custom code>
@@ -333,10 +337,14 @@ module.exports = POS.DeepModel = Model.extend({
   // Get all of the attributes of the model at the time of the previous
   // `"change"` event.
   previousAttributes: function() {
-    //<custom code>
-    return _.deepClone(this._previousAttributes);
-    //</custom code>
+    return _.merge({}, this._previousAttributes);
   }
 });
+
+//Config; override in your app to customise
+DeepModel.keyPathSeparator = '.';
+
+
+module.exports = POS.DeepModel = DeepModel;
 
 /*jshint ignore:end, +W101*/

@@ -45,7 +45,7 @@ module.exports = POS.IndexedDBCollection = Collection.extend({
 
     return this._mergeRecord(record)
       .then(function(model){
-        return self.add(model, {merge: true});
+        return self.add(model, {merge: true });
       })
       .done(function(model){
         debug('Record merged', model);

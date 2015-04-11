@@ -160,31 +160,48 @@ class WC_POS_AJAX {
     );
   }
 
+  /**
+   * Send email receipt
+   */
   public function email_receipt() {
-
-    //
-    $response = '';
-
-    $this->json_headers();
-    echo json_encode( $response );
-    die();
+    $order_id 	= isset($_REQUEST['order_id']) ? $_REQUEST['order_id'] : '';
+    $email 		= isset($_REQUEST['email']) ? $_REQUEST['email'] : '';
+    if( $order_id != '' && $email != '' ) {
+      update_post_meta( $order_id, '_billing_email', $email );
+      WC()->mailer()->customer_invoice( $order_id );
+      $response = array(
+        'result' => 'success',
+        'message' => __( 'Email sent', 'woocommerce-pos')
+      );
+    } else {
+      $response = array(
+        'result' => 'error',
+        'message' => __( 'There was an error sending the email', 'woocommerce-pos')
+      );
+    }
+    $this->serve_response($response);
   }
 
+  /**
+   *
+   */
   public function send_support_email() {
 
-    $headers[] = 'From: '. $_POST['payload']['name'] .' <'. $_POST['payload']['email'] .'>';
-    $message = print_r( $_POST['payload'], true );
+    $headers[] = 'From: '. $_POST['name'] .' <'. $_POST['email'] .'>';
+    $message = $_POST['message'] . "\n\n" . $_POST['status'];
     if( wp_mail( 'support@woopos.com.au', 'WooCommerce POS Support', $message, $headers ) ) {
-      $result['success'] = __( 'Email sent!', 'woocommerce-pos' );
+      $response = array(
+        'result' => 'success',
+        'message' => __( 'Email sent', 'woocommerce-pos')
+      );
     } else {
-      $result = new WP_Error(
-        'woocommerce_pos_mail_error',
-        __( 'Error sending email', 'woocommerce-pos' ),
-        array( 'status' => 401 )
+      $response = array(
+        'result' => 'error',
+        'message' => __( 'There was an error sending the email', 'woocommerce-pos')
       );
     }
 
-    $this->serve_response($result);
+    $this->serve_response($response);
   }
 
   /**

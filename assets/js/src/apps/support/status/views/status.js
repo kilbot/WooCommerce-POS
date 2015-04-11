@@ -21,10 +21,6 @@ module.exports = ItemView.extend({
     this.$el.prepend( $('#tmpl-pos-status').html() );
   },
 
-  onShow: function(){
-
-  },
-
   templateHelpers: function(){
     var data = this.collection.toJSON();
     return { tests: data };
