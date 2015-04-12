@@ -10,3 +10,6 @@
 [submodule "assets/js/src/lib/config/obscura/query"]
 	path = assets/js/src/lib/config/obscura/query
 	url = https://github.com/kilbot/backbone-query.git
+[submodule "assets/js/src/lib/config/deep-model"]
+	path = assets/js/src/lib/config/deep-model
+	url = https://github.com/kilbot/backbone-deep-model.git

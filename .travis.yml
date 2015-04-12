@@ -10,6 +10,9 @@ env:
 #    - WP_VERSION=3.8 WP_MULTISITE=0
 #    - WP_VERSION=3.8 WP_MULTISITE=1
 
+before_install:
+  - git submodule update --init --recursive
+
 before_script:
     - npm install -g grunt-cli
     - npm install

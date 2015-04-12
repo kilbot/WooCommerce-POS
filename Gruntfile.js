@@ -53,7 +53,7 @@ module.exports = function(grunt) {
         tasks: ['cssmin']
       },
       js: {
-        files: ['<%= app.js.src %>/**/*.js', '<%= app.js.src %>/**/*.hbs'],
+        files: ['<%= jshint.app %>', '<%= app.js.src %>/**/*.hbs'],
         tasks: ['webpack:dev', 'simplemocha', 'jshint:app']
       },
       test: {
@@ -61,7 +61,7 @@ module.exports = function(grunt) {
         tasks: ['jshint:tests', 'simplemocha']
       },
       symlink: {
-        files: ['<%= app.js.src %>/**/*.js'],
+        files: ['<%= jshint.app %>'],
         options: {
           event: ['added', 'deleted']
         },
@@ -115,7 +115,8 @@ module.exports = function(grunt) {
         '!./assets/js/src/lib/config/obscura/filtered/**/*.js',
         '!./assets/js/src/lib/config/obscura/paginated/**/*.js',
         '!./assets/js/src/lib/config/obscura/query/**/*.js',
-        '!./assets/js/src/lib/config/obscura/sorted/**/*.js'
+        '!./assets/js/src/lib/config/obscura/sorted/**/*.js',
+        '!./assets/js/src/lib/config/deep-model/**/*.js'
       ],
       tests: [
         './test/**/*.js'
@@ -334,7 +335,8 @@ module.exports = function(grunt) {
               '**/*.html',
               '**/*.hbs',
               '!lib/config/obscura/*/node_modules/**/*',
-              '!lib/config/obscura/*/*/node_modules/**/*'
+              '!lib/config/obscura/*/*/node_modules/**/*',
+              '!lib/config/deep-model/node_modules/**/*'
             ],
             dest: 'node_modules'
           }
