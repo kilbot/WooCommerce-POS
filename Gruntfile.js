@@ -111,7 +111,11 @@ module.exports = function(grunt) {
       },
       app: [
         './assets/js/src/**/*.js',
-        '!assets/js/vendor/**/*.js'
+        '!./assets/js/vendor/**/*.js',
+        '!./assets/js/src/lib/config/obscura/filtered/**/*.js',
+        '!./assets/js/src/lib/config/obscura/paginated/**/*.js',
+        '!./assets/js/src/lib/config/obscura/query/**/*.js',
+        '!./assets/js/src/lib/config/obscura/sorted/**/*.js'
       ],
       tests: [
         './test/**/*.js'
@@ -328,7 +332,9 @@ module.exports = function(grunt) {
             src: [
               '**/*.js',
               '**/*.html',
-              '**/*.hbs'
+              '**/*.hbs',
+              '!lib/config/obscura/*/node_modules/**/*',
+              '!lib/config/obscura/*/*/node_modules/**/*'
             ],
             dest: 'node_modules'
           }

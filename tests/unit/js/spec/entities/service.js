@@ -72,14 +72,14 @@ describe('entities/service.js', function () {
     expect(orders.at(0).get('foo')).to.equal('bar');
   });
 
-  it('should return a FilteredCollection using { type: "filtered" }', function(){
-    var filtered = this.module.channel.request('get', {
-      type: 'filtered',
-      name: 'products'
-    });
-    var Filtered = require('lib/config/filtered-collection');
-    expect(filtered).to.be.instanceof(Filtered);
-  });
+  //it('should return a FilteredCollection using { type: "filtered" }', function(){
+  //  var filtered = this.module.channel.request('get', {
+  //    type: 'filtered',
+  //    name: 'products'
+  //  });
+  //  var Filtered = require('lib/config/obscura/filtered');
+  //  expect(filtered).to.be.instanceof(Filtered);
+  //});
 
   it('should return an app option using { type: "option" }', function(){
     this.module.app = new Backbone.Marionette.Application({ foo: 'bar' });

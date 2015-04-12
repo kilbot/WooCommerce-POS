@@ -35,10 +35,11 @@ If this is your first time setting up a local development environment you may wa
 
 ### Installation
 
-Navigate to your local `wp-content/plugins` directory and clone the project.
+Navigate to your local `wp-content/plugins` directory and clone the project. 
+The recursive flag will init and update any submodules. 
 
 ```sh
-git clone https://github.com/kilbot/WooCommerce-POS.git woocommerce-pos
+git clone --recursive https://github.com/kilbot/WooCommerce-POS.git woocommerce-pos
 ```
 
 Then, navigate into the root directory of the project and install the dependencies.

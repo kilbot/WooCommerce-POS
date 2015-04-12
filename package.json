@@ -26,6 +26,7 @@
   "dependencies": {
     "accounting": "^0.4.1",
     "backbone": "^1.1.2",
+    "backbone-collection-proxy": "^0.2.5",
     "backbone-validation": "^0.11.3",
     "backbone.marionette": "^2.4.1",
     "backbone.radio": "^0.9.0",
