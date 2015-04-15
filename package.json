@@ -64,7 +64,6 @@
     "grunt-webpack": "^1.0.8",
     "grunt-wp-i18n": "^0.5.0",
     "imports-loader": "^0.6.3",
-    "indexeddb-js": "0.0.14",
     "jsdom": "^2.0.0",
     "jshint-stylish": "^1.0.0",
     "load-grunt-tasks": "^3.1.0",
@@ -74,8 +73,8 @@
     "raw-loader": "^0.5.1",
     "selenium-webdriver": "^2.44.0",
     "sinon": "^1.12.2",
+    "sinon-as-promised": "^3.0.0",
     "sinon-chai": "^2.6.0",
-    "sqlite3": "^3.0.4",
     "webpack": "^1.8.0",
     "webpack-dev-server": "^1.7.0"
   }

@@ -116,7 +116,8 @@ module.exports = function(grunt) {
         '!./assets/js/src/lib/config/obscura/paginated/**/*.js',
         '!./assets/js/src/lib/config/obscura/query/**/*.js',
         '!./assets/js/src/lib/config/obscura/sorted/**/*.js',
-        '!./assets/js/src/lib/config/deep-model/**/*.js'
+        '!./assets/js/src/lib/config/deep-model/**/*.js',
+        '!./assets/js/src/lib/config/idb/**/*.js'
       ],
       tests: [
         './test/**/*.js'
@@ -334,9 +335,17 @@ module.exports = function(grunt) {
               '**/*.js',
               '**/*.html',
               '**/*.hbs',
-              '!lib/config/obscura/*/node_modules/**/*',
-              '!lib/config/obscura/*/*/node_modules/**/*',
-              '!lib/config/deep-model/node_modules/**/*'
+              '!lib/config/obscura/**/*',
+              'lib/config/obscura/*.js',
+              'lib/config/obscura/filtered/index.js',
+              'lib/config/obscura/paginated/index.js',
+              'lib/config/obscura/sorted/index.js',
+              'lib/config/obscura/query/query.js',
+              'lib/config/obscura/query/qparser/qparser.js',
+              '!lib/config/deep-model/**/*',
+              'lib/config/deep-model/src/index.js',
+              '!lib/config/idb/**/*',
+              'lib/config/idb/src/**/*'
             ],
             dest: 'node_modules'
           }

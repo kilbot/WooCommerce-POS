@@ -25,6 +25,10 @@ module.exports = POS.Collection = bb.Collection.extend({
 
   parse: function (resp){
     return resp && resp[this.name] ? resp[this.name] : resp ;
+  },
+
+  sync: function(){
+    return bb.sync.apply(this, arguments);
   }
 
 });

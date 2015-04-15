@@ -10,6 +10,7 @@ var sinonChai = require('sinon-chai');
 var chaiJquery = require('chai-jquery');
 var chaiPromises = require('chai-as-promised');
 var chaiBackbone = require('chai-backbone');
+var sinonAsPromised = require('sinon-as-promised');
 
 chai.should();
 chai.use(sinonChai);
@@ -25,13 +26,4 @@ global.proxyquire = proxyquire;
 if (typeof global.localStorage === 'undefined' || global.localStorage === null) {
     var LocalStorage    = require('node-localstorage').LocalStorage;
     global.localStorage = new LocalStorage('./node_modules/node-localstorage/scratch');
-}
-
-// indexedDB
-if (typeof global.indexedDB === 'undefined' || global.indexedDB === null) {
-    var sqlite3      = require('sqlite3');
-    var engine       = new sqlite3.Database(':memory:');
-    var indexeddbjs  = require('indexeddb-js');
-    var scope        = indexeddbjs.makeScope('sqlite3', engine);
-    global.window.indexedDB = scope.indexedDB;
 }

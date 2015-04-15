@@ -7,6 +7,8 @@
 
 var bb = require('backbone');
 var Radio = require('backbone.radio');
+bb.idbSync = require('./idb/src/sync');
+bb.ajaxSync = bb.sync;
 
 // set jquery ajax globals
 bb.$.ajaxSetup({
@@ -24,41 +26,13 @@ bb.$.ajaxSetup({
   timeout: 50000 // 50 seconds
 });
 
-// global ajax error handler
-bb.$( document ).ajaxError(function( event, request ) {
-  Radio.trigger('global', 'error', {
-    jqXHR   : request,
-    status  : request.statusText
-    //message : request.responseText
-  });
-});
-
-// reference to Backbone.sync
-bb.ajaxSync = bb.sync;
-
-// sync method for IndexedDB
-bb.idbSync = require('./sync/idbsync');
-
-// test for indexedDB
-var hasIndexedDB = function(entity){
-  if(entity.indexedDB){
-    return true;
-  }
-  if(entity.collection && entity.collection.indexedDB){
-    return true;
-  }
-  return false;
-};
-
 // override Backbone.sync
-bb.sync = function(method, model, options) {
+bb.sync = function(method, entity, options) {
   // idb
-  if(!options.remote && hasIndexedDB(model)){
-    return bb.idbSync.apply(this, [method, model, options]);
+  if(!options.remote &&
+    (entity.db || (entity.collection && entity.collection.db))){
+    return bb.idbSync.apply(this, [method, entity, options]);
   }
   // server
-  options.beforeSend = function(xhr){
-    xhr.setRequestHeader('X-WC-POS', 1);
-  };
-  return bb.ajaxSync.apply(this, [method, model, options]);
+  return bb.ajaxSync.apply(this, [method, entity, options]);
 };

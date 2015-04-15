@@ -6,15 +6,15 @@
 var Backbone = require('backbone');
 var Radio = Backbone.Radio;
 var debug = require('debug')('dualCollection');
-var IndexedDBCollection = require('./idb-collection');
+var IDBCollection = require('./idb-collection');
 var POS = require('lib/utilities/global');
 var _ = require('lodash');
 var $ = require('jquery');
 var moment = require('moment');
 
-module.exports = POS.DualCollection = IndexedDBCollection.extend({
-  storage: 'dual',
+module.exports = POS.DualCollection = IDBCollection.extend({
   keyPath: 'local_id',
+  mergeKeyPath: 'id',
   _syncDelayed: true,
 
   /**
@@ -38,13 +38,13 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     DELETE_FAILED : 'delete'
   },
 
-  eventNames: {
-    LOCAL_SYNC_FAIL     : 'LOCAL_SYNC_FAIL',
-    LOCAL_SYNC_SUCCESS  : 'LOCAL_SYNC_SUCCESS',
-    REMOTE_SYNC_FAIL    : 'REMOTE_SYNC_FAIL',
-    REMOTE_SYNC_SUCCESS : 'REMOTE_SYNC_SUCCESS',
-    SYNCHRONIZED        : 'SYNCHRONIZED'
-  },
+  //eventNames: {
+  //  LOCAL_SYNC_FAIL     : 'LOCAL_SYNC_FAIL',
+  //  LOCAL_SYNC_SUCCESS  : 'LOCAL_SYNC_SUCCESS',
+  //  REMOTE_SYNC_FAIL    : 'REMOTE_SYNC_FAIL',
+  //  REMOTE_SYNC_SUCCESS : 'REMOTE_SYNC_SUCCESS',
+  //  SYNCHRONIZED        : 'SYNCHRONIZED'
+  //},
 
   url: function(){
     var wc_api = Radio.request('entities', 'get', {
@@ -58,65 +58,33 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     pageSize: 10
   },
 
-  parseState: function (resp, queryParams, state, options) {
-    // totals are always in the WC API headers
-    var totalRecords = options.xhr.getResponseHeader('X-WC-Total');
-    var totalPages = options.xhr.getResponseHeader('X-WC-Total');
-
-    // return as decimal
-    return {
-      totalRecords: parseInt(totalRecords, 10),
-      totalPages: parseInt(totalPages, 10)
-    };
-  },
-
-  parseProp: function(resp, prop){
-    var array = this.parse(resp);
-    return _.pluck(array, prop);
-  },
-
-  getSyncMethodsByState: function(state){
-    if(this.methods[state]){
-      return this.methods[state];
-    }
-  },
-
-  //getState: function(key){
-  //  return Radio.request('entities', 'get', {
-  //    type: 'localStorage',
-  //    name: this.name,
-  //    key: key
-  //  });
-  //},
-  //
-  //setState: function(options){
-  //  Radio.command('entities', 'set', {
-  //    type: 'localStorage',
-  //    name: this.name,
-  //    data: options
-  //  });
-  //},
-  //
-  //removeState: function(key){
-  //  Radio.command('entities', 'remove', {
-  //    type: 'localStorage',
-  //    name: this.name,
-  //    key: key
-  //  });
-  //},
-
+  /**
+   *
+   */
   fetch: function(options){
     options = options || {};
-    var self = this;
+    if(options.remote){
+      return this._remoteFetch(options);
+    }
+    return IDBCollection.prototype.fetch.call(this, options);
+  },
 
-    return IndexedDBCollection.prototype.fetch.call(this, options)
-      .then(function(){
-        if(options.fullSync){
-          self.fullSync();
-        }
+  /**
+   *
+   */
+  _remoteFetch: function(options){
+    var self = this;
+    return this.sync('read', this, options)
+      .then(function(resp){
+        var models = self.parse(resp);
+        return IDBCollection.prototype.merge.call(self, models);
       })
-      .done(function(){ debug('idb fetch complete'); })
-      .fail(function(err){ debug('idb fetch failed', err); });
+      .then(function(models){
+        var ids = _.map(models, function(model){
+          return model.get('id');
+        });
+        self.dequeue(ids);
+      });
   },
 
   /**
@@ -166,7 +134,7 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
 
     // no local records, possibly first fetch
     if(this.length === 0){
-      return this.remoteFetch();
+      return this.fetch({ remote: true });
     }
 
     //var last_update = this.formatDate( this.getState('last_update') );
@@ -189,19 +157,19 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
    * - merge records with local collection
    * todo add(records)
    */
-  remoteFetch: function(options){
-    options = options || {};
-    var self = this;
-
-    return this.remoteSync('read', this, options)
-      .then(function(resp){
-        var records = self.parse(resp);
-        return self.mergeRecords(records);
-      })
-      .done(function(){ debug('remote fetch complete'); })
-      .fail(function(err){ debug('remote fetch failed', err); });
-
-  },
+  //remoteFetch: function(options){
+  //  options = options || {};
+  //  var self = this;
+  //
+  //  return this.remoteSync('read', this, options)
+  //    .then(function(resp){
+  //      var records = self.parse(resp);
+  //      return self.mergeRecords(records);
+  //    })
+  //    .done(function(){ debug('remote fetch complete'); })
+  //    .fail(function(err){ debug('remote fetch failed', err); });
+  //
+  //},
 
   /**
    * Create new record & wait for local_id
@@ -274,41 +242,6 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
 
   },
 
-
-
-  /**
-   * Returns a promise for an array of ids since last update
-   */
-  //getRemoteIds: function(last_update){
-  //  var deferred = $.Deferred(),
-  //      self = this, ids, options = {};
-  //
-  //  options.data = {
-  //    fields: 'id',
-  //    filter: {
-  //      limit: -1,
-  //      updated_at_min: this.formatDate(last_update)
-  //    }
-  //  };
-  //
-  //  options.success = function(resp){
-  //    ids = self.parseProp(resp, 'id');
-  //    debug(ids.length + ' remote ids');
-  //    deferred.resolve(ids);
-  //  };
-  //
-  //  options.error = function(jqXHR, textStatus, errorThrown){
-  //    self.trigger('error', jqXHR, textStatus, errorThrown);
-  //    debug('error fetching ids ', textStatus);
-  //  };
-  //
-  //  this.setState({last_update: Date.now()});
-  //
-  //  this.remoteSync('read', this, options);
-  //
-  //  return deferred;
-  //},
-
   /**
    * Get array of all entity ids from the server
    * - optionally get ids modified since last_update
@@ -341,30 +274,6 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     options.remote = true;
     return this.sync(method, model, options);
   },
-
-  /**
-   * Returns a promise for an array of ids from IndexedDB
-   * note: this.fetch + this.pluck('id') should give same result
-   */
-  //getLocalIds: function(){
-  //  var deferred = $.Deferred(),
-  //      ids = [];
-  //
-  //  var onItem = function(item){
-  //    ids.push(item.id);
-  //  };
-  //
-  //  var onEnd = function(){
-  //    deferred.resolve(ids);
-  //  };
-  //
-  //  this.indexedDB.store.iterate(onItem, {
-  //    index: 'id',
-  //    onEnd: onEnd
-  //  });
-  //
-  //  return deferred;
-  //},
 
   /**
    * Remove garbage records, ie: records deleted on server
@@ -409,7 +318,6 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
       return this.queue.push(ids);
     }
     this.queue = _.union(this.queue, ids);
-    debug(ids.length + ' ids added to queue');
   },
 
   /**
@@ -421,7 +329,6 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
     } else {
       this.queue = _.difference(this.queue, ids);
     }
-    debug(ids.length + ' ids removed from queue');
   },
 
   /**
@@ -437,8 +344,12 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
    * - optionally keep processing queue until empty
    */
   processQueue: function(options){
-    if(this.queue.length === 0){ return; }
-    this.trigger('loading', true);
+    options = options || {};
+    var queue = options.queue || this.queue;
+
+    if(queue.length === 0){
+      return;
+    }
 
     //if(options.filter){
     //  // - fetch remote ids with filter
@@ -450,20 +361,19 @@ module.exports = POS.DualCollection = IndexedDBCollection.extend({
 
     var self = this,
         deferred = new $.Deferred(),
-        ids = this.queue.splice(0, this.state.pageSize).join(','),
-        cont = options.all && this.queue.length > 0;
+        ids = queue.splice(0, this.state.pageSize).join(',');
 
     var done = function(){
-      self.trigger('loading', false);
-      if(cont){
+      if(options.all && queue.length > 0){
         deferred.progress(ids);
-        _.delay(self.processQueue.bind(self), self.getDelay(), options.all);
+        _.delay(self.processQueue.bind(self), self.getDelay(), options);
       } else {
         deferred.resolve(ids);
       }
     };
 
-    this.remoteFetch({
+    this.fetch({
+      remote: true,
       data: {
         filter: {
           limit: -1,

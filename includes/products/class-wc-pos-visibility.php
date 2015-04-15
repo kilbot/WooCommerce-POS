@@ -11,13 +11,23 @@
 
 class WC_POS_Products_Visibility {
 
+  protected $options;
+
   /**
    * Constructor
    */
   public function __construct() {
+    $this->options = array(
+      'pos_and_online'  => __( 'POS & Online', 'woocommerce-pos' ),
+      'pos_only'        => __( 'POS Only', 'woocommerce-pos' ),
+      'online_only'     => __( 'Online Only', 'woocommerce-pos' )
+    );
+
     add_filter( 'posts_where', array( $this, 'posts_where' ), 10 , 2 );
     add_filter( 'views_edit-product', array( $this, 'pos_visibility_filters' ), 10, 1 );
     add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ), 10, 1 );
+    add_action( 'bulk_edit_custom_box', array( $this, 'edit_box' ), 10, 2 );
+    add_action( 'quick_edit_custom_box', array( $this, 'edit_box'), 10, 2 );
   }
 
   /**
@@ -120,6 +130,12 @@ class WC_POS_Products_Visibility {
       }
     }
 
+  }
+
+  public function edit_box($column_name, $post_type){
+    if($post_type == 'product' && $column_name == 'name'){
+      include 'views/quick-edit.php';
+    }
   }
 
 }

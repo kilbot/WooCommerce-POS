@@ -7,7 +7,7 @@ var _ = require('lodash');
 var Modernizr = global['Modernizr'];
 var Radio = require('backbone.radio');
 var polyglot = require('lib/utilities/polyglot');
-var debug = require('debug')('systemStatus');
+//var debug = require('debug')('systemStatus');
 
 var StatusRoute = Route.extend({
 
@@ -103,21 +103,11 @@ var StatusRoute = Route.extend({
     var collection = this[db],
         self = this;
 
-    this.removeState(db);
-
-    collection.indexedDB.clear(function(){
-      collection.reset();
-      self.render();
-    },function(){
-      debug('Could not clear ' + db, arguments);
-    });
-  },
-
-  removeState: function(name){
-    Radio.command('entities', 'remove', {
-      type: 'localStorage',
-      name: name
-    });
+    collection.db.clear()
+      .then(function(){
+        collection.reset();
+        self.render();
+      });
   }
 
 });

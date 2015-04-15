@@ -3,84 +3,45 @@
  */
 
 var Collection = require('./collection');
-var debug = require('debug')('idbCollection');
+//var debug = require('debug')('idbCollection');
 var POS = require('lib/utilities/global');
-var $ = require('jquery');
-var _ = require('lodash');
-var IndexedDB = require('./sync/idb');
+var IndexedDB = require('./idb/src/idb');
 
 module.exports = POS.IndexedDBCollection = Collection.extend({
+  name          : 'store',
+  storePrefix   : 'wc_pos_',
+  dbVersion     : 1,
+  keyPath       : 'local_id',
+  autoIncrement : true,
+  indexes       : [
+    {name: 'local_id', keyPath: 'local_id', unique: true},
+    {name: 'id', keyPath: 'id', unique: true},
+    {name: 'status', keyPath: 'status', unique: false}
+  ],
 
   constructor: function() {
     Collection.apply(this, arguments);
-    this.indexedDB = new IndexedDB(this);
-    this.indexedDB.open();
+
+    var options = {
+      storeName     : this.name,
+      storePrefix   : this.storePrefix,
+      dbVersion     : this.dbVersion,
+      keyPath       : this.keyPath,
+      autoIncrement : this.autoIncrement,
+      indexes       : this.indexes
+    };
+
+    this.db = new IndexedDB(options, this);
+    this.db.mergeKeyPath = this.mergeKeyPath;
+    this.db.open();
   },
 
-  /**
-   * merge array of records
-   */
-  mergeRecords: function(records){
+  merge: function(models){
     var self = this;
-
-    var merge = _.map(records, this._mergeRecord, this);
-    return $.when.apply(this, merge)
+    return this.db.merge(models)
       .then(function(){
-        var models = Array.prototype.slice.call(arguments);
+        var models = Array.prototype.slice.apply(arguments);
         return self.add(models, {merge: true});
-      })
-      .done(function(){
-        debug('All records merged', arguments);
-      })
-      .fail(function(err){
-        debug('Error merging records', err);
-      });
-  },
-
-  /**
-   * merge single record
-   */
-  mergeRecord: function(record){
-    var self = this;
-
-    return this._mergeRecord(record)
-      .then(function(model){
-        return self.add(model, {merge: true });
-      })
-      .done(function(model){
-        debug('Record merged', model);
-      })
-      .fail(function(err){
-        debug('Error merging record', err);
-      });
-  },
-
-  /**
-   * - get the local_id (if record already stored locally)
-   * - mix local_id into server response
-   * - save to idb
-   * - get updated record
-   * todo: putBatch?
-   * todo: `put` should return full model?
-   */
-  _mergeRecord: function(record){
-    var self    = this,
-        keyPath = this.keyPath;
-
-    return this.indexedDB.getByAttribute({ id: record.id })
-      .then(function(array){
-        var local = _.first(array);
-        if(local){ record[keyPath] = local[keyPath]; }
-        return self.indexedDB.put(record);
-      })
-      .then(function(id){
-        return self.indexedDB.get(id);
-      })
-      .done(function(model){
-        debug('Record merged with idb', model);
-      })
-      .fail(function(err){
-        debug('Error merging record with idb', err);
       });
   }
 

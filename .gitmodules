@@ -13,3 +13,6 @@
 [submodule "assets/js/src/lib/config/deep-model"]
 	path = assets/js/src/lib/config/deep-model
 	url = https://github.com/kilbot/backbone-deep-model.git
+[submodule "assets/js/src/lib/config/idb"]
+	path = assets/js/src/lib/config/idb
+	url = https://github.com/kilbot/backbone-idb.git
