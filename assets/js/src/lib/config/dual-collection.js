@@ -24,28 +24,6 @@ module.exports = POS.DualCollection = IDBCollection.extend({
   queue: [],
   delay: 500, // server breathing spacing, can also be set via radio
 
-  states: {
-    SYNCHRONIZED  : 'SYNCHRONIZED',
-    SYNCHRONIZING : 'SYNCHRONIZING',
-    UPDATE_FAILED : 'UPDATE_FAILED',
-    CREATE_FAILED : 'CREATE_FAILED',
-    DELETE_FAILED : 'DELETE_FAILED'
-  },
-
-  methods: {
-    UPDATE_FAILED : 'create',
-    CREATE_FAILED : 'update',
-    DELETE_FAILED : 'delete'
-  },
-
-  //eventNames: {
-  //  LOCAL_SYNC_FAIL     : 'LOCAL_SYNC_FAIL',
-  //  LOCAL_SYNC_SUCCESS  : 'LOCAL_SYNC_SUCCESS',
-  //  REMOTE_SYNC_FAIL    : 'REMOTE_SYNC_FAIL',
-  //  REMOTE_SYNC_SUCCESS : 'REMOTE_SYNC_SUCCESS',
-  //  SYNCHRONIZED        : 'SYNCHRONIZED'
-  //},
-
   url: function(){
     var wc_api = Radio.request('entities', 'get', {
       type: 'option',
@@ -64,7 +42,7 @@ module.exports = POS.DualCollection = IDBCollection.extend({
   fetch: function(options){
     options = options || {};
     if(options.remote){
-      return this._remoteFetch(options);
+      return this.remoteFetch(options);
     }
     return IDBCollection.prototype.fetch.call(this, options);
   },
@@ -72,7 +50,7 @@ module.exports = POS.DualCollection = IDBCollection.extend({
   /**
    *
    */
-  _remoteFetch: function(options){
+  remoteFetch: function(options){
     var self = this;
     return this.sync('read', this, options)
       .then(function(resp){
@@ -103,7 +81,7 @@ module.exports = POS.DualCollection = IDBCollection.extend({
 
     this._syncing = true;
     debug('fullSync started');
-    this.trigger('fullSync:start');
+    this.trigger('start:fullSync');
 
     this.fetchUpdated()
       .then(function(){
@@ -118,7 +96,7 @@ module.exports = POS.DualCollection = IDBCollection.extend({
       .fail(function(err){ debug('fullSync failed', err); })
       .always(function(){
         self._syncing = false;
-        self.trigger('fullSync:end');
+        self.trigger('end:fullSync');
       });
 
   },
@@ -144,53 +122,12 @@ module.exports = POS.DualCollection = IDBCollection.extend({
     return this.getRemoteIds(last_update)
       .then(function(ids){
         self.enqueue(ids);
-        return self.processQueue(true);
-      })
-      .done(function(){ debug('fetch updated complete'); })
-      .fail(function(err){ debug('fetch updated failed', err); });
+        return self.processQueue({
+          queue: ids,
+          all  : true
+        });
+      });
 
-  },
-
-  /**
-   * Remote fetch
-   * - fetch records from server
-   * - merge records with local collection
-   * todo add(records)
-   */
-  //remoteFetch: function(options){
-  //  options = options || {};
-  //  var self = this;
-  //
-  //  return this.remoteSync('read', this, options)
-  //    .then(function(resp){
-  //      var records = self.parse(resp);
-  //      return self.mergeRecords(records);
-  //    })
-  //    .done(function(){ debug('remote fetch complete'); })
-  //    .fail(function(err){ debug('remote fetch failed', err); });
-  //
-  //},
-
-  /**
-   * Create new record & wait for local_id
-   * Remote fetch to populate the rest if the attributes
-   */
-  remoteGet: function(options){
-    options = options || {};
-    var deferred = $.Deferred();
-
-    this.create({
-      id: options.remote_id,
-      status: 'completed' // placeholder status, ie: closed order
-    }, {
-      wait: true,
-      success: function(model){
-        model.remoteFetch().done( deferred.resolve );
-      },
-      error: deferred.reject
-    });
-
-    return deferred.promise();
   },
 
   /**
@@ -198,23 +135,18 @@ module.exports = POS.DualCollection = IDBCollection.extend({
    */
   syncDelayed: function(){
     var models = this.getDelayedModels();
-    _.each(models, function(model){
-      model.remoteSync();
-    }, this);
+    var sync = _.map(models, function(model){
+      return model.remoteSync;
+    });
+    return $.when.apply(this, sync);
   },
 
   /**
    * returns array of all delayed records
    */
   getDelayedModels: function() {
-    var delayed = [
-      this.states.DELETE_FAILED,
-      this.states.CREATE_FAILED,
-      this.states.UPDATE_FAILED
-    ];
-
     return this.filter(function(model){
-      return delayed.indexOf( model.get('status') ) !== -1;
+      return model.isDelayed();
     });
   },
 
@@ -264,15 +196,6 @@ module.exports = POS.DualCollection = IDBCollection.extend({
       type          : this.name,
       updated_at_min: last_update
     });
-  },
-
-  /**
-   * Sync to server
-   */
-  remoteSync: function(method, model, options){
-    options = options || {};
-    options.remote = true;
-    return this.sync(method, model, options);
   },
 
   /**
@@ -343,34 +266,19 @@ module.exports = POS.DualCollection = IDBCollection.extend({
    * - take slice of ids from queue and remote fetch
    * - optionally keep processing queue until empty
    */
+  /* jshint -W071, -W074 */
   processQueue: function(options){
     options = options || {};
     var queue = options.queue || this.queue;
-
-    if(queue.length === 0){
+    if(queue.length === 0 || this._processingQueue){
       return;
     }
-
-    //if(options.filter){
-    //  // - fetch remote ids with filter
-    //  // - compare to queue
-    //  // - resort queue with ids at front?
-    //  // - or store queue with a unique id
-    //  console.log(options.filter);
-    //}
+    this._processingQueue = true;
+    this.trigger('start:processQueue');
 
     var self = this,
         deferred = new $.Deferred(),
         ids = queue.splice(0, this.state.pageSize).join(',');
-
-    var done = function(){
-      if(options.all && queue.length > 0){
-        deferred.progress(ids);
-        _.delay(self.processQueue.bind(self), self.getDelay(), options);
-      } else {
-        deferred.resolve(ids);
-      }
-    };
 
     this.fetch({
       remote: true,
@@ -378,12 +286,27 @@ module.exports = POS.DualCollection = IDBCollection.extend({
         filter: {
           limit: -1,
           'in': ids
-        }
+        },
+        query: options.filter
       }
-    }).done(done);
+    })
+    .done(function(){
+      if(!options.all || queue.length === 0){
+        deferred.resolve();
+      } else {
+        deferred.progress(ids);
+        _.delay(self.processQueue.bind(self), self.getDelay(), options);
+      }
+    })
+    .fail(deferred.reject)
+    .always(function(){
+      self._processingQueue = false;
+      self.trigger('end:processQueue');
+    });
 
     return deferred.promise();
   },
+  /* jshint +W071, +W074 */
 
   /**
    * Allows delay to be added between process queue

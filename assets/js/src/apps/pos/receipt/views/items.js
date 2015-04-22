@@ -2,6 +2,7 @@ var ItemView = require('lib/config/item-view');
 var POS = require('lib/utilities/global');
 var hbs = require('handlebars');
 var $ = require('jquery');
+var _ = require('lodash');
 
 var View = ItemView.extend({
   tagName: 'ul',
@@ -14,9 +15,7 @@ var View = ItemView.extend({
 
   templateHelpers: function(){
     var order = this.order.toJSON();
-    return order.line_items
-      .concat(order.fee_lines)
-      .concat(order.shipping_lines);
+    return _.union(order.line_items, order.fee_lines, order.shipping_lines);
   }
 });
 

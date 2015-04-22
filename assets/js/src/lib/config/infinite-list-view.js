@@ -13,12 +13,12 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
 
   initialize: function(){
     this.listenTo(this.collection.superset(), {
-      'loading': this.toggleLoading,
-      'fullSync:end': this.checkOverflow
+      'start:processQueue': this.startLoading,
+      'end:processQueue': this.endLoading,
+      'end:fullSync': this.checkOverflow
     });
     this.on({
-      'render:empty': this.checkOverflow,
-      'render:collection': this.checkOverflow
+      'all': this.checkOverflow
     });
     _.bindAll(this, 'onScroll', 'loadMore', 'getOverflow');
   },
@@ -43,6 +43,12 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
     }
   }, 200),
 
+  checkOverflow: _.debounce(function(){
+    if(this.getOverflow() < 100){
+      this.loadMore();
+    }
+  }, 200),
+
   getOverflow: function(){
     if(this._parent) {
       var sH = this._parent.el.scrollHeight,
@@ -52,20 +58,14 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
     }
   },
 
-  checkOverflow: function(){
-    if(this.getOverflow() === 0){
-      this.loadMore();
-    }
-  },
-
-  loadMore: function(){
+  loadMore: function() {
     // get next page from filtered collection
-    if(this.collection.hasNextPage()){
+    if (this.collection.hasNextPage()) {
       return this.collection.appendNextPage();
     }
 
     // load more from queue
-    if(this.collection.superset().queue.length > 0){
+    if (this.collection.superset().queue.length > 0) {
       this.remoteFetchMore();
     }
   },
@@ -74,6 +74,14 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
     var options = {};
     options.filter = this.collection.getTokens();
     this.collection.superset().processQueue(options);
+  },
+
+  startLoading: function(){
+    this.toggleLoading(true);
+  },
+
+  endLoading: function(){
+    this.toggleLoading(false);
   },
 
   toggleLoading: function(loading){

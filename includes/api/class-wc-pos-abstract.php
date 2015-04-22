@@ -23,6 +23,18 @@ abstract class WC_POS_API_Abstract {
   }
 
   /**
+   * @return array|mixed
+   */
+  protected function get_data(){
+    $data = json_decode(trim($this->get_raw_data()), true);
+    // remove status
+    if(is_array($data) && array_key_exists('status', $data)){
+      unset($data['status']);
+    }
+    return $data;
+  }
+
+  /**
    * Parse an RFC3339 datetime into a MySQl datetime
    * mirrors woocommerce/includes/api/class-wc-api-server.php
    *

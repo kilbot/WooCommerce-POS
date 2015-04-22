@@ -107,8 +107,8 @@ module.exports = Service.extend({
   error: function(options){
     options = options || {};
 
-    if(options.jqXHR && options.jqXHR.responseText){
-      options.raw = options.jqXHR.responseText;
+    if(options.jqXHR){
+      this.parseXHR(options);
     }
 
     var view = new AlertView({
@@ -119,6 +119,12 @@ module.exports = Service.extend({
     });
 
     this.open(view);
+  },
+
+  parseXHR: function(options){
+    options.status = options.jqXHR.statusText;
+    options.message = options.jqXHR.responseJSON.errors[0].message;
+    options.raw = options.jqXHR.responseText;
   }
 
 });

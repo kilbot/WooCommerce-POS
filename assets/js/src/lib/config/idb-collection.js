@@ -32,7 +32,6 @@ module.exports = POS.IndexedDBCollection = Collection.extend({
     };
 
     this.db = new IndexedDB(options, this);
-    this.db.mergeKeyPath = this.mergeKeyPath;
     this.db.open();
   },
 

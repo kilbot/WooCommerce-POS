@@ -10,11 +10,9 @@ module.exports = POS.Collection = bb.Collection.extend({
       this._isNew = false;
     });
 
-    this.on('error', function(jqXHR, textStatus, errorThrown){
+    this.on('error', function(entity, resp){
       Radio.trigger('global', 'error', {
-        jqXHR   : jqXHR,
-        status  : textStatus,
-        message : errorThrown
+        jqXHR   : resp
       });
     });
   },

@@ -15,7 +15,6 @@ module.exports = Route.extend({
       name    : 'products',
       perPage : 10
     });
-    this.collection = this.filtered.superset();
     this.setTabLabel({
       tab   : 'left',
       label : polyglot.t('titles.products')
@@ -23,10 +22,12 @@ module.exports = Route.extend({
   },
 
   fetch: function() {
-    if( this.collection.isNew() ){
-      return this.collection.fetch({
-        fullSync: true
-      });
+    var collection = this.filtered.superset();
+    if( collection.isNew() ){
+      return collection.fetch()
+        .then(function(){
+          collection.fullSync();
+        });
     } else {
       this.filtered
         .resetFilters()

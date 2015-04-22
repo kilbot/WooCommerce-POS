@@ -46,7 +46,7 @@ module.exports = DualCollection.extend({
   addToCart: function(options){
     var order = this.getActiveOrder();
     var self = this;
-    $.when(order.cart.indexedDB.open(), order.getLocalId())
+    $.when(order.cart.db.open(), order.getLocalId())
       .then(function() {
         order.cart.order_id = order.id;
         order.cart.addToCart(options);

@@ -1,7 +1,7 @@
 var DeepModel = require('./deep-model');
 var POS = require('lib/utilities/global');
 var _ = require('lodash');
-var debug = require('debug')('dualModel');
+//var debug = require('debug')('dualModel');
 
 module.exports = POS.DualModel = DeepModel.extend({
   idAttribute: 'local_id',
@@ -29,113 +29,86 @@ module.exports = POS.DualModel = DeepModel.extend({
     return urlRoot;
   },
 
+  // delayed states
   states: {
-    SYNCHRONIZED  : 'SYNCHRONIZED',
-    SYNCHRONIZING : 'SYNCHRONIZING',
-    UPDATE_FAILED : 'UPDATE_FAILED',
-    CREATE_FAILED : 'CREATE_FAILED',
-    DELETE_FAILED : 'DELETE_FAILED'
+    'update' : 'UPDATE_FAILED',
+    'create' : 'CREATE_FAILED',
+    'delete' : 'DELETE_FAILED'
   },
 
   hasRemoteId: function() {
     return !!this.get(this.remoteIdAttribute);
   },
 
-  getUrlForSync: function(urlRoot, method) {
-    var remoteId = this.get(this.remoteIdAttribute);
-    if (remoteId && (method === 'update' || method === 'delete')) {
-      return '' + urlRoot + '/' + remoteId + '/';
-    }
-    return urlRoot;
-  },
-
-  getSyncMethodsByState: function(state){
-    var methods = {};
-    methods[this.states.CREATE_FAILED] = 'create';
-    methods[this.states.UPDATE_FAILED] = 'update';
-    methods[this.states.DELETE_FAILED] = 'delete';
-    return methods[state];
-  },
-
-  isInSynchronizing: function() {
-    return this.get('status') === this.states.SYNCHRONIZING;
-  },
-
   isDelayed: function() {
     var status = this.get('status');
-    return status === this.states.DELETE_FAILED ||
-           status === this.states.UPDATE_FAILED ||
-           status === this.states.CREATE_FAILED;
-  },
-
-  remoteSync: function(options){
-    options = options || {};
-    var self      = this,
-        status    = this.get('status'),
-        method    = this.getSyncMethodsByState(status),
-        keyPath   = this.collection.keyPath,
-        local_id  = this.get(keyPath);
-
-    options.remote = true;
-
-    return this.sync(method, this, options)
-      .then(function(response){
-        if (method === 'delete') {
-          return self.destroy();
-        }
-        var attributes = self.parse(response);
-        if(local_id){ attributes[keyPath] = local_id; }
-        if(!attributes.status) { attributes.status = ''; }
-        return self.collection.mergeRecord(attributes);
-      })
-      .done(function(model){
-        debug('remote sync done', model);
-      })
-      .fail(function(err){
-        debug('remote sync fail', err);
-      });
-
-  },
-
-  save: function(attributes, options){
-    options = options || {};
-    var self = this, remote;
-
-    if(options.remote){
-      remote = true;
-      options.remote = undefined; // prevent remote flag going through to sync
-    }
-
-    return DeepModel.prototype.save.call(this, attributes, options)
-      .then(function(){
-        if(remote){
-          return self.remoteSync();
-        }
-      })
-      .done(function(model){
-        debug('model saved', model);
-      })
-      .fail(function(err){
-        debug('error saving model', err);
-      });
-
+    return status === this.states['update'] ||
+           status === this.states['create'] ||
+           status === this.states['delete'];
   },
 
   /**
-   *
+   * - sync to idb with correct status
+   * - if remote, sync to remote
    */
-  remoteFetch: function(options){
+  sync: function(method, model, options){
+    options = options || {};
+    var opts = _.clone(options);
+    opts.remote = undefined;
+
+    this.setStatus(method);
+
+    return DeepModel.prototype.sync.call(this, method, model, opts)
+      .then(function(){
+        if(options.remote){
+          return model.remoteSync(method, model, options);
+        }
+      })
+      .then(function(resp){
+        if(resp){
+          return model.merge();
+        }
+      });
+  },
+
+  remoteSync: function(method, model, options){
     options = options || {};
     options.remote = true;
-    var self = this;
+    if(method !== 'read'){
+      method = model.getMethod(method);
+    }
+    return DeepModel.prototype.sync.call(this, method, model, options);
+  },
 
-    return this.sync('read', this, options)
-      .then(function(resp){
-        var record = self.parse(resp);
-        return self.collection.mergeRecord(record);
-      })
-      .done(function(){ debug('remote fetch complete'); })
-      .fail(function(err){ debug('remote fetch failed', err); });
+  setStatus: function(method){
+    if(this.states[method]){
+      if(method === 'update' && !this.hasRemoteId()){
+        method = 'create';
+      }
+      this.set({ status: this.states[method] });
+    }
+  },
+
+  getMethod: function(method){
+    var status = this.get('status');
+    var remoteMethod = _.findKey(this.states, function(state) {
+      return state === status;
+    });
+    if(remoteMethod){
+      return remoteMethod;
+    }
+    return method;
+  },
+
+  merge: function(){
+    // todo: merge
+    // - merge should take bb & json?
+    if(this.isDelayed()){
+      this.unset('status');
+    }
+    if(this.collection && this.collection.db){
+      return this.collection.merge( this.toJSON() );
+    }
   }
 
 });

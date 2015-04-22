@@ -30,6 +30,9 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    */
   public function __construct( WC_POS_Gateways $gateways ) {
 
+    // store raw http data
+    $this->data = $this->get_data();
+
     // gateways class
     $this->gateways = $gateways;
 
@@ -88,20 +91,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @return array data
    */
   public function order_data($data, $WC_API_Orders) {
-
-    // get raw data from request body
-    $data = json_decode(trim($this->get_raw_data()), true);
-
-    // store raw data
-    $this->data = $data;
-
-    // scrub properties
-    $props = array('status');
-    foreach($props as $prop){
-      unset($data[$prop]);
-    }
-
-    return $data;
+    return $this->data;
   }
 
   /**
