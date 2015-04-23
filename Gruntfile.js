@@ -56,6 +56,10 @@ module.exports = function(grunt) {
         files: ['<%= jshint.app %>', '<%= app.js.src %>/**/*.hbs'],
         tasks: ['webpack:dev', 'simplemocha', 'jshint:app']
       },
+      uglify: {
+        files: ['assets/js/src/products.js'],
+        tasks: ['uglify:simple']
+      },
       test: {
         files: ['tests/unit/js/**/*.js'],
         tasks: ['jshint:tests', 'simplemocha']
@@ -181,6 +185,11 @@ module.exports = function(grunt) {
 
     // minify js
     uglify: {
+      simple: {
+        files: {
+          'assets/js/products.min.js': 'assets/js/src/products.js'
+        }
+      },
       app: {
         files: {
           'assets/js/app.min.js': 'assets/js/app.build.js',
@@ -222,6 +231,7 @@ module.exports = function(grunt) {
           potFilename: 'woocommerce-pos.pot',
           exclude: [
             'includes/admin/.*',
+            'includes/products/.*',
             'includes/class-wc-pos-activator.php',
             'includes/class-wc-pos-deactivator.php'
           ],
@@ -255,6 +265,7 @@ module.exports = function(grunt) {
           potFilename: 'woocommerce-pos-admin.pot',
           include: [
             'includes/admin/.*',
+            'includes/products/.*',
             'includes/class-wc-pos-activator.php',
             'includes/class-wc-pos-deactivator.php'
           ],

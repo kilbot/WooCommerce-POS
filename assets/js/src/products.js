@@ -1,113 +1,90 @@
 /**
- * Handles the Product Edit page
- * todo: refactor
+ * Handles the POS visibility settings on the Product Edit page
  */
-/* jshint -W071 */
-(function () {
+(function ($) {
 
-  'use strict';
+  var pagenow = window.pagenow;
 
-  var $         = window.jQuery;
-  var _         = window._;
-  var Backbone  = window.Backbone;
-  var ajaxurl   = window.ajaxurl;
-  var posParams = window.posParams;
+  // admin list product page
+  function quick_edit(){
 
-  var Model = Backbone.Model.extend({
-      url: ajaxurl,
-      idAttribute: 'name',
-      save: function(){
-    var params = {
-      emulateJSON: true,
-      data: {
-        action: 'pos_set_product_visibilty',
-        posVisibility: this.get('name'),
-        postId: posParams.postId,
-        security: posParams.visibilityNonce
+    // we create a copy of the WP inline edit post function
+    var wp_inline_edit = window.inlineEditPost.edit;
+
+    // and then we overwrite the function with our own code
+    window.inlineEditPost.edit = function( id ) {
+
+      // "call" the original WP edit function
+      // we don't want to leave WordPress hanging
+      wp_inline_edit.apply( this, arguments );
+
+      // now we take care of our business
+
+      // get the post ID
+      var post_id = 0;
+      if ( typeof( id ) === 'object' ) {
+        post_id = parseInt( this.getId( id ), 10 );
+      }
+
+      if ( post_id > 0 ) {
+        // define the edit row
+        var edit_row = $( '#edit-' + post_id );
+
+        // get the data
+        var val = $('#woocommerce_pos_inline_' + post_id).data('visibility');
+
+        // populate the data
+        $( 'select[name="_pos_visibility"]', edit_row ).val( val );
       }
     };
-    return Backbone.sync( 'create', this, params );
   }
-  });
 
-  var Collection = Backbone.Collection.extend({
-    model: Model
-  });
+  // admin single product page
+  function meta_box(){
+    var display = $('#pos-visibility-display'),
+        show = $('#pos-visibility-show'),
+        select = $('#pos-visibility-select'),
+        cancel = $('#pos-visibility-cancel'),
+        save = $('#pos-visibility-save'),
+        current = $('input[name="_pos_visibility"]:checked');
 
-  var View = Backbone.View.extend({
-    el: $('#pos-visibility'),
-    template: _.template( $('#tmpl-pos-visibility').html() ),
-
-    events: {
-      'click a' : 'clicked'
-    },
-
-    initialize: function() {
-      this.collection = new Collection( posParams.visibility );
-      this.render();
-    },
-
-    render: function() {
-      this.$('#pos-visibility-select')
-        .html( this.template({ options: this.collection.toJSON() }) );
-      return this;
-    },
-
-    clicked: function(e) {
-      e.preventDefault();
-      var action = e.target.className.match(/\s?action-([a-z]+)/);
-      this.doAction(action[1]);
-    },
-
-    doAction: function(action){
-      var actions = {
-        edit: this.edit,
-        save: this.save,
-        cancel: this.cancel
-      };
-      if (typeof actions[action] !== 'function') {
-        throw new Error('Invalid action.');
-      }
-      return actions[action]();
-    },
-
-    edit: function(){
-      this.$('.action-edit').hide();
-      this.$('#pos-visibility-select').slideToggle();
-    },
-
-    save: function(){
-      var self = this;
-      var value = this.$('input:checked').val();
-      var model = this.collection.get(value);
-      this.$('.spinner').css({'display': 'inline-block', 'float': 'none'});
-      model.save({
-        success: function(){
-          $('#pos-visibility-display').text(model.get('label'));
-          self.cancel();
-        },
-        error: function(){
-          $('#pos-visibility-select')
-              .prepend('<p class="form-invalid">Error</p>')
-              .css({'padding': '5px', 'margin-top': 0});
-          self.$('.spinner').removeAttr('style');
-        }
-      });
-    },
-
-    cancel: function() {
-      var self = this;
-      this.$('.spinner').removeAttr('style');
-      this.$('#pos-visibility-select').slideToggle(400, function() {
-        self.$('.action-edit').show();
-        self.$('.form-invalid').remove();
-      });
+    function toggleSelect(){
+      select.slideToggle('fast');
+      show.toggle();
     }
-  });
 
-  $( document ).ready(function() {
-    return new View();
-  });
+    function updateDisplay(){
+      var val = current.parent('label').text();
+      display.text(val);
+    }
 
-})();
-/* jshint +W071 */
+    show.click(function(e){
+      e.preventDefault();
+      toggleSelect();
+    });
+
+    cancel.click(function(e){
+      e.preventDefault();
+      current.prop('checked', true);
+      updateDisplay();
+      toggleSelect();
+    });
+
+    save.click(function(e){
+      e.preventDefault();
+      current = $('input[name="_pos_visibility"]:checked');
+      updateDisplay();
+      toggleSelect();
+    });
+
+  }
+
+  // init
+  if(pagenow && pagenow === 'edit-product'){
+    quick_edit();
+  }
+  if(pagenow && pagenow === 'product'){
+    meta_box();
+  }
+
+})(window.jQuery);

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4.0-alpha\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2015-04-07 15:16:15+00:00\n"
+"POT-Creation-Date: 2015-04-23 12:56:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -33,15 +33,19 @@ msgstr ""
 msgid "POS Access"
 msgstr ""
 
-#: includes/admin/settings/class-wc-pos-hotkeys.php:24
+#: includes/admin/settings/class-wc-pos-hotkeys.php:44
 msgid "Help screen"
 msgstr ""
 
-#: includes/admin/settings/class-wc-pos-hotkeys.php:28
+#: includes/admin/settings/class-wc-pos-hotkeys.php:45
 msgid "Barcode search"
 msgstr ""
 
-#: includes/admin/settings/class-wc-pos-hotkeys.php:32
+#: includes/admin/settings/class-wc-pos-hotkeys.php:47
+msgid "New order"
+msgstr ""
+
+#: includes/admin/settings/class-wc-pos-hotkeys.php:48
 msgid "Sync with server"
 msgstr ""
 
@@ -82,7 +86,7 @@ msgid "Order Emails"
 msgstr ""
 
 #: includes/admin/settings/views/checkout.php:28
-msgid "blah"
+msgid "Send WooCommerce notification emails for POS orders"
 msgstr ""
 
 #: includes/admin/settings/views/checkout.php:44
@@ -205,12 +209,31 @@ msgid ""
 "to work correctly. Please <a href=\"%s\">enable permalinks</a>."
 msgstr ""
 
+#: includes/products/class-wc-pos-visibility.php:21
+msgid "POS & Online"
+msgstr ""
+
+#: includes/products/class-wc-pos-visibility.php:22
+#: includes/products/class-wc-pos-visibility.php:85
+msgid "POS Only"
+msgstr ""
+
+#: includes/products/class-wc-pos-visibility.php:23
+#: includes/products/class-wc-pos-visibility.php:86
+msgid "Online Only"
+msgstr ""
+
+#: includes/products/views/post-metabox-visibility-select.php:11
+#: includes/products/views/quick-edit-visibility-select.php:14
+msgid "POS visibility"
+msgstr ""
+
 #: includes/admin/class-wc-pos-permalink.php:28
 msgctxt "Permalink setting, eg: /pos"
 msgid "POS base"
 msgstr ""
 
-#: includes/admin/settings/class-wc-pos-hotkeys.php:19
+#: includes/admin/settings/class-wc-pos-hotkeys.php:21
 msgctxt "keyboard shortcuts"
 msgid "HotKeys"
 msgstr ""
