@@ -1,6 +1,6 @@
 var bb = require('backbone');
 var POS = require('lib/utilities/global');
-var Radio = require('backbone.radio');
+//var Radio = require('backbone.radio');
 
 module.exports = POS.Collection = bb.Collection.extend({
   constructor: function() {
@@ -10,11 +10,11 @@ module.exports = POS.Collection = bb.Collection.extend({
       this._isNew = false;
     });
 
-    this.on('error', function(entity, resp){
-      Radio.trigger('global', 'error', {
-        jqXHR   : resp
-      });
-    });
+    //this.on('error', function(entity, resp){
+    //  Radio.trigger('global', 'error', {
+    //    jqXHR   : resp
+    //  });
+    //});
   },
 
   isNew: function() {

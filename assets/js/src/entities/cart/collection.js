@@ -49,11 +49,11 @@ module.exports = IndexedDBCollection.extend({
     }
 
     var onSuccess = this.add.bind(this);
-    var keyRange = this.indexedDB.store.makeKeyRange({
+    var keyRange = this.db.store.makeKeyRange({
       only: this.order_id
     });
 
-    this.indexedDB.store.query(onSuccess, {
+    this.db.store.query(onSuccess, {
       index: 'order',
       keyRange: keyRange
     });

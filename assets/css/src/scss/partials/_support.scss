@@ -4,11 +4,12 @@
 			.label {
 				@include flex(0 1 25%);
 			}
-			.input {
-				input {
-					width: 100%;
-				}
-			}
+      .input[placeholder]:empty:before {
+        content: attr(placeholder);
+      }
+      .input[placeholder]:empty:focus:before {
+        content: "";
+      }
 			textarea {
 				width: 100%;
 				height: 100px;

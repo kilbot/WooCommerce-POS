@@ -26,6 +26,14 @@ bb.$.ajaxSetup({
   timeout: 50000 // 50 seconds
 });
 
+// global ajax error handler
+bb.$( document ).ajaxError(function( event, jqXHR, ajaxSettings, thrownError ) {
+  Radio.trigger('global', 'error', {
+    jqXHR       : jqXHR,
+    thrownError : thrownError
+  });
+});
+
 // override Backbone.sync
 bb.sync = function(method, entity, options) {
   // idb

@@ -107,20 +107,21 @@ class WC_POS_Template {
     // required scripts
     $scripts = array(
       'jquery'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>',
-      'lodash'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>',
+      'lodash'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>',
       'backbone'     => '<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>',
       'radio'        => '<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.radio/0.9.0/backbone.radio.min.js"></script>',
       'marionette'   => '<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.1/backbone.marionette.min.js"></script>',
-      'handlebars'   => '<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"></script>',
-      'idb-wrapper'  => '<script src="//cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.4.1/idbstore.min.js"></script>',
+      'handlebars'   => '<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.2/handlebars.min.js"></script>',
+      'idb-wrapper'  => '<script src="//cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.5.0/idbstore.min.js"></script>',
       'select2'      => '<script src="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js"></script>',
-      'moment'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>',
+      'moment'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>',
       'accounting'   => '<script src="//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>',
       'jquery.color' => '<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js"></script>',
       'app'          => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION .'"></script>'
     );
 
     // cdn bundle for local dev
+    // todo: formatNumber issue when using vendor bundle
 //    $scripts = array(
 //      'bundle'       => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/vendor.bundle.js?ver='. WC_POS_VERSION .'"></script>',
 //      'app'          => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION .'"></script>'

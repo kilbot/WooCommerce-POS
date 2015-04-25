@@ -3,6 +3,7 @@ var Backbone = require('backbone');
 var LayoutView = require('./views/layout');
 var AlertView = require('./views/alert');
 var $ = require('jquery');
+var _ = require('lodash');
 var globalChannel = require('backbone.radio').channel('global');
 
 module.exports = Service.extend({
@@ -122,8 +123,15 @@ module.exports = Service.extend({
   },
 
   parseXHR: function(options){
-    options.status = options.jqXHR.statusText;
-    options.message = options.jqXHR.responseJSON.errors[0].message;
+    if( _.isObject(options.thrownError) ){
+      options.status = options.thrownError.name;
+      options.message = options.thrownError.message;
+    } else {
+      options.status = options.jqXHR.statusText;
+      if( options.jqXHR.responseJSON && options.jqXHR.responseJSON.errors[0] ){
+        options.message = options.jqXHR.responseJSON.errors[0].message;
+      }
+    }
     options.raw = options.jqXHR.responseText;
   }
 

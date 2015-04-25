@@ -136,7 +136,7 @@ module.exports = POS.DualCollection = IDBCollection.extend({
   syncDelayed: function(){
     var models = this.getDelayedModels();
     var sync = _.map(models, function(model){
-      return model.remoteSync;
+      return model.remoteSync(null, model);
     });
     return $.when.apply(this, sync);
   },
@@ -200,37 +200,27 @@ module.exports = POS.DualCollection = IDBCollection.extend({
 
   /**
    * Remove garbage records, ie: records deleted on server
-   * todo: promisify removeBatch
    */
   removeGarbage: function(ids){
-    var deferred = new $.Deferred(),
-        models = this.getModelsByRemoteIds(ids);
+    var models = this.getModelsByRemoteIds(ids);
 
-    if(models.length === 0){ return; }
+    if(models.length === 0){
+      return;
+    }
 
-    // remove from collection
     this.remove(models);
-
-    // purge from indexeddb
-    this.indexedDB.store.removeBatch(
-      _.pluck(models, 'local_id'),
-      deferred.resolve,
-      deferred.reject
-    );
-
-    return deferred.promise();
+    return this.db.removeBatch(_.pluck(models, 'id'));
   },
 
   /**
-   * Turn ids array into array of models
-   * note: idAttribute for dual models is 'local_id'
+   * Turn array of remoteIds into array of models
+   * idAttribute = 'local_id'
+   * remoteIdAttribute = 'id
    */
   getModelsByRemoteIds: function(ids){
-    var models = [];
-    _.each(ids, function(id){
-      models.push(this.findWhere({id: id}));
-    }, this);
-    return models;
+    return this.filter(function(model){
+      return _(ids).contains(model.get('id'));
+    });
   },
 
   /**

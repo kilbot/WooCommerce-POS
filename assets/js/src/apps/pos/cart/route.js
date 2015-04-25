@@ -128,8 +128,8 @@ var CartRoute = Route.extend({
 
     // bit of a hack
     // get the "Customer:" translation and add it to the view
-    this.listenTo(this.layout.customerRegion, 'before:show', function(){
-      var label = this.layout.customerRegion.$el.html();
+    this.listenTo(this.layout.getRegion('customer'), 'before:show', function(){
+      var label = this.layout.getRegion('customer').$el.html();
       view.$el.prepend( label );
     });
 
@@ -156,10 +156,10 @@ var CartRoute = Route.extend({
         this.order.destroy();
       },
       'action:note': function(){
-        this.layout.notesRegion.currentView.showNoteField();
+        this.layout.getRegion('note').currentView.showNoteField();
       },
       'action:discount': function(){
-        this.layout.totalsRegion.currentView.showDiscountRow();
+        this.layout.getRegion('totals').currentView.showDiscountRow();
       },
       'action:fee': function(){
         this.order.cart.addToCart({

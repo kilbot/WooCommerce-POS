@@ -109,7 +109,7 @@ module.exports = DualModel.extend({
   destroy: function(options){
     if(this.cart.length > 0){
 
-      this.cart.indexedDB.removeBatch( this.cart.pluck('local_id') );
+      this.cart.db.removeBatch( this.cart.pluck('local_id') );
       //_.invoke( this.cart.toArray(), 'destroy' );
     }
     return DualModel.prototype.destroy.call(this, options);
@@ -132,8 +132,8 @@ module.exports = DualModel.extend({
       'remove'     : this.itemRemoved
     });
 
-    if(cart.indexedDB){
-      cart.indexedDB.open().then(function(){
+    if(cart.db){
+      cart.db.open().then(function(){
         cart.fetchCartItems();
       });
     }

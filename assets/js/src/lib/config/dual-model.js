@@ -63,11 +63,6 @@ module.exports = POS.DualModel = DeepModel.extend({
         if(options.remote){
           return model.remoteSync(method, model, options);
         }
-      })
-      .then(function(resp){
-        if(resp){
-          return model.merge();
-        }
       });
   },
 
@@ -77,7 +72,13 @@ module.exports = POS.DualModel = DeepModel.extend({
     if(method !== 'read'){
       method = model.getMethod(method);
     }
-    return DeepModel.prototype.sync.call(this, method, model, options);
+    return DeepModel.prototype.sync.call(this, method, model, options)
+      .then(function(resp){
+        if(resp){
+          var data = model.parse(resp);
+          return model.merge(data);
+        }
+      });
   },
 
   setStatus: function(method){
@@ -100,9 +101,10 @@ module.exports = POS.DualModel = DeepModel.extend({
     return method;
   },
 
-  merge: function(){
+  merge: function(resp){
     // todo: merge
     // - merge should take bb & json?
+    this.set(resp);
     if(this.isDelayed()){
       this.unset('status');
     }

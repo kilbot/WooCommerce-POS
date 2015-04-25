@@ -1,8 +1,13 @@
 // remove iOS rounded corners
-input[type="text"] {
-  -webkit-appearance: none;
+input[type="search"] {
+  @include appearance(none);
   @include border-radius(0);
   border: 1px solid $input-border-color;
+}
+
+// remove border from contentediatble el
+[contenteditable]:focus {
+  outline: 0px solid transparent;
 }
 
 // input group

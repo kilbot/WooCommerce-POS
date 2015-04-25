@@ -96,7 +96,7 @@ module.exports = DualCollection.extend({
     $.when(this._isReady).then(function() {
       debug('fetching ' + self.name);
 
-      self.indexedDB.iterate(onItem, {
+      self.db.iterate(onItem, {
         onEnd: onEnd,
         onError: deferred.reject
       });

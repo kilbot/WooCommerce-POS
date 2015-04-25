@@ -13,7 +13,7 @@
 				<li><a href="#" data-action="barcode"><i class="icon icon-barcode"></i> <?php _e( 'Scan Barcode', 'woocommerce-pos' ); ?></a></li>
 			</ul>
 		</div>
-		<input type="search" tabindex="1"  autofocus="autofocus" class="form-control">
+		<input type="search" tabindex="1" autofocus="autofocus" class="form-control">
 		<a class="clear" href="#"><i class="icon icon-times-circle icon-lg"></i></a>
 		<span class="input-group-btn"><a href="#" data-action="sync"><i class="icon icon-refresh"></i></a></span>
 	</div>

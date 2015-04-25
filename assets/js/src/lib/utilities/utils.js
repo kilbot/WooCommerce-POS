@@ -1,13 +1,14 @@
 var accounting = require('accounting');
 var POS = require('lib/utilities/global');
+var _ = require('lodash');
 var Utils = {};
 
 /**
  * Rounding to precision
  */
 Utils.round = function( num, precision ) {
-  if( precision === undefined ) {
-    precision = accounting.settings.number.precision;
+  if( !_.isFinite( parseInt(precision, 10) ) ) {
+    precision = accounting.settings.currency.precision;
   }
   return parseFloat( accounting.toFixed( num, precision ) );
 };
@@ -30,11 +31,11 @@ Utils.unformat = function( num ) {
  *
  */
 Utils.formatNumber = function( num, precision ) {
-  if( precision === undefined ) {
-    precision = accounting.settings.number.precision;
-  }
   if( precision === 'auto' ) {
     precision = Utils.decimalPlaces(num);
+  }
+  if( !_.isFinite( parseInt(precision, 10) ) ) {
+    precision = accounting.settings.currency.precision;
   }
   return accounting.formatNumber(num, precision);
 };
@@ -43,11 +44,11 @@ Utils.formatNumber = function( num, precision ) {
  *
  */
 Utils.formatMoney = function( num, precision ) {
-  if( precision === undefined ) {
-    precision = accounting.settings.currency.precision;
-  }
   if( precision === 'auto' ) {
     precision = Utils.decimalPlaces(num);
+  }
+  if( !_.isFinite( parseInt(precision, 10) ) ) {
+    precision = accounting.settings.currency.precision;
   }
   // round the number to even
   num = Utils.round(num, precision);

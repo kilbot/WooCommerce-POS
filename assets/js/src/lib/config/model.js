@@ -1,18 +1,10 @@
 var bb = require('backbone');
 var POS = require('lib/utilities/global');
-var Radio = require('backbone.radio');
+//var Radio = require('backbone.radio');
 
 module.exports = POS.Model = bb.Model.extend({
   constructor: function() {
     bb.Model.apply(this, arguments);
-
-    this.on('error', function(jqXHR, textStatus, errorThrown){
-      Radio.trigger('global', 'error', {
-        jqXHR   : jqXHR,
-        status  : textStatus,
-        message : errorThrown
-      });
-    });
   },
 
   parse: function (resp){

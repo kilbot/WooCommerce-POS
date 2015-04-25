@@ -9,8 +9,8 @@ var Filter = Behavior.extend({
   initialize: function(){
 
     this.listenTo(this.view.options.collection.superset(), {
-      'fullSync:start': this.syncStart,
-      'fullSync:end': this.syncEnd
+      'start:fullSync': this.syncStart,
+      'end:fullSync': this.syncEnd
     });
 
     this.hotkeys = Radio.request('entities', 'get', {

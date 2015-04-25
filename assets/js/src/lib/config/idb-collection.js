@@ -6,6 +6,7 @@ var Collection = require('./collection');
 //var debug = require('debug')('idbCollection');
 var POS = require('lib/utilities/global');
 var IndexedDB = require('./idb/src/idb');
+var Radio = require('backbone.radio');
 
 module.exports = POS.IndexedDBCollection = Collection.extend({
   name          : 'store',
@@ -28,7 +29,13 @@ module.exports = POS.IndexedDBCollection = Collection.extend({
       dbVersion     : this.dbVersion,
       keyPath       : this.keyPath,
       autoIncrement : this.autoIncrement,
-      indexes       : this.indexes
+      indexes       : this.indexes,
+      defaultErrorHandler : function(error){
+        Radio.trigger('global', 'error', {
+          status: error.target.error.name,
+          message: error.target.error.message
+        });
+      }
     };
 
     this.db = new IndexedDB(options, this);

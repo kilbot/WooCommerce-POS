@@ -108,7 +108,11 @@ class WC_POS {
       $user = $current_user;
 
       if( ! user_can( $user->ID, 'access_woocommerce_pos' ) )
-        $user = new WP_Error( 'woocommerce_pos_authentication_error', __( 'User not authorized to access WooCommerce POS', 'woocommerce-pos' ), array( 'code' => 500 ) );
+        $user = new WP_Error(
+          'woocommerce_pos_authentication_error',
+          __( 'User not authorized to access WooCommerce POS', 'woocommerce-pos' ),
+          array( 'status' => 401 )
+        );
     }
 
     return $user;
