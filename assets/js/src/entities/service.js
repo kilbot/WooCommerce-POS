@@ -42,6 +42,7 @@ module.exports = POS.Entities = Service.extend({
     collection  : 'getCollection',
     model       : 'getModel',
     filtered    : 'getFiltered',
+    variations  : 'getVariations',
     option      : 'getOption',
     settings    : 'getSettings',
     localStorage: 'getLocalStorage'
@@ -168,6 +169,16 @@ module.exports = POS.Entities = Service.extend({
     } else {
       storage.removeItem('wc_pos_' + options.name);
     }
+  },
+
+  getVariations: function(options){
+    var parent_id = options.parent.get('id');
+    if( !this._variations || !this._variations[parent_id] ){
+      var vars = new Variations(options.parent.get('variations'), options);
+      this._variations = this._variations || {};
+      this._variations[parent_id] = new FilteredCollection(vars, options);
+    }
+    return this._variations[parent_id];
   }
 
 });

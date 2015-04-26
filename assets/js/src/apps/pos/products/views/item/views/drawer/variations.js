@@ -19,15 +19,11 @@ module.exports = CollectionView.extend({
     options = options || {};
 
     this.collection = Radio.request('entities', 'get', {
-      type: 'filtered',
-      name: 'variations'
+      type: 'variations',
+      parent: this.model
     });
 
-    this.collection
-      .resetFilters()
-      .superset()
-      .getVariations(options.model);
-
+    this.collection.resetFilters();
     this.filterVariations(options.filter);
   },
 

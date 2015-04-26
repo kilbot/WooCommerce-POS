@@ -19,6 +19,13 @@ var Item = ItemView.extend({
   addToCart: function(e){
     e.preventDefault();
     Radio.command('router', 'add:to:cart', {model: this.model});
+  },
+
+  templateHelpers: function(){
+    return {
+      variation: true,
+      title: this.options.model.parent.get('title')
+    };
   }
 
 });

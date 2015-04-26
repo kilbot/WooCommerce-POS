@@ -31,15 +31,12 @@ var Variations = ItemView.extend({
     className: 'popover popover-variations popover-dark-bg'
   },
 
-  initialize: function(options){
+  initialize: function(){
     this.collection = Radio.request('entities', 'get', {
-      type: 'filtered',
-      name: 'variations'
+      type: 'variations',
+      parent: this.model
     });
-    this.collection
-      .resetFilters()
-      .superset()
-      .getVariations(options.model);
+    this.collection.resetFilters();
   },
 
   templateHelpers: function(){

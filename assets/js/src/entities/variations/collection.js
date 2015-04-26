@@ -1,22 +1,21 @@
 var Collection = require('lib/config/collection');
 var Model = require('./model');
-var _ = require('lodash');
+//var ? = require('lodash');
+var Radio = require('backbone.radio');
 
 module.exports = Collection.extend({
   model: Model,
 
-  initialize: function() {
-    this._isNew = false;
+  url: function(){
+    var wc_api = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'wc_api'
+    });
+    return wc_api + 'products';
   },
 
-  getVariations: function(parent){
-    var variations = [];
-    _.each(parent.get('variations'), function(variation) {
-      variation.type  = 'variation';
-      variation.title = parent.get('title');
-      variations.push(variation);
-    }, this);
-    this.reset(variations);
+  initialize: function() {
+    this._isNew = false;
   }
 
 });

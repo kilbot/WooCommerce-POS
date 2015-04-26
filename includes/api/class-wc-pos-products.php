@@ -13,7 +13,7 @@
 class WC_POS_API_Products extends WC_POS_API_Abstract {
 
   public function __construct() {
-    add_filter( 'woocommerce_api_product_response', array( $this, 'filter_product_response' ), 10, 4 );
+    add_filter( 'woocommerce_api_product_response', array( $this, 'product_response' ), 10, 4 );
   }
 
   /**
@@ -27,7 +27,7 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    *
    * @return array modified data array $product_data
    */
-  public function filter_product_response( $product_data, $product, $fields, $server ) {
+  public function product_response( $product_data, $product, $fields, $server ) {
 
     // remove some unnecessary keys
     // - saves storage space in IndexedDB
