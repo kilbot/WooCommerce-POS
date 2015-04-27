@@ -6,7 +6,6 @@ var Radio = require('backbone.radio');
 
 module.exports = Model.extend({
   idAttribute: 'local_id',
-  pulseDelay: 500,
 
   defaults : {
     'subtotal'      : 0,
@@ -250,19 +249,6 @@ module.exports = Model.extend({
       sum += this.get(array[i]);
     }
     return Utils.round(sum, 4);
-  },
-
-  /**
-   * delay destroy for cart item pulse
-   */
-  destroy: function(options){
-    var self = this;
-    options = options || {};
-    options.wait = true;
-    this.trigger('pulse', 'remove');
-    return _.delay(function(){
-      return Model.prototype.destroy.call(self, options);
-    }, this.pulseDelay);
   }
 
 });

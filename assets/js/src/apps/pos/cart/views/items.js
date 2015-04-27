@@ -12,7 +12,12 @@ var Empty = ItemView.extend({
 var View = CollectionView.extend({
   tagName: 'ul',
   childView: LineItem,
-  emptyView: Empty
+  emptyView: Empty,
+  voidCart: function(){
+    this.children.each(function(child){
+      child.getRegion('item').currentView.removeItem();
+    });
+  }
 });
 
 module.exports = View;

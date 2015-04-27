@@ -53,8 +53,7 @@ module.exports = FormView.extend({
 
   modelEvents: {
     'change:title'        : 'save',
-    'change:method_title' : 'save',
-    'pulse'               : 'pulse'
+    'change:method_title' : 'save'
   },
 
   bindings: {
@@ -92,21 +91,14 @@ module.exports = FormView.extend({
     this.model.save();
   },
 
-  pulse: function(type){
-    if(type === 'remove'){
-      return this.fadeOut();
-    }
-  },
-
-  fadeOut: function(){
-    this.ui.remove.attr('disabled', 'true');
-    this.$el.addClass('bg-danger');
-    this.$el.fadeOut(this.model.pulseDelay);
-  },
-
   removeItem: function(e) {
-    e.preventDefault();
-    this.model.destroy();
+    if(e) { e.preventDefault(); }
+    var self = this;
+    this.ui.remove.attr('disabled', 'true');
+    this.$el.addClass('bg-danger')
+      .fadeOut(500, function(){
+      self.model.destroy();
+    });
   }
 
 });

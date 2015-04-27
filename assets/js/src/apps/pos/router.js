@@ -42,8 +42,8 @@ var Router = Router.extend({
 
     // listen to order collection
     this.listenTo(this.orders, {
-      'new:order' : this.addOrder,
-      'remove'    : this.removeOrder
+      'add'    : this.addOrder,
+      'remove' : this.removeOrder
     });
   },
 
@@ -100,13 +100,15 @@ var Router = Router.extend({
 
   addOrder: function(order){
     if(this._currentRoute instanceof CartRoute){
-      bb.history.navigate('cart/' + order.id, {trigger: true});
+      //bb.history.navigate('cart/' + order.id);
+      this.execute(this.showCart, [order.id]);
     }
   },
 
   removeOrder: function(){
     if(this._currentRoute instanceof CartRoute){
-      bb.history.navigate('', {trigger: true});
+      bb.history.navigate('');
+      this.execute(this.showCart);
     }
   }
 

@@ -1,10 +1,7 @@
 var DualCollection = require('lib/config/dual-collection');
 var Model = require('./model');
-var debug = require('debug')('ordersCollection');
 var $ = require('jquery');
-//var Radio = require('backbone.radio');
 var _ = require('lodash');
-var bb = require('backbone');
 
 module.exports = DualCollection.extend({
   model: Model,
@@ -34,36 +31,43 @@ module.exports = DualCollection.extend({
   },
 
   /**
-   *
+   * Promise of an active order
    */
   getActiveOrder: function(){
+    var self = this;
+    var deferred = new $.Deferred();
+
     if(!this.active){
-      this.active = this.add({});
+      this.create().then(function(order){
+        self.active = order;
+        deferred.resolve(order);
+      });
+    } else {
+      deferred.resolve(this.active);
     }
-    return this.active;
+
+    return deferred.promise();
   },
 
   addToCart: function(options){
-    var order = this.getActiveOrder();
-    var self = this;
-    $.when(order.cart.db.open(), order.getLocalId())
-      .then(function() {
-        order.cart.order_id = order.id;
+    this.getActiveOrder()
+      .then(function(order){
         order.cart.addToCart(options);
-        if(order.cart.isNew()){
-          self.trigger('new:order', order);
-        }
       });
   },
 
-  getReceipt: function(id){
-    var order = this.get(id);
+  create: function(){
+    var deferred = new $.Deferred();
 
-    if(order && order._open){
-      bb.navigate('checkout/' + order.id, { trigger: true });
-    }
+    DualCollection.prototype.create.call(this, {}, {
+      wait: true,
+      success: function(order){
+        order.cart.order_id = order.id;
+        deferred.resolve(order);
+      }
+    });
 
-    return order;
+    return deferred.promise();
   },
 
   /**
@@ -71,38 +75,8 @@ module.exports = DualCollection.extend({
    */
   openOrders: function(){
     return this.filter(function(model){
-      return model._open;
+      return model.isEditable();
     });
-  },
-
-  /**
-   * iterate through idb, add orders with no remoteId
-   */
-  fetchLocal: function(){
-    var self = this,
-        deferred = $.Deferred();
-
-    var onItem = function(item){
-      if(!item.id){
-        self.add(item);
-      }
-    };
-
-    var onEnd = function(){
-      self._isNew = false;
-      deferred.resolve();
-    };
-
-    $.when(this._isReady).then(function() {
-      debug('fetching ' + self.name);
-
-      self.db.iterate(onItem, {
-        onEnd: onEnd,
-        onError: deferred.reject
-      });
-    });
-
-    return deferred;
   }
 
 });

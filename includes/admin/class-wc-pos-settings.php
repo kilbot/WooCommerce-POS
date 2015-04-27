@@ -156,7 +156,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       'marionette',
-      '//cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.0/backbone.marionette.min.js',
+      '//cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.1/backbone.marionette.min.js',
       array( 'jquery', 'backbone', 'underscore' ),
       false,
       true
@@ -164,7 +164,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       'handlebars',
-      '//cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js',
+      '//cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.2/handlebars.min.js',
       array( 'jquery', 'backbone', 'underscore' ),
       false,
       true
@@ -180,7 +180,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       'moment',
-      '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js',
+      '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js',
       array( 'jquery' ),
       false,
       true
@@ -196,7 +196,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       'idb-wrapper',
-      '//cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.4.1/idbstore.min.js',
+      '//cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.5.0/idbstore.min.js',
       array(),
       false,
       true

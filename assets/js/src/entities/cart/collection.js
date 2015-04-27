@@ -2,7 +2,6 @@ var IndexedDBCollection = require('lib/config/idb-collection');
 var Model = require('./model');
 var _ = require('lodash');
 
-
 module.exports = IndexedDBCollection.extend({
   model: Model,
   name: 'cart',

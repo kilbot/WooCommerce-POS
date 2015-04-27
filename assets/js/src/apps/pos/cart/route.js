@@ -59,7 +59,7 @@ var CartRoute = Route.extend({
   },
 
   onRender: function(){
-    if( this.order && !this.order._open ){
+    if( this.order && !this.order.isEditable() ){
       this.navigate('receipt/' + this.order.id, { trigger: true });
     }
   },
@@ -83,10 +83,10 @@ var CartRoute = Route.extend({
     var view = new ItemsView();
     this.layout.getRegion('list').show(view);
     _.invoke([
-      this.layout.totalsRegion,
-      this.layout.customerRegion,
-      this.layout.actionsRegion,
-      this.layout.notesRegion
+      this.layout.getRegion('totals'),
+      this.layout.getRegion('customer'),
+      this.layout.getRegion('actions'),
+      this.layout.getRegion('note')
     ], 'empty');
   },
 
@@ -153,7 +153,8 @@ var CartRoute = Route.extend({
 
     this.listenTo(view, {
       'action:void': function(){
-        this.order.destroy();
+        this.layout.getRegion('list').currentView.voidCart();
+        //this.order.destroy();
       },
       'action:note': function(){
         this.layout.getRegion('note').currentView.showNoteField();

@@ -28,33 +28,9 @@ module.exports = DualModel.extend({
   /**
    *
    */
-  defaults: function(){
-    var defaults = this.defaultCustomer();
-    return _.extend(defaults, {
-      note: '',
-      order_discount: 0
-    });
-  },
-
-  /**
-   *
-   */
-  defaultCustomer: function(){
-    var default_customer;
-
-    var customers = Radio.request('entities', 'get', {
-      type : 'option',
-      name : 'customers'
-    }) || {};
-
-    default_customer = customers['default'] || customers.guest;
-
-    if(default_customer){
-      return {
-        customer_id : default_customer.id,
-        customer    : default_customer
-      };
-    }
+  defaults: {
+    note: '',
+    order_discount: 0
   },
 
   /**
@@ -63,15 +39,9 @@ module.exports = DualModel.extend({
    */
   initialize: function(){
 
-    this.tax = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'tax'
-    }) || {};
-
-    this.tax_rates = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'tax_rates'
-    }) || {};
+    this.tax = this.getEntities('tax');
+    this.tax_rates = this.getEntities('tax_rates');
+    _.extend(this.defaults, this.defaultCustomer());
 
     if( this.isEditable() ){
       this.attachCart();
@@ -83,37 +53,48 @@ module.exports = DualModel.extend({
       'change:order_discount': this.calcTotals,
       'change:status': this.isEditable
     });
+
+  },
+
+  getEntities: function(name){
+    return Radio.request('entities', 'get', {
+      type: 'option',
+      name: name
+    }) || {};
   },
 
   /**
    *
    */
-  getLocalId: function(){
-    if(this.id){
-      return this.id;
+  defaultCustomer: function(){
+    var customers = this.getEntities('customers'),
+      default_customer = customers['default'] || customers.guest;
+
+    if(default_customer){
+      return {
+        customer_id : default_customer.id,
+        customer    : default_customer
+      };
     }
-    return this.save({}, {wait:true});
   },
 
   /**
    * is order editable method, sets _open true or false
    */
   isEditable: function(){
-    this._open = !_.contains(this.closedStatus, this.get('status'));
-    return this._open;
+    return !_.contains(this.closedStatus, this.get('status'));
   },
 
   /**
    * Remove items from cart before destroy
    */
-  destroy: function(options){
-    if(this.cart.length > 0){
-
-      this.cart.db.removeBatch( this.cart.pluck('local_id') );
-      //_.invoke( this.cart.toArray(), 'destroy' );
-    }
-    return DualModel.prototype.destroy.call(this, options);
-  },
+  //destroy: function(options){
+  //  var self = this;
+  //  return this.cart.db.removeBatch( this.cart.pluck('local_id') )
+  //    .always(function(){
+  //      return DualModel.prototype.destroy.call(self, options);
+  //    });
+  //},
 
   /**
    * Attach cart

@@ -30,7 +30,7 @@ var CheckoutRoute = Route.extend({
 
     if(this.order){
       this.listenTo( this.order, 'change:status', function(model){
-        if(!model._open && model.get('status') !== 'failed'){
+        if(!model.isEditable() && model.get('status') !== 'failed'){
           this.navigate('receipt/' + model.id, { trigger: true });
         }
       });
@@ -50,7 +50,7 @@ var CheckoutRoute = Route.extend({
   },
 
   onRender: function(){
-    if( this.order && !this.order._open ){
+    if( this.order && !this.order.isEditable() ){
       this.navigate('receipt/' + this.order.id, { trigger: true });
     }
   },

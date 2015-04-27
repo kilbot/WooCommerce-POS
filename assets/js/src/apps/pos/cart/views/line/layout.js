@@ -10,8 +10,8 @@ module.exports = LayoutView.extend({
     return '<div class="item"></div><div class="drawer"></div>';
   },
   regions: {
-    itemRegion: '.item',
-    drawerRegion: '.drawer'
+    item: '.item',
+    drawer: '.drawer'
   },
 
   modelEvents: {
@@ -25,22 +25,22 @@ module.exports = LayoutView.extend({
     this.listenTo( view, 'drawer:close', this.closeDrawer );
     this.listenTo( view, 'drawer:toggle', this.toggleDrawer );
 
-    this.itemRegion.show(view);
+    this.getRegion('item').show(view);
   },
 
   openDrawer: function(){
     var view = new DrawerView({ model: this.model });
-    this.drawerRegion.show(view);
+    this.getRegion('drawer').show(view);
     this.$el.addClass('drawer-open');
   },
 
   closeDrawer: function(){
-    this.drawerRegion.empty();
+    this.getRegion('drawer').empty();
     this.$el.removeClass('drawer-open');
   },
 
   toggleDrawer: function(){
-    if( this.drawerRegion.hasView() ){
+    if( this.getRegion('drawer').hasView() ){
       this.closeDrawer();
     } else {
       this.openDrawer();
