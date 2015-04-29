@@ -19,7 +19,7 @@ global $current_user;
   <header id="header">
     <div>
       <div>
-        <a href="#" id="menu-btn" class="btn-header"><i class="icon icon-bars"></i> <span><?php /* translators: wordpress */ _e( 'Menu' ); ?></span></a>
+        <a href="#" id="menu-btn" class="btn-header"><i class="icon-bars"></i> <span><?php /* translators: wordpress */ _e( 'Menu' ); ?></span></a>
       </div>
       <h1 class="center-block"><?php $this->title(); ?></h1>
       <div>
@@ -38,7 +38,7 @@ global $current_user;
   <div id="menu">
     <ul>
       <?php $menu = $this->menu(); foreach( $menu as $key => $item ): ?>
-        <li class="<?php echo $key ?>"><a href="<?php echo $item['href'] ?>"><i class="icon icon-<?php echo $key ?> icon-lg"></i><?php echo $item['label'] ?></a></li>
+        <li class="<?php echo $key ?>"><a href="<?php echo $item['href'] ?>"><i class="icon-<?php echo $key ?> icon-lg"></i><?php echo $item['label'] ?></a></li>
       <?php endforeach; ?>
     </ul>
   </div>

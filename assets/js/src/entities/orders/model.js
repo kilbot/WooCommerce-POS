@@ -1,7 +1,7 @@
 var DualModel = require('lib/config/dual-model');
 var Radio = require('backbone.radio');
 //var $ = require('jquery');
-var _ = require('lodash');
+//var _ = require('lodash');
 var Utils = require('lib/utilities/utils');
 var debug = require('debug')('order');
 
@@ -16,14 +16,14 @@ module.exports = DualModel.extend({
   /**
    * Orders with the following status are closed for editing
    */
-  closedStatus: [
-    'completed',
-    'on-hold',
-    'cancelled',
-    'refunded',
-    'processing',
-    'failed'
-  ],
+  //closedStatus: [
+  //  'completed',
+  //  'on-hold',
+  //  'cancelled',
+  //  'refunded',
+  //  'processing',
+  //  'failed'
+  //],
 
   /**
    *
@@ -41,7 +41,7 @@ module.exports = DualModel.extend({
 
     this.tax = this.getEntities('tax');
     this.tax_rates = this.getEntities('tax_rates');
-    _.extend(this.defaults, this.defaultCustomer());
+    this.defaultCustomer();
 
     if( this.isEditable() ){
       this.attachCart();
@@ -68,13 +68,13 @@ module.exports = DualModel.extend({
    */
   defaultCustomer: function(){
     var customers = this.getEntities('customers'),
-      default_customer = customers['default'] || customers.guest;
+        default_customer = customers['default'] || customers.guest;
 
     if(default_customer){
-      return {
+      this.set({
         customer_id : default_customer.id,
         customer    : default_customer
-      };
+      });
     }
   },
 
@@ -82,7 +82,9 @@ module.exports = DualModel.extend({
    * is order editable method, sets _open true or false
    */
   isEditable: function(){
-    return !_.contains(this.closedStatus, this.get('status'));
+    //return !_.contains(this.closedStatus, this.get('status'));
+    return this.get('status') === undefined || this.isDelayed();
+    //return this.isDelayed();
   },
 
   /**
@@ -200,11 +202,18 @@ module.exports = DualModel.extend({
 
   /**
    * process order
+   * todo: remoteSync resolves to an array of models, should match sync?
    */
   process: function(){
     this.processCart();
     this.processGateway();
-    this.remoteSync();
+    return this.remoteSync()
+      .then(function(array){
+        var model = array[0];
+        if(model.get('status') === 'failed'){
+          model.save({ status: 'UPDATE_FAILED' });
+        }
+      });
   },
 
   /**

@@ -6,7 +6,6 @@ var Checkout = require('./checkout/route');
 var HotKeys = require('./hotkeys/route');
 var Access = require('./access/route');
 var Tools = require('./tools/route');
-var Buttons = require('lib/components/buttons/view');
 var bb = require('backbone');
 var Radio = bb.Radio;
 var $ = require('jquery');
@@ -145,25 +144,41 @@ var SettingsRouter = Router.extend({
       buttons: [
         {
           action    : 'save',
-          className : 'button-primary'
+          className : 'button-primary',
+          icon      : 'append'
+        },{
+          type: 'message'
         }
-        //{
-        //  action    : 'restore',
-        //  className : 'button pull-right'
-        //}
-      ],
-      msgPos: 'right'
+      ]
     });
 
-    var view = new Buttons(options);
+    var view = Radio.request('buttons', 'view', options);
 
     this.listenTo(view, {
-      'action:save': function(){
-        options.model.save([], { buttons: view });
+      'action:save': function(btn, view){
+        btn.trigger('state', 'loading');
+        view.triggerMethod('message', 'reset');
+        options.model.save([], {
+          success: function(model, resp){
+            btn.trigger('state', 'success');
+            if(resp.success){
+              view.triggerMethod('message', resp.success, 'success');
+            } else {
+              view.triggerMethod('message', 'success');
+            }
+          },
+          error: function(jqxhr){
+            btn.trigger('state', 'error');
+            if(jqxhr.responseJSON && jqxhr.responseJSON.errors){
+              view.triggerMethod(
+                'message', jqxhr.responseJSON.errors[0].message, 'error'
+              );
+            } else {
+              view.triggerMethod('message', 'error');
+            }
+          }
+        });
       }
-      //'action:restore': function(){
-      //  options.model.fetch({ buttons: view, restore: true });
-      //}
     });
 
     this.layout.getRegion('footer').show(view);

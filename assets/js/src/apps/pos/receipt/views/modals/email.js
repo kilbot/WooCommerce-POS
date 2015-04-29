@@ -2,18 +2,11 @@ var ItemView = require('lib/config/item-view');
 var POS = require('lib/utilities/global');
 var hbs = require('handlebars');
 var polyglot = require('lib/utilities/polyglot');
-var Radio = require('backbone.radio');
-var $ = require('jquery');
-var _ = require('lodash');
+var Tmpl = require('./email.hbs');
 
 var View = ItemView.extend({
 
-  template: hbs.compile('' +
-    '<div class="input-group">' +
-    '<span class="input-group-addon">@</span>' +
-    '<input type="text" class="form-control" placeholder="{{email}}">' +
-    '</div>'
-  ),
+  template: hbs.compile(Tmpl),
 
   initialize: function(){
     this.modal = {
@@ -23,14 +16,15 @@ var View = ItemView.extend({
       footer: {
         buttons: [
           {
+            type: 'message'
+          }, {
             action: 'send',
-            className: 'btn-success'
+            className: 'btn-success',
+            icon: 'prepend'
           }
         ]
       }
     };
-
-    this.on('action:send', this.sendEmail);
   },
 
   ui: {
@@ -42,53 +36,6 @@ var View = ItemView.extend({
       email: this.getOption('email')
     };
     return data;
-  },
-
-  sendEmail: function(){
-    var self = this,
-        email = this.ui.email.val(),
-        order_id = this.getOption('order_id'),
-        ajaxurl = Radio.request('entities', 'get', {
-          type: 'option',
-          name: 'ajaxurl'
-        });
-
-    if(email === ''){
-      email = this.getOption('email');
-    }
-
-    if(!order_id || email === ''){
-      return;
-    }
-
-    var onError = function(message){
-      var obj = { type: 'error' };
-      if(message){
-        obj.text = message;
-      }
-      self.trigger('complete:send', obj);
-    };
-
-    var onSuccess = function(data){
-      var obj = { type: 'success'},
-          message;
-
-      if(!_.isObject(data) || data.result !== 'success'){
-        if(data.message){ message = data.message; }
-        return onError(message);
-      }
-
-      obj.text = data.message;
-      self.trigger('complete:send', obj);
-    };
-
-    $.getJSON( ajaxurl, {
-      action: 'wc_pos_email_receipt',
-      order_id: order_id,
-      email : email
-    })
-    .done(onSuccess)
-    .fail(onError);
   }
 
 });

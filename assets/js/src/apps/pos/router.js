@@ -101,7 +101,9 @@ var Router = Router.extend({
   addOrder: function(order){
     if(this._currentRoute instanceof CartRoute){
       //bb.history.navigate('cart/' + order.id);
-      this.execute(this.showCart, [order.id]);
+      if(order.isEditable()){
+        this.execute(this.showCart, [order.id]);
+      }
     }
   },
 

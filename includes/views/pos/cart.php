@@ -40,11 +40,11 @@
       {{/each}}
     </dl>
     {{/is}}
-		<a data-action="more" href="#" class="btn btn-default btn-circle-sm"><i class="icon icon-angle-down"></i></a>
+		<a data-action="more" href="#" class="btn btn-default btn-circle-sm"><i class="icon-angle-down"></i></a>
 	</div>
 	<div class="price"><input type="text" name="item_price" data-label="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" data-original="regular_price" class="btn autogrow"></div>
 	<div class="total"></div>
-	<div class="action"><a data-action="remove" class="btn btn-circle btn-danger" href="#"><i class="icon icon-times icon-lg"></i></a></div>
+	<div class="action"><a data-action="remove" class="btn btn-circle btn-danger" href="#"><i class="icon-times icon-lg"></i></a></div>
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item-drawer">
@@ -76,10 +76,10 @@
 		<span data-key="{{key}}">
 			<input name="meta.label" value="{{label}}" type="text">
 			<textarea name="meta.value">{{value}}</textarea>
-			<a href="#" class="action-remove-meta"><i class="icon icon-times"></i></a>
+			<a href="#" class="action-remove-meta"><i class="icon-times"></i></a>
 		</span>
 		{{/each}}
-		<a href="#" class="action-add-meta"><i class="icon icon-plus"></i></a>
+		<a href="#" class="action-add-meta"><i class="icon-plus"></i></a>
 	</div>
 	{{/if}}
 

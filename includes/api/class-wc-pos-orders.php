@@ -104,7 +104,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @return array
    */
   public function edit_order_data($data, $order_id, $WC_API_Orders){
-    $this->delete_order_items($order_id);
+//    $this->delete_order_items($order_id);
     return $this->order_data($data, $WC_API_Orders);
   }
 
@@ -312,7 +312,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @param $order_id
    * @param $data
    */
-  private function process_payment( $order_id, $data ){
+  public function process_payment( $order_id, $data ){
 
     if(!isset($data['payment_details'])){
       return;

@@ -8,6 +8,7 @@ var Application = require('apps/admin/application');
 var EntitiesService = require('entities/service');
 var ModalService = require('lib/components/modal/service');
 var TabsService = require('lib/components/tabs/service');
+var ButtonsService = require('lib/components/buttons/service');
 
 /**
  * SubApps
@@ -35,6 +36,7 @@ app.modalApp = new ModalService({
 });
 
 app.tabsService = new TabsService();
+app.buttonsService = new ButtonsService();
 
 /**
  * Attach app to window for third party plugins

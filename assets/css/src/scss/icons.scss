@@ -5,8 +5,8 @@
   font-weight: normal;
   font-style: normal;
 }
-.icon {
-  display: inline-block;
+[class^="icon-"], [class*=" icon-"] {
+//  display: inline-block;
   font-family: WooCommercePOS;
   speak: none;
   font-style: normal;
@@ -240,16 +240,22 @@
 /**
  * Loading & Fail
  */
-.icon-spinner, .icon-loading {
-  width: 20px;
-  height: 20px;
-  background: url(../loader.gif);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  &.icon-2x {
-    width: 40px;
-    height: 40px;
-  }
+//.icon-spinner, .icon-loading {
+//  display: inline-block;
+//  width: 20px;
+//  height: 20px;
+//  background: url(../loader.gif);
+//  background-repeat: no-repeat;
+//  background-size: 100% 100%;
+//  &.icon-2x {
+//    width: 40px;
+//    height: 40px;
+//  }
+//}
+
+.icon-spinner:before, .icon-loading:before {
+  @extend .icon-spin;
+  content: "\f013"; // icon-cog
 }
 
 .icon-fail {

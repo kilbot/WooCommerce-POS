@@ -4,8 +4,8 @@ var POS = require('lib/utilities/global');
 var LayoutView = require('./layout');
 var StatusView = require('./views/status');
 var GatewaysView = require('./views/gateways');
-var Buttons = require('lib/components/buttons/view');
 var polyglot = require('lib/utilities/polyglot');
+var Radio = require('backbone.radio');
 
 var CheckoutRoute = Route.extend({
 
@@ -71,25 +71,27 @@ var CheckoutRoute = Route.extend({
   },
 
   showActions: function(){
-    var view = new Buttons({
+    var view = Radio.request('buttons', 'view', {
       buttons: [{
         action: 'return-to-sale',
         className: 'btn pull-left'
       },{
         action: 'process-payment',
-        className: 'btn btn-success'
+        className: 'btn btn-success',
+        icon: 'prepend'
       }]
     });
 
     this.listenTo(view, {
       'action:return-to-sale': function(){
-        this.navigate('cart/' + this.order.id, {
-          trigger: true,
-          replace: true
-        });
+        this.navigate('cart/' + this.order.id, { trigger: true });
       },
-      'action:process-payment': function(){
-        this.order.process();
+      'action:process-payment': function(btn){
+        btn.trigger('state', 'loading');
+        this.order.process()
+          .always(function(){
+            btn.trigger('state', 'reset');
+          });
       }
     });
 

@@ -1,6 +1,5 @@
 var LayoutView = require('lib/config/layout-view');
 var Header = require('./header');
-var Buttons = require('lib/components/buttons/view');
 var _ = require('lodash');
 var $ = require('jquery');
 var Radio = require('backbone.radio');
@@ -23,6 +22,15 @@ module.exports = LayoutView.extend({
     'tabindex' : -1,
     'role' : 'dialog'
   },
+  buttons: [
+    {
+      type: 'message'
+    },{
+      action: 'save',
+      icon: 'prepend',
+      className: 'btn-primary'
+    }
+  ],
 
   regions: {
     header  : '.modal-header',
@@ -105,19 +113,8 @@ module.exports = LayoutView.extend({
   },
 
   modalFooter: function(options){
-    var view = new Buttons(options),
-        actions = _.pluck(view.data.buttons, 'action'),
-        events = {};
-
-    // register action events and pass them to the currentView
-    _.each(actions, function(action){
-      events['action:' + action] = function(){
-        this.content.currentView.trigger('action:' + action);
-      };
-    }, this);
-
-    this.listenTo(view, events);
-
+    options.buttons = options.buttons || this.buttons;
+    var view = Radio.request('buttons', 'view', options);
     this.footer.show(view);
   },
 
@@ -130,6 +127,10 @@ module.exports = LayoutView.extend({
     if(className){
       this.$('.modal-dialog').addClass(className);
     }
+  },
+
+  getButtons: function(){
+    return this.getRegion('footer').currentView;
   }
 
 });

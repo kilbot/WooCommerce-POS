@@ -1,5 +1,5 @@
 // remove iOS rounded corners
-input[type="search"] {
+input[type="text"], input[type="search"] {
   @include appearance(none);
   @include border-radius(0);
   border: 1px solid $input-border-color;

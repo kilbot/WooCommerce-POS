@@ -12,7 +12,6 @@ var Utils = require('lib/utilities/utils');
 var polyglot = require('lib/utilities/polyglot');
 
 var CartRoute = Route.extend({
-  cartRoute: true, // used by add to cart service
 
   initialize: function( options ) {
     options = options || {};
@@ -26,7 +25,7 @@ var CartRoute = Route.extend({
 
   fetch: function() {
     if (this.collection.isNew()) {
-      return this.collection.fetch();
+      return this.collection.fetch({ silent: true });
     }
   },
 
@@ -152,9 +151,9 @@ var CartRoute = Route.extend({
     });
 
     this.listenTo(view, {
-      'action:void': function(){
+      'action:void': function(btn, view){
+        view.triggerMethod('disableButtons');
         this.layout.getRegion('list').currentView.voidCart();
-        //this.order.destroy();
       },
       'action:note': function(){
         this.layout.getRegion('note').currentView.showNoteField();

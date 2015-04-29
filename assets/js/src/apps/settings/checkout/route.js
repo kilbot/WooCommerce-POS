@@ -37,11 +37,37 @@ var SettingsRoute = Route.extend({
     });
 
     var self = this;
-    Radio.request('modal', 'open', view).done(function(args){
-      self.listenTo(view, 'action:save', function(){
-        model.save([], { buttons: args.view.footer.currentView });
+    Radio.request('modal', 'open', view)
+      .then(function(args){
+        var buttons = args.view.getRegion('footer').currentView;
+
+        self.listenTo(buttons, 'action:save', function(btn, view){
+          model.save([], {
+            success: function(model, resp){
+              btn.trigger('state', 'success');
+              if(resp.success){
+                view.triggerMethod('message', resp.success, 'success');
+              } else {
+                view.triggerMethod('message', 'success');
+              }
+            },
+            error: function(jqxhr){
+              btn.trigger('state', 'error');
+              if(jqxhr.responseJSON && jqxhr.responseJSON.errors){
+                view.triggerMethod(
+                  'message', jqxhr.responseJSON.errors[0].message, 'error'
+                );
+              } else {
+                view.triggerMethod('message', 'error');
+              }
+            }
+          });
+        });
+
+        //self.listenTo(args.view, 'change:title', function(){
+        //
+        //});
       });
-    });
 
   }
 });

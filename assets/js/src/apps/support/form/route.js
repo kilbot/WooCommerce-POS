@@ -40,8 +40,11 @@ var FormRoute = Route.extend({
   showActions: function(){
     var view = new Buttons({
       buttons: [{
+        type: 'message'
+      },{
         action: 'send',
-        className: 'btn btn-success'
+        className: 'btn-success',
+        icon: 'prepend'
       }]
     });
 
@@ -50,9 +53,8 @@ var FormRoute = Route.extend({
     this.layout.getRegion('actions').show(view);
   },
 
-  email: function(){
+  email: function(btn, view){
     var form = this.layout.getRegion('form').currentView,
-        buttons = this.layout.getRegion('actions').currentView,
         data = {
           action  : 'wc_pos_send_support_email',
           name    : form.$('[data-name="name"]').text(),
@@ -65,27 +67,20 @@ var FormRoute = Route.extend({
           name: 'ajaxurl'
         });
 
-    buttons.triggerMethod('Update', { message: 'spinner' });
+    btn.trigger('state', 'loading');
+    view.triggerMethod('message', 'reset');
 
     var onError = function(message){
-      var obj = { type: 'error' };
-      if(message){
-        obj.text = message;
-      }
-      buttons.triggerMethod('Update', { message: obj });
+      btn.trigger('state', 'error');
+      view.triggerMethod('message', message, 'error');
     };
 
     var onSuccess = function(data){
-      var obj = { type: 'success'},
-        message;
-
       if(!_.isObject(data) || data.result !== 'success'){
-        if(data.message){ message = data.message; }
-        return onError(message);
+        return onError(data.message);
       }
-
-      obj.text = data.message;
-      buttons.triggerMethod('Update', { message: obj });
+      btn.trigger('state', 'success');
+      view.triggerMethod('message', data.message, 'success');
     };
 
     $.post( ajaxurl, data )

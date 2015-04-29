@@ -126,17 +126,17 @@ class WC_POS_AJAX {
       return new WP_Error(
         'woocommerce_pos_settings_error',
         __( 'There is no settings id', 'woocommerce-pos' ),
-        array( 'status' => 401 )
+        array( 'status' => 400 )
       );
 
     // init relevant handler
     $id = $_GET['id'];
-    $handlers = (array) apply_filters( 'woocommerce_pos_settings_handlers', WC_POS_Admin_Settings::$handlers);
+    $handlers = (array) apply_filters('woocommerce_pos_settings_handlers', WC_POS_Admin_Settings::$handlers);
     if(!isset($handlers[$id]))
       return new WP_Error(
         'woocommerce_pos_settings_error',
         sprintf( __( 'No handler found for %s settings', 'woocommerce-pos' ), $_GET['id']),
-        array( 'status' => 401 )
+        array( 'status' => 400 )
       );
 
     $handler = new $handlers[$id]();

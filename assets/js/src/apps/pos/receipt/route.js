@@ -9,6 +9,7 @@ var TotalsView = require('./views/totals');
 var EmailView = require('./views/modals/email');
 var polyglot = require('lib/utilities/polyglot');
 var Buttons = require('lib/components/buttons/view');
+var $ = require('jquery');
 
 var ReceiptRoute = Route.extend({
 
@@ -74,15 +75,12 @@ var ReceiptRoute = Route.extend({
     var view = new Buttons({
       buttons: [{
         action: 'print',
-        label: polyglot.t('buttons.print'),
         className: 'btn-primary pull-left'
       }, {
         action: 'email',
-        label: polyglot.t('buttons.email'),
         className: 'btn-primary pull-left'
       }, {
         action: 'new-order',
-        label: polyglot.t('buttons.new-order'),
         className: 'btn-success'
       }]
     });
@@ -91,10 +89,7 @@ var ReceiptRoute = Route.extend({
       'action:print': this.print,
       'action:email': this.email,
       'action:new-order': function(){
-        this.navigate('', {
-          trigger: true,
-          replace: true
-        });
+        this.navigate('', { trigger: true });
       }
     });
 
@@ -109,30 +104,62 @@ var ReceiptRoute = Route.extend({
   },
 
   email: function(){
+    var self = this;
+
     var view = new EmailView({
       order_id: this.order.get('id'),
       email: this.order.get('customer.email')
     });
 
-    var modal = Radio.request('modal', 'open', view);
-    var self = this;
+    Radio.request('modal', 'open', view)
+      .then(function(args){
+        var buttons = args.view.getButtons();
+        var email = args.view.getRegion('content').currentView.ui.email.val();
+        self.listenTo(buttons, 'action:send', function(btn, view){
+          self.send(btn, view, email);
+        });
+      });
 
-    modal.done(function(){
-      self.buttons(view, this.footer.currentView);
-    });
   },
 
-  buttons: function(emailView, buttonsView){
-    this.listenTo(emailView, {
-      'action:send': function(){
-        buttonsView.triggerMethod('Update', {message: 'spinner'});
-      },
-      'complete:send': function(message){
-        buttonsView.triggerMethod('Update', {
-          message: message
+  // todo: refactor
+  send: function(btn, view, email){
+    var order_id = this.order.id,
+        ajaxurl = Radio.request('entities', 'get', {
+          type: 'option',
+          name: 'ajaxurl'
         });
+
+    btn.trigger('state', 'loading');
+    view.triggerMethod('message', 'reset');
+
+    function onSuccess(model, resp){
+      btn.trigger('state', 'success');
+      if(resp.success){
+        view.triggerMethod('message', resp.success, 'success');
+      } else {
+        view.triggerMethod('message', 'success');
       }
-    });
+    }
+
+    function onError(jqxhr){
+      btn.trigger('state', 'error');
+      if(jqxhr.responseJSON && jqxhr.responseJSON.errors){
+        view.triggerMethod(
+          'message', jqxhr.responseJSON.errors[0].message, 'error'
+        );
+      } else {
+        view.triggerMethod('message', 'error');
+      }
+    }
+
+    $.getJSON( ajaxurl, {
+      action: 'wc_pos_email_receipt',
+      order_id: order_id,
+      email : email
+    })
+    .done(onSuccess)
+    .fail(onError);
   }
 
 });

@@ -1,7 +1,6 @@
 var FormView = require('lib/config/form-view');
 var $ = require('jquery');
 var Tooltip = require('lib/behaviors/tooltip');
-var Radio = require('backbone.radio');
 
 module.exports = FormView.extend({
   tagName: 'table',
@@ -20,11 +19,16 @@ module.exports = FormView.extend({
         title: title
       },
       footer: {
-        buttons: [{
-          action    : 'save',
-          className : 'button-primary',
-          disabled  : !title
-        }]
+        buttons: [
+          {
+            type: 'message'
+          },{
+            action    : 'save',
+            className : 'button-primary',
+            icon      : 'prepend',
+            disabled  : !title
+          }
+        ]
       }
     };
   },
@@ -35,21 +39,21 @@ module.exports = FormView.extend({
     }
   },
 
-  modelEvents: {
-    'change:title': function(modal, value){
-      var update = {};
-      update.header = { title: value };
-      if(this.model.isNew()){
-        update.footer = {
-          buttons: [{
-            action: 'save',
-            disabled: false
-          }]
-        };
-      }
-      Radio.command('modal', 'update', update);
-    }
-  },
+  //modelEvents: {
+  //  'change:title': function(modal, value){
+  //    var update = {};
+  //    update.header = { title: value };
+  //    if(this.model.isNew()){
+  //      update.footer = {
+  //        buttons: [{
+  //          action: 'save',
+  //          disabled: false
+  //        }]
+  //      };
+  //    }
+  //    Radio.command('modal', 'update', update);
+  //  }
+  //},
 
   onRender: function(){
     var self = this;

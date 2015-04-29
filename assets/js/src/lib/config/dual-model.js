@@ -67,6 +67,7 @@ module.exports = POS.DualModel = DeepModel.extend({
   },
 
   remoteSync: function(method, model, options){
+    model = model || this;
     options = options || {};
     options.remote = true;
     if(method !== 'read'){

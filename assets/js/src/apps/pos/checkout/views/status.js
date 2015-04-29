@@ -10,6 +10,14 @@ var View = ItemView.extend({
   initialize: function(){
     var status = polyglot.t('titles.to-pay');
     this.template = hbs.compile( status + ': {{{money total}}}' );
+  },
+
+  modelEvents: {
+    'change:status': 'onStatusChange'
+  },
+
+  onStatusChange: function(model, status){
+    this.$el.addClass(status);
   }
 
 });
