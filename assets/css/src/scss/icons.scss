@@ -1,3 +1,5 @@
+@import "compass";
+
 @font-face {
   font-family: 'WooCommercePOS';
   src: url('../fonts/woocommerce-pos.eot?v=0.3.1');
@@ -6,16 +8,18 @@
   font-style: normal;
 }
 [class^="icon-"], [class*=" icon-"] {
-//  display: inline-block;
   font-family: WooCommercePOS;
   speak: none;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
-//  vertical-align: bottom;
+  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Required for <i> rotate ========= */
+  display: inline-block;
+  /* ? ========= */
   span {
     display: none;
   }
@@ -35,87 +39,46 @@
 .icon-5x {
   font-size: 5em;
 }
-.icon-spin {
-  -webkit-animation: spin 2s infinite linear;
-  -moz-animation: spin 2s infinite linear;
-  -o-animation: spin 2s infinite linear;
-  animation: spin 2s infinite linear;
+
+/**
+ * Spin
+ */
+@include keyframes(spin) {
+  0% { @include rotate(0deg); }
+  100% { @include rotate(359deg); }
+}
+.spinner {
+  @include animation(spin 2s infinite linear);
+}
+.spinner--steps8 {
+  @include animation(spin 1s infinite steps(8));
+}
+.spinner--steps12 {
+  @include animation(spin 1s infinite steps(12));
 }
 
-@-moz-keyframes spin {
-  0% {
-    -moz-transform: rotate(0deg);
-  }
-  100% {
-    -moz-transform: rotate(359deg);
-  }
-}
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-  }
-}
-@-o-keyframes spin {
-  0% {
-    -o-transform: rotate(0deg);
-  }
-  100% {
-    -o-transform: rotate(359deg);
-  }
-}
-@keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-    transform: rotate(359deg);
-  }
-}
+/**
+ * Rotate
+ */
 .icon-rotate-90 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  -o-transform: rotate(90deg);
-  transform: rotate(90deg);
+  @include rotate(90deg);
 }
 .icon-rotate-180 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  transform: rotate(180deg);
+  @include rotate(180deg);
 }
 .icon-rotate-270 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-  -webkit-transform: rotate(270deg);
-  -moz-transform: rotate(270deg);
-  -ms-transform: rotate(270deg);
-  -o-transform: rotate(270deg);
-  transform: rotate(270deg);
+  @include rotate(270deg);
 }
 .icon-flip-horizontal {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
-  -webkit-transform: scale(-1, 1);
-  -moz-transform: scale(-1, 1);
-  -ms-transform: scale(-1, 1);
-  -o-transform: scale(-1, 1);
-  transform: scale(-1, 1);
+  @include scale(-1, 1);
 }
 .icon-flip-vertical {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
-  -webkit-transform: scale(1, -1);
-  -moz-transform: scale(1, -1);
-  -ms-transform: scale(1, -1);
-  -o-transform: scale(1, -1);
-  transform: scale(1, -1);
+  @include scale(-1, 1);
 }
+
+/**
+ * Icons
+ */
 .icon-angle-down:before {
   content: "\f107";
 }
@@ -240,22 +203,9 @@
 /**
  * Loading & Fail
  */
-//.icon-spinner, .icon-loading {
-//  display: inline-block;
-//  width: 20px;
-//  height: 20px;
-//  background: url(../loader.gif);
-//  background-repeat: no-repeat;
-//  background-size: 100% 100%;
-//  &.icon-2x {
-//    width: 40px;
-//    height: 40px;
-//  }
-//}
-
-.icon-spinner:before, .icon-loading:before {
-  @extend .icon-spin;
-  content: "\f013"; // icon-cog
+.icon-loading, .icon-spinner {
+  @extend .spinner;
+  @extend .icon-cog;
 }
 
 .icon-fail {

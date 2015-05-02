@@ -2,6 +2,7 @@
 
 /**
  * Responsible for the POS front-end
+ * todo: clean up
  *
  * @class    WC_POS_Template
  * @package  WooCommerce POS
@@ -225,6 +226,64 @@ class WC_POS_Template {
     }
 
     return $template;
+  }
+
+  /**
+   * Get ordered, enabled gateways from the checkout settings
+   * @return array
+   */
+  protected function gateways(){
+    $settings = new WC_POS_Admin_Settings_Checkout();
+    return $settings->load_enabled_gateways();
+  }
+
+  /**
+   * Sanitize payment icon
+   * - some gateways include junk in icon property, eg: paypal link
+   * @param WC_Payment_Gateway $gateway
+   * @return string
+   */
+  protected function sanitize_icon(WC_Payment_Gateway $gateway){
+    $icon = $gateway->show_icon ? $gateway->get_icon() : '';
+    if($icon !== ''){
+      // simple preg_match
+      preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $icon, $src);
+      $icon = $src[1];
+    }
+    return $icon;
+  }
+
+  /**
+   * Sanitize payment fields
+   * - some gateways include js in their payment fields
+   * @param WC_Payment_Gateway $gateway
+   * @return mixed|string
+   */
+  protected function sanitize_payment_fields(WC_Payment_Gateway $gateway){
+    $html = '';
+    if( $gateway->has_fields() || $gateway->get_description() ){
+
+      ob_start();
+      $gateway->payment_fields();
+      $html = ob_get_contents();
+      ob_end_clean();
+
+      // remove any javascript
+      // note: DOMDocument causes more problems than it's worth
+
+//      $doc = new DOMDocument();
+//      $doc->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+//      $script_tags = $doc->getElementsByTagName('script');
+//      $length = $script_tags->length;
+//      for ($i = 0; $i < $length; $i++) {
+//        $script_tags->item($i)->parentNode->removeChild($script_tags->item($i));
+//      }
+//      echo $doc->saveHTML();
+
+      // simple preg_replace
+      $html = preg_replace('/<script.+?<\/script>/im', '', $html);
+    }
+    return $html;
   }
 
 }

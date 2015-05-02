@@ -40,6 +40,10 @@ class WC_POS_Admin {
     if( $current_screen->id == 'options-permalink' )
       new WC_POS_Admin_Permalink();
 
+    // Add POS settings to orders pages
+    if( $current_screen->id == 'shop_order' || $current_screen->id == 'edit-shop_order'  )
+      new WC_POS_Admin_Orders();
+
   }
 
   public function enqueue_admin_styles() {

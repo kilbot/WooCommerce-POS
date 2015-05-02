@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * Gateway Settings Class
+ *
+ * @class    WC_POS_Admin_Settings_Gateways
+ * @package  WooCommerce POS
+ * @author   Paul Kilmurray <paul@kilbot.com.au>
+ * @link     http://www.woopos.com.au
+ */
+
+class WC_POS_Admin_Settings_Gateways extends WC_POS_Admin_Settings_Abstract {
+
+  /**
+   * @param $gateway_id
+   */
+  public function __construct($gateway_id) {
+    $this->id    = 'gateway_'.$gateway_id;
+    $this->default_settings = array(
+      'icon' => true
+    );
+  }
+
+  /**
+   * @param WC_Payment_Gateway $gateway
+   */
+  public function merge_settings(WC_Payment_Gateway $gateway) {
+    $data = $this->get_data();
+    if(isset($data['title'])){
+      $gateway->title = $data['title'];
+    }
+    if(isset($data['description'])){
+      $gateway->description = $data['description'];
+    }
+    $gateway->has_icon = $gateway->get_icon() != '';
+    $gateway->show_icon = isset($data['icon']) ? $data['icon']: true ;
+  }
+
+}

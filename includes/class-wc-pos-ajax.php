@@ -25,7 +25,7 @@ class WC_POS_AJAX {
       'get_all_ids'           => $api,
       'get_modal'             => $this,
       'get_print_template'    => $this,
-      'set_product_visibilty' => $this,
+//      'set_product_visibilty' => $this,
       'email_receipt'         => $this,
       'admin_settings'        => $this,
       'send_support_email'    => $this,
@@ -39,29 +39,6 @@ class WC_POS_AJAX {
       add_action( 'wp_ajax_wc_pos_' . $ajax_event, array( $class, $ajax_event ) );
     }
   }
-
-//  /**
-//   * Get all the ids for a given post_type
-//   * @return json
-//   */
-//  public function get_all_ids() {
-//
-//    if(empty( $_REQUEST['type'] )) {
-//      die();
-//    }
-//
-//    $args = array(
-//      'post_type'     => array('product'),
-//      'post_status'   => array('publish'),
-//      'posts_per_page'=>  -1,
-//      'fields'        => 'ids'
-//    );
-//
-//    $query = new WP_Query( $args );
-//    $ids = array_map( 'intval', $query->posts );
-//
-//    $this->serve_response($ids);
-//  }
 
   public function get_modal() {
 
@@ -86,31 +63,31 @@ class WC_POS_AJAX {
   /**
    * Update POS visibilty option
    */
-  public function set_product_visibilty() {
-
-    if( !isset( $_REQUEST['post_id'] ) )
-      wp_die('Product ID required');
-
-    // security
-    check_ajax_referer( 'set-product-visibilty-'.$_REQUEST['post_id'], 'security' );
-
-    // set the post_meta field
-    if( update_post_meta( $_REQUEST['post_id'], '_pos_visibility', $_REQUEST['_pos_visibility'] ) ) {
-      $post_modified     = current_time( 'mysql' );
-      $post_modified_gmt = current_time( 'mysql', 1 );
-      wp_update_post( array(
-        'ID'        => $_REQUEST['post_id'],
-        'post_modified'   => $post_modified,
-        'post_modified_gmt' => $post_modified_gmt
-      ));
-      $result = array('success' => true);
-    }
-    else {
-      wp_die('Failed to update post meta table');
-    }
-
-    $this->serve_response($result);
-  }
+//  public function set_product_visibilty() {
+//
+//    if( !isset( $_REQUEST['post_id'] ) )
+//      wp_die('Product ID required');
+//
+//    // security
+//    check_ajax_referer( 'set-product-visibilty-'.$_REQUEST['post_id'], 'security' );
+//
+//    // set the post_meta field
+//    if( update_post_meta( $_REQUEST['post_id'], '_pos_visibility', $_REQUEST['_pos_visibility'] ) ) {
+//      $post_modified     = current_time( 'mysql' );
+//      $post_modified_gmt = current_time( 'mysql', 1 );
+//      wp_update_post( array(
+//        'ID'        => $_REQUEST['post_id'],
+//        'post_modified'   => $post_modified,
+//        'post_modified_gmt' => $post_modified_gmt
+//      ));
+//      $result = array('success' => true);
+//    }
+//    else {
+//      wp_die('Failed to update post meta table');
+//    }
+//
+//    $this->serve_response($result);
+//  }
 
   /**
    * POS Settings stored in options table
@@ -129,18 +106,26 @@ class WC_POS_AJAX {
         array( 'status' => 400 )
       );
 
-    // init relevant handler
-    $id = $_GET['id'];
-    $handlers = (array) apply_filters('woocommerce_pos_settings_handlers', WC_POS_Admin_Settings::$handlers);
-    if(!isset($handlers[$id]))
-      return new WP_Error(
-        'woocommerce_pos_settings_error',
-        sprintf( __( 'No handler found for %s settings', 'woocommerce-pos' ), $_GET['id']),
-        array( 'status' => 400 )
-      );
+    $id       = $_GET['id'];
+    $method   = strtolower($_SERVER['REQUEST_METHOD']);
+    $data     = $this->get_raw_data();
 
-    $handler = new $handlers[$id]();
-    $method = strtolower($_SERVER['REQUEST_METHOD']);
+    // special case: gateway_
+    $gateway_id = preg_replace( '/^gateway_/', '', strtolower( $id ), 1, $count );
+    if($count){
+      $handler = new WC_POS_Admin_Settings_Gateways($gateway_id);
+
+      // else, find handler by id
+    } else {
+      $handlers = (array) apply_filters('woocommerce_pos_settings_handlers', WC_POS_Admin_Settings::$handlers);
+      if(!isset($handlers[$id]))
+        return new WP_Error(
+          'woocommerce_pos_settings_error',
+          sprintf( __( 'No handler found for %s settings', 'woocommerce-pos' ), $_GET['id']),
+          array( 'status' => 400 )
+        );
+      $handler = new $handlers[$id]();
+    }
 
     // get
     if( $method === 'get' ) {
@@ -149,14 +134,13 @@ class WC_POS_AJAX {
 
     // set
     if( $method === 'post' || $method === 'put' ) {
-      $data = $this->get_raw_data();
       return $handler->save($data);
     }
 
     return new WP_Error(
       'woocommerce_pos_cannot_{$method}_{$id}',
       __( 'Settings error', 'woocommerce-pos' ),
-      array( 'status' => 401 )
+      array( 'status' => 400 )
     );
   }
 

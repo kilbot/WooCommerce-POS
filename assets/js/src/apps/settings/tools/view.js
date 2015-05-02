@@ -4,14 +4,13 @@ var POS = require('lib/utilities/global');
 var $ = require('jquery');
 
 var View = ItemView.extend({
-  attributes: {
-    id: 'wc-pos-settings-tools'
+
+  template: function(){
+    return $('script[data-id="tools"]').html();
   },
 
-  initialize: function() {
-    this.template = function(){
-      return $('script[data-id="tools"]').html();
-    };
+  attributes: {
+    id: 'wc-pos-settings-tools'
   },
 
   //behaviors: {
@@ -22,10 +21,6 @@ var View = ItemView.extend({
 
   ui: {
     translation: '*[data-action="translation"]'
-  },
-
-  onRender: function(){
-
   },
 
   triggers: {

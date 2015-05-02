@@ -1,3 +1,25 @@
-.modal {
-  z-index: 160000; // seriously
+#wc-pos-modal{
+  .modal {
+    z-index: 160000; // seriously
+    .modal-body {
+      .form-table {
+        th {
+          width: 150px;
+          @include breakpoint(782px){
+            [data-toggle="tooltip"] {
+              float: right;
+            }
+          }
+        }
+        td {
+          input[type="text"], textarea {
+            width: 100%;
+          }
+          textarea {
+            min-height: 80px;
+          }
+        }
+      }
+    }
+  }
 }

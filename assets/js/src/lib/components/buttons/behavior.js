@@ -55,9 +55,9 @@ var Buttons = Behavior.extend({
     return this;
   },
 
-  setState: function(e, state){
-    var btn = $(e.target);
-    var prop = state === 'loading' ? 'disable' : 'enable';
+  setState: function(e, state, message){
+    var btn = $(e.target),
+        prop = state === 'loading' ? 'disable' : 'enable';
     this[prop]();
     this.updateText(btn);
     if( btn.is('input') ){
@@ -65,7 +65,9 @@ var Buttons = Behavior.extend({
     } else {
       this.updateIcon(btn, state);
     }
-
+    if(message !== undefined){
+      this.updateMessage(message, state);
+    }
   },
 
   updateText: function(btn){
@@ -92,22 +94,33 @@ var Buttons = Behavior.extend({
     }
   },
 
-  onMessage: function(message, state){
+  updateMessage: function(message, state){
+    if(message === null){
+      message = polyglot.t('messages.' + state);
+    }
     if(!state){
       state = message;
       message = polyglot.t('messages.' + message);
     }
-    this.ui.message.removeClass('loading success error');
     if(state === 'reset'){
-      this.ui.message.html('');
-    } else {
-      this.ui.message.addClass(state);
-      this.ui.message.html(message);
+      message = '';
     }
+    this.ui.message
+      .removeClass('loading success error')
+      .addClass(state)
+      .html(message);
+  },
+
+  onMessage: function(message, state){
+    this.updateMessage(message, state);
   },
 
   onDisableButtons: function(){
     this.disable();
+  },
+
+  onEnableButtons: function(){
+    this.enable();
   }
 
 });

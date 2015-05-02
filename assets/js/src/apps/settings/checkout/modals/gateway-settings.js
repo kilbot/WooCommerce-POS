@@ -1,22 +1,19 @@
 var FormView = require('lib/config/form-view');
 var $ = require('jquery');
 var Tooltip = require('lib/behaviors/tooltip');
+var Radio = require('backbone.radio');
 
 module.exports = FormView.extend({
   tagName: 'table',
   className: 'form-table',
 
-  initialize: function () {
-    var title = this.model.get('title');
-
-    if(!title){
-      this.model.fetch();
-    }
-
+  initialize: function (options) {
+    options = options || {};
+    this.template = options.tmpl.trim();
     // modal setup
     this.modal = {
       header: {
-        title: title
+        title: this.model.get('title')
       },
       footer: {
         buttons: [
@@ -25,8 +22,7 @@ module.exports = FormView.extend({
           },{
             action    : 'save',
             className : 'button-primary',
-            icon      : 'prepend',
-            disabled  : !title
+            icon      : 'prepend'
           }
         ]
       }
@@ -39,21 +35,13 @@ module.exports = FormView.extend({
     }
   },
 
-  //modelEvents: {
-  //  'change:title': function(modal, value){
-  //    var update = {};
-  //    update.header = { title: value };
-  //    if(this.model.isNew()){
-  //      update.footer = {
-  //        buttons: [{
-  //          action: 'save',
-  //          disabled: false
-  //        }]
-  //      };
-  //    }
-  //    Radio.command('modal', 'update', update);
-  //  }
-  //},
+  modelEvents: {
+    'change:title': function(modal, value){
+      var update = {};
+      update.header = { title: value };
+      Radio.command('modal', 'update', update);
+    }
+  },
 
   onRender: function(){
     var self = this;
@@ -63,6 +51,10 @@ module.exports = FormView.extend({
         self.addBinding(null, '*[name="' + name + '"]', name);
       }
     });
+
+    if(this.model.get('hasIcon')){
+      this.$('#icon').closest('tr').show();
+    }
   }
 
 });

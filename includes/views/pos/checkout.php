@@ -5,19 +5,19 @@
 ?>
 
 <?php
-	$gateways = $this->gateways->enabled_gateways();
+	$gateways = $this->gateways();
 	if($gateways): foreach( $gateways as $gateway ):
 ?>
 <script
 	type="text/x-handlebars-template"
 	class="tmpl-checkout-gateways"
 	data-gateway="<?php echo $gateway->id; ?>"
-	data-title="<?php echo $gateway->title; ?>"
-	data-icon="<?php echo $gateway->icon; ?>"
+	data-title="<?php echo esc_html( $gateway->get_title() ); ?>"
+	data-icon="<?php echo $this->sanitize_icon( $gateway ); ?>"
 	data-default="<?php echo $gateway->default; ?>"
 >
 	<div class="form-group">
-		<?php echo $gateway->payment_fields; ?>
+		<?php echo $this->sanitize_payment_fields( $gateway ); ?>
 	</div>
 </script>
 <?php endforeach; endif; ?>

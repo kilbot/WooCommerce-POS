@@ -155,29 +155,8 @@ var SettingsRouter = Router.extend({
     var view = Radio.request('buttons', 'view', options);
 
     this.listenTo(view, {
-      'action:save': function(btn, view){
-        btn.trigger('state', 'loading');
-        view.triggerMethod('message', 'reset');
-        options.model.save([], {
-          success: function(model, resp){
-            btn.trigger('state', 'success');
-            if(resp.success){
-              view.triggerMethod('message', resp.success, 'success');
-            } else {
-              view.triggerMethod('message', 'success');
-            }
-          },
-          error: function(jqxhr){
-            btn.trigger('state', 'error');
-            if(jqxhr.responseJSON && jqxhr.responseJSON.errors){
-              view.triggerMethod(
-                'message', jqxhr.responseJSON.errors[0].message, 'error'
-              );
-            } else {
-              view.triggerMethod('message', 'error');
-            }
-          }
-        });
+      'action:save': function(btn){
+        options.model.save([], { buttons: btn });
       }
     });
 

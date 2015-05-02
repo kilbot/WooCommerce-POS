@@ -3,14 +3,13 @@ var POS = require('lib/utilities/global');
 var $ = require('jquery');
 
 var View = FormView.extend({
-  attributes: {
-    id: 'wc-pos-settings-access'
+
+  template: function(){
+    return $('script[data-id="access"]').html();
   },
 
-  initialize: function() {
-    this.template = function(){
-      return $('script[data-id="access"]').html();
-    };
+  attributes: {
+    id: 'wc-pos-settings-access'
   },
 
   ui: {

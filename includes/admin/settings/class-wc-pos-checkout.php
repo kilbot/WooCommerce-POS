@@ -32,11 +32,7 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
 
   public function load_gateways() {
     $gateways = WC_Payment_Gateways::instance()->payment_gateways;
-    $settings = get_option( WC_POS_Admin_Settings::DB_PREFIX . $this->id );
-
-    if( $settings && isset( $settings['gateway_order'] ) ) {
-      $order = $settings['gateway_order'];
-    }
+    $order = $this->get_data('gateway_order');
 
     // reorder
     $i = count($gateways);
@@ -46,6 +42,8 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
       } else {
         $ordered_gateways[ ++$i ] = $gateway;
       }
+      $settings = new WC_POS_Admin_Settings_Gateways($gateway->id);
+      $settings->merge_settings($gateway);
       $gateway->pos = apply_filters( 'woocommerce_pos_payment_gateways', $gateway );
     }
 
@@ -53,37 +51,25 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
     return $ordered_gateways;
   }
 
-  /**
-   * Gateway data, eg: title, description, icon
-   * defaults to Woo settings
-   * @param $gateway_id
-   * @return array|bool
-   */
-  public function get_gateway_data($gateway_id){
-    $data = get_option(WC_POS_Admin_Settings::DB_PREFIX . 'gateway_' . $gateway_id);
-    return $data ? $data : $this->default_gateway_settings($gateway_id);
+  public function load_enabled_gateways(){
+    $gateways = $this->load_gateways();
+    $enabled = $this->get_enabled_gateway_ids();
+    $default = $this->get_data('default_gateway');
+    $_gateways = array();
+
+    if($gateways): foreach($gateways as $gateway):
+      $id = $gateway->id;
+      if(in_array($id, $enabled) && $gateway->pos){
+        $gateway->default = $id == $default;
+        $_gateways[$id] = $gateway;
+      }
+    endforeach; endif;
+
+    return $_gateways;
   }
 
-  private function default_gateway_settings( $gateway_id ) {
-    $gateways = WC_Payment_Gateways::instance()->payment_gateways;
-    $settings = false;
-    $gateway = null;
-
-    // get gateway by id
-    foreach( $gateways as $object ) {
-      if ( $gateway_id == $object->id ) {
-        $gateway = $object;
-        break;
-      }
-    }
-
-    if( $gateway ) {
-      $settings['title'] = $gateway->title;
-      $settings['description'] = $gateway->description;
-      $settings['icon'] = 'true';
-    }
-
-    return $settings;
+  public function get_enabled_gateway_ids(){
+    return array_keys($this->get_data('enabled'), true);
   }
 
 }

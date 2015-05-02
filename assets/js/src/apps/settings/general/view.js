@@ -6,15 +6,13 @@ var Tooltip = require('lib/behaviors/tooltip');
 var CustomerSelect = require('lib/components/customer-select/view');
 
 var View = FormView.extend({
-  attributes: {
-    id: 'wc-pos-settings-general'
+
+  template: function(){
+    return $('script[data-id="general"]').html();
   },
 
-  initialize: function() {
-    var id = this.model.id;
-    this.template = function(){
-      return $('script[data-id="' + id + '"]').html();
-    };
+  attributes: {
+    id: 'wc-pos-settings-general'
   },
 
   behaviors: {

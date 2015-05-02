@@ -4,15 +4,13 @@ var POS = require('lib/utilities/global');
 var Tooltip = require('lib/behaviors/tooltip');
 
 var View = FormView.extend({
-  attributes: {
-    id: 'wc-pos-settings-hotkeys'
+
+  template: function(){
+    return $('script[data-id="hotkeys"]').html();
   },
 
-  initialize: function() {
-    var id = this.model.id;
-    this.template = function(){
-      return $('script[data-id="' + id + '"]').html();
-    };
+  attributes: {
+    id: 'wc-pos-settings-hotkeys'
   },
 
   behaviors: {

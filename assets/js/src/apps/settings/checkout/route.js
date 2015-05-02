@@ -22,54 +22,48 @@ var SettingsRoute = Route.extend({
     var view = new View({
       model: this.model
     });
-    this.listenTo(view, 'gateway:settings', this.openGatewaySettingsModal);
+    this.listenTo(view, 'open:modal', this.openModal);
     this.container.show(view);
   },
 
-  openGatewaySettingsModal: function(id, tmpl){
+  openModal: function(id, view){
     var model = this.model.collection.add({
       id: 'gateway_' + id
     });
 
-    var view = new GatewaySettingsModal({
-      template: tmpl,
+    if(!model.get('title')){
+      this.initModalData(model, view);
+    }
+
+    var modal = new GatewaySettingsModal({
+      tmpl: view.modalTmpl,
       model: model
     });
 
     var self = this;
-    Radio.request('modal', 'open', view)
+    Radio.request('modal', 'open', modal)
       .then(function(args){
-        var buttons = args.view.getRegion('footer').currentView;
-
-        self.listenTo(buttons, 'action:save', function(btn, view){
-          model.save([], {
-            success: function(model, resp){
-              btn.trigger('state', 'success');
-              if(resp.success){
-                view.triggerMethod('message', resp.success, 'success');
-              } else {
-                view.triggerMethod('message', 'success');
-              }
-            },
-            error: function(jqxhr){
-              btn.trigger('state', 'error');
-              if(jqxhr.responseJSON && jqxhr.responseJSON.errors){
-                view.triggerMethod(
-                  'message', jqxhr.responseJSON.errors[0].message, 'error'
-                );
-              } else {
-                view.triggerMethod('message', 'error');
-              }
-            }
-          });
+        var buttons = args.view.getButtons();
+        self.listenTo(buttons, 'action:save', function(btn){
+          model.save([], { buttons: btn });
         });
-
-        //self.listenTo(args.view, 'change:title', function(){
-        //
-        //});
       });
 
+  },
+
+  initModalData: function(model, view){
+    function element(attr){
+      return '#' + model.id + ' .gateway-' + attr;
+    }
+    var data = {
+      title: view.$(element('name')).html(),
+      description: view.$(element('description')).html(),
+      icon: view.$(element('icon')).data('show') ? true : false
+    };
+    data.hasIcon = view.$(element('icon')).data('icon');
+    model.set(data);
   }
+
 });
 
 module.exports = SettingsRoute;

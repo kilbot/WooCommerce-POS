@@ -69,12 +69,16 @@
         </thead>
         <tbody>
           <?php foreach ( $this->load_gateways() as $gateway ) : ?>
-            <tr>
+            <tr id="gateway_<?php echo esc_html( $gateway->id ) ?>">
               <td>
                 <input type="radio" name="default_gateway" value="<?php echo esc_attr( $gateway->id ) ?>" />
                 <input type="hidden" name="gateway_order.<?php echo $gateway->id ?>" class="gateway_order" />
               </td>
               <td class="gateway-name"><?php echo $gateway->get_title() ?></td>
+              <td style="display:none" class="gateway-description"><?php echo esc_html( $gateway->get_description() ); ?></td>
+              <td style="display:none" class="gateway-icon" data-icon="<?php echo $gateway->has_icon; ?>" data-show="<?php echo $gateway->show_icon; ?>">
+                <?php echo esc_html( $gateway->get_icon() ); ?>
+              </td>
               <td class="gateway-id"><?php echo esc_html( $gateway->id ) ?></td>
               <td>
                 <?php if ( $gateway->enabled == 'yes' ): ?>
@@ -121,7 +125,7 @@
     </th>
     <td><textarea id="description" name="description"></textarea></td>
   </tr>
-  <tr>
+  <tr style="display:none">
     <th scope="row">
       <label for="icon"><?php _e( 'Icon', 'woocommerce-pos' ); ?></label>
     </th>

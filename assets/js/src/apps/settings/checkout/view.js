@@ -5,15 +5,12 @@ var Tooltip = require('lib/behaviors/tooltip');
 var Sortable = require('lib/behaviors/sortable');
 
 var View = FormView.extend({
-  attributes: {
-    id: 'wc-pos-settings-checkout'
+  template: function(){
+    return $('script[data-id="checkout"]').html();
   },
 
-  initialize: function() {
-    var id = this.model.id;
-    this.template = function(){
-      return $('script[data-id="' + id + '"]').html();
-    };
+  attributes: {
+    id: 'wc-pos-settings-checkout'
   },
 
   onRender: function(){
@@ -24,6 +21,7 @@ var View = FormView.extend({
         self.addBinding(null, '*[name="' + name + '"]', name);
       }
     });
+    this.modalTmpl = this.$('#tmpl-gateway-settings-modal').html();
   },
 
   ui: {
@@ -46,8 +44,7 @@ var View = FormView.extend({
   openGatewaySettingsModal: function(e){
     e.preventDefault();
     var gateway = $(e.target).data('gateway');
-    var template = this.$('#tmpl-gateway-settings-modal').html();
-    this.trigger('gateway:settings', gateway, template);
+    this.trigger('open:modal', gateway, this);
   }
 
 });

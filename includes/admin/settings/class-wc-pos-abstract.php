@@ -31,6 +31,11 @@ abstract class WC_POS_Admin_Settings_Abstract {
     return $data;
   }
 
+  /**
+   * Get stored data from db
+   * note: get_option caches data
+   * @return mixed|void
+   */
   protected function stored_data(){
     return get_option(WC_POS_Admin_Settings::DB_PREFIX . $this->id);
   }
