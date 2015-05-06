@@ -69,11 +69,16 @@ module.exports = IndexedDBCollection.extend({
    * add/increase item
    * also prune attributes
    */
+  /* jshint -W071, -W074 */
   addToCart: function(options){
     options = options || {};
-    var attributes = options.model ? options.model.toJSON() : options;
+    var model, attributes = options.model ? options.model.toJSON() : options;
 
-    var model = this.findWhere({ product_id: attributes.id });
+    if(attributes.id){
+      model = this.findWhere({ product_id: attributes.id });
+      attributes.product_id = attributes.id;
+      delete attributes.id;
+    }
 
     if(model){
       model.quantity('increase');
@@ -83,11 +88,10 @@ module.exports = IndexedDBCollection.extend({
 
     model.trigger('pulse');
   },
+  /* jshint +W071, +W074 */
 
   _addToCart: function(attributes){
     attributes.order = this.order_id;
-    attributes.product_id = attributes.id;
-    delete attributes.id;
     return this.add(_.pick(attributes, this.productAttributes));
   },
 

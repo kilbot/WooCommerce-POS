@@ -11,6 +11,9 @@
 
 class WC_POS_Admin {
 
+  /* @var array Stores admin notices */
+  private $notices = array();
+
   /**
    * Constructor
    */
@@ -18,11 +21,9 @@ class WC_POS_Admin {
 
     $this->init();
     add_action( 'current_screen', array( $this, 'conditional_init' ) );
-
-//    add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
-//    add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-//    add_action( 'admin_print_footer_scripts', array( $this, 'admin_print_footer_scripts' ) );
     add_action( 'admin_print_scripts', array( $this, 'admin_print_scripts' ) );
+    add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+    add_action( 'woocommerce_pos_add_admin_notice', array( $this, 'add_admin_notice' ) );
 
   }
 
@@ -46,35 +47,6 @@ class WC_POS_Admin {
 
   }
 
-  public function enqueue_admin_styles() {
-
-  }
-
-  public function enqueue_admin_scripts() {
-    $screen = get_current_screen();
-
-    // js for product page
-    if ( false ) {
-      wp_enqueue_script(
-        WC_POS_PLUGIN_NAME . '-products',
-        WC_POS_PLUGIN_URL . 'assets/js/products.min.js',
-        array(
-          'jquery',
-          'backbone',
-          'underscore'
-        ),
-        WC_POS_VERSION
-      );
-    }
-  }
-
-  /**
-   *
-   */
-  public function admin_print_footer_scripts() {
-
-  }
-
   /**
    *
    */
@@ -82,6 +54,29 @@ class WC_POS_Admin {
     if(defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG){
       echo '<script type="text/javascript">var wc_pos_debug = true;</script>';
     }
+  }
+
+  /**
+   * Display the admin notices
+   */
+  public function admin_notices() {
+
+    if( !empty( $this->notices ) ) {
+      foreach( $this->notices as $notice ) {
+        echo '<div class="' . $notice['msg_type'] . '">
+          <p>'. wp_kses( $notice['msg'], wp_kses_allowed_html( 'post' ) ) .'</p>
+				</div>';
+      }
+    }
+
+  }
+
+  /**
+   * Add admin notices for display
+   * @param $notice
+   */
+  public function add_admin_notice($notice){
+    array_push( $this->notices, $notice );
   }
 
 }

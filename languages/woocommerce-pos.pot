@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4.0-alpha\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2015-04-29 14:56:57+00:00\n"
+"POT-Creation-Date: 2015-05-04 05:01:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,75 +29,67 @@ msgstr ""
 msgid "POS Transaction completed."
 msgstr ""
 
-#: includes/class-wc-pos-ajax.php:128
+#: includes/class-wc-pos-ajax.php:105
 msgid "There is no settings id"
 msgstr ""
 
-#: includes/class-wc-pos-ajax.php:138
+#: includes/class-wc-pos-ajax.php:124
 msgid "No handler found for %s settings"
 msgstr ""
 
-#: includes/class-wc-pos-ajax.php:158
+#: includes/class-wc-pos-ajax.php:142
 msgid "Settings error"
 msgstr ""
 
-#: includes/class-wc-pos-ajax.php:174 includes/class-wc-pos-ajax.php:195
+#: includes/class-wc-pos-ajax.php:158 includes/class-wc-pos-ajax.php:179
 msgid "Email sent"
 msgstr ""
 
-#: includes/class-wc-pos-ajax.php:179 includes/class-wc-pos-ajax.php:200
+#: includes/class-wc-pos-ajax.php:163 includes/class-wc-pos-ajax.php:184
 msgid "There was an error sending the email"
 msgstr ""
 
-#: includes/class-wc-pos-ajax.php:215
+#: includes/class-wc-pos-ajax.php:199
 msgid "Invalid security nonce"
 msgstr ""
 
-#: includes/class-wc-pos-gateways.php:81
-msgid "Online Store"
-msgstr ""
-
-#: includes/class-wc-pos-gateways.php:82 includes/class-wc-pos-template.php:151
-msgid "POS"
-msgstr ""
-
-#: includes/class-wc-pos-i18n.php:301
+#: includes/class-wc-pos-i18n.php:305
 msgid "To Pay"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:302
+#: includes/class-wc-pos-i18n.php:306
 msgid "Paid"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:303
+#: includes/class-wc-pos-i18n.php:307
 msgid "Unpaid"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:304
+#: includes/class-wc-pos-i18n.php:308
 msgid "Email Receipt"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:313 includes/views/pos/cart.php:129
+#: includes/class-wc-pos-i18n.php:317 includes/views/pos/cart.php:129
 msgid "Discount"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:319
+#: includes/class-wc-pos-i18n.php:323
 msgid "Process Payment"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:323
+#: includes/class-wc-pos-i18n.php:327
 msgid "Return to Sale"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:327
+#: includes/class-wc-pos-i18n.php:331
 msgid "Void"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:335
+#: includes/class-wc-pos-i18n.php:339
 msgid "Loading&hellip;"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:337
+#: includes/class-wc-pos-i18n.php:341
 msgid "Your browser is not supported!"
 msgstr ""
 
@@ -119,6 +111,10 @@ msgstr ""
 
 #: includes/class-wc-pos-status.php:31
 msgid "Access to the REST API is required"
+msgstr ""
+
+#: includes/class-wc-pos-template.php:152
+msgid "POS"
 msgstr ""
 
 #: includes/class-wc-pos.php:113
@@ -226,12 +222,12 @@ msgid ""
 "href=\"http://wordpress.org/plugins/woocommerce/\">WooCommerce</a>."
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:289
+#: includes/class-wc-pos-i18n.php:293
 msgctxt "system status: browser capabilities"
 msgid "Browser"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:295
+#: includes/class-wc-pos-i18n.php:299
 msgctxt "keyboard shortcuts"
 msgid "HotKeys"
 msgstr ""
@@ -241,27 +237,27 @@ msgctxt "keyboard shortcuts"
 msgid "Hotkeys"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:305
+#: includes/class-wc-pos-i18n.php:309
 msgctxt "order status, ie: open order in cart"
 msgid "Open"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:310
+#: includes/class-wc-pos-i18n.php:314
 msgctxt "system status: delete local records"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:321
+#: includes/class-wc-pos-i18n.php:325
 msgctxt "restore default settings"
 msgid "Restore defaults"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:322
+#: includes/class-wc-pos-i18n.php:326
 msgctxt "Numpad return key"
 msgid "return"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:341
+#: includes/class-wc-pos-i18n.php:345
 msgctxt "eg: 23 records"
 msgid "record |||| records"
 msgstr ""

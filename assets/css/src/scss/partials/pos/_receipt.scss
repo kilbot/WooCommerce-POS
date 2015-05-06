@@ -1,4 +1,18 @@
 .receipt-module {
+  .status {
+    > div.paid {
+      background-color: nth($paletteGreen, 6);
+    }
+    > div.unpaid {
+      background-color: nth($paletteOrange, 6);
+    }
+    > div {
+      a {
+        color: $inverse-text-color;
+        text-decoration: underline;
+      }
+    }
+  }
   .list-header, .list, .list-totals {
     .qty {
       @include flex(0 1 15%);

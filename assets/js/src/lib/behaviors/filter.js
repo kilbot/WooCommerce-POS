@@ -94,11 +94,11 @@ var Filter = Behavior.extend({
   },
 
   syncStart: function(){
-    this.ui.sync.children('.icon').addClass('icon-spin');
+    this.ui.sync.children('i').addClass('icon-spin');
   },
 
   syncEnd: function(){
-    this.ui.sync.children('.icon').removeClass('icon-spin');
+    this.ui.sync.children('i').removeClass('icon-spin');
   },
 
   onDestroy: function(){

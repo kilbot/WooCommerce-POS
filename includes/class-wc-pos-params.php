@@ -229,17 +229,23 @@ class WC_POS_Params {
   }
 
   static public function tax_labels() {
-    $labels = array_reduce( explode( "\n", get_option('woocommerce_tax_classes' ) ), function ($result, $label) {
-      if( $label = trim($label) ) {
-        $result[ sanitize_title($label) ] = $label;
-      }
-      return $result;
-    }, array());
+    $labels = array(
+      /* translators: woocommerce */
+      '' => __( 'Standard', 'woocommerce' )
+    );
 
-    /* translators: woocommerce */
-    $standard[''] = __( 'Standard', 'woocommerce' );
+    // get_tax_classes method introduced in WC 2.3
+    if(method_exists( 'WC_Tax','get_tax_classes' )){
+      $classes = WC_Tax::get_tax_classes();
+    } else {
+      $classes = array_filter( array_map( 'trim', explode( "\n", get_option( 'woocommerce_tax_classes' ) ) ) );
+    }
 
-    return $standard + $labels;
+    foreach($classes as $class){
+      $labels[ sanitize_title($class) ] = $class;
+    }
+
+    return $labels;
   }
 
   static public function shipping_labels() {

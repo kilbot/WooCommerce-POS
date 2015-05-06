@@ -1,11 +1,12 @@
 var DualModel = require('lib/config/dual-model');
 var Radio = require('backbone.radio');
-//var $ = require('jquery');
+var $ = require('jquery');
 //var _ = require('lodash');
 var Utils = require('lib/utilities/utils');
 var debug = require('debug')('order');
+var POS = require('lib/utilities/global');
 
-module.exports = DualModel.extend({
+var Model = DualModel.extend({
   name: 'order',
   fields: [
     'customer.first_name',
@@ -205,9 +206,15 @@ module.exports = DualModel.extend({
    * todo: remoteSync resolves to an array of models, should match sync?
    */
   process: function(){
-    this.processCart();
-    this.processGateway();
-    return this.remoteSync()
+    var self = this;
+
+    return $.when(this.processCart)
+      .then(function(){
+        return self.processGateway();
+      })
+      .then(function(){
+        return self.remoteSync();
+      })
       .then(function(array){
         var model = array[0];
         if(model.get('status') === 'failed'){
@@ -253,3 +260,6 @@ module.exports = DualModel.extend({
   }
 
 });
+
+module.exports = Model;
+POS.attach('Entities.Order.Model', Model);

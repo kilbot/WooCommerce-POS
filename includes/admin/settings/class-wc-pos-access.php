@@ -119,4 +119,10 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Abstract {
     endforeach;
   }
 
+  public function output(){
+    $poscaps = self::$poscaps;
+    $woocaps = self::$woocaps;
+    include 'views/' . $this->id . '.php';
+  }
+
 }

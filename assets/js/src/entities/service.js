@@ -17,7 +17,7 @@ var storage = global.localStorage || window.localStorage;
 var JSON = global.JSON || window.JSON;
 //var Radio = require('backbone.radio');
 
-module.exports = POS.Entities = Service.extend({
+var EntitiesService = Service.extend({
   channelName: 'entities',
 
   initialize: function() {
@@ -182,3 +182,6 @@ module.exports = POS.Entities = Service.extend({
   }
 
 });
+
+module.exports = EntitiesService;
+POS.attach('Entities.Service', EntitiesService);

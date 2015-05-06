@@ -282,6 +282,10 @@ class WC_POS_i18n {
     return $code ? $denominations->$code : $denominations;
   }
 
+  /**
+   * @param string $dest
+   * @return mixed
+   */
   public static function translations($dest = 'frontend'){
     $translations = array();
 
@@ -303,6 +307,7 @@ class WC_POS_i18n {
       'unpaid'    => __( 'Unpaid', 'woocommerce-pos' ),
       'email-receipt' => __( 'Email Receipt', 'woocommerce-pos' ),
       'open'      => _x( 'Open', 'order status, ie: open order in cart', 'woocommerce-pos' ),
+      'change'    => _x('Change', 'Money returned from cash sale', 'woocommerce-pos')
     );
 
     $translations['buttons'] = array(
@@ -341,7 +346,7 @@ class WC_POS_i18n {
       'records'   => _x( 'record |||| records', 'eg: 23 records', 'woocommerce-pos' ),
     );
 
-    return $translations;
+    return apply_filters('woocommerce_pos_translations', $translations);
   }
 
 }

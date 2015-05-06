@@ -57,6 +57,20 @@ module.exports = DeepModel.extend({
       }
       btn.trigger('state', ['error', message]);
     };
+  },
+
+  /**
+   * Override destroy to restore data
+   * @param options
+   * @returns {*}
+   */
+  destroy: function(options){
+    var self = this;
+    return this.sync('delete', this, options)
+      .then(function(data){
+        data.id = self.id;
+        self.clear({ silent: true }).set(data);
+      });
   }
 
 });

@@ -17,27 +17,20 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   /** @var array Contains the raw order data */
   private $data = array();
 
-  /** @var array Contains the settings data */
-  private $settings = array();
-
-  /** @var bool Flag for decimal quantity setting */
-  private $allow_decimal_qty = false;
-  private $completed_order_status = 'completed';
+  /** @var object Contains a reference to the settings classes */
+  private $general_settings;
+  private $checkout_settings;
 
   /**
    * Constructor
-   * @param WC_POS_Gateways $gateways
    */
-  public function __construct( WC_POS_Gateways $gateways ) {
+  public function __construct() {
 
     // store raw http data
-    $this->data = $this->get_data();
+    $this->data = parent::get_data();
 
-    // gateways class
-    $this->gateways = $gateways;
-
-    // settings
-    $this->get_settings();
+    // init subclasses
+    $this->init();
 
     add_filter( 'woocommerce_api_create_order_data', array( $this, 'order_data'), 10, 2 );
     add_filter( 'woocommerce_api_edit_order_data', array( $this, 'edit_order_data'), 10, 3 );
@@ -55,7 +48,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     add_filter( 'woocommerce_api_order_response', array( $this, 'order_response' ), 10, 4 );
 
     // allow decimals for qty
-    if( $this->allow_decimal_qty ){
+    if( $this->general_settings->get_data('decimal_qty') ){
       remove_filter('woocommerce_stock_amount', 'intval');
       add_filter( 'woocommerce_stock_amount', 'floatval' );
     }
@@ -64,26 +57,12 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     add_filter( 'woocommerce_email', array( $this, 'woocommerce_email' ), 99 );
   }
 
-  private function get_settings(){
-    $settings = array();
-
-    // general settings
-    $general = new WC_POS_Admin_Settings_General();
-    $settings['general'] = $general->get_data();
-
-    if( isset($settings['general']['decimal_qty']) && $settings['general']['decimal_qty']){
-      $this->allow_decimal_qty = true;
-    }
-
-    // checkout settings
-    $checkout = new WC_POS_Admin_Settings_Checkout();
-    $settings['checkout'] = $checkout->get_data();
-
-    if( isset($settings['checkout']['order_status']) ){
-      $this->completed_order_status = $settings['checkout']['order_status'];
-    }
-
-    $this->settings = $settings;
+  /**
+   * Init the settings classes
+   */
+  private function init(){
+    $this->general_settings = new WC_POS_Admin_Settings_General();
+    $this->checkout_settings = new WC_POS_Admin_Settings_Checkout();
   }
 
   /**
@@ -325,7 +304,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     // load the gateways & process payment
     $gateway_id = $data['payment_details']['method_id'];
     add_filter('option_woocommerce_'. $gateway_id .'_settings', array($this, 'force_enable_gateway'));
-    $gateways = $this->gateways->enabled_gateways();
+    $gateways = $this->checkout_settings->load_enabled_gateways();
     $response = $gateways[ $gateway_id ]->process_payment( $order_id );
 
     if(isset($response['result']) && $response['result'] == 'success'){
@@ -340,6 +319,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   }
 
   /**
+   * Some gateways will check if enabled
    * @param $data
    * @return mixed
    */
@@ -408,7 +388,8 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
     if($offsite || $reload){
       update_post_meta( $order_id, '_pos_payment_redirect', $response['redirect'] );
-      $message = sprintf( __('You are now being redirected offsite to complete the payment.<br><a target="_blank" href="%s">Click here</a> if you are not redirected automatically.', 'woocommerce-pos'), $response['redirect'] );
+      $message = __('You are now being redirected offsite to complete the payment.', 'woocommerce-pos');
+      $message .= sprintf( __('<a href="%s">Click here</a> if you are not redirected automatically.', 'woocommerce-pos'), $response['redirect'] );
     }
 
     return $message;
@@ -423,7 +404,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     $order = new WC_Order( $order_id );
     if( $order->status == 'processing' ) {
       $message = __('POS Transaction completed.', 'woocommerce-pos');
-      $order->update_status( $this->completed_order_status, $message );
+      $order->update_status( $this->checkout_settings->get_data('order_status'), $message );
     }
 
   }
@@ -450,7 +431,8 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
     // allow decimal quantity
     // fixed in WC 2.4+
-    if( version_compare( WC()->version, '2.4' ) <= 0 && $this->allow_decimal_qty ){
+    if( version_compare( WC()->version, '2.4' ) <= 0 &&
+      $this->general_settings->get_data('decimal_qty') ){
       $order_data['line_items'] = $this->filter_qty($order_data['line_items']);
     }
 
@@ -533,19 +515,11 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @param WC_Emails $wc_emails
    */
   public function woocommerce_email(WC_Emails $wc_emails) {
-    if(
-      !isset($settings['checkout']) ||
-      !isset($settings['checkout']['customer_emails']) ||
-      !$settings['checkout']['customer_emails']
-    ){
+    if( !$this->checkout_settings->get_data('customer_emails') ){
       $this->remove_customer_emails($wc_emails);
     }
 
-    if(
-      !isset($settings['checkout']) ||
-      !isset($settings['checkout']['admin_emails']) ||
-      !$settings['checkout']['admin_emails']
-    ){
+    if( !$this->checkout_settings->get_data('admin_emails') ){
       $this->remove_admin_emails($wc_emails);
     }
   }
@@ -554,9 +528,27 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @param WC_Emails $wc_emails
    */
   private function remove_customer_emails(WC_Emails $wc_emails){
-    remove_action('woocommerce_order_status_pending_to_processing_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
-    remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_Customer_Processing_Order'], 'trigger'));
-    remove_action('woocommerce_order_status_completed_notification', array($wc_emails->emails['WC_Email_Customer_Completed_Order'], 'trigger'));
+    remove_action(
+      'woocommerce_order_status_pending_to_processing_notification',
+      array(
+        $wc_emails->emails['WC_Email_Customer_Processing_Order'],
+        'trigger'
+      )
+    );
+    remove_action(
+      'woocommerce_order_status_pending_to_on-hold_notification',
+      array(
+        $wc_emails->emails['WC_Email_Customer_Processing_Order'],
+        'trigger'
+      )
+    );
+    remove_action(
+      'woocommerce_order_status_completed_notification',
+      array(
+        $wc_emails->emails['WC_Email_Customer_Completed_Order'],
+        'trigger'
+      )
+    );
   }
 
   /**
@@ -566,12 +558,48 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     // send 'woocommerce_low_stock_notification'
     // send 'woocommerce_no_stock_notification'
     // send 'woocommerce_product_on_backorder_notification'
-    remove_action('woocommerce_order_status_pending_to_processing_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-    remove_action('woocommerce_order_status_pending_to_completed_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-    remove_action('woocommerce_order_status_pending_to_on-hold_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-    remove_action('woocommerce_order_status_failed_to_processing_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-    remove_action('woocommerce_order_status_failed_to_completed_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
-    remove_action('woocommerce_order_status_failed_to_on-hold_notification', array($wc_emails->emails['WC_Email_New_Order'], 'trigger'));
+    remove_action(
+      'woocommerce_order_status_pending_to_processing_notification',
+      array(
+        $wc_emails->emails['WC_Email_New_Order'],
+        'trigger'
+      )
+    );
+    remove_action(
+      'woocommerce_order_status_pending_to_completed_notification',
+      array(
+        $wc_emails->emails['WC_Email_New_Order'],
+        'trigger'
+      )
+    );
+    remove_action(
+      'woocommerce_order_status_pending_to_on-hold_notification',
+      array(
+        $wc_emails->emails['WC_Email_New_Order'],
+        'trigger'
+      )
+    );
+    remove_action(
+      'woocommerce_order_status_failed_to_processing_notification',
+      array(
+        $wc_emails->emails['WC_Email_New_Order'],
+        'trigger'
+      )
+    );
+    remove_action(
+      'woocommerce_order_status_failed_to_completed_notification',
+      array(
+        $wc_emails->emails['WC_Email_New_Order'],
+        'trigger'
+      )
+    );
+    remove_action(
+      'woocommerce_order_status_failed_to_on-hold_notification',
+      array(
+        $wc_emails->emails['WC_Email_New_Order'],
+        'trigger'
+      )
+    );
 
   }
 

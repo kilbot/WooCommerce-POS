@@ -15,7 +15,7 @@ class WC_POS_Admin_Settings {
   const DB_PREFIX = 'woocommerce_pos_settings_';
 
   /* @var string The settings screen id */
-  private $screen_id;
+  static public $screen_id;
 
   /* @var array An array of settings objects */
   private $settings = array();
@@ -32,23 +32,15 @@ class WC_POS_Admin_Settings {
    * Constructor
    */
   public function __construct() {
-    $this->init();
     add_action( 'admin_menu', array( $this, 'admin_menu' ) );
     add_action( 'current_screen', array( $this, 'conditional_init' ) );
-  }
-
-  /**
-   * Load settings page subclasses
-   */
-  private function init(){
-
   }
 
   /**
    * Add Settings page to admin menu
    */
   public function admin_menu() {
-    $this->screen_id = add_submenu_page(
+    self::$screen_id = add_submenu_page(
       WC_POS_PLUGIN_NAME,
       /* translators: woocommerce */
       __( 'Settings', 'woocommerce' ),
@@ -66,7 +58,7 @@ class WC_POS_Admin_Settings {
    * @param $current_screen
    */
   public function conditional_init( $current_screen ) {
-    if( $current_screen->id == $this->screen_id ) {
+    if( $current_screen->id == self::$screen_id ) {
 
       // init handlers for settings pages
       $handlers = apply_filters( 'woocommerce_pos_settings_handlers', self::$handlers);
@@ -78,9 +70,6 @@ class WC_POS_Admin_Settings {
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
       add_action( 'admin_print_footer_scripts', array( $this, 'admin_inline_js' ) );
-
-      // allow third party to hook into settings page
-      do_action( 'woocommerce_pos_settings_page' );
 
     }
   }

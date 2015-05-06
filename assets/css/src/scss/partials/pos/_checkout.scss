@@ -1,6 +1,13 @@
 .checkout-module {
 	.list-header {
 		display: block;
+    > div.fail {
+      background-color: nth($paletteRed, 7);
+      a {
+        color: $inverse-text-color;
+        text-decoration: underline;
+      }
+    }
 	}
 	.list {
 		ul {

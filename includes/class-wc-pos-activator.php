@@ -11,16 +11,10 @@
 
 class WC_POS_Activator {
 
-  /* @var array Stores admin notices */
-  private $notices = array();
-
   public function __construct() {
 
     // wpmu_new_blog
     add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
-
-    // output any activation notices
-    add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
     // check dependencies
     add_action( 'admin_init', array( $this, 'run_checks' ) );
@@ -143,31 +137,16 @@ class WC_POS_Activator {
     if( ! current_user_can( 'activate_plugins' ) )
       return;
 
-    $wc_active = function_exists( 'is_woocommerce_active' ) ? is_woocommerce_active() : $this->is_woocommerce_active() ;
-
-    if ( ! $wc_active ) {
+    if ( ! class_exists( 'WooCommerce' ) && current_user_can( 'activate_plugins' ) ) {
 
       // alert the user
       $error = array (
         'msg_type'  => 'error',
         'msg'     => sprintf( __('<strong>WooCommerce POS</strong> requires <a href="%s">WooCommerce</a>. Please <a href="%s">install and activate WooCommerce</a>', 'woocommerce-pos' ), 'http://wordpress.org/plugins/woocommerce/', admin_url('plugins.php') ) . ' &raquo;'
       );
-      array_push( $this->notices, $error );
+      do_action('woocommerce_pos_add_admin_notice', $error);
     }
 
-  }
-
-  /**
-   * Check if WooCommerce is in active_plugins
-   * @return bool
-   */
-  private function is_woocommerce_active() {
-    $active_plugins = (array) get_option( 'active_plugins', array() );
-
-    if ( is_multisite() )
-      $active_plugins = array_merge( $active_plugins, get_site_option( 'active_sitewide_plugins', array() ) );
-
-    return in_array( 'woocommerce/woocommerce.php', $active_plugins ) || array_key_exists( 'woocommerce/woocommerce.php', $active_plugins );
   }
 
   /**
@@ -184,7 +163,7 @@ class WC_POS_Activator {
         'msg_type'  => 'error',
         'msg'     => sprintf( __('<strong>WooCommerce POS</strong> requires the WooCommerce REST API. Please <a href="%s">enable the REST API</a>', 'woocommerce-pos' ), admin_url('admin.php?page=wc-settings') ) . ' &raquo;'
       );
-      array_push( $this->notices, $error );
+      do_action('woocommerce_pos_add_admin_notice', $error);
 
     }
   }
@@ -201,24 +180,8 @@ class WC_POS_Activator {
         'msg_type'  => 'error',
         'msg'     => sprintf( __('<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks to work correctly. Please <a href="%s">enable permalinks</a>.', 'woocommerce-pos'), admin_url('options-permalink.php') ) . ' &raquo;'
       );
-      array_push( $this->notices, $error );
-    }
-  }
-
-  /**
-   * Display the admin notices
-   */
-  public function admin_notices() {
-    if( !empty($this->notices ) ) {
-      foreach( $this->notices as $notice ) {
-        echo '<div class="' . $notice['msg_type'] . '">
-          <p>' . $notice['msg'] . '</p>
-        </div>';
-      }
+      do_action('woocommerce_pos_add_admin_notice', $error);
     }
   }
 
 }
-
-// auto load this class for activation checks
-new WC_POS_Activator();

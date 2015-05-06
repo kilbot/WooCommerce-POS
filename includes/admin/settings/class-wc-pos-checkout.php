@@ -44,7 +44,7 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
       }
       $settings = new WC_POS_Admin_Settings_Gateways($gateway->id);
       $settings->merge_settings($gateway);
-      $gateway->pos = apply_filters( 'woocommerce_pos_payment_gateways', $gateway );
+      apply_filters( 'woocommerce_pos_load_gateway', $gateway );
     }
 
     ksort( $ordered_gateways, SORT_NUMERIC );
@@ -59,8 +59,9 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
 
     if($gateways): foreach($gateways as $gateway):
       $id = $gateway->id;
-      if(in_array($id, $enabled) && $gateway->pos){
+      if(in_array($id, $enabled) && isset($gateway->pos) && $gateway->pos){
         $gateway->default = $id == $default;
+//        $gateway->enabled = 'yes'; // gets stomped later by init_settings()
         $_gateways[$id] = $gateway;
       }
     endforeach; endif;

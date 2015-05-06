@@ -42,6 +42,53 @@ describe('entities/cart/collection.js', function () {
     expect(this.collection.length).equals(2);
   });
 
+  it('should add shipping to cart', function() {
+    var shipping = {
+      type        : 'shipping',
+      method_title: 'Shipping',
+      method_id   : ''
+    };
+
+    // add product as model
+    this.collection.addToCart(shipping);
+    expect(this.collection.length).equals(1);
+
+    var model = this.collection.at(0);
+    expect(model.get('type')).equals('shipping');
+  });
+
+  it('should add a fee to cart', function() {
+    var fee = {
+      type        : 'fee',
+      method_title: 'Fee'
+    };
+
+    // add product as model
+    this.collection.addToCart(fee);
+    expect(this.collection.length).equals(1);
+
+    var model = this.collection.at(0);
+    expect(model.get('type')).equals('fee');
+  });
+
+  it('should add shipping and fee to cart', function() {
+    var shipping = {
+      type        : 'shipping',
+      method_title: 'Shipping',
+      method_id   : ''
+    };
+    this.collection.addToCart(shipping);
+
+    var fee = {
+      type        : 'fee',
+      method_title: 'Fee'
+    };
+    this.collection.addToCart(fee);
+
+    expect(this.collection.length).equals(2);
+    expect(this.collection.pluck('type')).eql(['shipping', 'fee']);
+  });
+
   it('should combine itemized taxes', function() {
     this.collection.add([
       {

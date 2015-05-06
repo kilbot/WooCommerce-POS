@@ -17,7 +17,7 @@ class WC_POS_Gateways {
   public function __construct() {
     $this->init();
     add_action( 'woocommerce_payment_gateways', array( $this, 'payment_gateways' ) );
-    add_action( 'woocommerce_pos_payment_gateways', array( $this, 'pos_gateways' ) );
+    add_action( 'woocommerce_pos_load_gateway', array( $this, 'load_gateway' ) );
   }
 
   /**
@@ -35,7 +35,7 @@ class WC_POS_Gateways {
    * @param $gateways
    * @return array
    */
-  public function payment_gateways( $gateways ) {
+  public function payment_gateways( array $gateways ) {
     // don't show POS gateways on WC settings page
     if(is_admin()){
       $screen = get_current_screen();
@@ -55,10 +55,9 @@ class WC_POS_Gateways {
    * @param $gateway
    * @return bool
    */
-  public function pos_gateways( $gateway ) {
-    if( in_array( $gateway->id, array( 'pos_cash', 'pos_card', 'paypal' ) ) )
-      return true;
-    return false;
+  public function load_gateway( WC_Payment_Gateway $gateway ) {
+    $gateway->pos = in_array( $gateway->id, array( 'pos_cash', 'pos_card', 'paypal' ) );
+    return $gateway;
   }
 
 }

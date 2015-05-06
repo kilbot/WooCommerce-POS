@@ -157,10 +157,14 @@ var SettingsRouter = Router.extend({
     this.listenTo(view, {
       'action:save': function(btn){
         options.model.save([], { buttons: btn });
+      },
+      'action:restore': function(btn){
+        options.model.destroy({ buttons: btn });
       }
     });
 
     this.layout.getRegion('footer').show(view);
+
   }
 
 });

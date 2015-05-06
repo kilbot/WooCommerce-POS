@@ -137,8 +137,13 @@ class WC_POS_AJAX {
       return $handler->save($data);
     }
 
+    // delete
+    if( $method === 'delete' ) {
+      return $handler->delete($data);
+    }
+
     return new WP_Error(
-      'woocommerce_pos_cannot_{$method}_{$id}',
+      'woocommerce_pos_cannot_'.$method.'_'.$id,
       __( 'Settings error', 'woocommerce-pos' ),
       array( 'status' => 400 )
     );

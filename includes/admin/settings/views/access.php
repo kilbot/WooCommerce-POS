@@ -22,13 +22,13 @@
     <?php if($data): foreach($data['roles'] as $key => $role): ?>
       <li id="<?php echo $key; ?>">
         <ul>
-          <?php if(isset($this::$poscaps)): foreach($this::$poscaps as $cap): ?>
+          <?php if(isset($poscaps)): foreach($poscaps as $cap): ?>
             <li>
               <input type="checkbox" name="roles.<?php echo esc_attr($key); ?>.pos_capabilities.<?php echo esc_attr($cap); ?>" />
               <?php echo $cap; ?>
             </li>
           <?php endforeach; endif; ?>
-          <?php if(isset($this::$woocaps)): foreach($this::$woocaps as $cap): ?>
+          <?php if(isset($woocaps)): foreach($woocaps as $cap): ?>
             <li>
               <input type="checkbox" name="roles.<?php echo esc_attr($key); ?>.woo_capabilities.<?php echo esc_attr($cap); ?>" />
               <?php echo $cap; ?>

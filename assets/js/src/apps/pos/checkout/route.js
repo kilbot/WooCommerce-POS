@@ -63,7 +63,7 @@ var CheckoutRoute = Route.extend({
   },
 
   showGateways: function(){
-    this.order.gateways.order_total = this.order.get('total');
+    this.order.gateways.order = this.order;
     var view = new GatewaysView({
       collection: this.order.gateways
     });

@@ -40,6 +40,10 @@ abstract class WC_POS_Admin_Settings_Abstract {
     return get_option(WC_POS_Admin_Settings::DB_PREFIX . $this->id);
   }
 
+  /**
+   * @param array $data
+   * @return array|bool
+   */
   public function save(array $data){
     $data['updated_at'] = time(); // forces update_option to return true
     $updated = add_option( WC_POS_Admin_Settings::DB_PREFIX . $this->id, $data, '', 'no' );
@@ -47,6 +51,13 @@ abstract class WC_POS_Admin_Settings_Abstract {
       $updated = update_option( WC_POS_Admin_Settings::DB_PREFIX . $this->id, $data );
     }
     return $updated ? $data : false;
+  }
+
+  /**
+   *
+   */
+  public function delete(){
+
   }
 
 }

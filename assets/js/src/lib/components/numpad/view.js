@@ -37,7 +37,7 @@ var View = FormView.extend({
   bindings: function(){
     var parent = this.parent || {};
     // copy binding from parent
-    if(! _.isEmpty(parent.bindings) ){
+    if( !_.isEmpty(parent.bindings) ){
       return parent.bindings;
     }
     // .. or simple bind to target
