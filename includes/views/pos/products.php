@@ -75,3 +75,10 @@
 <script type="text/template" id="tmpl-products-empty">
 	<div class="empty"><?php /* translators: woocommerce */ _e( 'No Products found', 'woocommerce' ); ?></div>
 </script>
+
+<script type="text/x-handlebars-template" id="tmpl-pagination">
+  <small class="info">
+    <?= sprintf( __( 'Showing %s of %s', 'woocommerce-pos' ), '{{showing}}', '{{local}}' ); ?>
+    {{#if hasQueue}}(<?= sprintf( __( '%s in queue', 'woocommerce-pos' ), '{{queue}}' ); ?>){{/if}}
+  </small>
+</script>

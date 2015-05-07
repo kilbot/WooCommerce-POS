@@ -2,6 +2,7 @@ var Route = require('lib/config/route');
 var Layout = require('./layout');
 var Actions = require('./views/actions');
 var List = require('./views/list');
+var Pagination = require('lib/components/pagination/view');
 var Radio = require('backbone.radio');
 var _ = require('lodash');
 var polyglot = require('lib/utilities/polyglot');
@@ -43,6 +44,7 @@ module.exports = Route.extend({
       this.showActions();
       this.showTabs();
       this.showProducts();
+      this.showPagination();
     });
 
     this.container.show( this.layout );
@@ -83,14 +85,13 @@ module.exports = Route.extend({
       name: 'tabs'
     });
     return _.map(tabs);
-  }
+  },
 
-  //showPagination: function(){
-  //  var view = new Views.Pagination({
-  //    collection: this.filtered
-  //  });
-  //  // show
-  //  this.layout.footerRegion.show(view);
-  //}
+  showPagination: function(){
+    var view = new Pagination({
+      collection: this.filtered
+    });
+    this.layout.getRegion('footer').show(view);
+  }
 
 });

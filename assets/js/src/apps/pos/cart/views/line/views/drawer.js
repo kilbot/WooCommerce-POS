@@ -56,7 +56,14 @@ module.exports = FormView.extend({
             name: 'tax_labels'
           });
         }
-      }
+      },
+      attributes: [{
+        name: 'disabled',
+        observe: 'taxable',
+        onGet: function(val) {
+          return !val;
+        }
+      }]
     },
     'select[name="method_id"]': {
       observe: 'method_id',

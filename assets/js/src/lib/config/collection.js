@@ -9,12 +9,6 @@ module.exports = POS.Collection = bb.Collection.extend({
     this.once('sync', function() {
       this._isNew = false;
     });
-
-    //this.on('error', function(entity, resp){
-    //  Radio.trigger('global', 'error', {
-    //    jqXHR   : resp
-    //  });
-    //});
   },
 
   isNew: function() {

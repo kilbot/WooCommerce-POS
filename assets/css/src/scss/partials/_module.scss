@@ -135,5 +135,11 @@
   }
   .list-footer {
     background: nth( $primaryPalette, 2 );
+    .info {
+      color: darken(nth( $primaryPalette, 2 ), 20%);
+      float: right;
+      font-style: italic;
+      padding: $spacing/8 $spacing/4;
+    }
   }
 }

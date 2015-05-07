@@ -11,10 +11,10 @@ module.exports = DualCollection.extend({
   /**
    * Open orders first
    */
-  comparator: function( model ){
-    if( model.get('id') === undefined ) { return 0; }
-    return 1;
-  },
+  //comparator: function( model ){
+  //  if( model.get('id') === undefined ) { return 0; }
+  //  return 1;
+  //},
 
   /**
    *
