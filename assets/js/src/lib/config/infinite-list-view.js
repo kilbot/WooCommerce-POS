@@ -72,7 +72,10 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
 
   remoteFetchMore: function(){
     var options = {};
-    options.filter = this.collection.getTokens();
+    var tokens = this.collection.getTokens();
+    if(tokens){
+      options.filter = this.prepareRemoteQuery(tokens);
+    }
     this.collection.superset().processQueue(options);
   },
 
@@ -86,6 +89,28 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
 
   toggleLoading: function(loading){
     this.$el.toggleClass('loading', loading);
+  },
+
+  prepareRemoteQuery: function(tokens){
+    var filter = {
+      'not_in': this.collection.pluck('id').join(',')
+    };
+
+    _.each(tokens, function(token){
+
+      // simple search
+      if(token.type === 'string'){
+        filter.q = token.query;
+      }
+
+      // simple prefix search
+      if(token.type === 'prefix'){
+        filter[token.prefix] = token.query;
+      }
+
+    });
+
+    return filter;
   }
 
 });

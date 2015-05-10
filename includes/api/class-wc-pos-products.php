@@ -12,8 +12,12 @@
 
 class WC_POS_API_Products extends WC_POS_API_Abstract {
 
+  /**
+   *
+   */
   public function __construct() {
     add_filter( 'woocommerce_api_product_response', array( $this, 'product_response' ), 10, 4 );
+    add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
   }
 
   /**
@@ -100,12 +104,58 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
     return $product_data;
   }
 
+  public function pre_get_posts($query){
+
+    // store original meta_query
+    $meta_query = $query->get( 'meta_query' );
+
+    if( isset( $_GET['filter'] ) ){
+
+      $filter = $_GET['filter'];
+
+      // barcode
+      // todo: allow users to set custom meta field
+      if( isset($filter['barcode']) ){
+        $meta_query[] = array(
+          'key' 		=> '_sku',
+          'value' 	=> $filter['barcode'],
+          'compare'	=> '='
+        );
+      }
+
+      // featured
+      // todo: more general meta_key test using $query_args_whitelist
+      if( isset($filter['featured']) ){
+        $meta_query[] = array(
+          'key' 		=> '_featured',
+          'value' 	=> $filter['featured'] ? 'yes' : 'no',
+          'compare'	=> '='
+        );
+      }
+
+      // on sale
+      // - no easy way to get on_sale items
+      // - wc_get_product_ids_on_sale uses cached data, includes variations
+      if( isset($filter['on_sale']) ){
+        $sale_ids = array_filter( wc_get_product_ids_on_sale() );
+        $ids = array_diff($sale_ids, $query->query['post__not_in']);
+        $query->set( 'post__not_in', array() );
+        $query->set( 'post__in', $ids );
+      }
+
+    }
+
+    // update the meta_query
+    $query->set( 'meta_query', $meta_query );
+
+  }
+
   /**
    * Returns array of all product ids
    * @param $updated_at_min
    * @return array
    */
-  public function get_ids($updated_at_min){
+  static public function get_ids($updated_at_min){
     $args = array(
       'post_type'     => array('product'),
       'post_status'   => array('publish'),

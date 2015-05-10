@@ -24,6 +24,7 @@ class WC_POS {
     add_action( 'init', array( $this, 'init' ) );
     add_filter( 'generate_rewrite_rules', array( $this, 'generate_rewrite_rules' ) );
     add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 2 );
+    add_action( 'woocommerce_api_loaded', array( $this, 'load_woocommerce_api_patches') );
     do_action( 'woocommerce_pos_loaded' );
 
   }
@@ -59,7 +60,6 @@ class WC_POS {
     // global
     $i18n     = new WC_POS_i18n();
     $gateways = new WC_POS_Gateways();
-    $api      = new WC_POS_API( $gateways );
     new WC_POS_Products();
 
     // frontend only
@@ -75,7 +75,7 @@ class WC_POS {
 
     // ajax only
     if (is_admin() && defined('DOING_AJAX') && DOING_AJAX ) {
-      new WC_POS_AJAX( $i18n, $api );
+      new WC_POS_AJAX( $i18n );
     }
 
   }
@@ -117,6 +117,13 @@ class WC_POS {
     }
 
     return $user;
+  }
+
+  /**
+   *
+   */
+  public function load_woocommerce_api_patches(){
+    new WC_POS_API();
   }
 
 }

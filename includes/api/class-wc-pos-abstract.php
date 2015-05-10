@@ -56,4 +56,9 @@ abstract class WC_POS_API_Abstract {
     return $datetime->format( 'Y-m-d H:i:s' );
   }
 
+  /**
+   * @param $updated_at_min
+   */
+  static protected function get_ids($updated_at_min){}
+
 }

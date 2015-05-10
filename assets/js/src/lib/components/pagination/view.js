@@ -1,6 +1,7 @@
 var ItemView = require('lib/config/item-view');
 var POS = require('lib/utilities/global');
 var $ = require('jquery');
+var _ = require('lodash');
 var hbs = require('handlebars');
 
 var View = ItemView.extend({
@@ -16,9 +17,11 @@ var View = ItemView.extend({
   //  'click @ui.next': 'onNext'
   //},
 
+  // todo: improve this, add/remove is overkill
   collectionEvents: {
-    'paginated:change:page': 'render',
-    'paginated:change:numPages': 'render'
+    'add remove': _.debounce(function(){
+      this.render();
+    }, 10)
   },
 
   initialize: function(){

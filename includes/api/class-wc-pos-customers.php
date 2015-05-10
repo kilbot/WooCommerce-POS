@@ -22,7 +22,7 @@ class WC_POS_API_Customers extends WC_POS_API_Abstract {
 
   /**
    * Removes the role='customer' restraint
-   * todo: settings
+   * todo: add this option to settings
    * @param $wp_user_query
    */
   public function pre_get_users( $wp_user_query ) {
@@ -82,9 +82,10 @@ class WC_POS_API_Customers extends WC_POS_API_Abstract {
 
   /**
    * Returns array of all user ids
+   * @param $updated_at_min
    * @return array
    */
-  public function get_ids(){
+  static public function get_ids($updated_at_min){
     $args = array(
       'fields' => 'ID'
     );

@@ -259,7 +259,7 @@ module.exports = POS.DualCollection = IDBCollection.extend({
   /* jshint -W071, -W074 */
   processQueue: function(options){
     options = options || {};
-    var queue = options.queue || this.queue;
+    var queue = options.queue || _.clone(this.queue);
     if(queue.length === 0 || this._processingQueue){
       return;
     }
@@ -273,11 +273,10 @@ module.exports = POS.DualCollection = IDBCollection.extend({
     this.fetch({
       remote: true,
       data: {
-        filter: {
+        filter: options.filter || {
           limit: -1,
           'in': ids
-        },
-        query: options.filter
+        }
       }
     })
     .done(function(){
@@ -311,7 +310,7 @@ module.exports = POS.DualCollection = IDBCollection.extend({
 
   /*
    * Helper function to format Date.now() to RFC3339
-   * - returns 2015-03-11T02:30:43.925Z (with millisenconds)
+   * - returns 2015-03-11T02:30:43.925Z (with milliseconds)
    * - undefined if no timestamp
    */
   formatDate: function(timestamp) {

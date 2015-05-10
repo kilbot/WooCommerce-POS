@@ -11,21 +11,42 @@
 
 class WC_POS_API {
 
-  private $products;
-  private $orders;
-  private $customers;
-  private $coupons;
 
-  public function __construct( WC_POS_Gateways $gateways ) {
+  /**
+   *
+   */
+  public function __construct() {
     if( ! is_pos() )
       return;
 
-    $this->products   = new WC_POS_API_Products();
-    $this->orders     = new WC_POS_API_Orders( $gateways );
-    $this->customers  = new WC_POS_API_Customers();
-    $this->coupons    = new WC_POS_API_Coupons();
-
+    add_filter( 'woocommerce_api_dispatch_args', array( $this, 'dispatch_args'), 10, 2 );
     add_filter( 'woocommerce_api_query_args', array( $this, 'woocommerce_api_query_args' ), 10, 2 );
+  }
+
+  /**
+   * @param $args
+   * @param $callback
+   * @return mixed
+   */
+  public function dispatch_args($args, $callback){
+    $wc_api_handler = get_class($callback[0]);
+
+    switch($wc_api_handler){
+      case 'WC_API_Products':
+        new WC_POS_API_Products();
+        break;
+      case 'WC_API_Orders':
+        new WC_POS_API_Orders();
+        break;
+      case 'WC_API_Customers':
+        new WC_POS_API_Customers();
+        break;
+      case 'WC_API_Coupons':
+        new WC_POS_API_Coupons();
+        break;
+    }
+
+    return $args;
   }
 
   /**
@@ -41,6 +62,12 @@ class WC_POS_API {
       unset( $request_args['in'] );
     }
 
+    // pos query
+    if ( ! empty( $request_args['not_in'] ) ) {
+      $args['post__not_in'] = explode(',', $request_args['not_in']);
+      unset( $request_args['not_in'] );
+    }
+
     return $args;
   }
 
@@ -48,16 +75,13 @@ class WC_POS_API {
    * Get all the ids for a given post_type
    * @return json
    */
-  public function get_all_ids() {
+  static public function get_all_ids() {
     $entity = isset($_REQUEST['type']) ? $_REQUEST['type'] : false;
     $updated_at_min = isset($_REQUEST['updated_at_min']) ? $_REQUEST['updated_at_min'] : false;
+    $handler = 'WC_POS_API_' . $entity;
 
-    $has_method = property_exists($this, $entity) &&
-      is_object($this->{$entity}) &&
-      method_exists($this->{$entity}, 'get_ids');
-
-    if($has_method){
-      $result = $this->{$entity}->get_ids($updated_at_min);
+    if(method_exists($handler, 'get_ids')){
+      $result = $handler::get_ids($updated_at_min);
     } else {
       $result = new WP_Error(
         'woocommerce_pos_get_ids_error',

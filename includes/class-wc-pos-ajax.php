@@ -17,12 +17,11 @@ class WC_POS_AJAX {
    * Hook into ajax events
    *
    * @param WC_POS_i18n $i18n
-   * @param WC_POS_API $api
    */
-  public function __construct(WC_POS_i18n $i18n, WC_POS_API $api) {
+  public function __construct(WC_POS_i18n $i18n) {
 
     $ajax_events = array(
-      'get_all_ids'           => $api,
+      'get_all_ids'           => 'WC_POS_API',
       'get_modal'             => $this,
       'get_print_template'    => $this,
 //      'set_product_visibilty' => $this,
