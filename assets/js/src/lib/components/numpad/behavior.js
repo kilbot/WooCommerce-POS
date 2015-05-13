@@ -1,46 +1,73 @@
 var Behavior = require('lib/config/behavior');
 var POS = require('lib/utilities/global');
 var Modernizr = global['Modernizr'];
-var NumpadView = require('./view');
 var Radio = require('backbone.radio');
 var $ = require('jquery');
+var _ = require('lodash');
 
 var NumpadBehavior = Behavior.extend({
 
   ui: {
-    input: '*[data-numpad]'
+    target: '*[data-numpad]'
   },
 
   events: {
-    'click @ui.input' : 'numpadPopover',
-    'open:numpad @ui.input' : 'numpadPopover'
+    'click @ui.target'      : 'numpadPopover',
+    'open:numpad @ui.input' : 'numpadPopover',
+    'keyup @ui.target'      : 'closePopover'
   },
 
-  onShow: function() {
+  onRender: function() {
     if(Modernizr.touch) {
-      this.$('*[data-numpad]').attr('readonly', true);
+      this.ui.target.each(function(){
+        if( $(this).is('input') ){
+          $(this).attr('readonly', true);
+        }
+      });
     }
   },
 
+  /* jshint -W071 */
   numpadPopover: function(e){
-    var input = $(e.currentTarget),
-        placement = input.data('placement') || 'bottom';
+    var target  = $(e.target),
+        name    = target.attr('name'),
+        options = _.clone( target.data() );
 
-    var numpad = new NumpadView({
-      target    : input,
-      model     : this.view.model,
-      parent    : this.view
+    // numpad
+    _.defaults( options, {
+      value : this.view.model.get( name )
     });
 
-    var options = {
-      target    : input,
+    if( _.isString( options.original ) ){
+      options.original = this.view.model.get(options.original);
+    }
+
+    var numpad = Radio.request('numpad', 'view', options);
+
+    this.listenTo(numpad, 'input', function(value){
+      target.popover('hide');
+      this.view.model.set( name, value );
+    });
+
+    // popover
+    target.one('shown.bs.popover', function(){
+      numpad.ui.input.select();
+    });
+
+    _.defaults( options, {
+      target    : target,
       view      : numpad,
       parent    : this.view,
       className : 'popover popover-numpad popover-dark-bg',
-      placement : placement
-    };
+      placement : 'bottom'
+    });
 
     Radio.request('popover', 'open', options);
+  },
+  /* jshint +W071 */
+
+  closePopover: function(e){
+    $(e.target).popover('hide');
   }
 
 });

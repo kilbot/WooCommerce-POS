@@ -55,7 +55,8 @@ var filteredMethods = [
   'getFilters',
   'query',
   'getQuery',
-  'getTokens'
+  'getTokens',
+  'getRemoteFilter'
 ];
 var filteredEvents = [
   'filtered:add',

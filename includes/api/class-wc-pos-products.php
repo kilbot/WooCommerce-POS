@@ -138,7 +138,8 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
       // - wc_get_product_ids_on_sale uses cached data, includes variations
       if( isset($filter['on_sale']) ){
         $sale_ids = array_filter( wc_get_product_ids_on_sale() );
-        $ids = array_diff($sale_ids, $query->query['post__not_in']);
+        $exclude = isset($query->query['post__not_in']) ? $query->query['post__not_in'] : array();
+        $ids = array_diff($sale_ids, $exclude);
         $query->set( 'post__not_in', array() );
         $query->set( 'post__in', $ids );
       }

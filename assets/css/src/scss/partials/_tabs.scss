@@ -1,11 +1,11 @@
 .tabs {
 	ul {
-        background: nth( $primaryPalette, 2 );
+    background: nth( $primaryPalette, 2 );
 		list-style: none;
 		margin: 0;
 		padding: 0;
 		li {
-		  	vertical-align: bottom; /* hack for icon alignment */
+		  vertical-align: bottom; /* hack for icon alignment */
 			display: inline-block;
 			background: $btn-default-bg;
 			padding: $spacing/4 $spacing/2;

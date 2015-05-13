@@ -83,7 +83,7 @@ module.exports = POS.DualCollection = IDBCollection.extend({
     debug('fullSync started');
     this.trigger('start:fullSync');
 
-    this.fetchUpdated()
+    return this.fetchUpdated()
       .then(function(){
         return self.auditRecords();
       })

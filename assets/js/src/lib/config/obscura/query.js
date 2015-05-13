@@ -27,6 +27,32 @@ module.exports = {
 
   getTokens: function(){
     return this._tokens;
+  },
+
+  getRemoteFilter: function(){
+    if(!this._tokens){
+      return;
+    }
+
+    var filter = {
+      'not_in': this.pluck('id').join(',')
+    };
+
+    _.each(this._tokens, function(token){
+
+      // simple search
+      if(token.type === 'string'){
+        filter.q = token.query;
+      }
+
+      // simple prefix search
+      if(token.type === 'prefix'){
+        filter[token.prefix] = token.query;
+      }
+
+    });
+
+    return filter;
   }
 
 };

@@ -14,6 +14,7 @@ var PopoverService = require('lib/components/popover/service');
 var PrintService = require('lib/components/print/service');
 var TabsService = require('lib/components/tabs/service');
 var ButtonsService = require('lib/components/buttons/service');
+var NumpadService = require('lib/components/numpad/service');
 
 /**
  * SubApps
@@ -59,6 +60,7 @@ app.popoverService = new PopoverService();
 app.printService = new PrintService();
 app.tabsService = new TabsService();
 app.buttonsService = new ButtonsService();
+app.numpadService = new NumpadService();
 
 /**
  * Attach app to window for third party plugins
