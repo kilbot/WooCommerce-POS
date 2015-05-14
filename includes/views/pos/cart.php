@@ -25,8 +25,8 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-cart-item">
-	<div class="qty"><input type="text" name="quantity" data-label="<?php /* translators: woocommerce */ _e( 'Quantity', 'woocommerce' ); ?>" data-numpad="quantity" class="btn autogrow"></div>
-	<div class="title">
+	<div class="qty">{{#if product}}<input type="text" name="quantity" data-label="<?php /* translators: woocommerce */ _e( 'Quantity', 'woocommerce' ); ?>" data-numpad="quantity" class="btn autogrow">{{/if}}</div>
+  <div class="title">
     {{#if method_title}}
 		<strong data-name="method_title" contenteditable="true">{{method_title}}</strong>
     {{else}}
@@ -123,14 +123,6 @@
 		</li>
 	{{/if}}
 	{{/compare}}
-	<li class="order-discount" {{#compare order_discount '===' 0}}style="display:none"{{/compare}}>
-		<div><?php /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</div>
-		<div class="total">
-			<input type="text" name="order_discount" data-original="total" data-label="<?php _e( 'Discount', 'woocommerce-pos' ); ?>" data-placement="left" data-numpad="discount" class="btn autogrow">
-			<span class="amount">{{{money order_discount negative=true}}}</span>
-		</div>
-		<div class="action"></div>
-	</li>
 	<li class="order-total">
 		<div><?php /* translators: woocommerce */ _e( 'Order Total', 'woocommerce' ); ?>:</div>
 		<div class="total">{{{money total}}}</div>

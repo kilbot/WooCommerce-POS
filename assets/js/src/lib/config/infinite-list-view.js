@@ -49,8 +49,13 @@ module.exports = POS.InfiniteListView = Mn.CompositeView.extend({
     }
   }, 200),
 
+  /**
+   * returns overflow at bottom in px
+   * - added clientHeight check to prevent false trigger when div not drawn
+   * @returns {number}
+   */
   getOverflow: function(){
-    if(this._parent) {
+    if(this._parent && this._parent.el.clientHeight) {
       var sH = this._parent.el.scrollHeight,
           cH = this._parent.el.clientHeight,
           sT = this._parent.el.scrollTop;

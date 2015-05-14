@@ -28,6 +28,10 @@ class WC_POS_i18n {
     $this->load_plugin_textdomain();
     add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'update_check' ) );
     add_filter( 'upgrader_pre_download', array( $this, 'upgrader_pre_download' ), 10, 3 );
+    add_filter( 'woocommerce_pos_enqueue_scripts', array( $this, 'js_locale' ) );
+    add_filter( 'woocommerce_pos_admin_enqueue_scripts', array( $this, 'js_locale' ) );
+    add_filter( 'woocommerce_pos_params', array( $this, 'frontend_params' ) );
+    add_filter( 'woocommerce_pos_admin_params', array( $this, 'admin_params' ) );
   }
 
   /**
@@ -56,7 +60,7 @@ class WC_POS_i18n {
    * Check GitHub repo for updated language packs
    *
    * @param $transient
-   *
+   * @param bool $force
    * @return mixed
    */
   public function update_check( $transient, $force = false ) {
@@ -255,19 +259,41 @@ class WC_POS_i18n {
   /**
    * Load translations for js plugins
    *
+   * @param $scripts
    * @return string
    */
-  public static function locale_js() {
-    $locale = apply_filters( 'plugin_locale', get_locale(), WC_POS_PLUGIN_NAME );
-    list( $country ) = explode( '_', $locale );
+  public function js_locale( array $scripts ) {
+    $locale = apply_filters('plugin_locale', get_locale(), WC_POS_PLUGIN_NAME);
+    $dir = WC_POS_PLUGIN_PATH . 'languages/js/';
+    $url = WC_POS_PLUGIN_URL . 'languages/js/';
+    list($country) = explode('_', $locale);
 
-    if( is_readable( WC_POS_PLUGIN_PATH . 'languages/js/' . $locale . '.js' ) )
-      return WC_POS_PLUGIN_URL . 'languages/js/' . $locale . '.js';
+    if (is_readable( $dir . $locale . '.js')) {
+      $scripts['locale'] = $url . $locale . '.js';
+    } elseif (is_readable( $dir . $country . '.js')) {
+      $scripts['locale'] = $url . $country . '.js';
+    }
 
-    if( is_readable( WC_POS_PLUGIN_PATH . 'languages/js/' . $country . '.js' ) )
-      return WC_POS_PLUGIN_URL . 'languages/js/' . $country . '.js';
+    return $scripts;
+  }
 
-    return false;
+  /**
+   * @param $params
+   * @return mixed
+   */
+  public function frontend_params( array $params ){
+    $params['denominations'] = $this->currency_denominations( get_option('woocommerce_currency') );
+    $params['i18n'] = $this->translations();
+    return $params;
+  }
+
+  /**
+   * @param $params
+   * @return mixed
+   */
+  public function admin_params( array $params ){
+    $params['i18n'] = $this->translations();
+    return $params;
   }
 
   /**
@@ -277,16 +303,15 @@ class WC_POS_i18n {
    *
    * @return array
    */
-  public static function currency_denominations( $code = '' ) {
+  private function currency_denominations( $code = '' ) {
     $denominations = json_decode( file_get_contents( WC_POS_PLUGIN_PATH. 'includes/denominations.json' ) );
     return $code ? $denominations->$code : $denominations;
   }
 
   /**
-   * @param string $dest
    * @return mixed
    */
-  public static function translations($dest = 'frontend'){
+  private function translations(){
     $translations = array();
 
     $translations['titles'] = array(

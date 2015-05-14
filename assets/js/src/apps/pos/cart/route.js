@@ -137,6 +137,7 @@ var CartRoute = Route.extend({
 
   /**
    * Actions
+   * - order discount removed in WC 2.3
    */
   showActions: function() {
     var view = new Buttons({
@@ -144,7 +145,7 @@ var CartRoute = Route.extend({
         {action: 'void',      className: 'btn-danger pull-left'},
         {action: 'fee',       className: 'btn-primary'},
         {action: 'shipping',  className: 'btn-primary'},
-        {action: 'discount',  className: 'btn-primary'},
+        //{action: 'discount',  className: 'btn-primary'},
         {action: 'note',      className: 'btn-primary'},
         {action: 'checkout',  className: 'btn-success'}
       ]
@@ -158,9 +159,9 @@ var CartRoute = Route.extend({
       'action:note': function(){
         this.layout.getRegion('note').currentView.showNoteField();
       },
-      'action:discount': function(){
-        this.layout.getRegion('totals').currentView.showDiscountRow();
-      },
+      //'action:discount': function(){
+      //  this.layout.getRegion('totals').currentView.showDiscountRow();
+      //},
       'action:fee': function(){
         this.order.cart.addToCart({
           type  : 'fee',

@@ -15,7 +15,7 @@ var View = ItemView.extend({
 
   templateHelpers: function(){
     var order = this.order.toJSON();
-    return _.union(order.line_items, order.fee_lines, order.shipping_lines);
+    return _.union(order.line_items, order.shipping_lines, order.fee_lines);
   }
 });
 

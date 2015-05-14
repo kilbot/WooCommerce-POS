@@ -3,8 +3,6 @@
 /**
  * POS Orders Class
  * duck punches the WC REST API
- * note: editing orders is no currently supported
- *
  *
  * @class    WC_POS_API_Orders
  * @package  WooCommerce POS
@@ -40,11 +38,14 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     add_action( 'woocommerce_api_create_order', array( $this, 'create_order'), 10, 3 );
     add_action( 'woocommerce_api_edit_order', array( $this, 'create_order'), 10, 3 );
 
+    // set store tax
+    add_filter( 'woocommerce_find_rates', array( $this, 'find_rates'), 10, 2 );
+
     // payment
     add_action( 'woocommerce_pos_process_payment', array( $this, 'process_payment' ), 10, 2 );
     add_action( 'woocommerce_payment_complete', array( $this, 'payment_complete' ), 10, 1 );
 
-    // add payment info to order response
+    // add info to order response
     add_filter( 'woocommerce_api_order_response', array( $this, 'order_response' ), 10, 4 );
 
     // allow decimals for qty
@@ -75,7 +76,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
   /**
    * Edit order
-   * - delete all order data
+   * - delete all order data, alternative is to save local_id as item meta
    *
    * @param $data
    * @param $order_id
@@ -83,8 +84,17 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @return array
    */
   public function edit_order_data($data, $order_id, $WC_API_Orders){
-//    $this->delete_order_items($order_id);
+    $this->delete_order_items($order_id);
     return $this->order_data($data, $WC_API_Orders);
+  }
+
+  /**
+   * Sets tax rate
+   * @param $matched_tax_rates
+   * @param $args
+   */
+  public function find_rates($matched_tax_rates, $args){
+    return $matched_tax_rates;
   }
 
   /**
@@ -217,7 +227,6 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @param $order_id
    */
   private function update_order_meta( $order_id ){
-    update_post_meta( $order_id, '_order_discount',     $this->data['order_discount'] );
     update_post_meta( $order_id, '_cart_discount',      $this->data['cart_discount'] );
     update_post_meta( $order_id, '_order_shipping_tax', $this->data['shipping_tax'] );
     update_post_meta( $order_id, '_order_tax',          $this->data['total_tax'] - $this->data['shipping_tax'] );
@@ -440,6 +449,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   }
 
   /**
+   * Adds support for custom address fields
    * @param $address
    * @param $order
    * @param string $type

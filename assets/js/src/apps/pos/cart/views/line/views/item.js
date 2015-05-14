@@ -17,16 +17,21 @@ module.exports = FormView.extend({
   },
 
   templateHelpers: function(){
-    var data = {};
+    var type = this.model.get('type');
+    return {
+      product: (type !== 'shipping' && type !== 'fee')
+    };
 
-    if( this.tax.tax_display_cart === 'incl' ) {
-      data.subtotal = this.model.sum(['subtotal', 'subtotal_tax']);
-      data.total = this.model.sum(['total', 'total_tax']);
-    }
-
-    data.discount = this.model.get('total') !== this.model.get('subtotal');
-
-    return data;
+    //var data = {};
+    //
+    //if( this.tax.tax_display_cart === 'incl' ) {
+    //  data.subtotal = this.model.sum(['subtotal', 'subtotal_tax']);
+    //  data.total = this.model.sum(['total', 'total_tax']);
+    //}
+    //
+    //data.discount = this.model.get('total') !== this.model.get('subtotal');
+    //
+    //return data;
   },
 
   behaviors: {

@@ -207,11 +207,11 @@ class WC_POS_Admin_Settings {
       true
     );
 
-    $locale_js = WC_POS_i18n::locale_js();
-    if( $locale_js ) {
+    $scripts = apply_filters( 'woocommerce_pos_admin_enqueue_scripts', array() );
+    if( $scripts['locale'] ) {
       wp_enqueue_script(
         WC_POS_PLUGIN_NAME . '-js-locale',
-        $locale_js,
+        $scripts['locale'],
         array( WC_POS_PLUGIN_NAME . '-admin-app' ),
         WC_POS_VERSION,
         true
@@ -223,7 +223,8 @@ class WC_POS_Admin_Settings {
    * Start the Settings App
    */
   public function admin_inline_js() {
-    echo '<script type="text/javascript">POS.options = '. wc_pos_json_encode( WC_POS_Params::admin() ) .'; POS.start();</script>';
+    $params = apply_filters( 'woocommerce_pos_admin_params', array() );
+    echo '<script type="text/javascript">POS.options = '. wc_pos_json_encode( $params ) .'; POS.start();</script>';
   }
 
 }

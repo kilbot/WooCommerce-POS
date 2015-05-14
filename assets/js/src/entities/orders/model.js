@@ -1,7 +1,5 @@
 var DualModel = require('lib/config/dual-model');
 var Radio = require('backbone.radio');
-var $ = require('jquery');
-//var _ = require('lodash');
 var Utils = require('lib/utilities/utils');
 var debug = require('debug')('order');
 var POS = require('lib/utilities/global');
@@ -196,25 +194,20 @@ var Model = DualModel.extend({
   sum: function(array){
     var sum = 0;
     for (var i = 0; i < array.length; i++) {
-      sum += this.get(array[i]);
+      sum += parseFloat( this.get(array[i]) );
     }
     return sum;
   },
 
   /**
    * process order
-   * todo: remoteSync resolves to an array of models, should match sync?
+   * todo: remoteSync resolves w/ an array of models, should match sync?
    */
   process: function(){
-    var self = this;
+    this.processCart();
+    this.processGateway();
 
-    return $.when(this.processCart)
-      .then(function(){
-        return self.processGateway();
-      })
-      .then(function(){
-        return self.remoteSync();
-      })
+    return this.remoteSync()
       .then(function(array){
         var model = array[0];
         if(model.get('status') === 'failed'){

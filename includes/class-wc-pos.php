@@ -58,13 +58,14 @@ class WC_POS {
     require_once WC_POS_PLUGIN_PATH . 'includes/wc-pos-functions.php';
 
     // global
+    new WC_POS_Params();
     $i18n     = new WC_POS_i18n();
-    $gateways = new WC_POS_Gateways();
+    new WC_POS_Gateways();
     new WC_POS_Products();
 
     // frontend only
     if (!is_admin()) {
-      new WC_POS_Template( $gateways );
+      new WC_POS_Template();
     }
 
     // admin only

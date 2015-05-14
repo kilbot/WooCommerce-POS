@@ -153,6 +153,7 @@
     }
   }
   .cart-customer {
+    border-top: 2px solid darken($list-border-color, 6%);
     padding: $spacing/3;
   }
   .cart-notes {

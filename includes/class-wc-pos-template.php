@@ -12,18 +12,12 @@
 
 class WC_POS_Template {
 
-  private $params;
-
   /**
    * Constructor
-   * @param WC_POS_Gateways $gateways
    */
-  public function __construct(WC_POS_Gateways $gateways) {
-    $this->gateways = $gateways;
-
+  public function __construct() {
     add_filter( 'query_vars', array( $this, 'query_vars' ) );
     add_action( 'template_redirect', array( $this, 'template_redirect' ) );
-
   }
 
   /**
@@ -107,40 +101,37 @@ class WC_POS_Template {
 
     // required scripts
     $scripts = array(
-      'jquery'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>',
-      'lodash'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.8.0/lodash.min.js"></script>',
-      'backbone'     => '<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>',
-      'radio'        => '<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.radio/0.9.0/backbone.radio.min.js"></script>',
-      'marionette'   => '<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.1/backbone.marionette.min.js"></script>',
-      'handlebars'   => '<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js"></script>',
-      'idb-wrapper'  => '<script src="//cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.5.0/idbstore.min.js"></script>',
-      'select2'      => '<script src="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js"></script>',
-      'moment'       => '<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>',
-      'accounting'   => '<script src="//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>',
-      'jquery.color' => '<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js"></script>',
-      'app'          => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION .'"></script>'
+      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js',
+      'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.8.0/lodash.min.js',
+      'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js',
+      'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/0.9.0/backbone.radio.min.js',
+      'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.1/backbone.marionette.min.js',
+      'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js',
+      'idb-wrapper'  => 'https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.5.0/idbstore.min.js',
+      'select2'      => 'https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js',
+      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js',
+      'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
+      'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js',
+      'app'          => WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION
     );
 
     // cdn bundle for local dev
     // todo: formatNumber issue when using vendor bundle
 //    $scripts = array(
-//      'bundle'       => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/vendor.bundle.js?ver='. WC_POS_VERSION .'"></script>',
-//      'app'          => '<script src="'. WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION .'"></script>'
+//      'bundle'       => WC_POS_PLUGIN_URL .'assets/js/vendor.bundle.js?ver='. WC_POS_VERSION,
+//      'app'          => WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION
 //    );
 
-      // get locale translation if available
-    $locale_js = WC_POS_i18n::locale_js();
-    if( $locale_js )
-      $scripts['locale'] = '<script src="'. $locale_js .'?ver='. WC_POS_VERSION .'"></script>';
-
     // output
-    $scripts = apply_filters( 'woocommerce_pos_footer', $scripts );
+    $scripts = apply_filters( 'woocommerce_pos_enqueue_scripts', $scripts );
+
     foreach( $scripts as $script ) {
-      echo "\n" . $script;
+      echo "\n".'<script src="'. $script . '"></script>';
     }
 
     // inline start app with params
-    echo '<script type="text/javascript">POS.options = '. json_encode( WC_POS_Params::frontend() ) .'; POS.start();</script>';
+    $params = apply_filters( 'woocommerce_pos_params', array() );
+    echo '<script type="text/javascript">POS.options = '. json_encode( $params ) .'; POS.start();</script>';
   }
 
   /**

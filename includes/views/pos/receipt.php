@@ -20,23 +20,32 @@
 <script type="text/x-handlebars-template" id="tmpl-receipt-items">
   {{#each []}}
   <li>
-    <div class="qty">{{quantity}}</div>
-    <div class="title">{{#if method_title}}{{method_title}}{{else}}{{name}}{{/if}}</div>
+    <div class="qty">{{#if product_id}}{{quantity}}{{/if}}</div>
+    <div class="title">
+      {{#if name}}{{name}}{{else}}{{title}}{{/if}}
+      {{#if method_title}}{{method_title}}{{/if}}
+    </div>
     <div class="price">
-      {{#if on_sale}}
+    {{#if product_id}}
+      {{#compare regular_price '!==' price}}
       <del>{{{money regular_price}}}</del>
       <ins>{{{money price}}}</ins>
       {{else}}
       {{{money price}}}
-      {{/if}}
+      {{/compare}}
+    {{/if}}
     </div>
     <div class="total">
-      {{#if on_sale}}
+    {{#if product_id}}
+      {{#compare subtotal '!==' total}}
       <del>{{{money subtotal}}}</del>
       <ins>{{{money total}}}</ins>
       {{else}}
       {{{money total}}}
-      {{/if}}
+      {{/compare}}
+    {{else}}
+      {{{money total}}}
+    {{/if}}
     </div>
   </li>
   {{/each}}
@@ -60,7 +69,7 @@
   <li class="tax">
     <div>
       {{#if ../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
-      {{label}}:
+      {{title}}:
     </div>
     <div class="total">{{{money total}}}</div>
   </li>
@@ -76,12 +85,14 @@
   </li>
   {{/if}}
   {{/compare}}
+  <!-- order_discount removed in WC 2.3, included for backwards compat -->
   {{#compare order_discount '!==' 0}}
   <li class="order-discount">
     <div><?php /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</div>
     <div class="total">{{{money order_discount negative=true}}}</div>
   </li>
   {{/compare}}
+  <!-- end order_discount -->
   <li class="order-total">
     <div><?php /* translators: woocommerce */ _e( 'Order Total', 'woocommerce' ); ?>:</div>
     <div class="total">{{{money total}}}</div>
