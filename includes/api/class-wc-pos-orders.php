@@ -30,22 +30,17 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     // init subclasses
     $this->init();
 
-    add_filter( 'woocommerce_api_create_order_data', array( $this, 'order_data'), 10, 2 );
+    // order data
+    add_filter( 'woocommerce_api_create_order_data', array( $this, 'create_order_data'), 10, 2 );
     add_filter( 'woocommerce_api_edit_order_data', array( $this, 'edit_order_data'), 10, 3 );
-    add_action( 'woocommerce_order_add_product', array( $this, 'order_add_product'), 10, 5 );
-    add_action( 'woocommerce_order_add_shipping', array( $this, 'order_add_shipping'), 10, 3 );
-    add_action( 'woocommerce_order_add_fee', array( $this, 'order_add_fee'), 10, 3 );
     add_action( 'woocommerce_api_create_order', array( $this, 'create_order'), 10, 3 );
-    add_action( 'woocommerce_api_edit_order', array( $this, 'create_order'), 10, 3 );
-
-    // set store tax
-    add_filter( 'woocommerce_find_rates', array( $this, 'find_rates'), 10, 2 );
+    add_action( 'woocommerce_api_edit_order', array( $this, 'edit_order'), 10, 3 );
 
     // payment
     add_action( 'woocommerce_pos_process_payment', array( $this, 'process_payment' ), 10, 2 );
     add_action( 'woocommerce_payment_complete', array( $this, 'payment_complete' ), 10, 1 );
 
-    // add info to order response
+    // order response
     add_filter( 'woocommerce_api_order_response', array( $this, 'order_response' ), 10, 4 );
 
     // allow decimals for qty
@@ -67,16 +62,43 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   }
 
   /**
-   * Store raw data for use by payment gateways
-   * @return array data
+   * Create order data
+   *
+   * @param $data
+   * @param $WC_API_Orders
+   * @return array
    */
-  public function order_data($data, $WC_API_Orders) {
+  public function create_order_data($data, $WC_API_Orders){
+
+    // add filters & actions
+    add_filter( 'woocommerce_product_object', array( $this, 'product_object') );
+    add_filter( 'woocommerce_product_tax_class', array( $this, 'product_tax_class' ), 10, 2 );
+    add_filter( 'woocommerce_get_product_from_item', array( $this, 'get_product_from_item' ), 10, 3 );
+    add_filter( 'pre_option_woocommerce_tax_based_on', array( $this, 'woocommerce_tax_based_on' ) );
+    add_filter( 'woocommerce_find_rates', array( $this, 'find_rates'), 10, 2 );
+    add_action( 'woocommerce_order_add_product', array( $this, 'order_add_product'), 10, 5 );
+
+    // WC API < 2.4 doesn't support fee with taxable = false
+    // change taxable = false to taxable = 'none'
+    if( version_compare( WC()->version, '2.4', '<' ) && isset($this->data['fee_lines']) ){
+      foreach( $this->data['fee_lines'] as &$fee ){
+        if( !$fee['taxable'] ){
+          $fee['taxable'] = 'none';
+        }
+      }
+    }
+
+    // if order has shipping line, we'll have to calc the tax ourselves
+    if( isset($this->data['shipping_lines']) && !empty($this->data['shipping_lines']) ){
+      add_action( 'woocommerce_order_add_shipping', array( $this, 'order_add_shipping'), 10, 3 );
+      add_action( 'woocommerce_order_add_tax', array( $this, 'order_add_tax' ), 10, 5 );
+    }
+
     return $this->data;
   }
 
   /**
-   * Edit order
-   * - delete all order data, alternative is to save local_id as item meta
+   * Edit order data
    *
    * @param $data
    * @param $order_id
@@ -85,86 +107,192 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    */
   public function edit_order_data($data, $order_id, $WC_API_Orders){
     $this->delete_order_items($order_id);
-    return $this->order_data($data, $WC_API_Orders);
+    return $this->create_order_data($data, $WC_API_Orders);
   }
 
   /**
-   * Sets tax rate
-   * @param $matched_tax_rates
-   * @param $args
+   * Change the product post_title
+   * @param WP_Post $product
+   * @return WP_Post
    */
-  public function find_rates($matched_tax_rates, $args){
-    return $matched_tax_rates;
+  public function product_object(WP_Post $product){
+
+    if( isset($product->ID) ){
+      $product_id = $product->ID;
+      $item = $this->get_line_item($product_id);
+      if( isset( $item['title'] ) ){
+        $product->post_title = sanitize_text_field( $item['title'] );
+      }
+    }
+
+    return $product;
   }
 
   /**
-   * Line item meta
+   * Change the product tax_class
+   * @param $tax_class
+   * @param $product
+   * @return string
+   */
+  public function product_tax_class($tax_class, $product){
+
+    if( isset($product->id) ){
+      $product_id = $product->id;
+      $item = $this->get_line_item($product_id);
+      if( isset( $item['tax_class'] ) ){
+        $tax_class = sanitize_text_field( $item['tax_class'] );
+      }
+    }
+
+    return $tax_class;
+  }
+
+  /**
+   * Set taxable
+   * @param $product
+   * @param $item
+   * @param $WC_Product
+   * @return mixed
+   */
+  public function get_product_from_item($product, $item, $WC_Product){
+
+    if( isset($product->id) ){
+      $product_id = $product->id;
+      $data = $this->get_line_item($product_id);
+      if( isset( $data['taxable'] ) ){
+        // api has options true/false
+        // tax_status has options taxable/shipping/none
+        $product->tax_status = $data['taxable'] ? 'taxable' : 'none';
+      }
+    }
+
+    return $product;
+
+  }
+
+  /**
+   * Add shipping tax
+   * @param $order_id
+   * @param $item_id
+   * @param $tax_rate_id
+   * @param $tax_amount
+   * @param $shipping_tax_amount
+   */
+  public function order_add_tax($order_id, $item_id, $tax_rate_id, $tax_amount, $shipping_tax_amount){
+
+    $shipping_taxes = array();
+
+    // check each shipping tax array for matching $tax_rate_id ... nasty
+    foreach($this->data['shipping_lines'] as $shipping) :
+      if( $shipping['tax'] ) : foreach( $shipping['tax'] as $rate_id => $tax ) :
+        if( $rate_id == $tax_rate_id && isset( $tax['total'] ) ) :
+          array_push( $shipping_taxes, $tax['total'] );
+          wc_update_order_item_meta( $item_id, 'shipping_tax_amount', wc_format_decimal( $tax['total'] ) );
+        endif;
+      endforeach; endif;
+    endforeach;
+
+    $shipping_tax_total = WC_Tax::round( array_sum( $shipping_taxes ) );
+    update_post_meta( $order_id, '_order_shipping_tax', wc_format_decimal( $shipping_tax_total ) );
+
+  }
+
+  /**
+   * Opportunity to add line_item meta
    * @param $order_id
    * @param $item_id
    * @param $product
    * @param $qty
    * @param $args
    */
-  public function order_add_product( $order_id, $item_id, $product, $qty, $args ) {
+  public function order_add_product($order_id, $item_id, $product, $qty, $args){
 
-    if(!$_item = $this->get_line_item($product->id, $item_id)){
-      return;
-    };
+    if( isset($product->id) ){
+      $product_id = $product->id;
+      $data = $this->get_line_item($product_id);
+      if( isset( $data['meta'] ) && !empty( $data['meta'] ) ){
+        $this->add_product_meta( $item_id, $data['meta'] );
+      }
+    }
 
-    // tax class
-    wc_update_order_item_meta( $item_id, '_tax_class', $_item['tax_class'] );
+  }
 
+  /**
+   * Add product meta
+   * @param $item_id
+   * @param array $meta
+   */
+  private function add_product_meta($item_id, array $meta){
 
     // line meta
-    if(isset($_item['meta'])): foreach($_item['meta'] as $meta):
-      wc_add_order_item_meta(
-        $item_id,
-        isset($meta['label']) ? $meta['label'] : '',
-        isset($meta['value']) ? $meta['value'] : ''
-      );
-    endforeach; endif;
+    foreach($meta as $m) {
+      $label = isset($m['label']) ? $m['label'] : '';
+      $value = isset($m['value']) ? $m['value'] : '';
+      wc_add_order_item_meta( $item_id, $label, $value );
+    }
+
   }
 
   /**
-   * Get posted line item data
-   * @param $product_id
-   * @param $item_id
-   * @return bool|void
-   */
-  private function get_line_item($product_id, $item_id){
-    if(!isset($this->data['line_items']))
-      return;
-
-    $items = $this->data['line_items'];
-
-    foreach($items as $k => $item):
-      if(isset($item['product_id']) && $item['product_id'] == $product_id):
-        $this->data['line_items'][$k]['id'] = $item_id;
-        return $item;
-      endif;
-    endforeach;
-
-    return;
-  }
-
-  /**
+   *
    * @param $order_id
    * @param $item_id
    * @param $rate
    */
   public function order_add_shipping($order_id, $item_id, $rate){
     $shipping_line = $this->get_shipping_line($rate, $item_id);
+
     if($shipping_line && isset($shipping_line['tax'])){
       $taxes = array();
       foreach($shipping_line['tax'] as $k => $tax){
-        $taxes[$k] = isset($tax['total']) ? $tax['total']: 0 ;
+        if( !empty($tax) ){
+          $taxes[$k] = isset($tax['total']) ? wc_format_decimal( $tax['total'] ) : 0 ;
+        }
       }
       wc_update_order_item_meta( $item_id, 'taxes', $taxes );
     }
   }
 
   /**
+   * Short circuit get_option('woocommerce_tax_based_on') as shop base
+   * @return string
+   */
+  public function woocommerce_tax_based_on(){
+    return 'base';
+  }
+
+  /**
+   * Remove calc_shipping_tax
+   * @param $matched_tax_rates
+   * @param $args
+   * @return array
+   */
+  public function find_rates( $matched_tax_rates, $args ){
+    if ( $matched_tax_rates ) {
+      foreach ( $matched_tax_rates as &$rate ) {
+        $rate['shipping'] = 'no';
+      }
+    }
+    return $matched_tax_rates;
+  }
+
+  /**
+   * Retrieve line_item from raw data
+   * @param $product_id
+   */
+  private function get_line_item($product_id){
+    if(!isset($this->data['line_items']))
+      return;
+
+    foreach($this->data['line_items'] as $item){
+      if( isset($item['product_id']) && $item['product_id'] == $product_id )
+        return $item;
+    }
+  }
+
+  /**
    * Match $rate properties to raw data
+   * - there's no id to match so do best guess match id, title & cost
    * @param $rate
    * @param $item_id
    */
@@ -173,130 +301,46 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
       return;
 
     $lines = $this->data['shipping_lines'];
-
-    foreach($lines as $k => $line):
+    foreach($lines as $key => &$line){
       if(
         $line['method_id'] == $rate->method_id &&
         $line['method_title'] == $rate->label &&
-        $line['total'] == $rate->cost
-      ):
-        $this->data['shipping_lines'][$k]['id'] = $item_id;
+        $line['total'] == $rate->cost &&
+        !isset( $line['id'] )
+      )
+        $line['id'] = $item_id;
         return $line;
-      endif;
-    endforeach;
-
-    return;
+    }
   }
 
   /**
-   * @param $order_id
-   * @param $item_id
-   * @param $fee
-   */
-  public function order_add_fee($order_id, $item_id, $fee){
-    if(!isset($this->data['fee_lines']))
-      return;
-
-    $lines = $this->data['fee_lines'];
-
-    foreach($lines as $k => $line):
-      if(
-        $line['title'] == $fee->name &&
-        $line['total'] == $fee->amount &&
-        $line['tax_class'] == $fee->tax_class
-      ):
-        $this->data['fee_lines'][$k]['id'] = $item_id;
-      endif;
-    endforeach;
-  }
-
-  /**
-   * Payment processing
+   * Create order complete
    * @param $order_id
    * @param $data
    * @param $WC_API_Orders
    */
   public function create_order( $order_id, $data, $WC_API_Orders ){
-    $this->update_order_meta($order_id);
-    $this->update_lines($order_id, 'line_items');
-    $this->update_lines($order_id, 'fee_lines');
+    // pos meta
+    update_post_meta( $order_id, '_pos', 1 );
+    update_post_meta( $order_id, '_pos_user', get_current_user_id() );
+
+    // payment
     do_action( 'woocommerce_pos_process_payment', $order_id, $data);
   }
 
   /**
+   * Edit order complete
    * @param $order_id
+   * @param $data
+   * @param $WC_API_Orders
    */
-  private function update_order_meta( $order_id ){
-    update_post_meta( $order_id, '_cart_discount',      $this->data['cart_discount'] );
-    update_post_meta( $order_id, '_order_shipping_tax', $this->data['shipping_tax'] );
-    update_post_meta( $order_id, '_order_tax',          $this->data['total_tax'] - $this->data['shipping_tax'] );
-    update_post_meta( $order_id, '_order_total',        $this->data['total'] );
-
-    foreach($this->data['tax_lines'] as $tax){
-      $code = WC_Tax::get_rate_code( $tax['rate_id'] );
-      $tax_item_id = wc_add_order_item( $order_id, array(
-        'order_item_name' => $code,
-        'order_item_type' => 'tax'
-      ));
-      if($tax_item_id) {
-        wc_add_order_item_meta( $tax_item_id, 'rate_id', $tax['rate_id'] );
-        wc_add_order_item_meta( $tax_item_id, 'label', $tax['label'] );
-        wc_add_order_item_meta( $tax_item_id, 'compound', ( $tax['compound'] == 'yes' ? 1 : 0 ) );
-        wc_add_order_item_meta( $tax_item_id, 'tax_amount', $tax['total'] - $tax['shipping'] );
-        wc_add_order_item_meta( $tax_item_id, 'shipping_tax_amount', $tax['shipping'] );
-      }
-    }
-
-    // pos meta
-    update_post_meta( $order_id, '_pos', 1 );
-    update_post_meta( $order_id, '_pos_user', get_current_user_id() );
+  public function edit_order( $order_id, $data, $WC_API_Orders ){
+    // payment
+    do_action( 'woocommerce_pos_process_payment', $order_id, $data);
   }
 
   /**
-   * @param $order_id
-   * @param $line
-   */
-  private function update_lines( $order_id, $line ){
-
-    if(!isset($this->data[$line]))
-      return;
-
-    foreach($this->data[$line] as $item){
-      if(!isset($item['id']))
-        return;
-
-      if(isset($item['tax'])){
-        $this->update_line_tax_data($item['id'], $item['tax']);
-      }
-
-      $subtotal_tax = isset($item['subtotal_tax']) ? $item['subtotal_tax'] : 0;
-      $total_tax = isset($item['total_tax']) ? $item['total_tax'] : 0;
-
-      wc_update_order_item_meta( $item['id'], '_line_subtotal_tax', $subtotal_tax );
-      wc_update_order_item_meta( $item['id'], '_line_tax', $total_tax );
-    }
-
-  }
-
-  /**
-   * @param $item_id
-   * @param $line_tax
-   */
-  private function update_line_tax_data($item_id, $line_tax){
-    if(!is_numeric($item_id) || !is_array($line_tax))
-      return;
-
-    $line_taxes = array();
-    $line_subtotal_taxes = array();
-    foreach($line_tax as $key => $itemized){
-      $line_taxes[$key] = isset($itemized['total']) ? $itemized['total']: 0 ;
-      $line_subtotal_taxes[$key] = isset($itemized['subtotal']) ? $itemized['subtotal'] : 0 ;
-    }
-
-    wc_update_order_item_meta( $item_id, '_line_tax_data', array( 'total' => $line_taxes, 'subtotal' => $line_subtotal_taxes ) );
-  }
-
-  /**
+   * Process payment
    * @param $order_id
    * @param $data
    */
@@ -440,7 +484,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
     // allow decimal quantity
     // fixed in WC 2.4+
-    if( version_compare( WC()->version, '2.4' ) <= 0 &&
+    if( version_compare( WC()->version, '2.4', '<' ) &&
       $this->general_settings->get_data('decimal_qty') ){
       $order_data['line_items'] = $this->filter_qty($order_data['line_items']);
     }
@@ -505,9 +549,10 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   }
 
   /**
-   * @param $order_id
+   * Delete all order items
+   * @param int $order_id
    */
-  private function delete_order_items($order_id){
+  private function delete_order_items(int $order_id){
     global $wpdb;
     $order_item_ids = $wpdb->get_col( $wpdb->prepare( "
 			SELECT      order_item_id

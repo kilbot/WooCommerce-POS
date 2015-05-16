@@ -116,10 +116,10 @@ describe('entities/cart/collection.js', function () {
         subtotal: 4.5,
         total: 3.2,
         shipping: 2,
-        rate_id: 1
+        rate_id: '1'
       },
       {
-        rate_id: 2,
+        rate_id: '2',
         total: 7,
         subtotal: 11.5,
         shipping: 0

@@ -171,6 +171,10 @@ var Model = DualModel.extend({
     total += total_tax;
     total -= order_discount;
 
+    // tax_lines will merge the data - possibly due to deep model
+    // clear tax_lines before save to ensure clean data
+    this.unset('tax_lines', { silent: true });
+
     // create totals object
     var totals = {
       'total'             : Utils.round( total, 4 ),
@@ -231,7 +235,7 @@ var Model = DualModel.extend({
       if(type !== 'shipping' && type !== 'fee'){
         type = 'product';
       }
-      obj[type].push(model.toJSON());
+      obj[type].push( model.toJSON() );
     });
 
     this.set({

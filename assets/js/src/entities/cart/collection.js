@@ -109,7 +109,8 @@ module.exports = IndexedDBCollection.extend({
     // convert obj to array to be consistent with WC REST API output
     var arr = [];
     _.each(obj, function(value, key){
-      value.rate_id = parseInt(key, 10);
+      //value.rate_id = parseInt(key, 10);
+      value.rate_id = key.toString(); // make sure it's a string
       arr.push(value);
     });
 

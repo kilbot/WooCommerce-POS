@@ -24,7 +24,7 @@ class WC_POS_Admin_Orders {
     add_action( 'woocommerce_process_shop_order_meta', array($this, 'save'), 10, 2 );
 
     // payment method dropdown
-    if( version_compare( WC()->version, '2.3' ) >= 0 ){
+    if( version_compare( WC()->version, '2.3', '>' ) ){
       add_filter( 'woocommerce_payment_gateways', array($this, 'payment_gateways'), 20, 1 );
     }
 

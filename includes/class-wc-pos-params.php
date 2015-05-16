@@ -215,8 +215,11 @@ class WC_POS_Params {
     $get_rates = method_exists( 'WC_Tax','get_base_tax_rates' ) ? 'get_base_tax_rates' : 'get_shop_base_rate';
 
     foreach( self::tax_classes() as $class ) {
-      if( $rate = WC_Tax::$get_rates( $class ) )
+      if( $rate = WC_Tax::$get_rates( $class ) ){
+        // WC_Tax returns a assoc array with int as keys = world of pain in js
+        // possibly change $key to $rate['id']
         $rates[$class] = $rate;
+      }
     }
 
     return $rates;
