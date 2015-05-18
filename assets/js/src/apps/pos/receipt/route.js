@@ -57,7 +57,7 @@ var ReceiptRoute = Route.extend({
 
   showItems: function(){
     var view = new ItemsView({
-      order: this.order
+      model: this.order
     });
 
     this.layout.getRegion('list').show(view);

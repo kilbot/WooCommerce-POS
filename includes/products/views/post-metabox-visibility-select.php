@@ -9,11 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="misc-pub-section" id="pos-visibility">
   <?php _e( 'POS visibility', 'woocommerce-pos' ); ?>:
-  <strong id="pos-visibility-display"><?php echo $options[$selected]; ?></strong>
+  <strong id="pos-visibility-display"><?php echo $this->options[$selected]; ?></strong>
   <a href="#pos-visibility" id="pos-visibility-show" class="hide-if-no-js" style="display: inline;"><?php /* translators: wordpress */ _e('Edit'); ?></a>
 
   <div id="pos-visibility-select" class="hide-if-js" style="display: none;">
-    <?php foreach($options as $value => $label): $checked = $value == $selected ? 'checked="checked"' : ''; ?>
+    <?php foreach($this->options as $value => $label): $checked = $value == $selected ? 'checked="checked"' : ''; ?>
       <label style="display:block;margin: 5px 0;">
         <input type="radio" name="_pos_visibility" value="<?php echo $value; ?>" <?php echo $checked; ?>> <?php echo $label; ?>
       </label>

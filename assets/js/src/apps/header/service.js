@@ -51,7 +51,8 @@ var Service = Service.extend({
   },
 
   browserCheck: function(){
-    var props = ['flexbox', 'indexeddb', 'localstorage'],
+    // smil targets all IE: http://caniuse.com/#feat=svg-smil
+    var props = ['flexbox', 'indexeddb', 'smil'],
         pass = _.every(props, function(prop){ return Modernizr[prop]; });
 
     if(!pass){

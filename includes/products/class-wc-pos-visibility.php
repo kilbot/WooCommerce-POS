@@ -17,6 +17,8 @@ class WC_POS_Products_Visibility {
    * Constructor
    */
   public function __construct() {
+
+    // visibility options
     $this->options = array(
       ''            => __( 'POS & Online', 'woocommerce-pos' ),
       'pos_only'    => __( 'POS Only', 'woocommerce-pos' ),
@@ -257,6 +259,9 @@ class WC_POS_Products_Visibility {
     echo '<div class="hidden" id="woocommerce_pos_inline_'. $post_id .'" data-visibility="'. $selected .'"><div>';
   }
 
+  /**
+   * Add visibility option to the Product edit page
+   */
   public function post_submitbox_misc_actions(){
     global $post;
 
@@ -265,7 +270,7 @@ class WC_POS_Products_Visibility {
     }
 
     $selected = get_post_meta( $post->ID , '_pos_visibility' , true );
-    $options = $this->options;
+    if( !$selected ){ $selected = ''; }
     include 'views/post-metabox-visibility-select.php';
   }
 

@@ -78,7 +78,7 @@ class WC_POS_API {
   static public function get_all_ids() {
     $entity = isset($_REQUEST['type']) ? $_REQUEST['type'] : false;
     $updated_at_min = isset($_REQUEST['updated_at_min']) ? $_REQUEST['updated_at_min'] : false;
-    $handler = 'WC_POS_API_' . $entity;
+    $handler = 'WC_POS_API_' . ucfirst( $entity );
 
     if(method_exists($handler, 'get_ids')){
       $result = $handler::get_ids($updated_at_min);

@@ -8,14 +8,24 @@ var View = ItemView.extend({
   tagName: 'ul',
   template: hbs.compile( $('#tmpl-receipt-items').html() ),
 
-  initialize: function(options){
-    options = options || {};
-    this.order = options.order;
-  },
-
   templateHelpers: function(){
-    var order = this.order.toJSON();
-    return _.union(order.line_items, order.shipping_lines, order.fee_lines);
+
+    // line items
+    // - add regular_price
+    var line_items = this.model.get('line_items');
+    _.each( line_items, function(item) {
+      item.on_sale = item.subtotal !== item.total;
+      item.regular_price = parseFloat(item.subtotal) / item.quantity;
+    });
+
+    //
+
+    //
+
+    return {
+      line_items: line_items
+    };
+
   }
 });
 

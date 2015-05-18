@@ -53,8 +53,8 @@ var StatusRoute = Route.extend({
   },
 
   browserStatus: function(){
-    var props = ['flexbox', 'indexeddb', 'localstorage'],
-      result = [];
+    var props = ['flexbox', 'indexeddb'],
+        result = [];
 
     _.each(props, function(prop){
       result.push({

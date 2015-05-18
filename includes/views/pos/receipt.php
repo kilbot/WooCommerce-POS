@@ -18,37 +18,46 @@
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-receipt-items">
-  {{#each []}}
+{{#each line_items}}
   <li>
-    <div class="qty">{{#if product_id}}{{quantity}}{{/if}}</div>
-    <div class="title">
-      {{#if name}}{{name}}{{else}}{{title}}{{/if}}
-      {{#if method_title}}{{method_title}}{{/if}}
-    </div>
+    <div class="qty">{{quantity}}</div>
+    <div class="title">{{name}}</div>
     <div class="price">
-    {{#if product_id}}
-      {{#compare regular_price '!==' price}}
+      {{#if on_sale}}
       <del>{{{money regular_price}}}</del>
       <ins>{{{money price}}}</ins>
       {{else}}
       {{{money price}}}
-      {{/compare}}
-    {{/if}}
+      {{/if}}
     </div>
     <div class="total">
-    {{#if product_id}}
-      {{#compare subtotal '!==' total}}
+      {{#if on_sale}}
       <del>{{{money subtotal}}}</del>
       <ins>{{{money total}}}</ins>
       {{else}}
       {{{money total}}}
-      {{/compare}}
-    {{else}}
-      {{{money total}}}
-    {{/if}}
+      {{/if}}
     </div>
   </li>
-  {{/each}}
+{{/each}}
+
+{{#each shipping_lines}}
+  <li>
+    <div class="qty"></div>
+    <div class="title">{{method_title}}</div>
+    <div class="price"></div>
+    <div class="total">{{{money total}}}</div>
+  </li>
+{{/each}}
+
+{{#each fee_lines}}
+  <li>
+    <div class="qty"></div>
+    <div class="title">{{title}}</div>
+    <div class="price"></div>
+    <div class="total">{{{money total}}}</div>
+  </li>
+{{/each}}
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-receipt-totals">

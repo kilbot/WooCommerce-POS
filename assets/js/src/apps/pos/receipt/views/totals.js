@@ -2,6 +2,7 @@ var ItemView = require('lib/config/item-view');
 var POS = require('lib/utilities/global');
 var hbs = require('handlebars');
 var $ = require('jquery');
+var _ = require('lodash');
 var Radio = require('backbone.radio');
 
 var View = ItemView.extend({
@@ -35,8 +36,11 @@ var View = ItemView.extend({
   },
 
   subtotal: function(){
-    //var fees =
-    return this.model.sum(['subtotal', 'total_shipping']);
+    var fees = _.pluck( this.model.get('fee_lines'), 'total' );
+    var fee_sum = _.reduce(fees, function(a, b){
+      return parseFloat(a) + parseFloat(b);
+    }, 0);
+    return fee_sum + this.model.sum(['subtotal', 'total_shipping']);
   },
 
   /**

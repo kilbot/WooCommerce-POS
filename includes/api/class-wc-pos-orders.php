@@ -15,6 +15,13 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   /** @var array Contains the raw order data */
   private $data = array();
 
+  /** @var Hacky fix for WC treatment of shipping tax  */
+  private $item_and_fee_count = 0;
+  private $get_product_from_item_count = 0;
+
+  /** @var Hacky fix for WC treatment of negative tax  */
+  private $tax_total = 0;
+
   /** @var object Contains a reference to the settings classes */
   private $general_settings;
   private $checkout_settings;
@@ -77,6 +84,8 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     add_filter( 'pre_option_woocommerce_tax_based_on', array( $this, 'woocommerce_tax_based_on' ) );
     add_filter( 'woocommerce_find_rates', array( $this, 'find_rates'), 10, 2 );
     add_action( 'woocommerce_order_add_product', array( $this, 'order_add_product'), 10, 5 );
+    add_action( 'updated_order_item_meta', array( $this, 'updated_order_item_meta'), 10, 4 );
+    add_action( 'added_post_meta', array( $this, 'added_post_meta'), 10, 4 );
 
     // WC API < 2.4 doesn't support fee with taxable = false
     // change taxable = false to taxable = 'none'
@@ -90,6 +99,12 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
     // if order has shipping line, we'll have to calc the tax ourselves
     if( isset($this->data['shipping_lines']) && !empty($this->data['shipping_lines']) ){
+      if( isset($this->data['line_items']) ){
+        $this->item_and_fee_count += count($this->data['line_items']);
+      }
+      if( isset($this->data['fee_lines']) ){
+        $this->item_and_fee_count += count($this->data['fee_lines']);
+      }
       add_action( 'woocommerce_order_add_shipping', array( $this, 'order_add_shipping'), 10, 3 );
       add_action( 'woocommerce_order_add_tax', array( $this, 'order_add_tax' ), 10, 5 );
     }
@@ -165,6 +180,8 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
         $product->tax_status = $data['taxable'] ? 'taxable' : 'none';
       }
     }
+
+    $this->get_product_from_item_count++;
 
     return $product;
 
@@ -268,11 +285,32 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @return array
    */
   public function find_rates( $matched_tax_rates, $args ){
-    if ( $matched_tax_rates ) {
-      foreach ( $matched_tax_rates as &$rate ) {
-        $rate['shipping'] = 'no';
+
+    // this allows us to break into WC_Tax::find_rates for shipping only
+    // super nasty :(
+    if($this->item_and_fee_count === $this->get_product_from_item_count){
+      $tax_rates = array();
+
+      if( isset($this->data['shipping_lines']) ){
+        foreach($this->data['shipping_lines'] as $shipping){
+          if( isset($shipping['tax']) ){
+            foreach($shipping['tax'] as $key => $tax){
+              if( !empty($tax) ){
+                $tax_rates[$key] = array(
+                  'rate'      => '0', // rate doesn't matter, we'll update later
+                  'label'     => $tax['label'],
+                  'shipping'  => 'yes',
+                  'compound'  => $tax['compound']
+                );
+              }
+            }
+          }
+        }
       }
+
+      $matched_tax_rates = $tax_rates;
     }
+
     return $matched_tax_rates;
   }
 
@@ -311,6 +349,45 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
         $line['id'] = $item_id;
         return $line;
     }
+  }
+
+  /**
+   * Fix item meta for negative product/fee values
+   * @param $meta_id
+   * @param $order_id
+   * @param $meta_key
+   * @param $meta_value
+   */
+  public function updated_order_item_meta($meta_id, $order_id, $meta_key, $meta_value){
+
+    if($meta_key == '_line_tax_data'){
+      $line_subtotal_taxes = isset($meta_value['subtotal']) ? $meta_value['subtotal'] : array();
+      $line_taxes          = isset($meta_value['total']) ? $meta_value['total'] : array();
+      $line_subtotal_tax   = array_sum( $line_subtotal_taxes );
+      $line_tax            = array_sum( $line_taxes );
+
+      // store tax_total for use by $this->added_post_meta
+      $this->tax_total     += $line_tax;
+
+      wc_update_order_item_meta( $order_id, '_line_subtotal_tax', wc_format_decimal( $line_subtotal_tax ) );
+      wc_update_order_item_meta( $order_id, '_line_tax', wc_format_decimal( $line_tax ) );
+    }
+
+  }
+
+  /**
+   * Fix post meta for negative product/fee values
+   * @param $meta_id
+   * @param $order_id
+   * @param $meta_key
+   * @param $meta_value
+   */
+  public function added_post_meta($meta_id, $order_id, $meta_key, $meta_value){
+
+    if($meta_key == '_order_tax' && isset($this->tax_total)){
+      update_post_meta($order_id, '_order_tax', $this->tax_total);
+    }
+
   }
 
   /**
