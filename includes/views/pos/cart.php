@@ -100,13 +100,13 @@
 		<div class="total">{{{money subtotal}}}</div>
 		<div class="action"></div>
 	</li>
-	{{#compare cart_discount '!==' 0}}
+	{{#if has_discount}}
 	<li class="cart-discount">
-		<div><?php /* translators: woocommerce */ _e( 'Cart Discount', 'woocommerce' ); ?>:</div>
+		<div><?php /* translators: woocommerce */ _e( 'Discount', 'woocommerce' ); ?>:</div>
 		<div class="total">{{{money cart_discount negative=true}}}</div>
 		<div class="action"></div>
 	</li>
-	{{/compare}}
+	{{/if}}
 	{{#compare total_tax '!==' 0}}
 	{{#if itemized}}
 		{{#each tax_lines}}

@@ -129,6 +129,8 @@ module.exports = Model.extend({
    * based on the calc_inclusive_tax function in
    * woocommerce/includes/class-wc-tax.php
    */
+  /* todo: too many statements */
+  /* jshint -W071 */
   calcInclusiveTax: function(options) {
     var regular_tax_rates = 0,
         compound_tax_rates = 0,
@@ -139,20 +141,22 @@ module.exports = Model.extend({
         rates = options.rates,
         qty = options.quantity;
 
-    _.each(rates, function(rate) {
+    _.each(rates, function(rate, key) {
+      if( this.get('type') === 'shipping' && rate.shipping === 'no' ){
+        delete rates[key];
+        return;
+      }
       if ( rate.compound === 'yes' ) {
         compound_tax_rates = compound_tax_rates + parseFloat(rate.rate);
       } else {
         regular_tax_rates = regular_tax_rates + parseFloat(rate.rate);
       }
-    });
+    }, this);
 
     var regular_tax_rate  = 1 + ( regular_tax_rates / 100 );
     var compound_tax_rate   = 1 + ( compound_tax_rates / 100 );
     non_compound_price = price / compound_tax_rate;
 
-    /* jshint -W071 */
-    /* todo: too many statements */
     _.each(rates, function(rate) {
       var the_rate = parseFloat(rate.rate) / 100;
       var the_price = 0;
@@ -176,14 +180,16 @@ module.exports = Model.extend({
       item_tax += tax_amount;
 
     }, this);
-    /* jshint +W071 */
 
     // itemized tax
-    this.set('tax', rates);
+    if( !_.isEmpty(rates) ){
+      this.set('tax', rates);
+    }
 
     // return the item tax
     return item_tax;
   },
+  /* jshint +W071 */
 
   /**
    * Calculate the line item tax total
@@ -202,11 +208,15 @@ module.exports = Model.extend({
     // multiple taxes
     _.each(rates, function(rate, key) {
       tax_amount = 0;
+      if( this.get('type') === 'shipping' && rate.shipping === 'no' ){
+        delete rates[key];
+        return;
+      }
       if ( rate.compound !== 'yes' ) {
         tax_amount = price * ( parseFloat(rate.rate) / 100 );
       }
       taxes[ key ] = tax_amount;
-    });
+    }, this);
 
     if( taxes.length > 0 ) {
       pre_compound_total = taxes.reduce(function(sum, num) {return sum + num;});
@@ -229,7 +239,9 @@ module.exports = Model.extend({
     }, this);
 
     // itemized tax
-    this.set('tax', rates);
+    if( !_.isEmpty(rates) ){
+      this.set('tax', rates);
+    }
 
     // return the item tax
     return item_tax;

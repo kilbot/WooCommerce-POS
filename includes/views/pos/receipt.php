@@ -21,7 +21,25 @@
 {{#each line_items}}
   <li>
     <div class="qty">{{quantity}}</div>
-    <div class="title">{{name}}</div>
+    <div class="title">
+      {{name}}
+      {{#with attributes}}
+      <dl class="variant">
+        {{#each []}}
+        <dt>{{name}}:</dt>
+        <dd>{{option}}</dd>
+        {{/each}}
+      </dl>
+      {{/with}}
+      {{#with meta}}
+      <dl class="meta">
+        {{#each []}}
+        <dt>{{label}}:</dt>
+        <dd>{{value}}</dd>
+        {{/each}}
+      </dl>
+      {{/with}}
+    </div>
     <div class="price">
       {{#if on_sale}}
       <del>{{{money regular_price}}}</del>
@@ -65,12 +83,12 @@
     <div><?php /* translators: woocommerce */ _e( 'Cart Subtotal', 'woocommerce' ); ?>:</div>
     <div class="total">{{{money subtotal}}}</div>
   </li>
-  {{#compare cart_discount '!==' 0}}
+  {{#if has_discount}}
   <li class="cart-discount">
-    <div><?php /* translators: woocommerce */ _e( 'Cart Discount', 'woocommerce' ); ?>:</div>
+    <div><?php /* translators: woocommerce */ _e( 'Discount', 'woocommerce' ); ?>:</div>
     <div class="total">{{{money cart_discount negative=true}}}</div>
   </li>
-  {{/compare}}
+  {{/if}}
   {{#compare total_tax '!==' 0}}
   {{#if itemized}}
   {{#each tax_lines}}

@@ -19,8 +19,8 @@ var View = ItemView.extend({
   templateHelpers: function(){
 
     var data = {
-      subtotal: this.subtotal(),
-      cart_discount: this.cartDiscount()
+      subtotal      : this.subtotal(),
+      cart_discount : this.cartDiscount()
     };
 
     if( this.tax.tax_display_cart === 'incl' ) {
@@ -31,6 +31,7 @@ var View = ItemView.extend({
 
     // itemized
     data.itemized = this.tax.tax_total_display === 'itemized';
+    data.has_discount = 0 !== parseFloat(data.cart_discount);
 
     return data;
   },

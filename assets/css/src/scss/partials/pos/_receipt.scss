@@ -19,6 +19,26 @@
     }
     .title {
       @include flex(1);
+      dl {
+        @include clearfix();
+        width: 100%;
+        font-size: $font-size-small;
+        margin: 0;
+        dt {
+          font-weight: normal;
+          float: left;
+          padding-right: 5px;
+          clear: left;
+          font-weight: 600;
+        }
+        dd {
+          float: left;
+          margin: 0;
+        }
+        &.variant {
+          margin: $spacing/4 0 0 0;
+        }
+      }
     }
     .price {
       text-align: right;
