@@ -31,7 +31,9 @@ module.exports = ItemView.extend({
 
     if( this.tax.tax_display_cart === 'incl' ) {
       data.subtotal = this.model.sum(['subtotal', 'subtotal_tax']);
-      data.cart_discount = this.model.get('subtotal') - this.model.get('total');
+      data.cart_discount = this.model.sum(
+        ['cart_discount', 'cart_discount_tax']
+      );
       data.incl_tax = true;
     }
 

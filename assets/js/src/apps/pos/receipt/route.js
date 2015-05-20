@@ -21,6 +21,10 @@ var ReceiptRoute = Route.extend({
       tab   : 'right',
       label : polyglot.t('titles.receipt')
     });
+    this.tax = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'tax'
+    }) || {};
   },
 
   fetch: function() {
@@ -57,7 +61,8 @@ var ReceiptRoute = Route.extend({
 
   showItems: function(){
     var view = new ItemsView({
-      model: this.order
+      model: this.order,
+      tax_display_cart: this.tax.tax_display_cart
     });
 
     this.layout.getRegion('list').show(view);
@@ -65,7 +70,9 @@ var ReceiptRoute = Route.extend({
 
   showTotals: function(){
     var view = new TotalsView({
-      model: this.order
+      model: this.order,
+      tax_display_cart: this.tax.tax_display_cart,
+      tax_total_display: this.tax.tax_total_display
     });
 
     this.layout.getRegion('totals').show(view);

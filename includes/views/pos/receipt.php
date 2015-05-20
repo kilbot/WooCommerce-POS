@@ -23,14 +23,6 @@
     <div class="qty">{{quantity}}</div>
     <div class="title">
       {{name}}
-      {{#with attributes}}
-      <dl class="variant">
-        {{#each []}}
-        <dt>{{name}}:</dt>
-        <dd>{{option}}</dd>
-        {{/each}}
-      </dl>
-      {{/with}}
       {{#with meta}}
       <dl class="meta">
         {{#each []}}
@@ -58,24 +50,6 @@
     </div>
   </li>
 {{/each}}
-
-{{#each shipping_lines}}
-  <li>
-    <div class="qty"></div>
-    <div class="title">{{method_title}}</div>
-    <div class="price"></div>
-    <div class="total">{{{money total}}}</div>
-  </li>
-{{/each}}
-
-{{#each fee_lines}}
-  <li>
-    <div class="qty"></div>
-    <div class="title">{{title}}</div>
-    <div class="price"></div>
-    <div class="total">{{{money total}}}</div>
-  </li>
-{{/each}}
 </script>
 
 <script type="text/x-handlebars-template" id="tmpl-receipt-totals">
@@ -89,13 +63,25 @@
     <div class="total">{{{money cart_discount negative=true}}}</div>
   </li>
   {{/if}}
+  {{#each shipping_lines}}
+  <li>
+    <div>{{method_title}}:</div>
+    <div class="total">{{{money total}}}</div>
+  </li>
+  {{/each}}
+  {{#each fee_lines}}
+  <li>
+    <div>{{title}}:</div>
+    <div class="total">{{{money total}}}</div>
+  </li>
+  {{/each}}
   {{#compare total_tax '!==' 0}}
   {{#if itemized}}
   {{#each tax_lines}}
   {{#compare total '!==' 0}}
   <li class="tax">
     <div>
-      {{#if ../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
+      {{#if ../../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
       {{title}}:
     </div>
     <div class="total">{{{money total}}}</div>

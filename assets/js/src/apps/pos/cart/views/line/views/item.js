@@ -8,8 +8,9 @@ var hbs = require('handlebars');
 var $ = require('jquery');
 
 module.exports = FormView.extend({
+  template: hbs.compile( $('#tmpl-cart-item').html() ),
+
   initialize: function() {
-    this.template = hbs.compile( $('#tmpl-cart-item').html() );
     this.tax = Radio.request('entities', 'get', {
       type: 'option',
       name: 'tax'
@@ -21,17 +22,6 @@ module.exports = FormView.extend({
     return {
       product: (type !== 'shipping' && type !== 'fee')
     };
-
-    //var data = {};
-    //
-    //if( this.tax.tax_display_cart === 'incl' ) {
-    //  data.subtotal = this.model.sum(['subtotal', 'subtotal_tax']);
-    //  data.total = this.model.sum(['total', 'total_tax']);
-    //}
-    //
-    //data.discount = this.model.get('total') !== this.model.get('subtotal');
-    //
-    //return data;
   },
 
   behaviors: {
@@ -77,9 +67,14 @@ module.exports = FormView.extend({
       onSet: Utils.unformat
     },
     '.total': {
-      observe: ['total', 'subtotal'],
+      observe: ['total', 'subtotal', 'tax_class', 'taxable'],
       updateMethod: 'html',
       onGet: function(value) {
+        if( this.tax.tax_display_cart === 'incl' ) {
+          value[0] = this.model.sum(['total', 'total_tax']);
+          value[1] = this.model.sum(['subtotal', 'subtotal_tax']);
+        }
+
         var total     = Utils.formatMoney(value[0]),
             subtotal  = Utils.formatMoney(value[1]);
 

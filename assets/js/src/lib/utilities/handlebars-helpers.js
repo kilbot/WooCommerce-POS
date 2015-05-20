@@ -151,6 +151,18 @@ hbs.registerHelper('formatDate', function(date, options){
   return moment(date).format(f);
 });
 
+hbs.registerHelper('debug', function(optionalValue) {
+  console.log('Current Context');
+  console.log('====================');
+  console.log(this);
+
+  if (optionalValue) {
+    console.log('Value');
+    console.log('====================');
+    console.log(optionalValue);
+  }
+});
+
 //hbs.registerHelper('getOption', function(key){
 //  var lookup = key.split('.');
 //  var option = Radio.request( 'entities', 'get', {

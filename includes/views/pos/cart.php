@@ -113,7 +113,7 @@
       {{#compare total '!==' 0}}
 			<li class="tax">
 				<div>
-					{{#if ../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
+					{{#if ../../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
 					{{label}}:
 				</div>
 				<div class="total">{{{money total}}}</div>

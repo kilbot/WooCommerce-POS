@@ -3,52 +3,46 @@ var POS = require('lib/utilities/global');
 var hbs = require('handlebars');
 var $ = require('jquery');
 var _ = require('lodash');
-var Radio = require('backbone.radio');
 
 var View = ItemView.extend({
   tagName: 'ul',
   template: hbs.compile( $('#tmpl-receipt-totals').html() ),
 
-  initialize: function(){
-    this.tax = Radio.request('entities', 'get', {
-      type : 'option',
-      name : 'tax'
-    }) || {};
+  viewOptions: ['tax_display_cart', 'tax_total_display'],
+
+  initialize: function(options){
+    this.mergeOptions(options, this.viewOptions);
   },
 
   templateHelpers: function(){
+    var data = this.model.toJSON();
 
-    var data = {
-      subtotal      : this.subtotal(),
-      cart_discount : this.cartDiscount()
-    };
+    data.cart_discount = data.cart_discount || data.total_discount;
+    data.itemized = this.tax_total_display === 'itemized';
 
-    if( this.tax.tax_display_cart === 'incl' ) {
-      data.subtotal = this.model.sum(['subtotal', 'subtotal_tax']);
-      data.cart_discount = this.model.get('subtotal') - this.model.get('total');
-      data.incl_tax = true;
+    if( this.tax_display_cart === 'incl' ) {
+      this._includingTax(data);
     }
 
-    // itemized
-    data.itemized = this.tax.tax_total_display === 'itemized';
     data.has_discount = 0 !== parseFloat(data.cart_discount);
 
     return data;
   },
 
-  subtotal: function(){
-    var fees = _.pluck( this.model.get('fee_lines'), 'total' );
-    var fee_sum = _.reduce(fees, function(a, b){
-      return parseFloat(a) + parseFloat(b);
-    }, 0);
-    return fee_sum + this.model.sum(['subtotal', 'total_shipping']);
+  _includingTax: function(data){
+    data.subtotal = this.model.sum(['subtotal', 'subtotal_tax']);
+    data.cart_discount = parseFloat(data.cart_discount) +
+      parseFloat(this.model.get('cart_discount_tax'));
+    data.shipping_lines = this._lineTax(data.shipping_lines);
+    data.fee_lines = this._lineTax(data.fee_lines);
+    data.incl_tax = true;
   },
 
-  /**
-   * note: WC 2.3 removed cart_discount, made it total_discount
-   */
-  cartDiscount: function(){
-    return this.model.get('cart_discount') || this.model.get('total_discount');
+  _lineTax: function(items){
+    _.each( items, function(item) {
+      item.total = parseFloat(item.total) + parseFloat(item.total_tax);
+    });
+    return items;
   }
 
 });

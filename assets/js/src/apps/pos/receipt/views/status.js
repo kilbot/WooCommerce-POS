@@ -24,7 +24,6 @@ var View = ItemView.extend({
     } else {
       this.message = message;
     }
-
   },
 
   templateHelpers: function(){

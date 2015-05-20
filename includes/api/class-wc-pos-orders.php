@@ -367,7 +367,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
     // now loop through the shipping_lines
     foreach($this->data['shipping_lines'] as $shipping) :
-      if( $shipping['tax'] ) :
+      if( isset( $shipping['tax'] ) ) :
         foreach( $shipping['tax'] as $rate_id => $tax ) :
           if( isset( $tax['total'] ) ) :
 
@@ -560,6 +560,26 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
       $this->general_settings->get_data('decimal_qty') ){
       $order_data['line_items'] = $this->filter_qty($order_data['line_items']);
     }
+
+    // add subtotal_tax
+    $subtotal_tax = 0;
+    foreach( $order_data['line_items'] as $item ) {
+      if(isset( $item['subtotal_tax'] )) {
+        $subtotal_tax += wc_format_decimal( $item['subtotal_tax'] );
+      }
+    }
+    $order_data['subtotal_tax'] = wc_format_decimal( $subtotal_tax );
+
+    // add shipping tax
+    foreach( $order_data['shipping_lines'] as &$item ) {
+      if(isset( $item['id'] )) {
+        $taxes = wc_get_order_item_meta( $item['id'], 'taxes' );
+        $item['total_tax'] = wc_format_decimal( array_sum($taxes) );
+      }
+    }
+
+    // add cart discount tax
+    $order_data['cart_discount_tax'] = get_post_meta($order->id, '_cart_discount_tax', true);
 
     return $order_data;
   }
