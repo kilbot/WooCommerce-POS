@@ -27,9 +27,16 @@ var Model = DualModel.extend({
   /**
    *
    */
-  defaults: {
-    note: '',
-    order_discount: 0
+  defaults: function(){
+    var customers = this.getEntities('customers'),
+        default_customer = customers['default'] || customers.guest || {};
+
+    return {
+      note          : '',
+      order_discount: 0,
+      customer_id   : default_customer.id,
+      customer      : default_customer
+    };
   },
 
   /**
@@ -40,7 +47,6 @@ var Model = DualModel.extend({
 
     this.tax = this.getEntities('tax');
     this.tax_rates = this.getEntities('tax_rates');
-    this.defaultCustomer();
 
     if( this.isEditable() ){
       this.attachCart();
@@ -60,21 +66,6 @@ var Model = DualModel.extend({
       type: 'option',
       name: name
     }) || {};
-  },
-
-  /**
-   *
-   */
-  defaultCustomer: function(){
-    var customers = this.getEntities('customers'),
-        default_customer = customers['default'] || customers.guest;
-
-    if(default_customer){
-      this.set({
-        customer_id : default_customer.id,
-        customer    : default_customer
-      });
-    }
   },
 
   /**

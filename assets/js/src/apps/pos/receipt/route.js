@@ -61,8 +61,7 @@ var ReceiptRoute = Route.extend({
 
   showItems: function(){
     var view = new ItemsView({
-      model: this.order,
-      tax_display_cart: this.tax.tax_display_cart
+      model: this.order
     });
 
     this.layout.getRegion('list').show(view);
@@ -70,9 +69,7 @@ var ReceiptRoute = Route.extend({
 
   showTotals: function(){
     var view = new TotalsView({
-      model: this.order,
-      tax_display_cart: this.tax.tax_display_cart,
-      tax_total_display: this.tax.tax_total_display
+      model: this.order
     });
 
     this.layout.getRegion('totals').show(view);

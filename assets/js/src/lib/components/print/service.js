@@ -3,6 +3,8 @@ var hbs = require('handlebars');
 var $ = require('jquery');
 var _ = require('lodash');
 var debug = require('debug')('print');
+var Radio = require('backbone.radio');
+var POS = require('lib/utilities/global');
 
 module.exports = Service.extend({
   channelName: 'print',
@@ -85,6 +87,8 @@ module.exports = Service.extend({
     this.deferred.resolve();
   },
 
+  /* todo: refactor print service with view */
+  /* jshint -W074 */
   template: function(options){
     options = options || {};
 
@@ -93,7 +97,13 @@ module.exports = Service.extend({
     }
 
     var template = hbs.compile($('#tmpl-print-' + options.template).html());
-    return template( options.model.toJSON() );
+    var tax = Radio.request('entities', 'get', {
+        type: 'option',
+        name: 'tax'
+      }) || {};
+    var data = POS.ReceiptView.prototype.prepare(options.model, tax);
+    return template( data );
   }
+  /* jshint +W074 */
 
 });

@@ -4,16 +4,15 @@ var _ = require('lodash');
 var POS = require('lib/utilities/global');
 
 var View = ItemView.extend({
-  template: function(){
-    return $('#menu').html();
-  },
+  template: '#tmpl-menu',
+  tagName: 'ul',
 
   initialize: function(){
     _.bindAll(this, 'open', 'close');
   },
 
   ui: {
-    menuItem: 'ul li a'
+    menuItem: 'li a'
   },
 
   events: {

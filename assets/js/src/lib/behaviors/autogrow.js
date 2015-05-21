@@ -28,22 +28,22 @@ var AutoGrow = Behavior.extend({
   },
 
   ui: {
-    input: '.autogrow'
+    target: '.autogrow'
   },
 
   events: {
-    'input @ui.input' : 'autoGrow'
+    'input @ui.target' : 'autoGrow'
   },
 
   autoGrowEach: function() {
-    _.each( this.ui.input, function( input ) {
-      this.autoGrow( $(input) );
+    _.each( this.ui.target, function( target ) {
+      this.autoGrow( $(target) );
     }, this);
   },
 
   autoGrow: function( e ) {
-    var input = e.target ? $(e.target) : e ;
-    var value = input.val();
+    var target  = e.target ? $(e.target) : e ;
+    var value   = target.is('input') ? target.val() : target.text();
 
     value = value.replace(/&/g, '&amp;')
       .replace(/\s/g,'&nbsp;')
@@ -52,7 +52,7 @@ var AutoGrow = Behavior.extend({
 
     this.tester.html(value);
     var width = this.tester.width() + this.options.padding;
-    input.css({ width: width });
+    target.css({ width: width });
 
   }
 

@@ -21,6 +21,7 @@ var NumpadService = require('lib/components/numpad/service');
  */
 var POSRouter = require('apps/pos/router');
 var SupportRouter = require('apps/support/router');
+var PrintRouter = require('apps/print/router');
 
 /**
  * bootstrap Handlebars Helpers
@@ -49,6 +50,10 @@ app.posApp = new POSRouter({
 });
 
 app.supportApp = new SupportRouter({
+  container: app.layout.getRegion('main')
+});
+
+app.printApp = new PrintRouter({
   container: app.layout.getRegion('main')
 });
 

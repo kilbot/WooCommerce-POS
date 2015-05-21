@@ -75,10 +75,10 @@
     <div class="total">{{{money total}}}</div>
   </li>
   {{/each}}
-  {{#compare total_tax '!==' 0}}
+  {{#if has_tax}}
   {{#if itemized}}
   {{#each tax_lines}}
-  {{#compare total '!==' 0}}
+  {{#if has_tax}}
   <li class="tax">
     <div>
       {{#if ../../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
@@ -86,7 +86,7 @@
     </div>
     <div class="total">{{{money total}}}</div>
   </li>
-  {{/compare}}
+  {{/if}}
   {{/each}}
   {{else}}
   <li class="tax">
@@ -97,14 +97,14 @@
     <div class="total">{{{money total_tax}}}</div>
   </li>
   {{/if}}
-  {{/compare}}
+  {{/if}}
   <!-- order_discount removed in WC 2.3, included for backwards compat -->
-  {{#compare order_discount '!==' 0}}
+  {{#if has_order_discount}}
   <li class="order-discount">
     <div><?php /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</div>
     <div class="total">{{{money order_discount negative=true}}}</div>
   </li>
-  {{/compare}}
+  {{/if}}
   <!-- end order_discount -->
   <li class="order-total">
     <div><?php /* translators: woocommerce */ _e( 'Order Total', 'woocommerce' ); ?>:</div>

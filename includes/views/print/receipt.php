@@ -89,9 +89,7 @@
 
 <body>
 <div class="order-branding">
-  <!-- <img src="logo" alt=""> -->
   <h1><?php bloginfo( 'name' ); ?></h1>
-  <!-- address, phone number -->
 </div>
 <div class="order-addresses">
   <div class="billing-address">
@@ -129,93 +127,96 @@
 </table>
 <table class="order-items">
   <thead>
-  <tr>
-    <th class="product"><?php _e( 'Product', 'woocommerce-pos' ); ?></th>
-    <th class="qty"><?php _e( 'Qty', 'woocommerce-pos' ); ?></th>
-    <th class="price"><?php _e( 'Price', 'woocommerce-pos' ); ?></th>
-  </tr>
+    <tr>
+      <th class="product"><?php _e( 'Product', 'woocommerce-pos' ); ?></th>
+      <th class="qty"><?php _e( 'Qty', 'woocommerce-pos' ); ?></th>
+      <th class="price"><?php _e( 'Price', 'woocommerce-pos' ); ?></th>
+    </tr>
   </thead>
   <tbody>
   {{#each line_items}}
-  <tr>
-    <td class="product">
-      {{name}}
-      {{#with attributes}}
-      <dl>
-        {{#each this}}
-        <dt>{{name}}:</dt>
-        <dd>{{option}}</dd>
-        {{/each}}
-      </dl>
-      {{/with}}
-    </td>
-    <td class="qty">{{quantity}}</td>
-    <td class="price">
-      {{#compare total '!==' subtotal}}
-      <del>{{{money subtotal}}}</del>
-      <ins>{{{money total}}}</ins>
-      {{else}}
-      {{{money total}}}
-      {{/compare}}
-    </td>
-  </tr>
+    <tr>
+      <td class="product">
+        {{name}}
+        {{#with meta}}
+        <dl class="meta">
+          {{#each []}}
+          <dt>{{label}}:</dt>
+          <dd>{{value}}</dd>
+          {{/each}}
+        </dl>
+        {{/with}}
+      </td>
+      <td class="qty">{{quantity}}</td>
+      <td class="price">
+        {{#if on_sale}}
+        <del>{{{money subtotal}}}</del>
+        <ins>{{{money total}}}</ins>
+        {{else}}
+        {{{money total}}}
+        {{/if}}
+      </td>
+    </tr>
   {{/each}}
   </tbody>
   <tfoot>
-  <tr class="subtotal">
-    <th colspan="2"><?php _e( 'Cart Subtotal', 'woocommerce-pos' ); ?>:</th>
-    <td colspan="1">{{{money subtotal}}}</td>
-  </tr>
-  {{#compare cart_discount '!==' 0}}
-  <tr class="cart-discount">
-    <th colspan="2"><?php _e( 'Cart Discount', 'woocommerce-pos' ); ?>:</th>
-    <td colspan="1">{{{money cart_discount negative=true}}}</td>
-  </tr>
-  {{/compare}}
-  {{#each fee_lines}}
-  <tr class="fee">
-    <th colspan="2">{{title}}:</th>
-    <td colspan="1">{{{money total}}}</td>
-  </tr>
-  {{/each}}
-  {{#compare total_tax '!==' 0}}
-  {{#if show_itemized}}
-  {{#each tax_lines}}
-  <tr class="tax">
-    <th colspan="2">
-      {{#if ../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
-      {{title}}:
-    </th>
-    <td colspan="1">{{{money total}}}</td>
-  </tr>
-  {{/each}}
-  {{else}}
-  <tr class="tax">
-    <th colspan="2">
-      {{#if incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
-      <?php echo esc_html( WC()->countries->tax_or_vat() ); ?>
-    </th>
-    <td colspan="1">{{{money total_tax}}}</td>
-  </tr>
-  {{/if}}
-  {{/compare}}
-  {{#compare order_discount '!==' 0}}
-  <tr class="order-discount">
-    <th colspan="2"><?php _e( 'Order Discount', 'woocommerce-pos' ); ?>:</th>
-    <td colspan="1">{{{money order_discount negative=true}}}</td>
-  </tr>
-  {{/compare}}
-  <tr class="order-total">
-    <th colspan="2"><?php _e( 'Order Total', 'woocommerce-pos' ); ?>:</th>
-    <td colspan="1">{{{money total}}}</td>
-  </tr>
+    <tr class="subtotal">
+      <th colspan="2"><?php _e( 'Cart Subtotal', 'woocommerce-pos' ); ?>:</th>
+      <td colspan="1">{{{money subtotal}}}</td>
+    </tr>
+    {{#if has_discount}}
+      <tr class="cart-discount">
+        <th colspan="2"><?php _e( 'Cart Discount', 'woocommerce-pos' ); ?>:</th>
+        <td colspan="1">{{{money cart_discount negative=true}}}</td>
+      </tr>
+    {{/if}}
+    {{#each shipping_lines}}
+      <tr class="shipping">
+        <th colspan="2">{{method_title}}:</th>
+        <td colspan="1">{{{money total}}}</td>
+      </tr>
+    {{/each}}
+    {{#each fee_lines}}
+      <tr class="fee">
+        <th colspan="2">{{title}}:</th>
+        <td colspan="1">{{{money total}}}</td>
+      </tr>
+    {{/each}}
+    {{#if has_tax}}
+      {{#if itemized}}
+        {{#each tax_lines}}
+          {{#if has_tax}}
+            <tr class="tax">
+              <th colspan="2">
+                {{#if ../../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
+                {{title}}:
+              </th>
+              <td colspan="1">{{{money total}}}</td>
+            </tr>
+          {{/if}}
+        {{/each}}
+      {{else}}
+        <tr class="tax">
+          <th colspan="2">
+            {{#if incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
+            <?php echo esc_html( WC()->countries->tax_or_vat() ); ?>
+          </th>
+          <td colspan="1">{{{money total_tax}}}</td>
+        </tr>
+      {{/if}}
+    {{/if}}
+    {{#if has_order_discount}}
+    <tr class="order-discount">
+      <th colspan="2"><?php _e( 'Order Discount', 'woocommerce-pos' ); ?>:</th>
+      <td colspan="1">{{{money order_discount negative=true}}}</td>
+    </tr>
+    {{/if}}
+    <tr class="order-total">
+      <th colspan="2"><?php _e( 'Order Total', 'woocommerce-pos' ); ?>:</th>
+      <td colspan="1">{{{money total}}}</td>
+    </tr>
   </tfoot>
 </table>
 <div class="order-notes">{{note}}</div>
-<div class="order-thanks"></div>
-<div class="order-colophon">
-  <div class="colophon-policies"></div>
-  <div class="colophon-imprint"></div>
-</div>
 </body>
 </html>

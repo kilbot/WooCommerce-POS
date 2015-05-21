@@ -8,7 +8,7 @@ var ReceiptRoute = require('./receipt/route');
 var Radio = require('backbone.radio');
 var bb = require('backbone');
 
-var Router = Router.extend({
+var POSRouter = Router.extend({
   routes: {
     '(cart)(/:id)(/)'  : 'showCart',
     'checkout(/:id)(/)': 'showCheckout',
@@ -116,5 +116,5 @@ var Router = Router.extend({
 
 });
 
-module.exports = Router;
-POS.attach('POSApp.Router', Router);
+module.exports = POSRouter;
+POS.attach('POSApp.Router', POSRouter);

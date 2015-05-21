@@ -196,27 +196,11 @@ class WC_POS_Template {
   }
 
   protected function print_tmpl(){
-    $located = $this->wc_pos_locate_template('print/receipt.php');
-
-    if ( ! file_exists( $located ) ) {
-      return;
+    if( $located = wc_pos_locate_template('print/receipt.php') ){
+      echo '<script type="text/x-handlebars-template" id="tmpl-print-receipt">';
+      include $located;
+      echo '</script>';
     }
-
-    echo '<script type="text/x-handlebars-template" id="tmpl-print-receipt">';
-    include $located;
-    echo '</script>';
-  }
-
-  private function wc_pos_locate_template($tmpl){
-    $template = locate_template(array(
-      '/woocommerce-pos/' . $tmpl
-    ));
-
-    if( !$template ){
-      $template = WC_POS_PLUGIN_PATH. 'includes/views/' . $tmpl;
-    }
-
-    return $template;
   }
 
   /**

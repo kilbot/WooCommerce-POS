@@ -4,15 +4,12 @@ var HotKeys = require('lib/behaviors/hotkeys');
 var Dropdown = require('lib/behaviors/dropdown');
 var Radio = require('backbone.radio');
 var HelpModal = require('./modals/help');
-var $ = require('jquery');
 
 var View = ItemView.extend({
-  template: function(){
-    return $('#header > div').html();
-  },
+  template: '#tmpl-header',
 
-  initialize: function(){
-    this.title = $('#header h1').text();
+  onRender: function(){
+    this.title = this.$('h1').text();
   },
 
   ui: {

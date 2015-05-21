@@ -1,5 +1,4 @@
 var LayoutView = require('lib/config/layout-view');
-var _ = require('lodash');
 var $ = require('jquery');
 var Radio = require('backbone.radio');
 var globalChannel = Radio.channel('global');
@@ -7,7 +6,14 @@ var globalChannel = Radio.channel('global');
 module.exports = LayoutView.extend({
   el: '#page',
 
-  template: _.template( $('#page').html() ),
+  template: function(){
+    return '' +
+      '<header id="header"></header>' +
+      '<div id="menu"></div>' +
+      '<div id="tabs" class="tabs"></div>' +
+      '<main id="main"></main>' +
+      '<div id="modal"></div>';
+  },
 
   regions: {
     header: '#header',

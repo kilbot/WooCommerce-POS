@@ -112,3 +112,23 @@ function _wc_pos_array_to_object($data) {
     return $data;
   }
 }
+
+/**
+ * Return template path
+ *
+ * @param string $path
+ * @return mixed|void
+ */
+function wc_pos_locate_template($path = ''){
+  $template = locate_template(array(
+    'woocommerce-pos/' . $path
+  ));
+
+  if( !$template ){
+    $template = WC_POS_PLUGIN_PATH. 'includes/views/' . $path;
+  }
+
+  if ( file_exists( $template ) ) {
+    return apply_filters('woocommerce_pos_locate_template', $template, $path);
+  }
+}

@@ -8,6 +8,7 @@
 
 <table class="widefat">
   <tbody>
+
     <tr>
       <th><?php /* translators: woocommerce */ _e( 'Translation Upgrade', 'woocommerce' ); ?></th>
       <td>
@@ -27,5 +28,16 @@
         ?>
       </td>
     </tr>
+
+    <tr>
+      <th><?php _e( 'Receipt Template', 'woocommerce-pos' ); ?></th>
+      <td>
+        <a href="<?php echo wc_pos_url('#print'); ?>" target="_blank" class="button">
+          <?php _e( 'View Sample Receipt', 'woocommerce-pos' ); ?>
+        </a>
+        <?php printf( __( '<strong class="red">Template path:</strong> %s', 'woocommerce-pos' ), '<code style="font-size: 11px">'. wc_pos_locate_template('print/receipt.php') .'</code>' ); ?>
+      </td>
+    </tr>
+
   </tbody>
 </table>
