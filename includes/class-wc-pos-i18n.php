@@ -352,7 +352,7 @@ class WC_POS_i18n {
       'return'    => _x( 'return', 'Numpad return key', 'woocommerce-pos' ),
       'return-to-sale'  => __( 'Return to Sale', 'woocommerce-pos' ),
       'save'      => /* translators: woocommerce */ __( 'Save Changes', 'woocommerce' ),
-      'send'      => /* translators: wordpress   */ __( 'Submit' ),
+      'send'      => __( 'Send', 'woocommerce-pos' ),
       'shipping'  => /* translators: woocommerce */ __( 'Shipping', 'woocommerce' ),
       'void'      => __( 'Void', 'woocommerce-pos' ),
       'expand-all'=> /* translators: woocommerce */ __( 'Expand all', 'woocommerce' ),

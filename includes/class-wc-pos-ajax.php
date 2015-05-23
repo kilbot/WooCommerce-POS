@@ -152,11 +152,14 @@ class WC_POS_AJAX {
    * Send email receipt
    */
   public function email_receipt() {
-    $order_id 	= isset($_REQUEST['order_id']) ? $_REQUEST['order_id'] : '';
-    $email 		= isset($_REQUEST['email']) ? $_REQUEST['email'] : '';
-    if( $order_id != '' && $email != '' ) {
-      update_post_meta( $order_id, '_billing_email', $email );
-      WC()->mailer()->customer_invoice( $order_id );
+    $order_id = isset($_REQUEST['order_id']) ? $_REQUEST['order_id'] : '';
+    $email    = isset($_REQUEST['email']) ? $_REQUEST['email'] : '';
+    $order    = wc_get_order( absint( $order_id ) );
+    if( is_object( $order ) ) {
+      if( $email != '' ){
+        $order->billing_email = $email;
+      }
+      WC()->mailer()->customer_invoice( $order );
       $response = array(
         'result' => 'success',
         'message' => __( 'Email sent', 'woocommerce-pos')

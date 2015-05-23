@@ -142,33 +142,28 @@ var ReceiptRoute = Route.extend({
 
   // todo: refactor
   send: function(btn, view, email){
-    var order_id = this.order.id,
+    var order_id = this.order.get('id'),
         ajaxurl = Radio.request('entities', 'get', {
           type: 'option',
           name: 'ajaxurl'
         });
 
-    btn.trigger('state', 'loading');
-    view.triggerMethod('message', 'reset');
+    btn.trigger('state', [ 'loading', '' ]);
 
-    function onSuccess(model, resp){
-      btn.trigger('state', 'success');
-      if(resp.success){
-        view.triggerMethod('message', resp.success, 'success');
+    function onSuccess(resp){
+      if(resp.result === 'success'){
+        btn.trigger('state', [ 'success', resp.message ]);
       } else {
-        view.triggerMethod('message', 'success');
+        btn.trigger('state', [ 'error', resp.message ]);
       }
     }
 
     function onError(jqxhr){
-      btn.trigger('state', 'error');
+      var message = null;
       if(jqxhr.responseJSON && jqxhr.responseJSON.errors){
-        view.triggerMethod(
-          'message', jqxhr.responseJSON.errors[0].message, 'error'
-        );
-      } else {
-        view.triggerMethod('message', 'error');
+        message = jqxhr.responseJSON.errors[0].message;
       }
+      btn.trigger('state', ['error', message]);
     }
 
     $.getJSON( ajaxurl, {
