@@ -132,8 +132,8 @@ var ReceiptRoute = Route.extend({
     Radio.request('modal', 'open', view)
       .then(function(args){
         var buttons = args.view.getButtons();
-        var email = args.view.getRegion('content').currentView.ui.email.val();
         self.listenTo(buttons, 'action:send', function(btn, view){
+          var email = args.view.getRegion('content').currentView.ui.email.val();
           self.send(btn, view, email);
         });
       });
