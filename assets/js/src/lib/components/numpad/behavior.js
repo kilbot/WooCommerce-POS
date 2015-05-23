@@ -46,12 +46,14 @@ var NumpadBehavior = Behavior.extend({
 
     this.listenTo(numpad, 'input', function(value){
       target.popover('hide');
-      this.view.model.set( name, value );
+      this.view.model.set( name, value, { numpadChange: true } );
     });
 
     // popover
     target.one('shown.bs.popover', function(){
-      numpad.ui.input.select();
+      if(!Modernizr.touch) {
+        numpad.ui.input.select();
+      }
     });
 
     _.defaults( options, {

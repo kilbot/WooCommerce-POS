@@ -4,7 +4,7 @@
  * Plugin Name:       WooCommerce POS
  * Plugin URI:        https://wordpress.org/plugins/woocommerce-pos/
  * Description:       A simple front-end for taking WooCommerce orders at the Point of Sale. Requires <a href="http://wordpress.org/plugins/woocommerce/">WooCommerce</a>.
- * Version:           0.4.0-alpha
+ * Version:           0.4.0-beta
  * Author:            kilbot
  * Author URI:        http://woopos.com.au
  * Text Domain:       woocommerce-pos

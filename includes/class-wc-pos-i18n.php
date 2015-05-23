@@ -85,7 +85,7 @@ class WC_POS_i18n {
 
     // see if translation pack exists
     $response = json_decode(wp_remote_retrieve_body( $request ) );
-    $transient = apply_filters( 'woocommerce_pos_language_packs_upgrade', $transient, $response, $this->github_url );
+    $transient = apply_filters( 'woocommerce_pos_language_packs_upgrade', $transient, $response, $this->github_url, $force );
     if( ! isset( $response->locales->$locale ) ) {
       return $transient;
     }

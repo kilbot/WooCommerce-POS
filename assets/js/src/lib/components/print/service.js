@@ -87,21 +87,21 @@ module.exports = Service.extend({
     this.deferred.resolve();
   },
 
-  /* todo: refactor print service with view */
   /* jshint -W074 */
+  /* todo: refactor print service with view */
   template: function(options){
     options = options || {};
 
-    if(!options.template || !options.model){
+    if(!options.model){
       return;
     }
 
-    var template = hbs.compile($('#tmpl-print-' + options.template).html());
+    var template = hbs.compile( $('#tmpl-print-receipt').html() );
     var tax = Radio.request('entities', 'get', {
         type: 'option',
         name: 'tax'
       }) || {};
-    var data = POS.ReceiptView.prototype.prepare(options.model, tax);
+    var data = POS.ReceiptView.prototype.prepare(options.model.toJSON(), tax);
     return template( data );
   }
   /* jshint +W074 */

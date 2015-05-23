@@ -10,10 +10,10 @@
       box-shadow: none !important;
       text-shadow: none !important;
     }
-    body {
+    body, table {
       font-family: 'Arial', sans-serif;
       line-height: 1.4;
-      font-size: 12px;
+      font-size: 14px;
     }
     h1,h2,h3,h4,h5,h6 {
       margin: 0;

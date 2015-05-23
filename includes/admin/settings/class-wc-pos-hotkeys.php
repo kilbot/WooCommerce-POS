@@ -31,9 +31,6 @@ class WC_POS_Admin_Settings_HotKeys extends WC_POS_Admin_Settings_Abstract {
         'search' => array(
           'key' => 'V'
         ),
-        'new' => array(
-          'key' => 'N'
-        ),
         'sync' => array(
           'key' => 'S'
         )

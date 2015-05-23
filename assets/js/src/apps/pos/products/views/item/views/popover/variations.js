@@ -2,7 +2,6 @@ var ItemView = require('lib/config/item-view');
 var Tmpl = require('./variations.hbs');
 var POS = require('lib/utilities/global');
 var hbs = require('handlebars');
-var Buttons = require('lib/components/buttons/behavior');
 var Radio = require('backbone.radio');
 var _ = require('lodash');
 var $ = require('jquery');
@@ -64,20 +63,25 @@ var Variations = ItemView.extend({
     'click @ui.add': 'add:to:cart'
   },
 
-  behaviors: {
-    Buttons: {
-      behaviorClass: Buttons
-    }
-  },
-
   events: {
     'click @ui.btn'     : 'onVariationSelect',
     'change @ui.select' : 'onVariationSelect'
   },
 
   onVariationSelect: function(e){
-    var name = $(e.currentTarget).data('name');
-    var option = $(e.currentTarget).val().toLowerCase();
+    var target = $(e.currentTarget);
+
+    // toggle
+    if( target.is('button') ){
+      target
+        .addClass('active')
+        .siblings('.btn')
+        .removeClass('active');
+    }
+
+    // filter
+    var name = target.data('name');
+    var option = target.val().toLowerCase();
     this.collection.filterBy(name, function(model){
       return _.some(model.get('attributes'), function(obj){
         return obj.name === name && obj.option === option;

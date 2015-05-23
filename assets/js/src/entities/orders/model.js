@@ -3,6 +3,7 @@ var Radio = require('backbone.radio');
 var Utils = require('lib/utilities/utils');
 var debug = require('debug')('order');
 var POS = require('lib/utilities/global');
+var $ = require('jquery');
 
 var Model = DualModel.extend({
   name: 'order',
@@ -115,6 +116,15 @@ var Model = DualModel.extend({
   },
 
   /**
+   * remove cart items from idb after successful order
+   */
+  clearCart: function(){
+    if(this.cart){
+      this.cart.db.removeBatch( this.cart.pluck('local_id') );
+    }
+  },
+
+  /**
    * Attach gateways
    */
   attachGateways: function(){
@@ -199,10 +209,15 @@ var Model = DualModel.extend({
    * todo: remoteSync resolves w/ an array of models, should match sync?
    */
   process: function(){
-    this.processCart();
-    this.processGateway();
+    var self = this;
 
-    return this.remoteSync()
+    return $.when( this.processCart() )
+      .then(function(){
+        return self.processGateway();
+      })
+      .then(function(){
+        return self.remoteSync();
+      })
       .then(function(array){
         var model = array[0];
         if(model.get('status') === 'failed'){
@@ -229,6 +244,7 @@ var Model = DualModel.extend({
       obj[type].push( model.toJSON() );
     });
 
+    // set
     this.set({
       line_items    : obj.product,
       shipping_lines: obj.shipping,

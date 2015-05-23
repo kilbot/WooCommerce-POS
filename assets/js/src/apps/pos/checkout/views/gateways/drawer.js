@@ -44,8 +44,12 @@ module.exports = FormView.extend({
 
     this.$('input, select, textarea').each(function(){
       var name = $(this).attr('name');
+      var id = $(this).attr('id');
       if(name){
         self.addBinding(null, '*[name="' + name + '"]', name);
+      }
+      if(!name && id){
+        self.addBinding(null, '#' + id, id);
       }
     });
   },

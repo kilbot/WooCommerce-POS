@@ -41,8 +41,9 @@ class WC_POS_Admin_Gateways extends WC_POS_Gateways {
    * @param  object $gateway
    */
   public function pos_status( $gateway ) {
-    $data = $this->get_settings_data();
-    $enabled = isset($data['enabled']) ? array_keys($data['enabled'], true) : array();
+    $settings = new WC_POS_Admin_Settings_Checkout();
+    $data = $settings->get_data('enabled');
+    $enabled = is_array($data) ? array_keys($data, true) : array();
 
     echo '<td class="pos_status">';
     if ( in_array( $gateway->id, $enabled ) )

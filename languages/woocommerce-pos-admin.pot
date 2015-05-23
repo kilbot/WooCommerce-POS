@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce POS 0.4.0-alpha\n"
+"Project-Id-Version: WooCommerce POS 0.4.0-beta\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2015-05-13 14:06:19+00:00\n"
+"POT-Creation-Date: 2015-05-23 09:22:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -45,19 +45,19 @@ msgstr ""
 msgid "POS Access"
 msgstr ""
 
-#: includes/admin/settings/class-wc-pos-hotkeys.php:44
+#: includes/admin/settings/class-wc-pos-hotkeys.php:41
 msgid "Help screen"
 msgstr ""
 
-#: includes/admin/settings/class-wc-pos-hotkeys.php:45
+#: includes/admin/settings/class-wc-pos-hotkeys.php:42
 msgid "Barcode search"
 msgstr ""
 
-#: includes/admin/settings/class-wc-pos-hotkeys.php:47
+#: includes/admin/settings/class-wc-pos-hotkeys.php:44
 msgid "New order"
 msgstr ""
 
-#: includes/admin/settings/class-wc-pos-hotkeys.php:48
+#: includes/admin/settings/class-wc-pos-hotkeys.php:45
 msgid "Sync with server"
 msgstr ""
 
@@ -197,6 +197,18 @@ msgid ""
 "reader."
 msgstr ""
 
+#: includes/admin/settings/views/tools.php:33
+msgid "Receipt Template"
+msgstr ""
+
+#: includes/admin/settings/views/tools.php:36
+msgid "View Sample Receipt"
+msgstr ""
+
+#: includes/admin/settings/views/tools.php:38
+msgid "<strong class=\"red\">Template path:</strong> %s"
+msgstr ""
+
 #: includes/admin/views/order-details.php:2
 msgid "Order type"
 msgstr ""
@@ -225,17 +237,17 @@ msgid ""
 "to work correctly. Please <a href=\"%s\">enable permalinks</a>."
 msgstr ""
 
-#: includes/products/class-wc-pos-visibility.php:21
+#: includes/products/class-wc-pos-visibility.php:23
 msgid "POS & Online"
 msgstr ""
 
-#: includes/products/class-wc-pos-visibility.php:22
-#: includes/products/class-wc-pos-visibility.php:85
+#: includes/products/class-wc-pos-visibility.php:24
+#: includes/products/class-wc-pos-visibility.php:87
 msgid "POS Only"
 msgstr ""
 
-#: includes/products/class-wc-pos-visibility.php:23
-#: includes/products/class-wc-pos-visibility.php:86
+#: includes/products/class-wc-pos-visibility.php:25
+#: includes/products/class-wc-pos-visibility.php:88
 msgid "Online Only"
 msgstr ""
 

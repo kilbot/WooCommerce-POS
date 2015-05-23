@@ -123,6 +123,8 @@ hbs.registerHelper('number', function(num, options){
 });
 
 hbs.registerHelper('formatAddress', function(a, options){
+  a = a || {};
+
   var format = [
     [a.first_name, a.last_name],
     [a.company],
@@ -149,6 +151,12 @@ hbs.registerHelper('formatAddress', function(a, options){
 hbs.registerHelper('formatDate', function(date, options){
   var f = options.hash.format || '';
   return moment(date).format(f);
+});
+
+hbs.registerHelper('formatDay', function(day, options){
+  var f = options.hash.format || '';
+  var idx = parseInt(day, 10) + 1;
+  return moment().isoWeekday(idx).format(f);
 });
 
 hbs.registerHelper('debug', function(optionalValue) {

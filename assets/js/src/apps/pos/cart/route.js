@@ -119,6 +119,7 @@ var CartRoute = Route.extend({
     });
 
     this.listenTo(view, 'customer:select', function(customer) {
+      this.order.unset('customer');
       this.order.save({
         customer_id: customer.id,
         customer: customer

@@ -17,11 +17,14 @@ var View = ItemView.extend({
   //  'click @ui.next': 'onNext'
   //},
 
-  // todo: improve this, add/remove is overkill
+  // todo: improve this
   collectionEvents: {
-    'add remove': _.debounce(function(){
-      this.render();
-    }, 10)
+    'add remove paginated:change:page paginated:change:numPages reset':
+      _.debounce(function(){
+        if(!this.isDestroyed){
+          this.render();
+        }
+      }, 10)
   },
 
   initialize: function(){

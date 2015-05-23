@@ -17,6 +17,8 @@ class WC_POS_Products {
    */
   public function __construct() {
     $this->init();
+
+    add_action( 'woocommerce_product_set_stock', array( $this, 'product_set_stock') );
   }
 
   /**
@@ -29,6 +31,20 @@ class WC_POS_Products {
     if( isset( $settings['pos_only_products'] ) && $settings['pos_only_products'] ) {
       new WC_POS_Products_Visibility();
     }
+  }
+
+  /**
+   * Bump modified date on stock change
+   * @param $product
+   */
+  public function product_set_stock($product){
+    $post_modified     = current_time( 'mysql' );
+    $post_modified_gmt = current_time( 'mysql', 1 );
+    wp_update_post( array(
+      'ID'                => $product->id,
+      'post_modified'     => $post_modified,
+      'post_modified_gmt' => $post_modified_gmt
+    ));
   }
 
 }

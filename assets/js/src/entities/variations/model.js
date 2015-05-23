@@ -1,4 +1,5 @@
 var Model = require('lib/config/model');
+var _ = require('lodash');
 
 module.exports = Model.extend({
   name: 'product',
@@ -19,6 +20,18 @@ module.exports = Model.extend({
         self.parent.set({ variations: self.collection.toJSON() });
         self.parent.merge();
       });
+  },
+
+  // the REST API gives string values for some attributes
+  // this can cause confusion, so parse to float
+  parse: function(resp){
+    resp = resp.product || resp;
+    _.each(['price', 'regular_price', 'sale_price'], function(attr){
+      if( _.isString(resp[attr]) ){
+        resp[attr] = parseFloat(resp[attr]);
+      }
+    });
+    return resp;
   }
 
 });

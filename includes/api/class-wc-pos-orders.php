@@ -14,9 +14,10 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
   /** @var array Contains the raw order data */
   private $data = array();
+  private $flag = false;
 
   /** @var Hacky fix for WC handling of negative tax  */
-  private $tax_total = 0;
+//  private $tax_total = 0;
 
   /** @var object Contains a reference to the settings classes */
   private $general_settings;
@@ -73,14 +74,13 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    */
   public function create_order_data($data, $WC_API_Orders){
 
-    // add filters & actions
+    // add filters & actions for create order
     add_filter( 'woocommerce_product_tax_class', array( $this, 'product_tax_class' ), 10, 2 );
     add_filter( 'woocommerce_get_product_from_item', array( $this, 'get_product_from_item' ), 10, 3 );
     add_filter( 'pre_option_woocommerce_tax_based_on', array( $this, 'woocommerce_tax_based_on' ) );
     add_filter( 'woocommerce_find_rates', array( $this, 'find_rates'), 10, 2 );
     add_action( 'woocommerce_order_add_product', array( $this, 'order_add_product'), 10, 5 );
     add_action( 'updated_order_item_meta', array( $this, 'updated_order_item_meta'), 10, 4 );
-    add_action( 'added_post_meta', array( $this, 'added_post_meta'), 10, 4 );
 
     // WC API < 2.4 doesn't support fee with taxable = false
     // change taxable = false to taxable = 'none'
@@ -111,7 +111,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @return array
    */
   public function edit_order_data($data, $order_id, $WC_API_Orders){
-    $this->delete_order_items($order_id);
+//    $this->delete_order_items($order_id);
     return $this->create_order_data($data, $WC_API_Orders);
   }
 
@@ -306,9 +306,6 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
       $line_subtotal_tax   = array_sum( $line_subtotal_taxes );
       $line_tax            = array_sum( $line_taxes );
 
-      // store tax_total for use by $this->added_post_meta
-      $this->tax_total     += $line_tax;
-
       wc_update_order_item_meta( $order_id, '_line_subtotal_tax', wc_format_decimal( $line_subtotal_tax ) );
       wc_update_order_item_meta( $order_id, '_line_tax', wc_format_decimal( $line_tax ) );
     }
@@ -316,20 +313,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   }
 
   /**
-   * Fix post meta for negative product/fee values
-   * @param $meta_id
-   * @param $order_id
-   * @param $meta_key
-   * @param $meta_value
-   */
-  public function added_post_meta($meta_id, $order_id, $meta_key, $meta_value){
-    if($meta_key == '_order_tax' && isset($this->tax_total)){
-      update_post_meta($order_id, '_order_tax', $this->tax_total);
-    }
-  }
-
-  /**
-   * Apply shipping tax if required
+   * Apply shipping tax, fix order_tax
    * -
    * - filter has already passed $this->data['shipping_tax'] test
    * @param $null
@@ -341,12 +325,12 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    */
   public function update_post_metadata($null, $order_id, $meta_key, $meta_value, $prev_value){
 
-    if( $meta_key != '_order_shipping')
-      return $null;
-
     // we want last update to _order_shipping after $order->calculate_taxes()
-    // quick, dirty test for _order_tax
-    if( ! get_post_meta( $order_id, '_order_tax', true ) )
+    // set flag true on first pass
+    if( $meta_key == '_order_shipping_tax' )
+      $this->flag = true;
+
+    if( $meta_key != '_order_shipping' || ! $this->flag )
       return $null;
 
     // update order meta
@@ -360,10 +344,15 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
     // first get an assoc array of $rate_id => $item_id
     $tax_items = array();
+    $order_tax = 0;
     $order = wc_get_order( $order_id );
     foreach ( $order->get_tax_totals() as $code => $tax ) {
       $tax_items[$tax->rate_id] = $tax->id;
+      $order_tax += $tax->amount;
     }
+
+    // fix total_tax calc
+    update_post_meta($order_id, '_order_tax', $order_tax);
 
     // now loop through the shipping_lines
     foreach($this->data['shipping_lines'] as $shipping) :
@@ -513,8 +502,8 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
     if($offsite || $reload){
       update_post_meta( $order_id, '_pos_payment_redirect', $response['redirect'] );
-      $message = __('You are now being redirected offsite to complete the payment.', 'woocommerce-pos');
-      $message .= sprintf( __('<a href="%s">Click here</a> if you are not redirected automatically.', 'woocommerce-pos'), $response['redirect'] );
+      $message = __('You are now being redirected offsite to complete the payment. ', 'woocommerce-pos');
+      $message .= sprintf( __('<a href="%s">Click here</a> if you are not redirected automatically. ', 'woocommerce-pos'), $response['redirect'] );
     }
 
     return $message;
@@ -642,9 +631,9 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
   /**
    * Delete all order items
-   * @param int $order_id
+   * @param $order_id
    */
-  private function delete_order_items(int $order_id){
+  private function delete_order_items($order_id){
     global $wpdb;
     $order_item_ids = $wpdb->get_col( $wpdb->prepare( "
 			SELECT      order_item_id

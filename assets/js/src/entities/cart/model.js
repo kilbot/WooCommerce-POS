@@ -12,7 +12,6 @@ module.exports = Model.extend({
     'subtotal_tax'  : 0,
     'total_tax'     : 0,
     'total'         : 0,
-    'item_price'    : 0,
     'item_tax'      : 0,
     'quantity'      : 1,
     'taxable'       : true,
@@ -41,7 +40,7 @@ module.exports = Model.extend({
       this.updateLineTotals );
 
     // set item price on init, this wil kick off updateLineTotals
-    if( this.get('item_price') === 0 ) {
+    if( this.get('item_price') === undefined ) {
       this.set({ 'item_price': parseFloat( this.get('price') ) });
     }
   },

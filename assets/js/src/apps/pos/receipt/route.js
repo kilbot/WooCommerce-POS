@@ -35,6 +35,20 @@ var ReceiptRoute = Route.extend({
 
   onFetch: function(id){
     this.order = this.collection.get(id);
+    this.order.clearCart();
+
+    // redirect, ie: offsite payment
+    var redirect = this.order.get('payment_details.redirect');
+    if(redirect && redirect !== ''){
+      window.open(redirect, '_blank');
+    }
+
+    // update products
+    var products = Radio.request('entities', 'get', {
+      type: 'collection',
+      name: 'products'
+    });
+    products.fetchUpdated();
   },
 
   render: function() {

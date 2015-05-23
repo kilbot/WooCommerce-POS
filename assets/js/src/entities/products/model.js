@@ -1,11 +1,24 @@
 var DualModel = require('lib/config/dual-model');
 var _ = require('lodash');
+var Radio = require('backbone.radio');
 
 module.exports = DualModel.extend({
   name: 'product',
 
   // this is an array of fields used by FilterCollection.matchmaker()
   fields: ['title'],
+
+  // the REST API gives string values for some attributes
+  // this can cause confusion, so parse to float
+  parse: function(resp){
+    resp = resp.product || resp;
+    _.each(['price', 'regular_price', 'sale_price'], function(attr){
+      if( _.isString(resp[attr]) ){
+        resp[attr] = parseFloat(resp[attr]);
+      }
+    });
+    return resp;
+  },
 
   /**
    * Helper functions for variation prices
@@ -92,6 +105,7 @@ module.exports = DualModel.extend({
 
     if(test === value) {
       this.trigger('found:barcode', this);
+      Radio.command('router', 'add:to:cart', {model: this});
       return true;
     }
 
@@ -130,6 +144,7 @@ module.exports = DualModel.extend({
     if(match){
       if(match !== 'partial'){
         this.trigger('found:barcode', match, this);
+        Radio.command('router', 'add:to:cart', {model: this});
       }
       return true;
     }

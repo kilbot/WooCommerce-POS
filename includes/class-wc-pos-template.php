@@ -122,7 +122,7 @@ class WC_POS_Template {
 //      'app'          => WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION
 //    );
 
-    // output
+    // output scripts
     $scripts = apply_filters( 'woocommerce_pos_enqueue_scripts', $scripts );
 
     foreach( $scripts as $script ) {
@@ -131,7 +131,16 @@ class WC_POS_Template {
 
     // inline start app with params
     $params = apply_filters( 'woocommerce_pos_params', array() );
-    echo '<script type="text/javascript">POS.options = '. json_encode( $params ) .'; POS.start();</script>';
+    $inline = array(
+      'start' => '<script type="text/javascript">POS.options = '. json_encode( $params ) .'; POS.start();</script>'
+    );
+
+    $inline_js = apply_filters( 'woocommerce_pos_inline_js', $inline );
+
+    // output inline js
+    foreach( $inline_js as $js ) {
+      echo "\n".$js;
+    }
   }
 
   /**

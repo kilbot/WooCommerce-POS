@@ -16,11 +16,12 @@ var Actions = View.extend({
   },
 
   keyEvents: {
-    'barcode': 'toggleBarcodeMode'
+    'search'  : 'barcodeModeOff',
+    'barcode' : 'barcodeModeOn'
   },
 
   ui: {
-    modeIcon    : '*[data-toggle="dropdown"] i.icon',
+    modeIcon    : '*[data-toggle="dropdown"] i',
     searchBtn   : '*[data-action="search"]',
     barcodeBtn  : '*[data-action="barcode"]',
     searchField : 'input[type=search]'

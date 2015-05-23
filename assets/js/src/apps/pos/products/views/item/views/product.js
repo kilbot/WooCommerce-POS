@@ -22,6 +22,10 @@ var Item = ItemView.extend({
     'click @ui.vdrawer'  : 'variationsDrawer'
   },
 
+  modelEvents: {
+    'change:updated_at': 'render'
+  },
+
   behaviors: {
     Tooltip: {
       behaviorClass: Tooltip,
