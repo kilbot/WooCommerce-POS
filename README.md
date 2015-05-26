@@ -9,14 +9,11 @@ Development repository for WooCommerce POS - the Point of Sale plugin for [WooCo
 * **Demo:** [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos)
 * **Website:** [http://woopos.com.au](http://woopos.com.au)
 
-## IMPORTANT NOTICE TO DEVELOPERS
+## Browser Compatibility
 
-This branch is in development, many features are incomplete and contain known bugs. 
-**You should not build this branch expecting to use it in production.** 
+[![Browser Compatibility](http://woopos.com.au/wp-content/uploads/2015/05/compatibility-chart.jpg)]
 
-* [0.4 Milestone](https://github.com/kilbot/WooCommerce-POS/milestones/0.4): Current outstanding issues for the next release.
-* [Changelog](./changelog): A list of notable changes.
-* [Sneak Peek](http://beta.woopos.com.au/pos): Beta demo site, updated with each build. Use login/pass: demo/demo.
+Browser testings thanks to [BrowserStack](http://browserstack.com).
 
 ## Report a bug
 

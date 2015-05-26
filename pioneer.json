@@ -1,8 +1,7 @@
 {
   "feature": "tests/integration/features",
   "tags": [
-    "@products",
-    "@tabs",
+
     "@barcode"
   ],
   "require": [

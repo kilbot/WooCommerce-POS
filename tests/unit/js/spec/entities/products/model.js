@@ -126,10 +126,10 @@ describe('entities/products/model.js', function () {
       this.product.barcodeMatch('FOO12345').should.be.false;
     });
 
-    it('should trigger "found:barcode" for exact barcode match', function() {
+    it('should trigger "match:barcode" for exact barcode match', function() {
       var trigger = stub();
       this.product.set({ type: 'simple' });
-      this.product.on('found:barcode', trigger);
+      this.product.on('match:barcode', trigger);
       this.product.barcodeMatch('SKU12345');
       trigger.should.have.been.calledWith(this.product);
     });
@@ -142,9 +142,9 @@ describe('entities/products/model.js', function () {
       this.product.barcodeMatch('SKU67890').should.be.true;
     });
 
-    it('should trigger "found:barcode" for exact variation match', function() {
+    it('should trigger "match:barcode" for exact variation match', function() {
       var trigger = stub();
-      this.product.on('found:barcode', trigger);
+      this.product.on('match:barcode', trigger);
       this.product.barcodeMatch('SKU67890');
       trigger.should.have.been.calledWith(dummy_data.variations[0], this.product);
     });

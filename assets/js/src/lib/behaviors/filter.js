@@ -103,6 +103,10 @@ var Filter = Behavior.extend({
 
   onDestroy: function(){
     this.combokeys.unbind(this.hotkeys.sync.key);
+  },
+
+  onClear: function(){
+    this.clear();
   }
 
 });

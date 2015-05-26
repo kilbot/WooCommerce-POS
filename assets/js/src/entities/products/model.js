@@ -1,6 +1,5 @@
 var DualModel = require('lib/config/dual-model');
 var _ = require('lodash');
-var Radio = require('backbone.radio');
 
 module.exports = DualModel.extend({
   name: 'product',
@@ -104,8 +103,7 @@ module.exports = DualModel.extend({
         value = barcode.toString().toLowerCase();
 
     if(test === value) {
-      this.trigger('found:barcode', this);
-      Radio.command('router', 'add:to:cart', {model: this});
+      this.trigger('match:barcode', this);
       return true;
     }
 
@@ -143,8 +141,7 @@ module.exports = DualModel.extend({
 
     if(match){
       if(match !== 'partial'){
-        this.trigger('found:barcode', match, this);
-        Radio.command('router', 'add:to:cart', {model: this});
+        this.trigger('match:barcode', match, this);
       }
       return true;
     }

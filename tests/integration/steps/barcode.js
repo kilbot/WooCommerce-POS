@@ -6,7 +6,7 @@ module.exports = function() {
       root: "body"
     }).sendKeys({
       keys: [
-        "\uE009", // cntr
+        "\uE008", // shift
         "b",
       ]
     });
@@ -15,7 +15,7 @@ module.exports = function() {
   this.Then(/^I should be in barcode mode$/, function () {
     return new W.ProductFilter()
       .hasClass({
-        selector: ".dropdown .icon",
+        selector: ".dropdown",
         className: "icon-barcode"
       });
   });
@@ -39,20 +39,46 @@ module.exports = function() {
     return new W.ProductFilter().click({ selector: '[data-action="search"]' });
   });
 
-  this.Then(/^I should see 7 products$/, function() {
-    return new W.ProductList().length().should.eventually.eql(7);
+  this.Then(/^I should see at least 7 products$/, function() {
+    return new W.ProductList().length().should.eventually.be.at.least(7);
   });
 
-  this.When(/^I use the barcode hotkey \+ 'woo'$/, function() {
+  this.When(/^I use the barcode hotkey \+ 'barcode'$/, function() {
     new this.Widget({
       root: "body"
     }).sendKeys({
         keys: [
-          "\uE009", // cntr
-          "bwoo"
+          "\uE008", // cntr
+          "bbarcode"
         ]
       });
   });
 
+  this.Then(/^An item should be added to the cart$/, function() {
+    var cart = new W.CartList();
+    cart.length().should.eventually.be.at.least(1);
+    cart.at(0).then(function(item){
+      item.getQuantity().should.eventually.eql(1);
+    });
+  });
+
+  this.When(/^I use the barcode hotkey \+ 'barcode' again$/, function() {
+    new this.Widget({
+      root: "body"
+    }).sendKeys({
+        keys: [
+          "\uE008", // cntr
+          "bbarcode"
+        ]
+      });
+  });
+
+  this.Then(/^The item should be added to the cart again$/, function() {
+    var cart = new W.CartList();
+    cart.length().should.eventually.be.at.least(1);
+    cart.at(0).then(function(item){
+      item.getQuantity().should.eventually.eql(2);
+    });
+  });
 
 }

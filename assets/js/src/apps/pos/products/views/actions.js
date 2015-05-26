@@ -2,9 +2,18 @@ var View = require('lib/config/item-view');
 var POS = require('lib/utilities/global');
 var Filter = require('lib/behaviors/filter');
 var HotKeys = require('lib/behaviors/hotkeys');
+var Radio = require('backbone.radio');
 
 var Actions = View.extend({
   template: '#tmpl-products-filter',
+
+  initialize: function(){
+    var products = this.collection.superset();
+    this.listenTo(products, 'match:barcode', function(model){
+      this.triggerMethod('clear');
+      Radio.command('router', 'add:to:cart', {model: model});
+    });
+  },
 
   behaviors: {
     Filter: {

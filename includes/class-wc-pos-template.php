@@ -176,7 +176,7 @@ class WC_POS_Template {
         /* translators: woocommerce */
         'label'  => __( 'Support', 'woocommerce' ),
         'href'   => '#support'
-      ),
+      )
     );
 
     return apply_filters( 'woocommerce_pos_menu', $menu );
