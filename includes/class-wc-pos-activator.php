@@ -125,9 +125,37 @@ class WC_POS_Activator {
    * Check dependencies
    */
   public function run_checks() {
+    $this->version_check();
     $this->woocommerce_check();
     $this->wc_api_check();
     $this->permalink_check();
+  }
+
+  /**
+   * Check version number, runs every time
+   */
+  public function version_check(){
+    // next check the POS version number
+    $old = get_option( 'woocommerce_pos_db_version' );
+    if( !$old || version_compare( $old, WC_POS_VERSION, '<' ) ) {
+      $this->db_upgrade( $old, WC_POS_VERSION );
+      update_option( 'woocommerce_pos_db_version', WC_POS_VERSION );
+    }
+  }
+
+  /**
+   * Upgrade database
+   */
+  public function db_upgrade( $old, $current ) {
+    $db_updates = array(
+//      '0.4' => 'updates/update-0.4.php'
+    );
+    foreach ( $db_updates as $version => $updater ) {
+      if ( version_compare( $version, $old, '>' ) &&
+        version_compare( $version, $current, '<=' ) ) {
+        include( $updater );
+      }
+    }
   }
 
   /**
