@@ -5,6 +5,7 @@ var hbs = require('handlebars');
 var Radio = require('backbone.radio');
 var _ = require('lodash');
 var $ = require('jquery');
+var polyglot = require('lib/utilities/polyglot');
 
 // rough calculation of variation option size
 var hasManyOptions = function(variation){
@@ -13,14 +14,6 @@ var hasManyOptions = function(variation){
           return total + opt.length;
       }, 0);
   return (opts * 26) + (chars * 5) > 250;
-};
-
-var emptyOption = function(){
-  var messages = Radio.request('entities', 'get', {
-    type: 'option',
-    name: 'messages'
-  });
-  return messages.choose;
 };
 
 var Variations = ItemView.extend({
@@ -45,7 +38,7 @@ var Variations = ItemView.extend({
       .sortBy(function(variation){
         if(hasManyOptions(variation)){
           variation.select = true;
-          variation.emptyOption = emptyOption();
+          variation.emptyOption = polyglot.t('messages.choose');
         }
         return variation.position;
       })
@@ -89,6 +82,7 @@ var Variations = ItemView.extend({
     });
     this.ui.add.prop('disabled', this.collection.length !== 1);
   }
+
 });
 
 module.exports = Variations;

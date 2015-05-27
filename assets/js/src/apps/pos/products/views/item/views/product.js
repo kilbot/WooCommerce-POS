@@ -69,7 +69,7 @@ var Item = ItemView.extend({
     if(slug){
       options.filter = {
         slug: slug,
-        option: $(e.target).text()
+        option: $(e.target).data('value')
       };
     }
 

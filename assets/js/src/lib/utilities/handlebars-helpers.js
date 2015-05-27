@@ -78,7 +78,7 @@ hbs.registerHelper('compare', function(left, operator, right, options) {
 /*jshint +W071, +W074 */
 
 hbs.registerHelper('list', function(items, sep, options) {
-  if(_.isArray(items)){
+  if( _.isArray(items) || _.isObject(items) ){
     var list = _.map(items, options.fn);
     return list.join(sep);
   }

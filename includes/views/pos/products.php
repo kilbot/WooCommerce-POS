@@ -37,7 +37,7 @@
     <dl class="variations">
       {{#each this}}
       <dt>{{name}}:</dt>
-      <dd>{{#list options ', '}}<a href="#" data-variation="{{../slug}}">{{this}}</a>{{/list}}</dd>
+      <dd>{{#list labels ', '}}<a href="#" data-value="{{slug}}" data-variation="{{../slug}}">{{name}}</a>{{/list}}</dd>
       {{/each}}
       <dt></dt><dd>
         <a href="#" data-action="expand"><?php /* translators: woocommerce */ _e( 'Expand all', 'woocommerce' ); ?></a>

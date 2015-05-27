@@ -79,6 +79,18 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
     // deep dive on variations
     if( $product_data['type'] == 'variable' ) {
 
+      // Woo handling of variation labels is FUBAR
+      // create assoc array of options so we can reconstruct for variation
+      foreach( $product_data['attributes'] as &$attribute ){
+        $attribute['slug'] = sanitize_title( $attribute['name'] );
+        $labels = array();
+        foreach( $attribute['options'] as $key => $option){
+          $labels[$key]['slug'] = sanitize_title( $option );
+          $labels[$key]['name'] = $option;
+        }
+        $attribute['labels'] = $labels;
+      }
+
       foreach( $product_data['variations'] as &$variation ) {
 
         // remove keys
