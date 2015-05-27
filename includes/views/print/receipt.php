@@ -72,6 +72,19 @@
     .product {
       text-align: left;
     }
+    .product dl {
+      margin: 0;
+    }
+    .product dt {
+      font-weight: 600;
+      padding-right: 6px;
+      float: left;
+      clear: left;
+    }
+    .product dd {
+      float: left;
+      margin: 0;
+    }
     .price {
       text-align: right;
     }

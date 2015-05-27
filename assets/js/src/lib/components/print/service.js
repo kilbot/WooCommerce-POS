@@ -24,6 +24,7 @@ module.exports = Service.extend({
     this.channel.reset();
   },
 
+  /* jshint -W071 */
   print: function(options){
     var template = this.template(options),
         iframe = this.init();
@@ -37,11 +38,24 @@ module.exports = Service.extend({
     iframe.onbeforeprint = this.beforePrint;
     iframe.onafterprint = this.afterPrint;
 
-    iframe.focus(); // required for IE
-    iframe.print();
+    // print once loaded
+    var loaded = function(){
+      iframe.focus(); // required for IE
+      iframe.print();
+    };
+
+    // get the first image, ie: logo
+    var logo = iframe.document.getElementsByTagName('img')[0];
+
+    if( logo ){
+      logo.onload = loaded;
+    } else {
+      loaded();
+    }
 
     return this.deferred;
   },
+  /* jshint +W071 */
 
   /**
    * creates an iframe and stores reference

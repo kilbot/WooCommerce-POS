@@ -2,6 +2,7 @@ var DualCollection = require('lib/config/dual-collection');
 var Model = require('./model');
 var $ = require('jquery');
 var _ = require('lodash');
+var bb = require('backbone');
 
 module.exports = DualCollection.extend({
   model: Model,
@@ -39,6 +40,9 @@ module.exports = DualCollection.extend({
 
     if(!this.active){
       this.create().then(function(order){
+        if(bb.history.getHash() === 'cart/new') {
+          bb.history.navigate('cart/' + order.id);
+        }
         self.active = order;
         deferred.resolve(order);
       });

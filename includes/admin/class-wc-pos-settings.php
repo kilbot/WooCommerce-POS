@@ -137,7 +137,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       'backbone.radio',
-      '//cdnjs.cloudflare.com/ajax/libs/backbone.radio/0.9.0/backbone.radio.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/0.9.0/backbone.radio.min.js',
       array( 'jquery', 'backbone', 'underscore' ),
       false,
       true
@@ -145,7 +145,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       'marionette',
-      '//cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.1/backbone.marionette.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.1/backbone.marionette.min.js',
       array( 'jquery', 'backbone', 'underscore' ),
       false,
       true
@@ -153,7 +153,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       'handlebars',
-      '//cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.2/handlebars.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.2/handlebars.min.js',
       array( 'jquery', 'backbone', 'underscore' ),
       false,
       true
@@ -161,7 +161,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       'select2',
-      '//cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js',
       array( 'jquery' ),
       false,
       true
@@ -169,7 +169,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       'moment',
-      '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js',
       array( 'jquery' ),
       false,
       true
@@ -177,7 +177,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       'accounting',
-      '//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
       array( 'jquery' ),
       false,
       true
@@ -185,7 +185,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       'idb-wrapper',
-      '//cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.5.0/idbstore.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.5.0/idbstore.min.js',
       array(),
       false,
       true

@@ -61,6 +61,10 @@ var View = ItemView.extend({
     };
     this.customers
       .fetch({
+        // wp-admin requires auth
+        beforeSend: function(xhr){
+          xhr.setRequestHeader('X-WC-POS', 1);
+        },
         data: 'filter[q]=' + query.term,
         success: onSuccess
       });

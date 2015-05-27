@@ -49,6 +49,9 @@
         &:before {
           content: "\f107";
         }
+        &:after {
+          display: none;
+        }
       }
     }
 
@@ -275,6 +278,9 @@
       b {
         &:before {
           content: "\f106";
+        }
+        &:after {
+          display: none;
         }
       }
     }

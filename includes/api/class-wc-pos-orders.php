@@ -99,6 +99,17 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
       add_filter( 'update_post_metadata', array( $this, 'update_post_metadata'), 10, 5 );
     }
 
+    // copy billing and shipping addresses from customer
+    if( isset($this->data['customer']) ){
+      $customer = $this->data['customer'];
+      if( isset($customer['billing_address']) ){
+        $this->data['billing_address'] = $customer['billing_address'];
+      }
+      if( isset($customer['shipping_address']) ){
+        $this->data['shipping_address'] = $customer['shipping_address'];
+      }
+    }
+
     return $this->data;
   }
 
@@ -430,6 +441,8 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     // switch back to logged in user
     wp_set_current_user( $logged_in_user );
 
+    // clear any payment gateway messages
+    wc_clear_notices();
   }
 
   /**
