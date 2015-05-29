@@ -3,12 +3,12 @@ var Radio = require('backbone.radio');
 var EventSource = global['EventSource'];
 
 module.exports =  ItemView.extend({
+  template: function(){
+    return '<i class="spinner"></i>';
+  },
+
   initialize: function (options) {
     options = options || {};
-
-    this.template = function(){
-      return '<i class="spinner"></i>';
-    };
 
     this.modal = {
       header: {
@@ -22,23 +22,13 @@ module.exports =  ItemView.extend({
         }]
       }
     };
-
-    this.initUpdate();
   },
 
-  initUpdate: function() {
-    var view = this;
-    var ajaxurl = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'ajaxurl'
-    });
-    var nonce = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'nonce'
-    });
-    var stream = new EventSource(
-      ajaxurl + '?action=wc_pos_update_translations&security=' + nonce
-    );
+  onShow: function() {
+    var view = this,
+        url = this.constructURL(),
+        stream = new EventSource(url);
+
     stream.onmessage = function(e){
       if( e.data === 'complete' ){
         this.close();
@@ -50,5 +40,18 @@ module.exports =  ItemView.extend({
         view.$('.spinner').before('<p>' + e.data + '</p>');
       }
     };
+  },
+
+  constructURL: function(){
+    var ajaxurl = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'ajaxurl'
+    });
+    var nonce = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'nonce'
+    });
+
+    return ajaxurl + '?action=wc_pos_update_translations&security=' + nonce;
   }
 });

@@ -4,7 +4,7 @@ var Layout = require('./layout');
 var Status = require('./views/status');
 var $ = require('jquery');
 var _ = require('lodash');
-var Modernizr = global['Modernizr'];
+//var Modernizr = global['Modernizr'];
 var Radio = require('backbone.radio');
 var polyglot = require('lib/utilities/polyglot');
 //var debug = require('debug')('systemStatus');
@@ -40,7 +40,6 @@ var StatusRoute = Route.extend({
 
   showStatus: function(){
     this.collection.reset();
-    this.collection.add( this.browserStatus() );
     this.collection.add( this.storageStatus() );
 
     var view = new Status({
@@ -50,26 +49,6 @@ var StatusRoute = Route.extend({
     this.listenTo(view, 'action:clear', this.clearDB);
 
     this.layout.getRegion('status').show( view );
-  },
-
-  browserStatus: function(){
-    var props = ['flexbox', 'indexeddb'],
-        result = [];
-
-    _.each(props, function(prop){
-      result.push({
-        test: Modernizr[prop],
-        message: Modernizr[prop] === true ?
-        '<span class="pass">' + prop + '</span>' :
-        '<span class="fail">no-' + prop + '</span>'
-      });
-    });
-
-    return {
-      icon    : _(result).pluck('test').every() ? 'check' : 'times',
-      title   : polyglot.t('titles.browser'),
-      message : _(result).pluck('message').join(', ')
-    };
   },
 
   storageStatus: function(){

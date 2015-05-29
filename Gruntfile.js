@@ -375,7 +375,7 @@ module.exports = function(grunt) {
             expand: true,
             cwd: '<%= app.tmp %>',
             src: ['**/*'],
-            dest: 'woocommerce-pos-pro/'
+            dest: 'woocommerce-pos/'
           }
         ]
       }

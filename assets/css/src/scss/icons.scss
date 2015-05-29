@@ -42,18 +42,19 @@
 
 /**
  * Spin
+ * DO NOT use .spinner, this clashes with the wp-admin spinner
  */
 @include keyframes(spin) {
   0% { @include rotate(0deg); }
   100% { @include rotate(359deg); }
 }
-.spinner, .icon-spin {
+.icon-spin {
   @include animation(spin 2s infinite linear);
 }
-.spinner--steps8 {
+.icon-spin--steps8 {
   @include animation(spin 1s infinite steps(8));
 }
-.spinner--steps12 {
+.icon-spin--steps12 {
   @include animation(spin 1s infinite steps(12));
 }
 
@@ -207,7 +208,7 @@
  * Loading & Fail
  */
 .icon-loading, .icon-spinner {
-  @extend .spinner;
+  @extend .icon-spin;
   @extend .icon-cog;
 }
 

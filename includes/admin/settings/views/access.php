@@ -14,25 +14,21 @@
 
 <div class="wc-pos-access">
   <ul class="wc-pos-access-tabs">
-    <?php $data = $this->get_data(); if($data): foreach($data['roles'] as $key => $role): ?>
-      <li data-id="<?php echo $key; ?>"><?php echo translate_user_role($role['name']); ?></li>
+    <?php $data = $this->get_data(); if($data): foreach($data['roles'] as $slug => $role): ?>
+      <li data-id="<?php echo $slug; ?>"><?php echo translate_user_role($role['name']); ?></li>
     <?php endforeach; endif; ?>
   </ul>
   <ul class="wc-pos-access-panel">
-    <?php if($data): foreach($data['roles'] as $key => $role): ?>
-      <li id="<?php echo $key; ?>">
+    <?php if($data): foreach($data['roles'] as $slug => $role): ?>
+      <li id="<?php echo $slug; ?>">
         <ul>
-          <?php if(isset($poscaps)): foreach($poscaps as $cap): ?>
-            <li>
-              <input type="checkbox" name="roles.<?php echo esc_attr($key); ?>.pos_capabilities.<?php echo esc_attr($cap); ?>" />
-              <?php echo $cap; ?>
-            </li>
-          <?php endforeach; endif; ?>
-          <?php if(isset($woocaps)): foreach($woocaps as $cap): ?>
-            <li>
-              <input type="checkbox" name="roles.<?php echo esc_attr($key); ?>.woo_capabilities.<?php echo esc_attr($cap); ?>" />
-              <?php echo $cap; ?>
-            </li>
+          <?php if(isset($this->caps)): foreach($this->caps as $key => $caps): ?>
+            <?php if($caps): foreach($caps as $cap): ?>
+              <li>
+                <input type="checkbox" name="roles.<?php echo esc_attr($slug); ?>.capabilities.<?php echo esc_attr($key); ?>.<?php echo esc_attr($cap); ?>" />
+                <?php echo $cap; ?>
+              </li>
+            <?php endforeach; endif; ?>
           <?php endforeach; endif; ?>
         </ul>
       </li>

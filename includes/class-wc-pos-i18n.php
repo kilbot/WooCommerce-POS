@@ -22,6 +22,8 @@ class WC_POS_i18n {
   public function __construct() {
 
     // raw github url for language packs
+    // todo: use last commit info and switch to cdn
+//    $this->github_url = 'https://cdn.rawgit.com/kilbot/WooCommerce-POS-Language-Packs/master/';
     $this->github_url = 'https://raw.githubusercontent.com/kilbot/WooCommerce-POS-Language-Packs/master/';
 
 //    add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
@@ -362,7 +364,7 @@ class WC_POS_i18n {
     $translations['messages'] = array(
       'choose'    => /* translators: woocommerce */ __( 'Choose an option', 'woocommerce' ),
       'error'     => /* translators: woocommerce */ __( 'Sorry, there has been an error.', 'woocommerce' ),
-      'loading'   => __( 'Loading&hellip;' ),
+      'loading'   => /* translators: wordpress */__( 'Loading ...' ),
       'success'   => /* translators: woocommerce */ __( 'Your changes have been saved.', 'woocommerce' ),
       'browser'   => __( 'Your browser is not supported!', 'woocommerce-pos' ),
     );

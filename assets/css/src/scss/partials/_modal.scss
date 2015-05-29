@@ -38,10 +38,13 @@
   }
   .modal-body {
     @include clearfix;
+
+    // wp-admin
     i.spinner {
       display: inline-block;
       float: none;
       margin: 0;
+      visibility: visible;
     }
   }
   .modal-footer {

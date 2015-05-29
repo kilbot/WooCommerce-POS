@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce POS 0.4.0-beta\n"
+"Project-Id-Version: WooCommerce POS 0.4.0-rc\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2015-05-23 14:33:24+00:00\n"
+"POT-Creation-Date: 2015-05-27 14:36:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,19 +14,19 @@ msgstr ""
 "Language-Team: Team Name <team@example.com>\n"
 "X-Generator: grunt-wp-i18n 0.5.2\n"
 
-#: includes/api/class-wc-pos-orders.php:479
+#: includes/api/class-wc-pos-orders.php:492
 msgid "There was an error processing the payment"
 msgstr ""
 
-#: includes/api/class-wc-pos-orders.php:505
+#: includes/api/class-wc-pos-orders.php:518
 msgid "You are now being redirected offsite to complete the payment. "
 msgstr ""
 
-#: includes/api/class-wc-pos-orders.php:506
+#: includes/api/class-wc-pos-orders.php:519
 msgid "<a href=\"%s\">Click here</a> if you are not redirected automatically. "
 msgstr ""
 
-#: includes/api/class-wc-pos-orders.php:520
+#: includes/api/class-wc-pos-orders.php:533
 msgid "POS Transaction completed."
 msgstr ""
 
@@ -176,35 +176,35 @@ msgstr ""
 msgid "%s in queue"
 msgstr ""
 
-#: includes/views/print/receipt.php:96
+#: includes/views/print/receipt.php:109
 msgid "Billing Address"
 msgstr ""
 
-#: includes/views/print/receipt.php:99
+#: includes/views/print/receipt.php:112
 msgid "Shipping Address"
 msgstr ""
 
-#: includes/views/print/receipt.php:104
+#: includes/views/print/receipt.php:117
 msgid "Order Number"
 msgstr ""
 
-#: includes/views/print/receipt.php:108
+#: includes/views/print/receipt.php:121
 msgid "Order Date"
 msgstr ""
 
-#: includes/views/print/receipt.php:112
+#: includes/views/print/receipt.php:125
 msgid "Payment Method"
 msgstr ""
 
-#: includes/views/print/receipt.php:123
+#: includes/views/print/receipt.php:136
 msgid "Telephone"
 msgstr ""
 
-#: includes/views/print/receipt.php:132
+#: includes/views/print/receipt.php:145
 msgid "Qty"
 msgstr ""
 
-#: includes/views/print/receipt.php:169
+#: includes/views/print/receipt.php:182
 msgid "Cart Discount"
 msgstr ""
 
@@ -289,7 +289,7 @@ msgstr ""
 
 #: includes/views/pos/cart.php:116 includes/views/pos/cart.php:127
 #: includes/views/pos/receipt.php:84 includes/views/pos/receipt.php:94
-#: includes/views/print/receipt.php:191 includes/views/print/receipt.php:201
+#: includes/views/print/receipt.php:204 includes/views/print/receipt.php:214
 msgctxt "abbreviation for includes (tax)"
 msgid "incl."
 msgstr ""
