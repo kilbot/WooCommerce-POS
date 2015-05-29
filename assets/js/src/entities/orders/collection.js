@@ -40,10 +40,11 @@ module.exports = DualCollection.extend({
 
     if(!this.active){
       this.create().then(function(order){
+        order.cart.order_id = order.id;
+        self.active = order;
         if(bb.history.getHash() === 'cart/new') {
           bb.history.navigate('cart/' + order.id);
         }
-        self.active = order;
         deferred.resolve(order);
       });
     } else {
@@ -63,12 +64,12 @@ module.exports = DualCollection.extend({
   create: function(){
     var deferred = new $.Deferred();
 
-    DualCollection.prototype.create.call(this, {}, {
+    // Safari has a problem with create, perhaps an autoincrement problem?
+    // Set local_id as timestamp milliseconds
+    DualCollection.prototype.create.call(this, { local_id: Date.now() }, {
       wait: true,
-      success: function(order){
-        order.cart.order_id = order.id;
-        deferred.resolve(order);
-      }
+      success: deferred.resolve,
+      error: deferred.reject
     });
 
     return deferred.promise();

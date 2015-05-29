@@ -133,7 +133,7 @@ var ReceiptRoute = Route.extend({
       .then(function(args){
         var buttons = args.view.getButtons();
         self.listenTo(buttons, 'action:send', function(btn, view){
-          var email = args.view.getRegion('content').currentView.ui.email.val();
+          var email = args.view.getRegion('content').currentView.getEmail();
           self.send(btn, view, email);
         });
       });
