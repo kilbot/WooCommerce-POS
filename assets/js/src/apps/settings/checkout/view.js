@@ -13,6 +13,10 @@ var View = FormView.extend({
     id: 'wc-pos-settings-checkout'
   },
 
+  modelEvents: {
+    'change:id': 'render'
+  },
+
   onRender: function(){
     var self = this;
     this.$('input, select, textarea').each(function(){

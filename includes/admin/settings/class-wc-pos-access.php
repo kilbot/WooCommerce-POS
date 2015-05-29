@@ -106,4 +106,28 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Abstract {
     endforeach;
   }
 
+  /**
+   * Delete: Loop through roles and capabilities
+   * - add for administrator/shop_manager
+   * - remove for everyone else
+   *
+   * @return bool|mixed|void
+   */
+  public function delete(){
+    global $wp_roles;
+
+    $roles = $wp_roles->roles;
+    $caps = array_merge( $this->caps['pos'], $this->caps['woo'] );
+
+    if( $roles ): foreach( $roles as $slug => $array ):
+      $role = get_role($slug);
+      $action = ( $slug == 'administrator' || $slug == 'shop_manager' ) ? 'add_cap' : 'remove_cap';
+      if( $caps ): foreach( $caps as $cap ):
+        $role->$action($cap);
+      endforeach; endif;
+    endforeach; endif;
+
+    return $this->get_data();
+  }
+
 }

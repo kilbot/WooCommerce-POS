@@ -57,7 +57,8 @@ abstract class WC_POS_Admin_Settings_Abstract {
    *
    */
   public function delete(){
-
+    delete_option(WC_POS_Admin_Settings::DB_PREFIX . $this->id);
+    return $this->get_data();
   }
 
 }

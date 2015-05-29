@@ -25,6 +25,10 @@ var View = FormView.extend({
     }
   },
 
+  modelEvents: {
+    'change:id': 'render'
+  },
+
   onRender: function(){
     var self = this;
 

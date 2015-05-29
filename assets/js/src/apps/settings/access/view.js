@@ -21,6 +21,10 @@ var View = FormView.extend({
     'click @ui.tabs' : 'onTabClick'
   },
 
+  modelEvents: {
+    'change:id': 'render'
+  },
+
   onRender: function(){
     var self = this;
 

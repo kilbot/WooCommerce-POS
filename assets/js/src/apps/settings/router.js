@@ -148,6 +148,10 @@ var SettingsRouter = Router.extend({
           icon      : 'append'
         },{
           type: 'message'
+        },{
+          action    : 'restore',
+          className : 'button-secondary alignright',
+          icon      : 'prepend'
         }
       ]
     });
