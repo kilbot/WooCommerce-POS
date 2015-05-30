@@ -11,7 +11,7 @@ var Actions = View.extend({
     var products = this.collection.superset();
     this.listenTo(products, 'match:barcode', function(model){
       this.triggerMethod('clear');
-      Radio.command('router', 'add:to:cart', {model: model});
+      Radio.command('router', 'add:to:cart', model);
     });
   },
 

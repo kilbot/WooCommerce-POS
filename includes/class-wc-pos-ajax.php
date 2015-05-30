@@ -178,9 +178,10 @@ class WC_POS_AJAX {
    */
   public function send_support_email() {
 
-    $headers[] = 'From: '. $_POST['name'] .' <'. $_POST['email'] .'>';
-    $message = $_POST['message'] . "\n\n" . $_POST['status'];
-    if( wp_mail( 'support@woopos.com.au', 'WooCommerce POS Support', $message, $headers ) ) {
+    $headers[]  = 'From: '. $_POST['name'] .' <'. $_POST['email'] .'>';
+    $message    = $_POST['message'] . "\n\n" . $_POST['status'];
+    $support    = apply_filters( 'woocommerce_pos_support_email', 'support@woopos.com.au' );
+    if( wp_mail( $support, 'WooCommerce POS Support', $message, $headers ) ) {
       $response = array(
         'result' => 'success',
         'message' => __( 'Email sent', 'woocommerce-pos')

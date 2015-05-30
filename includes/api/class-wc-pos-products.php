@@ -18,6 +18,25 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
   public function __construct() {
     add_filter( 'woocommerce_api_product_response', array( $this, 'product_response' ), 10, 4 );
     add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+
+//    add_filter( 'woocommerce_api_edit_product_data', array($this, 'edit_product_data') );
+  }
+
+  /**
+   * Remove variations from variable edit
+   * todo: find the cause of this, perhaps due to sanitize_title($slug) below
+   *
+   * @param $data
+   * @return array|mixed
+   */
+  public function edit_product_data($data){
+    $data = parent::get_data();
+
+    if( isset($data['type']) && $data['type'] == 'variable' ){
+      unset( $data['variations'] );
+    }
+
+    return $data;
   }
 
   /**
@@ -81,6 +100,7 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
 
       // Woo handling of variation labels is FUBAR
       // create assoc array of options so we can reconstruct for variation
+      // todo: sanitize_title on slug causes error on variable edit?
       foreach( $product_data['attributes'] as &$attribute ){
         $attribute['slug'] = sanitize_title( $attribute['name'] );
         $labels = array();
@@ -131,7 +151,7 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
         $meta_query[] = array(
           'key' 		=> '_sku',
           'value' 	=> $filter['barcode'],
-          'compare'	=> '='
+          'compare'	=> 'LIKE'
         );
       }
 

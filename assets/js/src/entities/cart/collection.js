@@ -1,6 +1,7 @@
 var IndexedDBCollection = require('lib/config/idb-collection');
 var Model = require('./model');
 var _ = require('lodash');
+var bb = require('backbone');
 
 module.exports = IndexedDBCollection.extend({
   model: Model,
@@ -72,7 +73,10 @@ module.exports = IndexedDBCollection.extend({
   /* jshint -W071, -W074 */
   addToCart: function(options){
     options = options || {};
-    var model, attributes = options.model ? options.model.toJSON() : options;
+    var model, attributes = options.model || options;
+    if(attributes instanceof bb.Model){
+      attributes = attributes.toJSON();
+    }
 
     if(attributes.id){
       model = this.findWhere({ product_id: attributes.id });

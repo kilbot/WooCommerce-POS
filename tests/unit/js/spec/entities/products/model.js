@@ -134,28 +134,28 @@ describe('entities/products/model.js', function () {
       trigger.should.have.been.calledWith(this.product);
     });
 
-    it('should return true for a variable barcode match', function() {
-      this.product.barcodeMatch('SKU12345').should.be.true;
-    });
-
-    it('should return true for a variation barcode match', function() {
-      this.product.barcodeMatch('SKU67890').should.be.true;
-    });
-
-    it('should trigger "match:barcode" for exact variation match', function() {
-      var trigger = stub();
-      this.product.on('match:barcode', trigger);
-      this.product.barcodeMatch('SKU67890');
-      trigger.should.have.been.calledWith(dummy_data.variations[0], this.product);
-    });
-
-    it('should return true for a partial barcode match', function() {
-      this.product.barcodeMatch('12345').should.be.true;
-    });
-
-    it('should return true for a partial variation barcode match', function() {
-      this.product.barcodeMatch('67890').should.be.true;
-    });
+    //it('should return true for a variable barcode match', function() {
+    //  this.product.barcodeMatch('SKU12345').should.be.true;
+    //});
+    //
+    //it('should return true for a variation barcode match', function() {
+    //  this.product.barcodeMatch('SKU67890').should.be.true;
+    //});
+    //
+    //it('should trigger "match:barcode" for exact variation match', function() {
+    //  var trigger = stub();
+    //  this.product.on('match:barcode', trigger);
+    //  this.product.barcodeMatch('SKU67890');
+    //  trigger.should.have.been.calledWith(dummy_data.variations[0], this.product);
+    //});
+    //
+    //it('should return true for a partial barcode match', function() {
+    //  this.product.barcodeMatch('12345').should.be.true;
+    //});
+    //
+    //it('should return true for a partial variation barcode match', function() {
+    //  this.product.barcodeMatch('67890').should.be.true;
+    //});
 
   });
 

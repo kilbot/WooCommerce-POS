@@ -25,7 +25,7 @@ var View = ItemView.extend({
   behaviors: {
     Select2: {
       behaviorClass: Select2,
-      minimumInputLength: 2
+      minimumInputLength: 3
     }
   },
 
@@ -34,7 +34,8 @@ var View = ItemView.extend({
   },
 
   events: {
-    'change @ui.select' : 'onSelect'
+    'change @ui.select' : 'onSelect',
+    'select2-opening @ui.select' : 'onSelectOpen'
   },
 
   /**
@@ -126,7 +127,12 @@ var View = ItemView.extend({
    */
   onSelect: function(e) {
     this.trigger( 'customer:select', e.added );
-  }
+  },
+
+  /**
+   *
+   */
+  onSelectOpen: function() {}
 
 });
 

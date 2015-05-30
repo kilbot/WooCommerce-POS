@@ -1,5 +1,6 @@
 var DualModel = require('lib/config/dual-model');
 var _ = require('lodash');
+var Radio = require('backbone.radio');
 
 module.exports = DualModel.extend({
   name: 'product',
@@ -103,7 +104,9 @@ module.exports = DualModel.extend({
         value = barcode.toString().toLowerCase();
 
     if(test === value) {
-      this.trigger('match:barcode', this);
+      if(type !== 'variable'){
+        this.trigger('match:barcode', this);
+      }
       return true;
     }
 
@@ -122,20 +125,20 @@ module.exports = DualModel.extend({
   },
 
   variableBarcodeMatch: function(test, value){
-    var variations = this.get('variations'),
-        match;
+    var match, variations = Radio.request('entities', 'get', {
+      type: 'variations',
+      parent: this
+    });
 
-    _.each(variations, function(variation){
-      if(variation.barcode){
-        var vtest = variation.barcode.toLowerCase();
-        if(vtest === value){
-          match = variation;
-          return;
-        }
-        if(vtest.indexOf( value ) !== -1) {
-          match = 'partial';
-          return;
-        }
+    variations.superset().each(function(variation){
+      var vtest = variation.get('barcode').toLowerCase();
+      if(vtest === value){
+        match = variation;
+        return;
+      }
+      if(vtest.indexOf( value ) !== -1) {
+        match = 'partial';
+        return;
       }
     });
 
