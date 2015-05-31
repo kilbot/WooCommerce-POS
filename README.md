@@ -9,9 +9,15 @@ Development repository for WooCommerce POS - the Point of Sale plugin for [WooCo
 * **Demo:** [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos)
 * **Website:** [http://woopos.com.au](http://woopos.com.au)
 
+<p align="center">
+  <img src="https://woopos.com.au/wp-content/uploads/2015/05/pos-sale-lg.gif" alt="Screenshot"/>
+</p>
+
 ## Browser Compatibility
 
-![Browser Compatibility](http://woopos.com.au/wp-content/uploads/2015/05/compatibility-chart.jpg)
+<p align="center">
+  <img src="https://woopos.com.au/wp-content/uploads/2015/05/compatibility-chart.jpg" alt="Browser Compatibility"/>
+</p>
 
 Browser testing by [BrowserStack](http://browserstack.com).
 
