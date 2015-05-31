@@ -1,7 +1,7 @@
 = 0.4.0 =
 * Note: this is a major code refactor, almost every line of code has been rewritten
 -
-* Products: Variation display has been changed to popover
+* Products: Variation popover/drawer
 * Products: Infinite scroll
 * Products: Hotkey for barcode search
 * Products: Attributes now show in tooltip
@@ -22,9 +22,9 @@
 * Pro: New order page
 * Pro: New coupon page
 * Pro: Multiple stores
+* Pro: Compatibility fix for Stripe gateway
 -
-* Fix: removed all cases of php echo shorthand for short_open_tag=off
-* Fix: numerous bugs with the number pad
+* Fix: all the things
 
 = 0.3.5 =
 * Note: this is a minor compatibility update for WooCommerce 2.3
