@@ -422,6 +422,11 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
       return;
     }
 
+    // special case, pos_card cashback
+    if(isset($data['payment_details']['pos-cashback'])){
+      $_POST['pos-cashback'] = $data['payment_details']['pos-cashback'];
+    }
+
     // some gateways check if a user is signed in, so let's switch to customer
     $logged_in_user = get_current_user_id();
     wp_set_current_user( $data['customer_id'] );

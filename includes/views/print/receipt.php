@@ -114,7 +114,7 @@
 </div>
 <table class="order-info">
   <tr>
-    <th><?php _e( 'Order Number', 'woocommerce-pos' ); ?></th>
+    <th><?php /* translators: woocommerce */ _e( 'Order Number', 'woocommerce' ); ?></th>
     <td>{{order_number}}</td>
   </tr>
   <tr>
@@ -127,13 +127,13 @@
   </tr>
   {{#if billing_address.email}}
   <tr>
-    <th><?php _e( 'Email', 'woocommerce-pos' ); ?></th>
+    <th><?php /* translators: woocommerce */ _e( 'Email', 'woocommerce' ); ?></th>
     <td>{{billing_address.email}}</td>
   </tr>
   {{/if}}
   {{#if billing_address.phone}}
   <tr>
-    <th><?php _e( 'Telephone', 'woocommerce-pos' ); ?></th>
+    <th><?php /* translators: woocommerce */ _e( 'Telephone', 'woocommerce' ); ?></th>
     <td>{{billing_address.phone}}</td>
   </tr>
   {{/if}}
@@ -141,9 +141,9 @@
 <table class="order-items">
   <thead>
     <tr>
-      <th class="product"><?php _e( 'Product', 'woocommerce-pos' ); ?></th>
-      <th class="qty"><?php _e( 'Qty', 'woocommerce-pos' ); ?></th>
-      <th class="price"><?php _e( 'Price', 'woocommerce-pos' ); ?></th>
+      <th class="product"><?php /* translators: woocommerce */ _e( 'Product', 'woocommerce' ); ?></th>
+      <th class="qty"><?php _ex( 'Qty', 'Abbreviation of Quantity', 'woocommerce-pos' ); ?></th>
+      <th class="price"><?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?></th>
     </tr>
   </thead>
   <tbody>
@@ -179,7 +179,7 @@
     </tr>
     {{#if has_discount}}
       <tr class="cart-discount">
-        <th colspan="2"><?php _e( 'Cart Discount', 'woocommerce-pos' ); ?>:</th>
+        <th colspan="2"><?php /* translators: woocommerce */  _e( 'Discount', 'woocommerce' ); ?>:</th>
         <td colspan="1">{{{money cart_discount negative=true}}}</td>
       </tr>
     {{/if}}
@@ -218,14 +218,16 @@
         </tr>
       {{/if}}
     {{/if}}
+    <!-- order_discount removed in WC 2.3, included for backwards compatibility -->
     {{#if has_order_discount}}
     <tr class="order-discount">
-      <th colspan="2"><?php _e( 'Order Discount', 'woocommerce-pos' ); ?>:</th>
+      <th colspan="2"><?php  /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</th>
       <td colspan="1">{{{money order_discount negative=true}}}</td>
     </tr>
     {{/if}}
+    <!-- end order_discount -->
     <tr class="order-total">
-      <th colspan="2"><?php _e( 'Order Total', 'woocommerce-pos' ); ?>:</th>
+      <th colspan="2"><?php  /* translators: woocommerce */ _e( 'Order Total', 'woocommerce' ); ?>:</th>
       <td colspan="1">{{{money total}}}</td>
     </tr>
   </tfoot>

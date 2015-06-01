@@ -79,6 +79,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 = 0.4 =
 * Note: this is a major code refactor, almost every line of code has been rewritten
+* Please check your POS admin after upgrade as many settings have changed
 -
 * Products: Variation popover/drawer
 * Products: Infinite scroll

@@ -54,7 +54,7 @@
 
 <script type="text/x-handlebars-template" id="tmpl-receipt-totals">
   <li class="subtotal">
-    <div><?php /* translators: woocommerce */ _e( 'Cart Subtotal', 'woocommerce' ); ?>:</div>
+    <div><?php _e( 'Cart Subtotal', 'woocommerce-pos' ); ?>:</div>
     <div class="total">{{{money subtotal}}}</div>
   </li>
   {{#if has_discount}}
@@ -98,7 +98,7 @@
   </li>
   {{/if}}
   {{/if}}
-  <!-- order_discount removed in WC 2.3, included for backwards compat -->
+  <!-- order_discount removed in WC 2.3, included for backwards compatibility -->
   {{#if has_order_discount}}
   <li class="order-discount">
     <div><?php /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</div>

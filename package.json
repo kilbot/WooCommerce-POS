@@ -1,7 +1,7 @@
 {
   "name": "woocommerce-pos",
   "description": "A simple front-end for taking WooCommerce orders at the Point of Sale.",
-  "version": "0.4.0-rc",
+  "version": "0.4.0",
   "scripts": {
     "test": "grunt test"
   },
