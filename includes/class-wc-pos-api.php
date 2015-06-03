@@ -81,7 +81,7 @@ class WC_POS_API {
     $handler = 'WC_POS_API_' . ucfirst( $entity );
 
     if(method_exists($handler, 'get_ids')){
-      $result = $handler::get_ids($updated_at_min);
+      $result = call_user_func(array($handler, 'get_ids'), $updated_at_min);
     } else {
       $result = new WP_Error(
         'woocommerce_pos_get_ids_error',

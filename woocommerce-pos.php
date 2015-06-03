@@ -26,7 +26,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Define plugin constants.
  */
-define( 'WC_POS_VERSION', '0.4.0' );
+define( 'WC_POS_VERSION', '0.4.1' );
 define( 'WC_POS_PLUGIN_NAME', 'woocommerce-pos' );
 define( 'WC_POS_PLUGIN_PATH', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'WC_POS_PLUGIN_URL', trailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
