@@ -257,9 +257,9 @@ class WC_POS_AJAX {
   private function get_raw_data() {
     global $HTTP_RAW_POST_DATA;
     if ( !isset( $HTTP_RAW_POST_DATA ) ) {
-      $HTTP_RAW_POST_DATA = json_decode(trim(file_get_contents('php://input')), true);
+      $HTTP_RAW_POST_DATA = trim(file_get_contents('php://input'));
     }
-    return $HTTP_RAW_POST_DATA;
+    return json_decode( $HTTP_RAW_POST_DATA, true);
   }
 
 }
