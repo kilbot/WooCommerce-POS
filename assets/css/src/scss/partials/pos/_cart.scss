@@ -37,6 +37,11 @@
             > div {
               padding: $spacing/3;
               &.title {
+                strong {
+                  /* improves contenteditable for firefox */
+                  word-wrap: break-word;
+                  display: inline-block;
+                }
                 position: relative;
                 padding-right: 14px;
                 [data-action="more"] {

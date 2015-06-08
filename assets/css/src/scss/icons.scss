@@ -19,10 +19,12 @@
   -moz-osx-font-smoothing: grayscale;
   /* Required for <i> rotate ========= */
   display: inline-block;
-  /* ? ========= */
+  /* span for hidden text ========= */
   span {
     display: none;
   }
+  /* Fix aligment issue in Firefox ========= */
+  vertical-align: inherit;
 }
 .icon-lg {
   font-size: 1.33333333em;
