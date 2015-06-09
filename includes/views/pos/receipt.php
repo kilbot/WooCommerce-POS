@@ -20,7 +20,7 @@
 <script type="text/x-handlebars-template" id="tmpl-receipt-items">
 {{#each line_items}}
   <li>
-    <div class="qty">{{quantity}}</div>
+    <div class="qty">{{number quantity precision="auto"}}</div>
     <div class="title">
       {{name}}
       {{#with meta}}

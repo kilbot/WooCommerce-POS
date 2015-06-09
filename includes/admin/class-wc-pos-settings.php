@@ -208,7 +208,7 @@ class WC_POS_Admin_Settings {
     );
 
     $scripts = apply_filters( 'woocommerce_pos_admin_enqueue_scripts', array() );
-    if( $scripts['locale'] ) {
+    if( isset( $scripts['locale'] ) ) {
       wp_enqueue_script(
         WC_POS_PLUGIN_NAME . '-js-locale',
         $scripts['locale'],

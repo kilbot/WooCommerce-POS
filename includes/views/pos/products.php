@@ -54,7 +54,7 @@
     </dl>
     {{/is}}
 		{{#if managing_stock}}
-		<small><?php /* translators: woocommerce */ printf( __( '%s in stock', 'woocommerce' ), '{{stock_quantity}}' ); ?></small>
+		<small><?php /* translators: woocommerce */ printf( __( '%s in stock', 'woocommerce' ), '{{number stock_quantity precision="auto"}}' ); ?></small>
 		{{/if}}
 	</div>
 	<div class="price">

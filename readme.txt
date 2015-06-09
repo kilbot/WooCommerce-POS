@@ -77,6 +77,15 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.4.1 =
+* New: added woocommerce_pos_email_receipt hook
+* Improve: editing a product title in cart
+* Improve: css tweaks for Firefox
+* Fix: create_order error for WC version 2.2.x
+* Fix: Internal Server Error for PHP 5.2.x
+* Fix: parse $HTTP_RAW_POST_DATA global to array
+* Fix: decimal quantity display
+
 = 0.4 =
 * Note: this is a major code refactor, almost every line of code has been rewritten
 * Please check your POS admin after upgrade as many settings have changed

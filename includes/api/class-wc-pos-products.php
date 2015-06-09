@@ -18,6 +18,12 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
   public function __construct() {
     add_filter( 'woocommerce_api_product_response', array( $this, 'product_response' ), 10, 4 );
     add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+
+    $general_settings = new WC_POS_Admin_Settings_General();
+    if( $general_settings->get_data('decimal_qty') ){
+      remove_filter('woocommerce_stock_amount', 'intval');
+      add_filter( 'woocommerce_stock_amount', 'floatval' );
+    }
   }
 
   /**
@@ -32,7 +38,6 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    * @return array modified data array $product_data
    */
   public function product_response( $product_data, $product, $fields, $server ) {
-
     // remove some unnecessary keys
     // - saves storage space in IndexedDB
     // - saves bandwidth transferring the data
@@ -63,6 +68,9 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
     foreach($removeKeys as $key) {
       unset($product_data[$key]);
     }
+
+    // allow decimal stock quantities
+    $product_data['stock_quantity'] = $product->get_stock_quantity();
 
     // use thumbnails for images
     if( $thumb_id = get_post_thumbnail_id( $product_data['id'] ) ) {

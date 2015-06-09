@@ -160,7 +160,7 @@
         </dl>
         {{/with}}
       </td>
-      <td class="qty">{{quantity}}</td>
+      <td class="qty">{{number quantity precision="auto"}}</td>
       <td class="price">
         {{#if on_sale}}
         <del>{{{money subtotal}}}</del>
