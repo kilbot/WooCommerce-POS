@@ -35,10 +35,10 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     $this->init();
 
     // order data
-    add_filter( 'woocommerce_api_create_order_data', array( $this, 'create_order_data'), 10, 2 );
-    add_filter( 'woocommerce_api_edit_order_data', array( $this, 'edit_order_data'), 10, 3 );
-    add_action( 'woocommerce_api_create_order', array( $this, 'create_order'), 10, 3 );
-    add_action( 'woocommerce_api_edit_order', array( $this, 'edit_order'), 10, 3 );
+    add_filter( 'woocommerce_api_create_order_data', array( $this, 'create_order_data') );
+    add_filter( 'woocommerce_api_edit_order_data', array( $this, 'edit_order_data'), 10, 2 );
+    add_action( 'woocommerce_api_create_order', array( $this, 'create_order') );
+    add_action( 'woocommerce_api_edit_order', array( $this, 'edit_order') );
 
     // payment
     add_action( 'woocommerce_pos_process_payment', array( $this, 'process_payment' ), 10, 2 );
@@ -68,11 +68,9 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   /**
    * Create order data
    *
-   * @param $data
-   * @param $WC_API_Orders
    * @return array
    */
-  public function create_order_data($data, $WC_API_Orders){
+  public function create_order_data(){
 
     // add filters & actions for create order
     add_filter( 'woocommerce_product_tax_class', array( $this, 'product_tax_class' ), 10, 2 );
@@ -118,12 +116,11 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    *
    * @param $data
    * @param $order_id
-   * @param $WC_API_Orders
    * @return array
    */
-  public function edit_order_data($data, $order_id, $WC_API_Orders){
+  public function edit_order_data($data, $order_id){
 //    $this->delete_order_items($order_id);
-    return $this->create_order_data($data, $WC_API_Orders);
+    return $this->create_order_data();
   }
 
   /**
@@ -388,27 +385,23 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   /**
    * Create order complete
    * @param $order_id
-   * @param $data
-   * @param $WC_API_Orders
    */
-  public function create_order( $order_id, $data, $WC_API_Orders ){
+  public function create_order( $order_id ){
     // pos meta
     update_post_meta( $order_id, '_pos', 1 );
     update_post_meta( $order_id, '_pos_user', get_current_user_id() );
 
     // payment
-    do_action( 'woocommerce_pos_process_payment', $order_id, $data);
+    do_action( 'woocommerce_pos_process_payment', $order_id, $this->data);
   }
 
   /**
    * Edit order complete
    * @param $order_id
-   * @param $data
-   * @param $WC_API_Orders
    */
-  public function edit_order( $order_id, $data, $WC_API_Orders ){
+  public function edit_order( $order_id ){
     // payment
-    do_action( 'woocommerce_pos_process_payment', $order_id, $data);
+    do_action( 'woocommerce_pos_process_payment', $order_id, $this->data);
   }
 
   /**
@@ -418,7 +411,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    */
   public function process_payment( $order_id, $data ){
 
-    if(!isset($data['payment_details'])){
+    if( !isset($data['payment_details']) ){
       return;
     }
 
