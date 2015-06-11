@@ -71,6 +71,7 @@ module.exports = LayoutView.extend({
   },
 
   shown: function(){
+    this.target.data('popoverOpen', true);
     $('body').on('click', this.close);
   },
 
@@ -87,6 +88,7 @@ module.exports = LayoutView.extend({
     });
     this.destroy();
     this.target.popover('destroy');
+    this.target.data('popoverOpen', false);
   }
 
 });

@@ -14,7 +14,7 @@ var NumpadBehavior = Behavior.extend({
   events: {
     'click @ui.target'      : 'numpadPopover',
     'open:numpad @ui.input' : 'numpadPopover',
-    'keyup @ui.target'      : 'closePopover'
+    'keypress @ui.target'      : 'keyboardEntry'
   },
 
   onRender: function() {
@@ -68,8 +68,14 @@ var NumpadBehavior = Behavior.extend({
   },
   /* jshint +W071 */
 
-  closePopover: function(e){
-    $(e.target).popover('hide');
+  keyboardEntry: function(e){
+    var target = $(e.target);
+    if( target.data('popoverOpen') ){
+      target.one('hidden.bs.popover', function(){
+        target.val( String.fromCharCode(e.keyCode) ).trigger('input');
+      });
+      target.popover('hide');
+    }
   }
 
 });

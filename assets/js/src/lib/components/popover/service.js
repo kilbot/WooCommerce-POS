@@ -13,7 +13,9 @@ module.exports = Service.extend({
   },
 
   open: function(options){
-    if(this.popoverOpen(options.target)){ return; }
+    if( options.target.data('popoverOpen') ){
+      return;
+    }
     this.layout = new Layout(options);
     this.layout.open();
     return this.layout;
@@ -21,14 +23,6 @@ module.exports = Service.extend({
 
   close: function(){
     this.layout.close();
-  },
-
-  popoverOpen: function(target){
-    var describedby = target.attr('aria-describedby');
-    if(describedby && describedby.slice(0,7) === 'popover'){
-      return true;
-    }
-    return false;
   }
 
 });
