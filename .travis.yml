@@ -28,4 +28,4 @@ script:
 
 after_success:
   - php vendor/bin/coveralls -v
-  - grunt coverage --mocha-reporter=dot
+  - grunt mochacov:coverage

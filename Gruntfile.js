@@ -412,16 +412,16 @@ module.exports = function(grunt) {
   });
 
   // test
-  grunt.registerTask('test', 'Run unit tests', ['symlink', 'mochacov:coverage']);
+  grunt.registerTask('test', 'Run unit tests', ['symlink', 'mochacov:test']);
 
   // dev
-  grunt.registerTask('dev', 'Development build', ['compass', 'cssmin', 'jshint', 'symlink', 'mochacov:test', 'webpack:dev', 'uglify', 'watch']);
+  grunt.registerTask('dev', 'Development build', ['compass', 'cssmin', 'jshint', 'test', 'webpack:dev', 'uglify', 'watch']);
 
   // deploy
-  grunt.registerTask('deploy', 'Production build', ['symlink', 'mochacov:test', 'makepot', 'webpack:deploy', 'js_locales', 'uglify', 'copy', 'compress', 'clean']);
+  grunt.registerTask('deploy', 'Production build', ['test', 'makepot', 'webpack:deploy', 'js_locales', 'uglify', 'copy', 'compress', 'clean']);
 
   // default = test
-  grunt.registerTask('default', ['dev']);
+  grunt.registerTask('default', ['test']);
 
   // special task for building js i18n files
   grunt.registerTask('js_locales', 'Combine locales.json files', function() {
