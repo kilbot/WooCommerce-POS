@@ -331,6 +331,27 @@ module.exports = function(grunt) {
       }
     },
 
+    mochacov: {
+      coverage: {
+        options: {
+          coveralls: true,
+          instrument: false
+        }
+      },
+      test: {
+        options: {
+          reporter: 'spec'
+        }
+      },
+      options: {
+        files: [
+          'tests/unit/js/setup/node.js',
+          'tests/unit/js/setup/helpers.js',
+          'tests/unit/js/spec/**/*.spec.js'
+        ]
+      }
+    },
+
     // create symlink from node_modules to assets/js/src (for tests)
     symlink: {
       options: {
@@ -391,16 +412,16 @@ module.exports = function(grunt) {
   });
 
   // test
-  grunt.registerTask('test', 'Run unit tests', ['symlink', 'simplemocha']);
+  grunt.registerTask('test', 'Run unit tests', ['symlink', 'mochacov:coverage']);
 
   // dev
-  grunt.registerTask('dev', 'Development build', ['compass', 'cssmin', 'jshint', 'test', 'webpack:dev', 'uglify', 'watch']);
+  grunt.registerTask('dev', 'Development build', ['compass', 'cssmin', 'jshint', 'symlink', 'mochacov:test', 'webpack:dev', 'uglify', 'watch']);
 
   // deploy
-  grunt.registerTask('deploy', 'Production build', ['test', 'makepot', 'webpack:deploy', 'js_locales', 'uglify', 'copy', 'compress', 'clean']);
+  grunt.registerTask('deploy', 'Production build', ['symlink', 'mochacov:test', 'makepot', 'webpack:deploy', 'js_locales', 'uglify', 'copy', 'compress', 'clean']);
 
   // default = test
-  grunt.registerTask('default', ['test']);
+  grunt.registerTask('default', ['dev']);
 
   // special task for building js i18n files
   grunt.registerTask('js_locales', 'Combine locales.json files', function() {

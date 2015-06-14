@@ -1,24 +1,31 @@
 language: php
 
 php:
-    - 5.3
-#    - 5.4
+  - 5.3
+  #    - 5.4
 
 env:
-    - WP_VERSION=latest WP_MULTISITE=0
-#    - WP_VERSION=latest WP_MULTISITE=1
-#    - WP_VERSION=3.8 WP_MULTISITE=0
-#    - WP_VERSION=3.8 WP_MULTISITE=1
+  - WP_VERSION=latest WP_MULTISITE=0
+  #    - WP_VERSION=latest WP_MULTISITE=1
+  #    - WP_VERSION=3.8 WP_MULTISITE=0
+  #    - WP_VERSION=3.8 WP_MULTISITE=1
 
 before_install:
   - git submodule update --init --recursive
 
+install:
+  - composer require satooshi/php-coveralls:~0.6.1@stable
+
 before_script:
-    - npm install -g grunt-cli
-    - npm install
-    - bash tests/unit/php/bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+  - npm install -g grunt-cli
+  - npm install
+  - bash tests/unit/php/bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 
 script:
-    - grunt test
-    - phpunit
-#    - ./node_modules/.bin/pioneer
+  - grunt test
+  - phpunit
+  #    - ./node_modules/.bin/pioneer
+
+after_success:
+  - php vendor/bin/coveralls -v
+  - grunt coverage --mocha-reporter=dot

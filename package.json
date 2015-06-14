@@ -3,7 +3,9 @@
   "description": "A simple front-end for taking WooCommerce orders at the Point of Sale.",
   "version": "0.4.1",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "dev": "grunt dev",
+    "deploy": "grunt deploy"
   },
   "repository": {
     "type": "git",
@@ -59,6 +61,7 @@
     "grunt-contrib-symlink": "^0.3.0",
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-cov": "^0.4.0",
     "grunt-simple-mocha": "^0.4.0",
     "grunt-webpack": "^1.0.8",
     "grunt-wp-i18n": "^0.5.2",
