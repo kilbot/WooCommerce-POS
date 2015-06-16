@@ -20,11 +20,12 @@ install:
   # php libraries
   - composer require satooshi/php-coveralls:~0.6.1@stable
   - composer require guzzlehttp/guzzle:~5
-  # install wordpress & woocommerce
+  # install wordpress & woocommerce & test theme
   - bash tests/unit/php/bin/install-wp-tests.sh woopos_tests root '' localhost $WP_VERSION
   - mkdir /tmp/wordpress/wp-content/plugins/woocommerce-pos/
   - mv * .[^.]* /tmp/wordpress/wp-content/plugins/woocommerce-pos/
   - mv /tmp/wordpress/* ./
+  - git clone https://github.com/kilbot/WooCommerce-POS-Test-Theme.git wp-content/themes/WooCommerce-POS-Test-Theme
   # apache
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
@@ -44,7 +45,7 @@ before_script:
   - chmod +x wp-cli.phar
   - sudo mv wp-cli.phar /usr/local/bin/wp
   - wp --info
-  - wp core config --dbname=woopos_tests --dbuser=root --dbpass=''
+  - wp core config --dbname=woopos_tests --dbuser=root
   - wp core install --url=woopos.dev --title=WooCommercePOS --admin_email=support@woopos.com.au
   - wp rewrite structure '/%year%/%monthnum%/%postname%'
   - wp plugin activate woocommerce-pos woocommerce
