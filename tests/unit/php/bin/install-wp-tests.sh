@@ -79,27 +79,12 @@ install_db() {
   mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
-install_integration_config(){
-  mv $WP_CORE_DIR/wp-config-sample.php $WP_CORE_DIR/wp-config.php
-  sed $ioption "s/database_name_here/$DB_NAME/" $WP_CORE_DIR/wp-config.php
-  sed $ioption "s/username_here/$DB_USER/" $WP_CORE_DIR/wp-config.php
-  sed $ioption "s/password_here/$DB_PASS/" $WP_CORE_DIR/wp-config.php
-}
-
 install_woo() {
   wget -nv -O /tmp/woocommerce.zip https://downloads.wordpress.org/plugin/woocommerce.zip
   unzip -qo /tmp/woocommerce.zip -d $WP_CORE_DIR/wp-content/plugins
 }
 
-install_wp_cli() {
-  curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-  chmod +x wp-cli.phar
-  sudo mv wp-cli.phar /usr/local/bin/wp
-}
-
 install_wp
 install_test_suite
 install_db
-install_integration_config
 install_woo
-install_wp_cli
