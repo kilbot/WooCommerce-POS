@@ -21,7 +21,7 @@ install:
   - composer require satooshi/php-coveralls:~0.6.1@stable
   - composer require guzzlehttp/guzzle:~5
   # install wordpress & woocommerce
-  - bash tests/unit/php/bin/install-wp-tests.sh unit_test root '' localhost $WP_VERSION
+  - bash tests/unit/php/bin/install-wp-tests.sh woopos_tests root root localhost $WP_VERSION
   - mkdir /tmp/wordpress/wp-content/plugins/woocommerce-pos/
   - mv * .[^.]* /tmp/wordpress/wp-content/plugins/woocommerce-pos/
   - mv /tmp/wordpress/* ./
@@ -44,11 +44,12 @@ before_script:
   - chmod +x wp-cli.phar
   - sudo mv wp-cli.phar /usr/local/bin/wp
   - wp --info
-  - wp core config --dbname=integration_test --dbuser=root
+  - wp core config --dbname=woopos_tests --dbuser=root --dbpass=root
   - wp core install --url=woopos.dev --title=WooCommercePOS --admin_email=support@woopos.com.au
   - wp rewrite structure '/%year%/%monthnum%/%postname%'
   - wp plugin activate woocommerce-pos woocommerce
   - wp option add woocommerce_api_enabled yes
+  - wp import wp-content/plugins/woocommerce/dummy-data/dummy-data.xml
   # grunt-cli
   - cd wp-content/plugins/woocommerce-pos/
   - npm install -g grunt-cli
