@@ -50,7 +50,7 @@ before_script:
   - wp rewrite structure '/%year%/%monthnum%/%postname%'
   - wp plugin activate woocommerce-pos woocommerce
   - wp option update woocommerce_api_enabled yes
-  - wp import wp-content/plugins/woocommerce/dummy-data/dummy-data.xml
+  - wp import wp-content/plugins/woocommerce/dummy-data/dummy-data.xml --authors=create
   # grunt-cli
   - cd wp-content/plugins/woocommerce-pos/
   - npm install -g grunt-cli
