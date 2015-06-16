@@ -44,7 +44,7 @@ before_script:
   - chmod +x wp-cli.phar
   - sudo mv wp-cli.phar /usr/local/bin/wp
   - wp --info
-  - wp core config --dbname=integration_test --dbuser=root --dbpass=
+  - wp core config --dbname=integration_test --dbuser=root
   - wp core install --url=woopos.dev --title=WooCommercePOS --admin_email=support@woopos.com.au
   - wp rewrite structure '/%year%/%monthnum%/%postname%'
   - wp plugin activate woocommerce-pos woocommerce
