@@ -1,8 +1,11 @@
 language: php
 
 php:
-  - 5.3
-  #    - 5.4
+  - 5.4
+
+addons:
+  hosts:
+    - woopos.dev
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
@@ -14,16 +17,35 @@ before_install:
   - git submodule update --init --recursive
 
 install:
+  # php libraries
   - composer require satooshi/php-coveralls:~0.6.1@stable
+  - composer require guzzle/guzzle:~5.3.0
+  # install wordpress & woocommerce
+  - bash tests/unit/php/bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION %TRAVIS_BUILD_DIR%
+  - mkdir /tmp/wordpress/wp-content/plugins/woocommerce-pos/
+  - mv * .[^.]* /tmp/wordpress/wp-content/plugins/woocommerce-pos/
+  - mv /tmp/wordpress/* ./
+  - cd wp-content/plugins/woocommerce-pos/
+  # apache
+  - sudo apt-get update
+  - sudo apt-get install apache2 libapache2-mod-fastcgi
+  # enable php-fpm
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - sudo a2enmod rewrite actions fastcgi alias
+  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+  # configure apache virtual hosts
+  - sudo cp -f tests/unit/php/bin/travis-ci-apache /etc/apache2/sites-available/default
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+  - sudo service apache2 restart
 
 before_script:
   - npm install -g grunt-cli
   - npm install
-  - bash tests/unit/php/bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 
 script:
   - grunt test
-  - phpunit
+  - phpunit -c phpunit.xml.dist
   #    - ./node_modules/.bin/pioneer
 
 after_success:

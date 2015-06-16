@@ -1,6 +1,7 @@
 # [WooCommerce POS](http://woopos.com.au) 
 [![Build Status](https://travis-ci.org/kilbot/WooCommerce-POS.svg)](https://travis-ci.org/kilbot/WooCommerce-POS) 
 [![Code Climate](https://codeclimate.com/github/kilbot/WooCommerce-POS/badges/gpa.svg)](https://codeclimate.com/github/kilbot/WooCommerce-POS)
+[![Coverage Status](https://coveralls.io/repos/kilbot/WooCommerce-POS/badge.svg)](https://coveralls.io/r/kilbot/WooCommerce-POS)
 [![Dependency Status](https://david-dm.org/kilbot/WooCommerce-POS.svg)](https://david-dm.org/kilbot/WooCommerce-POS)
 
 Development repository for WooCommerce POS - the Point of Sale plugin for [WooCommerce](http://woothemes.com/woocommerce/).

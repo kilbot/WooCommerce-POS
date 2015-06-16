@@ -312,30 +312,29 @@ module.exports = function(grunt) {
     },
 
     // tests
-    simplemocha: {
-      options: {
-        globals: ['should'],
-        //timeout: 3000,
-        //ignoreLeaks: false,
-        //grep: '*-test',
-        //ui: 'bdd',
-        reporter: 'spec'
-      },
-
-      all: {
-        src: [
-          'tests/unit/js/setup/node.js',
-          'tests/unit/js/setup/helpers.js',
-          'tests/unit/js/spec/**/*.spec.js'
-        ]
-      }
-    },
+    //simplemocha: {
+    //  options: {
+    //    globals: ['should'],
+    //    //timeout: 3000,
+    //    //ignoreLeaks: false,
+    //    //grep: '*-test',
+    //    //ui: 'bdd',
+    //    reporter: 'spec'
+    //  },
+    //
+    //  all: {
+    //    src: [
+    //      'tests/unit/js/setup/node.js',
+    //      'tests/unit/js/setup/helpers.js',
+    //      'tests/unit/js/spec/**/*.spec.js'
+    //    ]
+    //  }
+    //},
 
     mochacov: {
       coverage: {
         options: {
-          coveralls: true,
-          instrument: false
+          coveralls: true
         }
       },
       test: {
