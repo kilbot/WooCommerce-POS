@@ -15,6 +15,7 @@
   <filter>
     <blacklist>
       <directory suffix=".php">./tests/</directory>
+      <directory suffix=".php">./vendor/</directory>
     </blacklist>
   </filter>
   <logging>
