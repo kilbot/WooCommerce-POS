@@ -21,7 +21,7 @@ install:
   - composer require satooshi/php-coveralls:~0.6.1@stable
 #  - composer require guzzle/guzzle:~5.3.0
   # install wordpress & woocommerce
-  - bash tests/unit/php/bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION %TRAVIS_BUILD_DIR%
+  - bash tests/unit/php/bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
   - mkdir /tmp/wordpress/wp-content/plugins/woocommerce-pos/
   - mv * .[^.]* /tmp/wordpress/wp-content/plugins/woocommerce-pos/
   - mv /tmp/wordpress/* ./
