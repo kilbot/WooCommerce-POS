@@ -48,9 +48,11 @@ before_script:
   - wp core config --dbname=woopos_tests --dbuser=root
   - wp core install --url=woopos.dev --title=WooCommercePOS --admin_user=admin --admin_password=password --admin_email=support@woopos.com.au
   - wp rewrite structure '/%year%/%monthnum%/%postname%'
-  - wp plugin activate woocommerce-pos woocommerce
-  - wp option update woocommerce_api_enabled yes
+  - wp plugin activate woocommerce-pos
+  - wp plugin install woocommerce --activate
+  - wp plugin install wordpress-importer --activate
   - wp import wp-content/plugins/woocommerce/dummy-data/dummy-data.xml --authors=create
+  - wp option update woocommerce_api_enabled yes
   # grunt-cli
   - cd wp-content/plugins/woocommerce-pos/
   - npm install -g grunt-cli
