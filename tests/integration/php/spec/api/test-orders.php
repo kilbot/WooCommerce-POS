@@ -13,14 +13,9 @@ class OrdersAPITest extends WP_UnitTestCase {
 
   public function test_get_valid_response() {
     $response = $this->client->get();
-
     $this->assertEquals(200, $response->getStatusCode());
-
     $data = $response->json();
-
     $this->assertArrayHasKey('store', $data);
-    $this->assertArrayHasKey('name', $data['store']);
-    $this->assertEquals('woopos', $data['store']['name']);
   }
 
 }

@@ -15,6 +15,9 @@ WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
 WP_CORE_DIR=/tmp/wordpress/
 TRAVIS_BUILD_DIR=${TRAVIS_BUILD_DIR}
 
+WP_TESTS_DOMAIN=woopos.dev
+WP_TESTS_EMAIL=support@woopos.com.au
+
 set -ex
 
 install_wp() {
@@ -51,6 +54,8 @@ install_test_suite() {
   sed $ioption "s/yourusernamehere/$DB_USER/" wp-tests-config.php
   sed $ioption "s/yourpasswordhere/$DB_PASS/" wp-tests-config.php
   sed $ioption "s|localhost|${DB_HOST}|" wp-tests-config.php
+  sed $ioption "s/example.org/$WP_TESTS_DOMAIN/" wp-tests-config.php
+  sed $ioption "s/admin@example.org/$WP_TESTS_EMAIL/" wp-tests-config.php
 }
 
 install_db() {
