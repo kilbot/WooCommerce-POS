@@ -1,6 +1,6 @@
 <?php
 
-class Test_WC_POS {
+class Unit_Test_WC_POS {
 
   private $wp_tests_dir;
 
@@ -19,7 +19,6 @@ class Test_WC_POS {
     require_once $this->wp_tests_dir . '/includes/bootstrap.php';
     activate_plugin(WP_CONTENT_DIR . '/plugins/woocommerce/woocommerce.php');
 
-    $this->includes();
   }
 
   public function load_wc_pos() {
@@ -30,18 +29,6 @@ class Test_WC_POS {
     WC_POS_Activator::activate(true);
   }
 
-  private function includes(){
-
-    if( is_readable( 'vendor/autoload.php' ) ){
-      // travis
-      require_once 'vendor/autoload.php';
-    } else {
-      // vvv
-      require_once '/home/vagrant/.composer/vendor/autoload.php';
-    }
-
-  }
-
 }
 
-new Test_WC_POS();
+new Unit_Test_WC_POS();

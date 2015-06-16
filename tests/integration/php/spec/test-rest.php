@@ -1,17 +1,12 @@
 <?php
 
-class RESTAPITest extends WP_UnitTestCase {
+class RESTAPITest extends PHPUnit_Framework_TestCase {
 
   protected $client;
 
   public function setUp() {
-
-    // check api url
-    $wc_api = get_woocommerce_api_url('');
-    $this->assertEquals('http://woopos.dev/wc-api/v2/', $wc_api);
-
     $this->client = new GuzzleHttp\Client([
-      'base_url' => $wc_api,
+      'base_url' => 'http://woopos.dev/wc-api/v2/',
       'defaults' => ['exceptions' => false]
     ]);
   }
