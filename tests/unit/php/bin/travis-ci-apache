@@ -1,6 +1,7 @@
 <VirtualHost *:80>
 
   DocumentRoot %TRAVIS_BUILD_DIR%
+  ServerName www.woopos.dev
 
   <Directory "%TRAVIS_BUILD_DIR%">
     Options FollowSymLinks MultiViews ExecCGI

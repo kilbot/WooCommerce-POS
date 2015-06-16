@@ -40,6 +40,11 @@ install:
   - sudo service apache2 restart
 
 before_script:
+  # wp-cli
+  - wp --info
+  - wp rewrite structure '/%year%/%monthnum%/%postname%'
+  - wp plugin activate woocommerce-pos woocommerce
+  # grunt-cli
   - npm install -g grunt-cli
   - npm install
 
