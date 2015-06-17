@@ -2,6 +2,7 @@
 
   DocumentRoot %TRAVIS_BUILD_DIR%
   ServerName www.woopos.dev
+  ServerAlias woopos.dev
 
   <Directory "%TRAVIS_BUILD_DIR%">
     Options FollowSymLinks MultiViews ExecCGI

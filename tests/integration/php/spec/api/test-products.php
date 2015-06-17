@@ -6,7 +6,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
 
   public function setUp() {
     $this->client = new GuzzleHttp\Client([
-      'base_url' => 'http://woopos.dev/wc-api/v2/products/',
+      'base_url' => get_woocommerce_api_url( 'products' ),
       'defaults' => ['exceptions' => false],
       // 'headers' => [ 'X-WC-POS' => 1 ],
       // 'cookies' => true
