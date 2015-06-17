@@ -53,6 +53,7 @@ before_script:
   - wp plugin install wordpress-importer --activate
   - wp import wp-content/plugins/woocommerce/dummy-data/dummy-data.xml --authors=create
   - wp option update woocommerce_api_enabled yes
+  - cp wp-content/plugins/woocommerce-pos/wp-cli.yml ./
   - wp rewrite flush --hard
   # grunt-cli
   - cd wp-content/plugins/woocommerce-pos/
@@ -67,4 +68,4 @@ script:
 
 after_script:
   - php vendor/bin/coveralls -v
-  - grunt mochacov:coverage
+  - grunt coverage

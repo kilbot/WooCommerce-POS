@@ -311,43 +311,38 @@ module.exports = function(grunt) {
       }
     },
 
-    // tests
-    //simplemocha: {
-    //  options: {
-    //    globals: ['should'],
-    //    //timeout: 3000,
-    //    //ignoreLeaks: false,
-    //    //grep: '*-test',
-    //    //ui: 'bdd',
-    //    reporter: 'spec'
-    //  },
-    //
-    //  all: {
-    //    src: [
-    //      'tests/unit/js/setup/node.js',
-    //      'tests/unit/js/setup/helpers.js',
-    //      'tests/unit/js/spec/**/*.spec.js'
-    //    ]
-    //  }
-    //},
-
-    mochacov: {
-      coverage: {
-        options: {
-          coveralls: true
-        }
-      },
-      test: {
-        options: {
-          reporter: 'spec'
-        }
-      },
+    //tests
+    simplemocha: {
       options: {
-        files: [
+        globals: ['should'],
+        //timeout: 3000,
+        //ignoreLeaks: false,
+        //grep: '*-test',
+        //ui: 'bdd',
+        reporter: 'spec'
+      },
+
+      all: {
+        src: [
           'tests/unit/js/setup/node.js',
           'tests/unit/js/setup/helpers.js',
           'tests/unit/js/spec/**/*.spec.js'
         ]
+      }
+    },
+
+    mocha_istanbul: {
+      coverage: {
+        src: [
+          'tests/unit/js/setup/node.js',
+          'tests/unit/js/setup/helpers.js',
+          'tests/unit/js/spec/**/*.spec.js'
+        ],
+        options: {
+          coverage: true,
+          root: 'assets/js/src',
+          reportFormats: ['lcovonly']
+        }
       }
     },
 
@@ -411,13 +406,16 @@ module.exports = function(grunt) {
   });
 
   // test
-  grunt.registerTask('test', 'Run unit tests', ['symlink', 'mochacov:test']);
+  grunt.registerTask('test', 'Run unit tests', ['symlink', 'simplemocha']);
 
   // dev
   grunt.registerTask('dev', 'Development build', ['compass', 'cssmin', 'jshint', 'test', 'webpack:dev', 'uglify', 'watch']);
 
   // deploy
   grunt.registerTask('deploy', 'Production build', ['test', 'makepot', 'webpack:deploy', 'js_locales', 'uglify', 'copy', 'compress', 'clean']);
+
+  // coverage
+  grunt.registerTask('coverage', ['mocha_istanbul']);
 
   // default = test
   grunt.registerTask('default', ['test']);
@@ -437,6 +435,15 @@ module.exports = function(grunt) {
 
     grunt.config('uglify.js_locales', { 'files': files } );
     grunt.task.run('uglify:js_locales');
+  });
+
+  grunt.event.on('coverage', function(lcov, done){
+    require('coveralls').handleInput(lcov, function(err){
+      if (err) {
+        return done(err);
+      }
+      done();
+    });
   });
 
 };

@@ -12,9 +12,7 @@ assets/js/admin.build.js
 assets/js/app.build.js
 assets/js/core.build.js
 assets/js/app.min.js
-
 assets/js/admin.min.js
-
 assets/js/vendor.bundle.js
-
 assets/js/products.min.js
+coverage
