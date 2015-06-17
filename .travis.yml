@@ -63,7 +63,7 @@ before_script:
 script:
   - grunt test
   - phpunit -c phpunit.xml.dist
-  - phpunit -c phpunit-int.xml
+  - phpunit -c phpunit.int.xml
   #    - ./node_modules/.bin/pioneer
 
 after_script:

@@ -13,12 +13,11 @@
     </testsuite>
   </testsuites>
   <filter>
-    <blacklist>
-      <directory suffix=".php">./tests/</directory>
-      <directory suffix=".php">./vendor/</directory>
-    </blacklist>
+    <whitelist processUncoveredFilesFromWhitelist="false">
+      <directory suffix=".php">./includes</directory>
+    </whitelist>
   </filter>
   <logging>
-      <log type="coverage-clover" target="./tmp/clover.xml" charset="UTF-8" />
+    <log type="coverage-clover" target="coverage/clover.xml" charset="UTF-8" />
   </logging>
 </phpunit>

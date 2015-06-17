@@ -340,7 +340,7 @@ module.exports = function(grunt) {
         ],
         options: {
           coverage: true,
-          root: 'assets/js/src',
+          root: './assets/js/src',
           reportFormats: ['lcovonly']
         }
       }
