@@ -3,7 +3,6 @@
 class ProductsAPITest extends PHPUnit_Framework_TestCase {
 
   protected $client;
-  public $product_99;
 
   public function setUp() {
     $this->client = new GuzzleHttp\Client([
@@ -50,10 +49,11 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('product', $data);
-    $this->product_99 = $data['product'];
   }
 
-  public function test_simple_product_allow_decimal_quantity(){
+  public function test_simple_product_decimal_quantity(){
+    $random_qty = rand(0, 999) / 100;
+
     // set the decimal_qty option
     $option_key = WC_POS_Admin_Settings::DB_PREFIX . 'general';
     update_option( $option_key, array('decimal_qty' => true) );
@@ -65,14 +65,60 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
 
     // change the stock to decimal
     $product['managing_stock'] = true;
-    $product['stock_quantity'] = 3.25;
+    $product['stock_quantity'] = $random_qty;
 
     // update product and check response
-    $response = $this->client->put('99', ['json' => json_encode( $product )]);
+    $response = $this->client->put('99', ['json' => $product ]);
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('product', $data);
-    $this->assertEquals( '3.25', $data['product']['stock_quantity'] );
+    $this->assertEquals( $random_qty, $data['product']['stock_quantity'] );
+  }
+
+  public function test_get_single_variable_product() {
+    $response = $this->client->get('41');
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('product', $data);
+    $this->assertEquals( 'variation', $data['product']['type'] );
+  }
+
+  public function test_variable_product_decimal_quantity(){
+    $random_qty = rand(0, 999) / 100;
+
+    // set the decimal_qty option
+    $option_key = WC_POS_Admin_Settings::DB_PREFIX . 'general';
+    update_option( $option_key, array('decimal_qty' => true) );
+
+    // get single variation
+    $response = $this->client->get('41');
+    $data = $response->json();
+    $product = $data['product'];
+
+    // change the stock to decimal
+    $product['managing_stock'] = true;
+    $product['stock_quantity'] = $random_qty;
+
+    // update variation and check response
+    $response = $this->client->put('41', ['json' => $product ]);
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('product', $data);
+    $this->assertEquals( $random_qty, $data['product']['stock_quantity'] );
+
+    // also need to check the parent output
+    $response = $this->client->get('40');
+    $data = $response->json();
+    $parent = $data['product'];
+    $this->assertArrayHasKey('variations', $parent);
+    $product = '';
+    foreach( $parent['variations'] as $variation ){
+      if( $variation['id'] == 41 ){
+        $product = $variation;
+        break;
+      }
+    }
+    $this->assertEquals( $random_qty, $product['stock_quantity'] );
   }
 
 }

@@ -30,6 +30,7 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
     'downloads',
     'image',
     'images',
+    'parent',
     'rating_count',
     'related_ids',
     'reviews_allowed',
@@ -70,17 +71,14 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    */
   public function product_response( $data, $product, $fields, $server ) {
 
-    $data = $this->filter_response_data( $data );
-
-    // allow decimal stock quantities
-    // todo: this is required because wc api forces stock_quantity to (int)
-    $data['stock_quantity'] = $product->get_stock_quantity();
+    $data = $this->filter_response_data( $data, $product );
 
     // deep dive on variations
     $type = isset( $data['type'] ) ? $data['type'] : '';
     if( $type == 'variable' ) :
       foreach( $data['variations'] as &$variation ) :
-        $variation = $this->filter_response_data( $variation );
+        $_product = wc_get_product( $variation['id'] );
+        $variation = $this->filter_response_data( $variation, $_product );
       endforeach;
     endif;
 
@@ -93,14 +91,20 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    * - add featured_src
    * - add special key for barcode, defaults to sku
    * @param array $data
+   * @param $product
    * @return array
    */
-  private function filter_response_data( array $data ){
+  private function filter_response_data( array $data, $product ){
     $id = isset( $data['id'] ) ? $data['id'] : '';
     $sku = isset( $data['sku'] ) ? $data['sku'] : '';
 
     $data['featured_src'] = $this->get_thumbnail( $id );
     $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $sku, $id );
+
+    // allow decimal stock quantities
+    // todo: this is required because wc api forces stock_quantity to (int)
+    $data['stock_quantity'] = $product->get_stock_quantity();
+
     return array_diff_key( $data, array_flip( $this->blacklist ) );
   }
 
