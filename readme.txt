@@ -79,17 +79,18 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 = 0.4.1 =
 * New: added woocommerce_pos_email_receipt hook
-* Improve: editing a product title in cart
-* Improve: css tweaks for Firefox
+* Improve: editing a product title in cart - commit [216e8a5](https://github.com/kilbot/WooCommerce-POS/commit/216e8a5)
+* Improve: css tweaks for Firefox - commit [216e8a5](https://github.com/kilbot/WooCommerce-POS/commit/216e8a5)
+* Improve: keyboard entry for qty and prices - commit [ee61744](https://github.com/kilbot/WooCommerce-POS/commit/ee61744)
 * Fix: create_order error for WC version 2.2.x
-* Fix: Internal Server Error for PHP 5.2.x
-* Fix: parse $HTTP_RAW_POST_DATA global to array
-* Fix: decimal quantity display
+* Fix: Internal Server Error for PHP 5.2.x - commit [d800d40](https://github.com/kilbot/WooCommerce-POS/commit/d800d40)
+* Fix: parse $HTTP_RAW_POST_DATA global to array - commit [ac88f50](https://github.com/kilbot/WooCommerce-POS/commit/ac88f50)
+* Fix: decimal quantity display - commit [358d95f](https://github.com/kilbot/WooCommerce-POS/commit/358d95f)
 
 = 0.4 =
-* Note: this is a major code refactor, almost every line of code has been rewritten
-* Please check your POS admin after upgrade as many settings have changed
--
+* ** Note: this is a major code refactor, almost every line of code has been rewritten **
+* ** Please check your POS admin after upgrade as many settings have changed **
+
 * Products: Variation popover/drawer
 * Products: Infinite scroll
 * Products: Hotkey for barcode search
@@ -102,7 +103,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Translations: WooCommerce POS now uses automatic downloads
 * New: Set custom permalink for POS front-end
 * Improved: Responsive design for tablets & mobile
--
+
 * Pro: Add customer during checkout
 * Pro: Open multiple carts
 * Pro: Hotkey for credit card readers
@@ -112,7 +113,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Pro: New coupon page
 * Pro: Multiple stores
 * Pro: Compatibility fix for Stripe gateway
--
+
 * Fix: all the things
 
 = 0.3.5 =

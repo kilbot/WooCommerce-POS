@@ -13,6 +13,37 @@
 class WC_POS_API_Products extends WC_POS_API_Abstract {
 
   /**
+   * Product keys not currently used by the POS
+   * - saves storage space in IndexedDB
+   * - saves bandwidth transferring the data
+   * - eg: removing 'description' reduces object size by ~25%
+   * @var array
+   */
+  private $blacklist = array(
+    'average_rating',
+    'cross_sell_ids',
+    'description',
+    'dimensions',
+    'download_expiry',
+    'download_limit',
+    'download_type',
+    'downloads',
+    'image',
+    'images',
+    'rating_count',
+    'related_ids',
+    'reviews_allowed',
+    'shipping_class',
+    'shipping_class_id',
+    'shipping_required',
+    'shipping_taxable',
+    'short_description',
+    'tags',
+    'upsell_ids',
+    'weight',
+  );
+
+  /**
    *
    */
   public function __construct() {
@@ -32,99 +63,63 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    * - add barcode field
    * - unset unnecessary data
    *
-   * @param  array $product_data
+   * @param  array $data
    * @param $product
    *
    * @return array modified data array $product_data
    */
-  public function product_response( $product_data, $product, $fields, $server ) {
-    // remove some unnecessary keys
-    // - saves storage space in IndexedDB
-    // - saves bandwidth transferring the data
-    // eg: removing 'description' reduces object size by ~25%
-    $removeKeys = array(
-      'average_rating',
-      'cross_sell_ids',
-      'description',
-      'dimensions',
-      'download_expiry',
-      'download_limit',
-      'download_type',
-      'downloads',
-      'image',
-      'images',
-      'rating_count',
-      'related_ids',
-      'reviews_allowed',
-      'shipping_class',
-      'shipping_class_id',
-      'shipping_required',
-      'shipping_taxable',
-      'short_description',
-      'tags',
-      'upsell_ids',
-      'weight',
-    );
-    foreach($removeKeys as $key) {
-      unset($product_data[$key]);
-    }
+  public function product_response( $data, $product, $fields, $server ) {
+
+    $data = $this->filter_response_data( $data );
 
     // allow decimal stock quantities
-    $product_data['stock_quantity'] = $product->get_stock_quantity();
-
-    // use thumbnails for images
-    if( $thumb_id = get_post_thumbnail_id( $product_data['id'] ) ) {
-      $image = wp_get_attachment_image_src( $thumb_id, 'shop_thumbnail' );
-      $product_data['featured_src'] = $image[0];
-    } else {
-      $product_data['featured_src'] = wc_placeholder_img_src();
-    }
-
-    // add special key for barcode, defaults to sku
-    // TODO: add an option for any meta field
-    $product_data['barcode'] = $product_data['sku'];
+    // todo: this is required because wc api forces stock_quantity to (int)
+    $data['stock_quantity'] = $product->get_stock_quantity();
 
     // deep dive on variations
-    if( $product_data['type'] == 'variable' ) {
+    $type = isset( $data['type'] ) ? $data['type'] : '';
+    if( $type == 'variable' ) :
+      foreach( $data['variations'] as &$variation ) :
+        $variation = $this->filter_response_data( $variation );
+      endforeach;
+    endif;
 
-      // Woo handling of variation labels is FUBAR
-      // create assoc array of options so we can reconstruct for variation
-      // todo: sanitize_title on slug causes error on variable edit?
-      foreach( $product_data['attributes'] as &$attribute ){
-        $attribute['slug'] = sanitize_title( $attribute['name'] );
-        $labels = array();
-        foreach( $attribute['options'] as $key => $option){
-          $labels[$key]['slug'] = sanitize_title( $option );
-          $labels[$key]['name'] = $option;
-        }
-        $attribute['labels'] = $labels;
-      }
-
-      foreach( $product_data['variations'] as &$variation ) {
-
-        // remove keys
-        foreach($removeKeys as $key) {
-          unset($variation[$key]);
-        }
-
-        // add featured_src
-        if( $thumb_id = get_post_thumbnail_id( $variation['id'] ) ) {
-          $image = wp_get_attachment_image_src( $thumb_id, 'shop_thumbnail' );
-          $variation['featured_src'] = $image[0];
-        } else {
-          $variation['featured_src'] = $product_data['featured_src'];
-        }
-
-        // add special key for barcode, defaults to sku
-        // TODO: add an option for any meta field
-        $variation['barcode'] = $variation['sku'];
-
-      }
-    }
-
-    return $product_data;
+    return $data;
   }
 
+  /**
+   * Filter product response data
+   * - remove some unnecessary keys
+   * - add featured_src
+   * - add special key for barcode, defaults to sku
+   * @param array $data
+   * @return array
+   */
+  private function filter_response_data( array $data ){
+    $id = isset( $data['id'] ) ? $data['id'] : '';
+    $sku = isset( $data['sku'] ) ? $data['sku'] : '';
+
+    $data['featured_src'] = $this->get_thumbnail( $id );
+    $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $sku, $id );
+    return array_diff_key( $data, array_flip( $this->blacklist ) );
+  }
+
+  /**
+   * Returns thumbnail if it exists, if not, returns the WC placeholder image
+   * @param int $id
+   * @return string
+   */
+  private function get_thumbnail($id){
+    if( $thumb_id = get_post_thumbnail_id( $id ) ) {
+      $image = wp_get_attachment_image_src( $thumb_id, 'shop_thumbnail' );
+      return $image[0];
+    }
+    return wc_placeholder_img_src();
+  }
+
+  /**
+   * @param $query
+   */
   public function pre_get_posts($query){
 
     // store original meta_query
