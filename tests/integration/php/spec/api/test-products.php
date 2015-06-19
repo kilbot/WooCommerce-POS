@@ -58,17 +58,12 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     $option_key = WC_POS_Admin_Settings::DB_PREFIX . 'general';
     update_option( $option_key, array('decimal_qty' => true) );
 
-    // get single product
-    $response = $this->client->get('99');
-    $data = $response->json();
-    $product = $data['product'];
-
     // change the stock to decimal
-    $product['managing_stock'] = true;
-    $product['stock_quantity'] = $random_qty;
+    update_post_meta(99, '_manage_stock', 'yes');
+    update_post_meta(99, '_stock', $random_qty);
 
     // update product and check response
-    $response = $this->client->put('99', ['json' => $product ]);
+    $response = $this->client->get('99');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('product', $data);
@@ -90,21 +85,9 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     $option_key = WC_POS_Admin_Settings::DB_PREFIX . 'general';
     update_option( $option_key, array('decimal_qty' => true) );
 
-    // get single variation
-    $response = $this->client->get('41');
-    $data = $response->json();
-    $product = $data['product'];
-
     // change the stock to decimal
-    $product['managing_stock'] = true;
-    $product['stock_quantity'] = $random_qty;
-
-    // update variation and check response
-    $response = $this->client->put('41', ['json' => $product ]);
-    $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
-    $this->assertArrayHasKey('product', $data);
-    $this->assertEquals( $random_qty, $data['product']['stock_quantity'] );
+    update_post_meta(41, '_manage_stock', 'yes');
+    update_post_meta(41, '_stock', $random_qty);
 
     // also need to check the parent output
     $response = $this->client->get('40');

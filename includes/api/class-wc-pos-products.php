@@ -101,9 +101,10 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
     $data['featured_src'] = $this->get_thumbnail( $id );
     $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $sku, $id );
 
-    // allow decimal stock quantities
-    // todo: this is required because wc api forces stock_quantity to (int)
-    $data['stock_quantity'] = $product->get_stock_quantity();
+    // allow decimal stock quantities, fixed in WC 2.4
+    if( version_compare( WC()->version, '2.4', '<' ) ){
+      $data['stock_quantity'] = $product->get_stock_quantity();
+    }
 
     return array_diff_key( $data, array_flip( $this->blacklist ) );
   }

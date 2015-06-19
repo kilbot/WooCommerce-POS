@@ -9,7 +9,10 @@ class Integration_Test_WC_POS {
 
     $this->includes();
     switch_theme('WooCommerce-POS-Test-Theme', 'WooCommerce-POS-Test-Theme');
-
+    update_option('active_plugins', array(
+      'woocommerce-pos/woocommerce-pos.php',
+      'woocommerce/woocommerce.php'
+    ));
     register_shutdown_function( array( $this, 'after_tests' ) );
   }
 

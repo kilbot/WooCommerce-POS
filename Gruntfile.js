@@ -401,6 +401,19 @@ module.exports = function(grunt) {
         force: true
       },
       deploy: ['<%= app.tmp %>']
+    },
+
+    phpunit: {
+      unit: {
+        options: {
+          configuration: 'phpunit.xml'
+        }
+      },
+      integration: {
+        options: {
+          configuration: 'phpunit.int.xml'
+        }
+      }
     }
 
   });

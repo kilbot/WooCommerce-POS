@@ -21,7 +21,7 @@ install:
   - composer require satooshi/php-coveralls:~0.6.1@stable
   - composer require guzzlehttp/guzzle:~5
   # install wordpress & woocommerce & test theme
-  - bash tests/unit/php/bin/install-wp-tests.sh woopos_tests root '' localhost $WP_VERSION
+  - bash tests/unit/php/bin/install-travis-wp-tests.sh woopos_tests root '' localhost $WP_VERSION
   - mkdir /tmp/wordpress/wp-content/plugins/woocommerce-pos/
   - mv * .[^.]* /tmp/wordpress/wp-content/plugins/woocommerce-pos/
   - mv /tmp/wordpress/* ./
@@ -53,7 +53,7 @@ before_script:
   - wp plugin install wordpress-importer --activate
   - wp import wp-content/plugins/woocommerce/dummy-data/dummy-data.xml --authors=create
   - wp option update woocommerce_api_enabled yes
-  - cp wp-content/plugins/woocommerce-pos/wp-cli.yml ./
+  - cp wp-content/plugins/woocommerce-pos/tests/integration/php/bin/wp-cli.yml ./
   - wp rewrite flush --hard
   # grunt-cli
   - cd wp-content/plugins/woocommerce-pos/

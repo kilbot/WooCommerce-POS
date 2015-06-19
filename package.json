@@ -63,6 +63,7 @@
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-mocha-istanbul": "^2.4.0",
+    "grunt-phpunit": "^0.3.6",
     "grunt-simple-mocha": "^0.4.0",
     "grunt-webpack": "^1.0.8",
     "grunt-wp-i18n": "^0.5.2",

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-DB_NAME=pos_tests
-DB_USER=root
-DB_PASS=root
-DB_HOST=localhost
-WP_VERSION=latest
+DB_NAME=$1
+DB_USER=$2
+DB_PASS=$3
+DB_HOST=${4-localhost}
+WP_VERSION=${5-latest}
 
 WP_TESTS_DIR=/tmp/wordpress-tests-lib
 WP_CORE_DIR=/tmp/wordpress/
@@ -67,7 +67,7 @@ install_db() {
   fi
 
   # create database
-  mysqladmin -f drop $DB_NAME
+  mysqladmin -f drop $DB_NAME --user="$DB_USER" --password="$DB_PASS"
   mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
