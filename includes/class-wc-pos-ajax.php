@@ -28,7 +28,9 @@ class WC_POS_AJAX {
       'email_receipt'         => $this,
       'admin_settings'        => $this,
       'send_support_email'    => $this,
-      'update_translations'   => $i18n
+      'update_translations'   => $i18n,
+      'test_http_methods'     => $this,
+      'system_status'         => $this
     );
 
     foreach ( $ajax_events as $ajax_event => $class ) {
@@ -105,9 +107,8 @@ class WC_POS_AJAX {
         array( 'status' => 400 )
       );
 
-    $id       = $_GET['id'];
-    $method   = strtolower($_SERVER['REQUEST_METHOD']);
-    $data     = $this->get_raw_data();
+    $id   = $_GET['id'];
+    $data = $this->get_raw_data();
 
     // special case: gateway_
     $gateway_id = preg_replace( '/^gateway_/', '', strtolower( $id ), 1, $count );
@@ -124,6 +125,12 @@ class WC_POS_AJAX {
           array( 'status' => 400 )
         );
       $handler = new $handlers[$id]();
+    }
+
+    $method = strtolower($_SERVER['REQUEST_METHOD']);
+    if ( isset( $_GET['_method'] ) ) {
+      // Compatibility for clients that can't use PUT/PATCH/DELETE
+      $method = strtolower( $_GET['_method'] );
     }
 
     // get
@@ -144,7 +151,7 @@ class WC_POS_AJAX {
     return new WP_Error(
       'woocommerce_pos_cannot_'.$method.'_'.$id,
       __( 'Settings error', 'woocommerce-pos' ),
-      array( 'status' => 400 )
+      array( 'status' => 405 )
     );
   }
 
@@ -196,6 +203,24 @@ class WC_POS_AJAX {
     }
 
     $this->serve_response($response);
+  }
+
+  /**
+   * Returns payload for any request for testing
+   */
+  public function test_http_methods(){
+    $this->serve_response( array(
+      'method' => strtolower($_SERVER['REQUEST_METHOD']),
+      'payload' => $this->get_raw_data()
+    ));
+  }
+
+  /**
+   * Returns system status JSON array
+   */
+  public function system_status(){
+    $status = new WC_POS_Status();
+    $this->serve_response($status->output());
   }
 
   /**

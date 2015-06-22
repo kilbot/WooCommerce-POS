@@ -6,7 +6,7 @@
 
 <h3><?php /* translators: woocommerce */ _e( 'Tools', 'woocommerce' ); ?></h3>
 
-<table class="widefat">
+<table class="widefat striped">
   <tbody>
 
     <tr>

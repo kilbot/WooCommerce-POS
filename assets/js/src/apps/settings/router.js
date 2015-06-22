@@ -6,6 +6,7 @@ var Checkout = require('./checkout/route');
 var HotKeys = require('./hotkeys/route');
 var Access = require('./access/route');
 var Tools = require('./tools/route');
+var Status = require('./status/route');
 var bb = require('backbone');
 var Radio = bb.Radio;
 var $ = require('jquery');
@@ -60,7 +61,8 @@ var SettingsRouter = Router.extend({
     'checkout': 'showCheckout',
     'hotkeys' : 'showHotkeys',
     'access'  : 'showAccess',
-    'tools'   : 'showTools'
+    'tools'   : 'showTools',
+    'status'  : 'showStatus'
   },
 
   onBeforeRoute: function() {
@@ -134,6 +136,12 @@ var SettingsRouter = Router.extend({
 
   showTools: function(){
     return new Tools({
+      container : this.layout.getRegion('settings')
+    });
+  },
+
+  showStatus: function(){
+    return new Status({
       container : this.layout.getRegion('settings')
     });
   },

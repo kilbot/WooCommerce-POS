@@ -1,11 +1,12 @@
 var LayoutView = require('lib/config/layout-view');
 var POS = require('lib/utilities/global');
-var $ = require('jquery');
+var polyglot = require('lib/utilities/polyglot');
 
 var Layout = LayoutView.extend({
   template: function(){
+    var title = polyglot.t('titles.system-status');
     return '' +
-      '<div class="list-header"><div><h4></h4></div></div>' +
+      '<div class="list-header"><div><h4>' + title + '</h4></div></div>' +
       '<div class="list"></div>' +
       '<div class="list-footer"></div>';
   },
@@ -20,11 +21,6 @@ var Layout = LayoutView.extend({
 
   attributes: {
     'class'  : 'module status-module'
-  },
-
-  onRender: function(){
-    var title = $('#tmpl-pos-status').data('title');
-    this.$('.list-header h4').text(title);
   }
 
 });

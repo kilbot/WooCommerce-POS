@@ -29,6 +29,9 @@ module.exports = Application.extend({
   onBeforeStart: function(){
     debug( 'starting WooCommerce POS admin app' );
 
+    // emulateHTTP
+    bb.emulateHTTP = this.options.emulateHTTP === true;
+
     // i18n
     polyglot.extend(this.options.i18n);
 

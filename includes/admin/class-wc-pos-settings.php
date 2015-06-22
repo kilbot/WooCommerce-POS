@@ -25,7 +25,8 @@ class WC_POS_Admin_Settings {
     'checkout'  => 'WC_POS_Admin_Settings_Checkout',
     'hotkeys'   => 'WC_POS_Admin_Settings_HotKeys',
     'access'    => 'WC_POS_Admin_Settings_Access',
-    'tools'     => 'WC_POS_Admin_Settings_Tools'
+    'tools'     => 'WC_POS_Admin_Settings_Tools',
+    'status'    => 'WC_POS_Admin_Settings_Status'
   );
 
   /**

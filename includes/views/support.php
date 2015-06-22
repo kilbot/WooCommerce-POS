@@ -34,22 +34,3 @@ global $current_user;
     </div>
   </li>
 </script>
-
-<script type="text/x-handlebars-template" id="tmpl-pos-status" data-title="<?php /* translators: woocommerce */ _e( 'System Status', 'woocommerce' ); ?>">
-  <?php
-    $status = new WC_POS_Status();
-    $tests = $status->tests();
-    if($tests): foreach($tests as $test): extract($test);
-  ?>
-  <li>
-    <div class="<?php echo $test ? 'pass': 'fail'; ?> shrink"><i class="icon-<?php echo $test ? 'check': 'times'; ?> icon-lg"></i></div>
-    <div class="title"><?php echo $title; ?></div>
-    <div class="message">
-    <?php echo $test ? $pass: $fail; ?>
-    <?php if(!$test && $action): ?>
-      <a class="btn btn-default" href="<?php echo $action; ?>"><?php echo $prompt; ?></a>
-    <?php endif; ?>
-    </div>
-  </li>
-  <?php endforeach; endif; ?>
-</script>

@@ -334,7 +334,9 @@ class WC_POS_i18n {
       'unpaid'    => __( 'Unpaid', 'woocommerce-pos' ),
       'email-receipt' => __( 'Email Receipt', 'woocommerce-pos' ),
       'open'      => _x( 'Open', 'order status, ie: open order in cart', 'woocommerce-pos' ),
-      'change'    => _x('Change', 'Money returned from cash sale', 'woocommerce-pos')
+      'change'    => _x('Change', 'Money returned from cash sale', 'woocommerce-pos'),
+      'system-status' => /* translators: woocommerce */ __( 'System Status', 'woocommerce' ),
+      'local-storage' => __( 'Local Storage', 'woocommerce-pos' ),
     );
 
     $translations['buttons'] = array(

@@ -1,4 +1,25 @@
 {{#each tests}}
+  <li>
+    <div class="shrink">
+      {{#if pass}}
+        <i class="icon-check icon-lg"></i>
+      {{else}}
+        <i class="icon-times icon-lg"></i>
+      {{/if}}
+    </div>
+    <div class="title">{{title}}</div>
+    <div class="message">
+      {{{message}}}
+      {{#if action}}
+        <button class="btn btn-default" data-action="{{action}}">{{prompt}}</button>
+      {{/if}}
+    </div>
+  </li>
+{{/each}}
+
+<li class="sub-heading"><div>{{sub-heading}}</div></li>
+
+{{#each storage}}
 <li>
   {{#if icon}}
   <div class="shrink">

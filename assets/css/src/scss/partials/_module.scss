@@ -70,8 +70,8 @@
           border-bottom: none;
         }
         &.sub-heading {
-          background-color: nth( $primaryPalette, 6 );
-          color: $inverse-text-color;
+          background-color: nth( $primaryPalette, 2 );
+          color: darken(nth( $primaryPalette, 2 ), 40%);
           text-align: center;
           h5 {
             width: 100%;

@@ -37,6 +37,7 @@ class WC_POS_Params {
     $params['tax_rates']     = $this->tax_rates();
     $params['user']          = $this->user();
     $params['wc_api']        = get_woocommerce_api_url( '' );
+    $params['emulateHTTP']   = get_option( 'woocommerce_pos_emulateHTTP' ) === '1';
     return $params;
   }
 
@@ -50,6 +51,7 @@ class WC_POS_Params {
     $params['customers']  = $this->customers();
     $params['nonce']      = wp_create_nonce( WC_POS_PLUGIN_NAME );
     $params['wc_api']     = get_woocommerce_api_url( '' );
+    $params['emulateHTTP']= get_option( 'woocommerce_pos_emulateHTTP' ) === '1';
     return $params;
   }
 
