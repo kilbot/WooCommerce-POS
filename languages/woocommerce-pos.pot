@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4.0\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2015-06-02 04:17:17+00:00\n"
+"POT-Creation-Date: 2015-06-22 14:08:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,43 +14,43 @@ msgstr ""
 "Language-Team: Team Name <team@example.com>\n"
 "X-Generator: grunt-wp-i18n 0.5.2\n"
 
-#: includes/api/class-wc-pos-orders.php:497
+#: includes/api/class-wc-pos-orders.php:490
 msgid "There was an error processing the payment"
 msgstr ""
 
-#: includes/api/class-wc-pos-orders.php:523
+#: includes/api/class-wc-pos-orders.php:516
 msgid "You are now being redirected offsite to complete the payment. "
 msgstr ""
 
-#: includes/api/class-wc-pos-orders.php:524
+#: includes/api/class-wc-pos-orders.php:517
 msgid "<a href=\"%s\">Click here</a> if you are not redirected automatically. "
 msgstr ""
 
-#: includes/api/class-wc-pos-orders.php:538
+#: includes/api/class-wc-pos-orders.php:531
 msgid "POS Transaction completed."
 msgstr ""
 
-#: includes/class-wc-pos-ajax.php:104
+#: includes/class-wc-pos-ajax.php:106
 msgid "There is no settings id"
 msgstr ""
 
-#: includes/class-wc-pos-ajax.php:123
+#: includes/class-wc-pos-ajax.php:124
 msgid "No handler found for %s settings"
 msgstr ""
 
-#: includes/class-wc-pos-ajax.php:146
+#: includes/class-wc-pos-ajax.php:153
 msgid "Settings error"
 msgstr ""
 
-#: includes/class-wc-pos-ajax.php:165 includes/class-wc-pos-ajax.php:187
+#: includes/class-wc-pos-ajax.php:172 includes/class-wc-pos-ajax.php:196
 msgid "Email sent"
 msgstr ""
 
-#: includes/class-wc-pos-ajax.php:170 includes/class-wc-pos-ajax.php:192
+#: includes/class-wc-pos-ajax.php:180 includes/class-wc-pos-ajax.php:201
 msgid "There was an error sending the email"
 msgstr ""
 
-#: includes/class-wc-pos-ajax.php:207
+#: includes/class-wc-pos-ajax.php:234
 msgid "Invalid security nonce"
 msgstr ""
 
@@ -70,7 +70,11 @@ msgstr ""
 msgid "Email Receipt"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:346 includes/views/print/receipt.php:130
+#: includes/class-wc-pos-i18n.php:339
+msgid "Local Storage"
+msgstr ""
+
+#: includes/class-wc-pos-i18n.php:348 includes/views/print/receipt.php:130
 #: includes/views/support.php:23
 #. translators: wordpress
 #. translators: woocommerce
@@ -78,44 +82,70 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:351
+#: includes/class-wc-pos-i18n.php:353
 msgid "Process Payment"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:355
+#: includes/class-wc-pos-i18n.php:357
 msgid "Return to Sale"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:357
+#: includes/class-wc-pos-i18n.php:359
 msgid "Send"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:359
+#: includes/class-wc-pos-i18n.php:361
 msgid "Void"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:369
+#: includes/class-wc-pos-i18n.php:371
 msgid "Your browser is not supported!"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:18
+#: includes/class-wc-pos-status.php:29
 msgid "WC Version"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:21
+#: includes/class-wc-pos-status.php:36
 msgid "WooCommerce >= %s required"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:27
+#: includes/class-wc-pos-status.php:48
 msgid "WC REST API"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:29
+#: includes/class-wc-pos-status.php:49
 msgid "API is active"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:30
+#: includes/class-wc-pos-status.php:56
 msgid "Access to the REST API is required"
+msgstr ""
+
+#: includes/class-wc-pos-status.php:68
+msgid ""
+"<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks "
+"to work correctly"
+msgstr ""
+
+#: includes/class-wc-pos-status.php:70
+msgid "Enable permalinks"
+msgstr ""
+
+#: includes/class-wc-pos-status.php:78
+msgid "Unable to test the REST API"
+msgstr ""
+
+#: includes/class-wc-pos-status.php:86
+msgid "Unable to access the REST API"
+msgstr ""
+
+#: includes/class-wc-pos-status.php:88
+msgid "Save permalinks"
+msgstr ""
+
+#: includes/class-wc-pos-status.php:96
+msgid "Unable to use RESTful HTTP methods, fallback is enabled"
 msgstr ""
 
 #: includes/class-wc-pos-template.php:152
@@ -245,27 +275,27 @@ msgctxt "Money returned from cash sale"
 msgid "Change"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:342
+#: includes/class-wc-pos-i18n.php:344
 msgctxt "system status: delete local records"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:353
+#: includes/class-wc-pos-i18n.php:355
 msgctxt "restore default settings"
 msgid "Restore defaults"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:354
+#: includes/class-wc-pos-i18n.php:356
 msgctxt "Numpad return key"
 msgid "return"
 msgstr ""
 
-#: includes/class-wc-pos-i18n.php:373
+#: includes/class-wc-pos-i18n.php:375
 msgctxt "eg: 23 records"
 msgid "record |||| records"
 msgstr ""
 
-#: includes/class-wc-pos-params.php:74
+#: includes/class-wc-pos-params.php:76
 msgctxt "Product tab: 'On Sale' products"
 msgid "On Sale"
 msgstr ""

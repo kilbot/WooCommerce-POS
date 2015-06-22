@@ -33,7 +33,7 @@ module.exports =  ItemView.extend({
       if( e.data === 'complete' ){
         this.close();
         view.$('.spinner').hide();
-        Radio.command('modal', 'update', { footer: {
+        Radio.request('modal', 'update', { footer: {
           show: true
         }});
       } else {

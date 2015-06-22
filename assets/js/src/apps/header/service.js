@@ -20,7 +20,7 @@ var Service = Service.extend({
       'route': this.browserCheck
     });
 
-    this.channel.comply({
+    this.channel.reply({
       'update:title': this.updateTitle
     }, this);
   },
@@ -42,7 +42,7 @@ var Service = Service.extend({
   showMenu: function(){
     var view = new Menu();
 
-    this.channel.comply({
+    this.channel.reply({
       'open:menu'   : view.open,
       'close:menu'  : view.close
     }, view);

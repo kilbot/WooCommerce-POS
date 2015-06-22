@@ -19,7 +19,6 @@ describe('apps/app/application.js', function() {
 
     it('should create a layout', function() {
       expect(this.LayoutView).to.have.been.calledWithNew;
-      expect(this.module).to.have.property('layout', this.layout);
     });
   });
 

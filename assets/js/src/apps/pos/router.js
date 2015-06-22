@@ -17,7 +17,7 @@ var POSRouter = Router.extend({
 
   initialize: function(options) {
     this.container = options.container;
-    this.channel.comply({
+    this.channel.reply({
       'show:cart'     : this.showCart,
       'show:checkout' : this.showCheckout,
       'show:receipt'  : this.showReceipt,
@@ -50,7 +50,7 @@ var POSRouter = Router.extend({
   onBeforeRoute: function(){
     //this.setActiveTab();
     this.showProducts();
-    Radio.command('header', 'update:title', '');
+    Radio.request('header', 'update:title', '');
   },
 
   setActiveTab: function(){

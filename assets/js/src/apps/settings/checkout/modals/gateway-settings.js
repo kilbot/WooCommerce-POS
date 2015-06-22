@@ -39,7 +39,7 @@ module.exports = FormView.extend({
     'change:title': function(modal, value){
       var update = {};
       update.header = { title: value };
-      Radio.command('modal', 'update', update);
+      Radio.request('modal', 'update', update);
     }
   },
 

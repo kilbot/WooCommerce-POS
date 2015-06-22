@@ -40,7 +40,7 @@ var View = ItemView.extend({
 
   openMenu: function(e){
     e.preventDefault();
-    Radio.command('header', 'open:menu');
+    Radio.request('header', 'open:menu');
   },
 
   showHelpModal: function() {

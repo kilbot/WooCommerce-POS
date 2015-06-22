@@ -101,7 +101,7 @@ describe('entities/service.js', function () {
   });
 
   it('should be able to get/set data in localStorage', function() {
-    this.module.channel.command('set', {
+    this.module.channel.request('set', {
       type: 'localStorage',
       name: 'test',
       data: {foo: 'bar', bat: 'man'}
@@ -112,7 +112,7 @@ describe('entities/service.js', function () {
       key: 'foo'
     });
     expect(foo).equals('bar');
-    this.module.channel.command('set', {
+    this.module.channel.request('set', {
       type: 'localStorage',
       name: 'test',
       data: {foo: 'baz'}
@@ -125,7 +125,7 @@ describe('entities/service.js', function () {
   });
 
   it('should be able to remove data from localStorage', function() {
-    this.module.channel.command('remove', {
+    this.module.channel.request('remove', {
       type: 'localStorage',
       name: 'test',
       key: 'bat'
@@ -135,7 +135,7 @@ describe('entities/service.js', function () {
       name: 'test'
     });
     expect(test).eql({foo: 'baz'});
-    this.module.channel.command('remove', {
+    this.module.channel.request('remove', {
       type: 'localStorage',
       name: 'test'
     });

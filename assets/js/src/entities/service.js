@@ -22,9 +22,9 @@ var EntitiesService = Service.extend({
 
   initialize: function() {
     this.channel.reply('get', this.get, this);
-    this.channel.comply('set', this.set, this);
-    this.channel.comply('remove', this.remove, this);
-    this.channel.comply('set:filter', this.setFilter, this);
+    this.channel.reply('set', this.set, this);
+    this.channel.reply('remove', this.remove, this);
+    this.channel.reply('set:filter', this.setFilter, this);
   },
 
   collections: {

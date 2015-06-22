@@ -26,7 +26,7 @@ module.exports = Service.extend({
     this.layout = new LayoutView();
     this.container.show(this.layout);
 
-    this.channel.comply({
+    this.channel.reply({
       'update': this.layout.update
     }, this.layout);
 

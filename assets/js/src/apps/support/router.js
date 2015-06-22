@@ -27,7 +27,7 @@ module.exports = Router.extend({
   updateTitle: function(){
     // TODO: put menu into params
     var title = $('#menu li.support').text();
-    Radio.command('header', 'update:title', title);
+    Radio.request('header', 'update:title', title);
   },
 
   showForm: function(){
