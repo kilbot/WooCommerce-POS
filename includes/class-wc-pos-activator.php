@@ -125,16 +125,20 @@ class WC_POS_Activator {
    * Check dependencies
    */
   public function run_checks() {
+    if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
+      return;
+
+    if( ! current_user_can( 'activate_plugins' ) )
+      return;
+
     $this->version_check();
     $this->woocommerce_check();
-    $this->wc_api_check();
-    $this->permalink_check();
   }
 
   /**
-   * Check version number, runs every time
+   * Check version number, runs every admin page load
    */
-  public function version_check(){
+  private function version_check(){
     // next check the POS version number
     $old = get_option( 'woocommerce_pos_db_version' );
     if( !$old || version_compare( $old, WC_POS_VERSION, '<' ) ) {
@@ -146,7 +150,7 @@ class WC_POS_Activator {
   /**
    * Upgrade database
    */
-  public function db_upgrade( $old, $current ) {
+  private function db_upgrade( $old, $current ) {
     $db_updates = array(
       '0.4' => 'updates/update-0.4.php'
     );
@@ -159,57 +163,23 @@ class WC_POS_Activator {
   }
 
   /**
-   * Check if WooCommerce is active
+   * WooCommerce POS will not load if WooCommerce is not present
    */
   private function woocommerce_check() {
-    if( ! current_user_can( 'activate_plugins' ) )
-      return;
-
-    if ( ! class_exists( 'WooCommerce' ) && current_user_can( 'activate_plugins' ) ) {
-
-      // alert the user
-      $error = array (
-        'msg_type'  => 'error',
-        'msg'     => sprintf( __('<strong>WooCommerce POS</strong> requires <a href="%s">WooCommerce</a>. Please <a href="%s">install and activate WooCommerce</a>', 'woocommerce-pos' ), 'http://wordpress.org/plugins/woocommerce/', admin_url('plugins.php') ) . ' &raquo;'
-      );
-      do_action('woocommerce_pos_add_admin_notice', $error);
-    }
-
+    if( ! class_exists( 'WooCommerce' ) )
+      add_action( 'admin_notices', array( $this, 'woocommerce_alert' ) );
   }
 
   /**
-   * Check if the WC API option is enabled
+   * Admin message - WooCommerce not activated
    */
-  private function wc_api_check() {
-    if( ! current_user_can( 'manage_woocommerce' ) )
-      return;
-
-    if( get_option( 'woocommerce_api_enabled' ) !== 'yes' && ! isset( $_POST['woocommerce_api_enabled'] ) ) {
-
-      // alert the user
-      $error = array (
-        'msg_type'  => 'error',
-        'msg'     => sprintf( __('<strong>WooCommerce POS</strong> requires the WooCommerce REST API. Please <a href="%s">enable the REST API</a>', 'woocommerce-pos' ), admin_url('admin.php?page=wc-settings') ) . ' &raquo;'
-      );
-      do_action('woocommerce_pos_add_admin_notice', $error);
-
-    }
-  }
-
-  /**
-   * Check if permalinks enabled, WC API needs permalinks
-   */
-  private function permalink_check() {
-    global $wp_rewrite;
-    if( $wp_rewrite->permalink_structure == '' ) {
-
-      // alert the user
-      $error = array (
-        'msg_type'  => 'error',
-        'msg'     => sprintf( __('<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks to work correctly. Please <a href="%s">enable permalinks</a>.', 'woocommerce-pos'), admin_url('options-permalink.php') ) . ' &raquo;'
-      );
-      do_action('woocommerce_pos_add_admin_notice', $error);
-    }
+  public function woocommerce_alert(){
+    echo '<div class="error">
+      <p>'. sprintf( __('<strong>WooCommerce POS</strong> requires <a href="%s">WooCommerce</a>. Please <a href="%s">install and activate WooCommerce</a>', 'woocommerce-pos' ), 'http://wordpress.org/plugins/woocommerce/', admin_url('plugins.php') ) . ' &raquo;</p>
+      </div>';
   }
 
 }
+
+// self loading
+new WC_POS_Activator();

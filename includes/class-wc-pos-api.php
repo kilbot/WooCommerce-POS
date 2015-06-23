@@ -50,6 +50,7 @@ class WC_POS_API {
   }
 
   /**
+   * - this filter was introduced in WC 2.3
    * @param $args
    * @param $request_args
    * @return mixed

@@ -2,26 +2,23 @@
 
 class Integration_Test_WC_POS {
 
+  private $wp_root;
+
   public function __construct(){
 
     ini_set( 'display_errors','on' );
     error_reporting( E_ALL );
 
     $this->includes();
-    switch_theme('WooCommerce-POS-Test-Theme', 'WooCommerce-POS-Test-Theme');
-    update_option('active_plugins', array(
-      'woocommerce-pos/woocommerce-pos.php',
-      'woocommerce/woocommerce.php'
-    ));
-    register_shutdown_function( array( $this, 'after_tests' ) );
+    $this->setup();
+    register_shutdown_function( array( $this, 'shutdown' ) );
   }
 
   /**
    * include wp-load
    * include composer autoloader
    */
-  private function includes(){
-
+  public function includes(){
     require_once(__DIR__.'/../../../../../../wp-load.php');
 
     if( is_readable( 'vendor/autoload.php' ) ){
@@ -34,10 +31,18 @@ class Integration_Test_WC_POS {
 
   }
 
+  public function setup(){
+    switch_theme('WooCommerce-POS-Test-Theme', 'WooCommerce-POS-Test-Theme');
+    update_option('active_plugins', array(
+      'woocommerce-pos/woocommerce-pos.php',
+      'woocommerce/woocommerce.php'
+    ));
+  }
+
   /**
    * runs after all tests are complete
    */
-  public function after_tests(){
+  public function shutdown(){
     switch_theme('twentyfifteen', 'twentyfifteen');
   }
 

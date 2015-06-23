@@ -51,7 +51,12 @@ require_once WC_POS_PLUGIN_PATH . 'includes/class-wc-pos.php';
 /**
  * Begins execution of the plugin.
  */
-add_action( 'woocommerce_loaded', 'run_woocommerce_pos' );
 function run_woocommerce_pos() {
   new WC_POS();
+}
+global $wp_actions;
+if ( isset( $wp_actions['woocommerce_loaded'] ) ) {
+  run_woocommerce_pos();
+} else {
+  add_action( 'woocommerce_loaded', 'run_woocommerce_pos' );
 }

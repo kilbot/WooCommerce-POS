@@ -10,7 +10,7 @@
 
 class WC_POS_Status {
 
-  private $wc_min_version = '2.2';
+  private $wc_min_version = '2.3';
 
   public function output() {
     $results = array(
@@ -21,7 +21,7 @@ class WC_POS_Status {
   }
 
   /**
-   * Test WC >= 2.2
+   * Test WC >= $wc_min_version
    * @return boolean
    */
   private function test_wc_version() {
@@ -68,14 +68,6 @@ class WC_POS_Status {
         'message' => __( '<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks to work correctly', 'woocommerce-pos' ),
         'action'  => admin_url('options-permalink.php'),
         'prompt'  => __( 'Enable permalinks', 'woocommerce-pos' )
-      ));
-    }
-
-    // check curl
-    if( !function_exists('curl_init') ){
-      return array_merge( $result, array(
-        'pass'    => false,
-        'message' => __( 'Unable to test the REST API', 'woocommerce-pos' )
       ));
     }
 
@@ -126,16 +118,11 @@ class WC_POS_Status {
    * @return bool|int
    */
   private function http_status( $url, $method = 'GET' ){
-    if( $ch = curl_init($url)) {
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-      curl_exec($ch);
-      $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-      curl_close($ch);
-      return (int) $status;
-    } else {
-      return false;
-    }
+    $args = array(
+      'method' => $method
+    );
+    $response = wp_remote_request( $url, $args );
+    return wp_remote_retrieve_response_code( $response );
   }
 
 }

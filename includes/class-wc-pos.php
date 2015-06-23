@@ -70,7 +70,6 @@ class WC_POS {
 
     // admin only
     if (is_admin() && (!defined('DOING_AJAX') || !DOING_AJAX)) {
-      new WC_POS_Activator(); // contains sanity checks
       new WC_POS_Admin();
     }
 

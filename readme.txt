@@ -24,7 +24,7 @@ You can see a demo of the WooCommerce POS plugin in action by going to [http://d
 * Upgrade to Pro: http://woopos.com.au/pro
 
 = REQUIREMENTS =
-* WooCommerce >= 2.2.0
+* WooCommerce >= 2.3.0
 * [A modern browser](http://woopos.com.au/faq/browser-compatibility/)
 
 == Installation ==
