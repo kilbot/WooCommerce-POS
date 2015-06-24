@@ -30,7 +30,8 @@ class WC_POS_AJAX {
       'send_support_email'    => $this,
       'update_translations'   => $i18n,
       'test_http_methods'     => $this,
-      'system_status'         => $this
+      'system_status'         => $this,
+      'toggle_legacy_server'  => 'WC_POS_Status'
     );
 
     foreach ( $ajax_events as $ajax_event => $class ) {
@@ -127,24 +128,26 @@ class WC_POS_AJAX {
       $handler = new $handlers[$id]();
     }
 
-    $method = strtolower($_SERVER['REQUEST_METHOD']);
+    // Compatibility for clients that can't use PUT/PATCH/DELETE
+    $method = strtoupper($_SERVER['REQUEST_METHOD']);
     if ( isset( $_GET['_method'] ) ) {
-      // Compatibility for clients that can't use PUT/PATCH/DELETE
-      $method = strtolower( $_GET['_method'] );
+      $method = strtoupper( $_GET['_method'] );
+    } elseif ( isset( $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] ) ) {
+      $method = strtoupper( $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] );
     }
 
     // get
-    if( $method === 'get' ) {
+    if( $method === 'GET' ) {
       return $handler->get_data();
     }
 
     // set
-    if( $method === 'post' || $method === 'put' ) {
+    if( $method === 'POST' || $method === 'PUT' ) {
       return $handler->save($data);
     }
 
     // delete
-    if( $method === 'delete' ) {
+    if( $method === 'DELETE' ) {
       return $handler->delete($data);
     }
 

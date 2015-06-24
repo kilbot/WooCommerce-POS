@@ -103,7 +103,7 @@ class WC_POS_Template {
     $scripts = array(
       'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js',
       'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.9.3/lodash.min.js',
-      'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.1/backbone-min.js',
+      'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js',
       'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.0/backbone.radio.min.js',
       'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.2/backbone.marionette.min.js',
       'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js',

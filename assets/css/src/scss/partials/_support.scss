@@ -21,10 +21,10 @@
 .status-module {
 	.list {
 		ul li {
-			.pass, i.icon-check {
+			.pass, i.icon-success {
 				color: $state-success-text;
 			}
-			.fail, i.icon-times {
+			.fail, i.icon-error {
 				color: $state-danger-text;
 			}
 			> div.title {

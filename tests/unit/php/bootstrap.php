@@ -9,7 +9,7 @@ class Unit_Test_WC_POS {
     ini_set( 'display_errors','on' );
     error_reporting( E_ALL );
 
-    $this->wp_tests_dir = getenv('WP_TESTS_DIR') ? getenv('WP_TESTS_DIR') : '/tmp/wordpress-tests-lib';
+    $this->wp_tests_dir = '/tmp/wordpress-tests-lib';
 
     require_once $this->wp_tests_dir . '/includes/functions.php';
 

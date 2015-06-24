@@ -35,7 +35,29 @@ var Status = Route.extend({
     var view = new View({
       tests: this.tests
     });
+    this.listenTo( view, {
+      'enable:legacy' : this.enableLegacy,
+      'disable:legacy': this.disableLegacy
+    });
     this.container.show(view);
+  },
+
+  enableLegacy: function(){
+    this.toggleLegacy(true);
+  },
+
+  disableLegacy: function(){
+    this.toggleLegacy(false);
+  },
+
+  toggleLegacy: function(toggle){
+    $.getJSON( this.ajaxurl, {
+      action: 'wc_pos_toggle_legacy_server',
+      enable: toggle,
+      security: this.nonce
+    }, function(){
+      window.location.reload();
+    });
   }
 
 });

@@ -12,16 +12,12 @@
   {{#each []}}
   <tr>
     <th style="width:25%">{{title}}</th>
-    {{#if pass}}
-      <td class="pass" style="width:10%"><i class="icon-check"></i></td>
-    {{else}}
-      <td class="fail" style="width:10%"><i class="icon-times"></i></td>
-    {{/if}}
+    <td style="width:10%;text-align:center;"><i class="icon-{{#if pass}}success{{else}}error{{/if}} icon-lg"></i></td>
     <td>
       {{{message}}}
-      {{#if action}}
-        <a href="{{action}}" class="button">{{prompt}}</a>
-      {{/if}}
+      {{#each buttons}}
+        <a href="{{#if href}}{{href}}{{else}}#{{/if}}" {{#if action}}data-action="{{action}}"{{/if}} class="button">{{prompt}}</a>
+      {{/each}}
     </td>
   </tr>
   {{/each}}

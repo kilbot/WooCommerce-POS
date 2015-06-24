@@ -19,6 +19,11 @@ class WC_POS_API {
     if( ! is_pos() )
       return;
 
+    // support for X-HTTP-Method-Override for WC < 2.4
+    if( version_compare( WC()->version, '2.4', '<' ) && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) ){
+      $_GET['_method'] = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
+    }
+
     add_filter( 'woocommerce_api_dispatch_args', array( $this, 'dispatch_args'), 10, 2 );
     add_filter( 'woocommerce_api_query_args', array( $this, 'woocommerce_api_query_args' ), 10, 2 );
   }
@@ -63,7 +68,7 @@ class WC_POS_API {
       unset( $request_args['in'] );
     }
 
-    // pos query
+    // required for compatibility WC < 2.4
     if ( ! empty( $request_args['not_in'] ) ) {
       $args['post__not_in'] = explode(',', $request_args['not_in']);
       unset( $request_args['not_in'] );

@@ -12,6 +12,16 @@ var View = ItemView.extend({
     id: 'wc-pos-settings-status'
   },
 
+  ui: {
+    enableLegacy  : 'a[data-action="enable-legacy-server"]',
+    disableLegacy : 'a[data-action="disable-legacy-server"]'
+  },
+
+  triggers: {
+    'click @ui.enableLegacy'  : 'enable:legacy',
+    'click @ui.disableLegacy' : 'disable:legacy'
+  },
+
   templateHelpers: function(){
     return this.options.tests;
   }

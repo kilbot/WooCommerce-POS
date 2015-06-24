@@ -6,10 +6,11 @@ class InstallTest extends WP_UnitTestCase {
 
   function setUp(){
     $this->activator = new WC_POS_Activator();
+    wp_set_current_user(1);
   }
 
   function test_version_check() {
-    $this->activator->version_check();
+    $this->activator->run_checks();
     $version = get_option( 'woocommerce_pos_db_version' );
     $this->assertEquals( WC_POS_VERSION, $version );
   }

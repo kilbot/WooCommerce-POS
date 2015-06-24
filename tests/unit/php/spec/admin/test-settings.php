@@ -2,6 +2,10 @@
 
 class SettingsTest extends WP_UnitTestCase {
 
+  function setUp(){
+
+  }
+
   function test_delete_settings(){
     update_option( WC_POS_Admin_Settings::DB_PREFIX . 'test', 'dummy' );
     WC_POS_Admin_Settings::delete_settings('test');
