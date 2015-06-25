@@ -3,6 +3,7 @@ var $ = require('jquery');
 var Tmpl = require('./status.hbs');
 var hbs = require('handlebars');
 var polyglot = require('lib/utilities/polyglot');
+var EmulateHTTP = require('lib/behaviors/emulateHTTP');
 
 module.exports = ItemView.extend({
   tagName: 'ul',
@@ -16,6 +17,12 @@ module.exports = ItemView.extend({
   events: {
     'click @ui.toggle': 'toggleReport',
     'click @ui.btn'   : 'buttonClick'
+  },
+
+  behaviors: {
+    EmulateHTTP: {
+      behaviorClass: EmulateHTTP
+    }
   },
 
   templateHelpers: function(){

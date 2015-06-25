@@ -39,5 +39,17 @@
       </td>
     </tr>
 
+    <tr>
+      <th><?php _e( 'Legacy Server Support', 'woocommerce-pos' ); ?></th>
+      <td>
+        <?php $toggle = get_option('woocommerce_pos_emulateHTTP') === '1'; ?>
+        <a href="#" data-action="legacy-<?php echo $toggle ? 'disable' : 'enable'; ?>" class="button">
+          <?php $toggle ? /* translators: wordpress */ _e('Disable') : /* translators: wordpress */ _e('Enable'); ?>
+        </a>
+        <?php _e( 'Emulate RESTful HTTP methods to support legacy servers.', 'woocommerce-pos' ); ?>
+      </td>
+    </tr>
+
+
   </tbody>
 </table>

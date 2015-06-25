@@ -66,7 +66,9 @@ var StatusRoute = Route.extend({
       storage: this.storageStatus()
     });
 
-    this.listenTo(view, 'action:clear', this.clearDB);
+    this.listenTo(view, {
+      'action:clear'  : this.clearDB
+    });
 
     this.layout.getRegion('status').show( view );
   },

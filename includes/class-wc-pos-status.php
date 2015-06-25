@@ -47,6 +47,10 @@ class WC_POS_Status {
     return $result;
   }
 
+  /**
+   * Test WC REST API is accessible using RESTful HTTP methods
+   * @return array
+   */
   private function test_wc_rest_api() {
     $result = array(
       'title'   => __( 'WC REST API', 'woocommerce-pos' ),
@@ -84,22 +88,16 @@ class WC_POS_Status {
     }
 
     // check API access
-    if( $this->http_status( get_woocommerce_api_url('') ) !== 200 ){
+    if( !$this->http_status( get_woocommerce_api_url('') ) ){
       return array_merge( $result, array(
         'pass'    => false,
-        'message' => __( 'Unable to access the REST API', 'woocommerce-pos' ),
-        'buttons' => array(
-          array(
-            'href'  => admin_url('options-permalink.php'),
-            'prompt'  => __( 'Save permalinks', 'woocommerce-pos' )
-          )
-        )
+        'message' => __( 'Unable to test the REST API', 'woocommerce-pos' )
       ));
     }
 
     // check http methods
     $can_use_restful_methods = $this->use_restful_http_methods();
-    $legacy_server_enabled = get_option( 'woocommerce_pos_emulateHTTP' );
+    $legacy_server_enabled = get_option( 'woocommerce_pos_emulateHTTP' ) === '1';
 
     if( !$can_use_restful_methods && !$legacy_server_enabled ){
       return array_merge( $result, array(
@@ -107,7 +105,7 @@ class WC_POS_Status {
         'message' => __( 'Unable to use RESTful HTTP methods', 'woocommerce-pos' ),
         'buttons' => array(
           array(
-            'action'  => 'enable-legacy-server',
+            'action'  => 'legacy-enable',
             'prompt'  => __( 'Enable legacy server support', 'woocommerce-pos' )
           )
         )
@@ -117,10 +115,10 @@ class WC_POS_Status {
     if( $can_use_restful_methods && $legacy_server_enabled ) {
       return array_merge( $result, array(
         'pass'    => false,
-        'message' => __( 'Legacy server enabled', 'woocommerce-pos' ),
+        'message' => __( 'Legacy server support enabled', 'woocommerce-pos' ),
         'buttons' => array(
           array(
-            'action'  => 'disable-legacy-server',
+            'action'  => 'legacy-disable',
             'prompt'  => __( 'Disable legacy server support', 'woocommerce-pos' )
           )
         )
@@ -133,7 +131,7 @@ class WC_POS_Status {
   }
 
   /**
-   * Check response from HTTP methods
+   * Check response using RESTful HTTP methods
    * @return bool
    */
   private function use_restful_http_methods(){
@@ -142,22 +140,42 @@ class WC_POS_Status {
       'security' => wp_create_nonce( WC_POS_PLUGIN_NAME )
     );
     $url = admin_url( 'admin-ajax.php?'. http_build_query( $args ) );
-    return $this->http_status( $url, 'PUT' ) === 200 && $this->http_status( $url, 'DELETE' ) === 200;
+    return $this->http_status( $url, 'PUT' ) && $this->http_status( $url, 'DELETE' );
   }
 
   /**
+   * Get response code for REST API
+   * - get_headers seems to be faster than wp_remote_request
+   * - however, get_headers has no timeout
+   * - seeing false positives from some servers
    * @param $url
    * @param $method
    * @return bool|int
    */
   private function http_status( $url, $method = 'GET' ){
+    // try get_headers first
+    stream_context_set_default(
+      array(
+        'http' => array(
+          'method' => $method
+        )
+      )
+    );
+    $headers = get_headers($url);
+    if( isset($headers[0]) )
+      return substr($headers[0], 9, 3) === '200';
+
+    // if get_headers fails, try wp_remote_request
     $args = array(
       'method' => $method
     );
     $response = wp_remote_request( $url, $args );
-    return wp_remote_retrieve_response_code( $response );
+    return wp_remote_retrieve_response_code( $response ) === 200;
   }
 
+  /**
+   * Option for to emulate RESTful HTTP requests
+   */
   static public function toggle_legacy_server(){
     if( isset($_GET['enable']) && $_GET['enable'] === 'true' ) {
       update_option( 'woocommerce_pos_emulateHTTP', true );

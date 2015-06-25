@@ -1,6 +1,6 @@
 var ItemView = require('lib/config/item-view');
 var POS = require('lib/utilities/global');
-//var Tooltip = require('lib/behaviors/tooltip');
+var EmulateHTTP = require('lib/behaviors/emulateHTTP');
 var $ = require('jquery');
 
 var View = ItemView.extend({
@@ -13,11 +13,11 @@ var View = ItemView.extend({
     id: 'wc-pos-settings-tools'
   },
 
-  //behaviors: {
-  //  Tooltip: {
-  //    behaviorClass: Tooltip
-  //  }
-  //},
+  behaviors: {
+    EmulateHTTP: {
+      behaviorClass: EmulateHTTP
+    }
+  },
 
   ui: {
     translation: '*[data-action="translation"]'
