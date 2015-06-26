@@ -2,16 +2,16 @@
   <strong>{{name}}</strong>
   {{#unless this.select}}
     <div class="btn-group" data-toggle="buttons">
-    {{#each labels}}
-      <button class="btn btn-default" value="{{slug}}" data-name="{{../name}}">{{name}}</button>
+    {{#each options}}
+      <button class="btn btn-default" value="{{this}}" data-variation="{{../slug}}">{{this}}</button>
     {{/each}}
     </div>
   {{/unless}}
   {{#if this.select}}
-    <select data-name="{{name}}">
+    <select data-variation="{{slug}}">
         <option value="">{{this.emptyOption}}</option>
-    {{#each labels}}
-        <option value="{{slug}}">{{name}}</option>
+    {{#each options}}
+        <option value="{{this}}">{{this}}</option>
     {{/each}}
     </select>
   {{/if}}

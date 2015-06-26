@@ -13,35 +13,74 @@
 class WC_POS_API_Products extends WC_POS_API_Abstract {
 
   /**
-   * Product keys not currently used by the POS
-   * - saves storage space in IndexedDB
-   * - saves bandwidth transferring the data
-   * - eg: removing 'description' reduces object size by ~25%
+   * Product fields used by the POS
    * @var array
    */
-  private $blacklist = array(
-    'average_rating',
-    'cross_sell_ids',
-    'description',
-    'dimensions',
-    'download_expiry',
-    'download_limit',
-    'download_type',
-    'downloads',
-    'image',
-    'images',
-    'parent',
-    'rating_count',
-    'related_ids',
-    'reviews_allowed',
-    'shipping_class',
-    'shipping_class_id',
+  private $whitelist = array(
+    'title',
+    'id',
+    'created_at',
+    'updated_at',
+    'type',
+    'status',
+    'downloadable',
+    'virtual',
+//    'permalink',
+    'sku',
+    'price',
+    'regular_price',
+    'sale_price',
+    'price_html',
+    'taxable',
+    'tax_status',
+    'tax_class',
+    'managing_stock',
+    'stock_quantity',
+    'in_stock',
+    'backorders_allowed',
+    'backordered',
+    'sold_individually',
+    'purchaseable',
+    'featured',
+    'visible',
+//    'catalog_visibility',
+    'on_sale',
+//    'weight',
+//    'dimensions',
     'shipping_required',
     'shipping_taxable',
-    'short_description',
-    'tags',
-    'upsell_ids',
-    'weight',
+    'shipping_class',
+    'shipping_class_id',
+//    'description',
+//    'short_description',
+//    'reviews_allowed',
+//    'average_rating',
+//    'rating_count',
+//    'related_ids',
+//    'upsell_ids',
+//    'cross_sell_ids',
+    'parent_id',
+    'categories',
+//    'tags',
+//    'images',
+    'featured_src',
+    'attributes',
+//    'downloads',
+//    'download_limit',
+//    'download_expiry',
+//    'download_type',
+    'purchase_note',
+    'total_sales',
+    'variations',
+//    'parent',
+
+    /**
+     * Fields add by POS
+     * - product thumbnail
+     * - barcode
+     */
+    'featured_src',
+    'barcode'
   );
 
   /**
@@ -70,24 +109,67 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    * @return array modified data array $product_data
    */
   public function product_response( $data, $product, $fields, $server ) {
-
-    $data = $this->filter_response_data( $data, $product );
-
-    // deep dive on variations
     $type = isset( $data['type'] ) ? $data['type'] : '';
+
+    // variable products
     if( $type == 'variable' ) :
+      $data['attributes'] = $this->patch_variable_attributes($data['attributes']);
+
+      // nested variations
       foreach( $data['variations'] as &$variation ) :
         $_product = wc_get_product( $variation['id'] );
         $variation = $this->filter_response_data( $variation, $_product );
+        $variation['attributes'] = $this->patch_variation_attributes( $variation['attributes'], $data['attributes'] );
       endforeach;
     endif;
 
-    return $data;
+    // variation
+    if( $type == 'variation' ) :
+      $data['attributes'] = $this->patch_variation_attributes( $data['attributes'], $data['parent']['attributes'] );
+    endif;
+
+    return $this->filter_response_data( $data, $product );
+  }
+
+  /**
+   * https://github.com/woothemes/woocommerce/issues/8457
+   * - sanitize the attribute slug
+   * - add lookup obj for options
+   * @param array $attributes
+   * @return array
+   */
+  private function patch_variable_attributes(array $attributes){
+    foreach( $attributes as &$attribute ) :
+      if( isset($attribute['slug']) ) $attribute['slug'] = sanitize_title($attribute['slug']);
+    endforeach;
+    return $attributes;
+  }
+
+  /**
+   * https://github.com/woothemes/woocommerce/issues/8457
+   * - restore the correct attribute name
+   * - add label
+   * @param array $attributes
+   * @param $parent_attributes
+   * @return array
+   */
+  private function patch_variation_attributes(array $attributes, array $parent_attributes){
+    foreach( $attributes as &$attribute ) :
+      foreach($parent_attributes as $attr){
+        if( $attribute['slug'] == sanitize_title( $attr['slug'] ) ){
+          $attribute['name'] = $attr['name'];
+          $option_slugs = array_map( 'sanitize_title', $attr['options'] );
+          $key = array_search( $attribute['option'], $option_slugs );
+          $attribute['label'] = $attr['options'][$key];
+          break;
+        }
+      }
+    endforeach;
+    return $attributes;
   }
 
   /**
    * Filter product response data
-   * - remove some unnecessary keys
    * - add featured_src
    * - add special key for barcode, defaults to sku
    * @param array $data
@@ -106,7 +188,11 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
       $data['stock_quantity'] = $product->get_stock_quantity();
     }
 
-    return array_diff_key( $data, array_flip( $this->blacklist ) );
+    // filter by whitelist
+    // - note, this uses the same methods as WC REST API fields parameter
+    // - this doesn't speed up queries as it should
+    // - when WC REST API properly filters requests POS should use fields param
+    return array_intersect_key( $data, array_flip( $this->whitelist ) );
   }
 
   /**

@@ -7,7 +7,7 @@ var _ = require('lodash');
 var Empty = ItemView.extend({
   tagName: 'li',
   className: 'empty',
-  template: '#tmpl-product-list-empty'
+  template: '#tmpl-products-empty'
 });
 
 module.exports = CollectionView.extend({
@@ -37,8 +37,8 @@ module.exports = CollectionView.extend({
       var matchMaker = function(model){
         var attributes = model.get('attributes');
         return _.any(attributes, function(attribute){
-          return attribute.slug.toLowerCase() === filter.slug.toLowerCase() &&
-            attribute.option.toLowerCase() === filter.option.toLowerCase();
+          return attribute.slug === filter.slug &&
+            attribute.label === filter.label;
         });
 
       };

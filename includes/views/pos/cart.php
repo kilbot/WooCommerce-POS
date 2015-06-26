@@ -33,7 +33,7 @@
     <dl class="variant">
       {{#each attributes}}
       <dt>{{name}}:</dt>
-      <dd>{{option}}</dd>
+      <dd>{{label}}</dd>
       {{/each}}
     </dl>
     {{/is}}

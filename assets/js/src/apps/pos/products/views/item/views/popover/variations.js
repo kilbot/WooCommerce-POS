@@ -10,10 +10,10 @@ var polyglot = require('lib/utilities/polyglot');
 // rough calculation of variation option size
 var hasManyOptions = function(variation){
   var opts = variation.options.length,
-      chars = variation.options.reduce(function(total, opt){
-          return total + opt.length;
-      }, 0);
-  return (opts * 26) + (chars * 5) > 250;
+    chars = variation.options.reduce(function(total, opt){
+      return total + opt.length;
+    }, 0);
+  return (opts * 26) + (chars * 5) > 220;
 };
 
 var Variations = ItemView.extend({
@@ -73,11 +73,11 @@ var Variations = ItemView.extend({
     }
 
     // filter
-    var name = target.data('name');
-    var option = target.val().toLowerCase();
-    this.collection.filterBy(name, function(model){
+    var slug = target.data('variation');
+    var label = target.val();
+    this.collection.filterBy(slug, function(model){
       return _.some(model.get('attributes'), function(obj){
-        return obj.name === name && obj.option === option;
+        return obj.slug === slug && obj.label === label;
       });
     });
     this.ui.add.prop('disabled', this.collection.length !== 1);
