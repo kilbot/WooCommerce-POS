@@ -21,6 +21,26 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
   }
 
   /**
+   * Helper functions
+   */
+  private function log_in_user(){
+    update_option('active_plugins', array(
+      'woocommerce-pos/woocommerce-pos.php',
+      'woocommerce-pos-test/index.php',
+      'woocommerce/woocommerce.php'
+    ));
+    update_option('woocommerce_pos_test_logged_in_user', 1);
+  }
+
+  private function log_out_user(){
+    update_option('active_plugins', array(
+      'woocommerce-pos/woocommerce-pos.php',
+      'woocommerce/woocommerce.php'
+    ));
+    delete_option('woocommerce_pos_test_logged_in_user');
+  }
+
+  /**
    *
    */
   public function test_get_valid_response() {
@@ -161,7 +181,6 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
   }
 
   /**
-   * TODO: cannot test ajax requests using Guzzle?
    * TODO: get_product in WC REST API does not trigger posts_where filter
    */
   public function test_online_only_products(){
@@ -179,17 +198,19 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     update_post_meta($product['id'], '_pos_visibility', 'online_only');
 
     // get all product ids
-//    $client = new GuzzleHttp\Client();
-//    $response = $client->get( admin_url('admin-ajax.php'), array(
-//      'query' => array(
-//        'action' => 'wc_pos_get_all_ids',
-//        'type' => 'products',
-//        'security' => wp_create_nonce( WC_POS_PLUGIN_NAME )
-//      ),
-//      'headers' => array( 'X-WC-POS' => '1' ),
-//      'exceptions' => false
-//    ));
-//    print $response->getBody()->read(10000);
+    $this->log_in_user();
+    $client = new GuzzleHttp\Client();
+    $response = $client->get( admin_url('admin-ajax.php'), array(
+      'query' => array(
+        'action' => 'wc_pos_get_all_ids',
+        'type' => 'products',
+        'security' => wp_create_nonce( WC_POS_PLUGIN_NAME )
+      ),
+      'headers' => array( 'X-WC-POS' => '1' ),
+      'exceptions' => false
+    ));
+    $this->log_out_user();
+    $this->assertNotContains( $product['id'], $response->json() );
 
     // get single product via API
 //    $response = $this->client->get($product['id']);

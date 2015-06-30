@@ -26,6 +26,7 @@ install:
   - mv * .[^.]* /tmp/wordpress/wp-content/plugins/woocommerce-pos/
   - mv /tmp/wordpress/* ./
   - git clone https://github.com/kilbot/WooCommerce-POS-Test-Theme.git wp-content/themes/WooCommerce-POS-Test-Theme
+  - git clone https://github.com/kilbot/WooCommerce-POS-Test-Plugin.git wp-content/themes/woocommerce-pos-test
   # apache
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
@@ -49,6 +50,7 @@ before_script:
   - wp core install --url=woopos.dev --title=WooCommercePOS --admin_user=admin --admin_password=password --admin_email=support@woopos.com.au
   - wp rewrite structure '/%year%/%monthnum%/%postname%'
   - wp plugin activate woocommerce-pos
+  - wp plugin activate woocommerce-pos-test
   - wp plugin install woocommerce --activate
   - wp plugin install wordpress-importer --activate
   - wp import wp-content/plugins/woocommerce/dummy-data/dummy-data.xml --authors=create

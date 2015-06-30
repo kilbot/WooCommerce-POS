@@ -80,7 +80,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 = 0.4.1 =
 * Note: WooCommerce POS now requires WooCommerce 2.3 or greater
 * New: added woocommerce_pos_email_receipt hook
-* Improve: editing a product title in cart - commit [216e8a5](https://github.com/kilbot/WooCommerce-POS/commit/216e8a5)
+* Improve: editing a product/fee/shipping title in cart - commit [216e8a5](https://github.com/kilbot/WooCommerce-POS/commit/216e8a5)
 * Improve: css tweaks for Firefox - commit [216e8a5](https://github.com/kilbot/WooCommerce-POS/commit/216e8a5)
 * Improve: keyboard entry for qty and prices - commit [ee61744](https://github.com/kilbot/WooCommerce-POS/commit/ee61744)
 * Fix: support for legacy server HTTP methods - commit [5765491](https://github.com/kilbot/WooCommerce-POS/commit/5765491)
@@ -88,6 +88,8 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: parse $HTTP_RAW_POST_DATA global to array - commit [ac88f50](https://github.com/kilbot/WooCommerce-POS/commit/ac88f50)
 * Fix: decimal quantity display - commit [358d95f](https://github.com/kilbot/WooCommerce-POS/commit/358d95f)
 * Fix: check WooCommerce has loaded - commit [80285c4](https://github.com/kilbot/WooCommerce-POS/commit/80285c4)
+* Fix: variation selection issues in popover - commit [5c9673b](https://github.com/kilbot/WooCommerce-POS/commit/5c9673b)
+* Update npm dependencies
 
 = 0.4 =
 * ** Note: this is a major code refactor, almost every line of code has been rewritten **
