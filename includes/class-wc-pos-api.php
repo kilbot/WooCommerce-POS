@@ -36,11 +36,24 @@ class WC_POS_API {
   public function dispatch_args($args, $callback){
     $wc_api_handler = get_class($callback[0]);
 
+    $has_data = in_array( $args['_method'], array(2, 4, 6) ) && isset( $args['data'] ) && is_array($args['data']);
+    if( $has_data ){
+      // remove status
+      if( array_key_exists('status', $args['data']) ){
+        unset($args['data']['status']);
+      }
+    }
+
     switch($wc_api_handler){
       case 'WC_API_Products':
         new WC_POS_API_Products();
         break;
       case 'WC_API_Orders':
+        if( $has_data && !isset( $args['data']['order'] ) ){
+          $data = $args['data'];
+          unset( $args['data'] );
+          $args['data']['order'] = $data;
+        }
         new WC_POS_API_Orders();
         break;
       case 'WC_API_Customers':

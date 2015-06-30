@@ -134,7 +134,6 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
   /**
    * https://github.com/woothemes/woocommerce/issues/8457
    * - sanitize the attribute slug
-   * - add lookup obj for options
    * @param array $attributes
    * @return array
    */
@@ -189,7 +188,7 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
     }
 
     // filter by whitelist
-    // - note, this uses the same methods as WC REST API fields parameter
+    // - note, this uses the same method as WC REST API fields parameter
     // - this doesn't speed up queries as it should
     // - when WC REST API properly filters requests POS should use fields param
     return array_intersect_key( $data, array_flip( $this->whitelist ) );

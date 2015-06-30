@@ -16,9 +16,6 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   private $data = array();
   private $flag = false;
 
-  /** @var Hacky fix for WC handling of negative tax  */
-//  private $tax_total = 0;
-
   /** @var object Contains a reference to the settings classes */
   private $general_settings;
   private $checkout_settings;
@@ -29,7 +26,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   public function __construct() {
 
     // store raw http data
-    $this->data = parent::get_data();
+//    $this->data = parent::get_data();
 
     // init subclasses
     $this->init();
@@ -68,9 +65,12 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   /**
    * Create order data
    *
+   * @param array $data
    * @return array
    */
-  public function create_order_data(){
+  public function create_order_data(array $data){
+
+    $this->data = $data;
 
     // add filters & actions for create order
     add_filter( 'woocommerce_product_tax_class', array( $this, 'product_tax_class' ), 10, 2 );
@@ -118,9 +118,9 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @param $order_id
    * @return array
    */
-  public function edit_order_data($data, $order_id){
+  public function edit_order_data(array $data, $order_id){
 //    $this->delete_order_items($order_id);
-    return $this->create_order_data();
+    return $this->create_order_data($data);
   }
 
   /**
@@ -422,7 +422,8 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
     // some gateways check if a user is signed in, so let's switch to customer
     $logged_in_user = get_current_user_id();
-    wp_set_current_user( $data['customer_id'] );
+    $customer_id = isset( $data['customer_id'] ) ? $data['customer_id'] : 0 ;
+    wp_set_current_user( $customer_id );
 
     // load the gateways & process payment
     $gateway_id = $data['payment_details']['method_id'];

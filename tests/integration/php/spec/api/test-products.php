@@ -4,6 +4,9 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
 
   protected $client;
 
+  /**
+   *
+   */
   public function setUp() {
     $this->client = new GuzzleHttp\Client([
       'base_url' => get_woocommerce_api_url( 'products/' ),
@@ -17,6 +20,9 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     ]);
   }
 
+  /**
+   *
+   */
   public function test_get_valid_response() {
     $response = $this->client->get();
     $this->assertEquals(200, $response->getStatusCode());
@@ -24,6 +30,9 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     $this->assertArrayHasKey('products', $data);
   }
 
+  /**
+   *
+   */
   public function test_get_simple_products() {
     $response = $this->client->get('', [
       'query' => [
@@ -44,6 +53,9 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     $this->assertArrayHasKey('barcode', $product);
   }
 
+  /**
+   *
+   */
   public function test_get_single_simple_product() {
     $response = $this->client->get('99');
     $this->assertEquals(200, $response->getStatusCode());
@@ -51,6 +63,9 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     $this->assertArrayHasKey('product', $data);
   }
 
+  /**
+   *
+   */
   public function test_simple_product_decimal_quantity(){
     $random_qty = rand(0, 999) / 100;
 
@@ -70,6 +85,9 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( $random_qty, $data['product']['stock_quantity'] );
   }
 
+  /**
+   *
+   */
   public function test_get_single_variable_product() {
     $response = $this->client->get('41');
     $this->assertEquals(200, $response->getStatusCode());
@@ -78,6 +96,9 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( 'variation', $data['product']['type'] );
   }
 
+  /**
+   *
+   */
   public function test_variable_product_decimal_quantity(){
     $random_qty = rand(0, 999) / 100;
 
@@ -102,6 +123,91 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
       }
     }
     $this->assertEquals( $random_qty, $product['stock_quantity'] );
+  }
+
+  /**
+   *
+   */
+  public function test_pos_only_products(){
+
+    // activate POS Only products
+    $option_key = WC_POS_Admin_Settings::DB_PREFIX . 'general';
+    update_option( $option_key, array('pos_only_products' => true) );
+
+    // get random product
+    $response = $this->client->get();
+    $data = $response->json();
+    $product = $data['products'][ array_rand( $data['products'] ) ];
+
+    // set to POS only
+    update_post_meta($product['id'], '_pos_visibility', 'pos_only');
+
+    // get product via API
+    $response = $this->client->get($product['id']);
+    $this->assertEquals(200, $response->getStatusCode());
+
+    // get product via website
+    $client = new GuzzleHttp\Client();
+    $response = $client->get( get_home_url(), array(
+      'query' => array(
+        'p' => $product['id']
+      ),
+      'exceptions' => false
+    ));
+    $this->assertEquals(404, $response->getStatusCode());
+
+    // delete POS visibility setting
+    delete_post_meta($product['id'], '_pos_visibility');
+  }
+
+  /**
+   * TODO: cannot test ajax requests using Guzzle?
+   * TODO: get_product in WC REST API does not trigger posts_where filter
+   */
+  public function test_online_only_products(){
+
+    // activate POS Only products
+    $option_key = WC_POS_Admin_Settings::DB_PREFIX . 'general';
+    update_option( $option_key, array('pos_only_products' => true) );
+
+    // get random product
+    $response = $this->client->get();
+    $data = $response->json();
+    $product = $data['products'][ array_rand( $data['products'] ) ];
+
+    // set to POS only
+    update_post_meta($product['id'], '_pos_visibility', 'online_only');
+
+    // get all product ids
+//    $client = new GuzzleHttp\Client();
+//    $response = $client->get( admin_url('admin-ajax.php'), array(
+//      'query' => array(
+//        'action' => 'wc_pos_get_all_ids',
+//        'type' => 'products',
+//        'security' => wp_create_nonce( WC_POS_PLUGIN_NAME )
+//      ),
+//      'headers' => array( 'X-WC-POS' => '1' ),
+//      'exceptions' => false
+//    ));
+//    print $response->getBody()->read(10000);
+
+    // get single product via API
+//    $response = $this->client->get($product['id']);
+//    $data = $response->json();
+//    $this->assertEmpty($data['product']);
+
+    // get product via website
+    $client = new GuzzleHttp\Client();
+    $response = $client->get( get_home_url(), array(
+      'query' => array(
+        'p' => $product['id']
+      ),
+      'exceptions' => false
+    ));
+    $this->assertEquals(200, $response->getStatusCode());
+
+    // delete POS visibility setting
+    delete_post_meta($product['id'], '_pos_visibility');
   }
 
 }

@@ -20,6 +20,10 @@ bb.$.ajaxSetup({
       });
     }
   },
+  // for straight jquery ajax calls
+  beforeSend: function(xhr){
+    xhr.setRequestHeader('X-WC-POS', 1);
+  },
   timeout: 50000 // 50 seconds
 });
 
