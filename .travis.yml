@@ -26,7 +26,7 @@ install:
   - mv * .[^.]* /tmp/wordpress/wp-content/plugins/woocommerce-pos/
   - mv /tmp/wordpress/* ./
   - git clone https://github.com/kilbot/WooCommerce-POS-Test-Theme.git wp-content/themes/WooCommerce-POS-Test-Theme
-  - git clone https://github.com/kilbot/WooCommerce-POS-Test-Plugin.git wp-content/themes/woocommerce-pos-test
+  - git clone https://github.com/kilbot/WooCommerce-POS-Test-Plugin.git wp-content/plugins/woocommerce-pos-test
   # apache
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
