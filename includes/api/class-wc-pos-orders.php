@@ -25,9 +25,6 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    */
   public function __construct() {
 
-    // store raw http data
-//    $this->data = parent::get_data();
-
     // init subclasses
     $this->init();
 
@@ -70,6 +67,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    */
   public function create_order_data(array $data){
 
+    // store raw http data
     $this->data = $data;
 
     // add filters & actions for create order
@@ -80,22 +78,28 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     add_action( 'woocommerce_order_add_product', array( $this, 'order_add_product'), 10, 5 );
     add_action( 'updated_order_item_meta', array( $this, 'updated_order_item_meta'), 10, 4 );
 
-    // WC API < 2.4 doesn't support fee with taxable = false
-    // change taxable = false to taxable = 'none'
+    // WC API < 2.4 has a bug if $fee['taxable'] = false
+    // set $fee['taxable'] = true and use random tax_class so not tax is calculated
     if( version_compare( WC()->version, '2.4', '<' ) && isset($this->data['fee_lines']) ){
       foreach( $this->data['fee_lines'] as &$fee ){
-        if( !$fee['taxable'] ){
-          $fee['taxable'] = 'none';
+        if( !isset($fee['taxable']) || $fee['taxable'] == false ){
+          $fee['taxable'] = true;
+          $fee['tax_class'] = 'upgrade-woocommerce-' . time();
         }
       }
     }
 
     // WC handling of shipping is FUBAR
     // if order has shipping line, we'll have to calc the tax ourselves
-    if( isset($this->data['shipping_lines']) && !empty($this->data['shipping_lines']) ){
+    // also recalc total tax for negative fee lines
+    $has_fee = isset($this->data['fee_lines']) && !empty($this->data['fee_lines']);
+    $has_shipping = isset($this->data['shipping_lines']) && !empty($this->data['shipping_lines']);
+
+    if( $has_shipping )
       add_action( 'woocommerce_order_add_shipping', array( $this, 'order_add_shipping'), 10, 3 );
+
+    if( $has_fee || $has_shipping )
       add_filter( 'update_post_metadata', array( $this, 'update_post_metadata'), 10, 5 );
-    }
 
     // copy billing and shipping addresses from customer
     if( isset($this->data['customer']) ){
@@ -363,21 +367,23 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     update_post_meta($order_id, '_order_tax', $order_tax);
 
     // now loop through the shipping_lines
-    foreach($this->data['shipping_lines'] as $shipping) :
-      if( isset( $shipping['tax'] ) ) :
-        foreach( $shipping['tax'] as $rate_id => $tax ) :
-          if( isset( $tax['total'] ) ) :
+    if( isset( $shipping['shipping_lines'] ) ) :
+      foreach($this->data['shipping_lines'] as $shipping) :
+        if( isset( $shipping['tax'] ) ) :
+          foreach( $shipping['tax'] as $rate_id => $tax ) :
+            if( isset( $tax['total'] ) ) :
 
-            if( array_key_exists( $rate_id, $tax_items ) ){
-              wc_update_order_item_meta( $tax_items[$rate_id], 'shipping_tax_amount', wc_format_decimal( $tax['total'] ) );
-            } else {
-              $order->add_tax( $rate_id, 0, $tax['total'] );
-            }
+              if( array_key_exists( $rate_id, $tax_items ) ){
+                wc_update_order_item_meta( $tax_items[$rate_id], 'shipping_tax_amount', wc_format_decimal( $tax['total'] ) );
+              } else {
+                $order->add_tax( $rate_id, 0, $tax['total'] );
+              }
 
-          endif;
-        endforeach;
-      endif;
-    endforeach;
+            endif;
+          endforeach;
+        endif;
+      endforeach;
+    endif;
 
     return $null;
   }

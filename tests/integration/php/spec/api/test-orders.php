@@ -49,6 +49,22 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     return $data['products'][ array_rand( $data['products'] ) ];
   }
 
+  private function update_tax_settings($args = array()){
+    $args = wp_parse_args($args, array(
+      'calc_taxes' => 'yes',
+      'prices_include_tax' => 'no',
+      'tax_based_on' => 'base',
+      'default_country' => 'GB'
+    ));
+
+    // enable taxes
+    update_option('woocommerce_calc_taxes', $args['calc_taxes']);
+    update_option('woocommerce_prices_include_tax', $args['prices_include_tax']);
+    update_option('woocommerce_tax_based_on', $args['tax_based_on']);
+    update_option('woocommerce_default_country', $args['default_country']);
+    // may need to delete _transient_wc_tax_rates_
+  }
+
   /**
    *
    */
@@ -230,27 +246,18 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
   }
 
   /**
-   *
+   * Test changing product title
    */
-  public function test_exclusive_tax_calculation(){
-    // enable taxes
-    update_option('woocommerce_calc_taxes', 'yes');
-    update_option('woocommerce_prices_include_tax', 'yes');
-    update_option('woocommerce_tax_based_on', 'base');
-    update_option('woocommerce_default_country', 'GB');
-    // may need to delete _transient_wc_tax_rates_
-
+  public function test_line_item_change_title(){
     // get a random product
     $product = $this->get_random_product();
     $product = $this->filter_line_item($product);
 
-    $product['total'] = 10;
-    $product['total_tax'] = 2;
+    $product['title'] = 'Foo';
 
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'taxable' => true,
         'line_items' => array(
           $product
         )
@@ -258,9 +265,291 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     ));
     $this->assertEquals(201, $response->getStatusCode());
     $data = $response->json();
-    print_r($data);
+    $this->assertArrayHasKey('order', $data);
+
+    // note: product goes in as 'title', comes out as 'name'
+    $this->assertEquals('Foo', $data['order']['line_items'][0]['name']);
+  }
+
+  /**
+   *
+   */
+  public function test_line_item_exclusive_tax(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // get a random product
+    $product = $this->get_random_product();
+    $product = $this->filter_line_item($product);
+
+    $product['taxable'] = true;
+    $product['total'] = 10;
+    $product['total_tax'] = 2;
+
+    // create order
+    $response = $this->client->post('', array(
+      'json' => array(
+        'line_items' => array(
+          $product
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(2, $data['order']['total_tax']);
   }
+
+  /**
+   *
+   */
+  public function test_line_item_change_taxable(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // get a random product
+    $product = $this->get_random_product();
+    $product = $this->filter_line_item($product);
+
+    $product['taxable'] = false;
+    $product['total'] = 10;
+    $product['total_tax'] = 2;
+
+    // create order
+    $response = $this->client->post('', array(
+      'json' => array(
+        'line_items' => array(
+          $product
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('order', $data);
+    $this->assertEquals(0, $data['order']['total_tax']);
+  }
+
+  /**
+   *
+   */
+  public function test_line_item_change_tax_rate(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // get a random product
+    $product = $this->get_random_product();
+    $product = $this->filter_line_item($product);
+
+    $product['taxable'] = true;
+    $product['total'] = 10;
+    $product['total_tax'] = 0.5;
+    $product['tax_class'] = 'reduced-rate';
+
+    // create order
+    $response = $this->client->post('', array(
+      'json' => array(
+        'line_items' => array(
+          $product
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('order', $data);
+    $this->assertEquals(0.5, $data['order']['total_tax']);
+    $this->assertEquals('reduced-rate', $data['order']['line_items'][0]['tax_class']);
+  }
+
+  /**
+   *
+   */
+  public function test_order_with_fee(){
+
+    // construct fee
+    // - fee title is required
+    $fee = array(
+      'title' => 'Foo',
+      'total' => 10
+    );
+
+    // create order
+    $response = $this->client->post('', array(
+      'json' => array(
+        'fee_lines' => array(
+          $fee
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('order', $data);
+    $this->assertEquals(10, $data['order']['total']);
+    $this->assertEquals('Foo', $data['order']['fee_lines'][0]['title']);
+  }
+
+  /**
+   *
+   */
+  public function test_order_with_taxable_fee(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // construct fee
+    // - fee title is required
+    // - tax_class is required if taxable
+    $fee = array(
+      'title'     => 'Foo',
+      'total'     => 10,
+      'taxable'   => true,
+      'tax_class' => ''
+    );
+
+    // create order
+    $response = $this->client->post('', array(
+      'json' => array(
+        'fee_lines' => array(
+          $fee
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('order', $data);
+    $this->assertEquals(12, $data['order']['total']);
+    $this->assertEquals(2, $data['order']['total_tax']);
+  }
+
+  /**
+   *
+   */
+  public function test_order_with_taxable_fee_change_tax_class(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // construct fee
+    // - fee title is required
+    // - tax_class is required if taxable
+    $fee = array(
+      'title'     => 'Foo',
+      'total'     => 10,
+      'taxable'   => true,
+      'tax_class' => 'reduced-rate'
+    );
+
+    // create order
+    $response = $this->client->post('', array(
+      'json' => array(
+        'fee_lines' => array(
+          $fee
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('order', $data);
+    $this->assertEquals(10.5, $data['order']['total']);
+    $this->assertEquals(0.5, $data['order']['total_tax']);
+  }
+
+  /**
+   *
+   */
+  public function test_order_with_negative_fee(){
+
+    // construct fee
+    // - fee title is required
+    $fee = array(
+      'title'     => 'Foo',
+      'total'     => -10,
+      'taxable'   => false
+    );
+
+    // create order
+    $response = $this->client->post('', array(
+      'json' => array(
+        'fee_lines' => array(
+          $fee
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('order', $data);
+    $this->assertEquals(-10, $data['order']['total']);
+  }
+
+  /**
+   *
+   */
+  public function test_order_with_negative_fee_and_tax(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // construct fee
+    // - fee title is required
+    $fee = array(
+      'title'     => 'Foo',
+      'total'     => -10,
+      'taxable'   => true,
+      'tax_class' => '',
+    );
+
+    // create order
+    $response = $this->client->post('', array(
+      'json' => array(
+        'fee_lines' => array(
+          $fee
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('order', $data);
+    $this->assertEquals(-12, $data['order']['total']);
+    $this->assertEquals(-2, $data['order']['total_tax']);
+  }
+
+  /**
+   * https://github.com/kilbot/WooCommerce-POS/issues/85
+   */
+  public function test_order_with_product_and_negative_fee(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // get a random product
+    $product = $this->get_random_product();
+    $product = $this->filter_line_item($product);
+
+    $product['taxable'] = true;
+    $product['total'] = 10;
+    $product['total_tax'] = 2;
+    $product['tax_class'] = '';
+
+    // construct fee
+    // - fee title is required
+    $fee = array(
+      'title'     => 'Foo',
+      'total'     => -5,
+      'taxable'   => false
+    );
+
+    // create order
+    $response = $this->client->post('', array(
+      'json' => array(
+        'line_items' => array(
+          $product
+        ),
+        'fee_lines' => array(
+          $fee
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('order', $data);
+    $this->assertEquals(7, $data['order']['total']);
+    $this->assertEquals(2, $data['order']['total_tax']);
+  }
+
 
 }
