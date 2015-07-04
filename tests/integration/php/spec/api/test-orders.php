@@ -551,5 +551,110 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(2, $data['order']['total_tax']);
   }
 
+  /**
+   *
+   */
+  public function test_order_with_shipping(){
 
+    // construct shipping
+    // - method_id is required
+    // - method_title is required
+    $shipping = array(
+      'method_id' => 'foo',
+      'method_title' => 'Bar',
+      'total'     => 10,
+      'taxable'   => false,
+    );
+
+    // create order
+    $response = $this->client->post('', array(
+      'json' => array(
+        'shipping_lines' => array(
+          $shipping
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('order', $data);
+    $this->assertEquals(10, $data['order']['total_shipping']);
+    $this->assertEquals('Bar', $data['order']['shipping_methods']);
+
+  }
+
+  /**
+   *
+   */
+  public function test_order_with_shipping_change_taxable(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // construct shipping
+    // - method_id is required
+    // - method_title is required
+    $shipping = array(
+      'method_id' => 'foo',
+      'method_title' => 'Bar',
+      'total'     => 10,
+      'taxable'   => true,
+      ''
+    );
+
+    // create order
+    $response = $this->client->post('', array(
+      'json' => array(
+        'shipping_lines' => array(
+          $shipping
+        ),
+        // note: shipping_tax required
+        'shipping_tax' => 2
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('order', $data);
+    $this->assertEquals(10, $data['order']['total_shipping']);
+    $this->assertEquals(2, $data['order']['shipping_tax']);
+    $this->assertEquals(12, $data['order']['total']);
+    $this->assertEquals(2, $data['order']['total_tax']);
+
+  }
+
+  /**
+   *
+   */
+  public function test_order_with_shipping_change_tax_class(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // construct shipping
+    // - method_id is required
+    // - method_title is required
+    $shipping = array(
+      'method_id' => 'foo',
+      'method_title' => 'Bar',
+      'total'     => 10,
+      'taxable'   => true,
+      'tax_class' => 'reduced-rate'
+    );
+
+    // create order
+    $response = $this->client->post('', array(
+      'json' => array(
+        'shipping_lines' => array(
+          $shipping
+        ),
+        // note: shipping_tax required
+        'shipping_tax' => 0.5
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('order', $data);
+    $this->assertEquals(10, $data['order']['total_shipping']);
+    $this->assertEquals(0.5, $data['order']['shipping_tax']);
+    $this->assertEquals(10.5, $data['order']['total']);
+    $this->assertEquals(0.5, $data['order']['total_tax']);
+
+  }
 }

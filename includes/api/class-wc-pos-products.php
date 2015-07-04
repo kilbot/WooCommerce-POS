@@ -200,10 +200,15 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    * @return string
    */
   private function get_thumbnail($id){
-    if( $thumb_id = get_post_thumbnail_id( $id ) ) {
+    $image = false;
+    $thumb_id = get_post_thumbnail_id( $id );
+
+    if( $thumb_id )
       $image = wp_get_attachment_image_src( $thumb_id, 'shop_thumbnail' );
+
+    if( is_array($image) )
       return $image[0];
-    }
+
     return wc_placeholder_img_src();
   }
 
