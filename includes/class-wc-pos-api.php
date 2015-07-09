@@ -110,7 +110,7 @@ class WC_POS_API {
       );
     }
 
-    WC_POS_AJAX::serve_response($result);
+    WC_POS_Server::response($result);
   }
 
 }

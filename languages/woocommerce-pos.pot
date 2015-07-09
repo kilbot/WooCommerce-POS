@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce POS 0.4.1-dev\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2015-06-24 14:27:09+00:00\n"
+"POT-Creation-Date: 2015-07-05 04:49:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,19 +14,19 @@ msgstr ""
 "Language-Team: Team Name <team@example.com>\n"
 "X-Generator: grunt-wp-i18n 0.5.2\n"
 
-#: includes/api/class-wc-pos-orders.php:490
+#: includes/api/class-wc-pos-orders.php:497
 msgid "There was an error processing the payment"
 msgstr ""
 
-#: includes/api/class-wc-pos-orders.php:516
+#: includes/api/class-wc-pos-orders.php:523
 msgid "You are now being redirected offsite to complete the payment. "
 msgstr ""
 
-#: includes/api/class-wc-pos-orders.php:517
+#: includes/api/class-wc-pos-orders.php:524
 msgid "<a href=\"%s\">Click here</a> if you are not redirected automatically. "
 msgstr ""
 
-#: includes/api/class-wc-pos-orders.php:531
+#: includes/api/class-wc-pos-orders.php:538
 msgid "POS Transaction completed."
 msgstr ""
 
@@ -110,49 +110,45 @@ msgstr ""
 msgid "WooCommerce >= %s required"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:52
+#: includes/class-wc-pos-status.php:56
 msgid "WC REST API"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:53
+#: includes/class-wc-pos-status.php:57
 msgid "API is active"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:60
+#: includes/class-wc-pos-status.php:64
 msgid "Access to the REST API is required"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:76
+#: includes/class-wc-pos-status.php:80
 msgid ""
 "<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks "
 "to work correctly"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:80
+#: includes/class-wc-pos-status.php:84
 msgid "Enable permalinks"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:90
-msgid "Unable to access the REST API"
-msgstr ""
-
 #: includes/class-wc-pos-status.php:94
-msgid "Save permalinks"
+msgid "Unable to test the REST API"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:107
+#: includes/class-wc-pos-status.php:105
 msgid "Unable to use RESTful HTTP methods"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:111
+#: includes/class-wc-pos-status.php:109
 msgid "Enable legacy server support"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:120
-msgid "Legacy server enabled"
+#: includes/class-wc-pos-status.php:118
+msgid "Legacy server support enabled"
 msgstr ""
 
-#: includes/class-wc-pos-status.php:124
+#: includes/class-wc-pos-status.php:122
 msgid "Disable legacy server support"
 msgstr ""
 

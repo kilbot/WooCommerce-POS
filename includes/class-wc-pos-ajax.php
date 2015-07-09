@@ -96,7 +96,7 @@ class WC_POS_AJAX {
    */
   public function admin_settings() {
     $result = $this->process_admin_settings();
-    $this->serve_response($result);
+    WC_POS_Server::response($result);
   }
 
   private function process_admin_settings(){
@@ -109,7 +109,7 @@ class WC_POS_AJAX {
       );
 
     $id   = $_GET['id'];
-    $data = $this->get_raw_data();
+    $data = WC_POS_Server::get_raw_data();
 
     // special case: gateway_
     $gateway_id = preg_replace( '/^gateway_/', '', strtolower( $id ), 1, $count );
@@ -183,7 +183,7 @@ class WC_POS_AJAX {
         'message' => __( 'There was an error sending the email', 'woocommerce-pos')
       );
     }
-    $this->serve_response($response);
+    WC_POS_Server::response($response);
   }
 
   /**
@@ -205,16 +205,16 @@ class WC_POS_AJAX {
       );
     }
 
-    $this->serve_response($response);
+    WC_POS_Server::response($response);
   }
 
   /**
    * Returns payload for any request for testing
    */
   public function test_http_methods(){
-    $this->serve_response( array(
+    WC_POS_Server::response( array(
       'method' => strtolower($_SERVER['REQUEST_METHOD']),
-      'payload' => $this->get_raw_data()
+      'payload' => WC_POS_Server::get_raw_data()
     ));
   }
 
@@ -223,7 +223,7 @@ class WC_POS_AJAX {
    */
   public function system_status(){
     $status = new WC_POS_Status();
-    $this->serve_response($status->output());
+    WC_POS_Server::response( $status->output() );
   }
 
   /**
@@ -237,59 +237,8 @@ class WC_POS_AJAX {
         __( 'Invalid security nonce', 'woocommerce-pos' ),
         array( 'status' => 401 )
       );
-      $this->serve_response($result);
+      WC_POS_Server::response($result);
     }
-  }
-
-  /**
-   * The below functions closely resemble output from the WC REST API
-   * This keeps response handling in the POS somewhat consistent
-   * between API and AJAX calls
-   *
-   * Output the result
-   * @param $result
-   */
-  static public function serve_response($result){
-
-    header( 'Content-Type: application/json; charset=utf-8' );
-
-    if (is_wp_error($result)) {
-      $data = $result->get_error_data();
-      if ( is_array( $data ) && isset( $data['status'] ) ) {
-        status_header( $data['status'] );
-      }
-      $result = self::error_to_array( $result );
-    }
-
-    echo json_encode( $result );
-    die();
-  }
-
-  /**
-   * Convert wp_error to array
-   * @param $error
-   * @return array
-   */
-  static private function error_to_array( $error ) {
-    $errors = array();
-    foreach ( (array) $error->errors as $code => $messages ) {
-      foreach ( (array) $messages as $message ) {
-        $errors[] = array( 'code' => $code, 'message' => $message );
-      }
-    }
-    return array( 'errors' => $errors );
-  }
-
-  /**
-   * Raw payload
-   * @return array|mixed|string
-   */
-  private function get_raw_data() {
-    global $HTTP_RAW_POST_DATA;
-    if ( !isset( $HTTP_RAW_POST_DATA ) ) {
-      $HTTP_RAW_POST_DATA = trim(file_get_contents('php://input'));
-    }
-    return json_decode( $HTTP_RAW_POST_DATA, true);
   }
 
 }
