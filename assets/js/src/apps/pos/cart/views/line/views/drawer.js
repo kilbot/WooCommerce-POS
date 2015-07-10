@@ -145,12 +145,14 @@ module.exports = FormView.extend({
   removeMetaFields: function(e){
     e.preventDefault();
 
-    var row = $(e.currentTarget).parent('span');
-    var meta = ( this.model.get('meta') || [] );
-    var index = _.findIndex( meta, { 'key': row.data('key') } );
+    var row = $(e.currentTarget).parent('span'),
+        meta = ( this.model.get('meta') || [] ),
+        index = _.findIndex( meta, { 'key': row.data('key') } );
+
     if( index >= 0 ){
       meta.splice( index, 1 );
       this.model.save({ 'meta': meta });
+      this.model.trigger('change:meta');
     }
 
     row.remove();

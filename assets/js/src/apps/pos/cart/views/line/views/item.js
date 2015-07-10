@@ -6,6 +6,7 @@ var AutoGrow = require('lib/behaviors/autogrow');
 var Numpad = require('lib/components/numpad/behavior');
 var hbs = require('handlebars');
 var $ = require('jquery');
+var _ = require('lodash');
 
 module.exports = FormView.extend({
   template: hbs.compile( $('#tmpl-cart-item').html() ),
@@ -64,6 +65,17 @@ module.exports = FormView.extend({
     '*[data-name="title"]' : {
       observe: 'title',
       events: ['blur']
+    },
+    'dl.meta': {
+      observe: 'meta',
+      updateMethod: 'html',
+      onGet: function(val){
+        var row = '';
+        _.each(val, function(meta){
+          row += '<dt>' + meta.label + '</dt><dd>' + meta.value + '</dd>';
+        });
+        return row;
+      }
     },
     '*[data-name="method_title"]': 'method_title',
     'input[name="item_price"]': {

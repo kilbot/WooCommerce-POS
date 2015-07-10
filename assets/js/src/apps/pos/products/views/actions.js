@@ -12,6 +12,7 @@ var Actions = View.extend({
     this.listenTo(products, 'match:barcode', function(model){
       this.triggerMethod('clear');
       Radio.request('router', 'add:to:cart', model);
+      this.ui.searchField.blur();
     });
   },
 

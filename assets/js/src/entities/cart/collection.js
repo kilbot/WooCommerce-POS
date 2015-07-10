@@ -28,6 +28,7 @@ module.exports = IndexedDBCollection.extend({
     'tax_status',
     'tax_class',
     'attributes',
+    'meta',         // variation meta
     'method_title', // shipping
     'method_id'     // shipping
   ],
@@ -96,6 +97,18 @@ module.exports = IndexedDBCollection.extend({
 
   _addToCart: function(attributes){
     attributes.order = this.order_id;
+
+    // turn variation attributes into line item meta
+    if(attributes.type === 'variation'){
+      attributes.meta = _.map(attributes.attributes, function(variant, idx){
+        return {
+          key: ++idx,
+          label: variant.name,
+          value: variant.label
+        };
+      });
+    }
+
     return this.add(_.pick(attributes, this.productAttributes));
   },
 
