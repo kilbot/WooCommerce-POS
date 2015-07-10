@@ -84,7 +84,7 @@ var View = FormView.extend({
 
     this.mergeOptions(options, this.viewOptions);
 
-    this.model = new Model({ value: this.value }, options);
+    this.model = new Model({}, options);
   },
 
   behaviors: {
@@ -180,15 +180,13 @@ var View = FormView.extend({
 
     switch(key) {
       case 'ret':
-        //var input = Utils.formatNumber(this.model.get('value'), 'auto');
-        var input = this.model.get('value');
-        this.trigger('input', input, this.model);
+        this.trigger('input', this.model.getFloatValue(), this.model);
         return;
       case 'del':
         if(this._hasSelection) {
           this.model.clearInput();
         }
-        this.model.backspace();
+        this.model.backSpace();
         break;
       case '+/-':
         this.model.plusMinus();

@@ -9,103 +9,139 @@ module.exports = bb.Model.extend({
     active: 'value'
   },
 
+  precision: 4,
+
   initialize: function(attributes, options){
     options = options || {};
     this.numpad = options.numpad;
 
+    this.set({ value: options.value.toString() });
+
+    if(options.precision){
+      this.precision = options.precision;
+    }
+
     if(options.original){
-      if(options.percentage === 'off'){
-        this.percentageOff = true;
-      }
-
-      this.set({ original: options.original });
-      this.set({ percentage: this.calcPercentage() });
-
-      this.on({
-        'change:value': function(){
-          this.set({ percentage: this.calcPercentage() }, { silent: true });
-        },
-        'change:percentage': function(){
-          this.set({ value: this.calcValue() }, { silent: true });
-        }
-      });
+      this.initPercentage(options);
     }
   },
 
-  // helper set with check for valid float value
-  _set: function(name, num){
+  initPercentage: function(options){
+    if(options.percentage === 'off'){
+      this.percentageOff = true;
+    }
+
+    this.set({ original: options.original.toString() });
+    this.set({ percentage: this.calcPercentage() });
+
+    this.on({
+      'change:value': function(){
+        this.set({ percentage: this.calcPercentage() }, { silent: true });
+      },
+      'change:percentage': function(){
+        this.set({ value: this.calcValue() }, { silent: true });
+      }
+    });
+  },
+
+  getFloatValue: function(){
+    return parseFloat( this.get('value') );
+  },
+
+  getActive: function(type){
+    var active = this.get( this.get('active') );
+    return type === 'float' ? parseFloat(active) : active.toString();
+  },
+
+  setActive: function(num){
     if(this.dec === '.'){
       this.dec = '';
-    }
-    if( !_.isNumber(num) ){
-      num = parseFloat(num);
     }
     if( _.isNaN(num) ){
       num = 0;
     }
-    this.set(name, num);
+    this.set( this.get('active'), this.round(num) );
   },
 
-  backspace: function(){
-    var name = this.get('active');
-    var num = this.get( name ).toString().slice(0, -1);
-    this._set( name, num );
+  backSpace: function(){
+    var num = this.getActive().slice(0, -1);
+    // remove trailing decimal
+    if( num.slice(-1) === '.' ){
+      num = num.slice(0, -1);
+    }
+    this.setActive( num );
     return this;
   },
 
   plusMinus: function(){
-    var name = this.get('active');
-    var num = this.get( name ) * -1;
-    this._set( name, num );
+    var num = this.getActive('float') * -1;
+    this.setActive( num );
     return this;
   },
 
   clearInput: function(){
-    var name = this.get('active');
-    this.set( name, 0 );
+    this.setActive( '' );
     return this;
   },
 
   key: function(key){
-    var name = this.get('active');
-    var num = this.get( name ).toString() + this.dec + key;
-    this._set( name, num );
+    var num = this.getActive();
+    if(this.decimalPlaces(num) < this.precision){
+      this.setActive( num + this.dec + key );
+    }
     return this;
   },
 
   decimal: function(){
-    var name = this.get('active');
-    var num = this.get( name ).toString();
-    this.dec = num.indexOf('.') === -1 ? '.' : '';
+    this.dec = this.getActive().indexOf('.') === -1 ? '.' : '';
     return this;
   },
 
   quantity: function( type ) {
-    var name = this.get('active');
-    var num = this.get( name );
-    this._set( name, (type === 'increase' ? ++num : --num) );
+    var num = this.getActive('float');
+    this.setActive( (type === 'increase' ? ++num : --num) );
     return this;
   },
 
   calcPercentage: function(){
-    var percentage = ( this.get('value') / this.get('original') ) * 100;
+    var value      = parseFloat( this.get('value') ),
+      original   = parseFloat( this.get('original') ),
+      percentage = ( value / original ) * 100;
+
     if(this.percentageOff){
-      return 100 - percentage;
+      return this.round(100 - percentage);
     }
-    return percentage;
+
+    return this.round(percentage);
   },
 
   calcValue: function(){
-    var multiplier = this.get('percentage') / 100;
+    var percentage = parseFloat( this.get('percentage') ),
+      original   = parseFloat( this.get('original') ),
+      multiplier = percentage / 100;
+
     if(this.percentageOff){
-      return ( 1 - multiplier ) * this.get('original');
+      return this.round(( 1 - multiplier ) * original);
     }
-    return multiplier * this.get('original');
+
+    return this.round(multiplier * original);
   },
 
   toggle: function(attr){
-    var active = this.get('active');
-    this.set({ active: (attr === active ? 'value' : attr) });
+    this.set({ active: (attr === this.get('active') ? 'value' : attr) });
+  },
+
+  round: function(val){
+    val = val.toString();
+    if(this.decimalPlaces(val) > this.precision){
+      val = parseFloat(val).toFixed(this.precision);
+      val = parseFloat(val).toString();
+    }
+    return val;
+  },
+
+  decimalPlaces: function(val){
+    return val.replace(/^-?\d*\.?|0+$/g, '').length;
   }
 
 });
