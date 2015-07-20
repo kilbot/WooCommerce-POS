@@ -1,8 +1,8 @@
 === WooCommerce POS ===
 Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
-Requires at least: 4.0 & WooCommerce 2.2
-Tested up to: 4.2
+Requires at least: 4.0 & WooCommerce 2.3
+Tested up to: 4.2.2
 Stable tag: 0.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -76,6 +76,9 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 1. WooCommerce POS main screen
 
 == Changelog ==
+
+= 0.4.2 =
+* Fix: variation display and select issues - commit
 
 = 0.4.1 =
 * Note: WooCommerce POS now requires WooCommerce 2.3 or greater

@@ -28,10 +28,13 @@ module.exports = function(grunt) {
         '!package.json',
         '!locales.json',
         '!phpunit.xml',
+        '!phpunit.xml.dist',
+        '!phpunit.int.xml',
         '!pioneer.json',
         '!<%= app.css.src %>/**',
         '!<%= app.js.src %>/**',
-        '!README.md'
+        '!README.md',
+        '!coverage/**'
       ]
     },
 

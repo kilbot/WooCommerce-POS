@@ -119,13 +119,13 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
       foreach( $data['variations'] as &$variation ) :
         $_product = wc_get_product( $variation['id'] );
         $variation = $this->filter_response_data( $variation, $_product );
-        $variation['attributes'] = $this->patch_variation_attributes( $variation['attributes'], $data['attributes'] );
+        $variation['attributes'] = $this->patch_variation_attributes( $_product );
       endforeach;
     endif;
 
     // variation
     if( $type == 'variation' ) :
-      $data['attributes'] = $this->patch_variation_attributes( $data['attributes'], $data['parent']['attributes'] );
+      $data['attributes'] = $this->patch_variation_attributes( $product );
     endif;
 
     return $this->filter_response_data( $data, $product );
@@ -146,25 +146,79 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
 
   /**
    * https://github.com/woothemes/woocommerce/issues/8457
-   * - restore the correct attribute name
-   * - add label
-   * @param array $attributes
-   * @param $parent_attributes
+   * patches WC_Product_Variable->get_variation_attributes()
+   * @param $product
    * @return array
    */
-  private function patch_variation_attributes(array $attributes, array $parent_attributes){
-    foreach( $attributes as &$attribute ) :
-      foreach($parent_attributes as $attr){
-        if( $attribute['slug'] == sanitize_title( $attr['slug'] ) ){
-          $attribute['name'] = $attr['name'];
-          $option_slugs = array_map( 'sanitize_title', $attr['options'] );
-          $key = array_search( $attribute['option'], $option_slugs );
-          $attribute['label'] = $attr['options'][$key];
-          break;
-        }
+  private function patch_variation_attributes( $product ){
+    $patched_attributes = array();
+    $attributes = $product->get_attributes();
+    $variation_attributes = $product->get_variation_attributes();
+
+    foreach( $variation_attributes as $slug => $option ){
+      $slug = str_replace( 'attribute_', '', $slug );
+
+      if( isset( $attributes[$slug] ) ){
+        $patched_attributes[] = array(
+          'slug'    => str_replace( 'pa_', '', $slug ),
+          'name'    => $this->get_variation_name( $attributes[$slug] ),
+          'option'  => $option,
+          'label'   => $this->get_variation_label( $product, $attributes[$slug], $option )
+        );
       }
-    endforeach;
-    return $attributes;
+
+    }
+
+    return $patched_attributes;
+  }
+
+  /**
+   * @param $attribute
+   * @return null|string
+   */
+  private function get_variation_name( $attribute ){
+    if( $attribute['is_taxonomy'] ){
+      global $wpdb;
+
+      $name = $wpdb->get_var(
+        $wpdb->prepare("
+          SELECT attribute_label
+          FROM {$wpdb->prefix}woocommerce_attribute_taxonomies
+          WHERE attribute_name = %s;
+        ", str_replace( 'pa_', '', $attribute['name'] ) ) );
+
+      if($name) return $name;
+    }
+
+    return $attribute['name'];
+  }
+
+  /**
+   * @param $product
+   * @param $option
+   * @param $attribute
+   * @return mixed
+   */
+  private function get_variation_label( $product, $attribute, $option ){
+    $name = $option;
+
+    // taxonomy attributes
+    if ( $attribute['is_taxonomy'] ) {
+      $terms = wp_get_post_terms( $product->parent->id, $attribute['name'] );
+      if( !is_wp_error($terms) ) : foreach( $terms as $term ) :
+        if( $option == $term->slug ) $name = $term->name;
+      endforeach; endif;
+
+    // piped attributes
+    } else {
+      $values = array_map( 'trim', explode( WC_DELIMITER, $attribute['value'] ) );
+      $options = array_combine( array_map( 'sanitize_title', $values) , $values );
+      if( $options && isset( $options[$option] ) ){
+        $name = $options[$option];
+      }
+    }
+
+    return $name;
   }
 
   /**
