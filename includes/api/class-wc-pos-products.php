@@ -13,6 +13,14 @@
 class WC_POS_API_Products extends WC_POS_API_Abstract {
 
   /**
+   * postmeta key to use for barcode
+   * - defaults to '_sku'
+   * - can be overwritten using the woocommerce_pos_barcode_meta_key filter
+   * @var array
+   */
+  private $barcode_meta_key;
+
+  /**
    * Product fields used by the POS
    * @var array
    */
@@ -89,12 +97,15 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
   public function __construct() {
     add_filter( 'woocommerce_api_product_response', array( $this, 'product_response' ), 10, 4 );
     add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+    add_filter( 'posts_where', array( $this, 'posts_where' ), 10 , 2 );
 
     $general_settings = new WC_POS_Admin_Settings_General();
     if( $general_settings->get_data('decimal_qty') ){
       remove_filter('woocommerce_stock_amount', 'intval');
       add_filter( 'woocommerce_stock_amount', 'floatval' );
     }
+
+    $this->barcode_meta_key = apply_filters( 'woocommerce_pos_barcode_meta_key', '_sku' );
   }
 
   /**
@@ -231,10 +242,15 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    */
   private function filter_response_data( array $data, $product ){
     $id = isset( $data['id'] ) ? $data['id'] : '';
-    $sku = isset( $data['sku'] ) ? $data['sku'] : '';
+    $barcode = isset( $data['sku'] ) ? $data['sku'] : '';
+
+    // allow custom barcode field
+    if( $this->barcode_meta_key !== '_sku' ){
+      $barcode = get_post_meta( $id, $this->barcode_meta_key, true );
+    }
 
     $data['featured_src'] = $this->get_thumbnail( $id );
-    $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $sku, $id );
+    $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $barcode, $id );
 
     // allow decimal stock quantities, fixed in WC 2.4
     if( version_compare( WC()->version, '2.4', '<' ) ){
@@ -278,15 +294,14 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
 
       $filter = $_GET['filter'];
 
-      // barcode
-      // todo: allow users to set custom meta field
-      if( isset($filter['barcode']) ){
-        $meta_query[] = array(
-          'key' 		=> '_sku',
-          'value' 	=> $filter['barcode'],
-          'compare'	=> 'LIKE'
-        );
-      }
+      // barcode moved to posts_where for variation search
+//      if( isset($filter['barcode']) ){
+//        $meta_query[] = array(
+//          'key' 		=> $this->barcode_meta_key,
+//          'value' 	=> $filter['barcode'],
+//          'compare'	=> 'LIKE'
+//        );
+//      }
 
       // featured
       // todo: more general meta_key test using $query_args_whitelist
@@ -314,6 +329,48 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
     // update the meta_query
     $query->set( 'meta_query', $meta_query );
 
+  }
+
+  /**
+   * @param $where
+   * @param $query
+   * @return mixed
+   */
+  public function posts_where( $where, $query ) {
+    global $wpdb;
+
+    if( isset( $_GET['filter'] ) ){
+
+      $filter = $_GET['filter'];
+
+      if( isset($filter['barcode']) ){
+
+        // gets post ids and parent ids
+        $result = $wpdb->get_results(
+          $wpdb->prepare("
+            SELECT p.ID, p.post_parent
+            FROM $wpdb->posts AS p
+            JOIN $wpdb->postmeta AS pm
+            ON p.ID = pm.post_id
+            WHERE pm.meta_key = %s
+            AND pm.meta_value LIKE %s
+          ", $this->barcode_meta_key, '%'.$filter['barcode'].'%' ),
+          ARRAY_N
+        );
+
+        if($result){
+          $ids = call_user_func_array('array_merge', $result);
+          $where .= " AND ID IN (" . implode( ',', array_unique($ids) ) . ")";
+        } else {
+          // no matches
+          $where .= " AND 1=0";
+        }
+
+      }
+
+    }
+
+    return $where;
   }
 
   /**

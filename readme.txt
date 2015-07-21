@@ -78,7 +78,8 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.4.2 =
-* Fix: variation display and select issues - commit
+* Fix: variation display and select issues - commit [91c7ec1](https://github.com/kilbot/WooCommerce-POS/commit/91c7ec13e737f820d84feb7890d7b6d027a79792)
+* Fix: variation barcode search for products in queue - commit
 
 = 0.4.1 =
 * Note: WooCommerce POS now requires WooCommerce 2.3 or greater
