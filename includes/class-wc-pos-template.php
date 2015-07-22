@@ -16,20 +16,7 @@ class WC_POS_Template {
    * Constructor
    */
   public function __construct() {
-    add_filter( 'query_vars', array( $this, 'query_vars' ) );
     add_action( 'template_redirect', array( $this, 'template_redirect' ) );
-  }
-
-  /**
-   * Add pos variable to $wp global
-   *
-   * @param $public_query_vars
-   *
-   * @return array
-   */
-  public function query_vars( $public_query_vars ) {
-    $public_query_vars[] = 'pos';
-    return $public_query_vars;
   }
 
   /**

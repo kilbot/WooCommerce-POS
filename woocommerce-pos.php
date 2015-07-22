@@ -35,13 +35,13 @@ define( 'WC_POS_PLUGIN_URL', trailingslashit( plugins_url( basename( plugin_dir_
  * The code that runs during plugin activation.
  */
 require_once WC_POS_PLUGIN_PATH . 'includes/class-wc-pos-activator.php';
-register_activation_hook( __FILE__, array( 'WC_POS_Activator', 'activate' ) );
+new WC_POS_Activator( plugin_basename( __FILE__ ) );
 
 /**
  * The code that runs during plugin deactivation.
  */
 require_once WC_POS_PLUGIN_PATH . 'includes/class-wc-pos-deactivator.php';
-register_deactivation_hook( __FILE__, array( 'WC_POS_Deactivator', 'deactivate' ) );
+new WC_POS_Deactivator( plugin_basename( __FILE__ ) );
 
 /**
  * The core plugin class.

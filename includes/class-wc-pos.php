@@ -22,7 +22,6 @@ class WC_POS {
     }
 
     add_action( 'init', array( $this, 'init' ) );
-    add_filter( 'generate_rewrite_rules', array( $this, 'generate_rewrite_rules' ) );
     add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 2 );
     add_action( 'woocommerce_api_loaded', array( $this, 'load_woocommerce_api_patches') );
     do_action( 'woocommerce_pos_loaded' );
@@ -59,12 +58,12 @@ class WC_POS {
 
     // global
     new WC_POS_Params();
-    $i18n     = new WC_POS_i18n();
+    $i18n = new WC_POS_i18n();
     new WC_POS_Gateways();
     new WC_POS_Products();
 
     // frontend only
-    if (!is_admin()) {
+    if( !is_admin() ){
       new WC_POS_Template();
     }
 
@@ -78,21 +77,6 @@ class WC_POS {
       new WC_POS_AJAX( $i18n );
     }
 
-  }
-
-  /**
-   * Add rewrite rule to permalinks
-   *
-   * @param $wp_rewrite
-   */
-  public function generate_rewrite_rules( $wp_rewrite ) {
-    $option = get_option( WC_POS_Admin_Settings::DB_PREFIX . 'permalink', 'pos' );
-    $slug = empty($option) ? 'pos' : $option; // make sure slug not empty
-
-    $custom_page_rules = array(
-      '^'. $slug .'/?$' => 'index.php?pos=1',
-    );
-    $wp_rewrite->rules = $custom_page_rules + $wp_rewrite->rules;
   }
 
   /**

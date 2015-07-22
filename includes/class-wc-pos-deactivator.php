@@ -14,34 +14,41 @@
 class WC_POS_Deactivator {
 
   /**
+   * @param $file
+   */
+  public function __construct( $file ){
+    register_deactivation_hook( $file, array( $this, 'deactivate' ) );
+  }
+
+  /**
    * Fired when the plugin is deactivated.
    *
    * @param $network_wide
    */
-  public static function deactivate( $network_wide ) {
+  public function deactivate( $network_wide ) {
 
     if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
       if ( $network_wide ) {
 
         // Get all blog ids
-        $blog_ids = self::get_blog_ids();
+        $blog_ids = $this->get_blog_ids();
 
         foreach ( $blog_ids as $blog_id ) {
 
           switch_to_blog( $blog_id );
-          self::single_deactivate();
+          $this->single_deactivate();
 
           restore_current_blog();
 
         }
 
       } else {
-        self::single_deactivate();
+        $this->single_deactivate();
       }
 
     } else {
-      self::single_deactivate();
+      $this->single_deactivate();
     }
 
   }
@@ -68,12 +75,12 @@ class WC_POS_Deactivator {
   /**
    * Fired when the plugin is deactivated.
    */
-  public static function single_deactivate() {
+  public function single_deactivate() {
+
     // remove pos capabilities
-    self::remove_pos_capability();
+    $this->remove_pos_capability();
 
     // flush on activation and deactivation
-    // this will remove the pos rewrite rule
     flush_rewrite_rules( false ); // false will not overwrite .htaccess
   }
 

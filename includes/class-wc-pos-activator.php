@@ -11,14 +11,23 @@
 
 class WC_POS_Activator {
 
-  public function __construct() {
+  /** @var  main plugin file, eg: woocommerce-pos/woocommerce-pos.php */
+  private $mainfile;
 
-    // wpmu_new_blog
+  /**
+   * @param $file
+   */
+  public function __construct( $file ) {
+    $this->mainfile = $file;
+
+    register_activation_hook( $file, array( $this, 'activate' ) );
     add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
-    // check dependencies
     add_action( 'admin_init', array( $this, 'run_checks' ) );
 
+    if( !$this->is_deactivating() ){
+      add_action( 'init', array( $this, 'rewrite_rules' ) );
+    }
   }
 
   /**
@@ -26,18 +35,18 @@ class WC_POS_Activator {
    *
    * @param $network_wide
    */
-  static public function activate( $network_wide ) {
+  public function activate( $network_wide ) {
     if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
       if ( $network_wide  ) {
 
         // Get all blog ids
-        $blog_ids = self::get_blog_ids();
+        $blog_ids = $this->get_blog_ids();
 
         foreach ( $blog_ids as $blog_id ) {
 
           switch_to_blog( $blog_id );
-          self::single_activate();
+          $this->single_activate();
 
           restore_current_blog();
         }
@@ -63,7 +72,7 @@ class WC_POS_Activator {
     }
 
     switch_to_blog( $blog_id );
-    self::single_activate();
+    $this->single_activate();
     restore_current_blog();
 
   }
@@ -74,7 +83,7 @@ class WC_POS_Activator {
    * - not spam
    * - not deleted
    */
-  static private function get_blog_ids() {
+  private function get_blog_ids() {
 
     global $wpdb;
 
@@ -90,27 +99,33 @@ class WC_POS_Activator {
   /**
    * Fired when the plugin is activated.
    */
-  static public function single_activate() {
-
-    // Add rewrite rules, $this->generate_rewrite_rules not called on activation
-    global $wp_rewrite;
-    $permalink = get_option( 'woocommerce_pos_settings_permalink' );
-    $slug = $permalink && $permalink != '' ? $permalink : 'pos' ;
-    add_rewrite_rule('^'. $slug .'/?$','index.php?pos=1','top');
-    flush_rewrite_rules( false ); // false will not overwrite .htaccess
-
+  public function single_activate() {
     // add pos capabilities
-    self::add_pos_capability();
+    $this->add_pos_capability();
+
+    // add rewrite rules
+    $this->rewrite_rules();
+    flush_rewrite_rules( false );
 
     // set the auto redirection on next page load
-    set_transient( 'woocommere_pos_welcome', 1, 30 );
+    //set_transient( 'woocommere_pos_welcome', 1, 30 );
+  }
+
+  /**
+   * Add rewrite rule to permalinks
+   */
+  public function rewrite_rules() {
+    $option = get_option( 'woocommerce_pos_settings_permalink', 'pos' );
+    $slug = empty($option) ? 'pos' : $option; // make sure slug is not empty
+    add_rewrite_tag('%'. $slug .'%', '([^&]+)');
+    add_rewrite_rule('^'. $slug .'/?$','index.php?pos=1','top');
   }
 
   /**
    * add default pos capabilities to administrator and
    * shop_manager roles
    */
-  static private function add_pos_capability(){
+  private function add_pos_capability(){
     $roles = array('administrator', 'shop_manager');
     $caps = array('manage_woocommerce_pos', 'access_woocommerce_pos');
     foreach($roles as $slug) :
@@ -179,7 +194,12 @@ class WC_POS_Activator {
       </div>';
   }
 
-}
+  /**
+   * Check if WP in the process of deactivating this plugin
+   */
+  public function is_deactivating(){
+    return isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'deactivate' &&
+      isset( $_REQUEST['plugin'] ) && $_REQUEST['plugin'] === $this->mainfile;
+  }
 
-// self loading
-new WC_POS_Activator();
+}
