@@ -36,4 +36,5 @@ module.exports = Application.extend({
   onStart: function(){
     bb.history.start();
   }
+
 });

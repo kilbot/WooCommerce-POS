@@ -36,6 +36,7 @@ class WC_POS_Params {
     $params['tax_labels']    = $this->tax_labels();
     $params['tax_rates']     = $this->tax_rates();
     $params['user']          = $this->user();
+    $params['version']       = WC_POS_VERSION;
     $params['wc_api']        = get_woocommerce_api_url( '' );
     $params['emulateHTTP']   = get_option( 'woocommerce_pos_emulateHTTP' ) === '1';
     return $params;

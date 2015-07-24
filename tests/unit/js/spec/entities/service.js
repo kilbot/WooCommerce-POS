@@ -100,7 +100,20 @@ describe('entities/service.js', function () {
     expect(foo.get('user')).equals('setting');
   });
 
-  it('should be able to get/set data in localStorage', function() {
+  it('should be able to get/set string data in localStorage', function() {
+    this.module.channel.request('set', {
+      type: 'localStorage',
+      name: 'test',
+      data: 'bar'
+    });
+    var foo = this.module.channel.request('get', {
+      type: 'localStorage',
+      name: 'test'
+    });
+    expect(foo).equals('bar');
+  });
+
+  it('should be able to get/set object data in localStorage', function() {
     this.module.channel.request('set', {
       type: 'localStorage',
       name: 'test',
@@ -124,6 +137,31 @@ describe('entities/service.js', function () {
     expect(test).eql({foo: 'baz', bat: 'man'});
   });
 
+  it('should be able to get/set mixed data in localStorage', function() {
+    this.module.channel.request('set', {
+      type: 'localStorage',
+      name: 'test',
+      data: {foo: 'bar', bat: ['boy', 'man']}
+    });
+    var bat = this.module.channel.request('get', {
+      type: 'localStorage',
+      name: 'test',
+      key: 'bat'
+    });
+    expect(bat).eql(['boy', 'man']);
+
+    this.module.channel.request('set', {
+      type: 'localStorage',
+      name: 'test',
+      data: {bat: 'man'}
+    });
+    var test = this.module.channel.request('get', {
+      type: 'localStorage',
+      name: 'test'
+    });
+    expect(test).eql({foo: 'bar', bat: 'man'});
+  });
+
   it('should be able to remove data from localStorage', function() {
     this.module.channel.request('remove', {
       type: 'localStorage',
@@ -134,7 +172,8 @@ describe('entities/service.js', function () {
       type: 'localStorage',
       name: 'test'
     });
-    expect(test).eql({foo: 'baz'});
+    expect(test).eql({foo: 'bar'});
+
     this.module.channel.request('remove', {
       type: 'localStorage',
       name: 'test'
@@ -144,6 +183,17 @@ describe('entities/service.js', function () {
       name: 'test'
     });
     expect(test).to.be.undefined;
+  });
+
+  it('should return all collections', function(){
+    this.module.should.respondTo('getAllCollections');
+    var keys1 = Object.keys( this.module.getAllCollections() );
+    var keys2 = Object.keys( this.module.collections );
+    keys1.should.eql(keys2);
+  });
+
+  it('should return IDB Collections', function(){
+    this.module.should.respondTo('idbCollections');
   });
 
   afterEach(function () {

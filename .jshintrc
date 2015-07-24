@@ -4,7 +4,8 @@
     "module"  : true,
     "exports" : true,
     "console" : true,
-    "global"  : true
+    "global"  : true,
+    "__VERSION__": true
   },
 
   "predef": ["-Promise"],

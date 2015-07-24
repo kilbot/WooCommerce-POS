@@ -31,7 +31,11 @@ describe('lib/config/dual-collection.js', function () {
       }),
       './idb-collection': Backbone.Collection.extend({
         sync: this.idbSync,
-        mergeRecords: stub().resolves(mergedCol)
+        mergeRecords: stub().resolves(mergedCol),
+        db: {
+          open: stub().resolves(''),
+          clear: stub().resolves('')
+        }
       })
     });
     this.collection = new DualCollection();
@@ -61,6 +65,26 @@ describe('lib/config/dual-collection.js', function () {
     var models = this.collection.getModelsByRemoteIds([2,4,6]);
     models.should.have.length(3);
     models[0].should.be.instanceof(Backbone.Model);
+  });
+
+  it('should have a clear method', function(done){
+    this.collection.should.respondTo('clear');
+
+    // add some models & queue
+    this.collection.add(localCol);
+    this.collection.enqueue([4,5,6]);
+    this.collection.length.should.eql( localCol.length );
+    this.collection.queue.length.should.eql( 3 );
+
+    // clear
+    var col = this.collection;
+    this.collection.clear().then(function(){
+      col.db.clear.should.have.been.calledOnce;
+      col.length.should.eql( 0 );
+      col.queue.length.should.eql( 0 );
+      done();
+    });
+
   });
 
 });

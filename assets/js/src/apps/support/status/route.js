@@ -104,10 +104,8 @@ var StatusRoute = Route.extend({
     var collection = this[db],
         self = this;
 
-    collection.db.clear()
+    collection.clear()
       .then(function(){
-        collection.reset();
-        collection.queue = [];
         self.render();
       });
   }

@@ -24,6 +24,7 @@ global.proxyquire = proxyquire;
 
 // localStorage
 if (typeof global.localStorage === 'undefined' || global.localStorage === null) {
-    var LocalStorage    = require('node-localstorage').LocalStorage;
-    global.localStorage = new LocalStorage('./node_modules/node-localstorage/scratch');
+  var LocalStorage    = require('node-localstorage').LocalStorage;
+  global.localStorage = new LocalStorage('./node_modules/node-localstorage/scratch');
+  global.localStorage.clear();
 }

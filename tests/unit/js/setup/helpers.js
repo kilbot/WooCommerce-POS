@@ -3,6 +3,7 @@ var Backbone = require('backbone');
 Backbone.$ = require('jquery');
 
 global.fs = require('fs');
+global.__VERSION__ = '';
 
 before(function() {
   global._ = _;

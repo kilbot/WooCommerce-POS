@@ -181,7 +181,7 @@ class WC_POS_Activator {
    * WooCommerce POS will not load if WooCommerce is not present
    */
   private function woocommerce_check() {
-    if( ! class_exists( 'WooCommerce' ) )
+    if( ! class_exists( 'WooCommerce' ) && current_user_can( 'activate_plugins' ) )
       add_action( 'admin_notices', array( $this, 'woocommerce_alert' ) );
   }
 

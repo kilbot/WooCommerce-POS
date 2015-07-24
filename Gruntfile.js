@@ -2,9 +2,12 @@ module.exports = function(grunt) {
 
   // load all grunt tasks matching the `grunt-*` pattern
   require('load-grunt-tasks')(grunt);
+  var webpack = require('webpack');
+
+  var pkg = grunt.file.readJSON('package.json');
 
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+    //pkg: grunt.file.readJSON('package.json'),
 
     // file paths
     app: {
@@ -142,6 +145,11 @@ module.exports = function(grunt) {
             { test: /\.hbs$/, loader: 'raw-loader' }
           ]
         },
+        plugins: [
+          new webpack.DefinePlugin({
+            __VERSION__: JSON.stringify(pkg.version)
+          })
+        ],
         resolve: {
           alias: {
             marionette: 'backbone.marionette',

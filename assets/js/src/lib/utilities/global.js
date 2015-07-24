@@ -1,4 +1,3 @@
-var version = version || '';
 var _ = require('lodash');
 var debugFunc = require('debug');
 var $ = require('jquery');
@@ -20,7 +19,7 @@ console.info(
  * create a global variable
  */
 module.exports = {
-  VERSION: version,
+  VERSION: __VERSION__, // injected by webpack
   attach: function(deepProperty, value){
     deepProperty = deepProperty.split('.');
     var nestedObj = _.reduceRight(deepProperty, function (child, parent) {

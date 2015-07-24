@@ -11,7 +11,7 @@ var Variations = require('./variations/collection');
 var FilteredCollection = require('lib/config/obscura');
 var debug = require('debug')('entities');
 var POS = require('lib/utilities/global');
-//var $ = require('jquery');
+var $ = require('jquery');
 var _ = require('lodash');
 var storage = global.localStorage || window.localStorage;
 var JSON = global.JSON || window.JSON;
@@ -20,11 +20,15 @@ var JSON = global.JSON || window.JSON;
 var EntitiesService = Service.extend({
   channelName: 'entities',
 
-  initialize: function() {
+  initialize: function(options) {
     this.channel.reply('get', this.get, this);
     this.channel.reply('set', this.set, this);
     this.channel.reply('remove', this.remove, this);
     this.channel.reply('set:filter', this.setFilter, this);
+
+    if(options.app){
+      this.listenTo( options.app, 'before:start', this.versionCheck );
+    }
   },
 
   collections: {
@@ -93,6 +97,13 @@ var EntitiesService = Service.extend({
     return ( this[prop] || this.attach(options) );
   },
 
+  getAllCollections: function(){
+    return _.reduce( this.collections, function(result, col, key){
+      result[key] = this.getCollection({ name: key });
+      return result;
+    }, {}, this);
+  },
+
   getModel: function(options){
     var prop = '_' + options.name;
     if( options.init ) {
@@ -139,10 +150,20 @@ var EntitiesService = Service.extend({
     }
   },
 
+  serialize: function(value){
+    return JSON.stringify(value);
+  },
+
+  deserialize: function(value){
+    try { value = JSON.parse(value); }
+    catch(e) { debug(e); }
+    return value || undefined;
+  },
+
   getLocalStorage: function(options){
     options = options || {};
-    var string = storage.getItem('wc_pos_' + options.name);
-    var obj = JSON.parse(string) || undefined;
+    var data = storage.getItem('wc_pos_' + options.name);
+    var obj = this.deserialize(data);
     if(options.key && obj && obj[options.key]){
       return obj[options.key];
     }
@@ -151,13 +172,12 @@ var EntitiesService = Service.extend({
 
   setLocalStorage: function(options){
     options = options || {};
-    var data = this.getLocalStorage({name: options.name}) || {};
-    if(_.isObject(data)){
-      _.extend(data, options.data);
-    } else {
-      data = options.data;
+    var data = options.data;
+    var old = this.getLocalStorage({name: options.name});
+    if( _.isObject(old) && _.isObject(data) ){
+      data = _.extend(old, data);
     }
-    storage.setItem('wc_pos_' + options.name, JSON.stringify(data));
+    storage.setItem('wc_pos_' + options.name, this.serialize(data));
   },
 
   remove: function(options){
@@ -179,6 +199,34 @@ var EntitiesService = Service.extend({
       this._variations[parent_id] = new FilteredCollection(vars, options);
     }
     return this._variations[parent_id];
+  },
+
+  versionCheck: function(){
+    var version = this.getLocalStorage({
+      name: 'version'
+    });
+    if(version !== POS.VERSION){
+      this.updateIDB();
+      this.setLocalStorage({
+        name: 'version',
+        data: POS.VERSION
+      });
+    }
+  },
+
+  updateIDB: function(){
+    // flush local storage
+    var flush = _.invoke( this.idbCollections(), 'clear', this );
+    return $.when.apply($, flush);
+  },
+
+  idbCollections: function(){
+    return _.reduce( this.getAllCollections(), function(result, col, key){
+      if( col instanceof POS.IndexedDBCollection ){
+        result[key] = col;
+      }
+      return result;
+    }, {}, this);
   }
 
 });
