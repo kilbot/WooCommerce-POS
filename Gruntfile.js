@@ -6,6 +6,22 @@ module.exports = function(grunt) {
 
   var pkg = grunt.file.readJSON('package.json');
 
+  /**
+   * Simple version conversion to integer
+   * - 0.4.2 becomes 4002
+   * - 0.4.2-dev becomes 4002
+   * - 1.4.2 becomes 1004002
+   */
+  var idbVersion = function(){
+    var version = pkg.version
+      .split('.')
+      .map(function(num){
+        return(1e15+ parseInt( num, 10 ) +"").slice(-3)
+      })
+      .join('');
+    return parseInt( version, 10 );
+  }
+
   grunt.initConfig({
     //pkg: grunt.file.readJSON('package.json'),
 
@@ -147,7 +163,7 @@ module.exports = function(grunt) {
         },
         plugins: [
           new webpack.DefinePlugin({
-            __VERSION__: JSON.stringify(pkg.version)
+            __VERSION__: JSON.stringify( idbVersion() )
           })
         ],
         resolve: {
@@ -218,7 +234,7 @@ module.exports = function(grunt) {
             'node_modules/backbone.radio/build/backbone.radio.js',
             'node_modules/backbone.marionette/lib/backbone.marionette.js',
             'node_modules/handlebars/dist/handlebars.js',
-            'node_modules/idb-wrapper/idbstore.js',
+            //'node_modules/idb-wrapper/idbstore.js',
             'node_modules/select2/select2.js',
             'node_modules/moment/moment.js',
             'node_modules/accounting/accounting.js',

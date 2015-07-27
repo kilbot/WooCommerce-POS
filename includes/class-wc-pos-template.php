@@ -16,7 +16,7 @@ class WC_POS_Template {
    * Constructor
    */
   public function __construct() {
-    add_action( 'template_redirect', array( $this, 'template_redirect' ) );
+    add_action( 'template_redirect', array( $this, 'template_redirect' ), 1 );
   }
 
   /**
@@ -94,7 +94,8 @@ class WC_POS_Template {
       'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.0/backbone.radio.min.js',
       'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.2/backbone.marionette.min.js',
       'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js',
-      'idb-wrapper'  => 'https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.5.0/idbstore.min.js',
+//      now using customised idb-wrapper
+//      'idb-wrapper'  => 'https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.5.0/idbstore.min.js',
       'select2'      => 'https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js',
       'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js',
       'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',

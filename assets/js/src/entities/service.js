@@ -11,7 +11,7 @@ var Variations = require('./variations/collection');
 var FilteredCollection = require('lib/config/obscura');
 var debug = require('debug')('entities');
 var POS = require('lib/utilities/global');
-var $ = require('jquery');
+//var $ = require('jquery');
 var _ = require('lodash');
 var storage = global.localStorage || window.localStorage;
 var JSON = global.JSON || window.JSON;
@@ -20,15 +20,11 @@ var JSON = global.JSON || window.JSON;
 var EntitiesService = Service.extend({
   channelName: 'entities',
 
-  initialize: function(options) {
+  initialize: function() {
     this.channel.reply('get', this.get, this);
     this.channel.reply('set', this.set, this);
     this.channel.reply('remove', this.remove, this);
     this.channel.reply('set:filter', this.setFilter, this);
-
-    if(options.app){
-      this.listenTo( options.app, 'before:start', this.versionCheck );
-    }
   },
 
   collections: {
@@ -199,25 +195,6 @@ var EntitiesService = Service.extend({
       this._variations[parent_id] = new FilteredCollection(vars, options);
     }
     return this._variations[parent_id];
-  },
-
-  versionCheck: function(){
-    var version = this.getLocalStorage({
-      name: 'version'
-    });
-    if(version !== POS.VERSION){
-      this.updateIDB();
-      this.setLocalStorage({
-        name: 'version',
-        data: POS.VERSION
-      });
-    }
-  },
-
-  updateIDB: function(){
-    // flush local storage
-    var flush = _.invoke( this.idbCollections(), 'clear', this );
-    return $.when.apply($, flush);
   },
 
   idbCollections: function(){
