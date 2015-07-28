@@ -5,9 +5,11 @@ npm-debug.log
 assets/css/src/admin.css
 assets/css/src/icons.css
 assets/css/src/pos.css
+assets/css/src/admin-icons.css
 assets/css/admin.min.css
 assets/css/pos.min.css
 assets/css/icons.min.css
+assets/css/admin-icons.min.css
 assets/js/admin.build.js
 assets/js/app.build.js
 assets/js/core.build.js
@@ -16,5 +18,3 @@ assets/js/admin.min.js
 assets/js/vendor.bundle.js
 assets/js/products.min.js
 coverage
-
-assets/css/admin-icons.min.css
