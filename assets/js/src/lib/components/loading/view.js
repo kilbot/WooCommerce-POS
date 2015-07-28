@@ -4,10 +4,15 @@ var POS = require('lib/utilities/global');
 
 var View = ItemView.extend({
   className: 'loading',
+  iconPrefix: 'icon-',
 
   initialize: function () {
     this.on('update:message', this.render);
     this.timeout = setTimeout(_.bind(this.fail, this), 60000);
+    // test for wp-admin
+    if(window.adminpage){
+      this.iconPrefix = 'wc_pos-icon-';
+    }
   },
 
   render: function () {
@@ -15,7 +20,7 @@ var View = ItemView.extend({
     if (!_.isEmpty(this.options.message)) {
       message = '<p>' + this.options.message + '</p>';
     }
-    this.$el.html('<p><i class="icon icon-spinner icon-lg"></i></p>' + message);
+    this.$el.html('<p>' + this.icon() + '</p>' + message);
     return this;
   },
 
@@ -34,7 +39,13 @@ var View = ItemView.extend({
       this.options.message = 'Script Error';
     }
     this.render();
-    this.$('.icon').removeClass('icon-spinner').addClass('icon-fail');
+    this.$('i').removeClass('icon-spinner').addClass('icon-fail');
+  },
+
+  icon: function(){
+    return '<i class="' +
+      this.iconPrefix + 'spinner ' +
+      this.iconPrefix + 'lg"></i>';
   }
 
 });

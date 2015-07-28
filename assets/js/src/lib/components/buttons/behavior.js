@@ -6,6 +6,14 @@ var d = 'disabled';
 
 var Buttons = Behavior.extend({
   loadingText: polyglot.t('messages.loading'),
+  iconPrefix: 'icon-',
+
+  initialize: function(){
+    // test for wp-admin
+    if(window.adminpage){
+      this.iconPrefix = 'wc_pos-icon-';
+    }
+  },
 
   ui: {
     btns    : '.btn',
@@ -82,9 +90,13 @@ var Buttons = Behavior.extend({
   updateIcon: function(btn, state){
     if(btn.data('icon') === undefined){ return; }
     var pos = btn.data('icon') || 'prepend';
-    var icon = state !== 'reset' ? '<i class="icon-' + state + '"></i>' : '';
+    var icon = state !== 'reset' ? this.icon(state) : '';
     btn.children('i').remove();
     btn[pos](icon);
+  },
+
+  icon: function(state){
+    return '<i class="' + this.iconPrefix + state + '"></i>';
   },
 
   updateInput: function(btn, state){

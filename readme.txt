@@ -78,6 +78,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.4.2 =
+* New: local storage will now clear on version change - commit [85ec411](https://github.com/kilbot/WooCommerce-POS/commit/85ec411a58600988b811272be6d151cb11161f4f)
 * Fix: variation display and select issues - commit [91c7ec1](https://github.com/kilbot/WooCommerce-POS/commit/91c7ec13e737f820d84feb7890d7b6d027a79792)
 * Fix: variation barcode search for products in queue - commit [3fda531](https://github.com/kilbot/WooCommerce-POS/commit/3fda5317ef580f6b6d70e24ba235d2b7e69c5ee4)
 

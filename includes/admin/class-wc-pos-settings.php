@@ -120,7 +120,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_style(
       WC_POS_PLUGIN_NAME . '-icons',
-      WC_POS_PLUGIN_URL . 'assets/css/icons.min.css',
+      WC_POS_PLUGIN_URL . 'assets/css/admin-icons.min.css',
       null,
       WC_POS_VERSION
     );

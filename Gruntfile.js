@@ -70,7 +70,8 @@ module.exports = function(grunt) {
         files: [
           '<%= app.css.src %>/pos.css',
           '<%= app.css.src %>/admin.css',
-          '<%= app.css.src %>/icons.css'
+          '<%= app.css.src %>/icons.css',
+          '<%= app.css.src %>/admin-icons.css'
         ],
         tasks: ['cssmin']
       },
@@ -123,7 +124,8 @@ module.exports = function(grunt) {
         files: {
           'assets/css/pos.min.css': ['assets/css/src/pos.css'],
           'assets/css/admin.min.css':['assets/css/src/admin.css'],
-          'assets/css/icons.min.css':['assets/css/src/icons.css']
+          'assets/css/icons.min.css':['assets/css/src/icons.css'],
+          'assets/css/admin-icons.min.css':['assets/css/src/admin-icons.css']
         }
       }
     },

@@ -9,7 +9,8 @@
 ?>
 
 <div class="wrap">
-  <p><?php _e( 'There has been an error loading the settings, please contact <a href="mailto:support@woopos.com.au">support</a>', 'woocommerce-pos' ); ?></p>
+  <p class="wc_pos-css-fade-out-10"><i class="wc_pos-icon-loading"></i> <?php /* translators: wordpress */ _e( 'Loading ...' ); ?></p>
+  <p class="wc_pos-css-fade-in-10"><?php _e( 'There has been an error loading the settings, please contact <a href="mailto:support@woopos.com.au">support</a>', 'woocommerce-pos' ); ?></p>
 </div>
 <script type="text/javascript">var wc_pos_settings = {};</script>
 
