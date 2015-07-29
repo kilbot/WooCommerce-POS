@@ -26,6 +26,7 @@ class WC_POS_Params {
   public function frontend_params( array $params ) {
     $params['accounting']    = $this->accounting();
     $params['ajaxurl']       = admin_url( 'admin-ajax.php', 'relative' );
+    $params['auto_print']    = $this->auto_print();
     $params['customers']     = $this->customers();
     $params['discount_keys'] = $this->discount_keys();
     $params['hotkeys']       = $this->hotkeys();
@@ -36,7 +37,6 @@ class WC_POS_Params {
     $params['tax_labels']    = $this->tax_labels();
     $params['tax_rates']     = $this->tax_rates();
     $params['user']          = $this->user();
-    $params['version']       = WC_POS_VERSION;
     $params['wc_api']        = get_woocommerce_api_url( '' );
     $params['emulateHTTP']   = get_option( 'woocommerce_pos_emulateHTTP' ) === '1';
     return $params;
@@ -268,6 +268,11 @@ class WC_POS_Params {
   private function discount_keys(){
     $settings = new WC_POS_Admin_Settings_General();
     return $settings->get_data('discount_quick_keys');
+  }
+
+  private function auto_print(){
+    $settings = new WC_POS_Admin_Settings_Checkout();
+    return $settings->get_data('auto_print_receipt');
   }
 
 }

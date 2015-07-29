@@ -29,10 +29,20 @@
     </th>
     <td>
       <input type="checkbox" name="admin_emails" id="admin_emails" />
-      <label for="order_emails">Enable admin emails</label>
+      <label for="order_emails"><?php _e( 'Enable admin emails', 'woocommerce-pos' ); ?></label>
       <br>
       <input type="checkbox" name="customer_emails" id="customer_emails" />
-      <label for="order_emails">Enable customer emails</label>
+      <label for="order_emails"><?php _e( 'Enable customer emails', 'woocommerce-pos' ); ?></label>
+    </td>
+  </tr>
+
+  <tr class="receipt_printing">
+    <th scope="row">
+      <?php _e( 'Receipt Printing', 'woocommerce-pos' ); ?>
+    </th>
+    <td>
+      <input type="checkbox" name="auto_print_receipt" id="auto_print_receipt" />
+      <label for="auto_print_receipt"><?php _e( 'Automatically print receipt after checkout', 'woocommerce-pos' ); ?></label>
     </td>
   </tr>
 

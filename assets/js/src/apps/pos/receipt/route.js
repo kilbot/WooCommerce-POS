@@ -17,6 +17,7 @@ var ReceiptRoute = Route.extend({
     options = options || {};
     this.container = options.container;
     this.collection = options.collection;
+    this.autoPrint = options.autoPrint;
     this.setTabLabel({
       tab   : 'right',
       label : polyglot.t('titles.receipt')
@@ -61,6 +62,9 @@ var ReceiptRoute = Route.extend({
       this.showItems();
       this.showTotals();
       this.showActions();
+      if(this.autoPrint){
+        this.print();
+      }
     });
 
     this.container.show( this.layout );

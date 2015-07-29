@@ -83,9 +83,15 @@ var POSRouter = Router.extend({
   },
 
   showReceipt: function() {
+    var autoPrint = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'auto_print'
+    });
+
     return new ReceiptRoute({
       container : this.layout.getRegion('right'),
-      collection: this.orders
+      collection: this.orders,
+      autoPrint : autoPrint
     });
   },
 

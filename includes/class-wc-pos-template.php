@@ -97,7 +97,7 @@ class WC_POS_Template {
 //      now using customised idb-wrapper
 //      'idb-wrapper'  => 'https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.5.0/idbstore.min.js',
       'select2'      => 'https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js',
-      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js',
+      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js',
       'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
       'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js',
       'app'          => WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION
