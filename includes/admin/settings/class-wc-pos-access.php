@@ -11,6 +11,8 @@
 
 class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Abstract {
 
+  protected static $instance;
+
   /**
    * Each settings tab requires an id and label
    */
@@ -35,16 +37,13 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Abstract {
         'list_users'
       ),
     ));
-
-    // save action
-    add_action('woocommerce_pos_settings_save_'.$this->id, array($this, 'save'));
   }
 
   /**
    * @param bool $key
    * @return array
    */
-  public function get_data($key = false){
+  public function get($key = false){
     return array(
       'roles' => $this->get_role_caps()
     );
@@ -79,10 +78,15 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Abstract {
     return $role_caps;
   }
 
-  public function save( array $data ){
+  /**
+   * @param array $data
+   * @return array
+   */
+  public function set( array $data ){
     if(isset($data['roles'])){
       $this->update_capabilities($data['roles']);
     }
+    return $this->get();
   }
 
   /**
@@ -127,7 +131,7 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Abstract {
       endforeach; endif;
     endforeach; endif;
 
-    return $this->get_data();
+    return $this->get();
   }
 
 }

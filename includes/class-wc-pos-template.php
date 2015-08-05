@@ -56,6 +56,10 @@ class WC_POS_Template {
     // disable W3 Total Cache minify
     if ( ! defined( 'DONOTMINIFY' ) )
       define( "DONOTMINIFY", "true" );
+
+    // disable WP Super Cache
+    if ( ! defined( 'DONOTCACHEPAGE' ) )
+      define( "DONOTCACHEPAGE", "true" );
   }
 
   /**
@@ -118,9 +122,9 @@ class WC_POS_Template {
     }
 
     // inline start app with params
-    $params = apply_filters( 'woocommerce_pos_params', array() );
+    $params = new WC_POS_Params();
     $inline = array(
-      'start' => '<script type="text/javascript">POS.options = '. json_encode( $params ) .'; POS.start();</script>'
+      'start' => '<script type="text/javascript">POS.options = '. $params->toJSON() .'; POS.start();</script>'
     );
 
     $inline_js = apply_filters( 'woocommerce_pos_inline_js', $inline );
@@ -205,7 +209,7 @@ class WC_POS_Template {
    * @return array
    */
   protected function gateways(){
-    $settings = new WC_POS_Admin_Settings_Checkout();
+    $settings = WC_POS_Admin_Settings_Checkout::get_instance();
     return $settings->load_enabled_gateways();
   }
 

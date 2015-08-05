@@ -11,6 +11,8 @@
 
 class WC_POS_Admin_Settings_Status extends WC_POS_Admin_Settings_Abstract {
 
+  protected static $instance;
+
   /**
    * Each settings tab requires an id and label
    */

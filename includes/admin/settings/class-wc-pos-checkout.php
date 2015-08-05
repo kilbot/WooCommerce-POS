@@ -11,6 +11,8 @@
 
 class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
 
+  protected static $instance;
+
   /**
    * Each settings tab requires an id and label
    */
@@ -19,10 +21,10 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
     /* translators: woocommerce */
     $this->label = __( 'Checkout', 'woocommerce' );
 
-    $this->default_settings = array(
+    $this->defaults = array(
       'order_status'    => 'wc-completed',
       'default_gateway' => 'pos_cash',
-      'enabled'         => array(
+      'enabled' => array(
         'pos_cash'  => true,
         'pos_card'  => true,
         'paypal'    => true
@@ -32,7 +34,7 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
 
   public function load_gateways() {
     $gateways = WC_Payment_Gateways::instance()->payment_gateways;
-    $order = $this->get_data('gateway_order');
+    $order = $this->get('gateway_order');
 
     // reorder
     $i = count($gateways);
@@ -54,7 +56,7 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
   public function load_enabled_gateways(){
     $gateways = $this->load_gateways();
     $enabled = $this->get_enabled_gateway_ids();
-    $default = $this->get_data('default_gateway');
+    $default = $this->get('default_gateway');
     $_gateways = array();
 
     if($gateways): foreach($gateways as $gateway):
@@ -70,7 +72,7 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
   }
 
   public function get_enabled_gateway_ids(){
-    return array_keys($this->get_data('enabled'), true);
+    return array_keys( (array) $this->get('enabled'), true);
   }
 
 }

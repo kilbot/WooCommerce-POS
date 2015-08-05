@@ -7,7 +7,7 @@
 </p>
 
 <ul class="wc-pos-hotkeys">
-  <?php $keys = $this->get_data('hotkeys'); if($keys): foreach($keys as $id => $key): ?>
+  <?php $keys = $this->get('hotkeys'); if($keys): foreach($keys as $id => $key): ?>
     <li>
       <input type="text" name="hotkeys.<?php echo $id?>.key">
       <label for="hotkeys.<?php echo $id?>.key"><?php echo $key['label']?></label>

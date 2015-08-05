@@ -61,7 +61,7 @@ class WC_POS_Admin_Orders {
    */
   public function payment_gateways($gateways){
     // get checkout settings data
-    $settings = new WC_POS_Admin_Settings_Checkout();
+    $settings = WC_POS_Admin_Settings_Checkout::get_instance();
     $enabled_ids = $settings->get_enabled_gateway_ids();
 
     $loaded_gateways = array();

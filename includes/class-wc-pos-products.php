@@ -27,10 +27,16 @@ class WC_POS_Products {
   private function init() {
 
     // pos only products
-    $settings = get_option( WC_POS_Admin_Settings::DB_PREFIX . 'general' );
-    if( isset( $settings['pos_only_products'] ) && $settings['pos_only_products'] ) {
+    if( wc_pos_get_option( 'general', 'pos_only_products' ) ) {
       new WC_POS_Products_Visibility();
     }
+
+    // decimal quantities
+    if( wc_pos_get_option( 'general', 'decimal_qty' ) ){
+      remove_filter('woocommerce_stock_amount', 'intval');
+      add_filter( 'woocommerce_stock_amount', 'floatval' );
+    }
+
   }
 
   /**

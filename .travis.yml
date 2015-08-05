@@ -20,6 +20,7 @@ install:
   # php libraries
   - composer require satooshi/php-coveralls:~0.6.1@stable
   - composer require guzzlehttp/guzzle:~5
+  - composer require 10up/wp_mock:dev-master
   # install wordpress & woocommerce & test theme
   - bash tests/unit/php/bin/install-travis-wp-tests.sh woopos_tests root '' localhost $WP_VERSION
   - mkdir /tmp/wordpress/wp-content/plugins/woocommerce-pos/

@@ -118,7 +118,7 @@ class WC_POS_AJAX {
 
       // else, find handler by id
     } else {
-      $handlers = (array) apply_filters('woocommerce_pos_settings_handlers', WC_POS_Admin_Settings::$handlers);
+      $handlers = (array) WC_POS_Admin_Settings::handlers();
       if(!isset($handlers[$id]))
         return new WP_Error(
           'woocommerce_pos_settings_error',
@@ -138,12 +138,12 @@ class WC_POS_AJAX {
 
     // get
     if( $method === 'GET' ) {
-      return $handler->get_data();
+      return $handler->get();
     }
 
     // set
     if( $method === 'POST' || $method === 'PUT' ) {
-      return $handler->save($data);
+      return $handler->set($data);
     }
 
     // delete

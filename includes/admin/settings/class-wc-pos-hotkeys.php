@@ -11,6 +11,7 @@
 
 class WC_POS_Admin_Settings_HotKeys extends WC_POS_Admin_Settings_Abstract {
 
+  protected static $instance;
   private $labels;
 
   /**
@@ -20,7 +21,7 @@ class WC_POS_Admin_Settings_HotKeys extends WC_POS_Admin_Settings_Abstract {
     $this->id    = 'hotkeys';
     $this->label = _x( 'HotKeys', 'keyboard shortcuts', 'woocommerce-pos' );
 
-    $this->default_settings = array(
+    $this->defaults = array(
       'hotkeys' => array(
         'help' => array(
           'key' => '?'
@@ -46,9 +47,10 @@ class WC_POS_Admin_Settings_HotKeys extends WC_POS_Admin_Settings_Abstract {
     );
   }
 
-  public function get_data($key = false){
-    $data = $this->stored_data() ? $this->stored_data() : $this->default_settings;
-    $data['hotkeys'] = array_merge($this->default_settings['hotkeys'], $data['hotkeys']);
+  public function get($key = false){
+    $data = get_option( $this->option_name() );
+    if(!$data){ $data = $this->defaults; }
+    $data['hotkeys'] = array_merge($this->defaults['hotkeys'], $data['hotkeys']);
 
     foreach($data['hotkeys'] as $slug => &$arr){
       $arr['label'] = $this->labels[$slug];

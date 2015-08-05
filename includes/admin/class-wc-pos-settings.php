@@ -62,9 +62,8 @@ class WC_POS_Admin_Settings {
     if( $current_screen->id == self::$screen_id ) {
 
       // init handlers for settings pages
-      $handlers = apply_filters( 'woocommerce_pos_settings_handlers', self::$handlers);
-      foreach($handlers as $key => $handler){
-        $this->settings[$key] = new $handler();
+      foreach(self::handlers() as $key => $handler){
+        $this->settings[$key] = $handler::get_instance();
       }
 
       // Enqueue scripts for the settings page
@@ -73,6 +72,14 @@ class WC_POS_Admin_Settings {
       add_action( 'admin_print_footer_scripts', array( $this, 'admin_inline_js' ) );
 
     }
+  }
+
+  /**
+   * Returns array of settings classes
+   * @return mixed|void
+   */
+  static public function handlers(){
+    return apply_filters( 'woocommerce_pos_settings_handlers', self::$handlers);
   }
 
   /**
@@ -224,8 +231,8 @@ class WC_POS_Admin_Settings {
    * Start the Settings App
    */
   public function admin_inline_js() {
-    $params = apply_filters( 'woocommerce_pos_admin_params', array() );
-    echo '<script type="text/javascript">POS.options = '. wc_pos_json_encode( $params ) .'; POS.start();</script>';
+    $params = new WC_POS_Params();
+    echo '<script type="text/javascript">POS.options = '. $params->toJSON() .'; POS.start();</script>';
   }
 
 }

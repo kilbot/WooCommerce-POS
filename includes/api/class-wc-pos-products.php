@@ -99,12 +99,6 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
     add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
     add_filter( 'posts_where', array( $this, 'posts_where' ), 10 , 2 );
 
-    $general_settings = new WC_POS_Admin_Settings_General();
-    if( $general_settings->get_data('decimal_qty') ){
-      remove_filter('woocommerce_stock_amount', 'intval');
-      add_filter( 'woocommerce_stock_amount', 'floatval' );
-    }
-
     $this->barcode_meta_key = apply_filters( 'woocommerce_pos_barcode_meta_key', '_sku' );
   }
 

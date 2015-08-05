@@ -11,12 +11,15 @@
 
 class WC_POS_Admin_Settings_Gateways extends WC_POS_Admin_Settings_Abstract {
 
+//  note: should be init as new, not Singleton
+//  protected static $instance;
+
   /**
    * @param $gateway_id
    */
   public function __construct($gateway_id) {
     $this->id    = 'gateway_'.$gateway_id;
-    $this->default_settings = array(
+    $this->defaults = array(
       'icon' => true
     );
   }
@@ -25,7 +28,7 @@ class WC_POS_Admin_Settings_Gateways extends WC_POS_Admin_Settings_Abstract {
    * @param WC_Payment_Gateway $gateway
    */
   public function merge_settings(WC_Payment_Gateway $gateway) {
-    $data = $this->get_data();
+    $data = $this->get();
     if(isset($data['title'])){
       $gateway->title = $data['title'];
     }

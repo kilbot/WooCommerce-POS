@@ -16,17 +16,10 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   private $data = array();
   private $flag = false;
 
-  /** @var object Contains a reference to the settings classes */
-  private $general_settings;
-  private $checkout_settings;
-
   /**
    * Constructor
    */
   public function __construct() {
-
-    // init subclasses
-    $this->init();
 
     // order data
     add_filter( 'woocommerce_api_create_order_data', array( $this, 'create_order_data') );
@@ -41,22 +34,8 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     // order response
     add_filter( 'woocommerce_api_order_response', array( $this, 'order_response' ), 10, 4 );
 
-    // allow decimals for qty
-    if( $this->general_settings->get_data('decimal_qty') ){
-      remove_filter('woocommerce_stock_amount', 'intval');
-      add_filter( 'woocommerce_stock_amount', 'floatval' );
-    }
-
     // order emails
     add_filter( 'woocommerce_email', array( $this, 'woocommerce_email' ), 99 );
-  }
-
-  /**
-   * Init the settings classes
-   */
-  private function init(){
-    $this->general_settings = new WC_POS_Admin_Settings_General();
-    $this->checkout_settings = new WC_POS_Admin_Settings_Checkout();
   }
 
   /**
@@ -430,7 +409,8 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     // load the gateways & process payment
     $gateway_id = $data['payment_details']['method_id'];
     add_filter('option_woocommerce_'. $gateway_id .'_settings', array($this, 'force_enable_gateway'));
-    $gateways = $this->checkout_settings->load_enabled_gateways();
+    $settings = WC_POS_Admin_Settings_Checkout::get_instance();
+    $gateways = $settings->load_enabled_gateways();
     $response = $gateways[ $gateway_id ]->process_payment( $order_id );
 
     if(isset($response['result']) && $response['result'] == 'success'){
@@ -532,7 +512,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     $order = new WC_Order( $order_id );
     if( $order->status == 'processing' ) {
       $message = __('POS Transaction completed.', 'woocommerce-pos');
-      $order->update_status( $this->checkout_settings->get_data('order_status'), $message );
+      $order->update_status( wc_pos_get_option( 'checkout', 'order_status' ), $message );
     }
 
   }
@@ -559,8 +539,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
     // allow decimal quantity
     // fixed in WC 2.4+
-    if( version_compare( WC()->version, '2.4', '<' ) &&
-      $this->general_settings->get_data('decimal_qty') ){
+    if( version_compare( WC()->version, '2.4', '<' ) && wc_pos_get_option( 'general', 'decimal_qty' ) ){
       $order_data['line_items'] = $this->filter_qty($order_data['line_items']);
     }
 
@@ -697,11 +676,12 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @param WC_Emails $wc_emails
    */
   public function woocommerce_email(WC_Emails $wc_emails) {
-    if( !$this->checkout_settings->get_data('customer_emails') ){
+
+    if( ! wc_pos_get_option( 'checkout', 'customer_emails' ) ){
       $this->remove_customer_emails($wc_emails);
     }
 
-    if( !$this->checkout_settings->get_data('admin_emails') ){
+    if( ! wc_pos_get_option( 'checkout', 'admin_emails' ) ){
       $this->remove_admin_emails($wc_emails);
     }
   }

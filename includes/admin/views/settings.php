@@ -23,7 +23,7 @@
     <?php echo $setting->output(); ?>
   </script>
 
-  <?php $data = $setting->get_data(); if( isset($data) ): ?>
+  <?php $data = $setting->get(); if( isset($data) ): ?>
     <script type="text/javascript">
       wc_pos_settings['<?php echo $setting->id ?>'] = <?php echo wc_pos_json_encode($data); ?>
     </script>

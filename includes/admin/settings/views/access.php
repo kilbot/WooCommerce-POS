@@ -14,7 +14,7 @@
 
 <div class="wc-pos-access">
   <ul class="wc-pos-access-tabs">
-    <?php $data = $this->get_data(); if($data): foreach($data['roles'] as $slug => $role): ?>
+    <?php $data = $this->get(); if($data): foreach($data['roles'] as $slug => $role): ?>
       <li data-id="<?php echo $slug; ?>"><?php echo translate_user_role($role['name']); ?></li>
     <?php endforeach; endif; ?>
   </ul>

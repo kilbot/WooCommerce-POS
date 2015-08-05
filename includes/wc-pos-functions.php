@@ -132,3 +132,23 @@ function wc_pos_locate_template($path = ''){
     return apply_filters('woocommerce_pos_locate_template', $template, $path);
   }
 }
+
+/**
+ * @param $id
+ * @param $key
+ * @return bool
+ */
+function wc_pos_get_option( $id, $key = false ){
+  $handlers = (array) WC_POS_Admin_Settings::handlers();
+  if( !array_key_exists( $id, $handlers ) )
+    return false;
+
+  // Singleton class uses late static binding, ie: PHP 5.3+
+  if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
+    $settings = $handlers[$id]::get_instance();
+  } else {
+    $settings = new $handlers[$id]();
+  }
+
+  return $settings->get( $key );
+}
