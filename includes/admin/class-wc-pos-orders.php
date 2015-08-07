@@ -31,6 +31,11 @@ class WC_POS_Admin_Orders {
     // pos vs online filter on edit-shop_order page
     add_filter( 'views_edit-shop_order', array( $this, 'pos_order_filters' ), 10, 1 );
     add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ), 10, 1 );
+
+    // add class to pos order rows
+    add_filter( 'post_class', array( $this, 'post_class' ), 10, 3 );
+    add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
+
   }
 
   /**
@@ -151,6 +156,38 @@ class WC_POS_Admin_Orders {
       $query->set( 'meta_query', $meta_query );
     }
 
+  }
+
+  /**
+   * Add type-wc_pos_order class to pos order rows
+   *
+   * @param $classes
+   * @param $class
+   * @param $id
+   * @return array
+   */
+  public function post_class($classes, $class, $id){
+    if( get_post_meta( $id, '_pos', true ) ){
+      $classes[] = 'type-wc_pos_order';
+    }
+    return $classes;
+  }
+
+  /**
+   * CSS
+   */
+  public function enqueue_admin_styles() {
+    $css = '
+      .widefat .type-wc_pos_order .column-order_status {
+        background: url( '. WC_POS_PLUGIN_URL .'assets/logo.svg ) no-repeat 75% 9px;
+        background-size: 18px;
+        fill: #94d31b;
+      }
+      .widefat .type-wc_pos_order .column-order_status mark {
+        margin: 0 auto 0 0;
+      }
+    ';
+    wp_add_inline_style( 'wp-admin', $css );
   }
 
 }

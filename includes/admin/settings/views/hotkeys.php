@@ -9,8 +9,8 @@
 <ul class="wc-pos-hotkeys">
   <?php $keys = $this->get('hotkeys'); if($keys): foreach($keys as $id => $key): ?>
     <li>
-      <input type="text" name="hotkeys.<?php echo $id?>.key">
-      <label for="hotkeys.<?php echo $id?>.key"><?php echo $key['label']?></label>
+      <input type="text" name="hotkeys.<?php esc_attr_e($id); ?>.key">
+      <label for="hotkeys.<?php esc_attr_e($id); ?>.key"><?php echo $key['label']; ?></label>
     </li>
   <?php endforeach; endif; ?>
 </ul>
