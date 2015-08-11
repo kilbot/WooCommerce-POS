@@ -32,6 +32,14 @@ define( 'WC_POS_PLUGIN_PATH', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'WC_POS_PLUGIN_URL', trailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
 
 /**
+ * Init admin notices
+ */
+if( is_admin() ) {
+  require_once WC_POS_PLUGIN_PATH . 'includes/admin/class-wc-pos-notices.php';
+  new WC_POS_Admin_Notices();
+}
+
+/**
  * The code that runs during plugin activation.
  */
 require_once WC_POS_PLUGIN_PATH . 'includes/class-wc-pos-activator.php';

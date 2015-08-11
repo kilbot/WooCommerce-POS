@@ -104,7 +104,7 @@ module.exports = IndexedDBCollection.extend({
         return {
           key: ++idx,
           label: variant.name,
-          value: variant.label
+          value: variant.option
         };
       });
     }

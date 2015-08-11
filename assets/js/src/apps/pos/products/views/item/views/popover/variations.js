@@ -2,7 +2,6 @@ var ItemView = require('lib/config/item-view');
 var Tmpl = require('./variations.hbs');
 var POS = require('lib/utilities/global');
 var hbs = require('handlebars');
-var Radio = require('backbone.radio');
 var _ = require('lodash');
 var $ = require('jquery');
 var polyglot = require('lib/utilities/polyglot');
@@ -24,10 +23,7 @@ var Variations = ItemView.extend({
   },
 
   initialize: function(){
-    this.collection = Radio.request('entities', 'get', {
-      type: 'variations',
-      parent: this.model
-    });
+    this.collection = this.model.getVariations();
     this.collection.resetFilters();
   },
 
@@ -73,11 +69,11 @@ var Variations = ItemView.extend({
     }
 
     // filter
-    var slug = target.data('variation');
-    var label = target.val();
-    this.collection.filterBy(slug, function(model){
+    var name = target.data('name');
+    var option = target.val();
+    this.collection.filterBy(name, function(model){
       return _.some(model.get('attributes'), function(obj){
-        return obj.slug === slug && obj.label === label;
+        return obj.name === name && obj.option === option;
       });
     });
     this.ui.add.prop('disabled', this.collection.length !== 1);

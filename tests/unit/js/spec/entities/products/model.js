@@ -1,5 +1,9 @@
 describe('entities/products/model.js', function () {
 
+  var Model = require('entities/products/model');
+  var _ = require('lodash');
+  var dummy = require('../../../data/products.json');
+
   var dummy_data = {
     id: 2,
     title: 'Variable Product',
@@ -58,7 +62,6 @@ describe('entities/products/model.js', function () {
   };
 
   beforeEach(function () {
-    var Model = require('entities/products/model');
     this.product = new Model(dummy_data);
   });
 
@@ -159,7 +162,47 @@ describe('entities/products/model.js', function () {
 
   });
 
-  describe('barcode match', function () {
+  describe('variable products', function () {
+
+    before(function () {
+      var variableAttributes = _.findWhere(dummy.products, { id: 40 });
+      this.variableProduct = new Model(variableAttributes);
+    });
+
+    it('getVariationOptions should return variation options', function() {
+      this.variableProduct.should.respondTo('getVariationOptions');
+      this.variableProduct.getVariationOptions().should.eql([{
+        name: 'Color',
+        options: [ 'Black', 'Blue' ]
+      }]);
+    });
+
+    it('getVariations should return variation collection', function(){
+      this.variableProduct.should.respondTo('getVariations');
+      var variations = this.variableProduct.getVariations();
+      variations.should.be.instanceOf( require('lib/config/obscura') );
+      variations.length.should.eql(2);
+    });
+
+    // changes to variations to made to parent.variations??
+    //
+    // it('getVariationOptions should return multiple variation options', function() {
+    //  var filteredVariations = this.variableProduct.getVariations();
+    //  var variations = filteredVariations.superset();
+    //  variations.each(function(variation) {
+    //    var variant = variation.get('attributes');
+    //    variant.push({name: 'Size', option: 'Small'});
+    //    variation.set('attributes', variant);
+    //  });
+    //
+    //  this.variableProduct.getVariationOptions().should.eql([{
+    //    name: 'Color',
+    //    options: [ 'Black', 'Blue' ]
+    //  }, {
+    //    name: 'Size',
+    //    options: [ 'Small' ]
+    //  }]);
+    //});
 
   });
 

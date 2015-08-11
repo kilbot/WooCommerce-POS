@@ -65,12 +65,11 @@ var Item = ItemView.extend({
     e.preventDefault();
     var options = {};
 
-    var slug = $(e.target).data('variation');
-    if(slug){
+    var name = $(e.target).data('name');
+    if(name){
       options.filter = {
-        slug: slug,
-        label: $(e.target).text()
-        //option: $(e.target).data('value')
+        name: name,
+        option: $(e.target).text()
       };
     }
 
@@ -83,7 +82,7 @@ var Item = ItemView.extend({
       data.price = this.model.range('price');
       data.sale_price = this.model.range('sale_price');
       data.regular_price = this.model.range('regular_price');
-      data.product_variations = this.model.productVariations();
+      data.product_variations = this.model.getVariationOptions();
     }
     data.product_attributes = this.model.productAttributes();
     return data;

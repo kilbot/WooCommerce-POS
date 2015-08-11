@@ -13,7 +13,7 @@
   <tr>
     <th style="width:25%">{{title}}</th>
     <td style="width:10%;text-align:center;" class="{{#if pass}}pass{{else}}fail{{/if}}">
-      <i class="icon-{{#if pass}}success{{else}}error{{/if}} icon-lg"></i>
+      <i class="wc_pos-icon-{{#if pass}}success{{else}}error{{/if}} wc_pos-icon-lg"></i>
     </td>
     <td>
       {{{message}}}

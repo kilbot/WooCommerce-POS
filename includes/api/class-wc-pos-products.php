@@ -118,8 +118,6 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
 
     // variable products
     if( $type == 'variable' ) :
-      $data['attributes'] = $this->patch_variable_attributes($data['attributes']);
-
       // nested variations
       foreach( $data['variations'] as &$variation ) :
         $_product = wc_get_product( $variation['id'] );
@@ -138,19 +136,6 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
 
   /**
    * https://github.com/woothemes/woocommerce/issues/8457
-   * - sanitize the attribute slug
-   * @param array $attributes
-   * @return array
-   */
-  private function patch_variable_attributes(array $attributes){
-    foreach( $attributes as &$attribute ) :
-      if( isset($attribute['slug']) ) $attribute['slug'] = sanitize_title($attribute['slug']);
-    endforeach;
-    return $attributes;
-  }
-
-  /**
-   * https://github.com/woothemes/woocommerce/issues/8457
    * patches WC_Product_Variable->get_variation_attributes()
    * @param $product
    * @return array
@@ -165,10 +150,8 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
 
       if( isset( $attributes[$slug] ) ){
         $patched_attributes[] = array(
-          'slug'    => str_replace( 'pa_', '', $slug ),
           'name'    => $this->get_variation_name( $attributes[$slug] ),
-          'option'  => $option,
-          'label'   => $this->get_variation_label( $product, $attributes[$slug], $option )
+          'option'  => $this->get_variation_option( $product, $attributes[$slug], $option )
         );
       }
 
@@ -184,15 +167,16 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
   private function get_variation_name( $attribute ){
     if( $attribute['is_taxonomy'] ){
       global $wpdb;
+      $name = str_replace( 'pa_', '', $attribute['name'] );
 
-      $name = $wpdb->get_var(
+      $label = $wpdb->get_var(
         $wpdb->prepare("
           SELECT attribute_label
           FROM {$wpdb->prefix}woocommerce_attribute_taxonomies
           WHERE attribute_name = %s;
-        ", str_replace( 'pa_', '', $attribute['name'] ) ) );
+        ", $name ) );
 
-      if($name) return $name;
+      return $label ? $label : $name;
     }
 
     return $attribute['name'];
@@ -204,7 +188,7 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    * @param $attribute
    * @return mixed
    */
-  private function get_variation_label( $product, $attribute, $option ){
+  private function get_variation_option( $product, $attribute, $option ){
     $name = $option;
 
     // taxonomy attributes

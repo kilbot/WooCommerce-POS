@@ -59,6 +59,22 @@ module.exports = POS.IndexedDBCollection = Collection.extend({
         var models = Array.prototype.slice.apply(arguments);
         return self.add(models, {merge: true});
       });
+  },
+
+  /**
+   * Clears the IDB storage and resets the collection
+   */
+  clear: function(){
+    if(!this.db){
+      return;
+    }
+
+    var self = this;
+    return this.db.open()
+      .then(function(){
+        self.reset();
+        return self.db.clear();
+      });
   }
 
 });

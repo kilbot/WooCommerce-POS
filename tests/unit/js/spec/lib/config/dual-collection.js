@@ -35,7 +35,8 @@ describe('lib/config/dual-collection.js', function () {
         db: {
           open: stub().resolves(''),
           clear: stub().resolves('')
-        }
+        },
+        clear: stub().resolves('')
       })
     });
     this.collection = new DualCollection();
@@ -79,8 +80,6 @@ describe('lib/config/dual-collection.js', function () {
     // clear
     var col = this.collection;
     this.collection.clear().then(function(){
-      col.db.clear.should.have.been.calledOnce;
-      col.length.should.eql( 0 );
       col.queue.length.should.eql( 0 );
       done();
     });

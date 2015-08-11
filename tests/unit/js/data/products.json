@@ -698,7 +698,7 @@
           "position": "0",
           "visible": false,
           "variation": true,
-          "options": [""]
+          "options": ["Black", "Blue"]
         }
       ],
       "purchase_note": "",
@@ -728,7 +728,7 @@
           "attributes": [
             {
               "name": "Color",
-              "option": "black"
+              "option": "Black"
             }
           ],
           "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_7_front-90x90.jpg",
@@ -758,7 +758,7 @@
           "attributes": [
             {
               "name": "Color",
-              "option": "blue"
+              "option": "Blue"
             }
           ],
           "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_1_front-90x90.jpg",

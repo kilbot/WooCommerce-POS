@@ -72,7 +72,7 @@ module.exports = FormView.extend({
       onGet: function(val){
         var row = '';
         _.each(val, function(meta){
-          row += '<dt>' + meta.label + '</dt><dd>' + meta.value + '</dd>';
+          row += '<dt>' + meta.label + ':</dt><dd>' + meta.value + '</dd>';
         });
         return row;
       }

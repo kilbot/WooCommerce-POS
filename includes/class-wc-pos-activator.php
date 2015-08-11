@@ -147,7 +147,11 @@ class WC_POS_Activator {
       return;
 
     $this->version_check();
-    $this->woocommerce_check();
+
+    if( $this->woocommerce_check() ){
+      $this->permalink_check();
+    }
+
   }
 
   /**
@@ -181,17 +185,25 @@ class WC_POS_Activator {
    * WooCommerce POS will not load if WooCommerce is not present
    */
   private function woocommerce_check() {
-    if( ! class_exists( 'WooCommerce' ) && current_user_can( 'activate_plugins' ) )
-      add_action( 'admin_notices', array( $this, 'woocommerce_alert' ) );
+    if( class_exists( 'WooCommerce' ) )
+      return true;
+
+    if( current_user_can( 'activate_plugins' ) ){
+      $message = sprintf( __('<strong>WooCommerce POS</strong> requires <a href="%s">WooCommerce</a>. Please <a href="%s">install and activate WooCommerce</a>', 'woocommerce-pos' ), 'http://wordpress.org/plugins/woocommerce/', admin_url('plugins.php') ) . ' &raquo;';
+      WC_POS_Admin_Notices::add( $message );
+    }
   }
 
   /**
-   * Admin message - WooCommerce not activated
+   * POS Frontend will give 404 if pretty permalinks not active
    */
-  public function woocommerce_alert(){
-    echo '<div class="error">
-      <p>'. sprintf( __('<strong>WooCommerce POS</strong> requires <a href="%s">WooCommerce</a>. Please <a href="%s">install and activate WooCommerce</a>', 'woocommerce-pos' ), 'http://wordpress.org/plugins/woocommerce/', admin_url('plugins.php') ) . ' &raquo;</p>
-      </div>';
+  private function permalink_check(){
+    $fail = WC_POS_Status::permalinks_disabled();
+    if( $fail ){
+      $message = $fail['message'] . '. ';
+      $message .= sprintf( '<a href="%s">%s</a>', $fail['buttons'][0]['href'], $fail['buttons'][0]['prompt'] ) . ' &raquo;';
+      WC_POS_Admin_Notices::add( $message );
+    }
   }
 
   /**

@@ -13,9 +13,13 @@ var View = CollectionView.extend({
   tagName: 'ul',
   childView: LineItem,
   emptyView: Empty,
-  voidCart: function(){
+  voidCart: function( order ){
     this.children.each(function(child){
-      child.getRegion('item').currentView.removeItem();
+      if( child instanceof Empty ){
+        order.destroy();
+      } else {
+        child.getRegion('item').currentView.removeItem();
+      }
     });
   }
 });

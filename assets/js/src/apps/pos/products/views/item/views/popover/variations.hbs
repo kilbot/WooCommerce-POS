@@ -3,15 +3,15 @@
   {{#unless this.select}}
     <div class="btn-group" data-toggle="buttons">
     {{#each options}}
-      <button class="btn btn-default" value="{{this}}" data-variation="{{../slug}}">{{this}}</button>
+      <button class="btn btn-default" value="{{this}}" data-name="{{../name}}">{{this}}</button>
     {{/each}}
     </div>
   {{/unless}}
   {{#if this.select}}
-    <select data-variation="{{slug}}">
-        <option value="">{{this.emptyOption}}</option>
+    <select data-name="{{name}}">
+      <option value="">{{this.emptyOption}}</option>
     {{#each options}}
-        <option value="{{this}}">{{this}}</option>
+      <option value="{{this}}">{{this}}</option>
     {{/each}}
     </select>
   {{/if}}

@@ -1,6 +1,8 @@
 var DualModel = require('lib/config/dual-model');
 var _ = require('lodash');
 var Radio = require('backbone.radio');
+var Variations = require('../variations/collection');
+var FilteredCollection = require('lib/config/obscura');
 
 module.exports = DualModel.extend({
   name: 'product',
@@ -150,6 +152,55 @@ module.exports = DualModel.extend({
     }
 
     return this.partialBarcodeMatch(test, value);
+  },
+
+  /**
+   * Construct variable options from variation array
+   * - variable.attributes includes all options, including those not used
+   */
+  getVariationOptions: function(){
+    if( this._variationOptions ) {
+      return this._variationOptions;
+    }
+
+    var variations = this.get('variations');
+
+    // pluck all options, eg:
+    // { Color: ['Black', 'Blue'], Size: ['Small', 'Large'] }
+    var result = _.pluck(variations, 'attributes')
+      .reduce(function(result, attrs){
+        _.each(attrs, function(attr){
+          if(result[attr.name]){
+            return result[attr.name].push(attr.option);
+          }
+          result[attr.name] = [attr.option];
+        });
+        return result;
+      }, {});
+
+    // map options with consistent keys
+    this._variationOptions = _.map(result, function(options, name){
+      return {
+        'name': name,
+        'options': _.uniq( options )
+      };
+    });
+
+    return this._variationOptions;
+  },
+
+  /**
+   *
+   */
+  getVariations: function(){
+    if(this._variations){
+      return this._variations;
+    }
+
+    var variations = new Variations(this.get('variations'), { parent: this });
+    this._variations = new FilteredCollection(variations);
+
+    return this._variations;
   }
 
 });

@@ -58,7 +58,7 @@ var Layout = LayoutView.extend({
 
   toggleDrawer: function(options){
     var drawer = this.getRegion('drawer'),
-      open = drawer.hasView();
+        open = drawer.hasView();
 
     if(open && options.filter){
       return drawer.currentView.filterVariations(options.filter);

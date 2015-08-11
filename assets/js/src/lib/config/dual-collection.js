@@ -317,12 +317,8 @@ module.exports = POS.DualCollection = IDBCollection.extend({
     }
 
     var self = this;
-    return this.db.open()
+    return IDBCollection.prototype.clear.call(this)
       .then(function(){
-        return self.db.clear();
-      })
-      .then(function(){
-        self.reset();
         self.queue = [];
       });
   },
