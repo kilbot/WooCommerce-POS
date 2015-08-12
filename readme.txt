@@ -83,6 +83,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: variation display and select issues - commit [91c7ec1](https://github.com/kilbot/WooCommerce-POS/commit/91c7ec13e737f820d84feb7890d7b6d027a79792), [b3d6543](https://github.com/kilbot/WooCommerce-POS/commit/b3d6543b86140df62ff90f3a7b7e734d73ae59ab)
 * Fix: variation barcode search for products in queue - commit [3fda531](https://github.com/kilbot/WooCommerce-POS/commit/3fda5317ef580f6b6d70e24ba235d2b7e69c5ee4)
 * Fix: populate order addresses from customer id - commit [b86bc56](https://github.com/kilbot/WooCommerce-POS/commit/b86bc5650a2bf41d7744bf07cda34407e8fa3dd5)
+* Fix: compatibility fix for WC 2.4 SSL authentication - commit []()
 * Tweak: WP Admin CSS - commit [c5a38c7](https://github.com/kilbot/WooCommerce-POS/commit/c5a38c7f889a7788e3eaa633c28620d2e80ac2ee)
 
 = 0.4.1 =

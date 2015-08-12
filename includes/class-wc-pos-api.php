@@ -19,13 +19,36 @@ class WC_POS_API {
     if( ! is_pos() )
       return;
 
+    // remove wc api authentication
+    $wc_api_auth = WC()->api->authentication;
+    remove_filter( 'woocommerce_api_check_authentication', array( $wc_api_auth, 'authenticate' ), 0 );
+
     // support for X-HTTP-Method-Override for WC < 2.4
     if( version_compare( WC()->version, '2.4', '<' ) && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) ){
       $_GET['_method'] = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
     }
 
+    add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 0 );
     add_filter( 'woocommerce_api_dispatch_args', array( $this, 'dispatch_args'), 10, 2 );
     add_filter( 'woocommerce_api_query_args', array( $this, 'woocommerce_api_query_args' ), 10, 2 );
+  }
+
+  /**
+   * Bypass authentication for WC REST API
+   * @return WP_User object
+   */
+  public function wc_api_authentication() {
+    global $current_user;
+    $user = $current_user;
+
+    if( ! user_can( $user->ID, 'access_woocommerce_pos' ) )
+      $user = new WP_Error(
+        'woocommerce_pos_authentication_error',
+        __( 'User not authorized to access WooCommerce POS', 'woocommerce-pos' ),
+        array( 'status' => 401 )
+      );
+
+    return $user;
   }
 
   /**

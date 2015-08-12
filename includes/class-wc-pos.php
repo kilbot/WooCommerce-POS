@@ -22,7 +22,6 @@ class WC_POS {
     }
 
     add_action( 'init', array( $this, 'init' ) );
-    add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 2 );
     add_action( 'woocommerce_api_loaded', array( $this, 'load_woocommerce_api_patches') );
     do_action( 'woocommerce_pos_loaded' );
 
@@ -76,30 +75,6 @@ class WC_POS {
       new WC_POS_AJAX( $i18n );
     }
 
-  }
-
-  /**
-   * Bypass authentication for WC REST API
-   *
-   * @param $user
-   *
-   * @return WP_User object
-   */
-  public function wc_api_authentication( $user, $wc_api ) {
-
-    if( is_pos() ) {
-      global $current_user;
-      $user = $current_user;
-
-      if( ! user_can( $user->ID, 'access_woocommerce_pos' ) )
-        $user = new WP_Error(
-          'woocommerce_pos_authentication_error',
-          __( 'User not authorized to access WooCommerce POS', 'woocommerce-pos' ),
-          array( 'status' => 401 )
-        );
-    }
-
-    return $user;
   }
 
   /**
