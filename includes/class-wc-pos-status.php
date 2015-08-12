@@ -142,7 +142,8 @@ class WC_POS_Status {
    * @return array
    */
   static public function permalinks_disabled(){
-    if( empty( get_option('permalink_structure') ) ) {
+    $permalinks = get_option('permalink_structure');
+    if( empty( $permalinks ) ) {
       return array(
         'pass'    => false,
         'message' => __( '<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks to work correctly', 'woocommerce-pos' ),

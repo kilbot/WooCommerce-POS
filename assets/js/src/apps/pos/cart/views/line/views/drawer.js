@@ -53,7 +53,7 @@ module.exports = FormView.extend({
         collection: function(){
           return Radio.request('entities', 'get', {
             type: 'option',
-            name: 'tax_labels'
+            name: 'tax_classes'
           });
         }
       },

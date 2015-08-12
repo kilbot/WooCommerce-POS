@@ -39,7 +39,7 @@ class WC_POS_Params {
       $this->shipping      = $this->shipping_labels();
       $this->tabs          = $this->product_tabs();
       $this->tax           = $this->tax();
-      $this->tax_labels    = $this->tax_labels();
+      $this->tax_classes   = $this->tax_classes();
       $this->tax_rates     = $this->tax_rates();
       $this->user          = $this->user();
     }
@@ -196,19 +196,10 @@ class WC_POS_Params {
   /**
    * @return array
    */
-  static public function tax_classes(){
-    $classes = array_filter( array_map( 'sanitize_title', explode( "\n", get_option('woocommerce_tax_classes' ) ) ) );
-    array_unshift( $classes, '' ); // add 'standard'
-    return $classes;
-  }
-
-  /**
-   * @return array
-   */
-  static public function tax_rates() {
+  private function tax_rates() {
     $rates = array();
 
-    foreach( self::tax_classes() as $class ) {
+    foreach( $this->tax_classes as $class => $label ) {
       if( $rate = WC_Tax::get_base_tax_rates( $class ) ){
         // WC_Tax returns a assoc array with int as keys = world of pain in js
         // possibly change $key to $rate['id']
@@ -222,24 +213,28 @@ class WC_POS_Params {
   /**
    * @return array
    */
-  static public function tax_labels() {
-    $labels = array(
+  private function tax_classes() {
+    if( isset( $this->tax_classes ) ){
+      return $this->tax_classes;
+    }
+
+    $classes = array(
       /* translators: woocommerce */
       '' => __( 'Standard', 'woocommerce' )
     );
 
     // get_tax_classes method introduced in WC 2.3
-    if(method_exists( 'WC_Tax','get_tax_classes' )){
-      $classes = WC_Tax::get_tax_classes();
+    if( method_exists( 'WC_Tax','get_tax_classes' ) ){
+      $labels = WC_Tax::get_tax_classes();
     } else {
-      $classes = array_filter( array_map( 'trim', explode( "\n", get_option( 'woocommerce_tax_classes' ) ) ) );
+      $labels = array_filter( array_map( 'trim', explode( "\n", get_option( 'woocommerce_tax_classes' ) ) ) );
     }
 
-    foreach($classes as $class){
-      $labels[ sanitize_title($class) ] = $class;
+    foreach( $labels as $label ){
+      $classes[ sanitize_title($label) ] = $label;
     }
 
-    return $labels;
+    return $classes;
   }
 
   /**
