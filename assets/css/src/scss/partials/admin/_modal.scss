@@ -1,5 +1,6 @@
 #wc-pos-modal{
-  .modal {
+  .wc_pos-modal {
+    @extend .modal;
     z-index: 160000; // seriously
     .modal-body {
       .form-table {

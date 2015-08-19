@@ -20,8 +20,10 @@ class WC_POS_API {
       return;
 
     // remove wc api authentication
-    $wc_api_auth = WC()->api->authentication;
-    remove_filter( 'woocommerce_api_check_authentication', array( $wc_api_auth, 'authenticate' ), 0 );
+    // - relies on ->api and ->authentication being publicly accessible
+    if( isset( WC()->api ) && isset( WC()->api->authentication ) ){
+      remove_filter( 'woocommerce_api_check_authentication', array( WC()->api->authentication, 'authenticate' ), 0 );
+    }
 
     // support for X-HTTP-Method-Override for WC < 2.4
     if( version_compare( WC()->version, '2.4', '<' ) && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) ){
@@ -59,7 +61,7 @@ class WC_POS_API {
   public function dispatch_args($args, $callback){
     $wc_api_handler = get_class($callback[0]);
 
-    $has_data = in_array( $args['_method'], array(2, 4, 6) ) && isset( $args['data'] ) && is_array($args['data']);
+    $has_data = in_array( $args['_method'], array(2, 4, 8) ) && isset( $args['data'] ) && is_array( $args['data'] );
     if( $has_data ){
       // remove status
       if( array_key_exists('status', $args['data']) ){

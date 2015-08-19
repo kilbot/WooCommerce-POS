@@ -1,16 +1,11 @@
 var ItemView = require('lib/config/item-view');
 var hbs = require('handlebars');
+var Tmpl = require('./header.hbs');
 var _ = require('lodash');
 var polyglot = require('lib/utilities/polyglot');
 
 module.exports = ItemView.extend({
-  template: hbs.compile('' +
-    '<h1>{{{title}}}</h1>' +
-    '<i class="icon icon-times" ' +
-    'data-action="close" ' +
-    'title="{{close}}">' +
-    '</i>'
-  ),
+  template: hbs.compile(Tmpl),
 
   initialize: function(options){
     options = options || {};
@@ -22,6 +17,7 @@ module.exports = ItemView.extend({
   },
 
   templateHelpers: function(){
+    this.data.iconPrefix = window.adminpage ? 'wc_pos-icon' : 'icon';
     return this.data;
   },
 

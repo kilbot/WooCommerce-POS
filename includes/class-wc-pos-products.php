@@ -17,8 +17,8 @@ class WC_POS_Products {
    */
   public function __construct() {
     $this->init();
-
     add_action( 'woocommerce_product_set_stock', array( $this, 'product_set_stock') );
+    add_action( 'woocommerce_variation_set_stock', array( $this, 'product_set_stock') );
   }
 
   /**
@@ -41,9 +41,10 @@ class WC_POS_Products {
 
   /**
    * Bump modified date on stock change
+   * - variation->id = parent id
    * @param $product
    */
-  public function product_set_stock($product){
+  public function product_set_stock( $product ){
     $post_modified     = current_time( 'mysql' );
     $post_modified_gmt = current_time( 'mysql', 1 );
     wp_update_post( array(

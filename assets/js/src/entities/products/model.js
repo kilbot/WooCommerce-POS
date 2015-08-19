@@ -10,16 +10,12 @@ module.exports = DualModel.extend({
   // this is an array of fields used by FilterCollection.matchmaker()
   fields: ['title'],
 
-  // the REST API gives string values for some attributes
-  // this can cause confusion, so parse to float
-  parse: function(resp){
-    resp = resp.product || resp;
-    _.each(['price', 'regular_price', 'sale_price'], function(attr){
-      if( _.isString(resp[attr]) ){
-        resp[attr] = parseFloat(resp[attr]);
-      }
-    });
-    return resp;
+  // data types
+  schema: {
+    price         : 'number',
+    regular_price : 'number',
+    sale_price    : 'number',
+    stock_quantity: 'number'
   },
 
   /**

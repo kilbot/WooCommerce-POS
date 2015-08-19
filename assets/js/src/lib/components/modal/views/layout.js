@@ -2,26 +2,27 @@ var LayoutView = require('lib/config/layout-view');
 var Header = require('./header');
 var _ = require('lodash');
 var $ = require('jquery');
+var hbs = require('handlebars');
+var Tmpl = require('./modal.hbs');
 var Radio = require('backbone.radio');
 var debug = require('debug')('modalLayout');
 require('bootstrap-sass/assets/javascripts/bootstrap/modal');
 require('bootstrap-sass/assets/javascripts/bootstrap/transition');
 
 module.exports = LayoutView.extend({
-  template: function(){
-    return '<div class="modal-dialog">' +
-      '<div class="modal-content">' +
-        '<div class="modal-header"></div>' +
-        '<div class="modal-body"></div>' +
-        '<div class="modal-footer"></div>' +
-      '</div>' +
-    '</div>';
+  template: hbs.compile(Tmpl),
+
+  //className: 'modal',
+  className: function(){
+    // if wp-admin, add css prefix
+    return window.adminpage ? 'wc_pos-modal' : 'modal';
   },
-  className: 'modal',
+
   attributes: {
     'tabindex' : -1,
     'role' : 'dialog'
   },
+
   buttons: [
     {
       type: 'message'
