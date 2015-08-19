@@ -18,6 +18,20 @@ module.exports = DualModel.extend({
     stock_quantity: 'number'
   },
 
+  initialize: function(){
+    this.on({
+      'change:updated_at': this.onUpdate
+    });
+  },
+
+  onUpdate: function(){
+    // update stock
+    if( this.get('type') === 'variable' ){
+      var variations = this.getVariations().superset();
+      variations.set( this.get('variations') );
+    }
+  },
+
   /**
    * Helper functions for variation prices
    */

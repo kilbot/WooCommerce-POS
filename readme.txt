@@ -85,7 +85,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: variation stock adjustment after sale - commit []()
 * Fix: populate order addresses from customer id - commit [b86bc56](https://github.com/kilbot/WooCommerce-POS/commit/b86bc5650a2bf41d7744bf07cda34407e8fa3dd5)
 * Fix: compatibility fix for WC 2.4 SSL authentication - commit [525671b](https://github.com/kilbot/WooCommerce-POS/commit/525671b7613b20864366aebf426f14d07b37bfa4)
-* Fix: modal CSS conflict in WP Admin - commit []()
+* Fix: modal CSS conflict in WP Admin - commit [837b918](https://github.com/kilbot/WooCommerce-POS/commit/837b918e5bae4de6c1cee1492d390ade1b2e7f45)
 * Tweak: WP Admin CSS - commit [c5a38c7](https://github.com/kilbot/WooCommerce-POS/commit/c5a38c7f889a7788e3eaa633c28620d2e80ac2ee)
 
 = 0.4.1 =

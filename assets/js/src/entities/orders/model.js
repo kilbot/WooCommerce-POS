@@ -216,7 +216,8 @@ var Model = DualModel.extend({
         return self.processGateway();
       })
       .then(function(){
-        return self.remoteSync();
+        var method = self.get('id') ? 'update' : 'create';
+        return self.remoteSync(method);
       })
       .then(function(array){
         var model = array[0];

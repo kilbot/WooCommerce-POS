@@ -488,11 +488,11 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
     // compare url fragments
     $success_url = wc_get_endpoint_url( 'order-received', $order_id, get_permalink( wc_get_page_id( 'checkout' ) ) );
-    $success_frag = parse_url( $success_url );
-    $redirect_frag = parse_url( $response['redirect'] );
+    $success = wp_parse_args( parse_url( $success_url ), array( 'host' => '', 'path' => '' ));
+    $redirect = wp_parse_args( parse_url( $response['redirect'] ), array( 'host' => '', 'path' => '' ));
 
-    $offsite = $success_frag['host'] !== $redirect_frag['host'];
-    $reload = !$offsite && $success_frag['path'] !== $redirect_frag['path'] && $response['messages'] == '';
+    $offsite = $success['host'] !== $redirect['host'];
+    $reload = !$offsite && $success['path'] !== $redirect['path'] && $response['messages'] == '';
 
     if($offsite || $reload){
       update_post_meta( $order_id, '_pos_payment_redirect', $response['redirect'] );

@@ -17,7 +17,7 @@ module.exports = POS.Model = bb.Model.extend({
   },
 
   parse: function (resp){
-    var data = resp[this.name] || resp;
+    var data = resp && resp[this.name] ? resp[this.name]  : resp;
     if( ! data ){
       return;
     }
