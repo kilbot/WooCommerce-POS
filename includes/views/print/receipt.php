@@ -121,6 +121,12 @@
     <th><?php _e( 'Order Date', 'woocommerce-pos' ); ?></th>
     <td>{{formatDate completed_at format="MMMM Do YYYY, h:mm:ss a"}}</td>
   </tr>
+  {{#if cashier}}
+  <tr>
+    <th><?php _e( 'Cashier', 'woocommerce-pos' ); ?></th>
+    <td>{{cashier.first_name}} {{cashier.last_name}}</td>
+  </tr>
+  {{/if}}
   <tr>
     <th><?php _e( 'Payment Method', 'woocommerce-pos' ); ?></th>
     <td>{{payment_details.method_title}}</td>

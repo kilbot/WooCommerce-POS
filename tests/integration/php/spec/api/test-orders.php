@@ -657,4 +657,5 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(0.5, $data['order']['total_tax']);
 
   }
+
 }

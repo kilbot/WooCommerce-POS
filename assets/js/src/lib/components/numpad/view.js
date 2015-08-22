@@ -208,7 +208,7 @@ var View = FormView.extend({
     e.preventDefault();
     var key = $(e.currentTarget).data('key');
     this.model.set('active', 'percentage');
-    this.model._set('percentage', key.replace('%', ''));
+    this.model.set('percentage', key.replace('%', ''));
     this.ui.toggle.addClass('toggle');
   },
 

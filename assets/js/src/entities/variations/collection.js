@@ -18,15 +18,6 @@ module.exports = Collection.extend({
     this._isNew = false;
   },
 
-  range: function(attr){
-    var attrs = this.compact( this.pluck(attr)), min = 0, max = 0;
-    if( !_.isEmpty(attrs) ) {
-      min = _(attrs).min();
-      max = _(attrs).max();
-    }
-    return _.uniq([min, max]);
-  },
-
   /**
    * same as _.compact
    * except allows 0
@@ -45,7 +36,16 @@ module.exports = Collection.extend({
       }
     }
     return result;
-  }
+  },
   /* jshint +W074 */
+
+  range: function(attr){
+    var attrs = this.compact( this.pluck(attr)), min = 0, max = 0;
+    if( !_.isEmpty(attrs) ) {
+      min = _(attrs).min();
+      max = _(attrs).max();
+    }
+    return _.uniq([min, max]);
+  }
 
 });

@@ -369,8 +369,11 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    */
   public function create_order( $order_id ){
     // pos meta
+    global $current_user;
+    get_currentuserinfo();
     update_post_meta( $order_id, '_pos', 1 );
-    update_post_meta( $order_id, '_pos_user', get_current_user_id() );
+    update_post_meta( $order_id, '_pos_user', $current_user->ID );
+    update_post_meta( $order_id, '_pos_user_name', $current_user->user_firstname . ' ' . $current_user->user_lastname );
 
     // payment
     do_action( 'woocommerce_pos_process_payment', $order_id, $this->data);
@@ -528,14 +531,18 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    */
   public function order_response( $order_data, $order, $fields, $server ) {
 
+    // add cashier data
+    $cashier_data = isset( $order_data['cashier'] ) ? $order_data['cashier'] : array();
+    $order_data['cashier'] = $this->add_cashier_data( $order->id, $cashier_data );
+
     // add pos payment info
     $order_data['payment_details']['result']   = get_post_meta( $order->id, '_pos_payment_result', true );
     $order_data['payment_details']['message']  = get_post_meta( $order->id, '_pos_payment_message', true );
     $order_data['payment_details']['redirect'] = get_post_meta( $order->id, '_pos_payment_redirect', true );
 
     // addresses
-    $order_data['billing_address'] = $this->filter_address($order_data['billing_address'], $order);
-    $order_data['shipping_address'] = $this->filter_address($order_data['shipping_address'], $order, 'shipping');
+//    $order_data['billing_address'] = $this->filter_address($order_data['billing_address'], $order);
+//    $order_data['shipping_address'] = $this->filter_address($order_data['shipping_address'], $order, 'shipping');
 
     // allow decimal quantity
     // fixed in WC 2.4+
@@ -567,6 +574,25 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   }
 
   /**
+   * @param $order_id
+   * @param array $cashier
+   * @return array
+   */
+  private function add_cashier_data( $order_id, array $cashier = array() ){
+    $cashier['id'] = get_post_meta( $order_id, '_pos_user', true);
+    $first_name = get_post_meta( $order_id, '_pos_user_first_name', true);
+    $last_name = get_post_meta( $order_id, '_pos_user_last_name', true);
+    if( !$first_name && !$last_name ) {
+      $user_info = get_userdata( $cashier['id'] );
+      $first_name = $user_info->first_name;
+      $last_name = $user_info->last_name;
+    }
+    $cashier['first_name'] = $first_name;
+    $cashier['last_name'] = $last_name;
+    return $cashier;
+  }
+
+  /**
    * Adds support for custom address fields
    * @param $address
    * @param $order
@@ -575,7 +601,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    */
   private function filter_address( $address, $order, $type = 'billing' ){
     $fields = apply_filters('woocommerce_admin_'.$type.'_fields', false);
-    if($fields){
+    if( $fields ){
       $address = array();
       foreach($fields as $key => $value){
         $address[$key] = $order->{$type.'_'.$key};
