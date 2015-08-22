@@ -24,7 +24,6 @@ var AutoGrow = Behavior.extend({
       $('body').append(this.tester);
     }
 
-    this.listenTo( this.view, 'show render', this.autoGrowEach );
   },
 
   ui: {
@@ -35,7 +34,7 @@ var AutoGrow = Behavior.extend({
     'input @ui.target' : 'autoGrow'
   },
 
-  autoGrowEach: function() {
+  onShow: function() {
     _.each( this.ui.target, function( target ) {
       this.autoGrow( $(target) );
     }, this);
@@ -53,7 +52,6 @@ var AutoGrow = Behavior.extend({
     this.tester.html(value);
     var width = this.tester.width() + this.options.padding;
     target.css({ width: width });
-
   }
 
 });

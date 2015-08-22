@@ -33,38 +33,6 @@ module.exports = DualModel.extend({
   },
 
   /**
-   * Helper functions for variation prices
-   */
-  min: function(attr){
-    var variations = this.get('variations');
-    if(attr === 'sale_price'){
-      variations = _.where(variations, {on_sale: true});
-    }
-    var attrs = _.pluck(variations, attr);
-    if(attrs.length > 0){
-      return _(attrs).compact().min();
-    }
-    return this.get(attr);
-  },
-
-  max: function(attr){
-    var attrs = _.pluck(this.get('variations'), attr);
-    if(attrs.length > 0){
-      return _(attrs).compact().max();
-    }
-    return this.get(attr);
-  },
-
-  range: function(attr){
-    if(attr === 'sale_price'){
-      var min = _.min([this.min('sale_price'), this.min('price')]);
-      var max = _.max([this.max('sale_price'), this.max('price')]);
-      return _.uniq([min, max]);
-    }
-    return _.uniq([this.min(attr), this.max(attr)]);
-  },
-
-  /**
    * Helper functions to display attributes vs variations
    */
   productAttributes: function(){
@@ -203,13 +171,17 @@ module.exports = DualModel.extend({
    *
    */
   getVariations: function(){
+
     if(this._variations){
       return this._variations;
     }
 
-    var variations = new Variations(this.get('variations'), { parent: this });
-    this._variations = new FilteredCollection(variations);
+    if( this.get('type') !== 'variable' ){
+      return false;
+    }
 
+    var variations = new Variations( this.get('variations'), { parent: this } );
+    this._variations = new FilteredCollection(variations);
     return this._variations;
   }
 

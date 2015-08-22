@@ -77,13 +77,13 @@ var Item = ItemView.extend({
   },
 
   templateHelpers: function(){
-    var data = {};
-    if(this.model.get('type') === 'variable'){
-      data.price = this.model.range('price');
-      data.sale_price = this.model.range('sale_price');
-      data.regular_price = this.model.range('regular_price');
-      data.product_variations = this.model.getVariationOptions();
-    }
+    var variations = this.model.getVariations();
+    var data = variations ? {
+      price: variations.superset().range('price'),
+      sale_price: variations.superset().range('sale_price'),
+      regular_price: variations.superset().range('regular_price'),
+      product_variations: this.model.getVariationOptions()
+    } : {} ;
     data.product_attributes = this.model.productAttributes();
     return data;
   }

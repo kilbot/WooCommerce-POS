@@ -1,4 +1,5 @@
-var Model = require('lib/config/model');
+//var Model = require('lib/config/model');
+var Model = require('lib/config/deep-model');
 
 module.exports = Model.extend({
   name: 'product',
@@ -20,6 +21,7 @@ module.exports = Model.extend({
     this.set({ title: options.parent.get('title') });
   },
 
+  // copy variation to parent
   save: function(attributes, options){
     var self = this;
     return Model.prototype.save.call(this, attributes, options)

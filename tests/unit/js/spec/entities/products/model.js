@@ -69,22 +69,6 @@ describe('entities/products/model.js', function () {
     expect(this.product).to.be.ok;
   });
 
-  describe('variation price ranges', function () {
-
-    it('should return the price range', function() {
-      expect(this.product.range('price')).eql(['2.50', '6.00']);
-    });
-
-    it('should return the regular price range', function() {
-      expect(this.product.range('regular_price')).eql(['5.00', '6.00']);
-    });
-
-    it('should return the sale price range', function() {
-      expect(this.product.range('sale_price')).eql(['2.50', '6.00']);
-    });
-
-  });
-
   describe('product attributes', function () {
 
     it('should return the visible product attributes (without variations)', function() {

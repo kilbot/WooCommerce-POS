@@ -60,10 +60,8 @@
 	<div class="price">
     {{#if on_sale}}
       <del>{{#list regular_price ' - '}}{{{money this}}}{{/list}}</del>
-      <ins>{{#list sale_price ' - '}}{{{money this}}}{{/list}}</ins>
-    {{else}}
-      {{#list price ' - '}}{{{money this}}}{{/list}}
     {{/if}}
+    {{#list price ' - '}}{{{money this}}}{{/list}}
 	</div>
 	{{#is type 'variable'}}
 	<div class="action"><a data-action="variations" class="btn btn-success btn-circle" href="#"><i class="icon-chevron-right icon-lg"></i></a></div>
