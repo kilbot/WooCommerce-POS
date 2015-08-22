@@ -532,13 +532,12 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   public function order_response( $order_data, $order, $fields, $server ) {
 
     // add cashier data
-    $cashier_data = isset( $order_data['cashier'] ) ? $order_data['cashier'] : array();
-    $order_data['cashier'] = $this->add_cashier_data( $order->id, $cashier_data );
+    $cashier_details = isset( $order_data['cashier'] ) ? $order_data['cashier'] : array();
+    $order_data['cashier'] = $this->add_cashier_details( $order, $cashier_details );
 
     // add pos payment info
-    $order_data['payment_details']['result']   = get_post_meta( $order->id, '_pos_payment_result', true );
-    $order_data['payment_details']['message']  = get_post_meta( $order->id, '_pos_payment_message', true );
-    $order_data['payment_details']['redirect'] = get_post_meta( $order->id, '_pos_payment_redirect', true );
+    $payment_details = isset( $order_data['payment_details'] ) ? $order_data['payment_details'] : array();
+    $order_data['payment_details'] = $this->add_payment_details( $order, $payment_details );
 
     // addresses
 //    $order_data['billing_address'] = $this->filter_address($order_data['billing_address'], $order);
@@ -574,14 +573,14 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   }
 
   /**
-   * @param $order_id
+   * @param $order
    * @param array $cashier
    * @return array
    */
-  private function add_cashier_data( $order_id, array $cashier = array() ){
-    $cashier['id'] = get_post_meta( $order_id, '_pos_user', true);
-    $first_name = get_post_meta( $order_id, '_pos_user_first_name', true);
-    $last_name = get_post_meta( $order_id, '_pos_user_last_name', true);
+  private function add_cashier_details( $order, array $cashier = array() ){
+    $cashier['id'] = get_post_meta( $order->id, '_pos_user', true);
+    $first_name = get_post_meta( $order->id, '_pos_user_first_name', true);
+    $last_name = get_post_meta( $order->id, '_pos_user_last_name', true);
     if( !$first_name && !$last_name ) {
       $user_info = get_userdata( $cashier['id'] );
       $first_name = $user_info->first_name;
@@ -589,7 +588,22 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     }
     $cashier['first_name'] = $first_name;
     $cashier['last_name'] = $last_name;
-    return $cashier;
+    return apply_filters( 'woocommerce_pos_order_response_cashier', $cashier, $order );
+  }
+
+  /**
+   * @param $order
+   * @param array $payment
+   * @return array
+   */
+  private function add_payment_details( $order, array $payment = array() ){
+    $payment['result']   = get_post_meta( $order->id, '_pos_payment_result', true );
+    $payment['message']  = get_post_meta( $order->id, '_pos_payment_message', true );
+    $payment['redirect'] = get_post_meta( $order->id, '_pos_payment_redirect', true );
+    if( isset( $payment['method_id'] ) && $payment['method_id'] == 'pos_cash' ){
+      $payment = WC_POS_Gateways_Cash::payment_details( $payment, $order );
+    }
+    return apply_filters( 'woocommerce_pos_order_response_payment_details', $payment, $order );
   }
 
   /**

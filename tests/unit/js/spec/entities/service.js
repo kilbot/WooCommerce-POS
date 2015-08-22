@@ -1,5 +1,7 @@
 describe('entities/service.js', function () {
 
+  var Marionette = require('backbone.marionette');
+
   beforeEach(function () {
 
     var Module = proxyquire('entities/service', {
@@ -82,7 +84,7 @@ describe('entities/service.js', function () {
   //});
 
   it('should return an app option using { type: "option" }', function(){
-    this.module.app = new Backbone.Marionette.Application({ foo: 'bar' });
+    this.module.app = new Marionette.Application({ foo: 'bar' });
     var foo = this.module.channel.request('get', {
       type: 'option',
       name: 'foo'
@@ -91,7 +93,7 @@ describe('entities/service.js', function () {
   });
 
   it('should return a settings Model using { type: "settings" }', function(){
-    this.module.app = new Backbone.Marionette.Application({ foo: { user: 'setting' } });
+    this.module.app = new Marionette.Application({ foo: { user: 'setting' } });
     var foo = this.module.channel.request('get', {
       type: 'settings',
       name: 'foo'

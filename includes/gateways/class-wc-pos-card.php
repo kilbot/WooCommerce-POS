@@ -113,7 +113,7 @@ class WC_POS_Gateways_Card extends WC_Payment_Gateway {
 
     // construct message
     if( $cashback ) {
-      $message = '<strong>'. __('Cashback', 'woocommerce-pos') .':</strong> ';
+      $message = __('Cashback', 'woocommerce-pos') . ': ';
       $message .= wc_price($cashback);
     }
 

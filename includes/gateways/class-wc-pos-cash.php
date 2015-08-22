@@ -65,21 +65,11 @@ class WC_POS_Gateways_Cash extends WC_Payment_Gateway {
     // get order object
     $order = new WC_Order( $order_id );
 
-    $tendered = isset( $_REQUEST['pos-cash-tendered'] ) ? wc_format_decimal( $_REQUEST['pos-cash-tendered'] ) : 0 ;
-    $tendered = abs((float) $tendered);
-    $total = isset( $_REQUEST['total'] ) ? $_REQUEST['total'] : 0 ;
-    $total = abs((float) $total);
-
-    if( $tendered !== 0 ) {
-
-      // calculate change
-      $change = $tendered - $total;
-
-      // add order meta
-      update_post_meta( $order_id, '_pos_cash_amount_tendered', $tendered );
-      update_post_meta( $order_id, '_pos_cash_change', $change );
-
-    }
+    // update pos_cash data
+    $tendered = isset( $_POST['pos-cash-tendered'] ) ? wc_format_decimal( $_POST['pos-cash-tendered'] ) : 0 ;
+    $change = isset( $_POST['pos-cash-change'] ) ? wc_format_decimal( $_POST['pos-cash-change'] ) : 0 ;
+    update_post_meta( $order_id, '_pos_cash_amount_tendered', $tendered );
+    update_post_meta( $order_id, '_pos_cash_change', $change );
 
     // payment complete
     $order->payment_complete();
@@ -97,13 +87,21 @@ class WC_POS_Gateways_Cash extends WC_Payment_Gateway {
 
     // construct message
     if( $tendered && $change ) {
-      $message = '<strong>'. __('Amount Tendered', 'woocommerce-pos') .':</strong> ';
+      $message = __('Amount Tendered', 'woocommerce-pos') .': ';
       $message .= wc_price($tendered) .'<br>';
-      $message .= '<strong>'. _x('Change', 'Money returned from cash sale', 'woocommerce-pos') .':</strong> ';
+      $message .= _x('Change', 'Money returned from cash sale', 'woocommerce-pos') .': ';
       $message .= wc_price($change);
     }
 
     echo $message;
+  }
+
+  static public function payment_details( $payment_details, $order ) {
+    $payment_details['method_pos_cash'] = array(
+      'tendered'  => get_post_meta( $order->id, '_pos_cash_amount_tendered', true ),
+      'change'    => get_post_meta( $order->id, '_pos_cash_change', true )
+    );
+    return $payment_details;
   }
 
 }

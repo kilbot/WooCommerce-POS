@@ -99,7 +99,7 @@ module.exports = FormView.extend({
   calcChange: function(tendered){
     var change = tendered - this.order_total;
     var msg = polyglot.t('titles.change') + ': ' + Utils.formatMoney(change);
-    this.model.set({ message: msg });
+    this.model.set({ message: msg, 'pos-cash-change': change });
   },
 
   updateStatusMessage: function(){
