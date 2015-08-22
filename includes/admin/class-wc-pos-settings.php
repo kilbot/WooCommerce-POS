@@ -145,7 +145,7 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       'backbone.radio',
-      'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.0/backbone.radio.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.1/backbone.radio.min.js',
       array( 'jquery', 'backbone', 'underscore' ),
       false,
       true
