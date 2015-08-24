@@ -81,7 +81,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: local storage will now clear on version change - commit [85ec411](https://github.com/kilbot/WooCommerce-POS/commit/85ec411a58600988b811272be6d151cb11161f4f)
 * New: option to automatically print receipt after checkout - commit [16fba05](https://github.com/kilbot/WooCommerce-POS/commit/16fba054593e118be6c567ce4d87f8d0b91acaa5)
 * New: add cashier to receipt data - commit [c4caa8d](https://github.com/kilbot/WooCommerce-POS/commit/c4caa8df78d9f255445f370854fbb3e466b46b4e)
-* New: add pos_cash info to receipt data - commit []()
+* New: add pos_cash info to receipt data - commit [e7e443b](https://github.com/kilbot/WooCommerce-POS/commit/e7e443ba07aff02f3927f2c08128e062b81fe5c1)
 * New: WooPOS icon to denote POS orders in WP Admin
 * Fix: variation display and select issues - commit [91c7ec1](https://github.com/kilbot/WooCommerce-POS/commit/91c7ec13e737f820d84feb7890d7b6d027a79792), [b3d6543](https://github.com/kilbot/WooCommerce-POS/commit/b3d6543b86140df62ff90f3a7b7e734d73ae59ab)
 * Fix: variation barcode search for products in queue - commit [3fda531](https://github.com/kilbot/WooCommerce-POS/commit/3fda5317ef580f6b6d70e24ba235d2b7e69c5ee4)
@@ -90,6 +90,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: compatibility fix for WC 2.4 SSL authentication - commit [525671b](https://github.com/kilbot/WooCommerce-POS/commit/525671b7613b20864366aebf426f14d07b37bfa4)
 * Fix: modal CSS conflict in WP Admin - commit [837b918](https://github.com/kilbot/WooCommerce-POS/commit/837b918e5bae4de6c1cee1492d390ade1b2e7f45)
 * Fix: numpad discount bug introduced in 0.4.1
+* Fix: quick edit links not showing on WP Admin Products page - commit []()
 * Tweak: WP Admin CSS - commit [c5a38c7](https://github.com/kilbot/WooCommerce-POS/commit/c5a38c7f889a7788e3eaa633c28620d2e80ac2ee)
 
 = 0.4.1 =
