@@ -1,6 +1,5 @@
 var DualModel = require('lib/config/dual-model');
 var _ = require('lodash');
-var Radio = require('backbone.radio');
 var Variations = require('../variations/collection');
 var FilteredCollection = require('lib/config/obscura');
 
@@ -105,12 +104,9 @@ module.exports = DualModel.extend({
   },
 
   variableBarcodeMatch: function(test, value){
-    var match, variations = Radio.request('entities', 'get', {
-      type: 'variations',
-      parent: this
-    });
+    var match;
 
-    variations.superset().each(function(variation){
+    this.getVariations().superset().each(function(variation){
       var vtest = variation.get('barcode').toLowerCase();
       if(vtest === value){
         match = variation;

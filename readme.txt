@@ -3,7 +3,7 @@ Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
 Requires at least: 4.0 & WooCommerce 2.3
 Tested up to: 4.3
-Stable tag: 0.4.2
+Stable tag: 0.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,6 +77,9 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.4.3 =
+* Fix: barcode scanning bug introduced in version 0.4.2 - commit []()
+
 = 0.4.2 =
 * New: local storage will now clear on version change - commit [85ec411](https://github.com/kilbot/WooCommerce-POS/commit/85ec411a58600988b811272be6d151cb11161f4f)
 * New: option to automatically print receipt after checkout - commit [16fba05](https://github.com/kilbot/WooCommerce-POS/commit/16fba054593e118be6c567ce4d87f8d0b91acaa5)
@@ -91,7 +94,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: modal CSS conflict in WP Admin - commit [837b918](https://github.com/kilbot/WooCommerce-POS/commit/837b918e5bae4de6c1cee1492d390ade1b2e7f45)
 * Fix: numpad discount bug introduced in 0.4.1
 * Fix: quick edit links not showing on WP Admin Products page - commit [07d3e98](https://github.com/kilbot/WooCommerce-POS/commit/07d3e984802b64c645f53899396bb393ea7cb7ef)
-* Fix: POS visibility options not showing on new product page - commit []()
+* Fix: POS visibility options not showing on new product page - commit [ef20a5b](https://github.com/kilbot/WooCommerce-POS/commit/ef20a5bd4e9727855e9eac747f912502ae0c9cc9)
 * Tweak: WP Admin CSS - commit [c5a38c7](https://github.com/kilbot/WooCommerce-POS/commit/c5a38c7f889a7788e3eaa633c28620d2e80ac2ee)
 
 = 0.4.1 =
