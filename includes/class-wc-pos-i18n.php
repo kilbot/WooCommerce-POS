@@ -338,6 +338,7 @@ class WC_POS_i18n {
         'void'      => __( 'Void', 'woocommerce-pos' ),
         'expand-all'=> /* translators: woocommerce */ __( 'Expand all', 'woocommerce' ),
         'close-all' => /* translators: woocommerce */ __( 'Close all', 'woocommerce' ),
+        'legacy'    => __( 'Enable legacy server support', 'woocommerce-pos' ),
       ),
       'messages'  => array(
         'choose'    => /* translators: woocommerce */ __( 'Choose an option', 'woocommerce' ),
@@ -345,6 +346,7 @@ class WC_POS_i18n {
         'loading'   => /* translators: wordpress */__( 'Loading ...' ),
         'success'   => /* translators: woocommerce */ __( 'Your changes have been saved.', 'woocommerce' ),
         'browser'   => __( 'Your browser is not supported!', 'woocommerce-pos' ),
+        'legacy'    => __( 'Unable to use RESTful HTTP methods', 'woocommerce-pos' ),
       ),
       'plural'    => array(
         'records'   => _x( 'record |||| records', 'eg: 23 records', 'woocommerce-pos' ),

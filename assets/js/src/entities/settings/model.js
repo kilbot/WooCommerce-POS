@@ -1,5 +1,6 @@
 var DeepModel = require('lib/config/deep-model');
 var Radio = require('backbone.radio');
+var polyglot = require('lib/utilities/polyglot');
 
 module.exports = DeepModel.extend({
 
@@ -52,7 +53,15 @@ module.exports = DeepModel.extend({
     options.error = function(jqxhr, textStatus, errorThrown){
       if( error ) { error(jqxhr, textStatus, errorThrown); }
       var message = null;
-      if(jqxhr.responseJSON && jqxhr.responseJSON.errors){
+
+      // code 405 = not allowed HTTP methods
+      if( jqxhr.status && jqxhr.status === 405 ){
+        message = polyglot.t('messages.legacy') +
+            '. <a href="#tools">' + polyglot.t('buttons.legacy') + '</a>.';
+      }
+
+      // other errors
+      if( !message && jqxhr.responseJSON && jqxhr.responseJSON.errors ){
         message = jqxhr.responseJSON.errors[0].message;
       }
       btn.trigger('state', ['error', message]);
