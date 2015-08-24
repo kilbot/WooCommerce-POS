@@ -171,17 +171,11 @@ module.exports = DualModel.extend({
    *
    */
   getVariations: function(){
-
-    if(this._variations){
-      return this._variations;
+    if( this.get('type') !== 'variable' ){ return false; }
+    if( ! this._variations ){
+      var variations = new Variations(this.get('variations'), { parent: this });
+      this._variations = new FilteredCollection(variations);
     }
-
-    if( this.get('type') !== 'variable' ){
-      return false;
-    }
-
-    var variations = new Variations( this.get('variations'), { parent: this } );
-    this._variations = new FilteredCollection(variations);
     return this._variations;
   }
 

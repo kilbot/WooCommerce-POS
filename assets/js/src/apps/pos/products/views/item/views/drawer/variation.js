@@ -16,6 +16,11 @@ var Item = ItemView.extend({
     'click @ui.add' : 'addToCart'
   },
 
+  // todo: why is this necessary?
+  modelEvents: {
+    'change:stock_quantity': 'render'
+  },
+
   addToCart: function(e){
     e.preventDefault();
     Radio.request('router', 'add:to:cart', {model: this.model});

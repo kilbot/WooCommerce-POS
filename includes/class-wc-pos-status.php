@@ -10,7 +10,7 @@
 
 class WC_POS_Status {
 
-  private $wc_min_version = '2.3';
+  private $wc_min_version = '2.3.7';
   private $php_min_version = '5.4';
 
   public function output() {
