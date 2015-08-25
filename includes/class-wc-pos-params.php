@@ -39,8 +39,8 @@ class WC_POS_Params {
       $this->shipping      = $this->shipping_labels();
       $this->tabs          = $this->product_tabs();
       $this->tax           = $this->tax();
-      $this->tax_classes   = $this->tax_classes();
-      $this->tax_rates     = $this->tax_rates();
+      $this->tax_classes   = WC_POS_Tax::tax_classes();
+      $this->tax_rates     = WC_POS_Tax::tax_rates();
       $this->user          = $this->user();
     }
 
@@ -191,50 +191,6 @@ class WC_POS_Params {
       'id'      => $current_user->ID,
       'display_name'  => $current_user->display_name
     );
-  }
-
-  /**
-   * @return array
-   */
-  private function tax_rates() {
-    $rates = array();
-
-    foreach( $this->tax_classes as $class => $label ) {
-      if( $rate = WC_Tax::get_base_tax_rates( $class ) ){
-        // WC_Tax returns a assoc array with int as keys = world of pain in js
-        // possibly change $key to $rate['id']
-        $rates[$class] = $rate;
-      }
-    }
-
-    return $rates;
-  }
-
-  /**
-   * @return array
-   */
-  private function tax_classes() {
-    if( isset( $this->tax_classes ) ){
-      return $this->tax_classes;
-    }
-
-    $classes = array(
-      /* translators: woocommerce */
-      '' => __( 'Standard', 'woocommerce' )
-    );
-
-    // get_tax_classes method introduced in WC 2.3
-    if( method_exists( 'WC_Tax','get_tax_classes' ) ){
-      $labels = WC_Tax::get_tax_classes();
-    } else {
-      $labels = array_filter( array_map( 'trim', explode( "\n", get_option( 'woocommerce_tax_classes' ) ) ) );
-    }
-
-    foreach( $labels as $label ){
-      $classes[ sanitize_title($label) ] = $label;
-    }
-
-    return $classes;
   }
 
   /**

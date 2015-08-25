@@ -145,6 +145,12 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
     $attributes = $product->get_attributes();
     $variation_attributes = $product->get_variation_attributes();
 
+    // patch for corrupted data, depreciate asap
+    if( empty( $attributes ) ){
+      $attributes = $product->parent->product_attributes;
+      delete_post_meta( $product->variation_id, '_product_attributes' );
+    }
+
     foreach( $variation_attributes as $slug => $option ){
       $slug = str_replace( 'attribute_', '', $slug );
 

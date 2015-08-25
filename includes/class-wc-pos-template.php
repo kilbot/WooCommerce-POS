@@ -28,8 +28,10 @@ class WC_POS_Template {
       return;
 
     // check auth
-    if( ! is_user_logged_in() )
+    if( ! is_user_logged_in() ){
+      add_filter( 'login_url', array( $this, 'login_url' ) );
       auth_redirect();
+    }
 
     // check privileges
     if( ! current_user_can( 'access_woocommerce_pos' ) )
@@ -46,6 +48,15 @@ class WC_POS_Template {
     include 'views/template.php';
     exit;
 
+  }
+
+  /**
+   * Add variable to login url to signify POS login
+   * @param $login_url
+   * @return mixed
+   */
+  public function login_url( $login_url ){
+    return add_query_arg( 'pos', '1', $login_url );
   }
 
   /**

@@ -78,7 +78,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.4.3 =
-* Fix: barcode scanning bug introduced in version 0.4.2 - commit []()
+* Fix: barcode scanning bug introduced in version 0.4.2 - commit [8a608c8](https://github.com/kilbot/WooCommerce-POS/commit/8a608c8124d77cd3499af55e08651752287261bc)
 
 = 0.4.2 =
 * New: local storage will now clear on version change - commit [85ec411](https://github.com/kilbot/WooCommerce-POS/commit/85ec411a58600988b811272be6d151cb11161f4f)
