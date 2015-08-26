@@ -1,9 +1,9 @@
 === WooCommerce POS ===
 Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
-Requires at least: 4.0 & WooCommerce 2.3
+Requires at least: 4.0 & WooCommerce 2.3.7
 Tested up to: 4.3
-Stable tag: 0.4.3
+Stable tag: 0.4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,7 +79,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 = 0.4.4 =
 * Fix: cart totals going to zero with new fee or shipping line item - commit [35f547c](https://github.com/kilbot/WooCommerce-POS/commit/35f547cf40919736ff769702043489ff1698ec30)
-* Improve: scanning barcodes multiple times - commit []()
+* Improve: scanning barcodes multiple times - commit [670173b](https://github.com/kilbot/WooCommerce-POS/commit/670173b4e890d74800420511803e48ef9f6a4ec7)
 
 = 0.4.3 =
 * Fix: barcode scanning bug introduced in version 0.4.2 - commit [8a608c8](https://github.com/kilbot/WooCommerce-POS/commit/8a608c8124d77cd3499af55e08651752287261bc)
