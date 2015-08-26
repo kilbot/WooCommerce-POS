@@ -7,7 +7,10 @@ var _ = require('lodash');
 var parse = {
   'float': parseFloat,
   'int': parseInt,
-  'number': Number
+  'number': function(num){
+    num = Number(num);
+    return _.isNaN(num) ? 0 : num;
+  }
 };
 
 module.exports = POS.Model = bb.Model.extend({

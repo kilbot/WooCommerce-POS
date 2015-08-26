@@ -18,6 +18,7 @@ module.exports = Model.extend({
     'tax_class'     : ''
   },
 
+  /* jshint -W074 */
   initialize: function() {
 
     // attach tax settings
@@ -41,9 +42,11 @@ module.exports = Model.extend({
 
     // set item price on init, this wil kick off updateLineTotals
     if( this.get('item_price') === undefined ) {
-      this.set({ 'item_price': parseFloat( this.get('price') ) });
+      var price = parseFloat( this.get('price') );
+      this.set({ 'item_price': _.isNaN(price) ? 0 : price });
     }
   },
+  /* jshint +W074 */
 
   /* jshint -W071, -W074 */
   /* todo: too many statements, too complex */

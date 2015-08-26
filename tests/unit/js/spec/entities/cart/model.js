@@ -437,6 +437,36 @@ describe('entities/cart/model.js', function () {
 
   });
 
+  describe('fee line items', function () {
+
+    beforeEach(function () {
+
+      var Model = require('entities/cart/model').extend({
+        url: '?',
+        collection: {tax_rates: {}}
+      });
+      this.model = new Model({
+        type: 'fee'
+      });
+
+    });
+
+    it('should be in a valid state', function(){
+      this.model.should.be.ok;
+    });
+
+    it('should init with default values', function(){
+      this.model.get('item_subtotal').should.eql(0);
+      this.model.get('item_subtotal_tax').should.eql(0);
+      this.model.get('item_tax').should.eql(0);
+      this.model.get('subtotal').should.eql(0);
+      this.model.get('subtotal_tax').should.eql(0);
+      this.model.get('total').should.eql(0);
+      this.model.get('total_tax').should.eql(0);
+    });
+
+  });
+
   describe('shipping line items', function () {
 
     beforeEach(function () {
@@ -449,6 +479,20 @@ describe('entities/cart/model.js', function () {
         type: 'shipping'
       });
 
+    });
+
+    it('should be in a valid state', function(){
+      this.model.should.be.ok;
+    });
+
+    it('should init with default values', function(){
+      this.model.get('item_subtotal').should.eql(0);
+      this.model.get('item_subtotal_tax').should.eql(0);
+      this.model.get('item_tax').should.eql(0);
+      this.model.get('subtotal').should.eql(0);
+      this.model.get('subtotal_tax').should.eql(0);
+      this.model.get('total').should.eql(0);
+      this.model.get('total_tax').should.eql(0);
     });
 
     describe('shipping line using GB dummy tax', function () {
