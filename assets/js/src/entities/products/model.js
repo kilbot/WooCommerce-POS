@@ -68,12 +68,12 @@ module.exports = DualModel.extend({
 
     }, this);
 
-    if(match){
-      return match;
-    }
+    //if(match){
+    //  return match;
+    //}
 
     // the original matchMaker
-    return callback(tokens, this);
+    return match ? match : callback(tokens, this);
 
   },
 

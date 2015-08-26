@@ -78,7 +78,8 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.4.4 =
-* Fix: cart totals going to zero with new fee or shipping line item - commit []()
+* Fix: cart totals going to zero with new fee or shipping line item - commit [35f547c](https://github.com/kilbot/WooCommerce-POS/commit/35f547cf40919736ff769702043489ff1698ec30)
+* Improve: scanning barcodes multiple times - commit []()
 
 = 0.4.3 =
 * Fix: barcode scanning bug introduced in version 0.4.2 - commit [8a608c8](https://github.com/kilbot/WooCommerce-POS/commit/8a608c8124d77cd3499af55e08651752287261bc)

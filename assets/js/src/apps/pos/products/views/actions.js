@@ -8,9 +8,18 @@ var Actions = View.extend({
   template: '#tmpl-products-filter',
 
   initialize: function(){
-    var products = this.collection.superset();
-    this.listenTo(products, 'match:barcode', function(model){
-      this.triggerMethod('clear');
+    var products = this.collection;
+    var self = this;
+
+    /**
+     * match:barcode is triggered before filter is complete
+     * this affects the filtered collection pagination
+     * todo: refactor and fix this
+     */
+    this.listenTo(products.superset(), 'match:barcode', function(model){
+      products.once('paginated:change:page', function(){
+        self.triggerMethod('clear');
+      });
       Radio.request('router', 'add:to:cart', model);
     });
   },
