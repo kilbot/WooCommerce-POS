@@ -22,12 +22,8 @@ class WC_POS_Activator {
 
     register_activation_hook( $file, array( $this, 'activate' ) );
     add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
-
     add_action( 'admin_init', array( $this, 'run_checks' ) );
-
-    if( !$this->is_deactivating() ){
-      add_action( 'init', array( $this, 'rewrite_rules' ) );
-    }
+    add_action( 'init', array( $this, 'rewrite_rules' ) );
   }
 
   /**
@@ -115,10 +111,12 @@ class WC_POS_Activator {
    * Add rewrite rule to permalinks
    */
   public function rewrite_rules() {
+    if( $this->is_deactivating() ) return;
+
     $option = get_option( 'woocommerce_pos_settings_permalink', 'pos' );
     $slug = empty($option) ? 'pos' : $option; // make sure slug is not empty
-    add_rewrite_tag('%'. $slug .'%', '([^&]+)');
-    add_rewrite_rule('^'. $slug .'/?$','index.php?pos=1','top');
+    add_rewrite_tag('%pos%', '([^&]+)');
+    add_rewrite_rule('^'. $slug .'/?$', 'index.php?pos=1', 'top');
   }
 
   /**

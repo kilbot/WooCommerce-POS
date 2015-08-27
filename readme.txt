@@ -77,6 +77,9 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.4.5 =
+* Fix: POS permalink bug introduced in 0.4.2 - []()
+
 = 0.4.4 =
 * Fix: cart totals going to zero with new fee or shipping line item - commit [35f547c](https://github.com/kilbot/WooCommerce-POS/commit/35f547cf40919736ff769702043489ff1698ec30)
 * Improve: scanning barcodes multiple times - commit [670173b](https://github.com/kilbot/WooCommerce-POS/commit/670173b4e890d74800420511803e48ef9f6a4ec7)
