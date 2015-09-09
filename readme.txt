@@ -25,7 +25,9 @@ You can see a demo of the WooCommerce POS plugin in action by going to [http://d
 
 = REQUIREMENTS =
 * WooCommerce >= 2.3.7
+* PHP 5.4+
 * [A modern browser](http://woopos.com.au/faq/browser-compatibility/)
+* [A good web host](http://woopos.com.au/wpe)
 
 == Installation ==
 
@@ -78,7 +80,9 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 == Changelog ==
 
 = 0.4.5 =
-* Fix: POS permalink bug introduced in 0.4.2 - []()
+* Important: WooCommerce POS now requires PHP 5.4 or higher
+* Important: WooCommerce POS now requires WooCommerce 2.3.7 or higher
+* Fix: POS permalink bug introduced in 0.4.2 - [22388f7](https://github.com/kilbot/WooCommerce-POS/commit/22388f7a6d91959b3b55fd07b6f973ba8eda01af)
 
 = 0.4.4 =
 * Fix: cart totals going to zero with new fee or shipping line item - commit [35f547c](https://github.com/kilbot/WooCommerce-POS/commit/35f547cf40919736ff769702043489ff1698ec30)

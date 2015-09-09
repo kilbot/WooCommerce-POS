@@ -15,6 +15,9 @@
 @import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/modals";
 @import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/tooltip";
 
+// select2
+@import "../../../../node_modules/select2/src/scss/core";
+
 //
 @import "partials/mixins";
 
@@ -43,7 +46,7 @@
 
 @import "partials/popover/numpad";
 @import "partials/popover/variations";
-@import "partials/select2";
+//@import "partials/select2";
 @import "partials/modal";
 
 @import "partials/hotkeys";

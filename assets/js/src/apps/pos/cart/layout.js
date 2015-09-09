@@ -20,7 +20,7 @@ module.exports = LayoutView.extend({
   },
 
   attributes: {
-    'class'         : 'module cart-module'
+    'class'   : 'module cart-module'
   },
 
   /**

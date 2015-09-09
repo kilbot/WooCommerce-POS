@@ -12,11 +12,60 @@
 
 class WC_POS_Template {
 
+  /** @var POS url slug */
+  private $slug;
+
+  /** @var regex match for rewite_rule  */
+  private $regex;
+
+  /** @var array external libraries */
+  static public $external_libs = array(
+    'min' => array(
+      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js',
+      'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js',
+      'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.2/backbone-min.js',
+      'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.1/backbone.radio.min.js',
+      'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.2/backbone.marionette.min.js',
+      'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.1/handlebars.min.js',
+      'select2'      => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js',
+      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js',
+      'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
+      'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js',
+    ),
+    'debug' => array(
+      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js',
+      'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js',
+      'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.2/backbone.js',
+      'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.1/backbone.radio.js',
+      'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.2/backbone.marionette.js',
+      'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.1/handlebars.js',
+      'select2'      => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.js',
+      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js',
+      'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.js',
+      'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.js',
+    )
+  );
+
   /**
    * Constructor
    */
   public function __construct() {
+    $this->slug = WC_POS_Admin_Permalink::get_slug();
+    $this->regex = '^'. $this->slug .'/?$';
+
+    add_rewrite_tag( '%pos%', '([^&]+)' );
+    add_rewrite_rule( $this->regex, 'index.php?pos=1', 'top' );
+    add_filter( 'option_rewrite_rules', array( $this, 'rewrite_rules' ), 1 );
     add_action( 'template_redirect', array( $this, 'template_redirect' ), 1 );
+  }
+
+  /**
+   * Make sure cache contains POS rewrite rule
+   * @param $rules
+   * @return bool
+   */
+  public function rewrite_rules( $rules ){
+    return isset( $rules[$this->regex] ) ? $rules : false;
   }
 
   /**
@@ -74,6 +123,27 @@ class WC_POS_Template {
   }
 
   /**
+   * @return array
+   */
+  static public function get_external_js_libraries(){
+    return defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? self::$external_libs['debug'] : self::$external_libs['min'] ;
+  }
+
+  /**
+   * @return mixed|void
+   */
+  private function get_scripts() {
+    $build = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? 'build' : 'min';
+
+    return apply_filters(
+      'woocommerce_pos_enqueue_scripts',
+      self::get_external_js_libraries() + array(
+        'app' => WC_POS_PLUGIN_URL . 'assets/js/app.'. $build .'.js?ver=' . WC_POS_VERSION
+      )
+    );
+  }
+
+  /**
    * Output the head scripts
    */
   protected function head() {
@@ -98,37 +168,8 @@ class WC_POS_Template {
    * Output the footer scripts
    */
   protected function footer() {
-    //
-    $build = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'build' : 'min';
 
-    // required scripts
-    $scripts = array(
-      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js',
-      'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js',
-      'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.2/backbone-min.js',
-      'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.1/backbone.radio.min.js',
-      'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.2/backbone.marionette.min.js',
-      'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js',
-//      now using customised idb-wrapper
-//      'idb-wrapper'  => 'https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.5.0/idbstore.min.js',
-      'select2'      => 'https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js',
-      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js',
-      'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
-      'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js',
-      'app'          => WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION
-    );
-
-    // cdn bundle for local dev
-    // todo: formatNumber issue when using vendor bundle
-//    $scripts = array(
-//      'bundle'       => WC_POS_PLUGIN_URL .'assets/js/vendor.bundle.js?ver='. WC_POS_VERSION,
-//      'app'          => WC_POS_PLUGIN_URL .'assets/js/app.'. $build .'.js?ver='. WC_POS_VERSION
-//    );
-
-    // output scripts
-    $scripts = apply_filters( 'woocommerce_pos_enqueue_scripts', $scripts );
-
-    foreach( $scripts as $script ) {
+    foreach( $this->get_scripts() as $script ) {
       echo "\n".'<script src="'. $script . '"></script>';
     }
 
@@ -255,22 +296,36 @@ class WC_POS_Template {
       $html = ob_get_contents();
       ob_end_clean();
 
-      // remove any javascript
-      // note: DOMDocument causes more problems than it's worth
-
-//      $doc = new DOMDocument();
-//      $doc->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-//      $script_tags = $doc->getElementsByTagName('script');
-//      $length = $script_tags->length;
-//      for ($i = 0; $i < $length; $i++) {
-//        $script_tags->item($i)->parentNode->removeChild($script_tags->item($i));
-//      }
-//      echo $doc->saveHTML();
-
-      // simple preg_replace
-      $html = preg_replace('/<script.+?<\/script>/im', '', $html);
+      // remove script tags
+      $html = $this->removeDomNodes( $html, '//script' );
     }
     return $html;
+  }
+
+  /**
+   * Removes dom nodes, eg: <script> elements
+   * @param $html
+   * @param $xpathString
+   * @return string
+   */
+  private function removeDomNodes($html, $xpathString){
+    $dom = new DOMDocument;
+
+    // Libxml constants not available on all servers (Libxml < 2.7.8)
+    // $html->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+    $dom->loadHtml( '<div class="form-group">' . $html . '</div>' );
+    # remove <!DOCTYPE
+    $dom->removeChild($dom->doctype);
+    # remove <html><body></body></html>
+    $dom->replaceChild($dom->firstChild->firstChild->firstChild, $dom->firstChild);
+
+    // remove the required node
+    $xpath = new DOMXPath($dom);
+    while ($node = $xpath->query($xpathString)->item(0)) {
+      $node->parentNode->removeChild($node);
+    }
+
+    return $dom->saveHTML();
   }
 
 }

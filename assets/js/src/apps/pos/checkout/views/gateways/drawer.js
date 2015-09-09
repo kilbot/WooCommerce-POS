@@ -1,6 +1,7 @@
 var FormView = require('lib/config/form-view');
 var hbs = require('handlebars');
 var $ = require('jquery');
+var _ = require('lodash');
 var Numpad = require('lib/components/numpad/behavior');
 var Utils = require('lib/utilities/utils');
 var polyglot = require('lib/utilities/polyglot');
@@ -42,15 +43,29 @@ module.exports = FormView.extend({
       return this.posCardRender();
     }
 
+    /**
+     * bind form elements
+     */
     this.$('input, select, textarea').each(function(){
-      var name = $(this).attr('name');
-      var id = $(this).attr('id');
+      var name = $(this).attr('name'),
+        id = $(this).attr('id'),
+        data = $(this).data();
+
       if(name){
-        self.addBinding(null, '*[name="' + name + '"]', name);
+        return self.addBinding(null, '*[name="' + name + '"]', name);
       }
-      if(!name && id){
-        self.addBinding(null, '#' + id, id);
+      if(id){
+        return self.addBinding(null, '#' + id, id);
       }
+      if(_.size(data) === 1){
+        var prop = Object.keys(data)[0];
+        return self.addBinding(
+          null,
+          '*[data-' + prop + '="' + data[prop] + '"]',
+          data[prop]
+        );
+      }
+
     });
   },
 

@@ -80,7 +80,7 @@ class WC_POS_Deactivator {
     // remove pos capabilities
     $this->remove_pos_capability();
 
-    // flush on activation and deactivation
+    // remove pos rewrite rule
     flush_rewrite_rules( false ); // false will not overwrite .htaccess
   }
 

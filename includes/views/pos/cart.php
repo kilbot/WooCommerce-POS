@@ -14,7 +14,7 @@
 	</div>
 	<div class="list"></div>
 	<div class="list-totals"></div>
-	<div class="cart-customer"><?php /* translators: woocommerce */ _e( 'Customer', 'woocommerce' ); ?>: </div>
+	<div class="cart-customer"></div>
 	<div class="list-actions"></div>
 	<div class="cart-notes"></div>
 	<div class="list-footer"></div>
@@ -130,4 +130,9 @@
 		<div class="total">{{{money total}}}</div>
 		<div class="action"></div>
 	</li>
+</script>
+
+<script type="text/x-handlebars-template" id="tmpl-cart-customer">
+  <?php /* translators: woocommerce */ _e( 'Customer', 'woocommerce' ); ?>:
+  <select name="customer_id" id="customer_id" class="select2" data-select="customer"></select>
 </script>

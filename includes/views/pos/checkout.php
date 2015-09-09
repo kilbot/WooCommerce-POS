@@ -16,9 +16,7 @@
 	data-icon="<?php echo $this->sanitize_icon( $gateway ); ?>"
 	data-default="<?php echo $gateway->default; ?>"
 >
-	<div class="form-group">
-		<?php echo $this->sanitize_payment_fields( $gateway ); ?>
-	</div>
+	<?php echo $this->sanitize_payment_fields( $gateway ); ?>
 </script>
 <?php endforeach; endif; ?>
 

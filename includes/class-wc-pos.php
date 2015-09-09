@@ -60,10 +60,7 @@ class WC_POS {
     new WC_POS_Gateways();
     new WC_POS_Products();
 
-    // frontend only
-    if( !is_admin() ){
-      new WC_POS_Template();
-    }
+    new WC_POS_Template();
 
     // admin only
     if (is_admin() && (!defined('DOING_AJAX') || !DOING_AJAX)) {

@@ -1,9 +1,8 @@
 var FormView = require('lib/config/form-view');
 var $ = require('jquery');
 var POS = require('lib/utilities/global');
-var Select2 = require('lib/behaviors/select2');
+var CustomerSelect = require('lib/behaviors/customer-select');
 var Tooltip = require('lib/behaviors/tooltip');
-var CustomerSelect = require('lib/components/customer-select/view');
 
 var View = FormView.extend({
 
@@ -16,17 +15,29 @@ var View = FormView.extend({
   },
 
   behaviors: {
-    Select2: {
-      behaviorClass: Select2,
-      maximumSelectionSize: 4
-    },
     Tooltip: {
       behaviorClass: Tooltip
+    },
+    CustomerSelect: {
+      behaviorClass: CustomerSelect
+    }
+  },
+
+  select2: {
+    'discount_quick_keys': {
+      maximumSelectionLength: 4
     }
   },
 
   modelEvents: {
-    'change:id': 'render'
+    'change:id': 'render',
+    'change:logged_in_user': function(model, toggle){
+      this.ui.customerSelect.prop('disabled', toggle);
+    }
+  },
+
+  ui: {
+    customerSelect: 'select[data-select="customer"]'
   },
 
   onRender: function(){
@@ -40,41 +51,13 @@ var View = FormView.extend({
       }
     });
 
-    this.customerSelect();
-  },
-
-  customerSelect: function(){
-    var view = new CustomerSelect({
-      el    : this.$('*[data-component="customer-select"]'),
-      model : this.model
-    });
-    view.render();
-
-    // update model on customer select
-    this.listenTo(view, 'customer:select', function(customer) {
-      this.model.set({
-        default_customer: customer.id,
-        customer: customer
-      });
-    });
-
     // disable customer select if logged_in_user checked
-    if(this.model.get('logged_in_user')){
-      view.triggerMethod('select:disable', true);
+    if( this.model.get('logged_in_user') ){
+      this.ui.customerSelect.prop('disabled', true);
     }
-
-    this.model.on('change:logged_in_user', function(model, toggle){
-      view.triggerMethod('select:disable', toggle);
-    });
-
-    // clean up
-    // TODO: abstract clean up
-    this.on('destroy', function(){
-      view.destroy();
-    });
   }
 
 });
 
 module.exports = View;
-POS.attach('SettingsApp.General.View');
+POS.attach('SettingsApp.General.View', View);

@@ -11,6 +11,8 @@
 
 class WC_POS_Admin_Permalink {
 
+  const DB_KEY = 'woocommerce_pos_settings_permalink';
+
   /**
    * Constructor
    */
@@ -36,9 +38,9 @@ class WC_POS_Admin_Permalink {
    * Output the POS field
    */
   public function pos_slug_input() {
-    $permalink = get_option( WC_POS_Admin_Settings::DB_PREFIX . 'permalink' );
-    if( ! $permalink ) $permalink = '';
-    echo '<input name="woocommerce_pos_permalink" type="text" class="regular-text code" value="'. esc_attr( $permalink ) .'" placeholder="pos" />';
+    $slug = self::get_slug();
+    if( $slug === 'pos' ) $slug = ''; // use placeholder
+    echo '<input name="woocommerce_pos_permalink" type="text" class="regular-text code" value="'. esc_attr( $slug ) .'" placeholder="pos" />';
   }
 
   /**
@@ -47,10 +49,17 @@ class WC_POS_Admin_Permalink {
   public function save() {
     if( isset( $_POST['woocommerce_pos_permalink'] ) ) {
       $permalink = untrailingslashit( sanitize_text_field( $_POST['woocommerce_pos_permalink'] ) );
-      if( $permalink != '' ) {
-        update_option( WC_POS_Admin_Settings::DB_PREFIX . 'permalink', $permalink );
-      }
+      update_option( self::DB_KEY, $permalink );
     }
+  }
+
+  /**
+   * Return the custom slug, defaults to 'pos'
+   * @return string
+   */
+  static public function get_slug(){
+    $slug = get_option( self::DB_KEY );
+    return empty( $slug ) ? 'pos' : sanitize_text_field( $slug );
   }
 
 }

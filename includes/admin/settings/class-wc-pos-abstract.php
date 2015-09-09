@@ -37,6 +37,7 @@ class WC_POS_Admin_Settings_Abstract {
    */
   public function output(){
     include 'views/' . $this->id . '.php';
+    do_action( 'woocommerce_pos_' . $this->id . '_settings_after_output', $this );
   }
 
   /**
@@ -54,7 +55,9 @@ class WC_POS_Admin_Settings_Abstract {
    */
   public function get($key = false){
     $data = get_option( $this->option_name() );
-    if(!$data){ $data = $this->defaults; }
+    if(!$data){
+      $data = apply_filters( 'woocommerce_pos_' . $this->id . '_settings_defaults', $this->defaults );
+    }
     if($key && is_array($data)) {
       $data = array_key_exists($key, $data) ? $data[$key] : false;
     }
@@ -80,6 +83,15 @@ class WC_POS_Admin_Settings_Abstract {
   public function delete(){
     delete_option( $this->option_name() );
     return $this->get();
+  }
+
+  /**
+   * @return mixed|string|void
+   */
+  public function getJSON(){
+//    return json_encode( $this->get(), JSON_FORCE_OBJECT ); // empty array as object??
+    $data = $this->get();
+    return $data ? json_encode( $data ) : false;
   }
 
 }

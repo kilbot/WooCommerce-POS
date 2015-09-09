@@ -1,4 +1,4 @@
 describe('lib/components', function () {
   require('./components/buttons');
-  require('./components/customer-select');
+  //require('./components/customer-select');
 });

@@ -17,9 +17,7 @@
  * @return string|void
  */
 function wc_pos_url( $page = '' ) {
-  $option = get_option( WC_POS_Admin_Settings::DB_PREFIX . 'permalink', 'pos' );
-  $slug = empty($option) ? 'pos' : $option; // make sure slug not empty
-
+  $slug = WC_POS_Admin_Permalink::get_slug();
   return home_url( $slug . '/' .$page );
 }
 
@@ -89,28 +87,8 @@ function wc_pos_update_option( $name, $value, $autoload = 'no' ) {
  * @return mixed
  */
 function wc_pos_json_encode($data){
-  if ( version_compare( PHP_VERSION, '5.3', '>=' ) ) {
-    $args = array( $data, JSON_FORCE_OBJECT );
-  } else {
-    $args = array( _wc_pos_array_to_object($data) );
-  }
-
+  $args = array( $data, JSON_FORCE_OBJECT );
   return call_user_func_array( 'json_encode', $args );
-}
-
-
-/**
- * Recursively cast array to object
- *
- * @param $data
- * @return object
- */
-function _wc_pos_array_to_object($data) {
-  if (is_array($data)) {
-    return (object) array_map(__FUNCTION__, $data);
-  } else {
-    return $data;
-  }
 }
 
 /**
@@ -143,12 +121,6 @@ function wc_pos_get_option( $id, $key = false ){
   if( !array_key_exists( $id, $handlers ) )
     return false;
 
-  // Singleton class uses late static binding, ie: PHP 5.3+
-  if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
-    $settings = $handlers[$id]::get_instance();
-  } else {
-    $settings = new $handlers[$id]();
-  }
-
+  $settings = $handlers[$id]::get_instance();
   return $settings->get( $key );
 }

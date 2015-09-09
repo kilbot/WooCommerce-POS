@@ -19,6 +19,7 @@ var Actions = View.extend({
     this.listenTo(products.superset(), 'match:barcode', function(model){
       products.once('paginated:change:page', function(){
         self.triggerMethod('clear');
+        self.ui.searchField.blur();
       });
       Radio.request('router', 'add:to:cart', model);
     });

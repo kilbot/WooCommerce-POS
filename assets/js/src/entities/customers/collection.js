@@ -23,5 +23,10 @@ module.exports = Collection.extend({
       this._guest = settings.guest;
       this._default = settings['default'] || settings.guest;
     }
+  },
+
+  getDefaultCustomer: function(){
+    return this._default;
   }
+
 });

@@ -3,8 +3,8 @@ var LayoutView = require('./layout');
 var ItemsView = require('./views/items');
 var TotalsView = require('./views/totals');
 var NotesView = require('./views/notes');
+var CustomerView = require('./views/customer');
 var Buttons = require('lib/components/buttons/view');
-var CustomerSelect = require('lib/components/customer-select/view');
 //var debug = require('debug')('cart');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
@@ -110,29 +110,10 @@ var CartRoute = Route.extend({
     this.layout.getRegion('totals').show(view);
   },
 
-  /**
-   * Customer Select
-   */
   showCustomer: function(){
-    var view = new CustomerSelect({
+    var view = new CustomerView({
       model: this.order
     });
-
-    this.listenTo(view, 'customer:select', function(customer) {
-      this.order.unset('customer');
-      this.order.save({
-        customer_id: customer.id,
-        customer: customer
-      });
-    });
-
-    // bit of a hack
-    // get the "Customer:" translation and add it to the view
-    this.listenTo(this.layout.getRegion('customer'), 'before:show', function(){
-      var label = this.layout.getRegion('customer').$el.html();
-      view.$el.prepend( label );
-    });
-
     this.layout.getRegion('customer').show( view );
   },
 

@@ -35,8 +35,7 @@ var Model = DualModel.extend({
     return {
       note          : '',
       order_discount: 0,
-      customer_id   : default_customer.id,
-      customer      : default_customer
+      customer_id   : default_customer.id
     };
   },
 

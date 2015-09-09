@@ -132,16 +132,10 @@ class WC_POS_Params {
    * @return object $customer
    */
   private function customers() {
-    $settings = wc_pos_get_option( 'general' );
-    $user_id = false;
 
-    if(isset($settings['customer']['id'])){
-      $user_id = $settings['customer']['id'];
-    }
-
-    if(isset($settings['logged_in_user']) && $settings['logged_in_user']){
-      $user_id = get_current_user_id();
-    }
+    $user_id = wc_pos_get_option( 'general', 'logged_in_user' ) ?
+      get_current_user_id() :
+      wc_pos_get_option( 'general', 'default_customer' );
 
     if( $user_id ) {
       $user = get_userdata($user_id);

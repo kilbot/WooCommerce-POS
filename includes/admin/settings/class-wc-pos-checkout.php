@@ -43,6 +43,13 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
       $gateways = WC_Payment_Gateways::instance()->payment_gateways;
     }
 
+    // some poorly written plugins will init WC_Payment_Gateways before WP init
+    // check to see if POS Cash Gateway is present, if not: re-init WC_Payment_Gateways
+    if( ! in_array( 'WC_POS_Gateways_Cash', array_map( 'get_class', $gateways ) ) ){
+      WC_Payment_Gateways::instance()->init();
+      $gateways = WC_Payment_Gateways::instance()->payment_gateways;
+    }
+
     // reorder
     $i = count($gateways);
     foreach( $gateways as $gateway ) {

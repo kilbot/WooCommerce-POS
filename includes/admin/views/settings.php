@@ -14,7 +14,7 @@
 </div>
 <script type="text/javascript">var wc_pos_settings = {};</script>
 
-<?php foreach( $this->settings as $setting ): if($setting->current_user_authorized): ?>
+<?php foreach( $this->settings as $setting ): if( $setting->current_user_authorized ): ?>
 
   <script class="tmpl-wc-pos-settings"
           data-id="<?php echo $setting->id ?>"
@@ -23,9 +23,9 @@
     <?php echo $setting->output(); ?>
   </script>
 
-  <?php $data = $setting->get(); if( isset($data) ): ?>
+  <?php $json = $setting->getJSON(); if( $json ) : ?>
     <script type="text/javascript">
-      wc_pos_settings['<?php echo $setting->id ?>'] = <?php echo wc_pos_json_encode($data); ?>
+      wc_pos_settings['<?php echo $setting->id ?>'] = <?php echo $json; ?>;
     </script>
   <?php endif; ?>
 

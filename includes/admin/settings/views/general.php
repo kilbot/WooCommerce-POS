@@ -35,7 +35,7 @@
       <img title="<?php esc_attr_e( 'The default customer for POS orders, eg: Guest or create a new customer.', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="tooltip">
     </th>
     <td>
-      <div data-component="customer-select"></div>
+      <select name="default_customer" id="default_customer" class="select2" data-select="customer"></select>
       <input type="checkbox" name="logged_in_user" id="logged_in_user">
       <label for="logged_in_user"><?php _ex( 'Use cashier account', 'Default customer setting', 'woocommerce-pos' ) ?></label>
     </td>
