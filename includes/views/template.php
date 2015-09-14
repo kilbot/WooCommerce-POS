@@ -2,48 +2,45 @@
 /**
  * Main POS template
  */
-
-// using global user info
-global $current_user;
-
 ?>
 <html class="no-js">
 <head>
   <title><?php _e('Point of Sale', 'woocommerce-pos') ?> - <?php bloginfo('name') ?></title>
-  <?php include 'meta.php' ?>
-  <?php $this->head(); ?>
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+
+  <!-- For iPad with high-resolution Retina display running iOS ≥ 7: -->
+  <link rel="apple-touch-icon-precomposed" href="<?php echo WC_POS_PLUGIN_URL ?>assets/favicon-152.png">
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="<?php echo WC_POS_PLUGIN_URL ?>assets/favicon-152.png">
+
+  <!-- For iPad with high-resolution Retina display running iOS ≤ 6: -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo WC_POS_PLUGIN_URL ?>assets/favicon-144.png">
+
+  <!-- For iPhone with high-resolution Retina display running iOS ≥ 7: -->
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="<?php echo WC_POS_PLUGIN_URL ?>assets/favicon-120.png">
+
+  <!-- For iPhone with high-resolution Retina display running iOS ≤ 6: -->
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo WC_POS_PLUGIN_URL ?>assets/favicon-114.png">
+
+  <!-- For first- and second-generation iPad: -->
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo WC_POS_PLUGIN_URL ?>assets/favicon-72.png">
+
+  <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+  <link rel="apple-touch-icon-precomposed" href="<?php echo WC_POS_PLUGIN_URL ?>assets/favicon-57.png">
+
+  <!-- IE 10 Metro tile icon -->
+  <meta name="msapplication-TileColor" content="#323A46">
+  <meta name="msapplication-TileImage" content="<?php echo WC_POS_PLUGIN_URL ?>assets/favicon-144.png">
+
+  <?php do_action('woocommerce_pos_head'); ?>
 </head>
 <body>
 
 <div id="page" class="site"></div>
 
-<script type="text/template" id="tmpl-header">
-  <div>
-    <a href="#" id="menu-btn" class="btn-header"><i class="icon-bars"></i> <span><?php /* translators: wordpress */ _e( 'Menu' ); ?></span></a>
-  </div>
-  <h1 class="center-block"><?php $this->title(); ?></h1>
-  <div>
-    <div class="dropdown">
-      <a href="#" id="user-btn" class="btn-header" data-toggle="dropdown">
-        <?php echo get_avatar( $current_user->ID, 26 ); ?>
-        <span><?php echo $current_user->display_name ?></span>
-      </a>
-      <ul class="dropdown-menu dropdown-menu-right" role="menu">
-        <li><a href="<?php echo wp_logout_url( home_url() ); ?>"><?php /* translators: wordpress */ _e( 'Log Out' ); ?></a></li>
-      </ul>
-    </div>
-  </div>
-</script>
-
-<script type="text/template" id="tmpl-menu">
-  <?php $menu = $this->menu(); foreach( $menu as $key => $item ): ?>
-    <li class="<?php echo $key ?>"><a href="<?php echo $item['href'] ?>"><i class="icon-<?php echo $key ?> icon-lg"></i><?php echo $item['label'] ?></a></li>
-  <?php endforeach; ?>
-</script>
-
-<?php $this->js_tmpl(); ?>
-<?php $this->print_tmpl(); ?>
-<?php $this->footer(); ?>
+<?php do_action('woocommerce_pos_footer'); ?>
 
 </body>
 </html>

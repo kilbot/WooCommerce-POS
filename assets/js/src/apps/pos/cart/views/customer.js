@@ -3,7 +3,7 @@ var POS = require('lib/utilities/global');
 var CustomerSelect = require('lib/behaviors/customer-select');
 
 var View = FormView.extend({
-  template: '#tmpl-cart-customer',
+  template: 'pos.tmpl-cart-customer',
 
   behaviors: {
     CustomerSelect: {

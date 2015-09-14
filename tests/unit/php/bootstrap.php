@@ -15,15 +15,14 @@ class Unit_Test_WC_POS {
     require_once $this->wp_tests_dir . '/includes/functions.php';
     
     tests_add_filter( 'muplugins_loaded', array( $this, 'load_wc_pos' ) );
-//    tests_add_filter( 'setup_theme', array( $this, 'install_wc_pos' ) );
 
     require_once $this->wp_tests_dir . '/includes/bootstrap.php';
-    activate_plugin(WP_CONTENT_DIR . '/plugins/woocommerce/woocommerce.php');
+//    activate_plugin(WP_CONTENT_DIR . '/plugins/woocommerce/woocommerce.php');
   }
 
   public function load_wc_pos() {
+    require_once WP_CONTENT_DIR . '/plugins/woocommerce/woocommerce.php';
     require_once dirname( __FILE__ ) . '/../../../woocommerce-pos.php';
-    new WC_POS();
   }
 
   /**

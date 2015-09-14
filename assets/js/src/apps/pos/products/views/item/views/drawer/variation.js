@@ -1,11 +1,10 @@
 var ItemView = require('lib/config/item-view');
 var POS = require('lib/utilities/global');
-var hbs = require('handlebars');
-var $ = require('jquery');
 var Radio = require('backbone.radio');
 
 var Item = ItemView.extend({
-  template: hbs.compile( $('#tmpl-product').html() ),
+  template: 'pos.tmpl-product',
+
   className: 'variation',
 
   ui: {

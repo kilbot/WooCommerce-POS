@@ -1,0 +1,42 @@
+<li class="subtotal">
+  <div><?php /* translators: woocommerce */ _e( 'Cart Subtotal', 'woocommerce' ); ?>:</div>
+  <div class="total">{{{money subtotal}}}</div>
+  <div class="action"></div>
+</li>
+{{#if has_discount}}
+<li class="cart-discount">
+  <div><?php /* translators: woocommerce */ _e( 'Discount', 'woocommerce' ); ?>:</div>
+  <div class="total">{{{money cart_discount negative=true}}}</div>
+  <div class="action"></div>
+</li>
+{{/if}}
+{{#compare total_tax '!==' 0}}
+{{#if itemized}}
+{{#each tax_lines}}
+{{#compare total '!==' 0}}
+<li class="tax">
+  <div>
+    {{#if ../../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
+    {{label}}:
+  </div>
+  <div class="total">{{{money total}}}</div>
+  <div class="action"></div>
+</li>
+{{/compare}}
+{{/each}}
+{{else}}
+<li class="tax">
+  <div>
+    {{#if incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
+    <?php echo esc_html( WC()->countries->tax_or_vat() ); ?>:
+  </div>
+  <div class="total">{{{money total_tax}}}</div>
+  <div class="action"></div>
+</li>
+{{/if}}
+{{/compare}}
+<li class="order-total">
+  <div><?php /* translators: woocommerce */ _e( 'Order Total', 'woocommerce' ); ?>:</div>
+  <div class="total">{{{money total}}}</div>
+  <div class="action"></div>
+</li>

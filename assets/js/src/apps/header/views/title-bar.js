@@ -6,7 +6,7 @@ var Radio = require('backbone.radio');
 var HelpModal = require('./modals/help');
 
 var View = ItemView.extend({
-  template: '#tmpl-header',
+  template: 'tmpl-header',
 
   onRender: function(){
     this.title = this.$('h1').text();

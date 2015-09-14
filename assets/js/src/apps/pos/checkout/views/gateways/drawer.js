@@ -1,5 +1,4 @@
 var FormView = require('lib/config/form-view');
-var hbs = require('handlebars');
 var $ = require('jquery');
 var _ = require('lodash');
 var Numpad = require('lib/components/numpad/behavior');
@@ -9,9 +8,7 @@ var polyglot = require('lib/utilities/polyglot');
 module.exports = FormView.extend({
 
   initialize: function() {
-    this.template = hbs.compile(
-      $('script[data-gateway="' + this.model.id + '"]').html()
-    );
+    this.template = 'pos.gateways.' + this.model.id;
     this.order_total = this.model.collection.order.get('total');
     this.updateStatusMessage();
   },

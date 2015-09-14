@@ -18,6 +18,18 @@ class WC_POS_Template {
   /** @var regex match for rewite_rule  */
   private $regex;
 
+  /** @var WC_POS_Params instance */
+  private $params;
+
+  /** @var array head css */
+  private $head_css = array();
+
+  /** @var array head js */
+  private $head_js = array();
+
+  /** @var array footer js */
+  private $footer_js = array();
+
   /** @var array external libraries */
   static public $external_libs = array(
     'min' => array(
@@ -57,6 +69,9 @@ class WC_POS_Template {
     add_rewrite_rule( $this->regex, 'index.php?pos=1', 'top' );
     add_filter( 'option_rewrite_rules', array( $this, 'rewrite_rules' ), 1 );
     add_action( 'template_redirect', array( $this, 'template_redirect' ), 1 );
+
+    add_action( 'woocommerce_pos_head', array( $this, 'head' ) );
+    add_action( 'woocommerce_pos_footer', array( $this, 'footer' ) );
   }
 
   /**
@@ -94,7 +109,7 @@ class WC_POS_Template {
     do_action( 'woocommerce_pos_template_redirect' );
 
     // now show the page
-    include 'views/template.php';
+    $this->output();
     exit;
 
   }
@@ -123,6 +138,16 @@ class WC_POS_Template {
   }
 
   /**
+   * Output the template
+   */
+  private function output(){
+    // init params
+    $this->params = new WC_POS_Params();
+
+    include 'views/template.php';
+  }
+
+  /**
    * @return array
    */
   static public function get_external_js_libraries(){
@@ -130,61 +155,105 @@ class WC_POS_Template {
   }
 
   /**
-   * @return mixed|void
-   */
-  private function get_scripts() {
-    $build = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? 'build' : 'min';
-
-    return apply_filters(
-      'woocommerce_pos_enqueue_scripts',
-      self::get_external_js_libraries() + array(
-        'app' => WC_POS_PLUGIN_URL . 'assets/js/app.'. $build .'.js?ver=' . WC_POS_VERSION
-      )
-    );
-  }
-
-  /**
    * Output the head scripts
    */
-  protected function head() {
-    $styles = array(
-      'pos-css'       => '<link rel="stylesheet" href="'. WC_POS_PLUGIN_URL .'assets/css/pos.min.css?ver='. WC_POS_VERSION .'" type="text/css" />',
-      'icons-css'     => '<link rel="stylesheet" href="'. WC_POS_PLUGIN_URL .'assets/css/icons.min.css?ver='. WC_POS_VERSION .'" type="text/css" />',
-    );
-    $styles = apply_filters( 'woocommerce_pos_head', $styles );
+  public function head() {
 
-    // tack on debug & modernizr
-    if(defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG){
-      $styles['debug'] = '<script type="text/javascript">var wc_pos_debug = true;</script>';
-    }
-    $styles['modernizr-js'] = '<script src="'. WC_POS_PLUGIN_URL .'assets/js/vendor/modernizr.custom.min.js?ver='. WC_POS_VERSION .'"></script>';
+    // enqueue and print javascript
+    $styles = apply_filters( 'woocommerce_pos_enqueue_head_css', array(
+      'pos-css'   => WC_POS_PLUGIN_URL .'assets/css/pos.min.css?ver='. WC_POS_VERSION,
+      'icons-css' => WC_POS_PLUGIN_URL .'assets/css/icons.min.css?ver='. WC_POS_VERSION
+    ) );
 
     foreach( $styles as $style ) {
-      echo "\n" . $style;
+      echo "\n" . $this->format_css( trim( $style ) );
+    }
+
+    // enqueue and print javascript
+    $js = array(
+      'modernizr-js' => WC_POS_PLUGIN_URL .'assets/js/vendor/modernizr.custom.min.js?ver='. WC_POS_VERSION
+    );
+
+    // tack on debug
+    // todo, move this to params
+    if(defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG){
+      $js['debug'] = 'var wc_pos_debug = true;';
+    }
+
+    $scripts = apply_filters( 'woocommerce_pos_enqueue_head_js', $js );
+    foreach( $scripts as $script ) {
+      echo "\n" . $this->format_js( trim( $script ) );
     }
   }
 
   /**
    * Output the footer scripts
    */
-  protected function footer() {
+  public function footer() {
+    $build = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? 'build' : 'min';
 
-    foreach( $this->get_scripts() as $script ) {
-      echo "\n".'<script src="'. $script . '"></script>';
+    $js = self::get_external_js_libraries();
+    $js['templates'] = $this->get_template_js();
+    $js['app'] = WC_POS_PLUGIN_URL . 'assets/js/app.'. $build .'.js?ver=' . WC_POS_VERSION;
+    $js['params'] = 'POS.options = '. $this->params->toJSON();
+    $js['start'] = 'POS.start();';
+
+    $scripts = apply_filters( 'woocommerce_pos_enqueue_footer_js', $js );
+
+    foreach( $scripts as $script ) {
+      echo "\n" . $this->format_js( trim( $script ) );
     }
+  }
 
-    // inline start app with params
-    $params = new WC_POS_Params();
-    $inline = array(
-      'start' => '<script type="text/javascript">POS.options = '. $params->toJSON() .'; POS.start();</script>'
-    );
+  /**
+   * Makes sure css is in the right format for template
+   * @param $style
+   * @return string
+   */
+  private function format_css( $style ){
+    if( substr( $style, 0, 5 ) === '<link' )
+      return $style;
 
-    $inline_js = apply_filters( 'woocommerce_pos_inline_js', $inline );
+    if( substr( $style, 0, 4 ) === 'http' )
+      return '<link rel="stylesheet" href="' . $style . '" type="text/css" />';
 
-    // output inline js
-    foreach( $inline_js as $js ) {
-      echo "\n".$js;
-    }
+    return '<style>' . $style . '</style>';
+  }
+
+  /**
+   * Makes sure javascript is in the right format for template
+   * @param $script
+   * @return string
+   */
+  private function format_js( $script ){
+    if( substr( $script, 0, 7 ) === '<script' )
+      return $script;
+
+    if( substr( $script, 0, 4 ) === 'http' )
+      return '<script src="' . $script . '"></script>';
+
+    return '<script>' . $script . '</script>';
+  }
+
+  /**
+   * @return string
+   */
+  private function get_template_js(){
+    $path = 'assets/js/templates.js';
+
+    // create templates file
+    // todo: no caching at the moment
+    $this->create_templates_file( WC_POS_PLUGIN_PATH . $path );
+
+    // template url
+    return WC_POS_PLUGIN_URL . $path . '?ver=' . WC_POS_VERSION;
+  }
+
+  /**
+   *
+   */
+  private function get_params_js(){
+
   }
 
   /**
@@ -224,45 +293,6 @@ class WC_POS_Template {
     );
 
     return apply_filters( 'woocommerce_pos_menu', $menu );
-  }
-
-  /**
-   * Output the header title
-   */
-  protected function title() {
-    echo apply_filters( 'woocommerce_pos_title', get_bloginfo( 'name' ) );
-  }
-
-  /**
-   * Include the javascript templates
-   */
-  protected function js_tmpl() {
-    $templates = array(
-      'views/pos.php',
-      'views/support.php',
-      'views/help.php'
-    );
-    $templates = apply_filters( 'woocommerce_pos_js_tmpl', $templates );
-    foreach($templates as $template) {
-      include $template;
-    }
-  }
-
-  protected function print_tmpl(){
-    if( $located = wc_pos_locate_template('print/receipt.php') ){
-      echo '<script type="text/x-handlebars-template" id="tmpl-print-receipt">';
-      include $located;
-      echo '</script>';
-    }
-  }
-
-  /**
-   * Get ordered, enabled gateways from the checkout settings
-   * @return array
-   */
-  protected function gateways(){
-    $settings = WC_POS_Admin_Settings_Checkout::get_instance();
-    return $settings->load_enabled_gateways();
   }
 
   /**
@@ -326,6 +356,115 @@ class WC_POS_Template {
     }
 
     return $dom->saveHTML();
+  }
+
+  /**
+   * Returns an array of all default tmpl-*.php paths
+   * - uses SPL iterators
+   */
+  public function locate_default_template_files(){
+    $iterator = new RecursiveIteratorIterator(
+      new RecursiveDirectoryIterator( self::get_template_dir() ),
+      RecursiveIteratorIterator::SELF_FIRST
+    );
+    $regex = new RegexIterator(
+      $iterator, '/^.+tmpl-[a-z-]+\.php$/i',
+      RecursiveRegexIterator::GET_MATCH
+    );
+    $templates = array_keys( iterator_to_array( $regex ) );
+    $slugs = array_map( function( $template ){
+      return str_replace( array( self::get_template_dir(), '.php' ), '', $template );
+    }, $templates );
+    return array_combine( $slugs, $templates );
+  }
+
+  /**
+   * Returns an array of template paths
+   * @return array
+   */
+  public function locate_template_files(){
+    $files = array();
+    foreach( $this->locate_default_template_files() as $slug => $path ){
+      $files[ $slug ] = self::locate_template_file( $path );
+    };
+    return $files;
+  }
+
+  /**
+   * Locate a single template partial
+   * @param string $default
+   * @return string
+   */
+  static public function locate_template_file( $default = '' ){
+    $custom_path1 = str_replace( self::get_template_dir(), 'woocommerce-pos', $default );
+    $custom_path2 = str_replace( 'tmpl-', '', $custom_path1 );
+    $custom = locate_template( array( $custom_path1, $custom_path2 ) );
+    return $custom ? $custom : $default;
+  }
+
+  /**
+   * Returns the partials directory
+   * @return string
+   */
+  static public function get_template_dir(){
+    return realpath( WC_POS_PLUGIN_PATH . 'includes/views' );
+  }
+
+  /**
+   * Creates a js file of template partials
+   * @param $output_file
+   * @return int
+   */
+  public function create_templates_file( $output_file ){
+    $templates = array();
+
+    foreach( $this->locate_template_files() as $slug => $file ){
+      $keys = explode( substr( $slug, 0, 1 ), substr( $slug, 1 ) );
+      $template = array_reduce( array_reverse( $keys ), function($result, $key){
+        return array( $key => $result );
+      }, $this->template_output( $file ) );
+      $templates = array_merge_recursive( $templates, $template );
+    }
+
+    // gateways
+    $templates = $this->gateways_templates( $templates );
+
+    $templates = apply_filters( 'woocommerce_pos_templates', $templates );
+    return file_put_contents( $output_file, 'Handlebars.Templates = ' . json_encode($templates) );
+  }
+
+  /**
+   * Output template partial as string
+   * @param $file
+   * @return string
+   */
+  public function template_output( $file ){
+    ob_start();
+    include $file;
+    $template = ob_get_clean();
+    // remove newlines and code spacing
+    return preg_replace('/^\s+|\n|\r|\s+$/m', '', $template);
+  }
+
+  /**
+   * @param array $templates
+   * @return array
+   */
+  private function gateways_templates( array $templates ){
+    $settings = WC_POS_Admin_Settings_Checkout::get_instance();
+    $gateways = $settings->load_enabled_gateways();
+
+    if($gateways): foreach( $gateways as $gateway ):
+      $this->params->gateways[] = array(
+        'method_id'    => $gateway->id,
+        'method_title' => esc_html( $gateway->get_title() ),
+        'icon'         => $this->sanitize_icon( $gateway ),
+        'active'       => $gateway->default
+      );
+      $templates['pos']['gateways'][$gateway->id] = $this->sanitize_payment_fields( $gateway );
+    endforeach; endif;
+
+    return $templates;
   }
 
 }

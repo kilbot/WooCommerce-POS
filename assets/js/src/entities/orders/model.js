@@ -133,7 +133,11 @@ var Model = DualModel.extend({
       name : 'gateways'
     });
 
-    this.gateways.fetch();
+    var gateways = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'gateways'
+    });
+    this.gateways.add(gateways);
   },
 
   /**

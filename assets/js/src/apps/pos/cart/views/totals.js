@@ -1,11 +1,9 @@
 var ItemView = require('lib/config/form-view');
-var $ = require('jquery');
-var hbs = require('handlebars');
 var Radio = require('backbone.radio');
 
 module.exports = ItemView.extend({
   tagName: 'ul',
-  template: hbs.compile( $('#tmpl-cart-totals').html() ),
+  template: 'pos.tmpl-cart-totals',
 
   initialize: function() {
     this.tax = Radio.request('entities', 'get', {

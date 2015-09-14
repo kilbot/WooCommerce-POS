@@ -4,12 +4,10 @@ var bb = require('backbone');
 var Radio = bb.Radio;
 var AutoGrow = require('lib/behaviors/autogrow');
 var Numpad = require('lib/components/numpad/behavior');
-var hbs = require('handlebars');
-var $ = require('jquery');
 var _ = require('lodash');
 
 module.exports = FormView.extend({
-  template: hbs.compile( $('#tmpl-cart-item').html() ),
+  template: 'pos.tmpl-cart-item',
 
   initialize: function() {
     this.tax = Radio.request('entities', 'get', {

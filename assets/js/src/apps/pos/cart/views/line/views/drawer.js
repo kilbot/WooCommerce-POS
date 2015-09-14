@@ -2,16 +2,14 @@ var FormView = require('lib/config/form-view');
 var Utils = require('lib/utilities/utils');
 var AutoGrow = require('lib/behaviors/autogrow');
 var Numpad = require('lib/components/numpad/behavior');
-var hbs = require('handlebars');
 var $ = require('jquery');
 var _ = require('lodash');
 var bb = require('backbone');
 var Radio = bb.Radio;
 
 module.exports = FormView.extend({
-  initialize: function() {
-    this.template = hbs.compile( $('#tmpl-cart-item-drawer').html() );
-  },
+
+  template: 'pos.tmpl-cart-item-drawer',
 
   behaviors: {
     AutoGrow: {

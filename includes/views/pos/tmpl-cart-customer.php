@@ -1,0 +1,1 @@
+<?php /* translators: woocommerce */ _e( 'Customer', 'woocommerce' ); ?>: <select name="customer_id" id="customer_id" class="select2" data-select="customer"></select>

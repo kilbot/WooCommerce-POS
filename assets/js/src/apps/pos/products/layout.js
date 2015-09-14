@@ -21,7 +21,7 @@ var Layout = LayoutView.extend({
   },
 
   attributes: {
-    'class'         : 'module products-module'
+    'class'   : 'module products-module'
   }
 
 });

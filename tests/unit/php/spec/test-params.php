@@ -51,7 +51,7 @@ class ParamsTest extends WP_UnitTestCase {
     $json = $this->params->toJSON();
     $this->assertJson( $json );
     $data = json_decode( $json );
-    print_r($data);
+//    print_r($data);
 
     // WP_Mock doesn't work?? :(
 //    $this->assertEquals( 'baz', $data->foo );

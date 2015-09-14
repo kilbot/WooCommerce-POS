@@ -4,7 +4,7 @@ var _ = require('lodash');
 var POS = require('lib/utilities/global');
 
 var View = ItemView.extend({
-  template: '#tmpl-menu',
+  template: 'tmpl-menu',
   tagName: 'ul',
 
   initialize: function(){

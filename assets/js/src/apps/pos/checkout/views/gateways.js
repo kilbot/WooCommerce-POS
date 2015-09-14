@@ -6,7 +6,7 @@ var POS = require('lib/utilities/global');
 var EmptyView = ItemView.extend({
   tagName: 'li',
   className: 'empty',
-  template: '#tmpl-checkout-gateways-empty'
+  template: 'pos.tmpl-checkout-empty'
 });
 
 var View = CollectionView.extend({

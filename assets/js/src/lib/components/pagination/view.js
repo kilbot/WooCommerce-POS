@@ -1,11 +1,9 @@
 var ItemView = require('lib/config/item-view');
 var POS = require('lib/utilities/global');
-var $ = require('jquery');
 var _ = require('lodash');
-var hbs = require('handlebars');
 
 var View = ItemView.extend({
-  template: hbs.compile($('#tmpl-pagination').html()),
+  template: 'tmpl-pagination',
 
   //ui: {
   //  prev    : '.prev',

@@ -1,13 +1,11 @@
 var ItemView = require('lib/config/item-view');
 var Tooltip = require('lib/behaviors/tooltip');
-var Tmpl = require('./hotkeys.hbs');
-var hbs = require('handlebars');
 var Radio = require('backbone.radio');
 var POS = require('lib/utilities/global');
 var polyglot = require('lib/utilities/polyglot');
 
 var View = ItemView.extend({
-  template: hbs.compile(Tmpl),
+  template: 'modals.tmpl-hotkeys',
 
   initialize: function () {
     this.hotkeys = Radio.request('entities', 'get', {
