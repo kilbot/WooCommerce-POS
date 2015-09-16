@@ -22,8 +22,7 @@ class TemplateTest extends WP_UnitTestCase {
       mkdir($test_dir);
     file_put_contents( $test_file, '' );
 
-    $files = $this->
-    template->locate_default_template_files();
+    $files = $this->template->locate_default_template_files();
     $this->assertContains( $test_file, $files );
 
     // delete test template

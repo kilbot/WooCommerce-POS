@@ -22,11 +22,11 @@
 <div class="col-1"><?php /* translators: woocommerce */ _e( 'Add&nbsp;meta', 'woocommerce' ); ?>:</div>
 <div class="col-2">
   {{#each meta}}
-		<span data-key="{{key}}">
-			<input name="meta.label" value="{{label}}" type="text">
-			<textarea name="meta.value">{{value}}</textarea>
-			<a href="#" class="action-remove-meta"><i class="icon-times"></i></a>
-		</span>
+    <span data-key="{{key}}">
+      <input name="meta.label" value="{{label}}" type="text">
+      <textarea name="meta.value">{{value}}</textarea>
+      <a href="#" class="action-remove-meta"><i class="icon-times"></i></a>
+    </span>
   {{/each}}
   <a href="#" class="action-add-meta"><i class="icon-plus"></i></a>
 </div>

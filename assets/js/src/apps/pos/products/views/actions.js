@@ -5,7 +5,7 @@ var HotKeys = require('lib/behaviors/hotkeys');
 var Radio = require('backbone.radio');
 
 var Actions = View.extend({
-  template: 'pos.tmpl-products-filter',
+  template: 'pos.products.tmpl-filter',
 
   initialize: function(){
     var products = this.collection;

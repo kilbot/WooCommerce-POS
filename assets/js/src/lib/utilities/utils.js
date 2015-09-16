@@ -1,5 +1,5 @@
 var accounting = require('accounting');
-var POS = require('lib/utilities/global');
+//var POS = require('lib/utilities/global');
 var _ = require('lodash');
 var Utils = {};
 
@@ -165,4 +165,5 @@ Utils.toType = function(obj) {
   return ({}).toString.call(obj).match(/\s([a-z|A-Z]+)/)[1].toLowerCase();
 };
 
-module.exports = POS.Utils = Utils;
+module.exports = Utils;
+//module.exports = POS.Utils = Utils;

@@ -23,7 +23,7 @@ var Layout = LayoutView.extend({
   },
 
   attributes: {
-    'class'         : 'module checkout-module'
+    'class' : 'module checkout-module'
   }
 
 });

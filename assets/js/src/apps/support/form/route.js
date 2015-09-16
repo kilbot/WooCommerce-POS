@@ -6,6 +6,7 @@ var $ = require('jquery');
 var Radio = require('backbone.radio');
 var Buttons = require('lib/components/buttons/view');
 var _ = require('lodash');
+var polyglot = require('lib/utilities/polyglot');
 
 var FormRoute = Route.extend({
 
@@ -13,7 +14,7 @@ var FormRoute = Route.extend({
     this.container = options.container;
     this.setTabLabel({
       tab   : 'left',
-      label : $('#tmpl-support-form').data('title')
+      label : polyglot.t('titles.support-form')
     });
   },
 

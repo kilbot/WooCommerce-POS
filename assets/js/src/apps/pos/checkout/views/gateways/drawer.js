@@ -8,7 +8,7 @@ var polyglot = require('lib/utilities/polyglot');
 module.exports = FormView.extend({
 
   initialize: function() {
-    this.template = 'pos.gateways.' + this.model.id;
+    this.template = 'pos.checkout.gateways.' + this.model.id;
     this.order_total = this.model.collection.order.get('total');
     this.updateStatusMessage();
   },

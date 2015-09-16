@@ -1,7 +1,7 @@
 var LayoutView = require('lib/config/layout-view');
 
 module.exports = LayoutView.extend({
-  template: 'pos.tmpl-receipt',
+  template: 'pos.receipt.tmpl-list',
 
   tagName: 'section',
 

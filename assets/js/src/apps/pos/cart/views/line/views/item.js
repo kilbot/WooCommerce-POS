@@ -7,7 +7,7 @@ var Numpad = require('lib/components/numpad/behavior');
 var _ = require('lodash');
 
 module.exports = FormView.extend({
-  template: 'pos.tmpl-cart-item',
+  template: 'pos.cart.tmpl-item',
 
   initialize: function() {
     this.tax = Radio.request('entities', 'get', {

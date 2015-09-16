@@ -3,7 +3,7 @@ var Radio = require('backbone.radio');
 
 module.exports = ItemView.extend({
   tagName: 'ul',
-  template: 'pos.tmpl-cart-totals',
+  template: 'pos.cart.tmpl-totals',
 
   initialize: function() {
     this.tax = Radio.request('entities', 'get', {

@@ -3,7 +3,7 @@ var POS = require('lib/utilities/global');
 
 var View = ReceiptView.extend({
   tagName: 'ul',
-  template: 'pos.tmpl-receipt-items'
+  template: 'pos.receipt.tmpl-items'
 });
 
 module.exports = View;

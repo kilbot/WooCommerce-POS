@@ -259,7 +259,7 @@ class WC_POS_Template {
   /**
    * Output the side menu
    */
-  protected function menu() {
+  static protected function menu() {
     $menu = array(
       'pos' => array(
         'label'  => __( 'POS', 'woocommerce-pos' ),
@@ -329,7 +329,7 @@ class WC_POS_Template {
       // remove script tags
       $html = $this->removeDomNodes( $html, '//script' );
     }
-    return $html;
+    return self::trim_html_string( $html );;
   }
 
   /**
@@ -359,32 +359,44 @@ class WC_POS_Template {
   }
 
   /**
-   * Returns an array of all default tmpl-*.php paths
+   * Returns an assoc array of all default tmpl-*.php paths
    * - uses SPL iterators
+   * @param $partials_dir
+   * @return array
    */
-  public function locate_default_template_files(){
+  static public function locate_default_template_files( $partials_dir = '' ){
+    if( empty( $partials_dir ) )
+      $partials_dir = self::get_template_dir();
+
     $iterator = new RecursiveIteratorIterator(
-      new RecursiveDirectoryIterator( self::get_template_dir() ),
+      new RecursiveDirectoryIterator( $partials_dir ),
       RecursiveIteratorIterator::SELF_FIRST
     );
+
     $regex = new RegexIterator(
       $iterator, '/^.+tmpl-[a-z-]+\.php$/i',
       RecursiveRegexIterator::GET_MATCH
     );
-    $templates = array_keys( iterator_to_array( $regex ) );
-    $slugs = array_map( function( $template ){
-      return str_replace( array( self::get_template_dir(), '.php' ), '', $template );
-    }, $templates );
-    return array_combine( $slugs, $templates );
+
+    $paths = array_keys( iterator_to_array( $regex ) );
+    $templates = array();
+
+    foreach( $paths as $path ){
+      $slug = str_replace( array( $partials_dir, '.php' ), '', $path );
+      $templates[ $slug ] = $path;
+    };
+
+    return $templates;
   }
 
   /**
    * Returns an array of template paths
+   * @param $partials_dir
    * @return array
    */
-  public function locate_template_files(){
+  static public function locate_template_files( $partials_dir = '' ){
     $files = array();
-    foreach( $this->locate_default_template_files() as $slug => $path ){
+    foreach( self::locate_default_template_files( $partials_dir ) as $slug => $path ){
       $files[ $slug ] = self::locate_template_file( $path );
     };
     return $files;
@@ -392,14 +404,14 @@ class WC_POS_Template {
 
   /**
    * Locate a single template partial
-   * @param string $default
+   * @param string $default_path
    * @return string
    */
-  static public function locate_template_file( $default = '' ){
-    $custom_path1 = str_replace( self::get_template_dir(), 'woocommerce-pos', $default );
+  static public function locate_template_file( $default_path = '' ){
+    $custom_path1 = str_replace( self::get_template_dir(), 'woocommerce-pos', $default_path );
     $custom_path2 = str_replace( 'tmpl-', '', $custom_path1 );
     $custom = locate_template( array( $custom_path1, $custom_path2 ) );
-    return $custom ? $custom : $default;
+    return $custom ? $custom : $default_path;
   }
 
   /**
@@ -416,21 +428,28 @@ class WC_POS_Template {
    * @return int
    */
   public function create_templates_file( $output_file ){
+    $templates = self::create_templates_array();
+    $templates['pos']['checkout']['gateways'] = $this->gateways_templates();
+    $templates = apply_filters( 'woocommerce_pos_templates', $templates );
+    return file_put_contents( $output_file, 'Handlebars.Templates = ' . json_encode($templates) );
+  }
+
+  /**
+   * @param $partials_dir
+   * @return array
+   */
+  static public function create_templates_array( $partials_dir = '' ){
     $templates = array();
 
-    foreach( $this->locate_template_files() as $slug => $file ){
+    foreach( self::locate_template_files( $partials_dir ) as $slug => $file ){
       $keys = explode( substr( $slug, 0, 1 ), substr( $slug, 1 ) );
       $template = array_reduce( array_reverse( $keys ), function($result, $key){
         return array( $key => $result );
-      }, $this->template_output( $file ) );
+      }, self::template_output( $file ) );
       $templates = array_merge_recursive( $templates, $template );
     }
 
-    // gateways
-    $templates = $this->gateways_templates( $templates );
-
-    $templates = apply_filters( 'woocommerce_pos_templates', $templates );
-    return file_put_contents( $output_file, 'Handlebars.Templates = ' . json_encode($templates) );
+    return $templates;
   }
 
   /**
@@ -438,21 +457,29 @@ class WC_POS_Template {
    * @param $file
    * @return string
    */
-  public function template_output( $file ){
+  static public function template_output( $file ){
     ob_start();
     include $file;
     $template = ob_get_clean();
-    // remove newlines and code spacing
-    return preg_replace('/^\s+|\n|\r|\s+$/m', '', $template);
+    return self::trim_html_string( $template );
   }
 
   /**
-   * @param array $templates
+   * Remove newlines and code spacing
+   * @param $str
+   * @return mixed
+   */
+  static private function trim_html_string( $str ){
+    return preg_replace('/^\s+|\n|\r|\s+$/m', '', $str);
+  }
+
+  /**
    * @return array
    */
-  private function gateways_templates( array $templates ){
+  private function gateways_templates(){
     $settings = WC_POS_Admin_Settings_Checkout::get_instance();
     $gateways = $settings->load_enabled_gateways();
+    $templates = array();
 
     if($gateways): foreach( $gateways as $gateway ):
       $this->params->gateways[] = array(
@@ -461,7 +488,7 @@ class WC_POS_Template {
         'icon'         => $this->sanitize_icon( $gateway ),
         'active'       => $gateway->default
       );
-      $templates['pos']['gateways'][$gateway->id] = $this->sanitize_payment_fields( $gateway );
+      $templates[$gateway->id] = $this->sanitize_payment_fields( $gateway );
     endforeach; endif;
 
     return $templates;

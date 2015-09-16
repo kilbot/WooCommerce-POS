@@ -1,11 +1,12 @@
 var LayoutView = require('lib/config/layout-view');
 var POS = require('lib/utilities/global');
-var $ = require('jquery');
+var polyglot = require('lib/utilities/polyglot');
 
 var Layout = LayoutView.extend({
   template: function(){
+    var title = polyglot.t('titles.support-form');
     return '' +
-      '<div class="list-header"><div><h4></h4></div></div>' +
+      '<div class="list-header"><div><h4>' + title + '</h4></div></div>' +
       '<div class="list"></div>' +
       '<div class="list-actions"></div>' +
       '<div class="list-footer"></div>';
@@ -22,11 +23,6 @@ var Layout = LayoutView.extend({
 
   attributes: {
     'class'  : 'module support-module'
-  },
-
-  onRender: function(){
-    var title = $('#tmpl-support-form').data('title');
-    this.$('.list-header h4').text(title);
   }
 
 });
