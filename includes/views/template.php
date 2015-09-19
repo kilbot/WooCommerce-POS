@@ -42,5 +42,7 @@
 
 <?php do_action('woocommerce_pos_footer'); ?>
 
+<script>POS.getPayload().then(POS.start.bind(POS));</script>
+
 </body>
 </html>

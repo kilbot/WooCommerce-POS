@@ -19,25 +19,16 @@ class WC_POS_Template {
   private $regex;
 
   /** @var WC_POS_Params instance */
-  private $params;
-
-  /** @var array head css */
-  private $head_css = array();
-
-  /** @var array head js */
-  private $head_js = array();
-
-  /** @var array footer js */
-  private $footer_js = array();
+  public $params;
 
   /** @var array external libraries */
   static public $external_libs = array(
     'min' => array(
       'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js',
       'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js',
-      'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.2/backbone-min.js',
-      'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.1/backbone.radio.min.js',
-      'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.2/backbone.marionette.min.js',
+      'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js',
+      'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.2/backbone.radio.min.js',
+      'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.3/backbone.marionette.min.js',
       'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.1/handlebars.min.js',
       'select2'      => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js',
       'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js',
@@ -47,9 +38,9 @@ class WC_POS_Template {
     'debug' => array(
       'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js',
       'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js',
-      'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.2/backbone.js',
-      'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.1/backbone.radio.js',
-      'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.2/backbone.marionette.js',
+      'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone.js',
+      'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.2/backbone.radio.js',
+      'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.3/backbone.marionette.js',
       'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.1/handlebars.js',
       'select2'      => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.js',
       'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js',
@@ -69,9 +60,6 @@ class WC_POS_Template {
     add_rewrite_rule( $this->regex, 'index.php?pos=1', 'top' );
     add_filter( 'option_rewrite_rules', array( $this, 'rewrite_rules' ), 1 );
     add_action( 'template_redirect', array( $this, 'template_redirect' ), 1 );
-
-    add_action( 'woocommerce_pos_head', array( $this, 'head' ) );
-    add_action( 'woocommerce_pos_footer', array( $this, 'footer' ) );
   }
 
   /**
@@ -108,8 +96,12 @@ class WC_POS_Template {
     // last chance before template is rendered
     do_action( 'woocommerce_pos_template_redirect' );
 
+    // add head & footer actions
+    add_action( 'woocommerce_pos_head', array( $this, 'head' ) );
+    add_action( 'woocommerce_pos_footer', array( $this, 'footer' ) );
+
     // now show the page
-    $this->output();
+    include 'views/template.php';
     exit;
 
   }
@@ -138,16 +130,6 @@ class WC_POS_Template {
   }
 
   /**
-   * Output the template
-   */
-  private function output(){
-    // init params
-    $this->params = new WC_POS_Params();
-
-    include 'views/template.php';
-  }
-
-  /**
    * @return array
    */
   static public function get_external_js_libraries(){
@@ -166,23 +148,18 @@ class WC_POS_Template {
     ) );
 
     foreach( $styles as $style ) {
-      echo "\n" . $this->format_css( trim( $style ) );
+      echo $this->format_css( trim( $style ) ) . "\n";
     }
 
     // enqueue and print javascript
     $js = array(
-      'modernizr-js' => WC_POS_PLUGIN_URL .'assets/js/vendor/modernizr.custom.min.js?ver='. WC_POS_VERSION
+      'modernizr' => WC_POS_PLUGIN_URL .'assets/js/vendor/modernizr.custom.min.js?ver='. WC_POS_VERSION,
+      'globals' => 'var ajaxurl=\'' . admin_url( 'admin-ajax.php', 'relative' ) . '\', nonce=\'' . wp_create_nonce( WC_POS_PLUGIN_NAME ) . '\';'
     );
-
-    // tack on debug
-    // todo, move this to params
-    if(defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG){
-      $js['debug'] = 'var wc_pos_debug = true;';
-    }
 
     $scripts = apply_filters( 'woocommerce_pos_enqueue_head_js', $js );
     foreach( $scripts as $script ) {
-      echo "\n" . $this->format_js( trim( $script ) );
+      echo $this->format_js( trim( $script ) ) . "\n";
     }
   }
 
@@ -193,15 +170,11 @@ class WC_POS_Template {
     $build = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? 'build' : 'min';
 
     $js = self::get_external_js_libraries();
-    $js['templates'] = $this->get_template_js();
     $js['app'] = WC_POS_PLUGIN_URL . 'assets/js/app.'. $build .'.js?ver=' . WC_POS_VERSION;
-    $js['params'] = 'POS.options = '. $this->params->toJSON();
-    $js['start'] = 'POS.start();';
-
     $scripts = apply_filters( 'woocommerce_pos_enqueue_footer_js', $js );
 
     foreach( $scripts as $script ) {
-      echo "\n" . $this->format_js( trim( $script ) );
+      echo $this->format_js( trim( $script ) ) . "\n";
     }
   }
 
@@ -233,66 +206,6 @@ class WC_POS_Template {
       return '<script src="' . $script . '"></script>';
 
     return '<script>' . $script . '</script>';
-  }
-
-  /**
-   * @return string
-   */
-  private function get_template_js(){
-    $path = 'assets/js/templates.js';
-
-    // create templates file
-    // todo: no caching at the moment
-    $this->create_templates_file( WC_POS_PLUGIN_PATH . $path );
-
-    // template url
-    return WC_POS_PLUGIN_URL . $path . '?ver=' . WC_POS_VERSION;
-  }
-
-  /**
-   *
-   */
-  private function get_params_js(){
-
-  }
-
-  /**
-   * Output the side menu
-   */
-  static protected function menu() {
-    $menu = array(
-      'pos' => array(
-        'label'  => __( 'POS', 'woocommerce-pos' ),
-        'href'   => '#'
-      ),
-      'products' => array(
-        /* translators: woocommerce */
-        'label'  => __( 'Products', 'woocommerce' ),
-        'href'   => admin_url('edit.php?post_type=product')
-      ),
-      'orders' => array(
-        /* translators: woocommerce */
-        'label'  => __( 'Orders', 'woocommerce' ),
-        'href'   => admin_url('edit.php?post_type=shop_order')
-      ),
-      'customers' => array(
-        /* translators: woocommerce */
-        'label'  => __( 'Customers', 'woocommerce' ),
-        'href'   => admin_url('users.php')
-      ),
-      'coupons' => array(
-        /* translators: woocommerce */
-        'label' => __( 'Coupons', 'woocommerce' ),
-        'href'   => admin_url('edit.php?post_type=shop_coupon')
-      ),
-      'support' => array(
-        /* translators: woocommerce */
-        'label'  => __( 'Support', 'woocommerce' ),
-        'href'   => '#support'
-      )
-    );
-
-    return apply_filters( 'woocommerce_pos_menu', $menu );
   }
 
   /**
@@ -423,18 +336,6 @@ class WC_POS_Template {
   }
 
   /**
-   * Creates a js file of template partials
-   * @param $output_file
-   * @return int
-   */
-  public function create_templates_file( $output_file ){
-    $templates = self::create_templates_array();
-    $templates['pos']['checkout']['gateways'] = $this->gateways_templates();
-    $templates = apply_filters( 'woocommerce_pos_templates', $templates );
-    return file_put_contents( $output_file, 'Handlebars.Templates = ' . json_encode($templates) );
-  }
-
-  /**
    * @param $partials_dir
    * @return array
    */
@@ -493,5 +394,40 @@ class WC_POS_Template {
 
     return $templates;
   }
+
+  /**
+   * @return mixed|void
+   */
+  public function payload(){
+    $templates = self::create_templates_array();
+    $templates['pos']['checkout']['gateways'] = $this->gateways_templates();
+    return apply_filters( 'woocommerce_pos_templates', $templates );
+  }
+
+  /**
+   * @return string
+   */
+//  private function get_template_js(){
+//    $path = 'assets/js/templates.js';
+//
+//    // create templates file
+//    // todo: no caching at the moment
+//    $this->create_templates_file( WC_POS_PLUGIN_PATH . $path );
+//
+//    // template url
+//    return WC_POS_PLUGIN_URL . $path . '?ver=' . WC_POS_VERSION;
+//  }
+
+  /**
+   * Creates a js file of template partials
+   * @param $output_file
+   * @return int
+   */
+//  public function create_templates_file( $output_file ){
+//    $templates = self::create_templates_array();
+//    $templates['pos']['checkout']['gateways'] = $this->gateways_templates();
+//    $templates = apply_filters( 'woocommerce_pos_templates', $templates );
+//    return file_put_contents( $output_file, 'Handlebars.Templates = ' . json_encode($templates) );
+//  }
 
 }

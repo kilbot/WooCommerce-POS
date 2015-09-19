@@ -290,10 +290,12 @@ class WC_POS_i18n {
   }
 
   /**
+   * i18n payload to init POS app
    * @return mixed
    */
-  static public function translations(){
-    return array(
+  static public function payload(){
+
+    return apply_filters( 'woocommerce_pos_i18n', array(
       'titles'    => array(
         'browser'   => _x( 'Browser', 'system status: browser capabilities', 'woocommerce-pos' ),
         'cart'      => /* translators: woocommerce */ __( 'Cart', 'woocommerce' ),
@@ -352,7 +354,7 @@ class WC_POS_i18n {
       'plural'    => array(
         'records'   => _x( 'record |||| records', 'eg: 23 records', 'woocommerce-pos' ),
       )
-    );
+    ));
 
   }
 

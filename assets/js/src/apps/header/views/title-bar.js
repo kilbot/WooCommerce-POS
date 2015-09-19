@@ -8,8 +8,18 @@ var HelpModal = require('./modals/help');
 var View = ItemView.extend({
   template: 'tmpl-header',
 
-  onRender: function(){
-    this.title = this.$('h1').text();
+  initialize: function(){
+    var store = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'store'
+    });
+    this.storeName = store.name;
+  },
+
+  templateHelpers: function(){
+    return {
+      name: this.storeName
+    };
   },
 
   ui: {
@@ -34,7 +44,7 @@ var View = ItemView.extend({
   },
 
   update: function(str){
-    var title = str ? str : this.title;
+    var title = str ? str : this.storeName;
     this.$('h1').text(title);
   },
 

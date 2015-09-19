@@ -5,7 +5,7 @@
 <div>
   <a href="#" id="menu-btn" class="btn-header"><i class="icon-bars"></i> <span><?php /* translators: wordpress */ _e( 'Menu' ); ?></span></a>
 </div>
-<h1 class="center-block"></h1>
+<h1 class="center-block">{{name}}</h1>
 <div>
   <div class="dropdown">
     <a href="#" id="user-btn" class="btn-header" data-toggle="dropdown">

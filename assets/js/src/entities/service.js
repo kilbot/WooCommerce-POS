@@ -7,15 +7,12 @@ var Coupons = require('./coupons/collection');
 var Settings = require('./settings/model');
 var SettingsCollection = require('./settings/collection');
 var Gateways = require('./gateways/collection');
-//var Variations = require('./variations/collection');
 var FilteredCollection = require('lib/config/obscura');
 var debug = require('debug')('entities');
 var POS = require('lib/utilities/global');
-//var $ = require('jquery');
 var _ = require('lodash');
 var storage = global.localStorage || window.localStorage;
 var JSON = global.JSON || window.JSON;
-//var Radio = require('backbone.radio');
 
 var EntitiesService = Service.extend({
   channelName: 'entities',
@@ -34,7 +31,6 @@ var EntitiesService = Service.extend({
     customers : Customers,
     coupons   : Coupons,
     gateways  : Gateways,
-    //variations: Variations,
     settings  : SettingsCollection
   },
 
@@ -42,7 +38,6 @@ var EntitiesService = Service.extend({
     collection  : 'getCollection',
     model       : 'getModel',
     filtered    : 'getFiltered',
-    //variations  : 'getVariations',
     option      : 'getOption',
     settings    : 'getSettings',
     localStorage: 'getLocalStorage'
@@ -186,16 +181,6 @@ var EntitiesService = Service.extend({
       storage.removeItem('wc_pos_' + options.name);
     }
   },
-
-  //getVariations: function(options){
-  //  var parent_id = options.parent.get('id');
-  //  if( !this._variations || !this._variations[parent_id] ){
-  //    var vars = new Variations(options.parent.get('variations'), options);
-  //    this._variations = this._variations || {};
-  //    this._variations[parent_id] = new FilteredCollection(vars, options);
-  //  }
-  //  return this._variations[parent_id];
-  //},
 
   idbCollections: function(){
     return _.reduce( this.getAllCollections(), function(result, col, key){

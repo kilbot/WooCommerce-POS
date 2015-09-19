@@ -2,13 +2,23 @@ var ItemView = require('lib/config/item-view');
 var $ = require('jquery');
 var _ = require('lodash');
 var POS = require('lib/utilities/global');
+var Radio = require('backbone.radio');
+var hbs = require('handlebars');
+var Tmpl = require('./menu.hbs');
 
 var View = ItemView.extend({
-  template: 'tmpl-menu',
   tagName: 'ul',
+  template: hbs.compile( Tmpl ),
 
   initialize: function(){
     _.bindAll(this, 'open', 'close');
+  },
+
+  templateHelpers: function(){
+    return Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'menu'
+    });
   },
 
   ui: {
@@ -16,11 +26,7 @@ var View = ItemView.extend({
   },
 
   events: {
-    'click @ui.menuItem': 'goTo'
-  },
-
-  goTo: function(){
-    this.close();
+    'click @ui.menuItem': 'close'
   },
 
   open: function(){

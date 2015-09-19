@@ -190,7 +190,7 @@ class WC_POS_Admin_Settings {
    */
   public function admin_inline_js() {
     $params = new WC_POS_Params();
-    echo '<script type="text/javascript">POS.options = '. $params->toJSON() .'; POS.start();</script>';
+    echo '<script type="text/javascript">POS.options = '. json_encode( $params->payload() ) .'; POS.start();</script>';
   }
 
 }

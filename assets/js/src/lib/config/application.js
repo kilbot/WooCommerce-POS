@@ -14,19 +14,26 @@ module.exports = POS.Application = Mn.Application.extend({
     Radio.channel(this.channelName);
   },
 
-  Utils: Utils
+  Utils: Utils,
+
+  getPayload: function(){
+    return $.getJSON(
+      window.ajaxurl, {
+        action: 'wc_pos_payload',
+        security: window.nonce
+      }
+    );
+  }
 
 });
 
 /**
  * Custom Template Access
  **/
-Mn.TemplateCache.prototype.loadTemplate = function(templateId, options){
-  options = options || {};
+Mn.TemplateCache.prototype.loadTemplate = function(templateId){
   return _.get( hbs.Templates, templateId.split('.'), $(templateId).html() );
 };
 
-Mn.TemplateCache.prototype.compileTemplate = function(rawTemplate, options) {
-  options = options || {};
+Mn.TemplateCache.prototype.compileTemplate = function(rawTemplate) {
   return hbs.compile(rawTemplate);
 };

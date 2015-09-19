@@ -21,6 +21,7 @@ class WC_POS_AJAX {
   public function __construct(WC_POS_i18n $i18n) {
 
     $ajax_events = array(
+      'payload'               => $this,
       'get_all_ids'           => 'WC_POS_API',
       'get_modal'             => $this,
       'get_print_template'    => $this,
@@ -31,7 +32,7 @@ class WC_POS_AJAX {
       'update_translations'   => $i18n,
       'test_http_methods'     => $this,
       'system_status'         => $this,
-      'toggle_legacy_server'  => 'WC_POS_Status'
+      'toggle_legacy_server'  => 'WC_POS_Status',
     );
 
     foreach ( $ajax_events as $ajax_event => $class ) {
@@ -40,6 +41,20 @@ class WC_POS_AJAX {
       // trigger method
       add_action( 'wp_ajax_wc_pos_' . $ajax_event, array( $class, $ajax_event ) );
     }
+
+  }
+
+  public function payload(){
+    $templates = new WC_POS_Template();
+    $params = new WC_POS_Params();
+    $templates->params = $params;
+    $payload = array(
+      'templates' => $templates->payload(),
+      'params' => $params->payload(),
+      'i18n' => WC_POS_i18n::payload()
+    );
+
+    WC_POS_Server::response( $payload );
   }
 
   public function get_modal() {
