@@ -2,7 +2,7 @@ var Behavior = require('lib/config/behavior');
 var Radio = require('backbone.radio');
 var _ = require('lodash');
 var debug = require('debug')('hotkey');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Combokeys = require('combokeys');
 
 var HotKeys = Behavior.extend({
@@ -52,4 +52,4 @@ var HotKeys = Behavior.extend({
 });
 
 module.exports = HotKeys;
-POS.attach('Behaviors.HotKeys', HotKeys);
+App.prototype.set('Behaviors.HotKeys', HotKeys);

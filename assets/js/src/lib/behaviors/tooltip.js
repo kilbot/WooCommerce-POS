@@ -1,5 +1,5 @@
 var Behavior = require('lib/config/behavior');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 require('bootstrap-sass/assets/javascripts/bootstrap/tooltip');
 
 var Tooltip = Behavior.extend({
@@ -19,4 +19,4 @@ var Tooltip = Behavior.extend({
 });
 
 module.exports = Tooltip;
-POS.attach('Behaviors.Tooltip', Tooltip);
+App.prototype.set('Behaviors.Tooltip', Tooltip);

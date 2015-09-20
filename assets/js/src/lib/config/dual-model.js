@@ -1,9 +1,9 @@
 var DeepModel = require('./deep-model');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 var _ = require('lodash');
 var debug = require('debug')('dualModel');
 
-module.exports = POS.DualModel = DeepModel.extend({
+module.exports = app.prototype.DualModel = DeepModel.extend({
   idAttribute: 'local_id',
   remoteIdAttribute: 'id',
   fields: ['title'],

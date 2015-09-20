@@ -1,6 +1,6 @@
 var Behavior = require('lib/config/behavior');
 var _ = require('lodash');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Combokeys = require('combokeys');
 var Radio = require('backbone.radio');
 
@@ -112,4 +112,4 @@ var Filter = Behavior.extend({
 });
 
 module.exports = Filter;
-POS.attach('Behaviors.Filter', Filter);
+App.prototype.set('Behaviors.Filter', Filter);

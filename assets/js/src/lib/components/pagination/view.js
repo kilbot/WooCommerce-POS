@@ -1,5 +1,5 @@
 var ItemView = require('lib/config/item-view');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var _ = require('lodash');
 
 var View = ItemView.extend({
@@ -62,4 +62,4 @@ var View = ItemView.extend({
 });
 
 module.exports = View;
-POS.attach('Components.Pagination.View', View);
+App.prototype.set('Components.Pagination.View', View);

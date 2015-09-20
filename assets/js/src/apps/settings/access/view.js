@@ -1,5 +1,5 @@
 var FormView = require('lib/config/form-view');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var $ = require('jquery');
 
 var View = FormView.extend({
@@ -56,4 +56,4 @@ var View = FormView.extend({
 });
 
 module.exports = View;
-POS.attach('SettingsApp.Access.View');
+App.prototype.set('SettingsApp.Access.View');

@@ -9,7 +9,7 @@ var SettingsCollection = require('./settings/collection');
 var Gateways = require('./gateways/collection');
 var FilteredCollection = require('lib/config/obscura');
 var debug = require('debug')('entities');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var _ = require('lodash');
 var storage = global.localStorage || window.localStorage;
 var JSON = global.JSON || window.JSON;
@@ -184,7 +184,7 @@ var EntitiesService = Service.extend({
 
   idbCollections: function(){
     return _.reduce( this.getAllCollections(), function(result, col, key){
-      if( col instanceof POS.IndexedDBCollection ){
+      if( col instanceof App.IndexedDBCollection ){
         result[key] = col;
       }
       return result;
@@ -194,4 +194,4 @@ var EntitiesService = Service.extend({
 });
 
 module.exports = EntitiesService;
-POS.attach('Entities.Service', EntitiesService);
+App.prototype.set('Entities.Service', EntitiesService);

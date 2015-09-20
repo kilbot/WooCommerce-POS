@@ -1,5 +1,5 @@
 var Route = require('lib/config/route');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var View = require('./view');
 var GatewaySettingsModal = require('./modals/gateway-settings');
 var Radio = require('backbone.radio');
@@ -67,4 +67,4 @@ var SettingsRoute = Route.extend({
 });
 
 module.exports = SettingsRoute;
-POS.attach('SettingsApp.Route', SettingsRoute);
+App.prototype.set('SettingsApp.Route', SettingsRoute);

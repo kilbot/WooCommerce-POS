@@ -1,5 +1,3 @@
-require('lib/utilities/underscore-mixins');
-var POS = require('lib/utilities/global');
 var Application = require('apps/admin/application');
 
 /**
@@ -41,4 +39,4 @@ app.buttonsService = new ButtonsService();
 /**
  * Attach app to window for third party plugins
  */
-module.exports = window.POS = POS.create(app);
+module.exports = app;

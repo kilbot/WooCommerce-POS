@@ -1,7 +1,7 @@
 var ItemView = require('lib/config/item-view');
 var CollectionView = require('lib/config/collection-view');
 var Gateway = require('./gateways/layout');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 
 var EmptyView = ItemView.extend({
   tagName: 'li',
@@ -16,4 +16,4 @@ var View = CollectionView.extend({
 });
 
 module.exports = View;
-POS.attach('POSApp.Checkout.Views.Gateways', View);
+App.prototype.set('POSApp.Checkout.Views.Gateways', View);

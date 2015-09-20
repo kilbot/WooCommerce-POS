@@ -26,14 +26,17 @@ module.exports = Application.extend({
   /**
    * Set up application with start params
    */
-  onBeforeStart: function(){
+  onBeforeStart: function(options){
     debug( 'starting WooCommerce POS admin app' );
 
-    // emulateHTTP
-    bb.emulateHTTP = this.options.emulateHTTP === true;
-
     // i18n
-    polyglot.extend(this.options.i18n);
+    polyglot.extend(options.i18n);
+
+    // params
+    this.options = options.params;
+
+    // emulateHTTP
+    bb.emulateHTTP = options.emulateHTTP === true;
 
     // bootstrap accounting settings
     accounting.settings = this.options.accounting;

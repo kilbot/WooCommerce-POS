@@ -1,5 +1,5 @@
 var Route = require('lib/config/route');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Layout = require('./layout');
 var Status = require('./views/status');
 var $ = require('jquery');
@@ -113,4 +113,4 @@ var StatusRoute = Route.extend({
 });
 
 module.exports = StatusRoute;
-POS.attach('SupportApp.Status.Route', StatusRoute);
+App.prototype.set('SupportApp.Status.Route', StatusRoute);

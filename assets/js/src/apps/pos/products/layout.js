@@ -1,6 +1,6 @@
 var hbs = require('handlebars');
 var LayoutView = require('lib/config/layout-view');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 
 var Layout = LayoutView.extend({
 
@@ -27,4 +27,4 @@ var Layout = LayoutView.extend({
 });
 
 module.exports = Layout;
-POS.attach('POSApp.Products.Layout', Layout);
+App.prototype.set('POSApp.Products.Layout', Layout);

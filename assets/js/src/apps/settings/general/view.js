@@ -1,6 +1,6 @@
 var FormView = require('lib/config/form-view');
 var $ = require('jquery');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var CustomerSelect = require('lib/behaviors/customer-select');
 var Tooltip = require('lib/behaviors/tooltip');
 
@@ -60,4 +60,4 @@ var View = FormView.extend({
 });
 
 module.exports = View;
-POS.attach('SettingsApp.General.View', View);
+App.prototype.set('SettingsApp.General.View', View);

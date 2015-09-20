@@ -1,5 +1,5 @@
 var FormView = require('lib/config/form-view');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var CustomerSelect = require('lib/behaviors/customer-select');
 
 var View = FormView.extend({
@@ -18,4 +18,4 @@ var View = FormView.extend({
 });
 
 module.exports = View;
-POS.attach('POSApp.Cart.Views.Customer', View);
+App.prototype.set('POSApp.Cart.Views.Customer', View);

@@ -1,9 +1,8 @@
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Router = require('lib/config/router');
 var LayoutView = require('./layout');
 var ReceiptRoute = require('./receipt/route');
 var Radio = require('backbone.radio');
-//var bb = require('backbone');
 
 var PrintRouter = Router.extend({
   routes: {
@@ -47,4 +46,4 @@ var PrintRouter = Router.extend({
 });
 
 module.exports = PrintRouter;
-POS.attach('Print.Router', PrintRouter);
+App.prototype.set('Print.Router', PrintRouter);

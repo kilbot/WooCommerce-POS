@@ -45,14 +45,25 @@ class WC_POS_AJAX {
   }
 
   public function payload(){
-    $templates = new WC_POS_Template();
-    $params = new WC_POS_Params();
-    $templates->params = $params;
-    $payload = array(
-      'templates' => $templates->payload(),
-      'params' => $params->payload(),
-      'i18n' => WC_POS_i18n::payload()
-    );
+
+    // frontend
+    if( is_pos() ){
+      $templates = new WC_POS_Template();
+      $payload = array(
+        'templates' => $templates->payload(),
+        'params' => $templates->params->payload(),
+        'i18n' => WC_POS_i18n::payload()
+      );
+    }
+
+    // admin
+    else {
+      $params = new WC_POS_Params();
+      $payload = array(
+        'params' => $params->payload(),
+        'i18n' => WC_POS_i18n::payload()
+      );
+    }
 
     WC_POS_Server::response( $payload );
   }

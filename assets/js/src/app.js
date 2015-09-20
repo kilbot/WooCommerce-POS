@@ -1,4 +1,3 @@
-var POS = require('lib/utilities/global');
 var Application = require('apps/app/application');
 
 // sync config
@@ -70,4 +69,4 @@ app.numpadService = new NumpadService();
 /**
  * Attach app to window for third party plugins
  */
-module.exports = window.POS = POS.create(app);
+module.exports = app;

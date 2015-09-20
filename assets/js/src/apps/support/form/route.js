@@ -1,5 +1,5 @@
 var Route = require('lib/config/route');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Layout = require('./layout');
 var Form = require('./views/form');
 var $ = require('jquery');
@@ -92,4 +92,4 @@ var FormRoute = Route.extend({
 });
 
 module.exports = FormRoute;
-POS.attach('SupportApp.Form.Route', FormRoute);
+App.prototype.set('SupportApp.Form.Route', FormRoute);

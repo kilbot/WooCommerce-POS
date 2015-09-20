@@ -154,7 +154,6 @@ class WC_POS_Template {
     // enqueue and print javascript
     $js = array(
       'modernizr' => WC_POS_PLUGIN_URL .'assets/js/vendor/modernizr.custom.min.js?ver='. WC_POS_VERSION,
-      'globals' => 'var ajaxurl=\'' . admin_url( 'admin-ajax.php', 'relative' ) . '\', nonce=\'' . wp_create_nonce( WC_POS_PLUGIN_NAME ) . '\';'
     );
 
     $scripts = apply_filters( 'woocommerce_pos_enqueue_head_js', $js );
@@ -399,6 +398,7 @@ class WC_POS_Template {
    * @return mixed|void
    */
   public function payload(){
+    $this->params = new WC_POS_Params();
     $templates = self::create_templates_array();
     $templates['pos']['checkout']['gateways'] = $this->gateways_templates();
     return apply_filters( 'woocommerce_pos_templates', $templates );

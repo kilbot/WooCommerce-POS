@@ -1,5 +1,5 @@
 var Behavior = require('lib/config/behavior');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var $ = require('jquery');
 var Radio = require('backbone.radio');
 
@@ -41,4 +41,4 @@ var EmulateHTTP = Behavior.extend({
 });
 
 module.exports = EmulateHTTP;
-POS.attach('Behaviors.EmulateHTTP', EmulateHTTP);
+App.prototype.set('Behaviors.EmulateHTTP', EmulateHTTP);

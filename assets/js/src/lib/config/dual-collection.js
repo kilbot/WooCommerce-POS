@@ -7,12 +7,12 @@ var Backbone = require('backbone');
 var Radio = Backbone.Radio;
 var debug = require('debug')('dualCollection');
 var IDBCollection = require('./idb-collection');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 var _ = require('lodash');
 var $ = require('jquery');
 var moment = require('moment');
 
-module.exports = POS.DualCollection = IDBCollection.extend({
+module.exports = app.prototype.DualCollection = IDBCollection.extend({
   keyPath: 'local_id',
   mergeKeyPath: 'id',
   _syncDelayed: true,

@@ -1,4 +1,4 @@
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Router = require('lib/config/router');
 var LayoutView = require('./layout-view');
 var General = require('./general/route');
@@ -182,4 +182,4 @@ var SettingsRouter = Router.extend({
 });
 
 module.exports = SettingsRouter;
-POS.attach('SettingsApp.Router', SettingsRouter);
+App.prototype.set('SettingsApp.Router', SettingsRouter);

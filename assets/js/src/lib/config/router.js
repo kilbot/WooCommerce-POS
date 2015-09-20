@@ -3,9 +3,9 @@ var Mn = require('backbone.marionette');
 var $ = require('jquery');
 var _ = require('lodash');
 var Route = require('./route');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 
-module.exports = POS.Router = Mn.AppRouter.extend({
+module.exports = app.prototype.Router = Mn.AppRouter.extend({
   constructor: function() {
     this.channel = bb.Radio.channel('router');
     this.on('all', this._onRouterEvent);

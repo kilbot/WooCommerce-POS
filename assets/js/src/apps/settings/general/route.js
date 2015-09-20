@@ -1,5 +1,5 @@
 var Route = require('lib/config/route');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var View = require('./view');
 
 var General = Route.extend({
@@ -26,4 +26,4 @@ var General = Route.extend({
 });
 
 module.exports = General;
-POS.attach('SettingsApp.General.Route', General);
+App.prototype.set('SettingsApp.General.Route', General);

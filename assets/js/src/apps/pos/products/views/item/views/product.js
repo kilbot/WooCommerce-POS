@@ -1,5 +1,5 @@
 var ItemView = require('lib/config/item-view');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var $ = require('jquery');
 var _ = require('lodash');
 var Tooltip = require('lib/behaviors/tooltip');
@@ -90,4 +90,4 @@ var Item = ItemView.extend({
 });
 
 module.exports = Item;
-POS.attach('POSApp.Products.Item', Item);
+App.prototype.set('POSApp.Products.Item', Item);

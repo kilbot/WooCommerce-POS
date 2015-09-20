@@ -1,7 +1,7 @@
 var Mn = require('backbone.marionette');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 
-module.exports = POS.LayoutView = Mn.LayoutView.extend({
+module.exports = app.prototype.LayoutView = Mn.LayoutView.extend({
 
   working: function( action ) {
     if (action === 'start') {

@@ -1,6 +1,6 @@
 var ItemView = require('lib/config/item-view');
 var Radio = require('backbone.radio');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var $ = require('jquery');
 var polyglot = require('lib/utilities/polyglot');
 
@@ -42,4 +42,4 @@ var View = ItemView.extend({
 });
 
 module.exports = View;
-POS.attach('HeaderApp.Views.BrowserModal', View);
+App.prototype.set('HeaderApp.Views.BrowserModal', View);

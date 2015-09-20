@@ -1,5 +1,5 @@
 var LayoutView = require('lib/config/layout-view');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var polyglot = require('lib/utilities/polyglot');
 
 var Layout = LayoutView.extend({
@@ -26,4 +26,4 @@ var Layout = LayoutView.extend({
 });
 
 module.exports = Layout;
-POS.attach('SupportApp.Views.Layout', Layout);
+App.prototype.set('SupportApp.Views.Layout', Layout);

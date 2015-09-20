@@ -1,4 +1,4 @@
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var LayoutView = require('lib/config/layout-view');
 var Product = require('./views/product');
 var Variations = require('./views/drawer/variations');
@@ -74,4 +74,4 @@ var Layout = LayoutView.extend({
 });
 
 module.exports = Layout;
-POS.attach('POSApp.Products.Item.Layout', Layout);
+App.prototype.set('POSApp.Products.Item.Layout', Layout);

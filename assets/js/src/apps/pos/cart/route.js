@@ -7,7 +7,7 @@ var CustomerView = require('./views/customer');
 var Buttons = require('lib/components/buttons/view');
 //var debug = require('debug')('cart');
 var _ = require('lodash');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Utils = require('lib/utilities/utils');
 var polyglot = require('lib/utilities/polyglot');
 
@@ -187,4 +187,4 @@ var CartRoute = Route.extend({
 });
 
 module.exports = CartRoute;
-POS.attach('POSApp.Cart.Route', CartRoute);
+App.prototype.set('POSApp.Cart.Route', CartRoute);

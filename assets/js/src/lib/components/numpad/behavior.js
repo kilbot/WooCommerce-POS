@@ -1,5 +1,5 @@
 var Behavior = require('lib/config/behavior');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Modernizr = global['Modernizr'];
 var Radio = require('backbone.radio');
 var $ = require('jquery');
@@ -81,4 +81,4 @@ var NumpadBehavior = Behavior.extend({
 });
 
 module.exports = NumpadBehavior;
-POS.attach('Behaviors.Numpad', NumpadBehavior);
+App.prototype.set('Behaviors.Numpad', NumpadBehavior);

@@ -1,5 +1,5 @@
 var ReceiptView = require('lib/config/receipt-view');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 
 var View = ReceiptView.extend({
   tagName: 'ul',
@@ -7,4 +7,4 @@ var View = ReceiptView.extend({
 });
 
 module.exports = View;
-POS.attach('POSApp.Receipt.Views.Totals', View);
+App.prototype.set('POSApp.Receipt.Views.Totals', View);

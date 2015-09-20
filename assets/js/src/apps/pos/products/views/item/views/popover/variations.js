@@ -1,6 +1,6 @@
 var ItemView = require('lib/config/item-view');
 var Tmpl = require('./variations.hbs');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var hbs = require('handlebars');
 var _ = require('lodash');
 var $ = require('jquery');
@@ -82,4 +82,4 @@ var Variations = ItemView.extend({
 });
 
 module.exports = Variations;
-POS.attach('POSApp.Products.Variations', Variations);
+App.prototype.set('POSApp.Products.Variations', Variations);

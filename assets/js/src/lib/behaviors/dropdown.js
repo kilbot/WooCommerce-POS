@@ -1,5 +1,5 @@
 var Behavior = require('lib/config/behavior');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 require('bootstrap-sass/assets/javascripts/bootstrap/dropdown');
 
 var Dropdown = Behavior.extend({
@@ -11,4 +11,4 @@ var Dropdown = Behavior.extend({
 });
 
 module.exports = Dropdown;
-POS.attach('Behaviors.Dropdown', Dropdown);
+App.prototype.set('Behaviors.Dropdown', Dropdown);

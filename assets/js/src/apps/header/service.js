@@ -1,7 +1,7 @@
 var Service = require('lib/config/service');
 var TitleBar = require('./views/title-bar');
 var Menu = require('./views/menu');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Radio = require('backbone.radio');
 var routerChannel = Radio.channel('router');
 var BrowserModal = require('./views/modals/browser');
@@ -67,4 +67,4 @@ var Service = Service.extend({
 });
 
 module.exports = Service;
-POS.attach('HeaderApp.Service', Service);
+App.prototype.set('HeaderApp.Service', Service);

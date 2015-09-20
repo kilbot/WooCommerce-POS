@@ -1,6 +1,6 @@
 var FormView = require('lib/config/form-view');
 var $ = require('jquery');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Tooltip = require('lib/behaviors/tooltip');
 var Sortable = require('lib/behaviors/sortable');
 
@@ -54,4 +54,4 @@ var View = FormView.extend({
 });
 
 module.exports = View;
-POS.attach('SettingsApp.View');
+App.prototype.set('SettingsApp.View');

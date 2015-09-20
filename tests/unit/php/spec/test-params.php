@@ -31,13 +31,13 @@ class ParamsTest extends WP_UnitTestCase {
   /**
    * toJSON converts public class properties to JSON
    */
-  function test_params_to_json() {
-    $this->params->foo = 'bar';
-    $json = $this->params->toJSON();
-    $this->assertJson( $json );
-    $data = json_decode( $json );
-    $this->assertEquals( 'bar', $data->foo );
-  }
+//  function test_params_to_json() {
+//    $this->params->foo = 'bar';
+//    $json = $this->params->toJSON();
+//    $this->assertJson( $json );
+//    $data = json_decode( $json );
+//    $this->assertEquals( 'bar', $data->foo );
+//  }
 
   /**
    *

@@ -1,7 +1,7 @@
 var Route = require('lib/config/route');
 var Radio = require('backbone.radio');
 //var debug = require('debug')('receipt');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var LayoutView = require('./layout');
 var StatusView = require('./views/status');
 var ItemsView = require('./views/items');
@@ -182,4 +182,4 @@ var ReceiptRoute = Route.extend({
 });
 
 module.exports = ReceiptRoute;
-POS.attach('POSApp.Receipt.Route', ReceiptRoute);
+App.prototype.set('POSApp.Receipt.Route', ReceiptRoute);

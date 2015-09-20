@@ -1,8 +1,7 @@
 var bb = require('backbone');
-var POS = require('lib/utilities/global');
-//var Radio = require('backbone.radio');
+var app = require('./application');
 
-module.exports = POS.Collection = bb.Collection.extend({
+module.exports = app.prototype.Collection = bb.Collection.extend({
   constructor: function() {
     bb.Collection.apply(this, arguments);
     this._isNew = true;

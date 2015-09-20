@@ -1,4 +1,4 @@
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Router = require('lib/config/router');
 var LayoutView = require('./layout');
 var Products = require('./products/route');
@@ -123,4 +123,4 @@ var POSRouter = Router.extend({
 });
 
 module.exports = POSRouter;
-POS.attach('POSApp.Router', POSRouter);
+App.prototype.set('POSApp.Router', POSRouter);

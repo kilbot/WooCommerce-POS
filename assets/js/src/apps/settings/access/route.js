@@ -1,5 +1,5 @@
 var Route = require('lib/config/route');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var View = require('./view');
 
 var Access = Route.extend({
@@ -26,4 +26,4 @@ var Access = Route.extend({
 });
 
 module.exports = Access;
-POS.attach('SettingsApp.Access.Route', Access);
+App.prototype.set('SettingsApp.Access.Route', Access);

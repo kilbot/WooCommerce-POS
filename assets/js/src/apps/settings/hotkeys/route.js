@@ -1,5 +1,5 @@
 var Route = require('lib/config/route');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var View = require('./view');
 
 var HotKeys = Route.extend({
@@ -20,4 +20,4 @@ var HotKeys = Route.extend({
 });
 
 module.exports = HotKeys;
-POS.attach('SettingsApp.HotKeys.Route', HotKeys);
+App.prototype.set('SettingsApp.HotKeys.Route', HotKeys);

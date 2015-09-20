@@ -4,14 +4,14 @@
 
 var Collection = require('./collection');
 //var debug = require('debug')('idbCollection');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 var IndexedDB = require('./idb/src/idb');
 var Radio = require('backbone.radio');
 
-module.exports = POS.IndexedDBCollection = Collection.extend({
+module.exports = app.prototype.IndexedDBCollection = Collection.extend({
   name          : 'store',
   storePrefix   : 'wc_pos_',
-  dbVersion     : POS.VERSION,
+  dbVersion     : 4005,
   keyPath       : 'local_id',
   autoIncrement : true,
   indexes       : [

@@ -1,7 +1,7 @@
 var Behavior = require('lib/config/behavior');
 var $ = require('jquery');
 var _ = require('lodash');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 
 var AutoGrow = Behavior.extend({
 
@@ -57,4 +57,4 @@ var AutoGrow = Behavior.extend({
 });
 
 module.exports = AutoGrow;
-POS.attach('Behaviors.AutoGrow', AutoGrow);
+App.prototype.set('Behaviors.AutoGrow', AutoGrow);

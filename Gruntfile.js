@@ -198,7 +198,8 @@ module.exports = function(grunt) {
         output: {
           path: './<%= app.js.build %>/',
           filename: '[name].build.js',
-          pathinfo: true
+          pathinfo: true,
+          library: 'POS'
         },
         devtool: 'eval-source-map',
         debug: true
@@ -206,7 +207,8 @@ module.exports = function(grunt) {
       deploy: {
         output: {
           path: './<%= app.js.build %>/',
-          filename: '[name].build.js'
+          filename: '[name].build.js',
+          library: 'POS'
         }
       }
     },

@@ -1,8 +1,8 @@
 var bb = require('backbone');
 var Mn = require('backbone.marionette');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 
-module.exports = POS.Module = Mn.Module.extend({
+module.exports = app.prototype.Module = Mn.Module.extend({
   constructor: function() {
     this.listenTo(bb.history, 'route', this._onHistoryRoute);
     Mn.Module.apply(this, arguments);

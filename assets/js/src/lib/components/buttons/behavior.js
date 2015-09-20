@@ -1,5 +1,5 @@
 var Behavior = require('lib/config/behavior');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var $ = require('jquery');
 var polyglot = require('lib/utilities/polyglot');
 var d = 'disabled';
@@ -138,4 +138,4 @@ var Buttons = Behavior.extend({
 });
 
 module.exports = Buttons;
-POS.attach('Behaviors.Buttons', Buttons);
+App.prototype.set('Behaviors.Buttons', Buttons);

@@ -2,12 +2,12 @@
  * Prepare order JSON for display on receipts
  */
 var ItemView = require('./item-view');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 var Radio = require('backbone.radio');
 var _ = require('lodash');
 
 /* jshint  -W101, -W071, -W074 */
-module.exports = POS.ReceiptView = ItemView.extend({
+module.exports = app.prototype.ReceiptView = ItemView.extend({
 
   viewOptions: ['data'],
 

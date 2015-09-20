@@ -1,12 +1,13 @@
 var Mn = require('backbone.marionette');
-var POS = require('lib/utilities/global');
 var Radio = require('backbone.radio');
 var _ = require('lodash');
 var $ = require('jquery');
 var hbs = require('handlebars');
 var Utils = require('lib/utilities/utils');
+var polyglot = require('lib/utilities/polyglot');
+var debugFunction = require('debug');
 
-module.exports = POS.Application = Mn.Application.extend({
+module.exports = Mn.Application.extend({
 
   _initChannel: function () {
     this.channelName = _.result(this, 'channelName') || 'global';
@@ -14,17 +15,40 @@ module.exports = POS.Application = Mn.Application.extend({
     Radio.channel(this.channelName);
   },
 
-  Utils: Utils,
+  _initDebug: function( debug ){
+    if( debug ){
+      debugFunction.enable('*');
+    }
+    Radio.DEBUG = debug;
+    console.info(
+      'Debugging is ' +
+      ( debug ? 'on' : 'off' )  +
+      ', visit http://woopos.com.au/docs/debugging'
+    );
+  },
 
-  getPayload: function(){
-    return $.getJSON(
-      window.ajaxurl, {
+  start: function( options ){
+    var self = this;
+    $.getJSON(
+      options.ajaxurl, {
         action: 'wc_pos_payload',
-        security: window.nonce
+        security: options.nonce
+      }, function( payload ){
+        var debug = _.get( payload, ['params', 'debug'], false );
+        self._initDebug( debug );
+        Mn.Application.prototype.start.call(self, payload);
       }
     );
-  }
+  },
 
+  set: function( path, value ){
+    _.set( this, path, value );
+  },
+
+  // extend app for third party plugins
+  debug: debugFunction,
+  polyglot: polyglot,
+  Utils: Utils
 });
 
 /**

@@ -1,4 +1,4 @@
 var Mn = require('backbone.marionette');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 
-module.exports = POS.Behavior = Mn.Behavior;
+module.exports = app.prototype.Behavior = Mn.Behavior;

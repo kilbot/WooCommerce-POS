@@ -1,7 +1,7 @@
 var ItemView = require('lib/config/item-view');
 var $ = require('jquery');
 var _ = require('lodash');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Radio = require('backbone.radio');
 var hbs = require('handlebars');
 var Tmpl = require('./menu.hbs');
@@ -54,4 +54,4 @@ var View = ItemView.extend({
 });
 
 module.exports = View;
-POS.attach('HeaderApp.Views.Menu', View);
+App.prototype.set('HeaderApp.Views.Menu', View);

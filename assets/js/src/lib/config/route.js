@@ -2,12 +2,12 @@ var bb = require('backbone');
 var Mn = require('backbone.marionette');
 var $ = require('jquery');
 var _ = require('lodash');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 var LoadingService = require('lib/components/loading/service');
 var Radio = require('backbone.radio');
 var globalChannel = Radio.channel('global');
 
-module.exports = POS.Route = Mn.Object.extend({
+module.exports = app.prototype.Route = Mn.Object.extend({
   constructor: function() {
     this.initialize.apply(this, arguments);
   },

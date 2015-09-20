@@ -1,5 +1,4 @@
 var accounting = require('accounting');
-//var POS = require('lib/utilities/global');
 var _ = require('lodash');
 var Utils = {};
 
@@ -166,4 +165,3 @@ Utils.toType = function(obj) {
 };
 
 module.exports = Utils;
-//module.exports = POS.Utils = Utils;

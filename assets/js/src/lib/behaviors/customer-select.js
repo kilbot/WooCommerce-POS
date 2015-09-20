@@ -1,5 +1,5 @@
 var Behavior = require('lib/config/behavior');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Radio = require('backbone.radio');
 var hbs = require('handlebars');
 var $ = require('jquery');
@@ -120,4 +120,4 @@ var CustomerSelect = Behavior.extend({
 });
 
 module.exports = CustomerSelect;
-POS.attach('Behaviors.CustomerSelect', CustomerSelect);
+App.prototype.set('Behaviors.CustomerSelect', CustomerSelect);

@@ -1,7 +1,7 @@
 var ItemView = require('lib/config/item-view');
 var Tooltip = require('lib/behaviors/tooltip');
 var Radio = require('backbone.radio');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var polyglot = require('lib/utilities/polyglot');
 
 var View = ItemView.extend({
@@ -36,4 +36,4 @@ var View = ItemView.extend({
 });
 
 module.exports = View;
-POS.attach('HeaderApp.Views.HelpModal', View);
+App.prototype.set('HeaderApp.Views.HelpModal', View);

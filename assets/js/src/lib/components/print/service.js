@@ -4,7 +4,7 @@ var $ = require('jquery');
 var _ = require('lodash');
 var debug = require('debug')('print');
 var Radio = require('backbone.radio');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 
 module.exports = Service.extend({
   channelName: 'print',
@@ -115,7 +115,7 @@ module.exports = Service.extend({
         type: 'option',
         name: 'tax'
       }) || {};
-    var data = POS.ReceiptView.prototype.prepare(options.model.toJSON(), tax);
+    var data = App.ReceiptView.prototype.prepare(options.model.toJSON(), tax);
     return template( data );
   }
   /* jshint +W074 */

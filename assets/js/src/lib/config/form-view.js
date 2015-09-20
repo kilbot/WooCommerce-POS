@@ -1,11 +1,11 @@
 var ItemView = require('./item-view');
 var bb = require('backbone');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 require('backbone.stickit');
 require('backbone-validation');
 require('lib/utilities/stickit-handlers');
 
-module.exports = POS.FormView = ItemView.extend({
+module.exports = app.prototype.FormView = ItemView.extend({
 
   constructor: function() {
     return ItemView.prototype.constructor.apply(this, arguments);

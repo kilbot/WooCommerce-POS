@@ -1,7 +1,7 @@
 var ItemView = require('lib/config/item-view');
 var CollectionView = require('lib/config/collection-view');
 var LineItem = require('./line/layout');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 
 var Empty = ItemView.extend({
   tagName: 'li',
@@ -25,4 +25,4 @@ var View = CollectionView.extend({
 });
 
 module.exports = View;
-POS.attach('POSApp.Cart.Views.Items', View);
+App.prototype.set('POSApp.Cart.Views.Items', View);

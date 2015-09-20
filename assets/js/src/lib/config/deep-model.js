@@ -1,5 +1,5 @@
-var POS = require('lib/utilities/global');
+var app = require('./application');
 var Model = require('./model');
 var DeepModel = require('./deep-model/src/index');
 
-module.exports = POS.DeepModel = Model.extend(DeepModel);
+module.exports = app.prototype.DeepModel = Model.extend(DeepModel);

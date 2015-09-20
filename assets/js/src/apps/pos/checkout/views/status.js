@@ -1,5 +1,5 @@
 var ItemView = require('lib/config/item-view');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var hbs = require('handlebars');
 //var $ = require('jquery');
 var polyglot = require('lib/utilities/polyglot');
@@ -43,4 +43,4 @@ var View = ItemView.extend({
 });
 
 module.exports = View;
-POS.attach('POSApp.Checkout.Views.Status', View);
+App.prototype.set('POSApp.Checkout.Views.Status', View);

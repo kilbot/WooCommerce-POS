@@ -1,5 +1,5 @@
 var ItemView = require('lib/config/item-view');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var EmulateHTTP = require('lib/behaviors/emulateHTTP');
 var $ = require('jquery');
 var hbs = require('handlebars');
@@ -25,4 +25,4 @@ var View = ItemView.extend({
 });
 
 module.exports = View;
-POS.attach('SettingsApp.Status.View');
+App.prototype.set('SettingsApp.Status.View');

@@ -1,5 +1,5 @@
 var bb = require('backbone');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 var _ = require('lodash');
 //var Radio = require('backbone.radio');
 
@@ -13,7 +13,7 @@ var parse = {
   }
 };
 
-module.exports = POS.Model = bb.Model.extend({
+module.exports = app.prototype.Model = bb.Model.extend({
 
   constructor: function() {
     bb.Model.apply(this, arguments);

@@ -1,5 +1,5 @@
 var Route = require('lib/config/route');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var View = require('./view');
 var TranslationModal = require('./modal/translation-update');
 var Radio = require('backbone.radio');
@@ -33,4 +33,4 @@ var Tools = Route.extend({
 });
 
 module.exports = Tools;
-POS.attach('SettingsApp.Tools.Route', Tools);
+App.prototype.set('SettingsApp.Tools.Route', Tools);

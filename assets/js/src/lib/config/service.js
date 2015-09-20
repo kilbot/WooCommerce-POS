@@ -1,9 +1,9 @@
 var Mn = require('backbone.marionette');
 var Radio = require('backbone.radio');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 var _ = require('lodash');
 
-module.exports = POS.Service = Mn.Object.extend({
+module.exports = app.prototype.Service = Mn.Object.extend({
   constructor: function(options) {
     options = options || {};
 

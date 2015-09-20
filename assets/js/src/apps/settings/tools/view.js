@@ -1,5 +1,5 @@
 var ItemView = require('lib/config/item-view');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var EmulateHTTP = require('lib/behaviors/emulateHTTP');
 var $ = require('jquery');
 
@@ -30,4 +30,4 @@ var View = ItemView.extend({
 });
 
 module.exports = View;
-POS.attach('SettingsApp.Tools.View');
+App.prototype.set('SettingsApp.Tools.View');

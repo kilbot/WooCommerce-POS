@@ -189,8 +189,11 @@ class WC_POS_Admin_Settings {
    * Start the Settings App
    */
   public function admin_inline_js() {
-    $params = new WC_POS_Params();
-    echo '<script type="text/javascript">POS.options = '. json_encode( $params->payload() ) .'; POS.start();</script>';
+    $options = array(
+      'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
+      'nonce' => wp_create_nonce( WC_POS_PLUGIN_NAME )
+    );
+    echo '<script>POS.start('. json_encode($options) .');</script>';
   }
 
 }

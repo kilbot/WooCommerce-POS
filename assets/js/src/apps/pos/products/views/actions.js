@@ -1,5 +1,5 @@
 var View = require('lib/config/item-view');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var Filter = require('lib/behaviors/filter');
 var HotKeys = require('lib/behaviors/hotkeys');
 var Radio = require('backbone.radio');
@@ -88,4 +88,4 @@ var Actions = View.extend({
 });
 
 module.exports = Actions;
-POS.attach('POSApp.Products.Actions', Actions);
+App.prototype.set('POSApp.Products.Actions', Actions);

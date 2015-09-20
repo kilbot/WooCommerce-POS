@@ -42,7 +42,13 @@
 
 <?php do_action('woocommerce_pos_footer'); ?>
 
-<script>POS.getPayload().then(POS.start.bind(POS));</script>
+<?php
+  $options = array(
+    'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
+    'nonce' => wp_create_nonce( WC_POS_PLUGIN_NAME )
+  );
+?>
+<script>POS.start(<?php echo json_encode($options) ?>);</script>
 
 </body>
 </html>

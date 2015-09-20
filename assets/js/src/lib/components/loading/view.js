@@ -1,6 +1,6 @@
 var ItemView = require('lib/config/item-view');
 var _ = require('lodash');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 
 var View = ItemView.extend({
   className: 'loading',
@@ -51,4 +51,4 @@ var View = ItemView.extend({
 });
 
 module.exports = View;
-POS.attach('Components.Loading.View', View);
+App.prototype.set('Components.Loading.View', View);

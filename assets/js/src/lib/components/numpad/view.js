@@ -1,5 +1,5 @@
 var FormView = require('lib/config/form-view');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var hbs = require('handlebars');
 var Tmpl = require('./numpad.hbs');
 var Model = require('./model');
@@ -228,4 +228,4 @@ var View = FormView.extend({
 });
 
 module.exports = View;
-POS.attach('Components.Numpad.View', View);
+App.prototype.set('Components.Numpad.View', View);

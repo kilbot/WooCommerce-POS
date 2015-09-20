@@ -2,7 +2,7 @@ var DualModel = require('lib/config/dual-model');
 var Radio = require('backbone.radio');
 var Utils = require('lib/utilities/utils');
 var debug = require('debug')('order');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var $ = require('jquery');
 
 var Model = DualModel.extend({
@@ -270,4 +270,4 @@ var Model = DualModel.extend({
 });
 
 module.exports = Model;
-POS.attach('Entities.Order.Model', Model);
+App.prototype.set('Entities.Order.Model', Model);

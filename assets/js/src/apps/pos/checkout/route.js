@@ -1,6 +1,6 @@
 var Route = require('lib/config/route');
 //var debug = require('debug')('checkout');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var LayoutView = require('./layout');
 var StatusView = require('./views/status');
 var GatewaysView = require('./views/gateways');
@@ -101,4 +101,4 @@ var CheckoutRoute = Route.extend({
 });
 
 module.exports = CheckoutRoute;
-POS.attach('POSApp.Checkout.Route', CheckoutRoute);
+App.prototype.set('POSApp.Checkout.Route', CheckoutRoute);

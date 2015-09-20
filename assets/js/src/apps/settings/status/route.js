@@ -1,5 +1,5 @@
 var Route = require('lib/config/route');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var View = require('./view');
 var Radio = require('backbone.radio');
 var $ = require('jquery');
@@ -41,4 +41,4 @@ var Status = Route.extend({
 });
 
 module.exports = Status;
-POS.attach('SettingsApp.Status.Route', Status);
+App.prototype.set('SettingsApp.Status.Route', Status);

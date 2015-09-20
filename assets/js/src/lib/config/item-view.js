@@ -1,4 +1,4 @@
 var Mn = require('backbone.marionette');
-var POS = require('lib/utilities/global');
+var app = require('./application');
 
-module.exports = POS.ItemView = Mn.ItemView;
+module.exports = app.prototype.ItemView = Mn.ItemView;

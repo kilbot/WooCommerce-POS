@@ -1,5 +1,5 @@
 var Behavior = require('lib/config/behavior');
-var POS = require('lib/utilities/global');
+var App = require('lib/config/application');
 var $ = require('jquery');
 var _ = require('lodash');
 
@@ -59,4 +59,4 @@ var Sortable = Behavior.extend({
 });
 
 module.exports = Sortable;
-POS.attach('Behaviors.Sortable', Sortable);
+App.prototype.set('Behaviors.Sortable', Sortable);
