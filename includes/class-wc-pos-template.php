@@ -2,7 +2,6 @@
 
 /**
  * Responsible for the POS front-end
- * todo: clean up
  *
  * @class    WC_POS_Template
  * @package  WooCommerce POS
@@ -380,6 +379,7 @@ class WC_POS_Template {
     $settings = WC_POS_Admin_Settings_Checkout::get_instance();
     $gateways = $settings->load_enabled_gateways();
     $templates = array();
+    $this->params = new WC_POS_Params();
 
     if($gateways): foreach( $gateways as $gateway ):
       $this->params->gateways[] = array(
@@ -398,7 +398,6 @@ class WC_POS_Template {
    * @return mixed|void
    */
   public function payload(){
-    $this->params = new WC_POS_Params();
     $templates = self::create_templates_array();
     $templates['pos']['checkout']['gateways'] = $this->gateways_templates();
     return apply_filters( 'woocommerce_pos_templates', $templates );

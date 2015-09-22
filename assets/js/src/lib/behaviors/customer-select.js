@@ -98,6 +98,7 @@ var CustomerSelect = Behavior.extend({
   // using custom event to set select2 options
   events: {
     'stickit:init @ui.select': function( e, name ){
+      // options
       this.view.select2 = this.view.select2 || {};
       this.view.select2[name] = {
         minimumInputLength: 3, // minimum 3 characters to trigger search
@@ -110,6 +111,13 @@ var CustomerSelect = Behavior.extend({
 
   onRender: function(){
     // initSelection
+    if( _.isEmpty( this.ui.select.data('placeholder') ) ){
+      this.initSelection();
+    }
+
+  },
+
+  initSelection: function(){
     var customer = this.customers.getDefaultCustomer();
     var text = formatSelection( customer );
     this.ui.select

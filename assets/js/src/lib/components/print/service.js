@@ -110,13 +110,14 @@ module.exports = Service.extend({
       return;
     }
 
-    var template = hbs.compile( $('#tmpl-print-receipt').html() );
     var tax = Radio.request('entities', 'get', {
         type: 'option',
         name: 'tax'
       }) || {};
-    var data = App.ReceiptView.prototype.prepare(options.model.toJSON(), tax);
-    return template( data );
+    var ReceiptView = App.prototype.ReceiptView.prototype;
+    var data = ReceiptView.prepare( options.model.toJSON(), tax );
+    var template = _.get(hbs.Templates, ['print', 'tmpl-receipt'], '');
+    return hbs.compile( template )( data );
   }
   /* jshint +W074 */
 

@@ -171,6 +171,24 @@ hbs.registerHelper('debug', function(optionalValue) {
   }
 });
 
+hbs.registerHelper('formatCustomerName', function(customer) {
+  var name = _(customer).pick(['first_name','last_name'])
+    .values()
+    .map(function( value ){
+      return value.trim();
+    })
+    .compact()
+    .value()
+    .join(' ');
+
+  if(!name){
+    name = customer.username;
+  }
+
+  return name;
+});
+
+
 //hbs.registerHelper('getOption', function(key){
 //  var lookup = key.split('.');
 //  var option = Radio.request( 'entities', 'get', {

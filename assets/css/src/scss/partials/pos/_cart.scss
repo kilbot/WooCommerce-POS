@@ -159,12 +159,26 @@
   }
   .cart-customer {
     border-top: 2px solid darken($list-border-color, 6%);
-    padding: $spacing/3;
+    > div {
+      @include display-flex;
+      @include align-items(center);
+      > div {
+        @include flex(1);
+        padding: $spacing/3;
+        a {
+          margin-right: $spacing/8;
+          color: darken( $list-border-color, 6% );
+          &:hover {
+            color: $btn-danger-bg;
+          }
+        }
+      }
+    }
   }
   .cart-notes {
     > div {
       padding: $spacing/3;
-      border-top: 1px solid darken( $list-border-color, 5% );
+      border-top: 1px solid darken( $list-border-color, 6% );
     }
   }
   &.cart-empty {

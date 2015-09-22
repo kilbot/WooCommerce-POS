@@ -19,10 +19,7 @@ bb.Stickit.addHandler({
   initialize: function($el, model, opt){
     $el.trigger('stickit:init', opt.observe); // on-the-fly select options
     var options = _.get( opt, ['view', 'select2', opt.observe ], {} );
-    var defaults = {
-      width: '250px' // default width
-    };
-    $el.select2( _.defaults( options, defaults ) );
+    $el.select2( options );
   },
   getVal: function($el){
     /**
