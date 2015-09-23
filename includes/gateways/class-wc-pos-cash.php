@@ -66,8 +66,9 @@ class WC_POS_Gateways_Cash extends WC_Payment_Gateway {
     $order = new WC_Order( $order_id );
 
     // update pos_cash data
-    $tendered = isset( $_POST['pos-cash-tendered'] ) ? wc_format_decimal( $_POST['pos-cash-tendered'] ) : 0 ;
-    $change = isset( $_POST['pos-cash-change'] ) ? wc_format_decimal( $_POST['pos-cash-change'] ) : 0 ;
+    $data = WC_POS_Server::get_raw_data();
+    $tendered = isset( $data['payment_details']['pos-cash-tendered'] ) ? wc_format_decimal( $data['payment_details']['pos-cash-tendered'] ) : 0 ;
+    $change = isset( $data['payment_details']['pos-cash-change'] ) ? wc_format_decimal( $data['payment_details']['pos-cash-change'] ) : 0 ;
     update_post_meta( $order_id, '_pos_cash_amount_tendered', $tendered );
     update_post_meta( $order_id, '_pos_cash_change', $change );
 
