@@ -17,8 +17,11 @@ class WC_POS_Admin_Settings {
   /* @var string The settings screen id */
   static public $screen_id;
 
-  /* @var array An array of settings objects */
-  private $settings = array();
+  /* @var WC_POS_Params instance */
+  private $params;
+
+  /* @var array */
+  private $settings;
 
   static public $handlers = array(
     'general'   => 'WC_POS_Admin_Settings_General',
@@ -33,8 +36,15 @@ class WC_POS_Admin_Settings {
    * Constructor
    */
   public function __construct() {
+
+    if( defined('DOING_AJAX') && DOING_AJAX ){
+      add_action( 'wp_ajax_wc_pos_admin_settings_payload', array( $this, 'payload') );
+      return;
+    }
+
     add_action( 'admin_menu', array( $this, 'admin_menu' ) );
     add_action( 'current_screen', array( $this, 'conditional_init' ) );
+
   }
 
   /**
@@ -61,11 +71,6 @@ class WC_POS_Admin_Settings {
   public function conditional_init( $current_screen ) {
     if( $current_screen->id == self::$screen_id ) {
 
-      // init handlers for settings pages
-      foreach(self::handlers() as $key => $handler){
-        $this->settings[$key] = $handler::get_instance();
-      }
-
       // Enqueue scripts for the settings page
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ), 99 );
@@ -80,6 +85,45 @@ class WC_POS_Admin_Settings {
    */
   static public function handlers(){
     return apply_filters( 'woocommerce_pos_settings_handlers', self::$handlers);
+  }
+
+  /**
+   * AJAX payload
+   */
+  public function payload(){
+    WC_POS_Server::check_ajax_referer();
+
+    $this->params = new WC_POS_Params();
+
+    $payload = array(
+      'templates' => $this->templates_payload(),
+      'settings'  => $this->settings,
+      'params'    => $this->params->payload(),
+      'i18n'      => WC_POS_i18n::payload()
+    );
+
+    WC_POS_Server::response( $payload );
+  }
+
+  /**
+   * Templates payload
+   * @return array
+   */
+  public function templates_payload(){
+    $templates = array();
+    foreach(self::handlers() as $key => $handler){
+      $settings = $handler::get_instance();
+      ob_start();
+      $settings->output();
+      $template = ob_get_clean();
+      $templates[ $key ] = preg_replace('/^\s+|\n|\r|\s+$/m', '', $template);
+      $this->settings[] = array(
+        'id'    => $settings->id,
+        'label' => $settings->label,
+        'data'  => $settings->get()
+      );
+    }
+    return apply_filters( 'woocommerce_pos_admin_settings_templates', $templates );
   }
 
   /**
@@ -190,8 +234,9 @@ class WC_POS_Admin_Settings {
    */
   public function admin_inline_js() {
     $options = array(
+      'action'  => 'wc_pos_admin_settings_payload',
       'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
-      'nonce' => wp_create_nonce( WC_POS_PLUGIN_NAME )
+      'nonce'   => wp_create_nonce( WC_POS_PLUGIN_NAME )
     );
     echo '<script>POS.start('. json_encode($options) .');</script>';
   }

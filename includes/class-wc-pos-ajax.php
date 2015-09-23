@@ -21,7 +21,6 @@ class WC_POS_AJAX {
   public function __construct(WC_POS_i18n $i18n) {
 
     $ajax_events = array(
-      'payload'               => $this,
       'get_all_ids'           => 'WC_POS_API',
       'get_modal'             => $this,
       'get_print_template'    => $this,
@@ -59,10 +58,11 @@ class WC_POS_AJAX {
     // admin
     else {
       $params = new WC_POS_Params();
-      $payload = array(
+      $settings = new WC_POS_Admin_Settings();
+      $payload = array_merge( $settings->payload(), array(
         'params' => $params->payload(),
         'i18n' => WC_POS_i18n::payload()
-      );
+      ));
     }
 
     WC_POS_Server::response( $payload );

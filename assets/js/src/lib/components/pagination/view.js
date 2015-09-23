@@ -3,7 +3,7 @@ var App = require('lib/config/application');
 var _ = require('lodash');
 
 var View = ItemView.extend({
-  template: 'tmpl-pagination',
+  template: 'pagination',
 
   //ui: {
   //  prev    : '.prev',

@@ -3,7 +3,7 @@ var App = require('lib/config/application');
 var Radio = require('backbone.radio');
 
 var Item = ItemView.extend({
-  template: 'pos.products.tmpl-product',
+  template: 'pos.products.product',
 
   className: 'variation',
 

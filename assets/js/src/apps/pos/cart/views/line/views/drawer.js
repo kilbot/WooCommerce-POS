@@ -9,7 +9,7 @@ var Radio = bb.Radio;
 
 module.exports = FormView.extend({
 
-  template: 'pos.cart.tmpl-item-drawer',
+  template: 'pos.cart.item-drawer',
 
   behaviors: {
     AutoGrow: {

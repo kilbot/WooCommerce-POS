@@ -6,7 +6,7 @@ var App = require('lib/config/application');
 var EmptyView = ItemView.extend({
   tagName: 'li',
   className: 'empty',
-  template: 'pos.checkout.tmpl-empty'
+  template: 'pos.checkout.empty'
 });
 
 var View = CollectionView.extend({

@@ -5,9 +5,7 @@ var Tooltip = require('lib/behaviors/tooltip');
 
 var View = FormView.extend({
 
-  template: function(){
-    return $('script[data-id="hotkeys"]').html();
-  },
+  template: 'hotkeys',
 
   attributes: {
     id: 'wc-pos-settings-hotkeys'

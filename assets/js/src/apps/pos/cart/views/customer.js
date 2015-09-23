@@ -5,7 +5,7 @@ var _ = require('lodash');
 var Radio = require('backbone.radio');
 
 var View = FormView.extend({
-  template: 'pos.cart.tmpl-customer',
+  template: 'pos.cart.customer',
 
   initialize: function(){
     var customers = Radio.request('entities', 'get', {

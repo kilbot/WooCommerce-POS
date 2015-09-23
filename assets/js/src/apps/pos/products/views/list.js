@@ -6,7 +6,7 @@ var App = require('lib/config/application');
 var Empty = ItemView.extend({
   tagName: 'li',
   className: 'empty',
-  template: 'pos.products.tmpl-empty'
+  template: 'pos.products.empty'
 });
 
 var List = InfiniteListView.extend({

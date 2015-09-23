@@ -1,7 +1,7 @@
 var LayoutView = require('lib/config/layout-view');
 
 module.exports = LayoutView.extend({
-  template: 'pos.cart.tmpl-list',
+  template: 'pos.cart.list',
 
   initialize: function(options){
     options = options || {};

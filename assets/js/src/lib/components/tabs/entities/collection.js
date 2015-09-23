@@ -21,7 +21,7 @@ var TabsCollection = Collection.extend({
 
   ensureActiveTab: function() {
     var activeTabs = this.where({'active': true});
-    if( activeTabs.length === 0 ) {
+    if( this.length > 0 && activeTabs.length === 0 ) {
       this.at(0).set({active: true});
     }
   }

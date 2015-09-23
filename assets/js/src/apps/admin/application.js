@@ -1,12 +1,10 @@
 var Application = require('lib/config/application');
 var bb = require('backbone');
-//var _ = require('lodash');
+var _ = require('lodash');
 var LayoutView = require('./layout-view');
 var debug = require('debug')('admin');
-var accounting = require('accounting');
 var Radio = require('backbone.radio');
 var routerChannel = Radio.channel('router');
-var polyglot = require('lib/utilities/polyglot');
 
 module.exports = Application.extend({
 
@@ -27,19 +25,29 @@ module.exports = Application.extend({
    * Set up application with start params
    */
   onBeforeStart: function(options){
+    options = options || {};
+
     debug( 'starting WooCommerce POS admin app' );
 
-    // i18n
-    polyglot.extend(options.i18n);
+    // get settings tabs
+    this.settingsApp.tabsArray = _.map(options.settings, function(setting){
+      return _.pick(setting, ['id', 'label']);
+    });
 
-    // params
-    this.options = options.params;
+    // get settings data
+    var data = _.map(options.settings, function(setting){
+      _.set(setting, ['data', 'id'], setting.id);
+      return setting.data;
+    });
 
-    // emulateHTTP
-    bb.emulateHTTP = options.emulateHTTP === true;
+    // init settings
+    var settings = Radio.request('entities', 'get', {
+      type: 'collection',
+      name: 'settings'
+    });
 
-    // bootstrap accounting settings
-    accounting.settings = this.options.accounting;
+    settings.add( data );
+
   },
 
   onStart: function(){

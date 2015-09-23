@@ -4,9 +4,7 @@ var $ = require('jquery');
 
 var View = FormView.extend({
 
-  template: function(){
-    return $('script[data-id="access"]').html();
-  },
+  template: 'access',
 
   attributes: {
     id: 'wc-pos-settings-access'

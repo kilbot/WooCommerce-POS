@@ -6,9 +6,7 @@ var Tooltip = require('lib/behaviors/tooltip');
 
 var View = FormView.extend({
 
-  template: function(){
-    return $('script[data-id="general"]').html();
-  },
+  template: 'general',
 
   attributes: {
     id: 'wc-pos-settings-general'

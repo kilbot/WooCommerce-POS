@@ -116,7 +116,7 @@ module.exports = Service.extend({
       }) || {};
     var ReceiptView = App.prototype.ReceiptView.prototype;
     var data = ReceiptView.prepare( options.model.toJSON(), tax );
-    var template = _.get(hbs.Templates, ['print', 'tmpl-receipt'], '');
+    var template = _.get(hbs.Templates, ['print', 'receipt'], '');
     return hbs.compile( template )( data );
   }
   /* jshint +W074 */

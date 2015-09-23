@@ -6,7 +6,7 @@ var Radio = require('backbone.radio');
 var HelpModal = require('./modals/help');
 
 var View = ItemView.extend({
-  template: 'tmpl-header',
+  template: 'header',
 
   initialize: function(){
     var store = Radio.request('entities', 'get', {

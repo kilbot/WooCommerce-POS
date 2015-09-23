@@ -47,7 +47,7 @@
       <img title="<?php esc_attr_e( 'Configure discount keys for quick numpad entry', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="tooltip">
     </th>
     <td>
-      <select name="discount_quick_keys" id="discount_quick_keys" class="select2" multiple>
+      <select name="discount_quick_keys" id="discount_quick_keys" class="select2" style="width:250px" multiple>
       <?php for($i=1; $i<=100; $i++): ?>
         <option value="<?php echo $i;?>"><?php echo $i;?>%</option>
       <?php endfor; ?>

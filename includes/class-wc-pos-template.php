@@ -52,6 +52,12 @@ class WC_POS_Template {
    * Constructor
    */
   public function __construct() {
+
+    if( defined('DOING_AJAX') && DOING_AJAX ){
+      add_action( 'wp_ajax_wc_pos_payload', array( $this, 'payload' ) );
+      return;
+    }
+
     $this->slug = WC_POS_Admin_Permalink::get_slug();
     $this->regex = '^'. $this->slug .'/?$';
 
@@ -343,6 +349,7 @@ class WC_POS_Template {
     foreach( self::locate_template_files( $partials_dir ) as $slug => $file ){
       $keys = explode( substr( $slug, 0, 1 ), substr( $slug, 1 ) );
       $template = array_reduce( array_reverse( $keys ), function($result, $key){
+        if( is_string($result) ) $key = preg_replace('/^tmpl-/i', '', $key);
         return array( $key => $result );
       }, self::template_output( $file ) );
       $templates = array_merge_recursive( $templates, $template );
@@ -379,7 +386,6 @@ class WC_POS_Template {
     $settings = WC_POS_Admin_Settings_Checkout::get_instance();
     $gateways = $settings->load_enabled_gateways();
     $templates = array();
-    $this->params = new WC_POS_Params();
 
     if($gateways): foreach( $gateways as $gateway ):
       $this->params->gateways[] = array(
@@ -398,35 +404,26 @@ class WC_POS_Template {
    * @return mixed|void
    */
   public function payload(){
+    WC_POS_Server::check_ajax_referer();
+
+    $this->params = new WC_POS_Params();
+
+    $payload = array(
+      'templates' => $this->templates_payload(),
+      'params'    => $this->params->payload(),
+      'i18n'      => WC_POS_i18n::payload()
+    );
+
+    WC_POS_Server::response( $payload );
+  }
+
+  /**
+   * @return mixed|void
+   */
+  public function templates_payload(){
     $templates = self::create_templates_array();
     $templates['pos']['checkout']['gateways'] = $this->gateways_templates();
     return apply_filters( 'woocommerce_pos_templates', $templates );
   }
-
-  /**
-   * @return string
-   */
-//  private function get_template_js(){
-//    $path = 'assets/js/templates.js';
-//
-//    // create templates file
-//    // todo: no caching at the moment
-//    $this->create_templates_file( WC_POS_PLUGIN_PATH . $path );
-//
-//    // template url
-//    return WC_POS_PLUGIN_URL . $path . '?ver=' . WC_POS_VERSION;
-//  }
-
-  /**
-   * Creates a js file of template partials
-   * @param $output_file
-   * @return int
-   */
-//  public function create_templates_file( $output_file ){
-//    $templates = self::create_templates_array();
-//    $templates['pos']['checkout']['gateways'] = $this->gateways_templates();
-//    $templates = apply_filters( 'woocommerce_pos_templates', $templates );
-//    return file_put_contents( $output_file, 'Handlebars.Templates = ' . json_encode($templates) );
-//  }
 
 }

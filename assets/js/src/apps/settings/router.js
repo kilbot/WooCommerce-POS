@@ -9,7 +9,6 @@ var Tools = require('./tools/route');
 var Status = require('./status/route');
 var bb = require('backbone');
 var Radio = bb.Radio;
-var $ = require('jquery');
 var _ = require('lodash');
 
 var SettingsRouter = Router.extend({
@@ -22,37 +21,9 @@ var SettingsRouter = Router.extend({
   },
 
   onBeforeEnter: function() {
-    this.bootstrapTabs();
-    this.bootstrapSettings();
     this.layout = new LayoutView();
     this.listenTo(this.layout, 'show', this.showTabs);
     this.container.show(this.layout);
-  },
-
-  bootstrapTabs: function(){
-    var tabs = [],
-        frag = bb.history.getFragment() || 'general';
-
-    // check page for templates
-    $('.tmpl-wc-pos-settings').each(function(){
-      tabs.push({
-        id    : $(this).data('id'),
-        label : $(this).data('label'),
-        active: ( $(this).data('id') === frag )
-      });
-    });
-
-    this.tabsArray = tabs;
-  },
-
-  bootstrapSettings: function(){
-    var settings = window.wc_pos_settings;
-
-    _.each(settings, function(setting, id){
-      var model = this.collection.add(setting);
-      model.set({ id: id });
-      model._isNew = false;
-    }, this);
   },
 
   routes: {
@@ -70,10 +41,7 @@ var SettingsRouter = Router.extend({
   },
 
   showTabs: function(){
-
-    //var view = new Tabs({
-    //  collection: this.tabsArray
-    //});
+    // this.tabsArray is added during POS.onBeforeStart
     var view = Radio.request('tabs', 'view', {
       tabs: this.tabsArray
     });

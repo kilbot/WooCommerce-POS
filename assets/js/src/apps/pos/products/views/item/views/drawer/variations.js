@@ -6,7 +6,7 @@ var _ = require('lodash');
 var Empty = ItemView.extend({
   tagName: 'li',
   className: 'empty',
-  template: 'pos.products.tmpl-empty'
+  template: 'pos.products.empty'
 });
 
 module.exports = CollectionView.extend({

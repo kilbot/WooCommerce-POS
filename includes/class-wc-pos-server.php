@@ -35,6 +35,22 @@ class WC_POS_Server {
   }
 
   /**
+   * Verifies the AJAX request
+   * @param string $id
+   */
+  static public function check_ajax_referer( $id = 'security' ){
+    $pass = check_ajax_referer( WC_POS_PLUGIN_NAME, $id, false );
+    if(!$pass){
+      $result = new WP_Error(
+        'woocommerce_pos_invalid_nonce',
+        __( 'Invalid security nonce', 'woocommerce-pos' ),
+        array( 'status' => 401 )
+      );
+      self::response($result);
+    }
+  }
+
+  /**
    * Convert wp_error to array
    * @param $error
    * @return array

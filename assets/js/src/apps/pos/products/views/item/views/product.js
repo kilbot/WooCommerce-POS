@@ -7,7 +7,7 @@ var Radio = require('backbone.radio');
 var Variations = require('./popover/variations');
 
 var Item = ItemView.extend({
-  template: 'pos.products.tmpl-product',
+  template: 'pos.products.product',
 
   ui: {
     add      : 'a[data-action="add"]',

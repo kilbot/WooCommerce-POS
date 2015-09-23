@@ -1,13 +1,10 @@
 var ItemView = require('lib/config/item-view');
 var App = require('lib/config/application');
 var EmulateHTTP = require('lib/behaviors/emulateHTTP');
-var $ = require('jquery');
 
 var View = ItemView.extend({
 
-  template: function(){
-    return $('script[data-id="tools"]').html();
-  },
+  template: 'tools',
 
   attributes: {
     id: 'wc-pos-settings-tools'

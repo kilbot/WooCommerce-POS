@@ -61,14 +61,13 @@ class WC_POS {
     new WC_POS_Products();
     new WC_POS_Template();
 
-    // admin only
-    if (is_admin() && (!defined('DOING_AJAX') || !DOING_AJAX)) {
+    if ( is_admin() ) {
       new WC_POS_Admin();
-    }
 
-    // ajax only
-    if (is_admin() && defined('DOING_AJAX') && DOING_AJAX ) {
-      new WC_POS_AJAX( $i18n );
+      // ajax only
+      if (defined('DOING_AJAX') && DOING_AJAX ) {
+        new WC_POS_AJAX( $i18n );
+      }
     }
 
   }

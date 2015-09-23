@@ -6,6 +6,8 @@ var hbs = require('handlebars');
 var Utils = require('lib/utilities/utils');
 var polyglot = require('lib/utilities/polyglot');
 var debugFunction = require('debug');
+var bb = require('backbone');
+var accounting = require('accounting');
 
 module.exports = Mn.Application.extend({
 
@@ -27,15 +29,40 @@ module.exports = Mn.Application.extend({
     );
   },
 
+  _initOptions: function( payload ){
+    payload = payload || {};
+
+    // templates
+    hbs.Templates = payload.templates || {};
+
+    // polyglot
+    polyglot.extend( payload.i18n );
+
+    // options
+    this.options = payload.params || {};
+
+    // debug
+    this._initDebug( this.options.debug );
+
+    // emulateHTTP
+    bb.emulateHTTP = this.options.emulateHTTP === true;
+
+    // bootstrap accounting settings
+    accounting.settings = this.options.accounting;
+  },
+
+  /**
+   * todo: handle errors
+   * @param options
+   */
   start: function( options ){
     var self = this;
     $.getJSON(
       options.ajaxurl, {
-        action: 'wc_pos_payload',
+        action: options.action || 'wc_pos_payload',
         security: options.nonce
       }, function( payload ){
-        var debug = _.get( payload, ['params', 'debug'], false );
-        self._initDebug( debug );
+        self._initOptions( payload );
         Mn.Application.prototype.start.call(self, payload);
       }
     );
@@ -49,6 +76,7 @@ module.exports = Mn.Application.extend({
   debug: debugFunction,
   polyglot: polyglot,
   Utils: Utils
+
 });
 
 /**

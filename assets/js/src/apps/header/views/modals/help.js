@@ -5,7 +5,7 @@ var App = require('lib/config/application');
 var polyglot = require('lib/utilities/polyglot');
 
 var View = ItemView.extend({
-  template: 'modals.tmpl-hotkeys',
+  template: 'modals.hotkeys',
 
   initialize: function () {
     this.hotkeys = Radio.request('entities', 'get', {

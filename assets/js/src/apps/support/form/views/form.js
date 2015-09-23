@@ -3,7 +3,7 @@ var $ = require('jquery');
 
 module.exports = ItemView.extend({
   tagName: 'ul',
-  template: 'support.tmpl-form',
+  template: 'support.form',
 
   ui: {
     toggle : '.toggle',

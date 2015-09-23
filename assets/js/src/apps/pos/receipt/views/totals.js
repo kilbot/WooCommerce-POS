@@ -3,7 +3,7 @@ var App = require('lib/config/application');
 
 var View = ReceiptView.extend({
   tagName: 'ul',
-  template: 'pos.receipt.tmpl-totals'
+  template: 'pos.receipt.totals'
 });
 
 module.exports = View;

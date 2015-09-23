@@ -11,7 +11,7 @@ var General = Route.extend({
   },
 
   fetch: function() {
-    if(this.model.isNew()){
+    if(this.model && this.model.isNew()){
       return this.model.fetch();
     }
   },
