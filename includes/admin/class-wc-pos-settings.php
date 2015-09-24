@@ -17,34 +17,12 @@ class WC_POS_Admin_Settings {
   /* @var string The settings screen id */
   static public $screen_id;
 
-  /* @var WC_POS_Params instance */
-  private $params;
-
-  /* @var array */
-  private $settings;
-
-  static public $handlers = array(
-    'general'   => 'WC_POS_Admin_Settings_General',
-    'checkout'  => 'WC_POS_Admin_Settings_Checkout',
-    'hotkeys'   => 'WC_POS_Admin_Settings_HotKeys',
-    'access'    => 'WC_POS_Admin_Settings_Access',
-    'tools'     => 'WC_POS_Admin_Settings_Tools',
-    'status'    => 'WC_POS_Admin_Settings_Status'
-  );
-
   /**
    * Constructor
    */
   public function __construct() {
-
-    if( defined('DOING_AJAX') && DOING_AJAX ){
-      add_action( 'wp_ajax_wc_pos_admin_settings_payload', array( $this, 'payload') );
-      return;
-    }
-
     add_action( 'admin_menu', array( $this, 'admin_menu' ) );
     add_action( 'current_screen', array( $this, 'conditional_init' ) );
-
   }
 
   /**
@@ -77,53 +55,6 @@ class WC_POS_Admin_Settings {
       add_action( 'admin_print_footer_scripts', array( $this, 'admin_inline_js' ) );
 
     }
-  }
-
-  /**
-   * Returns array of settings classes
-   * @return mixed|void
-   */
-  static public function handlers(){
-    return apply_filters( 'woocommerce_pos_settings_handlers', self::$handlers);
-  }
-
-  /**
-   * AJAX payload
-   */
-  public function payload(){
-    WC_POS_Server::check_ajax_referer();
-
-    $this->params = new WC_POS_Params();
-
-    $payload = array(
-      'templates' => $this->templates_payload(),
-      'settings'  => $this->settings,
-      'params'    => $this->params->payload(),
-      'i18n'      => WC_POS_i18n::payload()
-    );
-
-    WC_POS_Server::response( $payload );
-  }
-
-  /**
-   * Templates payload
-   * @return array
-   */
-  public function templates_payload(){
-    $templates = array();
-    foreach(self::handlers() as $key => $handler){
-      $settings = $handler::get_instance();
-      ob_start();
-      $settings->output();
-      $template = ob_get_clean();
-      $templates[ $key ] = preg_replace('/^\s+|\n|\r|\s+$/m', '', $template);
-      $this->settings[] = array(
-        'id'    => $settings->id,
-        'label' => $settings->label,
-        'data'  => $settings->get()
-      );
-    }
-    return apply_filters( 'woocommerce_pos_admin_settings_templates', $templates );
   }
 
   /**

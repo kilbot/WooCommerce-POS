@@ -29,6 +29,7 @@ class WC_POS_Params {
     $this->nonce           = wp_create_nonce( WC_POS_PLUGIN_NAME );
     $this->wc_api          = get_woocommerce_api_url( '' );
     $this->emulateHTTP     = get_option( 'woocommerce_pos_emulateHTTP' ) === '1';
+    $this->idbVersion      = WC_POS_Settings::get_idb_version();
 
     // frontend params
     if( is_pos() ){
@@ -212,7 +213,7 @@ class WC_POS_Params {
   /**
    *
    */
-  public function menu() {
+  private function menu() {
 
     return apply_filters( 'woocommerce_pos_menu', array(
       array(

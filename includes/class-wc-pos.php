@@ -55,19 +55,25 @@ class WC_POS {
     // global helper functions
     require_once WC_POS_PLUGIN_PATH . 'includes/wc-pos-functions.php';
 
-    // global
-    $i18n = new WC_POS_i18n();
+    // global classes
+    new WC_POS_i18n();
     new WC_POS_Gateways();
     new WC_POS_Products();
     new WC_POS_Template();
 
-    if ( is_admin() ) {
-      new WC_POS_Admin();
+    // end global classes
+    if( !is_admin() )
+      return;
 
-      // ajax only
-      if (defined('DOING_AJAX') && DOING_AJAX ) {
-        new WC_POS_AJAX( $i18n );
-      }
+    // ajax only
+    if( defined('DOING_AJAX') && DOING_AJAX ){
+      new WC_POS_Settings();
+      new WC_POS_AJAX();
+    }
+
+    // admin only
+    else {
+      new WC_POS_Admin();
     }
 
   }

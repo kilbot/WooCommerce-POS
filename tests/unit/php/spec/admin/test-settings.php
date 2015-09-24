@@ -1,6 +1,6 @@
 <?php
 
-class SettingsTest extends WP_UnitTestCase {
+class AdminSettingsTest extends WP_UnitTestCase {
 
   function setUp(){
 

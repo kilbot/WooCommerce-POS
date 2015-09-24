@@ -117,7 +117,7 @@ function wc_pos_locate_template($path = ''){
  * @return bool
  */
 function wc_pos_get_option( $id, $key = false ){
-  $handlers = (array) WC_POS_Admin_Settings::handlers();
+  $handlers = (array) WC_POS_Settings::handlers();
   if( !array_key_exists( $id, $handlers ) )
     return false;
 

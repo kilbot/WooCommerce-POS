@@ -32,6 +32,9 @@ class WC_POS_i18n {
     add_filter( 'upgrader_pre_download', array( $this, 'upgrader_pre_download' ), 10, 3 );
     add_filter( 'woocommerce_pos_enqueue_scripts', array( $this, 'js_locale' ) );
     add_filter( 'woocommerce_pos_admin_enqueue_scripts', array( $this, 'js_locale' ) );
+
+    // ajax
+    add_action( 'wp_ajax_wc_pos_update_translations', array( $this, 'update_translations' ) );
   }
 
   /**
@@ -144,7 +147,7 @@ class WC_POS_i18n {
    */
   public function update_translations(){
     // security
-    check_ajax_referer( WC_POS_PLUGIN_NAME, 'security' );
+    WC_POS_Server::check_ajax_referer();
 
     header("Content-Type: text/event-stream");
     header("Cache-Control: no-cache");

@@ -15,12 +15,6 @@ class WC_POS_Admin {
    * Constructor
    */
   public function __construct() {
-
-    if( defined('DOING_AJAX') && DOING_AJAX ){
-      new WC_POS_Admin_Settings();
-      return;
-    }
-
     $this->init();
     add_action( 'current_screen', array( $this, 'conditional_init' ) );
   }

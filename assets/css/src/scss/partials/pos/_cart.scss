@@ -165,7 +165,7 @@
       > div {
         @include flex(1);
         padding: $spacing/3;
-        a {
+        [data-action="remove"] {
           margin-right: $spacing/8;
           color: darken( $list-border-color, 6% );
           &:hover {

@@ -3,11 +3,11 @@
 /**
  * Provides a Cash Payment Gateway.
  *
- * @class 	    WC_POS_Gateways_Cash
+ * @class       WC_POS_Gateways_Cash
  * @package     WooCommerce POS
  * @author      Paul Kilmurray <paul@kilbot.com.au>
  * @link        http://www.woopos.com.au
- * @extends		WC_Payment_Gateway
+ * @extends     WC_Payment_Gateway
  */
 
 class WC_POS_Gateways_Cash extends WC_Payment_Gateway {

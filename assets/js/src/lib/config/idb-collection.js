@@ -35,13 +35,11 @@ module.exports = app.prototype.IndexedDBCollection = Collection.extend({
           status: error.target.error.name,
           message: error.target.error.message
         });
-      },
-      onVersionChange: function(store){
-        store.clear();
       }
     };
 
     this.db = new IndexedDB(options, this);
+    this.versionCheck();
     this.db.open()
       // error opening db
       .fail(function(error){
@@ -75,6 +73,35 @@ module.exports = app.prototype.IndexedDBCollection = Collection.extend({
         self.reset();
         return self.db.clear();
       });
+  },
+
+  /**
+   * Each website will have a unique idbVersion number
+   * the version number is incremented on plugin update and some user actions
+   * this version check will compare the version numbers
+   * idb is flushed on version change
+   */
+  versionCheck: function(){
+    var name = this.name;
+
+    var newVersion = parseInt( Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'idbVersion'
+    }) ) || 0;
+    var oldVersion = parseInt( Radio.request('entities', 'get', {
+      type: 'localStorage',
+      name: name + '_idbVersion'
+    }) ) || 0;
+
+    if( newVersion !== oldVersion ){
+      this.clear().then(function(){
+        Radio.request('entities', 'set', {
+          type : 'localStorage',
+          name : name + '_idbVersion',
+          data : newVersion
+        });
+      });
+    }
   }
 
 });

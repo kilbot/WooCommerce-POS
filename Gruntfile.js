@@ -12,15 +12,15 @@ module.exports = function(grunt) {
    * - 0.4.2-dev becomes 4002
    * - 1.4.2 becomes 1004002
    */
-  var idbVersion = function(){
-    var version = pkg.version
-      .split('.')
-      .map(function(num){
-        return(1e15+ parseInt( num, 10 ) +"").slice(-3)
-      })
-      .join('');
-    return parseInt( version, 10 );
-  }
+  //var idbVersion = function(){
+  //  var version = pkg.version
+  //    .split('.')
+  //    .map(function(num){
+  //      return(1e15+ parseInt( num, 10 ) +"").slice(-3)
+  //    })
+  //    .join('');
+  //  return parseInt( version, 10 );
+  //}
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -163,11 +163,11 @@ module.exports = function(grunt) {
             { test: /\.hbs$/, loader: 'raw-loader' }
           ]
         },
-        plugins: [
-          new webpack.DefinePlugin({
-            __VERSION__: JSON.stringify( idbVersion() )
-          })
-        ],
+        //plugins: [
+        //  new webpack.DefinePlugin({
+        //    __VERSION__: JSON.stringify( idbVersion() )
+        //  })
+        //],
         resolve: {
           alias: {
             marionette: 'backbone.marionette',

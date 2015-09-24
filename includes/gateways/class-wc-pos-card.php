@@ -3,7 +3,7 @@
 /**
  * Provides a Card Payment Gateway.
  *
- * @class 	    WC_POS_Gateways_Card
+ * @class       WC_POS_Gateways_Card
  * @package     WooCommerce POS
  * @author      Paul Kilmurray <paul@kilbot.com.au>
  * @link        http://www.woopos.com.au

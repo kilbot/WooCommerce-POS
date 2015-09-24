@@ -41,9 +41,6 @@ class WC_POS_Activator {
    * Checks for valid install and begins execution of the plugin.
    */
   public function run_woocommerce_pos(){
-    // Run update script if required
-    $this->version_check();
-
     // WooCommerce greater than 2.3.7 is required
     // PHP greater than 5.4 is required
     if( $this->php_check() && $this->woocommerce_check() ){
@@ -54,6 +51,9 @@ class WC_POS_Activator {
       if( is_admin() && (!defined('DOING_AJAX') || !DOING_AJAX) ){
         $this->permalink_check();
       }
+
+      // Run update script if required
+      $this->version_check();
     }
   }
 
@@ -153,17 +153,17 @@ class WC_POS_Activator {
    * Check version number, runs every admin page load
    */
   private function version_check(){
-    // next check the POS version number
-    $old = get_option( 'woocommerce_pos_db_version' );
-    if( !$old || version_compare( $old, WC_POS_VERSION, '<' ) ) {
+    $old = WC_POS_Settings::get_db_version();
+    if( version_compare( $old, WC_POS_VERSION, '<' ) ){
+      WC_POS_Settings::bump_versions();
       $this->db_upgrade( $old, WC_POS_VERSION );
-      update_option( 'woocommerce_pos_db_version', WC_POS_VERSION );
     }
-    return true;
   }
 
   /**
    * Upgrade database
+   * @param $old
+   * @param $current
    */
   private function db_upgrade( $old, $current ) {
     $db_updates = array(

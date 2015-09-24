@@ -15,10 +15,8 @@ class WC_POS_AJAX {
 
   /**
    * Hook into ajax events
-   *
-   * @param WC_POS_i18n $i18n
    */
-  public function __construct(WC_POS_i18n $i18n) {
+  public function __construct() {
 
     $ajax_events = array(
       'get_all_ids'           => 'WC_POS_API',
@@ -26,9 +24,7 @@ class WC_POS_AJAX {
       'get_print_template'    => $this,
 //      'set_product_visibilty' => $this,
       'email_receipt'         => $this,
-      'admin_settings'        => $this,
       'send_support_email'    => $this,
-      'update_translations'   => $i18n,
       'test_http_methods'     => $this,
       'system_status'         => $this,
       'toggle_legacy_server'  => 'WC_POS_Status',
@@ -41,31 +37,6 @@ class WC_POS_AJAX {
       add_action( 'wp_ajax_wc_pos_' . $ajax_event, array( $class, $ajax_event ) );
     }
 
-  }
-
-  public function payload(){
-
-    // frontend
-    if( is_pos() ){
-      $templates = new WC_POS_Template();
-      $payload = array(
-        'templates' => $templates->payload(),
-        'params' => $templates->params->payload(),
-        'i18n' => WC_POS_i18n::payload()
-      );
-    }
-
-    // admin
-    else {
-      $params = new WC_POS_Params();
-      $settings = new WC_POS_Admin_Settings();
-      $payload = array_merge( $settings->payload(), array(
-        'params' => $params->payload(),
-        'i18n' => WC_POS_i18n::payload()
-      ));
-    }
-
-    WC_POS_Server::response( $payload );
   }
 
   public function get_modal() {
@@ -116,73 +87,6 @@ class WC_POS_AJAX {
 //
 //    $this->serve_response($result);
 //  }
-
-  /**
-   * POS Settings stored in options table
-   */
-  public function admin_settings() {
-    $result = $this->process_admin_settings();
-    WC_POS_Server::response($result);
-  }
-
-  private function process_admin_settings(){
-    // validate
-    if(!isset($_GET['id']))
-      return new WP_Error(
-        'woocommerce_pos_settings_error',
-        __( 'There is no settings id', 'woocommerce-pos' ),
-        array( 'status' => 400 )
-      );
-
-    $id   = $_GET['id'];
-    $data = WC_POS_Server::get_raw_data();
-
-    // special case: gateway_
-    $gateway_id = preg_replace( '/^gateway_/', '', strtolower( $id ), 1, $count );
-    if($count){
-      $handler = new WC_POS_Admin_Settings_Gateways($gateway_id);
-
-      // else, find handler by id
-    } else {
-      $handlers = (array) WC_POS_Admin_Settings::handlers();
-      if(!isset($handlers[$id]))
-        return new WP_Error(
-          'woocommerce_pos_settings_error',
-          sprintf( __( 'No handler found for %s settings', 'woocommerce-pos' ), $_GET['id']),
-          array( 'status' => 400 )
-        );
-      $handler = new $handlers[$id]();
-    }
-
-    // Compatibility for clients that can't use PUT/PATCH/DELETE
-    $method = strtoupper($_SERVER['REQUEST_METHOD']);
-    if ( isset( $_GET['_method'] ) ) {
-      $method = strtoupper( $_GET['_method'] );
-    } elseif ( isset( $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] ) ) {
-      $method = strtoupper( $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] );
-    }
-
-    // get
-    if( $method === 'GET' ) {
-      return $handler->get();
-    }
-
-    // set
-    if( $method === 'POST' || $method === 'PUT' ) {
-      return $handler->set($data);
-    }
-
-    // delete
-    if( $method === 'DELETE' ) {
-      return $handler->delete($data);
-    }
-
-    return new WP_Error(
-      'woocommerce_pos_cannot_'.$method.'_'.$id,
-      __( 'Settings error', 'woocommerce-pos' ),
-      array( 'status' => 405 )
-    );
-  }
 
   /**
    * Send email receipt
