@@ -17,6 +17,7 @@ class WC_POS_Admin_Plugins {
   }
 
   /**
+   * Prepend Settings link to plugin actions
    * @param $links
    * @return array
    */
@@ -27,6 +28,7 @@ class WC_POS_Admin_Plugins {
   }
 
   /**
+   * Thanks to: http://andidittrich.de/2015/05/howto-upgrade-notice-for-wordpress-plugins.html
    * @param $currentPluginMetadata
    * @param $newPluginMetadata
    */

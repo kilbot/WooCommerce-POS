@@ -197,6 +197,12 @@ class WC_POS_Settings {
       $method = strtoupper( $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] );
     }
 
+    // bump IDB version
+    if( isset( $data['bump_idb_version'] ) && $data['bump_idb_version'] ){
+      self::bump_idb_version();
+      unset( $data['bump_idb_version'] );
+    }
+
     // get
     if( $method === 'GET' ) {
       return $handler->get();
