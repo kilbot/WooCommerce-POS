@@ -13,14 +13,6 @@
 class WC_POS_API_Products extends WC_POS_API_Abstract {
 
   /**
-   * postmeta key to use for barcode
-   * - defaults to '_sku'
-   * - can be overwritten using the woocommerce_pos_barcode_meta_key filter
-   * @var array
-   */
-  private $barcode_meta_key;
-
-  /**
    * Product fields used by the POS
    * @var array
    */

@@ -79,21 +79,23 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
-= 0.4.5 =
+= 0.4.5 - 2015/09/** =
 * Important: WooCommerce POS now requires PHP 5.4 or higher
 * Important: WooCommerce POS now requires WooCommerce 2.3.7 or higher
+* Important: Pro users should update [WooCommerce POS Pro](http://woopos.com.au/pro) to version 0.4.5
 * Fix: POS permalink bug introduced in 0.4.2 - [22388f7](https://github.com/kilbot/WooCommerce-POS/commit/22388f7a6d91959b3b55fd07b6f973ba8eda01af)
-* Fix: POS Cash not recording amount tendered or change = [2ef2260](https://github.com/kilbot/WooCommerce-POS/commit/2ef226070eb4a2f966cd1d96c3fbd850b6baec34)
+* Fix: POS Cash not recording amount tendered or change - [2ef2260](https://github.com/kilbot/WooCommerce-POS/commit/2ef226070eb4a2f966cd1d96c3fbd850b6baec34)
 * Improve: POS template caching and performance
+* Improve: Plugin update notices - []()
 
-= 0.4.4 =
+= 0.4.4 - 2015/08/26 =
 * Fix: cart totals going to zero with new fee or shipping line item - commit [35f547c](https://github.com/kilbot/WooCommerce-POS/commit/35f547cf40919736ff769702043489ff1698ec30)
 * Improve: scanning barcodes multiple times - commit [670173b](https://github.com/kilbot/WooCommerce-POS/commit/670173b4e890d74800420511803e48ef9f6a4ec7)
 
-= 0.4.3 =
+= 0.4.3 - 2015/08/24 =
 * Fix: barcode scanning bug introduced in version 0.4.2 - commit [8a608c8](https://github.com/kilbot/WooCommerce-POS/commit/8a608c8124d77cd3499af55e08651752287261bc)
 
-= 0.4.2 =
+= 0.4.2 - 2015/08/24 =
 * New: local storage will now clear on version change - commit [85ec411](https://github.com/kilbot/WooCommerce-POS/commit/85ec411a58600988b811272be6d151cb11161f4f)
 * New: option to automatically print receipt after checkout - commit [16fba05](https://github.com/kilbot/WooCommerce-POS/commit/16fba054593e118be6c567ce4d87f8d0b91acaa5)
 * New: add cashier to receipt data - commit [c4caa8d](https://github.com/kilbot/WooCommerce-POS/commit/c4caa8df78d9f255445f370854fbb3e466b46b4e)
@@ -110,8 +112,8 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: POS visibility options not showing on new product page - commit [ef20a5b](https://github.com/kilbot/WooCommerce-POS/commit/ef20a5bd4e9727855e9eac747f912502ae0c9cc9)
 * Tweak: WP Admin CSS - commit [c5a38c7](https://github.com/kilbot/WooCommerce-POS/commit/c5a38c7f889a7788e3eaa633c28620d2e80ac2ee)
 
-= 0.4.1 =
-* Note: WooCommerce POS now requires WooCommerce 2.3 or greater
+= 0.4.1 - 2015/07/10 =
+* Important: WooCommerce POS now requires WooCommerce 2.3 or greater
 * New: added woocommerce_pos_email_receipt hook
 * Improve: blur() barcode search field after successful match
 * Improve: editing a product/fee/shipping title in cart - commit [216e8a5](https://github.com/kilbot/WooCommerce-POS/commit/216e8a5)
@@ -128,10 +130,9 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: decimal bug on numpad entry, eg: 0.01 - commit [b46884d](https://github.com/kilbot/WooCommerce-POS/commit/b46884d)
 * Update npm dependencies
 
-= 0.4 =
-* ** Note: this is a major code refactor, almost every line of code has been rewritten **
-* ** Please check your POS admin after upgrade as many settings have changed **
-
+= 0.4 - 2015/06/02 =
+* Important: this is a major code refactor, almost every line of code has been rewritten
+* Important: check your POS admin after upgrade as many settings have changed
 * Products: Variation popover/drawer
 * Products: Infinite scroll
 * Products: Hotkey for barcode search
@@ -144,7 +145,6 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Translations: WooCommerce POS now uses automatic downloads
 * New: Set custom permalink for POS front-end
 * Improved: Responsive design for tablets & mobile
-
 * Pro: Add customer during checkout
 * Pro: Open multiple carts
 * Pro: Hotkey for credit card readers
@@ -154,7 +154,16 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Pro: New coupon page
 * Pro: Multiple stores
 * Pro: Compatibility fix for Stripe gateway
-
 * Fix: all the things
 
-= [View full changelog](https://github.com/kilbot/WooCommerce-POS/blob/master/changelog) =
+[View full changelog](https://github.com/kilbot/WooCommerce-POS/blob/master/changelog)
+
+== Upgrade Notice ==
+
+= 0.4.5 =
+* WooCommerce POS now requires PHP 5.4 or higher.
+* WooCommerce POS now requires WooCommerce 2.3.7 or higher.
+* Pro users should update [WooCommerce POS Pro](http://woopos.com.au/pro) to version 0.4.5.
+
+= 0.4.4 =
+* Pro users should update [WooCommerce POS Pro](http://woopos.com.au/pro) to version 0.4.4.

@@ -87,11 +87,11 @@ module.exports = app.prototype.IndexedDBCollection = Collection.extend({
     var newVersion = parseInt( Radio.request('entities', 'get', {
       type: 'option',
       name: 'idbVersion'
-    }) ) || 0;
+    }), 10 ) || 0;
     var oldVersion = parseInt( Radio.request('entities', 'get', {
       type: 'localStorage',
       name: name + '_idbVersion'
-    }) ) || 0;
+    }), 10 ) || 0;
 
     if( newVersion !== oldVersion ){
       this.clear().then(function(){

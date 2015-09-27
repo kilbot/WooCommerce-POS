@@ -31,10 +31,10 @@ class WC_POS_Admin_Settings {
   public function admin_menu() {
     self::$screen_id = add_submenu_page(
       WC_POS_PLUGIN_NAME,
-      /* translators: woocommerce */
-      __( 'Settings', 'woocommerce' ),
-      /* translators: woocommerce */
-      __( 'Settings', 'woocommerce' ),
+      /* translators: wordpress */
+      __( 'Settings' ),
+      /* translators: wordpress */
+      __( 'Settings' ),
       'manage_woocommerce_pos',
       'wc_pos_settings',
       array( $this, 'display_settings_page' )

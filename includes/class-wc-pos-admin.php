@@ -41,6 +41,10 @@ class WC_POS_Admin {
     if( $current_screen->id == 'shop_order' || $current_screen->id == 'edit-shop_order'  )
       new WC_POS_Admin_Orders();
 
+    // Customise plugins page
+    if( $current_screen->id == 'plugins' )
+      new WC_POS_Admin_Plugins();
+
   }
 
 }
