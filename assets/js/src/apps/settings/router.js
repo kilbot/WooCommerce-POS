@@ -41,6 +41,12 @@ var SettingsRouter = Router.extend({
   },
 
   showTabs: function(){
+    var hash = bb.history.getHash() || 'general';
+    var tab = _.findWhere( this.tabsArray, { id: hash } );
+    if( tab ){
+      tab.active = true;
+    }
+
     // this.tabsArray is added during POS.onBeforeStart
     var view = Radio.request('tabs', 'view', {
       tabs: this.tabsArray

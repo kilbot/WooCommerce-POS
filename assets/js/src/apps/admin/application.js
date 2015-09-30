@@ -47,7 +47,6 @@ module.exports = Application.extend({
     });
 
     settings.add( data );
-
   },
 
   onStart: function(){

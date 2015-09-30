@@ -15,10 +15,6 @@ var parse = {
 
 module.exports = app.prototype.Model = bb.Model.extend({
 
-  constructor: function() {
-    bb.Model.apply(this, arguments);
-  },
-
   parse: function (resp){
     var data = resp && resp[this.name] ? resp[this.name]  : resp;
     if( ! data ){

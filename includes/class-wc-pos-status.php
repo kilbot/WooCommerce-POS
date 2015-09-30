@@ -10,9 +10,6 @@
 
 class WC_POS_Status {
 
-  const WC_MIN_VERSION = '2.3.7';
-  const PHP_MIN_VERSION = '5.4';
-
   public function output() {
     $results = array(
       $this->test_wc_version(),
@@ -29,13 +26,13 @@ class WC_POS_Status {
   private function test_wc_version() {
     $result = array(
       'title'   => __( 'WC Version', 'woocommerce-pos' ),
-      'pass'    => version_compare( WC()->version, $this->wc_min_version, '>=' ),
+      'pass'    => version_compare( WC()->version, WC_POS_Activator::WC_MIN_VERSION, '>=' ),
       'message' => esc_html( WC()->version )
     );
 
     if( ! $result['pass'] ){
       $result = array_merge( $result, array(
-        'message' => sprintf( __( 'WooCommerce >= %s required', 'woocommerce-pos' ), $this->wc_min_version),
+        'message' => sprintf( __( 'WooCommerce >= %s required', 'woocommerce-pos' ), WC_POS_Activator::WC_MIN_VERSION),
         'buttons' => array(
           array(
             'href'  => admin_url( 'update-core.php' ),
@@ -61,13 +58,13 @@ class WC_POS_Status {
 
     $result = array(
       'title'   => /* translators: woocommerce */ __( 'PHP Version', 'woocommerce' ),
-      'pass'    => version_compare( $php_version, $this->php_min_version, '>' ),
+      'pass'    => version_compare( $php_version, WC_POS_Activator::PHP_MIN_VERSION, '>' ),
       'message' => esc_html( $php_version )
     );
 
     if( ! $result['pass'] ){
       $result = array_merge( $result, array(
-        'message' => sprintf( __( 'PHP >= %s required', 'woocommerce-pos' ), $this->php_min_version ),
+        'message' => sprintf( __( 'PHP >= %s required', 'woocommerce-pos' ), WC_POS_Activator::PHP_MIN_VERSION ),
         'buttons' => array(
           array(
             'href'  => 'http://docs.woothemes.com/document/how-to-update-your-php-version/',

@@ -1,6 +1,6 @@
-var jsdom = require('jsdom').jsdom;
-global.document = jsdom('hello world');
-global.window = global.document.parentWindow;
+var jsdom = require("jsdom").jsdom;
+global.document = jsdom("hello world");
+global.window = global.document.defaultView;
 global.$ = global.jQuery = require('jquery');
 
 var proxyquire = require('proxyquire').noCallThru();

@@ -39,6 +39,17 @@
   }
 }
 
+#wc-pos-settings-tools {
+  table {
+    td {
+      a.button {
+        vertical-align: middle;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
 #wc-pos-settings-footer {
   margin-top: 20px;
   border-top: 1px solid lighten(#CFCFCF, 5%);

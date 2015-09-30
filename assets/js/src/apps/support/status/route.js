@@ -41,13 +41,13 @@ var StatusRoute = Route.extend({
   },
 
   _fetch: function(){
-    var self = this;
-    return $.getJSON( this.ajaxurl, {
-      action: 'wc_pos_system_status',
-      security: this.nonce
-    }, function( resp ){
-      self.tests = resp;
-    });
+    //var self = this;
+    //return $.getJSON( this.ajaxurl, {
+    //  action: 'wc_pos_system_status',
+    //  security: this.nonce
+    //}, function( resp ){
+    //  self.tests = resp;
+    //});
   },
 
   render: function(){

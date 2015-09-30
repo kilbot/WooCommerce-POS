@@ -181,7 +181,7 @@ hbs.registerHelper('formatCustomerName', function(customer) {
     .value()
     .join(' ');
 
-  if(!name){
+  if( customer && !name ){
     name = customer.username;
   }
 

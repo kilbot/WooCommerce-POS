@@ -26,7 +26,7 @@ class WC_POS_AJAX {
       'email_receipt'         => $this,
       'send_support_email'    => $this,
       'test_http_methods'     => $this,
-      'system_status'         => $this,
+//      'system_status'         => $this,
       'toggle_legacy_server'  => 'WC_POS_Status',
     );
 

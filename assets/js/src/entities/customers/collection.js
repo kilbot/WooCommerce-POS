@@ -1,18 +1,17 @@
-var Collection = require('lib/config/collection');
+var DualCollection = require('lib/config/dual-collection');
 var Model = require('./model');
 var Radio = require('backbone.radio');
 
-module.exports = Collection.extend({
+module.exports = DualCollection.extend({
   model: Model,
   name: 'customers',
-
-  url: function(){
-    var wc_api = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'wc_api'
-    });
-    return wc_api + 'customers';
-  },
+  indexes: [
+    {name: 'local_id', keyPath: 'local_id', unique: true},
+    {name: 'id', keyPath: 'id', unique: true},
+    {name: 'status', keyPath: 'status', unique: false},
+    {name: 'email', keyPath: 'email', unique: true},
+    {name: 'username', keyPath: 'username', unique: true}
+  ],
 
   initialize: function(){
     var settings = Radio.request('entities', 'get', {

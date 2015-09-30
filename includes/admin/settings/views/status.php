@@ -8,20 +8,34 @@
 
 <table class="widefat striped">
   <tbody>
-
-  {{#each []}}
-  <tr>
-    <th style="width:25%">{{title}}</th>
-    <td style="width:10%;text-align:center;" class="{{#if pass}}pass{{else}}fail{{/if}}">
-      <i class="wc_pos-icon-{{#if pass}}success{{else}}error{{/if}} wc_pos-icon-lg"></i>
-    </td>
-    <td>
-      {{{message}}}
-      {{#each buttons}}
-        <a href="{{#if href}}{{href}}{{else}}#{{/if}}" {{#if action}}data-action="{{action}}"{{/if}} class="button">{{prompt}}</a>
-      {{/each}}
-    </td>
-  </tr>
-  {{/each}}
+    <?php
+      $status = new WC_POS_Status();
+      foreach( $status->output() as $test ):
+      $args = wp_parse_args( $test, array(
+        'pass' => false,
+        'title' => '',
+        'message' => '',
+        'buttons' => array()
+      ) );
+      extract( $args );
+    ?>
+    <tr>
+      <th style="width:25%"><?php echo $title; ?></th>
+      <td style="width:10%;text-align:center;" class="<?php echo $pass ? 'pass' : 'fail'; ?>">
+        <i class="wc_pos-icon-<?php echo $pass ? 'success' : 'error'; ?> wc_pos-icon-lg"></i>
+      </td>
+      <td>
+        <?php echo $message; ?>
+        <?php
+        foreach( $buttons as $button ):
+          $href = isset( $button['href'] ) ? $button['href'] : '#';
+          $action = isset( $button['action'] ) ? 'data-action="'. esc_attr( $button['action'] ) .'"' : '';
+          $prompt = isset( $button['prompt'] ) ? $button['prompt'] : '';
+          ?>
+          <a href="<?php echo esc_url($href); ?>" <?php echo $action; ?> class="button"><?php echo $prompt; ?></a>
+        <?php endforeach; ?>
+      </td>
+    </tr>
+    <?php endforeach; ?>
   </tbody>
 </table>

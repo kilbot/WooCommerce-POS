@@ -14,10 +14,6 @@ var View = ItemView.extend({
     EmulateHTTP: {
       behaviorClass: EmulateHTTP
     }
-  },
-
-  templateHelpers: function(){
-    return this.options.tests;
   }
 
 });

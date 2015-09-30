@@ -1,13 +1,11 @@
 var ItemView = require('lib/config/item-view');
 var $ = require('jquery');
-var Tmpl = require('./status.hbs');
-var hbs = require('handlebars');
 var polyglot = require('lib/utilities/polyglot');
 var EmulateHTTP = require('lib/behaviors/emulateHTTP');
 
 module.exports = ItemView.extend({
   tagName: 'ul',
-  template: hbs.compile(Tmpl),
+  template: 'support.status',
 
   ui: {
     toggle: '.toggle',

@@ -11,9 +11,9 @@
 
 class WC_POS_Activator {
 
-  /** @const min requires to run WooCommerce POS */
-  const WC_MIN = '2.3.7';
-  const PHP_MIN = '5.4';
+  // minimum requirements
+  const WC_MIN_VERSION = '2.3.7';
+  const PHP_MIN_VERSION = '5.4';
 
   /**
    * @param $file
@@ -41,8 +41,7 @@ class WC_POS_Activator {
    * Checks for valid install and begins execution of the plugin.
    */
   public function run_woocommerce_pos(){
-    // WooCommerce greater than 2.3.7 is required
-    // PHP greater than 5.4 is required
+    // Check for min requirements to run
     if( $this->php_check() && $this->woocommerce_check() ){
       require_once WC_POS_PLUGIN_PATH . 'includes/class-wc-pos.php';
       new WC_POS();
@@ -181,14 +180,14 @@ class WC_POS_Activator {
    * Check min version of WooCommerce installed
    */
   private function woocommerce_check() {
-    if( class_exists( 'WooCommerce' ) && version_compare( WC()->version, self::WC_MIN, '>=' ) )
+    if( class_exists( 'WooCommerce' ) && version_compare( WC()->version, self::WC_MIN_VERSION, '>=' ) )
       return true;
 
     if( class_exists( 'WC_POS_Admin_Notices' ) ){
       $message = sprintf(
         __('<strong>WooCommerce POS</strong> requires <a href="%s">WooCommerce %s or higher</a>. Please <a href="%s">install and activate WooCommerce</a>', 'woocommerce-pos' ),
         'http://wordpress.org/plugins/woocommerce/',
-        self::WC_MIN,
+        self::WC_MIN_VERSION,
         admin_url('plugins.php')
       ) . ' &raquo;';
       WC_POS_Admin_Notices::add( $message );
@@ -200,13 +199,13 @@ class WC_POS_Activator {
    */
   private function php_check(){
     $php_version = phpversion();
-    if( version_compare( $php_version, self::PHP_MIN, '>' ) )
+    if( version_compare( $php_version, self::PHP_MIN_VERSION, '>' ) )
       return true;
 
     if( class_exists( 'WC_POS_Admin_Notices' ) ) {
       $message = sprintf(
         __('<strong>WooCommerce POS</strong> requires PHP %s or higher. Read more information about <a href="%s">how you can update</a>', 'woocommerce-pos' ),
-        self::PHP_MIN,
+        self::PHP_MIN_VERSION,
         'http://www.wpupdatephp.com/update/'
       ) . ' &raquo;';
       WC_POS_Admin_Notices::add( $message );
