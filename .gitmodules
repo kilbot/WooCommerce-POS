@@ -16,3 +16,6 @@
 [submodule "assets/js/src/lib/config/idb"]
 	path = assets/js/src/lib/config/idb
 	url = https://github.com/kilbot/backbone-idb.git
+[submodule "styleguide"]
+	path = styleguide
+	url = https://github.com/kilbot/WooCommerce-POS-StyleGuide.git

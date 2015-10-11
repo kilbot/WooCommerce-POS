@@ -45,10 +45,11 @@ class WC_POS_Admin_Permalink {
 
   /**
    * Watch for $_POST and save POS setting
+   * - sanitize field and remove slash from start and end
    */
   public function save() {
     if( isset( $_POST['woocommerce_pos_permalink'] ) ) {
-      $permalink = untrailingslashit( sanitize_text_field( $_POST['woocommerce_pos_permalink'] ) );
+      $permalink = trim( sanitize_text_field( $_POST['woocommerce_pos_permalink'] ), '/\\' );
       update_option( self::DB_KEY, $permalink );
     }
   }

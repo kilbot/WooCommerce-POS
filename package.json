@@ -43,6 +43,7 @@
     "lodash": "^3.10.1",
     "moment": "^2.10.6",
     "node-polyglot": "^0.4.3",
+    "normalize.css": "^3.0.3",
     "select2": "^4.0.0"
   },
   "devDependencies": {

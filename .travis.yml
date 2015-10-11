@@ -12,10 +12,9 @@ env:
   #    - WP_VERSION=latest WP_MULTISITE=1
   #    - WP_VERSION=3.8 WP_MULTISITE=0
   #    - WP_VERSION=3.8 WP_MULTISITE=1
-  - TRAVIS_NODE_VERSION="4"
 
 before_install:
-  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
+  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install stable
   - git submodule update --init --recursive
 
 install:

@@ -1,3 +1,10 @@
+/**
+  * @name Modal
+  *
+  * @markup
+  *   <div class="modal"></div>
+  */
+
 #wc-pos-modal, #modal {
   .modal-content {
     @include border-radius(0);

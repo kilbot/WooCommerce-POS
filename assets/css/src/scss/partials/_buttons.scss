@@ -1,3 +1,21 @@
+/**
+  * @name Standard Buttons
+  *
+  * @state :hover - Hover state
+  * @state :active - Active state
+  * @state :focus - Active state
+  * @state :active-focus - Active state
+  * @state .disabled - Disabled state
+  *
+  * @markup
+  *   <button class="btn">Default</button>
+  *   <button class="btn btn-primary">Primary</button>
+  *   <button class="btn btn-success">Success</button>
+  *   <button class="btn btn-info">Info</button>
+  *   <button class="btn btn-warning">Warning</button>
+  *   <button class="btn btn-danger">Danger</button>
+  */
+
 .btn {
   @include transition-property(background-color);
   @include transition-duration(.1s);
@@ -51,7 +69,6 @@
 }
 
 input[type="text"].btn {
-//  @include button-size($padding-base-vertical, $padding-base-horizontal, $font-size-base, $line-height-base, $border-radius-base);
   @include button-size(1px, 0, $font-size-base, $line-height-base, 16px);
   text-align: center;
   -moz-appearance: textfield;
@@ -112,8 +129,20 @@ input[type="text"].btn {
   @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
 }
 
-// Circle buttons
-// --------------------------------------------------
+/**
+  * @name Circle Buttons
+  *
+  * @state .btn-circle-sm - Small buttons
+  *
+  * @markup
+  *   <button class="btn btn-circle">+</button>
+  *   <button class="btn btn-circle btn-primary">+</button>
+  *   <button class="btn btn-circle btn-success">+</button>
+  *   <button class="btn btn-circle btn-info">+</button>
+  *   <button class="btn btn-circle btn-warning">+</button>
+  *   <button class="btn btn-circle btn-danger">+</button>
+  */
+
 .btn-circle {
   @include border-radius(18px);
   padding: 0px;
