@@ -1,0 +1,21 @@
+/**
+ * Prefix with $namespace-prefix is exists
+ */
+@function namespace($string) {
+  @if variable-exists(namespace-prefix) {
+    @return #{$namespace-prefix}-#{$string}
+  } @else {
+    @return $string;
+  }
+}
+
+/**
+ * Returns current module, with namespace prefix
+ */
+@function current-module() {
+  @if variable-exists(namespace-prefix) {
+    @return namespace( nth(&, 1) );
+  } @else {
+    @return nth(&, 1);
+  }
+}

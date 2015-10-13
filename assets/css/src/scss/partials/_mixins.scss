@@ -1,4 +1,7 @@
 @import "mixins/alert-variant";
+@import "mixins/button-size";
+@import "mixins/button-variant";
+@import "mixins/namespacing";
 
 @mixin hoverActiveFocus() {
     &:hover, &:active, &:focus {

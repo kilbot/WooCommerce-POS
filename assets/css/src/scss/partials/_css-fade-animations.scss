@@ -1,0 +1,37 @@
+/**
+  * @name CSS Fade Animations
+  *
+  * @state .css-fade-in-10 - 10 second Fade In state
+  * @state .css-fade-out-10 - 10 second Fade Out state
+  *
+  * @markup
+  *   <div>This is some text</div>
+  */
+
+$fade-in-name : namespace('fadeIn');
+$fade-out-name : namespace('fadeOut');
+
+css-fade {
+  @at-root {
+    .#{current-module()}-in-10 {
+      @include animation($fade-in-name 10s 1 linear);
+      opacity: 1;
+    }
+    .#{current-module()}-out-10 {
+      @include animation($fade-out-name 10s 1 linear);
+      opacity: 0;
+    }
+  }
+}
+
+@include keyframes($fade-in-name) {
+  0% { opacity: 0; }
+  90% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@include keyframes($fade-out-name) {
+  0% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}

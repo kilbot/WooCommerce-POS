@@ -5,7 +5,7 @@
 @import "partials/admin/variables";
 
 // Vendor
-@import "partials/normalize";
+//@import "partials/normalize";
 
 // Bootstrap
 @import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
@@ -18,6 +18,8 @@
 
 // select2
 @import "../../../../node_modules/select2/src/scss/core";
+
+@import "partials/mixins";
 
 /**
  * POS ADMIN
@@ -35,4 +37,5 @@
 @import "partials/admin/settings/checkout";
 @import "partials/admin/settings/access";
 
-@import "partials/css-fade-in-out";
+@import "partials/css-fade-animations";
+@import "partials/icons";

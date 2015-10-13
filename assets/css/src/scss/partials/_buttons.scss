@@ -3,8 +3,8 @@
   *
   * @state :hover - Hover state
   * @state :active - Active state
-  * @state :focus - Active state
-  * @state :active-focus - Active state
+  * @state :focus - Focus state
+  * @state :active-focus - Active Focus state
   * @state .disabled - Disabled state
   *
   * @markup
@@ -16,145 +16,146 @@
   *   <button class="btn btn-danger">Danger</button>
   */
 
-.btn {
-  @include transition-property(background-color);
-  @include transition-duration(.1s);
-  @include transition-timing-function(ease-in-out);
+// Sizing
+$btn-padding-x:                  $padding-base-horizontal !default;
+$btn-padding-y:                  $padding-base-vertical !default;
+$btn-font-size:                  $font-size-base !default;
+$btn-font-weight:                normal !default;
+$btn-line-height:                $line-height-base !default;
+$btn-border-radius:              $border-radius !default;
 
-  display: inline-block;
-  margin-bottom: 0; // For input.btn
-  font-weight: $btn-font-weight;
-  text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
-  cursor: pointer;
-  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
-  background-color: $input-bg;
-  border: 1px solid $input-border-color;
-  white-space: nowrap;
-  @include button-size($padding-base-vertical, $padding-base-horizontal, $font-size-base, $line-height-base, $border-radius-base);
-  @include user-select(none);
+// Colors
+$btn-color:                      $text-color !default;
+$btn-bg:                         $input-bg !default;
+$btn-border:                     $input-border-color !default;
 
-  &,
-  &:active,
-  &.active {
-    &:focus,
-    &.focus {
-      @include tab-focus;
+$btn-primary-color:              #fff !default;
+$btn-primary-bg:                 $brand-primary !default;
+$btn-primary-border:             $btn-primary-bg !default;
+
+$btn-secondary-color:            $gray-dark !default;
+$btn-secondary-bg:               #fff !default;
+$btn-secondary-border:           #ccc !default;
+
+$btn-info-color:                 #fff !default;
+$btn-info-bg:                    $brand-info !default;
+$btn-info-border:                $btn-info-bg !default;
+
+$btn-success-color:              #fff !default;
+$btn-success-bg:                 $brand-success !default;
+$btn-success-border:             $btn-success-bg !default;
+
+$btn-warning-color:              #fff !default;
+$btn-warning-bg:                 $brand-warning !default;
+$btn-warning-border:             $btn-warning-bg !default;
+
+$btn-danger-color:               #fff !default;
+$btn-danger-bg:                  $brand-danger !default;
+$btn-danger-border:              $btn-danger-bg !default;
+
+
+btn {
+  @at-root {
+
+    .#{current-module()} {
+      @include transition-property(all);
+      @include transition-duration(.2s);
+      @include transition-timing-function(ease-in-out);
+
+      display: inline-block;
+      margin-bottom: 0; // For input.btn
+      font-weight: $btn-font-weight;
+      text-align: center;
+      vertical-align: middle;
+      touch-action: manipulation;
+      cursor: pointer;
+      background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+      background-color: $btn-bg;
+      border: 1px solid $btn-border;
+      white-space: nowrap;
+      @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-line-height, $btn-border-radius);
+      @include user-select(none);
+
+      &,
+      &:active,
+      &.pseudo-class-active {
+        &:focus {
+          @include tab-focus;
+        }
+      }
+
+      &:hover,
+      &.pseudo-class-hover,
+      &:focus,
+      &.pseudo-class-focus {
+        color: $btn-color;
+        text-decoration: none;
+      }
+
+      &:active,
+      &.pseudo-class-active {
+        outline: 0;
+        background-image: none;
+        @include box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+      }
+
+      &.disabled,
+      &[disabled],
+      fieldset[disabled] & {
+        cursor: $cursor-disabled;
+        pointer-events: none; // Future-proof disabling of clicks
+        @include opacity(.65);
+        @include box-shadow(none);
+      }
     }
-  }
 
-  &:hover,
-  &:focus,
-  &.focus {
-    color: $btn-default-color;
-    text-decoration: none;
-  }
-
-  &:active,
-  &.active {
-    outline: 0;
-    background-image: none;
-    @include box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
-  }
-
-  &.disabled,
-  &[disabled],
-  fieldset[disabled] & {
-    cursor: $cursor-disabled;
-    pointer-events: none; // Future-proof disabling of clicks
-    @include opacity(.65);
-    @include box-shadow(none);
-  }
-}
-
-input[type="text"].btn {
-  @include button-size(1px, 0, $font-size-base, $line-height-base, 16px);
-  text-align: center;
-  -moz-appearance: textfield;
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  &::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-// toggle btns
-*[data-toggle="buttons"] {
-  @include display-flex;
-  width: 100%;
-  .btn {
-    @include flex(1 1 auto);
-    @include border-radius(0);
-    &:first-child {
-      @include border-top-left-radius($border-radius-base);
-      @include border-bottom-left-radius($border-radius-base);
+    /**
+     * Modifiers
+     */
+    .#{current-module()}-primary {
+      @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
     }
-    &:last-child {
-      @include border-top-right-radius($border-radius-base);
-      @include border-bottom-right-radius($border-radius-base);
+    .#{current-module()}-success {
+      @include button-variant($btn-success-color, $btn-success-bg, $btn-success-border);
     }
+    .#{current-module()}-info {
+      @include button-variant($btn-info-color, $btn-info-bg, $btn-info-border);
+    }
+    .#{current-module()}-warning {
+      @include button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border);
+    }
+    .#{current-module()}-danger {
+      @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
+    }
+
+    /**
+     * @name Circle Buttons
+     *
+     * @state .btn-circle-sm - Small buttons
+     *
+     * @markup
+     *   <button class="btn btn-circle">+</button>
+     *   <button class="btn btn-circle btn-primary">+</button>
+     *   <button class="btn btn-circle btn-success">+</button>
+     *   <button class="btn btn-circle btn-info">+</button>
+     *   <button class="btn btn-circle btn-warning">+</button>
+     *   <button class="btn btn-circle btn-danger">+</button>
+     */
+    .#{current-module()}-circle {
+      @include border-radius(18px);
+      padding: 0px;
+      width: 36px;
+      height: 36px;
+      line-height: 34px;
+    }
+
+    .#{current-module()}-circle-sm {
+      @include border-radius(11px);
+      padding: 0px;
+      width: 22px;
+      height: 22px;
+      line-height: 20px;
+    }
+
   }
-}
-
-// Alternate buttons
-// --------------------------------------------------
-
-.btn-default {
-  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
-}
-.btn-primary {
-  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
-}
-// Success appears as green
-.btn-success {
-  @include button-variant($btn-success-color, $btn-success-bg, $btn-success-border);
-}
-// Info appears as blue-green
-.btn-info {
-  @include button-variant($btn-info-color, $btn-info-bg, $btn-info-border);
-}
-// Warning appears as orange
-.btn-warning {
-  @include button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border);
-}
-// Danger and error appear as red
-.btn-danger {
-  @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
-}
-
-/**
-  * @name Circle Buttons
-  *
-  * @state .btn-circle-sm - Small buttons
-  *
-  * @markup
-  *   <button class="btn btn-circle">+</button>
-  *   <button class="btn btn-circle btn-primary">+</button>
-  *   <button class="btn btn-circle btn-success">+</button>
-  *   <button class="btn btn-circle btn-info">+</button>
-  *   <button class="btn btn-circle btn-warning">+</button>
-  *   <button class="btn btn-circle btn-danger">+</button>
-  */
-
-.btn-circle {
-  @include border-radius(18px);
-  padding: 0px;
-  width: 36px;
-  height: 36px;
-  line-height: 34px;
-}
-
-.btn-circle-sm {
-  @include border-radius(11px);
-  padding: 0px;
-  width: 22px;
-  height: 22px;
-  line-height: 20px;
 }

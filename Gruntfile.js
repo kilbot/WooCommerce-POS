@@ -6,22 +6,6 @@ module.exports = function(grunt) {
 
   var pkg = grunt.file.readJSON('package.json');
 
-  /**
-   * Simple version conversion to integer
-   * - 0.4.2 becomes 4002
-   * - 0.4.2-dev becomes 4002
-   * - 1.4.2 becomes 1004002
-   */
-  //var idbVersion = function(){
-  //  var version = pkg.version
-  //    .split('.')
-  //    .map(function(num){
-  //      return(1e15+ parseInt( num, 10 ) +"").slice(-3)
-  //    })
-  //    .join('');
-  //  return parseInt( version, 10 );
-  //}
-
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
