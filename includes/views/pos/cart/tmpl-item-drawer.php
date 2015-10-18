@@ -1,7 +1,7 @@
 {{#if product_id}}
 <div class="col-1"><label for="regular_price"><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>:</label></div>
 <div class="col-2">
-  <input name="regular_price" id="regular_price" class="autogrow btn" type="text" data-numpad="amount" data-label="<?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>" />
+  <input name="regular_price" id="regular_price" class="form-control autogrow" type="text" data-numpad="amount" data-label="<?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>" />
 </div>
 {{/if}}
 
@@ -14,7 +14,7 @@
 
 <div class="col-1"><label for="taxable"><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?>:</label></div>
 <div class="col-2">
-  <input type="checkbox" name="taxable" id="taxable">
+  <input type="checkbox" name="taxable" id="taxable" class="form-control">
   <select name="tax_class" id="tax_class" {{#unless taxable}}disabled{{/unless}}></select>
 </div>
 
@@ -23,8 +23,8 @@
 <div class="col-2">
   {{#each meta}}
     <span data-key="{{key}}">
-      <input name="meta.label" value="{{label}}" type="text">
-      <textarea name="meta.value">{{value}}</textarea>
+      <input name="meta.label" value="{{label}}" type="text" class="form-control">
+      <textarea name="meta.value" class="form-control">{{value}}</textarea>
       <a href="#" class="action-remove-meta"><i class="icon-times"></i></a>
     </span>
   {{/each}}

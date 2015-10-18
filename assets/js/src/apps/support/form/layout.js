@@ -9,7 +9,7 @@ var Layout = LayoutView.extend({
       '<div class="list-header support-header">' +
       '<div><h4>' + title + '</h4></div></div>' +
       '<div class="panel-body list support-list"></div>' +
-      '<div class="support-actions"></div>';
+      '<div class="list-actions support-actions"></div>';
   },
 
   regions: {

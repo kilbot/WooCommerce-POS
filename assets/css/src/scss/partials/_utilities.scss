@@ -1,20 +1,88 @@
+/**
+ * @name Floats
+ *
+ * @markup
+ *
+ */
+
+.clearfix {
+  @include clearfix();
+}
+
+.center-block {
+  @include center-block();
+}
+
+.pull-right {
+  @include pull-right();
+}
+
+.pull-left {
+  @include pull-left();
+}
+
+
+/**
+ * @name Screenreaders
+ *
+ * @markup
+ *
+ */
+
+.sr-only {
+  @include sr-only();
+}
+
+.sr-only-focusable {
+  @include sr-only-focusable();
+}
+
+/**
+ * @name Hidden
+ *
+ * @markup
+ *
+ */
+
+// Always hide an element with the `hidden` HTML attribute (from PureCSS).
+[hidden] {
+  display: none !important;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.text-hide {
+  @include text-hide();
+}
+
+
+/**
+ * @name Borders
+ *
+ * @markup
+ *
+ */
+
 .no-border {
 	border: 0 !important;
 }
 
-.working {
-	background-color: rgba(#7db500, 0.3);
-	background-image: url(../../../assets/bg-working.gif);
-}
 
-#right-panel {
-	.status {
-		padding: $spacing;
-		border-bottom: 1px solid $dark-border-color;
-	}
-}
+/**
+ * @name Background
+ *
+ * @markup
+ *
+ */
 
-.action-btns {
-	text-align: right;
-	padding: $spacing/2;
-}
+@include bg-variant('.bg-primary', $brand-primary);
+
+@include bg-variant('.bg-success', $brand-success);
+
+@include bg-variant('.bg-info', $brand-info);
+
+@include bg-variant('.bg-warning', $brand-warning);
+
+@include bg-variant('.bg-danger', $brand-danger);

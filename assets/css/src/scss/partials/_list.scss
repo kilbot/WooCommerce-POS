@@ -50,8 +50,18 @@ list {
         li {
           border-bottom: 1px solid $list-border-color;
 
+          &:last-of-type {
+            border-bottom: 0;
+          }
+
           &.empty {
             padding: $list-item-padding-y $list-item-drawer-padding-x;
+          }
+
+          &.sub-heading {
+            background-color: $list-header-background;
+            color: $list-header-color;
+            text-align: center;
           }
 
         }
@@ -317,9 +327,26 @@ list {
 
     .#{current-module()}-actions {
 
+      border-top: 2px solid $input-border-color;
+
       > div {
         padding: $list-actions-padding-y $list-actions-padding-x;
+        text-align: right;
 
+        > .btn.pull-left {
+          margin-right: 4px;
+        }
+
+      }
+
+      p.message {
+        display: inline-block;
+        text-align: right;
+        margin: 0;
+      }
+
+      &:first-of-type {
+        border-top: 0;
       }
 
     }

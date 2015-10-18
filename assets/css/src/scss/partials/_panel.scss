@@ -3,7 +3,7 @@ $panel-header-bg            : nth( $primaryPalette, 8 );
 $panel-header-text-color    : $inverse-text-color;
 $panel-footer-bg            : nth( $primaryPalette, 2 );
 $panel-footer-color         : darken( nth( $primaryPalette, 2 ), 25% );
-$panel-footer-padding-y     : $padding-base-vertical;
+$panel-footer-padding-y     : $padding-base-vertical/2;
 $panel-footer-padding-x     : $padding-base-horizontal;
 
 /**
@@ -69,6 +69,7 @@ panel {
       > div {
         background: $panel-footer-bg;
         @include clearfix();
+        line-height: 1;
       }
 
       .info {

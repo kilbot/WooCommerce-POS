@@ -1,22 +1,16 @@
 @import "mixins/alert-variant";
+@import "mixins/bg-variant";
+@import "mixins/breakpoints";
 @import "mixins/button-size";
 @import "mixins/button-variant";
-@import "mixins/namespacing";
+@import "mixins/center-block";
 @import "mixins/form-control-focus";
 @import "mixins/hover";
-@import "mixins/tab-focus";
-@import "mixins/reset-text";
+@import "mixins/namespacing";
 @import "mixins/nav-divider";
-
-//@mixin hoverActiveFocus() {
-//    &:hover, &:active, &:focus {
-//        @content;
-//    }
-//}
-//
-//@mixin transition-transform($transition...) {
-//  -webkit-transition: -webkit-transform $transition;
-//     -moz-transition: -moz-transform $transition;
-//       -o-transition: -o-transform $transition;
-//          transition: transform $transition;
-//}
+@import "mixins/pulls";
+@import "mixins/reset-text";
+@import "mixins/screen-reader";
+@import "mixins/tab-focus";
+@import "mixins/text-emphasis-variant";
+@import "mixins/text-hide";

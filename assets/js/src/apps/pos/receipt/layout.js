@@ -1,7 +1,7 @@
 var LayoutView = require('lib/config/layout-view');
 
 module.exports = LayoutView.extend({
-  template: 'pos.receipt.list',
+  template: 'pos.receipt.panel',
 
   regions: {
     status  : '.receipt-status',

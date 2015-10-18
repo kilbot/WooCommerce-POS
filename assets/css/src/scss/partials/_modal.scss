@@ -1,104 +1,328 @@
+$zindex-modal-bg              : 1040 !default;
+$zindex-modal                 : 1050 !default;
+
+$modal-inner-padding          : 15px !default;
+
+$modal-title-padding-y        : $padding-base-vertical;
+$modal-title-padding-x        : $padding-base-horizontal;
+$modal-title-line-height      : $line-height-base !default;
+
+$modal-content-bg             : #fff !default;
+$modal-content-border-color   : rgba(0,0,0,.2) !default;
+$modal-border-radius          : $border-radius-base;
+
+$modal-backdrop-bg            : #000 !default;
+$modal-backdrop-opacity       : .5 !default;
+$modal-header-border-color    : #e5e5e5 !default;
+$modal-footer-border-color    : $modal-header-border-color !default;
+
+$modal-body-padding-y         : $padding-base-vertical;
+$modal-body-padding-x         : $padding-base-horizontal;
+
+$modal-footer-padding-y       : $padding-base-vertical;
+$modal-footer-padding-x       : $padding-base-horizontal;
+
+$modal-lg                     : 900px !default;
+$modal-md                     : 600px !default;
+$modal-sm                     : 300px !default;
+
+
 /**
   * @name Modal
   *
   * @markup
-  *   <div class="modal"></div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div> <!-- Marionette region -->
+          <h4 class="modal-title">Modal title</h4>
+          <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+            <i class="icon-times icon-lg"></i>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <p>Status message</p>
+        <button type="button" class="btn pull-left" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
   */
 
-#wc-pos-modal, #modal {
-  .modal-content {
-    @include border-radius(0);
-  }
-  .modal-header {
-    padding: 0;
-    position: relative;
-    background-color: #fcfcfc;
-    height: 50px;
-    h1 {
-      padding: 0 16px;
-      font-size: 22px;
-      line-height: 50px;
-      margin: 0;
-    }
-    i {
-      position: absolute;
+// .modal-open      - body class for killing the scroll
+// .modal           - container to scroll within
+// .modal-dialog    - positioning shell for the actual modal
+// .modal-content   - actual modal w/ bg and corners and shit
+
+modal {
+  @at-root {
+
+    .#{current-module()} {
+      position: fixed;
       top: 0;
       right: 0;
-      cursor: pointer;
-      color: #777;
-      height: 50px;
-      width: 50px;
-      text-align: center;
-      border-left: 1px solid #ddd;
-      line-height: 50px;
-      background: transparent;
-      @include transition-property(all);
-      @include transition-duration(.1s);
-      @include transition-timing-function(ease-in-out);
-      &:hover {
-        color: #000;
-        border-color: #ccc;
-        background: #ddd;
-        outline: 0;
-      }
-    }
-  }
-  .modal-body {
-    @include clearfix;
+      bottom: 0;
+      left: 0;
+      z-index: $zindex-modal;
+      display: none;
+      overflow: hidden;
+      // Prevent Chrome on Windows from adding a focus outline. For details, see
+      // https://github.com/twbs/bootstrap/pull/10951.
+      outline: 0;
+      -webkit-overflow-scrolling: touch;
 
-    // wp-admin
-    i.spinner {
-      display: inline-block;
-      float: none;
-      margin: 0;
-      visibility: visible;
+      // When fading in the modal, animate it to slide down
+      &.fade .#{namespace('modal')}-dialog {
+        transition: transform .3s ease-out;
+        transform: translate(0, -25%);
+      }
+      &.in .#{namespace('modal')}-dialog { transform: translate(0, 0); }
     }
-  }
-  .modal-footer {
-    padding: 0px;
-    > div {
-      padding: 11px;
+
+    // Kill the scroll on the body
+    .#{current-module()}-open {
+      overflow: hidden;
+    }
+
+    // Container that the modal scrolls within
+    .#{current-module()}-open .#{current-module()} {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    // Shell div to position the modal with bottom padding
+    .#{current-module()}-dialog {
+      position: relative;
+      width: auto;
+      margin: 10px;
+    }
+
+    // Actual modal
+    .#{current-module()}-content {
+      position: relative;
+      background-color: $modal-content-bg;
+      background-clip: padding-box;
+      border: 1px solid $modal-content-border-color;
+      border-radius: $modal-border-radius;
+      @include box-shadow(0 3px 9px rgba(0,0,0,.5));
+      // Remove focus outline from opened modal
+      outline: 0;
+    }
+
+    // Modal background
+    .#{current-module()}-backdrop {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: $zindex-modal-bg;
+      background-color: $modal-backdrop-bg;
+
+      // Fade for backdrop
+      &.fade { opacity: 0; }
+      &.in { opacity: $modal-backdrop-opacity; }
+    }
+
+    // Modal header
+    // Top section of the modal w/ title and dismiss
+    .#{current-module()}-header {
+      border-bottom: 1px solid $modal-header-border-color;
+
+      > div {
+        @include display-flex;
+      }
+
+    }
+
+    // Close icon
+    .#{current-module()}-header .close {
+      @include flex(0 1 auto);
+      border-width: 0;
+      border-left-width: 1px;
+      border-bottom-width: 1px;
+      margin-bottom: -1px;
+      @include border-radius(0);
+      @include box-shadow(none);
+    }
+
+    // Title text within header
+    .#{current-module()}-title {
+      margin: 0;
+      line-height: $modal-title-line-height;
+      padding: $modal-title-padding-y $modal-title-padding-x;
+      @include flex(1);
+    }
+
+    // Modal body
+    // Where all modal content resides (sibling of .modal-header and .modal-footer)
+    .#{current-module()}-body {
+      position: relative;
+      padding: $modal-body-padding-y $modal-body-padding-x;
+      @include clearfix();
+    }
+
+    // Footer (for actions)
+    .#{current-module()}-footer {
+      padding: $modal-footer-padding-y $modal-title-padding-x;
+      text-align: right; // right align buttons
+      border-top: 1px solid $modal-footer-border-color;
+      @include clearfix(); // clear it in case folks use .pull-* classes on buttons
+
+      // Properly space out buttons
+      .btn + .btn {
+        margin-bottom: 0; // account for input[type="submit"] which gets the bottom margin like all other inputs
+        margin-left: 5px;
+      }
+      // but override that for button groups
+      .btn-group .btn + .btn {
+        margin-left: -1px;
+      }
+      // and override it for block buttons as well
+      .btn-block + .btn-block {
+        margin-left: 0;
+      }
+
       p.message {
         display: inline-block;
-        margin: 0 10px 0 0;
         text-align: right;
-        line-height: 20px;
-        i {
-          margin-right: 5px;
-          vertical-align: middle;
-        }
-        &.success {
-          color: $state-success-text;
-        }
-        &.error {
-          color: $state-danger-text;
-        }
+        margin: 0;
       }
     }
-  }
 
-  // error alert
-  .error {
-    .modal-header{
-      background: nth( $paletteRed, 8 );
-      border-color: lighten( nth( $paletteRed, 8 ), 5% );
-      color: $inverse-text-color;
-      i {
-        color: $inverse-text-color;
-        border-color: lighten( nth( $paletteRed, 8 ), 5% );
-        &:hover {
-          color: $inverse-text-color;
-          background: nth( $paletteRed, 7 );
-          outline: 0;
-        }
-      }
+    // Measure scrollbar width for padding body during modal show/hide
+    .#{current-module()}-scrollbar-measure {
+      position: absolute;
+      top: -9999px;
+      width: 50px;
+      height: 50px;
+      overflow: scroll;
     }
-    .modal-body {
-      .raw-output {
-        width: 100%;
-        max-height: 200px;
-        overflow: scroll;
-      }
-    }
+
   }
 }
+
+
+
+
+// Scale up the modal
+@include media-breakpoint-up(sm) {
+  // Automatically set modal's width for larger viewports
+  .modal-dialog {
+    width: $modal-md;
+    margin: 30px auto;
+  }
+  .modal-content {
+    @include box-shadow(0 5px 15px rgba(0,0,0,.5));
+  }
+
+  // Modal sizes
+  .modal-sm { width: $modal-sm; }
+}
+
+@include media-breakpoint-up(md) {
+  .modal-lg { width: $modal-lg; }
+}
+
+//#wc-pos-modal, #modal {
+//  .modal-content {
+//    @include border-radius(0);
+//  }
+//  .modal-header {
+//    padding: 0;
+//    position: relative;
+//    background-color: #fcfcfc;
+//    height: 50px;
+//    h1 {
+//      padding: 0 16px;
+//      font-size: 22px;
+//      line-height: 50px;
+//      margin: 0;
+//    }
+//    i {
+//      position: absolute;
+//      top: 0;
+//      right: 0;
+//      cursor: pointer;
+//      color: #777;
+//      height: 50px;
+//      width: 50px;
+//      text-align: center;
+//      border-left: 1px solid #ddd;
+//      line-height: 50px;
+//      background: transparent;
+//      @include transition-property(all);
+//      @include transition-duration(.1s);
+//      @include transition-timing-function(ease-in-out);
+//      &:hover {
+//        color: #000;
+//        border-color: #ccc;
+//        background: #ddd;
+//        outline: 0;
+//      }
+//    }
+//  }
+//  .modal-body {
+//    @include clearfix;
+//
+//    // wp-admin
+//    i.spinner {
+//      display: inline-block;
+//      float: none;
+//      margin: 0;
+//      visibility: visible;
+//    }
+//  }
+//  .modal-footer {
+//    padding: 0px;
+//    > div {
+//      padding: 11px;
+//      p.message {
+//        display: inline-block;
+//        margin: 0 10px 0 0;
+//        text-align: right;
+//        line-height: 20px;
+//        i {
+//          margin-right: 5px;
+//          vertical-align: middle;
+//        }
+//        &.success {
+//          color: $state-success-text;
+//        }
+//        &.error {
+//          color: $state-danger-text;
+//        }
+//      }
+//    }
+//  }
+//
+//  // error alert
+//  .error {
+//    .modal-header{
+//      background: nth( $paletteRed, 8 );
+//      border-color: lighten( nth( $paletteRed, 8 ), 5% );
+//      color: $inverse-text-color;
+//      i {
+//        color: $inverse-text-color;
+//        border-color: lighten( nth( $paletteRed, 8 ), 5% );
+//        &:hover {
+//          color: $inverse-text-color;
+//          background: nth( $paletteRed, 7 );
+//          outline: 0;
+//        }
+//      }
+//    }
+//    .modal-body {
+//      .raw-output {
+//        width: 100%;
+//        max-height: 200px;
+//        overflow: scroll;
+//      }
+//    }
+//  }
+//}

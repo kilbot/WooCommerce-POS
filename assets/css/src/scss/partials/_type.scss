@@ -1,36 +1,65 @@
-// Headings
-// -------------------------
+/**
+ * @name Headings
+ *
+ * @markup
+ *   <h1>Heading 1</h1>
+ *   <h2>Heading 2</h2>
+ *   <h3>Heading 3</h3>
+ *   <h4>Heading 4</h4>
+ *   <h5>Heading 5</h5>
+ *   <h6>Heading 6</h6>
+ */
+
+$headings-font-family : $font-family-base;
+$headings-font-weight : 500 !default;
+$headings-line-height : 1.1 !default;
+$headings-color       : inherit !default;
+$font-size-h1         : 2.5rem !default;
+$font-size-h2         : 2rem !default;
+$font-size-h3         : 1.75rem !default;
+$font-size-h4         : 1.5rem !default;
+$font-size-h5         : 1.25rem !default;
+$font-size-h6         : 1rem !default;
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: $headings-font-family;
   font-weight: $headings-font-weight;
   line-height: $headings-line-height;
+  color: $headings-color;
 }
 
-h1, .h1 { font-size: floor(($font-size-base * 2.6)); }   // ~36px
-h2, .h2 { font-size: floor(($font-size-base * 2.15)); }  // ~30px
-h3, .h3 { font-size: ceil(($font-size-base * 1.7)); }    // ~24px
-h4, .h4 { font-size: ceil(($font-size-base * 1.25)); }   // ~18px
-h5, .h5 { font-size: $font-size-base; }
-h6, .h6 { font-size: ceil(($font-size-base * 0.85)); }   // ~12px
+h1, .h1 { font-size: $font-size-h1; }  // 35px
+h2, .h2 { font-size: $font-size-h2; }  // 28px
+h3, .h3 { font-size: $font-size-h3; }  // 24.5px
+h4, .h4 { font-size: $font-size-h4; }  // 21px
+h5, .h5 { font-size: $font-size-h5; }  // 17.5px
+h6, .h6 { font-size: $font-size-h6; }  // 14px
 
-// Links
-// -------------------------
+/**
+ * @name Links
+ *
+ * @state :hover - Hover state
+ * @state :active - Active state
+ * @state :focus - Focus state
+ *
+ * @markup
+ *   <a href="#777">Hyperlink</a>
+ */
 
 a {
   color: $link-color;
-  text-decoration: none;
+  text-decoration: underline;
 
-  &:hover,
-  &:focus {
+  @include hover-focus {
     color: $link-hover-color;
     text-decoration: none;
   }
 
-//  &:focus {
-//    @include tab-focus;
-//  }
+  &:focus,
+  .pseudo-class-focus {
+    @include tab-focus();
+  }
 }
 
 // Emphasis & misc
@@ -39,47 +68,68 @@ a {
 // Ex: (12px small font / 14px base font) * 100% = about 85%
 small,
 .small {
-  font-size: floor((100% * $font-size-small / $font-size-base));
+  font-size: $font-size-sm;
 }
 
-mark,
-.mark {
-  background-color: $state-warning-bg;
-  padding: .2em;
-}
-
-// Alignment
-.text-left           { text-align: left; }
-.text-right          { text-align: right; }
-.text-center         { text-align: center; }
-.text-justify        { text-align: justify; }
-.text-nowrap         { white-space: nowrap; }
-
-// Transformation
-.text-lowercase      { text-transform: lowercase; }
-.text-uppercase      { text-transform: uppercase; }
-.text-capitalize     { text-transform: capitalize; }
-
-// Contextual colors
-.text-muted {
-  color: $text-muted;
-}
+/**
+ * @name Text
+ *
+ * @state .text-left - Align left
+ * @state .text-right - Align right
+ * @state .text-center - Centered
+ * @state .text-justify - Justified
+ * @state .text-nowrap - No wrap
+ * @state .text-lowercase - Lowercase
+ * @state .text-uppercase - Uppercase
+ * @state .text-capitalize - Capitalize
+ * @state .text-primary - Primary
+ * @state .text-success - Success
+ * @state .text-info - Info
+ * @state .text-warning - Warning
+ * @state .text-danger - Danger
+ *
+ * @markup
+ *   <p>Text helpers</p>
+ */
 
 text {
   @at-root {
 
-    .#{current-module()}-success {
-      color: #3c763d;
-    }
-    .#{current-module()}-error {
-      color: #a94442;
-    }
+    //.#{current-module()}-success {
+    //  color: #3c763d;
+    //}
+    //.#{current-module()}-error {
+    //  color: #a94442;
+    //}
+
+    // Alignment
+    .#{current-module()}-left           { text-align: left; }
+    .#{current-module()}-right          { text-align: right; }
+    .#{current-module()}-center         { text-align: center; }
+    .#{current-module()}-justify        { text-align: justify; }
+    .#{current-module()}-nowrap         { white-space: nowrap; }
+
+    // Transformation
+    .#{current-module()}-lowercase      { text-transform: lowercase; }
+    .#{current-module()}-uppercase      { text-transform: uppercase; }
+    .#{current-module()}-capitalize     { text-transform: capitalize; }
+
+    @include text-emphasis-variant('.#{current-module()}-primary',  $brand-primary);
+    @include text-emphasis-variant('.#{current-module()}-success',  $brand-success);
+    @include text-emphasis-variant('.#{current-module()}-info',     $brand-info);
+    @include text-emphasis-variant('.#{current-module()}-warning',  $brand-warning);
+    @include text-emphasis-variant('.#{current-module()}-danger',   $brand-danger);
 
   }
 }
 
-// Horizontal Rule
-// -------------------------
+/**
+ * @name Horizontal Rule
+ *
+ * @markup
+ *   <hr>
+ */
+
 hr {
   border: 0;
   height: 0;

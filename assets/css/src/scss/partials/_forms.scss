@@ -6,7 +6,7 @@ $input-color-placeholder  : #999 !default;
 $input-bg-disabled        : #eceeef !default;
 
 $input-padding-x          : $padding-base-horizontal !default;
-$input-padding-y          : $padding-base-vertical !default;
+$input-padding-y          : $padding-base-vertical/2 !default;
 
 $input-border-size        : 1px;
 $input-border-color       : darken($border-color, 5%);

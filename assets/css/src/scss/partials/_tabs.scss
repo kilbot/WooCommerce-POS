@@ -2,7 +2,7 @@ $tabs-background        : nth( $primaryPalette, 2 );
 $tab-item-background    : #f3f3f3;
 $tab-active-background  : #fff;
 $tabs-padding-x         : $padding-base-horizontal;
-$tabs-padding-y         : $padding-base-vertical;
+$tabs-padding-y         : $padding-base-vertical/2;
 
 /**
  * @name Tabs Spec

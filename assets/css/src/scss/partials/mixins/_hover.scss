@@ -5,22 +5,24 @@ $enable-hover-media-query: false;
     // See Media Queries Level 4: http://drafts.csswg.org/mediaqueries/#hover
     // Currently shimmed by https://github.com/twbs/mq4-hover-shim
     @media (hover: hover) {
-      &:hover { @content }
+      &:hover, &.pseudo-class-hover { @content }
     }
   }
   @else {
-    &:hover { @content }
+    &:hover, &.pseudo-class-hover { @content }
   }
 }
 
 @mixin hover-focus {
   @if $enable-hover-media-query {
-    &:focus { @content }
+    &:focus, &.pseudo-class-focus { @content }
     @include hover { @content }
   }
   @else {
     &:focus,
-    &:hover {
+    &.pseudo-class-focus,
+    &:hover,
+    &.pseudo-class-hover {
       @content
     }
   }

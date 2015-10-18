@@ -63,6 +63,7 @@ cart {
 
     }
 
+
     /**
      * @name Cart Item
      *
@@ -155,10 +156,6 @@ cart {
         font-size: 1.4em;
       }
 
-      li:last-of-type {
-        border: 0;
-      }
-
     }
 
 
@@ -182,20 +179,10 @@ cart {
 
     }
 
-    /**
-     * @name Cart Customer
-     */
-    .#{current-module()}-actions {
-
-      border-top: 2px solid $input-border-color;
-
-    }
-
     .#{current-module()}-notes {
 
-      border-top: 2px solid $input-border-color;
-
       > div {
+        border-top: 2px solid $input-border-color;
         padding: $cart-notes-padding-y $cart-notes-padding-x;
       }
     }

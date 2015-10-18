@@ -6,5 +6,5 @@
   <div class="total"><?php /* translators: woocommerce */ _e( 'Total', 'woocommerce' ); ?></div>
 </div>
 <div class="panel-body list receipt-list"></div>
-<div class="list-totals receipt-totals"></div>
-<div class="receipt-actions"></div>
+<div class="list list-totals receipt-totals"></div>
+<div class="list-actions receipt-actions"></div>
