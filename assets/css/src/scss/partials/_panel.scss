@@ -1,0 +1,84 @@
+$panel-bg                   : #fff !default;
+$panel-header-bg            : nth( $primaryPalette, 8 );
+$panel-header-text-color    : $inverse-text-color;
+$panel-footer-bg            : nth( $primaryPalette, 2 );
+$panel-footer-color         : darken( nth( $primaryPalette, 2 ), 25% );
+$panel-footer-padding-y     : $padding-base-vertical;
+$panel-footer-padding-x     : $padding-base-horizontal;
+
+/**
+ * @name Panel Spec
+ *
+ * @markup
+ *   <section style="height: 100px">
+ *     <div class="panel">
+ *       <div class="panel-header">
+ *         <div>Header</div>
+ *       </div>
+ *       <div class="panel-body">
+ *         <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dignissim quam sed lectus porta porttitor. Donec sit amet mi ante. Morbi facilisis massa ac pretium blandit. Donec auctor dolor eu laoreet imperdiet. Integer ac vestibulum sapien, at porttitor enim. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed massa justo, ornare at mattis eget, tincidunt vel enim. Etiam eu tellus vel enim commodo posuere sit amet at mauris. Aliquam erat volutpat. Donec sit amet justo tristique, vulputate leo ut, porta mauris. Cras neque nisi, malesuada ac velit at, pulvinar pulvinar quam.</div>
+ *       </div>
+ *       <div class="panel-footer">
+ *         <div>Footer</div>
+ *       </div>
+ *     </div>
+ *   </section>
+ */
+
+panel {
+  @at-root {
+
+    .#{current-module()} {
+      @include display-flex;
+      @include flex-direction(column);
+      height: 100%;
+      width: 100%;
+
+      > div {
+        background: $panel-bg;
+        @include flex(0 1 auto);
+      }
+    }
+
+    // Header
+    .#{current-module()}-header {
+      > div {
+        background: $panel-header-bg;
+        color: $panel-header-text-color;
+      }
+    }
+
+    // Body
+    .#{current-module()}-body {
+      overflow: auto;
+    }
+
+    /**
+     * @name Panel Footer Spec
+     *
+     * @markup
+     *   <div class="panel">
+     *     <div class="panel-footer">
+     *       <div>
+     *         <small class="info">Status information</small>
+     *       </div>
+     *     </div>
+     *   </div>
+     */
+    .#{current-module()}-footer {
+      > div {
+        background: $panel-footer-bg;
+        @include clearfix();
+      }
+
+      .info {
+        padding: $panel-footer-padding-y $panel-footer-padding-x;
+        color: $panel-footer-color;
+        float: right;
+        font-style: italic;
+      }
+
+    }
+
+  }
+}

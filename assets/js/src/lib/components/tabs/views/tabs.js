@@ -5,7 +5,8 @@ var View = CollectionView.extend({
   tagName: 'ul',
   childView: Tab,
   attributes: {
-    'role': 'tablist'
+    'class' : 'tabs',
+    'role'  : 'tablist'
   },
 
   setActive: function(id){

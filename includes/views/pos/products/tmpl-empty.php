@@ -1,1 +1,0 @@
-<div class="empty"><?php /* translators: woocommerce */ _e( 'No Products found', 'woocommerce' ); ?></div>

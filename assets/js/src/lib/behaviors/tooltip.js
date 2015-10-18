@@ -1,6 +1,6 @@
 var Behavior = require('lib/config/behavior');
 var App = require('lib/config/application');
-require('bootstrap-sass/assets/javascripts/bootstrap/tooltip');
+require('bootstrap/dist/js/umd/tooltip');
 
 var Tooltip = Behavior.extend({
 

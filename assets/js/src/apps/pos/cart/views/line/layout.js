@@ -7,11 +7,11 @@ module.exports = LayoutView.extend({
   tagName: 'li',
   className: function() { return this.model.get('type'); },
   template: function() {
-    return '<div class="item"></div><div class="drawer"></div>';
+    return '<div class="list-item"></div><div class="list-item-drawer"></div>';
   },
   regions: {
-    item: '.item',
-    drawer: '.drawer'
+    item: '.list-item',
+    drawer: '.list-item-drawer'
   },
 
   modelEvents: {

@@ -1,0 +1,329 @@
+$list-border-color              : $border-color;
+$list-alternate-bg-color        : #f9f9f9;
+
+$list-header-padding-x          : $padding-base-horizontal;
+$list-header-padding-y          : $padding-base-vertical;
+$list-header-background         : nth( $primaryPalette, 6 );
+$list-header-color              : $inverse-text-color;
+
+$list-item-padding-x            : $padding-base-horizontal;
+$list-item-padding-y            : $padding-base-vertical;
+
+$list-item-drawer-padding-x     : $padding-base-horizontal;
+$list-item-drawer-padding-y     : $padding-base-vertical;
+$list-item-drawer-bg            : $list-border-color;
+$list-item-drawer-border-color  : #ddd;
+
+$list-totals-padding-x          : $padding-base-horizontal;
+$list-totals-padding-y          : $padding-base-vertical;
+
+$list-actions-padding-x         : $padding-base-horizontal;
+$list-actions-padding-y         : $padding-base-vertical;
+
+list {
+  @at-root {
+
+    /**
+     * @name List
+     *
+     * @state .striped - Stripe alternate rows
+     *
+     * @markup
+     *   <div class="list">
+     *     <ul>
+     *       <li>Row</li>
+     *       <li>Row</li>
+     *       <li>Row</li>
+     *       <li>Row</li>
+     *     </ul>
+     *   </div>
+     */
+
+    .#{current-module()} {
+
+      ul {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+          border-bottom: 1px solid $list-border-color;
+
+          &.empty {
+            padding: $list-item-padding-y $list-item-drawer-padding-x;
+          }
+
+        }
+
+      }
+
+      &.striped {
+        li:nth-of-type(even) {
+          background: $list-alternate-bg-color;
+        }
+      }
+
+    }
+
+
+    /**
+     * @name List Header
+     *
+     * @markup
+     *   <div class="list-header">
+     *     <div>Cell</div>
+     *     <div>Cell</div>
+     *     <div>Cell</div>
+     *     <div>Cell</div>
+     *   </div>
+     */
+
+    .#{current-module()}-header {
+
+      @include display-flex;
+      background: $list-header-background;
+      color: $list-header-color;
+
+      > div {
+        @include flex(1 0 auto);
+        padding: $list-header-padding-y $list-header-padding-x;
+
+      }
+
+    }
+
+
+    /**
+     * @name List Item
+     *
+     * @markup
+     *   <div class="list-item">
+     *     <div> <!-- Marionette region -->
+     *       <div>Cell</div>
+     *       <div>Cell<br>New Line<br>New Line</div>
+     *       <div>Cell</div>
+     *       <div>Cell</div>
+     *     </div>
+     *   </div>
+     */
+
+    .#{current-module()}-item {
+
+      > div {
+        @include display-flex;
+        @include align-items(center);
+
+        > div {
+          @include flex(1 0 auto);
+          padding: $list-item-padding-y $list-item-padding-x;
+
+        }
+
+      }
+
+    }
+
+
+    /**
+      * @name List Item Drawer
+      *
+      * @markup
+      *   <div class="list-item-drawer">
+      *     <div> <!-- Marionette region -->
+      *       <div>
+      *         <div>Cell</div>
+      *         <div>Cell<br>New Line<br>New Line</div>
+      *         <div>Cell</div>
+      *         <div>Cell</div>
+      *       </div>
+      *       <div>
+      *         <div>Cell</div>
+      *         <div>Cell<br>New Line<br>New Line</div>
+      *         <div>Cell</div>
+      *         <div>Cell</div>
+      *       </div>
+      *     </div>
+      *   </div>
+      */
+
+    .#{current-module()}-item-drawer {
+
+      background: $list-item-drawer-bg;
+      box-shadow: inset 0 0 8px 0 rgba(0, 0, 0, 0.1);
+
+      > div > div {
+        @include display-flex;
+        @include align-items(center);
+        border-top: 1px solid $list-item-drawer-border-color;
+
+        > div {
+          @include flex(1 0 auto);
+          padding: $list-item-drawer-padding-y $list-item-drawer-padding-x;
+
+        }
+
+      }
+
+    }
+
+
+    /**
+     * @name Infinite List
+     *
+     * @state .pull - Pull to refresh
+     * @state .loading - Loading items
+     *
+     * @markup
+     *   <div class="list list-infinite">
+     *     <div><i class="icon-chevron-down"></i></div>
+     *       <ul>
+     *         <li>
+     *           <div class="list-item">
+     *             <div>
+     *               <div>Cell</div>
+     *               <div>Cell<br>New Line<br>New Line</div>
+     *               <div>Cell</div>
+     *               <div>Cell</div>
+     *             </div>
+     *           </div>
+     *           <div class="list-item-drawer">
+     *             <div>
+     *               <div>
+     *                 <div>Cell</div>
+     *                 <div>Cell<br>New Line<br>New Line</div>
+     *                 <div>Cell</div>
+     *                 <div>Cell</div>
+     *               </div>
+     *               <div>
+     *                 <div>Cell</div>
+     *                 <div>Cell<br>New Line<br>New Line</div>
+     *                 <div>Cell</div>
+     *                 <div>Cell</div>
+     *               </div>
+     *             <div>
+     *           </div>
+     *         </li>
+     *         <li>
+     *           <div class="list-item">
+     *             <div>
+     *               <div>Cell</div>
+     *               <div>Cell<br>New Line<br>New Line</div>
+     *               <div>Cell</div>
+     *               <div>Cell</div>
+     *             </div>
+     *           </div>
+     *           <div class="list-item-drawer">
+     *             <div>
+     *               <div>
+     *                 <div>Cell</div>
+     *                 <div>Cell<br>New Line<br>New Line</div>
+     *                 <div>Cell</div>
+     *                 <div>Cell</div>
+     *               </div>
+     *               <div>
+     *                 <div>Cell</div>
+     *                 <div>Cell<br>New Line<br>New Line</div>
+     *                 <div>Cell</div>
+     *                 <div>Cell</div>
+     *               </div>
+     *             <div>
+     *           </div>
+     *         </li>
+     *       </ul>
+     *     <div><i class="icon-loading"></i></div>
+     *   </div>
+     */
+
+    .#{current-module()}-infinite {
+
+      > div {
+        display: none;
+        text-align: center;
+
+      }
+
+      &.pull {
+        > div:first-of-type {
+          display: block;
+        }
+      }
+      &.loading {
+        > div:last-of-type {
+          display: block;
+        }
+      }
+
+    }
+
+
+    /**
+     * @name List Totals
+     *
+     * @markup
+     *   <div class="list list-totals">
+     *     <ul>
+     *       <li>
+     *         <div>Subtotal</div>
+     *         <div class="total">$3.00</div>
+     *         <div class="action"></div>
+     *       </li>
+     *       <li>
+     *         <div>Tax</div>
+     *         <div class="total">$1.00</div>
+     *         <div class="action"></div>
+     *       </li>
+     *       <li>
+     *         <div>Total</div>
+     *         <div class="total">$1.00</div>
+     *         <div class="action"></div>
+     *       </li>
+     *     </ul>
+     *   </div>
+     */
+
+    .#{current-module()}-totals {
+
+      li {
+        @include display-flex;
+
+        > div {
+          @include flex(1 0 auto);
+          padding: $list-totals-padding-y $list-totals-padding-x;
+          text-align: right;
+
+          &:first-of-type {
+            font-weight: 700;
+
+          }
+
+        }
+
+      }
+
+    }
+
+
+    /**
+     * @name List Actions
+     *
+     * @markup
+     *   <div class="list-actions">
+     *     <div>
+     *       <button class="btn btn-success">Button</button>
+     *     </div>
+     *   </div>
+     */
+
+    .#{current-module()}-actions {
+
+      > div {
+        padding: $list-actions-padding-y $list-actions-padding-x;
+
+      }
+
+    }
+
+
+  }
+}

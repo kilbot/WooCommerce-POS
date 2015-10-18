@@ -1,47 +1,118 @@
-.tabs {
-	ul {
-    background: nth( $primaryPalette, 2 );
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		li {
-		  vertical-align: bottom; /* hack for icon alignment */
-			display: inline-block;
-			background: $btn-default-bg;
-			padding: $spacing/4 $spacing/2;
-			margin: 0 1px 0 0;
-			cursor: pointer;
-			a {
-				color: $text-color;
-			    margin-right: $spacing/4;
-				&:hover {
-					color: $brand-danger;
-				}
-			}
-			&.active {
-				background: white;
-			}
-			&:hover {
+$tabs-background        : nth( $primaryPalette, 2 );
+$tab-item-background    : #f3f3f3;
+$tab-active-background  : #fff;
+$tabs-padding-x         : $padding-base-horizontal;
+$tabs-padding-y         : $padding-base-vertical;
 
-			}
-		}
-	}
-}
-.infinite-tabs {
-	overflow-x: hidden;
-}
+/**
+ * @name Tabs Spec
+ *
+ * @markup
+ * <ul class="tabs">
+ *  <li>Item 1</li>
+ *  <li class="active">Item 2</li>
+ *  <li>Item 3</li>
+ *  <li><i class="icon-plus"></i></li>
+ * </ul>
+ */
 
-/* Page column tabs */
-#tabs {
-  ul {
-    li {
-      background: darken($body-bg, 10%);
-      width: 50%;
+tabs {
+  @at-root {
+
+    .#{current-module()} {
+      background: $tabs-background;
+      list-style: none;
       margin: 0;
-      text-align: center;
-      &.active {
-        background: $body-bg;
+      padding: 0;
+      @include clearfix();
+
+      > li {
+        //display: inline-block;
+        float: left;
+        background: $tab-item-background;
+        padding: $tabs-padding-y $tabs-padding-x;
+        margin: 0 1px 0 0;
+        cursor: pointer;
+
+        &.active {
+          background: $tab-active-background;
+        }
+
+        /**
+         * @name Removable Tabs Spec
+         *
+         * @markup
+         * <ul class="tabs">
+         *  <li><a href="#777" class="tab-remove"><i class="icon-times-circle"></i></a> Item 1</li>
+         *  <li class="active"><a href="#777" class="tab-remove"><i class="icon-times-circle"></i></a> Item 2</li>
+         *  <li><a href="#777" class="tab-remove"><i class="icon-times-circle"></i></a> Item 3</li>
+         * </ul>
+         */
+        > .tab-remove {
+          color: $secondary-text-color;
+          &:hover {
+            color: $brand-danger;
+          }
+        }
+
+      }
+
+    }
+
+    /**
+     * @name Infinite Tabs Spec
+     *
+     * @markup
+     * <div class="tabs-infinite" style="width:300px;">
+     *  <span><i class="icon-chevron-left"></i></span>
+     *  <ul class="tabs">
+     *    <li>Item 1</li>
+     *    <li class="active">Item 2</li>
+     *    <li>Item 3</li>
+     *    <li>Item 4</li>
+     *    <li>Item 5</li>
+     *    <li>Item 6</li>
+     *    <li>Item 7</li>
+     *    <li>Item 8</li>
+     *    <li>Item 9</li>
+     *    <li>Item ∞</li>
+     *  </ul>
+     *  <span><i class="icon-chevron-right"></i></span>
+     * </div>
+     */
+    .#{current-module()}-infinite {
+      overflow-x: hidden;
+      position: relative;
+      > ul {
+        width: 2000px;
+      }
+      > span {
+        position: absolute;
+        top: 0;
+        &:first-of-type {
+          left: 0;
+        }
+        &:last-of-type {
+          right: 0;
+        }
       }
     }
+
   }
 }
+
+
+///* Page column tabs */
+//#tabs {
+//  ul {
+//    li {
+//      background: darken($body-bg, 10%);
+//      width: 50%;
+//      margin: 0;
+//      text-align: center;
+//      &.active {
+//        background: $body-bg;
+//      }
+//    }
+//  }
+//}

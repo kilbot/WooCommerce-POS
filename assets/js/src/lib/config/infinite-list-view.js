@@ -4,10 +4,10 @@ var _ = require('lodash');
 //var $ = require('jquery');
 
 module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
-  className: 'infinite-list',
+  className: 'list-infinite',
   template: function(){
     return '<div></div>' +
-      '<ul class="striped"></ul>' +
+      '<ul></ul>' +
       '<div><i class="icon icon-spinner"></i>';
   },
 

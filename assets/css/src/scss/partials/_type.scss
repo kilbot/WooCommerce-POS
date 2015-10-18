@@ -65,6 +65,19 @@ mark,
   color: $text-muted;
 }
 
+text {
+  @at-root {
+
+    .#{current-module()}-success {
+      color: #3c763d;
+    }
+    .#{current-module()}-error {
+      color: #a94442;
+    }
+
+  }
+}
+
 // Horizontal Rule
 // -------------------------
 hr {

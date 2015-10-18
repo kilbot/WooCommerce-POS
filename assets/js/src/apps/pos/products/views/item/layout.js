@@ -13,13 +13,13 @@ var Layout = LayoutView.extend({
 
   template: function () {
     return '' +
-      '<div class="item"></div>' +
-      '<div class="drawer"></div>';
+      '<div class="list-item products-item"></div>' +
+      '<div class="list-item-drawer products-item-drawer"></div>';
   },
 
   regions: {
-    item  : '.item',
-    drawer: '.drawer'
+    item  : '.list-item',
+    drawer: '.list-item-drawer'
   },
 
   onRender: function(){

@@ -5,7 +5,7 @@ var Radio = require('backbone.radio');
 var Item = ItemView.extend({
   template: 'pos.products.product',
 
-  className: 'variation',
+  className: 'products-item',
 
   ui: {
     add : 'a[data-action="add"]'

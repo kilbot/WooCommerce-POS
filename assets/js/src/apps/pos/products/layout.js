@@ -5,23 +5,21 @@ var App = require('lib/config/application');
 var Layout = LayoutView.extend({
 
   template: hbs.compile('' +
-    '<div class="list-actions"></div>' +
-    '<div class="list-tabs tabs infinite-tabs"></div>' +
-    '<div class="list"></div>' +
-    '<div class="list-footer"></div>'
+    '<div class="panel-header list-actions products-header"></div>' +
+    '<div class="products-tabs"></div>' +
+    '<div class="panel-body list products-list striped"></div>' +
+    '<div class="panel-footer products-footer"></div>'
   ),
 
-  tagName: 'section',
-
   regions: {
-    actions   : '.list-actions',
-    tabs      : '.list-tabs',
-    list      : '.list',
-    footer    : '.list-footer'
+    actions   : '.products-header',
+    tabs      : '.products-tabs',
+    list      : '.products-list',
+    footer    : '.products-footer'
   },
 
   attributes: {
-    'class'   : 'module products-module'
+    'class'   : 'panel products'
   }
 
 });

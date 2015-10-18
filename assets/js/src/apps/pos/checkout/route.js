@@ -59,7 +59,7 @@ var CheckoutRoute = Route.extend({
     var view = new StatusView({
       model: this.order
     });
-    this.layout.getRegion('header').show(view);
+    this.layout.getRegion('status').show(view);
   },
 
   showGateways: function(){

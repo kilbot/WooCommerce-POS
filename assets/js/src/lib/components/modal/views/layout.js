@@ -6,8 +6,7 @@ var hbs = require('handlebars');
 var Tmpl = require('./modal.hbs');
 var Radio = require('backbone.radio');
 var debug = require('debug')('modalLayout');
-require('bootstrap-sass/assets/javascripts/bootstrap/modal');
-require('bootstrap-sass/assets/javascripts/bootstrap/transition');
+require('bootstrap/dist/js/umd/modal');
 
 module.exports = LayoutView.extend({
   template: hbs.compile(Tmpl),

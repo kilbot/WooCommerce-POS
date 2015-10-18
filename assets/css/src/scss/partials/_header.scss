@@ -1,81 +1,171 @@
-#header {
-  color: $header-text-color;
-  background-color: $header-bg;
-  > div {
-    @include display-flex;
-    @include box-shadow(0 2px 5px rgba(0, 0, 0, 0.26));
-    > div, > h1 {
-      @include flex(1);
-    }
-    > div:last-of-type {
-      text-align: right;
-    }
-    h1 {
-      font-size: 14px;
-      text-align: center;
-      line-height: 38px;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    a {
+$header-bg                : nth( $primaryPalette, 10 );
+$header-text-color        : $inverse-text-color;
+$header-padding-y         : $padding-base-vertical;
+$header-padding-x         : $padding-base-horizontal;
+
+$menu-item-hover-color    : darken($link-color, 5%);
+$menu-text-color          : $inverse-text-color;
+$menu-item-padding-y      : $padding-base-vertical;
+$menu-item-padding-x      : $padding-base-horizontal;
+
+/**
+ * @name Header Spec
+ *
+ * @markup
+ *  <header id="header">
+ *    <div>
+ *      <div>
+ *        <a href="#777"><i class="icon-bars"></i> <span>Menu</span></a>
+ *      </div>
+ *      <h1>Title</h1>
+ *      <div>
+ *        <div class="dropdown open">
+ *          <a href="#777"><img src="http://0.gravatar.com/avatar/?s=20"> <span>Cashier Name</span></a>
+ *          <ul class="dropdown-menu">
+ *            <li class="dropdown-item"><a href="#777">Item 1</a></li>
+ *            <li class="dropdown-item"><a href="#777">Item 2</a></li>
+ *            <li class="dropdown-item"><a href="#777">Item 3</a></li>
+ *          </ul>
+ *        </div>
+ *      </div>
+ *    </div>
+ *  </header>
+ */
+
+header {
+  @at-root {
+
+    ##{current-module()} {
+
       color: $header-text-color;
-      text-decoration: none;
-      font-size: 14px;
-      line-height: 38px;
-      outline: 0;
-      &:hover {
-        color: darken($link-color, 5%);
-      }
-      &.btn-header {
-        color: $header-text-color;
-        background-color: $header-bg;
-        padding: 0 $spacing/2;
-        display: inline-block;
-        &:hover {
-          background-color: darken($link-color, 5%);
-          text-decoration: none;
-        }
-        img {
-          width: 20px;
-          height: 20px;
-          vertical-align: bottom;
-        }
-        span {
-          display: none;
-        }
-        @include breakpoint($tablet) {
-          span {
-            display: inline-block;
+      background: $header-bg;
+
+      > div {
+        @include display-flex;
+        @include align-items(center);
+        @include box-shadow(0 2px 5px rgba(0, 0, 0, 0.26));
+
+        > div {
+          @include flex(1);
+
+          &:last-of-type {
+            text-align: right;
+
           }
         }
+
+        > h1 {
+          @include flex(1);
+          text-align: center;
+          font-size: $font-size-base;
+          line-height: $line-height-base;
+          font-weight: normal;
+          margin: 0;
+          padding: $header-padding-y $header-padding-x;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+        }
+
       }
-    }
-    #user-btn {
-      img {
-        margin: 9px 0;
-      }
-      span {
-        margin-left: 2px;
-      }
-    }
-    .dropdown-menu {
-      margin: 0;
-      padding: 0;
-      background-color: $header-bg;
-      border: none;
-      @include border-radius(0);
+
       a {
         color: $header-text-color;
-        padding: 0 $spacing/2;
-        line-height: 38px;
+        text-decoration: none;
+        display: inline-block;
+        padding: $menu-item-padding-y $menu-item-padding-x;
+
+        &:hover {
+          background-color: $menu-item-hover-color;
+          color: $menu-text-color;
+
+        }
       }
-      a:hover {
-        background-color: darken($link-color, 5%);
-        color: $header-text-color;
-      }
+
     }
+
   }
 }
+
+//#header {
+//  color: $header-text-color;
+//  background-color: $header-bg;
+//  > div {
+//    @include display-flex;
+//    @include box-shadow(0 2px 5px rgba(0, 0, 0, 0.26));
+//    > div, > h1 {
+//      @include flex(1);
+//    }
+//    > div:last-of-type {
+//      text-align: right;
+//    }
+//    h1 {
+//      font-size: 14px;
+//      text-align: center;
+//      line-height: 38px;
+//      margin: 0;
+//      padding: 0;
+//      overflow: hidden;
+//      white-space: nowrap;
+//      text-overflow: ellipsis;
+//    }
+//    a {
+//      color: $header-text-color;
+//      text-decoration: none;
+//      font-size: 14px;
+//      line-height: 38px;
+//      outline: 0;
+//      &:hover {
+//        color: darken($link-color, 5%);
+//      }
+//      &.btn-header {
+//        color: $header-text-color;
+//        background-color: $header-bg;
+//        padding: 0 $spacing/2;
+//        display: inline-block;
+//        &:hover {
+//          background-color: darken($link-color, 5%);
+//          text-decoration: none;
+//        }
+//        img {
+//          width: 20px;
+//          height: 20px;
+//          vertical-align: bottom;
+//        }
+//        span {
+//          display: none;
+//        }
+//        @include breakpoint($tablet) {
+//          span {
+//            display: inline-block;
+//          }
+//        }
+//      }
+//    }
+//    #user-btn {
+//      img {
+//        margin: 9px 0;
+//      }
+//      span {
+//        margin-left: 2px;
+//      }
+//    }
+//    .dropdown-menu {
+//      margin: 0;
+//      padding: 0;
+//      background-color: $header-bg;
+//      border: none;
+//      @include border-radius(0);
+//      a {
+//        color: $header-text-color;
+//        padding: 0 $spacing/2;
+//        line-height: 38px;
+//      }
+//      a:hover {
+//        background-color: darken($link-color, 5%);
+//        color: $header-text-color;
+//      }
+//    }
+//  }
+//}

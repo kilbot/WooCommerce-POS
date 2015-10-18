@@ -1,87 +1,89 @@
-///* #page =================================================== */
-//html, body{
-//	overflow-x: hidden; /* prevents horizontal scroll bars */
-//	-webkit-tap-highlight-color: rgba(0,0,0,0); /* disable webkit tap highlight */
-//	height: 100%; /* fixes focus scrolling in Safari (OS X) */
-//}
+$menu-width             : 200px;
+$menu-bg                : nth( $primaryPalette, 10 );
+$menu-text-color        : $inverse-text-color;
+$menu-item-padding-y    : $padding-base-vertical;
+$menu-item-padding-x    : $padding-base-horizontal;
+$menu-item-hover-color  : darken($link-color, 5%);
 
-/* Menu =================================================== */
-#menu {
-  @include translate3d(-($menu-panel-width),0,0);
-  position: fixed;
-  width: $menu-panel-width;
-  height: 100%;
-  top: 0;
-  z-index: 9999;
-  background: $menu-bg;
-  @include box-shadow(inset -10px 0 6px -9px rgba(0, 0, 0, .7));
-  overflow: auto;
-  -webkit-overflow-scrolling: touch; /* enables momentum scrolling in iOS overflow elements */
-  ul {
-    list-style: none;
-    margin: 0;
-    // margin-top: $vspacing*1.5;
-    padding: 0;
-    li a {
-      line-height: 38px;
-      display: block;
-      color: $menu-text-color;
-      padding: 0 $spacing/2;
-//      border-bottom: 1px solid rgba(0, 0, 0, .1);
-      border-top: 1px solid rgba(255, 255, 255, .1);
-      text-decoration: none;
+/**
+ * @name Menu Spec
+ *
+ * @markup
+ *  <div class="menu-open">
+ *    <nav id="menu">
+ *      <ul>
+ *        <li><a href="#777"><i class="icon-woocommerce-pos icon-lg"></i> Item</a></li>
+ *        <li><a href="#777"><i class="icon-products icon-lg"></i> Item</a></li>
+ *        <li class="support"><a href="#777"><i class="icon-support icon-lg"></i> Item</a></li>
+ *        <li><a href="#777"><i class="icon-wordpress icon-lg"></i> Item</a></li>
+ *      </ul>
+ *    </nav>
+ *  </div>
+ */
 
-      &:hover {
-        background-color: darken($link-color, 5%);
-        color: $menu-text-color;
+menu {
+  @at-root {
+
+    ##{current-module()} {
+
+      width: $menu-width;
+      background: $menu-bg;
+      position: fixed;
+      height: 100%;
+      top: 0;
+      z-index: 9999;
+      @include box-shadow(inset -10px 0 6px -9px rgba(0, 0, 0, .7));
+      @include translate3d(-($menu-width),0,0);
+      @include transition(transform .2s cubic-bezier(.16, .68, .43, .99));
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+          border-top: 1px solid rgba(255, 255, 255, .1);
+
+          a {
+            display: block;
+            color: $menu-text-color;
+            padding: $menu-item-padding-y $menu-item-padding-x;
+            text-decoration: none;
+
+            &:hover {
+              background-color: $menu-item-hover-color;
+              color: $menu-text-color;
+            }
+
+            i {
+              margin-right: $menu-item-padding-x;
+            }
+          }
+
+          &.support a {
+            color: nth( $accentPalette, 8 );
+
+            &:hover {
+              color: $menu-text-color;
+              background-color: nth( $accentPalette, 8 );
+
+            }
+          }
+
+          &:first-of-type {
+            border: 0;
+          }
+
+        }
+
       }
+
     }
-    li i {
-      margin-right: $spacing/2;
-//      font-size: 1.2em;
+
+    // open
+    .#{current-module()}-open ##{current-module()} {
+      @include translate3d(0,0,0);
     }
-    li:first-child a {
-      border-top: 0;
-    }
-    li.support a {
-      color: nth( $accentPalette, 8 );
-      &:hover {
-        color: $menu-text-color;
-        background-color: nth( $accentPalette, 8 );
-      }
-    }
+
   }
-}
-
-/* Movement =================================================== */
-#menu {
-  -webkit-transform: translate3d(-200px,0,0);
-  -moz-transform: translate3d(-200px,0,0);
-  -ms-transform: translate3d(-200px,0,0);
-  -o-transform: translate3d(-200px,0,0);
-  transform: translate3d(-200px,0,0);
-}
-
-.menu-open #menu {
-  -webkit-transform: translate3d(0,0,0);
-  -moz-transform: translate3d(0,0,0);
-  -ms-transform: translate3d(0,0,0);
-  -o-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
-}
-
-//.menu-open #page {
-//  -webkit-transform: translate3d(200px,0,0);
-//  -moz-transform: translate3d(200px,0,0);
-//  -ms-transform: translate3d(200px,0,0);
-//  -o-transform: translate3d(200px,0,0);
-//  transform: translate3d(200px,0,0);
-//}
-
-//#page, #menu {
-#menu {
-  -webkit-transition: -webkit-transform .2s cubic-bezier(.16, .68, .43, .99);
-  -moz-transition: -moz-transform .2s cubic-bezier(.16, .68, .43, .99);
-  -o-transition: -o-transform .2s cubic-bezier(.16, .68, .43, .99);
-  transition: transform .2s cubic-bezier(.16, .68, .43, .99);
 }

@@ -1,0 +1,95 @@
+$main-padding-y : $padding-base-vertical * 2;
+$main-padding-x : $padding-base-horizontal / 2;
+
+main {
+  @at-root {
+
+    /**
+     * @name One Column Page
+     *
+     * @markup
+     *   <main id="main">
+     *     <div>
+     *       <section>
+     *         <div class="panel">
+     *           <div class="panel-header">
+     *             <div>Header</div>
+     *           </div>
+     *           <div class="panel-body">
+     *             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dignissim quam sed lectus porta porttitor. Donec sit amet mi ante. Morbi facilisis massa ac pretium blandit. Donec auctor dolor eu laoreet imperdiet. Integer ac vestibulum sapien, at porttitor enim. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed massa justo, ornare at mattis eget, tincidunt vel enim. Etiam eu tellus vel enim commodo posuere sit amet at mauris. Aliquam erat volutpat. Donec sit amet justo tristique, vulputate leo ut, porta mauris. Cras neque nisi, malesuada ac velit at, pulvinar pulvinar quam.</div>
+     *           </div>
+     *           <div class="panel-footer">
+     *             <div>Footer</div>
+     *           </div>
+     *         </div>
+     *       </section>
+     *     </div>
+     *   </main>
+     */
+
+    ##{current-module()} {
+      position: absolute;
+      top: 38px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: $main-padding-y $main-padding-x;
+
+      > div {
+        @include display-flex;
+        height: 100%;
+
+        > section {
+          @include display-flex;
+          @include flex(1);
+          margin: 0 $main-padding-x;
+          height: 100%;
+
+        }
+
+      }
+
+    }
+
+
+    /**
+     * @name Two Column Page
+     *
+     * @markup
+     *   <main id="main">
+     *     <div>
+     *       <section>
+     *         <div class="panel">
+     *           <div class="panel-header">
+     *             <div>Header</div>
+     *           </div>
+     *           <div class="panel-body">
+     *             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dignissim quam sed lectus porta porttitor. Donec sit amet mi ante. Morbi facilisis massa ac pretium blandit. Donec auctor dolor eu laoreet imperdiet. Integer ac vestibulum sapien, at porttitor enim. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed massa justo, ornare at mattis eget, tincidunt vel enim. Etiam eu tellus vel enim commodo posuere sit amet at mauris. Aliquam erat volutpat. Donec sit amet justo tristique, vulputate leo ut, porta mauris. Cras neque nisi, malesuada ac velit at, pulvinar pulvinar quam.</div>
+     *             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dignissim quam sed lectus porta porttitor. Donec sit amet mi ante. Morbi facilisis massa ac pretium blandit. Donec auctor dolor eu laoreet imperdiet. Integer ac vestibulum sapien, at porttitor enim. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed massa justo, ornare at mattis eget, tincidunt vel enim. Etiam eu tellus vel enim commodo posuere sit amet at mauris. Aliquam erat volutpat. Donec sit amet justo tristique, vulputate leo ut, porta mauris. Cras neque nisi, malesuada ac velit at, pulvinar pulvinar quam.</div>
+     *           </div>
+     *           <div class="panel-footer">
+     *             <div>Footer</div>
+     *           </div>
+     *         </div>
+     *       </section>
+     *       <section>
+     *         <div class="panel">
+     *           <div class="panel-header">
+     *             <div>Header</div>
+     *           </div>
+     *           <div class="panel-body">
+     *             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dignissim quam sed lectus porta porttitor. Donec sit amet mi ante. Morbi facilisis massa ac pretium blandit. Donec auctor dolor eu laoreet imperdiet. Integer ac vestibulum sapien, at porttitor enim. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed massa justo, ornare at mattis eget, tincidunt vel enim. Etiam eu tellus vel enim commodo posuere sit amet at mauris. Aliquam erat volutpat. Donec sit amet justo tristique, vulputate leo ut, porta mauris. Cras neque nisi, malesuada ac velit at, pulvinar pulvinar quam.</div>
+     *           </div>
+     *           <div class="panel-footer">
+     *             <div>Footer</div>
+     *           </div>
+     *         </div>
+     *       </section>
+     *     </div>
+     *   </main>
+     */
+
+
+
+  }
+}

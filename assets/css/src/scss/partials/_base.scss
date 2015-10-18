@@ -1,0 +1,51 @@
+$body-color   : $text-color;
+$body-bg      : #e8e5df;
+
+// Builds on Normalize.css
+html {
+  // Sets a specific default `font-size` for user with `rem` type scales.
+  font-size: $font-size-root;
+  // Changes the default tap highlight to be completely transparent in iOS.
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+body {
+  // Make the `body` use the `font-size-root`
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  // Go easy on the eyes and use something other than `#000` for text
+  color: $body-color;
+  // By default, `<body>` has no `background-color` so we set one as a best practice.
+  background-color: $body-bg;
+}
+
+/**
+ * @name Definition Lists
+ *
+ * @markup
+ *  <dl>
+ *    <dt>Title:</dt>
+ *    <dd>Data</dd>
+ *    <dt>Title:</dt>
+ *    <dd>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</dd>
+ *  </dl>
+ */
+
+dl {
+  @include clearfix();
+  width: 100%;
+  font-size: $font-size-sm;
+  margin: 0;
+  dt {
+    font-weight: normal;
+    float: left;
+    padding-right: 5px;
+    clear: left;
+    font-weight: 600;
+  }
+  dd {
+    float: left;
+    margin: 0;
+  }
+}

@@ -1,6 +1,6 @@
 var Behavior = require('lib/config/behavior');
 var App = require('lib/config/application');
-require('bootstrap-sass/assets/javascripts/bootstrap/dropdown');
+require('bootstrap/dist/js/umd/dropdown');
 
 var Dropdown = Behavior.extend({
 

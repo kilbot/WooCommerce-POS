@@ -9,11 +9,11 @@
 <div>
   <div class="dropdown">
     <a href="#" id="user-btn" class="btn-header" data-toggle="dropdown">
-      <?php echo get_avatar( $current_user->ID, 26 ); ?>
+      <?php echo get_avatar( $current_user->ID, 20 ); ?>
       <span><?php echo $current_user->display_name ?></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-right" role="menu">
-      <li><a href="<?php echo wp_logout_url( home_url() ); ?>"><?php /* translators: wordpress */ _e( 'Log Out' ); ?></a></li>
+      <li class="dropdown-item"><a href="<?php echo wp_logout_url( home_url() ); ?>"><?php /* translators: wordpress */ _e( 'Log Out' ); ?></a></li>
     </ul>
   </div>
 </div>

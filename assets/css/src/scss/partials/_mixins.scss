@@ -2,16 +2,21 @@
 @import "mixins/button-size";
 @import "mixins/button-variant";
 @import "mixins/namespacing";
+@import "mixins/form-control-focus";
+@import "mixins/hover";
+@import "mixins/tab-focus";
+@import "mixins/reset-text";
+@import "mixins/nav-divider";
 
-@mixin hoverActiveFocus() {
-    &:hover, &:active, &:focus {
-        @content;
-    }
-}
-
-@mixin transition-transform($transition...) {
-  -webkit-transition: -webkit-transform $transition;
-     -moz-transition: -moz-transform $transition;
-       -o-transition: -o-transform $transition;
-          transition: transform $transition;
-}
+//@mixin hoverActiveFocus() {
+//    &:hover, &:active, &:focus {
+//        @content;
+//    }
+//}
+//
+//@mixin transition-transform($transition...) {
+//  -webkit-transition: -webkit-transform $transition;
+//     -moz-transition: -moz-transform $transition;
+//       -o-transition: -o-transform $transition;
+//          transition: transform $transition;
+//}

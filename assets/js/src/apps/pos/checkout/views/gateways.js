@@ -2,11 +2,14 @@ var ItemView = require('lib/config/item-view');
 var CollectionView = require('lib/config/collection-view');
 var Gateway = require('./gateways/layout');
 var App = require('lib/config/application');
+var polyglot = require('lib/utilities/polyglot');
 
 var EmptyView = ItemView.extend({
   tagName: 'li',
   className: 'empty',
-  template: 'pos.checkout.empty'
+  template: function(){
+    return polyglot.t('messages.no-gateway');
+  }
 });
 
 var View = CollectionView.extend({

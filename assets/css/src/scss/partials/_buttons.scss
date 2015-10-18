@@ -10,6 +10,7 @@
   * @markup
   *   <button class="btn">Default</button>
   *   <button class="btn btn-primary">Primary</button>
+  *   <button class="btn btn-secondary">Secondary</button>
   *   <button class="btn btn-success">Success</button>
   *   <button class="btn btn-info">Info</button>
   *   <button class="btn btn-warning">Warning</button>
@@ -22,7 +23,7 @@ $btn-padding-y:                  $padding-base-vertical !default;
 $btn-font-size:                  $font-size-base !default;
 $btn-font-weight:                normal !default;
 $btn-line-height:                $line-height-base !default;
-$btn-border-radius:              $border-radius !default;
+$btn-border-radius:              $border-radius-base !default;
 
 // Colors
 $btn-color:                      $text-color !default;
@@ -33,9 +34,9 @@ $btn-primary-color:              #fff !default;
 $btn-primary-bg:                 $brand-primary !default;
 $btn-primary-border:             $btn-primary-bg !default;
 
-$btn-secondary-color:            $gray-dark !default;
-$btn-secondary-bg:               #fff !default;
-$btn-secondary-border:           #ccc !default;
+$btn-secondary-color:            $link-color !default;
+$btn-secondary-bg:               $input-border-color !default;
+$btn-secondary-border:           $input-border-color !default;
 
 $btn-info-color:                 #fff !default;
 $btn-info-bg:                    $brand-info !default;
@@ -115,6 +116,9 @@ btn {
     .#{current-module()}-primary {
       @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
     }
+    .#{current-module()}-secondary {
+      @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
+    }
     .#{current-module()}-success {
       @include button-variant($btn-success-color, $btn-success-bg, $btn-success-border);
     }
@@ -136,6 +140,7 @@ btn {
      * @markup
      *   <button class="btn btn-circle">+</button>
      *   <button class="btn btn-circle btn-primary">+</button>
+     *   <button class="btn btn-circle btn-secondary">+</button>
      *   <button class="btn btn-circle btn-success">+</button>
      *   <button class="btn btn-circle btn-info">+</button>
      *   <button class="btn btn-circle btn-warning">+</button>

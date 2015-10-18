@@ -1,124 +1,148 @@
-// remove iOS rounded corners
-input[type="text"], input[type="search"] {
-  @include appearance(none);
-  @include border-radius(0);
-  border: 1px solid $input-border-color;
+$input-font-size          : $font-size-base;
+$input-line-height        : $line-height-base;
+$input-color              : $text-color;
+$input-bg                 : #f9f9f9;
+$input-color-placeholder  : #999 !default;
+$input-bg-disabled        : #eceeef !default;
 
-  // disabled
-  &[disabled],
-  &[readonly],
-  fieldset[disabled] & {
-    background-color: $input-bg-disabled;
-    opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
-  }
+$input-padding-x          : $padding-base-horizontal !default;
+$input-padding-y          : $padding-base-vertical !default;
 
-  &[disabled],
-  fieldset[disabled] & {
-    cursor: $cursor-disabled;
-  }
-}
+$input-border-size        : 1px;
+$input-border-color       : darken($border-color, 5%);
+$input-border-radius      : $border-radius-base;
+$input-border-focus       : #66afe9 !default;
+$input-box-shadow-focus   : rgba(102,175,233,.6) !default;
 
-// remove border from contentediatble el
-[contenteditable]:focus {
-  outline: 0px solid transparent;
-}
+/**
+ * @name Input
+ *
+ * @state :focus - Focus State
+ *
+ * @markup
+ *  <input class="form-control" type="text" placeholder="Enter Name">
+ *  <br>
+ *  <input class="form-control" type="email" placeholder="Enter Email">
+ *  <br>
+ *  <input class="form-control" type="password" placeholder="Enter Password">
+ *  <br>
+ *  <input class="form-control" type="search" placeholder="Enter Search">
+ */
 
-// input group
-.input-group {
-  @include display-flex;
-  .form-control, .input-group-addon, .input-group-btn, .input-text {
-    border: 1px solid $input-border-color;
-    padding: $spacing/4 $spacing/2.4;
-    &:first-child {
-      @include border-radius($border-radius-small 0 0 $border-radius-small);
-    }
-    &:last-child {
-      @include border-radius(0 $border-radius-small $border-radius-small 0);
-    }
-  }
-  .input-group-addon {
-    color: $secondary-text-color;
-    background: $input-border-color;
-  }
-  .input-group-btn {
-    padding: 0;
-    > a {
-      color: nth($primaryPalette, 6);
-      background: $input-border-color;
-      display: inline-block;
-      padding: $spacing/4 $spacing/2.4;
-      &:hover {
-        color: nth($primaryPalette, 10);
-      }
-      &.disabled {
-        cursor: $cursor-disabled;
-        pointer-events: none; // Future-proof disabling of clicks
-        color: $text-color;
-      }
-    }
-  }
-  .form-control, .input-text {
-    outline: 0;
-    @include flex(1 1 auto);
-    &:not(:first-child) {
-      border-left: 0;
-    }
-    &:not(:last-child) {
-      border-right: 0;
-    }
-  }
-  .clear {
-    display: none;
-    color: $text-color;
-    background: white;
-    padding: $spacing/4 $spacing/2.4;
-    line-height: 20px;
-    border-top: 1px solid $input-border-color;
-    border-bottom: 1px solid $input-border-color;
-    i {
-      @include opacity(0.5);
-    }
-    &:hover i {
-      @include opacity(1);
-    }
-  }
-}
+form-control {
+  @at-root {
 
-// table forms
-table.form-table {
-  margin-bottom: $spacing;
-  td {
-    vertical-align: top;
-    padding: $spacing/3;
-  }
-  label {
-    color: $secondary-text-color;
-    margin-bottom: $spacing/6;
-    &:not(:last-child) {
-      display: block;
-    }
-  }
-  input[type="text"] {
-    width: 100%;
-    padding: $spacing/4 $spacing/2.4;
-  }
-  span.error-message {
-    display: none;
-  }
-  .error {
-    label {
-      color: $state-danger-text;
-    }
-    input {
-      border: 1px solid $state-danger-text;
-    }
-    span.error-message {
+    .#{current-module()} {
       display: block;
       width: 100%;
-      color: $inverse-text-color;
-      background-color: $state-danger-text;
-      font-size: 0.8em;
-      padding: $spacing/8;
+      padding: $input-padding-y $input-padding-x;
+      font-size: $input-font-size;
+      line-height: $input-line-height;
+      color: $input-color;
+      background-color: $input-bg;
+      border: $input-border-size solid $input-border-color;
+      @include border-radius($input-border-radius);
+      @include transition(border-color ease-in-out .15s, box-shadow ease-in-out .15s);
+
+      // Unstyle the caret on `<select>`s in IE10+.
+      &::-ms-expand {
+        background-color: transparent;
+        border: 0;
+      }
+
+      // Customize the `:focus` state to imitate native WebKit styles.
+      @include form-control-focus();
+
+      // Placeholder
+      &::placeholder {
+        color: $input-color-placeholder;
+        // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526.
+        opacity: 1;
+      }
+
+      // Disabled and read-only inputs
+      //
+      // HTML5 says that controls under a fieldset > legend:first-child won't be
+      // disabled if the fieldset is disabled. Due to implementation difficulty, we
+      // don't honor that edge case; we style them as disabled anyway.
+      &:disabled,
+      &[readonly] {
+        background-color: $input-bg-disabled;
+        // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
+        opacity: 1;
+      }
+
+      &:disabled {
+        cursor: $cursor-disabled;
+      }
+
     }
+
   }
 }
+
+// remove iOS rounded corners
+//input[type="text"], input[type="search"] {
+//  @include appearance(none);
+//  @include border-radius(0);
+//  border: 1px solid $input-border-color;
+//
+//  // disabled
+//  &[disabled],
+//  &[readonly],
+//  fieldset[disabled] & {
+//    background-color: $input-bg-disabled;
+//    opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
+//  }
+//
+//  &[disabled],
+//  fieldset[disabled] & {
+//    cursor: $cursor-disabled;
+//  }
+//}
+//
+//// remove border from contentediatble el
+//[contenteditable]:focus {
+//  outline: 0px solid transparent;
+//}
+//
+//
+//
+//// table forms
+//table.form-table {
+//  margin-bottom: $spacing;
+//  td {
+//    vertical-align: top;
+//    padding: $spacing/3;
+//  }
+//  label {
+//    color: $secondary-text-color;
+//    margin-bottom: $spacing/6;
+//    &:not(:last-child) {
+//      display: block;
+//    }
+//  }
+//  input[type="text"] {
+//    width: 100%;
+//    padding: $spacing/4 $spacing/2.4;
+//  }
+//  span.error-message {
+//    display: none;
+//  }
+//  .error {
+//    label {
+//      color: $state-danger-text;
+//    }
+//    input {
+//      border: 1px solid $state-danger-text;
+//    }
+//    span.error-message {
+//      display: block;
+//      width: 100%;
+//      color: $inverse-text-color;
+//      background-color: $state-danger-text;
+//      font-size: 0.8em;
+//      padding: $spacing/8;
+//    }
+//  }
+//}

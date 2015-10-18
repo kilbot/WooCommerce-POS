@@ -3,17 +3,15 @@ var LayoutView = require('lib/config/layout-view');
 module.exports = LayoutView.extend({
   template: 'pos.receipt.list',
 
-  tagName: 'section',
-
   regions: {
-    status  : '.status',
-    list    : '.list',
-    totals  : '.list-totals',
-    actions : '.list-actions'
+    status  : '.receipt-status',
+    list    : '.receipt-list',
+    totals  : '.receipt-totals',
+    actions : '.receipt-actions'
   },
 
   className: function(){
-    return 'module receipt-module ' + this.model.get('status');
+    return 'panel receipt ' + this.model.get('status');
   }
 
 });

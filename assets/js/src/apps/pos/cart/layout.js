@@ -1,26 +1,24 @@
 var LayoutView = require('lib/config/layout-view');
 
 module.exports = LayoutView.extend({
-  template: 'pos.cart.list',
+  template: 'pos.cart.panel',
 
   initialize: function(options){
     options = options || {};
     this.order = options.order;
   },
 
-  tagName: 'section',
-
   regions: {
-    list      : '.list',
-    totals    : '.list-totals',
+    list      : '.cart-list',
+    totals    : '.cart-totals',
     customer  : '.cart-customer',
-    actions   : '.list-actions',
+    actions   : '.cart-actions',
     note      : '.cart-notes',
-    footer    : '.list-footer'
+    footer    : '.cart-footer'
   },
 
   attributes: {
-    'class'   : 'module cart-module'
+    'class'   : 'panel cart'
   },
 
   /**

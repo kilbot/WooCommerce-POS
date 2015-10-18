@@ -1,7 +1,37 @@
-@import "compass";
-@import "partials/mixins/namespacing";
+@font-face {
+  font-family: 'WooCommercePOS';
+  src: url('../fonts/woocommerce-pos.eot?v=0.3.1');
+  src: url('../fonts/woocommerce-pos.eot?#iefix&v=0.3.1') format('embedded-opentype'), url('../fonts/woocommerce-pos.woff?v=0.3.1') format('woff'), url('../fonts/woocommerce-pos.ttf?v=0.3.1') format('truetype'), url('../fonts/woocommerce-pos.svg?v=0.3.1#woocommerceposregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
 
-$spin-name : namespace('spin');
+icon {
+  @at-root {
+
+    [class^="#{current-module()}-"], [class*=" #{current-module()}-"] {
+      font-family: WooCommercePOS;
+      speak: none;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      /* Better Font Rendering =========== */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      /* Required for <i> rotate ========= */
+      display: inline-block;
+      /* span for hidden text ========= */
+      span {
+        display: none;
+      }
+      /* Fix aligment issue in Firefox ========= */
+      vertical-align: inherit;
+    }
+
+  }
+}
+
 
 /**
   * @name Icons
@@ -11,159 +41,98 @@ $spin-name : namespace('spin');
     <i class="icon-angle-down"></i> angle-down
     <i class="icon-angle-up"></i> angle-up
     <i class="icon-barcode"></i> barcode
-    <i class="icon-products"></i> products
     <i class="icon-bars"></i> bars
     <i class="icon-check"></i> check
-    <i class="icon-success"></i> success
+    <i class="icon-chevron-down"></i> chevron-down
     <i class="icon-chevron-left"></i> chevron-left
     <i class="icon-chevron-right"></i> chevron-right
     <i class="icon-chevron-up"></i> chevron-up
-    <i class="icon-chevron-down"></i> chevron-down
     <i class="icon-cog"></i> cog
-    <i class="icon-refresh"></i> refresh
-    <i class="icon-globe"></i> globe
-    <i class="icon-minus"></i> minus
-    <i class="icon-plus"></i> plus
-    <i class="icon-qrcode"></i> grcode
-    <i class="icon-receipt"></i> receipt
-    <i class="icon-orders"></i> orders
-    <i class="icon-scissors"></i> scissors
     <i class="icon-coupons"></i> coupons
-    <i class="icon-search"></i> search
-    <i class="icon-support"></i> support
-    <i class="icon-times"></i> times
-    <i class="icon-error"></i> error
-    <i class="icon-times-circle"></i> times-circle
-    <i class="icon-user"></i> user
     <i class="icon-customers"></i> customers
-    <i class="icon-woocommerce-pos"></i> woocommerce-pos
-    <i class="icon-pos"></i> pos
     <i class="icon-delete"></i> delete
+    <i class="icon-error"></i> error
+    <i class="icon-globe"></i> globe
     <i class="icon-info-circle"></i> info-circle
+    <i class="icon-minus"></i> minus
     <i class="icon-more-horiz"></i> more-horiz
     <i class="icon-more-vert"></i> more-vert
     <i class="icon-note"></i> note
+    <i class="icon-orders"></i> orders
+    <i class="icon-plus"></i> plus
+    <i class="icon-pos"></i> pos
+    <i class="icon-products"></i> products
+    <i class="icon-qrcode"></i> grcode
+    <i class="icon-receipt"></i> receipt
+    <i class="icon-refresh"></i> refresh
+    <i class="icon-search"></i> search
+    <i class="icon-success"></i> success
+    <i class="icon-support"></i> support
+    <i class="icon-times"></i> times
+    <i class="icon-times-circle"></i> times-circle
+    <i class="icon-user"></i> user
+    <i class="icon-woocommerce-pos"></i> woocommerce-pos
     <i class="icon-wordpress"></i> wordpress
   *
   */
 
-@font-face {
-  font-family: 'WooCommercePOS';
-  src: url('../fonts/woocommerce-pos.eot?v=0.3.1');
-  src: url('../fonts/woocommerce-pos.eot?#iefix&v=0.3.1') format('embedded-opentype'), url('../fonts/woocommerce-pos.woff?v=0.3.1') format('woff'), url('../fonts/woocommerce-pos.ttf?v=0.3.1') format('truetype'), url('../fonts/woocommerce-pos.svg?v=0.3.1#woocommerceposregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-[class^="icon-"], [class*=" icon-"] {
-  font-family: WooCommercePOS;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* Required for <i> rotate ========= */
-  display: inline-block;
-  /* span for hidden text ========= */
-  span {
-    display: none;
+$icons: (
+  "angle-down"     : "f107",
+  "angle-up"       : "f106",
+  "barcode"        : "e603",
+  "bars"           : "f0c9",
+  "check"          : "f00c",
+  "chevron-left"   : "f053",
+  "products"       : "e603",
+  "success"        : "f00c",
+  "chevron-down"   : "f078",
+  "chevron-right"  : "f054",
+  "chevron-up"     : "f077",
+  "cog"            : "f013",
+  "coupons"        : "e607",
+  "customers"      : "e606",
+  "delete"         : "e601",
+  "error"          : "f00d",
+  "globe"          : "f0ac",
+  "info-circle"    : "f05a",
+  "minus"          : "f068",
+  "more-horiz"     : "e608",
+  "more-vert"      : "e609",
+  "note"           : "e026",
+  "orders"         : "e602",
+  "plus"           : "f067",
+  "pos"            : "e600",
+  "qrcode"         : "e604",
+  "receipt"        : "e602",
+  "refresh"        : "f01e",
+  "search"         : "f002",
+  "support"        : "e605",
+  "times"          : "f00d",
+  "times-circle"   : "f057",
+  "user"           : "e606",
+  "woocommerce-pos": "e600",
+  "wordpress"      : "e60a"
+);
+
+icon {
+  @at-root {
+
+    @each $class, $code in $icons {
+
+      // slash hack
+      $withslash: "\"\\#{$code}\"";
+
+      .#{current-module()}-#{$class} {
+        &:before {
+          content: unquote($withslash);
+        }
+      }
+
+    }
+
   }
-  /* Fix aligment issue in Firefox ========= */
-  vertical-align: inherit;
 }
 
-/**
- * Icons
- */
-.icon-angle-down:before {
-  content: "\f107";
-}
-.icon-angle-up:before {
-  content: "\f106";
-}
-.icon-woocommerce-pos:before, .icon-products:before {
-  content: "\e603";
-}
-.icon-bars:before {
-  content: "\f0c9";
-}
-.icon-check:before, .icon-success:before {
-  content: "\f00c";
-}
-.icon-chevron-left:before {
-  content: "\f053";
-}
-.icon-chevron-right:before {
-  content: "\f054";
-}
-.icon-chevron-up:before {
-  content: "\f077";
-}
-.icon-chevron-down:before {
-  content: "\f078";
-}
-.icon-cog:before {
-  content: "\f013";
-}
-.icon-refresh:before {
-  content: "\f01e";
-}
-.icon-globe:before {
-  content: "\f0ac";
-}
-.icon-minus:before {
-  content: "\f068";
-}
-.icon-plus:before {
-  content: "\f067";
-}
-.icon-qrcode:before {
-  content: "\e604";
-}
-.icon-receipt:before, .icon-orders:before {
-  content: "\e602";
-}
-.icon-scissors:before, .icon-coupons:before {
-  content: "\e607";
-}
-.icon-search:before {
-  content: "\f002";
-}
-.icon-support:before {
-  content: "\e605";
-}
-.icon-times:before, .icon-error:before {
-  content: "\f00d";
-}
-.icon-times-circle:before {
-  content: "\f057";
-}
-.icon-user:before, .icon-customers:before {
-  content: "\e606";
-}
-.icon-woocommerce-pos:before, .icon-pos:before {
-  content: "\e600";
-}
-.icon-delete:before {
-  content: "\e601";
-}
-.icon-info-circle:before {
-  content: "\f05a";
-}
-.icon-more-horiz:before {
-  content: "\e608";
-}
-.icon-more-vert:before {
-  content: "\e609";
-}
-.icon-note:before {
-  content: "\e026";
-}
-.icon-wordpress:before {
-  content: "\e60a";
-}
 
 /**
   * @name Order icons
@@ -180,38 +149,38 @@ $spin-name : namespace('spin');
     <i class="icon-open"></i> open
   *
   */
-.icon-pending:before {
-  content: "\e012";
-  color: #ffba00;
+
+$order-icons: (
+  pending     e012  #ffba00,
+  completed   e015  #2ea2cc,
+  on-hold     e033  #999,
+  failed      e016  #d0c21f,
+  cancelled   e013  #a00,
+  processing  e011  #73a724,
+  refunded    e014  #999,
+  open        e01d  #73a724
+);
+
+icon {
+  @at-root {
+
+    @each $icon in $order-icons {
+
+      // slash hack
+      $withslash: "\"\\#{nth($icon, 2)}\"";
+
+      .#{current-module()}-#{nth($icon, 1)} {
+        &:before {
+          content: unquote($withslash);
+          color: "#{nth($icon, 3)}";
+        }
+      }
+
+    }
+
+  }
 }
-.icon-completed:before {
-  content: "\e015";
-  color: #2ea2cc;
-}
-.icon-on-hold:before {
-  content: "\e033";
-  color: #999;
-}
-.icon-failed:before {
-  content: "\e016";
-  color: #d0c21f;
-}
-.icon-cancelled:before {
-  content: "\e013";
-  color: #a00;
-}
-.icon-processing:before {
-  content: "\e011";
-  color: #73a724;
-}
-.icon-refunded:before {
-  content: "\e014";
-  color: #999;
-}
-.icon-open:before {
-  content: "\e01d";
-  color: #73a724;
-}
+
 
 /**
   * @name Icon sizing
@@ -250,6 +219,41 @@ icon {
 
 
 /**
+  * @name Spinning icons
+  *
+  * @markup
+  *
+    <i class="icon-cog icon-spin"></i>
+    <i class="icon-cog icon-spin--steps8"></i>
+    <i class="icon-cog icon-spin--steps12"></i>
+  *
+  */
+
+$spin-name : namespace('spin');
+
+icon {
+  @at-root {
+
+    .#{current-module()}-spin {
+      @include animation($spin-name 2s infinite linear);
+    }
+    .#{current-module()}-spin--steps8 {
+      @include animation($spin-name 1s infinite steps(8));
+    }
+    .#{current-module()}-spin--steps12 {
+      @include animation($spin-name 1s infinite steps(12));
+    }
+
+    @include keyframes($spin-name) {
+      0% { @include rotate(0deg); }
+      100% { @include rotate(359deg); }
+    }
+
+  }
+}
+
+
+/**
   * @name Loading icons
   *
   * @markup
@@ -258,6 +262,7 @@ icon {
     <i class="icon-spinner"></i> spinner
     <i class="icon-fail"></i> fail
   *
+  * @todo how to extend
   */
 
 icon {
@@ -279,46 +284,6 @@ icon {
   }
 }
 
-.pass .icon-success {
-  color: #3c763d;
-}
-
-.fail .icon-error {
-  color: #a94442;
-}
-
-
-/**
-  * @name Spinning icons
-  *
-  * @markup
-  *
-    <i class="icon-cog icon-spin"></i>
-    <i class="icon-cog icon-spin--steps8"></i>
-    <i class="icon-cog icon-spin--steps12"></i>
-  *
-  */
-
-icon {
-  @at-root {
-
-    .#{current-module()}-spin {
-      @include animation($spin-name 2s infinite linear);
-    }
-    .#{current-module()}-spin--steps8 {
-      @include animation($spin-name 1s infinite steps(8));
-    }
-    .#{current-module()}-spin--steps12 {
-      @include animation($spin-name 1s infinite steps(12));
-    }
-
-  }
-}
-
-@include keyframes($spin-name) {
-  0% { @include rotate(0deg); }
-  100% { @include rotate(359deg); }
-}
 
 /**
   * @name Rotated icons
@@ -355,3 +320,16 @@ icon {
 
   }
 }
+
+/**
+  * @name Icon states
+  *
+  * @state .text-success - Success
+  * @state .text-error - Failure
+  *
+  * @markup
+  *
+    <i class="icon-check"></i>
+    <i class="icon-times"></i>
+  *
+  */

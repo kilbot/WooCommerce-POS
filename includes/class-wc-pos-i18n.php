@@ -352,6 +352,9 @@ class WC_POS_i18n {
         'success'   => /* translators: woocommerce */ __( 'Your changes have been saved.', 'woocommerce' ),
         'browser'   => __( 'Your browser is not supported!', 'woocommerce-pos' ),
         'legacy'    => __( 'Unable to use RESTful HTTP methods', 'woocommerce-pos' ),
+        'no-products' =>  /* translators: woocommerce */ __( 'No Products found', 'woocommerce' ),
+				'cart-empty' => /* translators: woocommerce */ __( 'Your cart is currently empty.', 'woocommerce' ),
+				'no-gateway' => /* translators: woocommerce */ __( 'No payment gateways enabled.', 'woocommerce-pos' )
       ),
       'plural'    => array(
         'records'   => _x( 'record |||| records', 'eg: 23 records', 'woocommerce-pos' ),

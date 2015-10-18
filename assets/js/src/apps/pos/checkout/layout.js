@@ -6,24 +6,22 @@ var Layout = LayoutView.extend({
 
   initialize: function(){
     this.template = hbs.compile('' +
-      '<div class="list-header"></div>' +
-      '<div class="list"></div>' +
-      '<div class="list-actions"></div>' +
-      '<div class="list-footer"></div>'
+      '<div class="checkout-status"></div>' +
+      '<div class="list checkout-list"></div>' +
+      '<div class="checkout-actions"></div>'
     );
   },
 
   tagName: 'section',
 
   regions: {
-    header  : '.list-header',
-    list    : '.list',
-    actions : '.list-actions',
-    footer  : '.list-footer'
+    status  : '.checkout-status',
+    list    : '.checkout-list',
+    actions : '.checkout-actions'
   },
 
   attributes: {
-    'class' : 'module checkout-module'
+    'class' : 'panel checkout'
   }
 
 });

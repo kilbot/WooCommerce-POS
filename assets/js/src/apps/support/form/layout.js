@@ -6,23 +6,20 @@ var Layout = LayoutView.extend({
   template: function(){
     var title = polyglot.t('titles.support-form');
     return '' +
-      '<div class="list-header"><div><h4>' + title + '</h4></div></div>' +
-      '<div class="list"></div>' +
-      '<div class="list-actions"></div>' +
-      '<div class="list-footer"></div>';
+      '<div class="list-header support-header">' +
+      '<div><h4>' + title + '</h4></div></div>' +
+      '<div class="panel-body list support-list"></div>' +
+      '<div class="support-actions"></div>';
   },
 
-  tagName: 'section',
-
   regions: {
-    header   : '.list-header',
-    form     : '.list',
-    actions  : '.list-actions',
-    footer   : '.list-footer'
+    header   : '.support-header',
+    form     : '.support-list',
+    actions  : '.support-actions'
   },
 
   attributes: {
-    'class'  : 'module support-module'
+    'class'  : 'panel support'
   }
 
 });

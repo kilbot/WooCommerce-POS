@@ -38,7 +38,7 @@
 </head>
 <body>
 
-<div id="page" class="site"></div>
+<div id="page"></div>
 
 <?php do_action('woocommerce_pos_footer'); ?>
 

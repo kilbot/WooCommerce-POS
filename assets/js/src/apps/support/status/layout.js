@@ -6,21 +6,18 @@ var Layout = LayoutView.extend({
   template: function(){
     var title = polyglot.t('titles.system-status');
     return '' +
-      '<div class="list-header"><div><h4>' + title + '</h4></div></div>' +
-      '<div class="list"></div>' +
-      '<div class="list-footer"></div>';
+      '<div class="list-header status-header">' +
+      '<div><h4>' + title + '</h4></div></div>' +
+      '<div class="panel-body list status-list"></div>';
   },
 
-  tagName: 'section',
-
   regions: {
-    header   : '.list-header',
-    status   : '.list',
-    footer   : '.list-footer'
+    header   : '.status-header',
+    status   : '.status-list'
   },
 
   attributes: {
-    'class'  : 'module status-module'
+    'class'  : 'panel status'
   }
 
 });

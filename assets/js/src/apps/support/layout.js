@@ -6,8 +6,8 @@ module.exports = LayoutView.extend({
 
   template: function(){
     return '' +
-      '<div id="left"></div>' +
-      '<div id="right"></div>';
+      '<section id="left"></section>' +
+      '<section id="right"></section>';
   },
 
   regions: {
