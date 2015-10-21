@@ -1,0 +1,96 @@
+$gateway-bg-color         : $input-border-color;
+$gateway-active-bg-color  : $brand-success;
+$gateway-active-text-color: $inverse-text-color;
+$gateway-padding-x        : $padding-base-horizontal;
+$gateway-padding-y        : $padding-base-vertical;
+
+checkout {
+  @at-root {
+
+    /**
+     *
+     */
+
+    .#{current-module()}-status {
+
+      .fail {
+        background-color: nth($paletteRed, 7);
+      }
+
+      a {
+        color: $inverse-text-color;
+      }
+
+    }
+
+
+    /**
+     *
+     */
+
+    .#{current-module()}-list {
+
+      li {
+
+        .gateway {
+          color: nth($primaryPalette, 6);
+          background: $gateway-bg-color;
+          &:hover {
+            color: nth($primaryPalette, 8);
+          }
+          h5 {
+            padding: $gateway-padding-y $gateway-padding-x;
+            margin: 0;
+            //font-size: 18px;
+            //line-height: 25px;
+            cursor: pointer;
+            img {
+              max-height: 25px;
+              vertical-align: middle;
+              margin-left: $gateway-padding-x;
+            }
+          }
+        }
+
+        .drawer {
+          > div {
+            padding: $gateway-padding-y $gateway-padding-x;
+            fieldset {
+              border: 0;
+              padding: 0;
+              margin: 0;
+            }
+            .form-row {
+              @include clearfix();
+              label {
+                float: left;
+                margin-right: $gateway-padding-x;
+                line-height: 2.4;
+              }
+              input {
+
+              }
+            }
+          }
+        }
+
+        &.active {
+          .gateway {
+            color: $gateway-active-text-color;
+            background: $gateway-active-bg-color
+          }
+        }
+
+        &.empty {
+          p {
+            padding: $gateway-padding-y $gateway-padding-x;
+            margin: 0;
+          }
+        }
+
+      }
+
+    }
+
+  }
+}

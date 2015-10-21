@@ -9,6 +9,8 @@ var Variations = require('./popover/variations');
 var Item = ItemView.extend({
   template: 'pos.products.product',
 
+  className: 'list-row',
+
   ui: {
     add      : 'a[data-action="add"]',
     vpopover : 'a[data-action="variations"]',

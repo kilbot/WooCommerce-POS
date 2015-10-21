@@ -173,7 +173,8 @@ module.exports = function(grunt) {
           handlebars: 'Handlebars',
           accounting: 'accounting',
           moment: 'moment',
-          select2: 'select2'
+          select2: 'select2',
+          'idb-wrapper': 'IDBStore'
         },
         cache: true,
         watch: true

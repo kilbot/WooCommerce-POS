@@ -6,8 +6,8 @@ var Layout = LayoutView.extend({
 
   initialize: function(){
     this.template = hbs.compile('' +
-      '<div class="checkout-status"></div>' +
-      '<div class="list checkout-list"></div>' +
+      '<div class="panel-header checkout-status"></div>' +
+      '<div class="panel-body list checkout-list"></div>' +
       '<div class="list-actions checkout-actions"></div>'
     );
   },

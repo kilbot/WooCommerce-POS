@@ -1,5 +1,5 @@
 @import "compass";
-@import "breakpoint";
+//@import "breakpoint";
 @import "partials/palette";
 @import "partials/variables";
 @import "partials/mixins";
@@ -54,7 +54,7 @@
 //
 //@import "partials/print-preview";
 
-@import "partials/base";
+@import "partials/reboot";
 @import "partials/utilities";
 @import "partials/main";
 @import "partials/menu";
@@ -70,10 +70,12 @@
 @import "partials/modal";
 @import "partials/type";
 @import "partials/loading";
-
 @import "partials/list";
+
 @import "partials/products";
 @import "partials/cart";
+@import "partials/checkout";
+@import "partials/receipt";
 
 @import "partials/tooltip";
 @import "partials/dropdown";

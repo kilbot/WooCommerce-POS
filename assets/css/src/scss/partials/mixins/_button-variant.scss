@@ -15,7 +15,6 @@
   }
 
   &:focus,
-  &.focus,
   &.pseudo-class-focus {
     color: $color;
     background-color: $active-background;
@@ -23,7 +22,6 @@
   }
 
   &:active,
-  &.active,
   &.pseudo-class-active,
   .open > &.dropdown-toggle {
     color: $color;
@@ -34,8 +32,9 @@
     @include box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
 
     &:hover,
+    &.pseudo-class-hover
     &:focus,
-    &.focus {
+    &.pseudo-class-focus {
       color: $color;
       background-color: darken($background, 17%);
       border-color: darken($border, 25%);
@@ -45,11 +44,12 @@
   &.disabled,
   &:disabled {
     &:focus,
-    &.focus {
+    &.pseudo-class-focus {
       background-color: $background;
       border-color: $border;
     }
-    &:hover {
+    &:hover,
+    &.pseudo-class-hover {
       background-color: $background;
       border-color: $border;
     }

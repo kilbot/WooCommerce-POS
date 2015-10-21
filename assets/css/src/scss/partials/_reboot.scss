@@ -1,0 +1,171 @@
+$body-color   : $text-color;
+$body-bg      : #e8e5df;
+
+// Builds on Normalize.css
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+@at-root {
+  @-moz-viewport      { width: device-width; }
+  @-ms-viewport       { width: device-width; }
+  @-o-viewport        { width: device-width; }
+  @-webkit-viewport   { width: device-width; }
+  @viewport           { width: device-width; }
+}
+
+html {
+  // Sets a specific default `font-size` for user with `rem` type scales.
+  font-size: $font-size-root;
+  // Changes the default tap highlight to be completely transparent in iOS.
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+body {
+  // Make the `body` use the `font-size-root`
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  // Go easy on the eyes and use something other than `#000` for text
+  color: $body-color;
+  // By default, `<body>` has no `background-color` so we set one as a best practice.
+  background-color: $body-bg;
+}
+
+/**
+ * @name Definition Lists
+ *
+ * @markup
+ *  <dl>
+ *    <dt>Title:</dt>
+ *    <dd>Data</dd>
+ *    <dt>Title:</dt>
+ *    <dd>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</dd>
+ *  </dl>
+ */
+
+dl {
+  @include clearfix();
+  width: 100%;
+  font-size: $font-size-sm;
+  margin: 0;
+  dt {
+    font-weight: normal;
+    float: left;
+    padding-right: 5px;
+    clear: left;
+    font-weight: 600;
+  }
+  dd {
+    float: left;
+    margin: 0;
+  }
+}
+
+
+//
+// Images
+//
+
+img {
+  // By default, `<img>`s are `inline-block`. This assumes that, and vertically
+  // centers them. This won't apply should you reset them to `block` level.
+
+  // update to bottom to prevent 1px overhang
+  vertical-align: bottom;
+}
+
+
+// iOS "clickable elements" fix for role="button"
+//
+// Fixes "clickability" issue (and more generally, the firing of events such as focus as well)
+// for traditionally non-focusable elements with role="button"
+// see https://developer.mozilla.org/en-US/docs/Web/Events/click#Safari_Mobile
+// Upstream patch for normalize.css submitted: https://github.com/necolas/normalize.css/pull/379 - remove this fix once that is merged
+
+[role="button"] {
+  cursor: pointer;
+}
+
+//
+// Tables
+//
+
+table {
+  // Reset for nesting within parents with `background-color`.
+  background-color: #fff;
+}
+
+th {
+  // Centered by default, but left-align-ed to match the `td`s below.
+  text-align: left;
+}
+
+
+//
+// Forms
+//
+
+label {
+  // Allow labels can use `margin` for spacing.
+  display: inline-block;
+  margin-bottom: .5rem;
+}
+
+input,
+button,
+select,
+textarea {
+  // Remove all `margin`s so our classes don't have to do it themselves.
+  margin: 0;
+  // Normalize includes `font: inherit;`, so `font-family`. `font-size`, etc are
+  // properly inherited. However, `line-height` isn't addressed there. Using this
+  // ensures we don't need to unnecessarily redeclare the global font stack.
+  line-height: inherit;
+  // iOS adds rounded borders by default
+  border-radius: 0;
+}
+
+textarea {
+  // Textareas should really only resize vertically so they don't break their (horizontal) containers.
+  resize: vertical;
+}
+
+fieldset {
+  // Chrome and Firefox set a `min-width: min-content;` on fieldsets,
+  // so we reset that to ensure it behaves more like a standard block element.
+  // See https://github.com/twbs/bootstrap/issues/12359.
+  min-width: 0;
+  // Reset the default outline behavior of fieldsets so they don't affect page layout.
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+legend {
+  // Reset the entire legend element to match the `fieldset`
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: .5rem;
+  font-size: 1.5rem;
+  line-height: inherit;
+  //  border: 0;
+}
+
+input[type="search"] {
+  // Undo Normalize's default here to match our global overrides.
+  box-sizing: inherit;
+  // This overrides the extra rounded corners on search inputs in iOS so that our
+  // `.form-control` class can properly style them. Note that this cannot simply
+  // be added to `.form-control` as it's not specific enough. For details, see
+  // https://github.com/twbs/bootstrap/issues/11586.
+  -webkit-appearance: none;
+}

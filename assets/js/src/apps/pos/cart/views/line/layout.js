@@ -3,15 +3,24 @@ var ItemView = require('./views/item');
 var DrawerView = require('./views/drawer');
 //var bb = require('backbone');
 
+/**
+ * @todo Abstract ListItemView
+ */
+
 module.exports = LayoutView.extend({
+
   tagName: 'li',
+
   className: function() { return this.model.get('type'); },
+
   template: function() {
-    return '<div class="list-item"></div><div class="list-item-drawer"></div>';
+    return '<div class="list-item cart-item"></div>' +
+      '<div class="list-drawer cart-drawer"></div>';
   },
+
   regions: {
-    item: '.list-item',
-    drawer: '.list-item-drawer'
+    item    : '.list-item',
+    drawer  : '.list-drawer'
   },
 
   modelEvents: {
@@ -67,7 +76,7 @@ module.exports = LayoutView.extend({
     }
 
     // scroll to row
-    this.$el.addClass('bg-success')
+    this.$el.addClass('pulse-in')
       .closest('.list')
       .animate({scrollTop: scrollTop}, 'fast', function() {
         // focus title if shipping or fee
@@ -77,7 +86,7 @@ module.exports = LayoutView.extend({
 
         // pulse
         self.$el.animate({backgroundColor: 'transparent'}, 500, function() {
-          self.$el.removeClass('bg-success').removeAttr('style');
+          self.$el.removeClass('pulse-in').removeAttr('style');
         });
       }
     );

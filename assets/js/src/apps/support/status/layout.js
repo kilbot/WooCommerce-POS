@@ -6,7 +6,7 @@ var Layout = LayoutView.extend({
   template: function(){
     var title = polyglot.t('titles.system-status');
     return '' +
-      '<div class="list-header status-header">' +
+      '<div class="panel-header status-header">' +
       '<div><h4>' + title + '</h4></div></div>' +
       '<div class="panel-body list status-list"></div>';
   },

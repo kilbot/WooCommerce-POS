@@ -25,13 +25,14 @@ var Filter = Behavior.extend({
 
   ui: {
     searchField : 'input[type=search]',
-    clearBtn    : 'a.clear',
+    clearBtn    : '.clear',
+    clear       : '*[data-action="clear"]',
     sync        : '*[data-action="sync"]'
   },
 
   events: {
     'keyup @ui.searchField' : 'query',
-    'click @ui.clearBtn'    : 'clear',
+    'click @ui.clear'       : 'clear',
     'click @ui.sync'        : 'sync'
   },
 

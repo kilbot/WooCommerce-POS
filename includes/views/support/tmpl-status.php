@@ -9,8 +9,8 @@
   ) );
   extract( $args );
 ?>
-  <li>
-    <div class="shrink">
+  <li class="list-row">
+    <div class="result">
       <i class="icon-<?php echo $pass ? 'success' : 'error'; ?> icon-lg"></i>
     </div>
     <div class="title"><?php echo $title; ?></div>

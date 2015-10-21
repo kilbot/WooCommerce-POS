@@ -6,7 +6,7 @@ var Layout = LayoutView.extend({
   template: function(){
     var title = polyglot.t('titles.support-form');
     return '' +
-      '<div class="list-header support-header">' +
+      '<div class="panel-header support-header">' +
       '<div><h4>' + title + '</h4></div></div>' +
       '<div class="panel-body list support-list"></div>' +
       '<div class="list-actions support-actions"></div>';

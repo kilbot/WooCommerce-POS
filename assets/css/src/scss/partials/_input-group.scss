@@ -34,6 +34,36 @@ $input-group-addon-line-height  : $input-line-height;
   * </div>
   */
 
+/**
+  * @name Button Addons
+  *
+  * @markup
+  * <div class="input-group">
+  *   <span class="input-group-btn">
+  *     <button class="btn btn-secondary">Go!</button>
+  *   </span>
+  *   <input type="text" class="form-control" placeholder="Search for...">
+  * </div>
+  * <br>
+  * <div class="input-group">
+  *   <input type="text" class="form-control" placeholder="Search for...">
+  *   <span class="input-group-btn">
+  *     <a href="#777" class="btn btn-secondary">Go!</a>
+  *   </span>
+  * </div>
+  * <br>
+  * <div class="input-group">
+  *   <span class="input-group-btn">
+  *     <a href="#777" class="btn btn-secondary">Go!</a>
+  *   </span>
+  *   <input type="text" class="form-control" placeholder="Search for...">
+  *   <span class="input-group-addon">Go!</span>
+  *   <span class="input-group-btn">
+  *     <a href="#777" class="btn btn-primary">Go!</a>
+  *   </span>
+  * </div>
+  */
+
 input-group {
   @at-root {
 
@@ -46,6 +76,12 @@ input-group {
         z-index: 2;
         flex: 1;
         margin-bottom: 0;
+      }
+
+      // inline
+      .#{namespace('form')}-inline & {
+        @include flex(1);
+        margin-right: $padding-base-horizontal;
       }
     }
 
@@ -153,114 +189,47 @@ input-group {
       border-left: 0;
     }
 
+
+    /**
+     * @name Search Group
+     *
+     * @markup
+     * <div class="input-group">
+     *   <span class="input-group-addon">
+     *     <i class="icon-search"></i>
+     *   </span>
+     *   <input type="search" class="form-control" placeholder="Search for...">
+     *   <span class="input-group-addon clear">
+     *     <i class="icon-times-circle icon-lg"></i>
+     *   </span>
+     *   <span class="input-group-btn">
+     *     <a href="#777" class="btn btn-secondary">
+     *       <i class="icon-refresh"></i>
+     *     </a>
+     *   </span>
+     * </div>
+     */
+    .clear {
+      display: none;
+      position: relative;
+      padding-left: 0;
+      padding-right: 0;
+      border: 0;
+
+      i {
+        position: absolute;
+        right: $input-padding-x;
+        margin-top: -2px;
+        z-index: 3;
+        color: $secondary-text-color;
+
+        &:hover {
+          cursor: pointer;
+          color: $text-color;
+        }
+      }
+    }
+
+
   }
 }
-
-// input group
-//.input-group {
-//  @include display-flex;
-//  .form-control, .input-group-addon, .input-group-btn, .input-text {
-//    border: 1px solid $input-border-color;
-//    padding: $spacing/4 $spacing/2.4;
-//    &:first-child {
-//      @include border-radius($border-radius-small 0 0 $border-radius-small);
-//    }
-//    &:last-child {
-//      @include border-radius(0 $border-radius-small $border-radius-small 0);
-//    }
-//  }
-//  .input-group-addon {
-//    color: $secondary-text-color;
-//    background: $input-border-color;
-//  }
-//  .input-group-btn {
-//    padding: 0;
-//    > a {
-//      color: nth($primaryPalette, 6);
-//      background: $input-border-color;
-//      display: inline-block;
-//      padding: $spacing/4 $spacing/2.4;
-//      &:hover {
-//        color: nth($primaryPalette, 10);
-//      }
-//      &.disabled {
-//        cursor: $cursor-disabled;
-//        pointer-events: none; // Future-proof disabling of clicks
-//        color: $text-color;
-//      }
-//    }
-//  }
-//  .form-control, .input-text {
-//    outline: 0;
-//    @include flex(1 1 auto);
-//    &:not(:first-child) {
-//      border-left: 0;
-//    }
-//    &:not(:last-child) {
-//      border-right: 0;
-//    }
-//  }
-//  .clear {
-//    display: none;
-//    color: $text-color;
-//    background: white;
-//    padding: $spacing/4 $spacing/2.4;
-//    line-height: 20px;
-//    border-top: 1px solid $input-border-color;
-//    border-bottom: 1px solid $input-border-color;
-//    i {
-//      @include opacity(0.5);
-//    }
-//    &:hover i {
-//      @include opacity(1);
-//    }
-//  }
-//}
-//
-//// toggle btns
-//*[data-toggle="buttons"] {
-//  @include display-flex;
-//  width: 100%;
-//  .btn {
-//    @include flex(1 1 auto);
-//    @include border-radius(0);
-//    &:first-child {
-//      @include border-top-left-radius($border-radius-base);
-//      @include border-bottom-left-radius($border-radius-base);
-//    }
-//    &:last-child {
-//      @include border-top-right-radius($border-radius-base);
-//      @include border-bottom-right-radius($border-radius-base);
-//    }
-//  }
-//}
-
-
-/**
-  * @name Button Addons
-  *
-  * @markup
-  * <div class="input-group">
-  *   <span class="input-group-btn">
-  *     <button class="btn btn-secondary">Go!</button>
-  *   </span>
-  *   <input type="text" class="form-control" placeholder="Search for...">
-  * </div>
-  * <br>
-  * <div class="input-group">
-  *   <input type="text" class="form-control" placeholder="Search for...">
-  *   <span class="input-group-btn">
-  *     <a href="#777" class="btn btn-secondary">Go!</a>
-  *   </span>
-  * </div>
-  * <br>
-  * <div class="input-group">
-  *   <span class="input-group-btn">
-  *     <a href="#777" class="btn btn-secondary">Go!</a>
-  *   </span>
-  *   <input type="text" class="form-control" placeholder="Search for...">
-  *   <span class="input-group-btn">
-  *     <a href="#777" class="btn btn-primary">Go!</a>
-  *   </span>
-  * </div>
-  */

@@ -1,5 +1,7 @@
-$main-padding-y : $padding-base-vertical * 2;
+$main-padding-y : $padding-base-vertical / 2;
 $main-padding-x : $padding-base-horizontal / 2;
+$section-padding-y : $main-padding-y;
+$section-padding-x : $main-padding-x;
 
 main {
   @at-root {
@@ -35,15 +37,49 @@ main {
       right: 0;
       padding: $main-padding-y $main-padding-x;
 
+      section {
+        padding: $section-padding-y $section-padding-x;
+      }
+
       > div {
         @include display-flex;
         height: 100%;
 
         > section {
-          @include display-flex;
           @include flex(1);
-          margin: 0 $main-padding-x;
           height: 100%;
+
+        }
+
+      }
+
+      // tabbed panels
+
+      .two-column & {
+        top: 68px;
+
+        &.left-active {
+          #right {
+            display: none;
+          }
+        }
+        &.right-active {
+          #left {
+            display: none;
+          }
+        }
+
+      }
+
+      @include media-breakpoint-up(md) {
+
+        .two-column & {
+          top: 38px;
+
+          &.left-active #right,
+          &.right-active #left {
+            @include display-flex;
+          }
 
         }
 

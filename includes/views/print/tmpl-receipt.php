@@ -175,8 +175,7 @@
       <td class="qty">{{number quantity precision="auto"}}</td>
       <td class="price">
         {{#if on_sale}}
-        <del>{{{money subtotal}}}</del>
-        <ins>{{{money total}}}</ins>
+        <del>{{{money subtotal}}}</del> {{{money total}}}
         {{else}}
         {{{money total}}}
         {{/if}}

@@ -1,5 +1,5 @@
 {{#each line_items}}
-<li>
+<li class="list-row">
   <div class="qty">{{number quantity precision="auto"}}</div>
   <div class="title">
     {{name}}
@@ -14,16 +14,14 @@
   </div>
   <div class="price">
     {{#if on_sale}}
-    <del>{{{money regular_price}}}</del>
-    <ins>{{{money price}}}</ins>
+    <del>{{{money regular_price}}}</del> {{{money price}}}
     {{else}}
     {{{money price}}}
     {{/if}}
   </div>
   <div class="total">
     {{#if on_sale}}
-    <del>{{{money subtotal}}}</del>
-    <ins>{{{money total}}}</ins>
+    <del>{{{money subtotal}}}</del> {{{money total}}}
     {{else}}
     {{{money total}}}
     {{/if}}

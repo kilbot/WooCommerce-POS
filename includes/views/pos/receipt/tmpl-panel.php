@@ -1,4 +1,4 @@
-<div class="receipt-status"></div>
+<div class="panel-header receipt-status"></div>
 <div class="list-header receipt-header">
   <div class="qty"><?php _ex( 'Qty', 'Abbreviation of Quantity', 'woocommerce-pos' ); ?></div>
   <div class="title"><?php /* translators: woocommerce */ _e( 'Product', 'woocommerce' ); ?></div>

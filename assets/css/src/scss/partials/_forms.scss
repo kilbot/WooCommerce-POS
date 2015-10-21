@@ -15,6 +15,29 @@ $input-border-focus       : #66afe9 !default;
 $input-box-shadow-focus   : rgba(102,175,233,.6) !default;
 
 /**
+ *
+ */
+[contenteditable]:focus {
+  @include form-control-focus();
+}
+
+
+/**
+ * @name Form
+ */
+
+form {
+  @at-root {
+
+    .#{current-module()}-inline {
+      @include display-flex;
+    }
+
+  }
+}
+
+
+/**
  * @name Input
  *
  * @state :focus - Focus State
@@ -33,7 +56,7 @@ form-control {
   @at-root {
 
     .#{current-module()} {
-      display: block;
+      //display: block; // allows align-right, nb: may break other styling
       width: 100%;
       padding: $input-padding-y $input-padding-x;
       font-size: $input-font-size;
@@ -77,6 +100,7 @@ form-control {
       }
 
     }
+
 
   }
 }

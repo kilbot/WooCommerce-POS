@@ -54,7 +54,7 @@ products {
      *   </div>
      */
 
-    .#{current-module()}-item {
+    .#{current-module()}-list {
 
       .img {
         @include flex(0 1 20%);

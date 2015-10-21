@@ -4,7 +4,7 @@
   * @state :hover - Hover state
   * @state :active - Active state
   * @state :focus - Focus state
-  * @state :active-focus - Active Focus state
+  * @state .pseudo-class-active pseudo-class-focus - Active Focus state
   * @state .disabled - Disabled state
   *
   * @markup
@@ -78,11 +78,13 @@ btn {
       white-space: nowrap;
       @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-line-height, $btn-border-radius);
       @include user-select(none);
+      text-decoration: none;
 
       &,
       &:active,
       &.pseudo-class-active {
-        &:focus {
+        &:focus,
+        &.pseudo-class-focus {
           @include tab-focus;
         }
       }

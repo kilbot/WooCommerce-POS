@@ -4,20 +4,21 @@ $tab-active-background  : #fff;
 $tabs-padding-x         : $padding-base-horizontal;
 $tabs-padding-y         : $padding-base-vertical/2;
 
-/**
- * @name Tabs Spec
- *
- * @markup
- * <ul class="tabs">
- *  <li>Item 1</li>
- *  <li class="active">Item 2</li>
- *  <li>Item 3</li>
- *  <li><i class="icon-plus"></i></li>
- * </ul>
- */
 
 tabs {
   @at-root {
+
+    /**
+     * @name Tabs Spec
+     *
+     * @markup
+     * <ul class="tabs">
+     *  <li>Item 1</li>
+     *  <li class="active">Item 2</li>
+     *  <li>Item 3</li>
+     *  <li><i class="icon-plus"></i></li>
+     * </ul>
+     */
 
     .#{current-module()} {
       background: $tabs-background;
@@ -96,6 +97,34 @@ tabs {
           right: 0;
         }
       }
+    }
+
+
+    /**
+     * @name Panel Tabs Spec
+     *
+     * @markup
+     *   <ul id="tabs">
+     *     <li>Left</li>
+     *     <li>Right</li>
+     *   </ul>
+     */
+    ##{current-module()} {
+
+      li {
+        background: darken($body-bg, 10%);
+        width: 50%;
+        margin: 0;
+        text-align: center;
+        &.active {
+          background: $body-bg;
+        }
+      }
+
+      @include media-breakpoint-up(md) {
+        display: none;
+      }
+
     }
 
   }

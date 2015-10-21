@@ -1,5 +1,5 @@
 $list-border-color              : $border-color;
-$list-alternate-bg-color        : #f9f9f9;
+$list-alternate-bg-color        : #fafafa;
 
 $list-header-padding-x          : $padding-base-horizontal;
 $list-header-padding-y          : $padding-base-vertical;
@@ -14,9 +14,12 @@ $list-item-drawer-padding-y     : $padding-base-vertical;
 $list-item-drawer-bg            : $list-border-color;
 $list-item-drawer-border-color  : #ddd;
 
+$list-totals-background         : #fff;
 $list-totals-padding-x          : $padding-base-horizontal;
 $list-totals-padding-y          : $padding-base-vertical;
 
+$list-actions-background        : #fff;
+$list-actions-background-alt    : nth( $primaryPalette, 8 );
 $list-actions-padding-x         : $padding-base-horizontal;
 $list-actions-padding-y         : $padding-base-vertical;
 
@@ -96,7 +99,7 @@ list {
       color: $list-header-color;
 
       > div {
-        @include flex(1 0 auto);
+        @include flex(1);
         padding: $list-header-padding-y $list-header-padding-x;
 
       }
@@ -105,30 +108,25 @@ list {
 
 
     /**
-     * @name List Item
+     * @name List Row
      *
      * @markup
-     *   <div class="list-item">
-     *     <div> <!-- Marionette region -->
-     *       <div>Cell</div>
-     *       <div>Cell<br>New Line<br>New Line</div>
-     *       <div>Cell</div>
-     *       <div>Cell</div>
-     *     </div>
+     *   <div class="list-row">
+     *     <div>Cell</div>
+     *     <div>Cell<br>New Line<br>New Line</div>
+     *     <div>Cell</div>
+     *     <div>Cell</div>
      *   </div>
      */
 
-    .#{current-module()}-item {
+    .#{current-module()}-row {
+
+      @include display-flex;
+      @include align-items(center);
 
       > div {
-        @include display-flex;
-        @include align-items(center);
-
-        > div {
-          @include flex(1 0 auto);
-          padding: $list-item-padding-y $list-item-padding-x;
-
-        }
+        @include flex(1);
+        padding: $list-item-padding-y $list-item-padding-x;
 
       }
 
@@ -136,43 +134,32 @@ list {
 
 
     /**
-      * @name List Item Drawer
+      * @name List Drawer
       *
       * @markup
-      *   <div class="list-item-drawer">
-      *     <div> <!-- Marionette region -->
-      *       <div>
-      *         <div>Cell</div>
-      *         <div>Cell<br>New Line<br>New Line</div>
-      *         <div>Cell</div>
-      *         <div>Cell</div>
-      *       </div>
-      *       <div>
-      *         <div>Cell</div>
-      *         <div>Cell<br>New Line<br>New Line</div>
-      *         <div>Cell</div>
-      *         <div>Cell</div>
-      *       </div>
+      *   <div class="list-drawer">
+      *     <div class="list-row">
+      *       <div>Cell</div>
+      *       <div>Cell<br>New Line<br>New Line</div>
+      *       <div>Cell</div>
+      *       <div>Cell</div>
+      *     </div>
+      *     <div class="list-row">
+      *       <div>Cell</div>
+      *       <div>Cell<br>New Line<br>New Line</div>
+      *       <div>Cell</div>
+      *       <div>Cell</div>
       *     </div>
       *   </div>
       */
 
-    .#{current-module()}-item-drawer {
+    .#{current-module()}-drawer {
 
       background: $list-item-drawer-bg;
       box-shadow: inset 0 0 8px 0 rgba(0, 0, 0, 0.1);
 
-      > div > div {
-        @include display-flex;
-        @include align-items(center);
+      .#{namespace('list')}-row {
         border-top: 1px solid $list-item-drawer-border-color;
-
-        > div {
-          @include flex(1 0 auto);
-          padding: $list-item-drawer-padding-y $list-item-drawer-padding-x;
-
-        }
-
       }
 
     }
@@ -294,18 +281,14 @@ list {
 
     .#{current-module()}-totals {
 
+      text-align: right;
+      background: $list-totals-background;
+      border-top: 2px solid $input-border-color;
+
       li {
-        @include display-flex;
 
-        > div {
-          @include flex(1 0 auto);
-          padding: $list-totals-padding-y $list-totals-padding-x;
-          text-align: right;
-
-          &:first-of-type {
-            font-weight: 700;
-
-          }
+        > div:first-of-type {
+          font-weight: 700;
 
         }
 
@@ -327,6 +310,7 @@ list {
 
     .#{current-module()}-actions {
 
+      background: $list-actions-background;
       border-top: 2px solid $input-border-color;
 
       > div {
@@ -346,6 +330,7 @@ list {
       }
 
       &:first-of-type {
+        background: $list-actions-background-alt;
         border-top: 0;
       }
 

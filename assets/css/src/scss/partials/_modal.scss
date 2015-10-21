@@ -7,6 +7,9 @@ $modal-title-padding-y        : $padding-base-vertical;
 $modal-title-padding-x        : $padding-base-horizontal;
 $modal-title-line-height      : $line-height-base !default;
 
+$modal-close-padding-y        : $padding-base-vertical;
+$modal-close-padding-x        : $padding-base-horizontal;
+
 $modal-content-bg             : #fff !default;
 $modal-content-border-color   : rgba(0,0,0,.2) !default;
 $modal-border-radius          : $border-radius-base;
@@ -37,7 +40,7 @@ $modal-sm                     : 300px !default;
         <div> <!-- Marionette region -->
           <h4 class="modal-title">Modal title</h4>
           <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
-            <i class="icon-times icon-lg"></i>
+            <i class="icon-times"></i>
             <span class="sr-only">Close</span>
           </button>
         </div>
@@ -46,7 +49,7 @@ $modal-sm                     : 300px !default;
         <p>One fine body&hellip;</p>
       </div>
       <div class="modal-footer">
-        <p>Status message</p>
+        <p class="message text-success">Status message <i class="icon-check"></i></p>
         <button type="button" class="btn pull-left" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
       </div>
@@ -149,6 +152,11 @@ modal {
       margin-bottom: -1px;
       @include border-radius(0);
       @include box-shadow(none);
+      padding: $modal-close-padding-y $modal-close-padding-x;
+
+      i {
+        padding: 5px 10px;
+      }
     }
 
     // Title text within header

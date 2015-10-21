@@ -3,6 +3,10 @@ var LayoutView = require('lib/config/layout-view');
 var Product = require('./views/product');
 var Variations = require('./views/drawer/variations');
 
+/**
+ * @todo Abstract ListItemView
+ */
+
 var Layout = LayoutView.extend({
 
   tagName: 'li',
@@ -13,13 +17,13 @@ var Layout = LayoutView.extend({
 
   template: function () {
     return '' +
-      '<div class="list-item products-item"></div>' +
-      '<div class="list-item-drawer products-item-drawer"></div>';
+      '<div class="list-item"></div>' +
+      '<div class="list-drawer"></div>';
   },
 
   regions: {
-    item  : '.list-item',
-    drawer: '.list-item-drawer'
+    item    : '.list-item',
+    drawer  : '.list-drawer'
   },
 
   onRender: function(){

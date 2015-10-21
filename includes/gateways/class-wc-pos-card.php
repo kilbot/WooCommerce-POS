@@ -52,7 +52,7 @@ class WC_POS_Gateways_Card extends WC_Payment_Gateway {
         <label for="pos-cashback" class="">'. __('Cashback', 'woocommerce-pos') .'</label>
         <div class="input-group">
         '. $left_addon .'
-          <input type="text" class="input-text" name="pos-cashback" id="pos-cashback" placeholder="" maxlength="20" data-value="0" data-numpad="cash" data-label="'. __('Cashback', 'woocommerce-pos') .'">
+          <input type="text" class="form-control" name="pos-cashback" id="pos-cashback" placeholder="" maxlength="20" data-value="0" data-numpad="cash" data-label="'. __('Cashback', 'woocommerce-pos') .'">
         '. $right_addon .'
         </div>
       </div>

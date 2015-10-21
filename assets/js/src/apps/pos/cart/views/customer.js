@@ -7,6 +7,8 @@ var Radio = require('backbone.radio');
 var View = FormView.extend({
   template: 'pos.cart.customer',
 
+  className: 'list-row',
+
   initialize: function(){
     var customers = Radio.request('entities', 'get', {
       type: 'option',

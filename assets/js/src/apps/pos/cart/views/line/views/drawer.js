@@ -21,8 +21,8 @@ module.exports = FormView.extend({
   },
 
   ui: {
-    addMeta     : '.action-add-meta',
-    removeMeta  : '.action-remove-meta',
+    addMeta     : '*[data-action="add-meta"]',
+    removeMeta  : '*[data-action="remove-meta"]',
     metaLabel   : 'input[name="meta.label"]',
     metaValue   : 'textarea[name="meta.value"]'
   },
@@ -132,11 +132,11 @@ module.exports = FormView.extend({
 
     $('<span data-key="'+ i +'" />')
       .append('' +
-        '<input type="text" name="meta.label">' +
-        '<textarea name="meta.value"></textarea>' +
-        '<a href="#" class="action-remove-meta">' +
-        '<i class="icon icon-times"></i>' +
-        '</a>')
+        '<input class="form-control" type="text" name="meta.label">' +
+        '<textarea class="form-control" name="meta.value"></textarea>' +
+        '<a href="#" class="btn btn-danger btn-circle btn-circle-sm" ' +
+        'data-action="remove-meta"><i class="icon icon-times"></i></a>'
+      )
       .insertBefore( $(e.currentTarget) );
   },
 

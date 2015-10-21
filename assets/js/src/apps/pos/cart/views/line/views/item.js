@@ -9,6 +9,8 @@ var _ = require('lodash');
 module.exports = FormView.extend({
   template: 'pos.cart.item',
 
+  className: 'list-row',
+
   initialize: function() {
     this.tax = Radio.request('entities', 'get', {
       type: 'option',
@@ -111,7 +113,7 @@ module.exports = FormView.extend({
     if(e) { e.preventDefault(); }
     var self = this;
     this.ui.remove.attr('disabled', 'true');
-    this.$el.addClass('bg-danger')
+    this.$el.addClass('pulse-out')
       .fadeOut(500, function(){
       self.model.destroy();
     });

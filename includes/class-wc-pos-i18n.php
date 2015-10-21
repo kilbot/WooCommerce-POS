@@ -23,10 +23,10 @@ class WC_POS_i18n {
 
     // raw github url for language packs
     // todo: use last commit info and switch to cdn
-//    $this->github_url = 'https://cdn.rawgit.com/kilbot/WooCommerce-POS-Language-Packs/master/';
+    //    $this->github_url = 'https://cdn.rawgit.com/kilbot/WooCommerce-POS-Language-Packs/master/';
     $this->github_url = 'https://raw.githubusercontent.com/kilbot/WooCommerce-POS-Language-Packs/master/';
 
-//    add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+    //    add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
     $this->load_plugin_textdomain();
     add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'update_check' ) );
     add_filter( 'upgrader_pre_download', array( $this, 'upgrader_pre_download' ), 10, 3 );
@@ -43,13 +43,13 @@ class WC_POS_i18n {
   public function load_plugin_textdomain() {
 
     $locale = apply_filters( 'plugin_locale', get_locale(), 'woocommerce-pos' );
-    $dir    = trailingslashit( WP_LANG_DIR );
+    $dir = trailingslashit( WP_LANG_DIR );
 
     load_textdomain( 'woocommerce-pos', $dir . 'woocommerce-pos/woocommerce-pos-' . $locale . '.mo' );
     load_textdomain( 'woocommerce-pos', $dir . 'plugins/woocommerce-pos-' . $locale . '.mo' );
 
     // admin translations
-    if( is_admin() ) {
+    if ( is_admin() ) {
       load_textdomain( 'woocommerce-pos', $dir . 'woocommerce-pos/woocommerce-pos-admin-' . $locale . '.mo' );
       load_textdomain( 'woocommerce-pos', $dir . 'plugins/woocommerce-pos-admin-' . $locale . '.mo' );
     } else {
@@ -62,7 +62,7 @@ class WC_POS_i18n {
   /**
    * Check GitHub repo for updated language packs
    *
-   * @param $transient
+   * @param      $transient
    * @param bool $force
    * @return mixed
    */
@@ -87,9 +87,9 @@ class WC_POS_i18n {
     }
 
     // see if translation pack exists
-    $response = json_decode(wp_remote_retrieve_body( $request ) );
+    $response = json_decode( wp_remote_retrieve_body( $request ) );
     $transient = apply_filters( 'woocommerce_pos_language_packs_upgrade', $transient, $response, $this->github_url, $force );
-    if( ! isset( $response->locales->$locale ) ) {
+    if ( !isset( $response->locales->$locale ) ) {
       return $transient;
     }
 
@@ -97,7 +97,7 @@ class WC_POS_i18n {
     $new = strtotime( $response->locales->$locale );
     $options = get_option( 'woocommerce_pos_language_packs' );
 
-    if( isset( $options[$locale] ) && $options[$locale] >= $new && !$force ){
+    if ( isset( $options[ $locale ] ) && $options[ $locale ] >= $new && !$force ) {
       return $transient;
     }
 
@@ -128,13 +128,14 @@ class WC_POS_i18n {
    */
   public function upgrader_pre_download( $reply, $package, $upgrader ) {
 
-    if( isset( $upgrader->skin->language_update )
-      && $upgrader->skin->language_update->slug == 'woocommerce-pos' ) {
+    if ( isset( $upgrader->skin->language_update )
+      && $upgrader->skin->language_update->slug == 'woocommerce-pos'
+    ) {
 
       $options = get_option( 'woocommerce_pos_language_packs', array() );
       $locale = get_locale();
-      $options[$locale] = current_time('timestamp');
-      if ( ! add_option( 'woocommerce_pos_language_packs', $options, '', 'no' ) ) {
+      $options[ $locale ] = current_time( 'timestamp' );
+      if ( !add_option( 'woocommerce_pos_language_packs', $options, '', 'no' ) ) {
         update_option( 'woocommerce_pos_language_packs', $options );
       }
     }
@@ -145,15 +146,15 @@ class WC_POS_i18n {
   /**
    * Force update translations from AJAX
    */
-  public function update_translations(){
+  public function update_translations() {
     // security
     WC_POS_Server::check_ajax_referer();
 
-    header("Content-Type: text/event-stream");
-    header("Cache-Control: no-cache");
-    header("Access-Control-Allow-Origin: *");
+    header( "Content-Type: text/event-stream" );
+    header( "Cache-Control: no-cache" );
+    header( "Access-Control-Allow-Origin: *" );
 
-    echo ":" . str_repeat(" ", 2048) . PHP_EOL; // 2 kB padding for IE
+    echo ":" . str_repeat( " ", 2048 ) . PHP_EOL; // 2 kB padding for IE
 
     $this->manual_update();
 
@@ -166,39 +167,41 @@ class WC_POS_i18n {
   public function manual_update() {
     ob_start();
     $locale = get_locale();
-    $creds = request_filesystem_credentials( $_GET['security'], '', false, false, null );
+    $creds = request_filesystem_credentials( $_GET[ 'security' ], '', false, false, null );
 
     /* translators: wordpress */
     $this->flush( sprintf( __( 'Updating translations for %1$s (%2$s)&#8230;' ), 'WooCommerce POS', $locale ) );
 
-    $transient = (object) array( 'checked' => true );
+    $transient = (object)array( 'checked' => true );
     $update = $this->update_check( $transient, true );
 
-    if( empty( $update->translations ) ) {
+    if ( empty( $update->translations ) ) {
       /* note: no translation exists */
-      $this->flush( 'No translations found for '. $locale .'. <a href="mailto:support@woopos.com.au">Contact us</a> if you would like to help translate WooCommerce POS into your language.' );
-      $this->flush('complete');
+      $this->flush( 'No translations found for ' . $locale . '. <a href="mailto:support@woopos.com.au">Contact us</a> if you would like to help translate WooCommerce POS into your language.' );
+      $this->flush( 'complete' );
+
       return;
     }
 
-    if ( ! $creds || ! WP_Filesystem( $creds ) ) {
+    if ( !$creds || !WP_Filesystem( $creds ) ) {
       /* translators: wordpress */
       $this->flush( __( 'Translation update failed.' ) );
-      $this->flush('complete');
+      $this->flush( 'complete' );
+
       return;
     }
 
-    foreach( $update->translations as $translation ){
+    foreach ( $update->translations as $translation ) {
 
       /* translators: wordpress */
-      $this->flush( sprintf( __( 'Downloading translation from <span class="code">%s</span>&#8230;' ), $translation['package'] ) );
+      $this->flush( sprintf( __( 'Downloading translation from <span class="code">%s</span>&#8230;' ), $translation[ 'package' ] ) );
 
       $response = wp_remote_get(
-        $translation['package'],
+        $translation[ 'package' ],
         array( 'sslverify' => false, 'timeout' => 60, 'filename' => $locale . '.zip' )
       );
 
-      if( is_wp_error( $response ) || ( $response['response']['code'] < 200 || $response['response']['code'] >= 300 ) ) {
+      if ( is_wp_error( $response ) || ( $response[ 'response' ][ 'code' ] < 200 || $response[ 'response' ][ 'code' ] >= 300 ) ) {
         /* translators: wordpress */
         $this->flush( __( 'Translation update failed.' ) );
         continue;
@@ -207,10 +210,10 @@ class WC_POS_i18n {
       global $wp_filesystem;
 
       $upload_dir = wp_upload_dir();
-      $file = trailingslashit( $upload_dir['path'] ) . $locale . '.zip';
+      $file = trailingslashit( $upload_dir[ 'path' ] ) . $locale . '.zip';
 
       // Save the zip file
-      if ( !$wp_filesystem->put_contents( $file, $response['body'], FS_CHMOD_FILE ) ) {
+      if ( !$wp_filesystem->put_contents( $file, $response[ 'body' ], FS_CHMOD_FILE ) ) {
         /* translators: wordpress */
         $this->flush( __( 'Translation update failed.' ) );
         continue;
@@ -229,10 +232,10 @@ class WC_POS_i18n {
       $wp_filesystem->delete( $file );
 
       // Update options timestamp
-      $key = str_replace( '-', '_', $translation['slug'] ) . '_language_packs';
+      $key = str_replace( '-', '_', $translation[ 'slug' ] ) . '_language_packs';
       $options = get_option( $key, array() );
-      $options[$locale] = current_time('timestamp');
-      if ( ! add_option( $key, $options, '', 'no' ) ) {
+      $options[ $locale ] = current_time( 'timestamp' );
+      if ( !add_option( $key, $options, '', 'no' ) ) {
         update_option( $key, $options );
       }
 
@@ -241,7 +244,7 @@ class WC_POS_i18n {
 
     }
 
-    $this->flush('complete');
+    $this->flush( 'complete' );
 
     return;
 
@@ -253,7 +256,7 @@ class WC_POS_i18n {
    * @param $data
    */
   private function flush( $data ) {
-    echo 'data:'. $data . PHP_EOL;
+    echo 'data:' . $data . PHP_EOL;
     echo PHP_EOL;
     ob_flush();
     flush();
@@ -266,15 +269,15 @@ class WC_POS_i18n {
    * @return string
    */
   public function js_locale( array $scripts ) {
-    $locale = apply_filters('plugin_locale', get_locale(), WC_POS_PLUGIN_NAME);
+    $locale = apply_filters( 'plugin_locale', get_locale(), WC_POS_PLUGIN_NAME );
     $dir = WC_POS_PLUGIN_PATH . 'languages/js/';
     $url = WC_POS_PLUGIN_URL . 'languages/js/';
-    list($country) = explode('_', $locale);
+    list( $country ) = explode( '_', $locale );
 
-    if (is_readable( $dir . $locale . '.js')) {
-      $scripts['locale'] = $url . $locale . '.js';
-    } elseif (is_readable( $dir . $country . '.js')) {
-      $scripts['locale'] = $url . $country . '.js';
+    if ( is_readable( $dir . $locale . '.js' ) ) {
+      $scripts[ 'locale' ] = $url . $locale . '.js';
+    } elseif ( is_readable( $dir . $country . '.js' ) ) {
+      $scripts[ 'locale' ] = $url . $country . '.js';
     }
 
     return $scripts;
@@ -287,79 +290,115 @@ class WC_POS_i18n {
    * @return array
    */
   static public function currency_denominations( $code = '' ) {
-    if( !$code ){ $code = get_woocommerce_currency(); }
-    $denominations = json_decode( file_get_contents( WC_POS_PLUGIN_PATH. 'includes/denominations.json' ) );
-    return isset($denominations->$code) ? $denominations->$code : $denominations;
+    if ( !$code ) {
+      $code = get_woocommerce_currency();
+    }
+    $denominations = json_decode( file_get_contents( WC_POS_PLUGIN_PATH . 'includes/denominations.json' ) );
+
+    return isset( $denominations->$code ) ? $denominations->$code : $denominations;
   }
 
   /**
    * i18n payload to init POS app
+   *
    * @return mixed
    */
-  static public function payload(){
+  static public function payload() {
 
     return apply_filters( 'woocommerce_pos_i18n', array(
-      'titles'    => array(
-        'browser'   => _x( 'Browser', 'system status: browser capabilities', 'woocommerce-pos' ),
-        'cart'      => /* translators: woocommerce */ __( 'Cart', 'woocommerce' ),
-        'checkout'  => /* translators: woocommerce */ __( 'Checkout', 'woocommerce' ),
-        'coupons'   => /* translators: woocommerce */ __( 'Coupons', 'woocommerce' ),
-        'customers' => /* translators: woocommerce */ __( 'Customers', 'woocommerce' ),
-        'fee'       => /* translators: woocommerce */ __( 'Fee', 'woocommerce' ),
-        'hotkeys'   => _x( 'HotKeys', 'keyboard shortcuts', 'woocommerce-pos' ),
-        'order'     => /* translators: woocommerce */ __( 'Order', 'woocommerce' ),
-        'orders'    => /* translators: woocommerce */ __( 'Orders', 'woocommerce' ),
-        'products'  => /* translators: woocommerce */ __( 'Products', 'woocommerce' ),
-        'receipt'   => /* translators: woocommerce */ __( 'Receipt', 'woocommerce' ),
-        'shipping'  => /* translators: woocommerce */ __( 'Shipping', 'woocommerce' ),
-        'to-pay'    => __( 'To Pay', 'woocommerce-pos' ),
-        'paid'      => __( 'Paid', 'woocommerce-pos' ),
-        'unpaid'    => __( 'Unpaid', 'woocommerce-pos' ),
+      'titles'   => array(
+        'browser'       => _x( 'Browser', 'system status: browser capabilities', 'woocommerce-pos' ),
+        /* translators: woocommerce */
+        'cart'          => __( 'Cart', 'woocommerce' ),
+        /* translators: woocommerce */
+        'checkout'      => __( 'Checkout', 'woocommerce' ),
+        /* translators: woocommerce */
+        'coupons'       => __( 'Coupons', 'woocommerce' ),
+        /* translators: woocommerce */
+        'customers'     => __( 'Customers', 'woocommerce' ),
+        /* translators: woocommerce */
+        'fee'           => __( 'Fee', 'woocommerce' ),
+        'hotkeys'       => _x( 'HotKeys', 'keyboard shortcuts', 'woocommerce-pos' ),
+        /* translators: woocommerce */
+        'order'         => __( 'Order', 'woocommerce' ),
+        /* translators: woocommerce */
+        'orders'        => __( 'Orders', 'woocommerce' ),
+        /* translators: woocommerce */
+        'products'      => __( 'Products', 'woocommerce' ),
+        /* translators: woocommerce */
+        'receipt'       => __( 'Receipt', 'woocommerce' ),
+        /* translators: woocommerce */
+        'shipping'      => __( 'Shipping', 'woocommerce' ),
+        'to-pay'        => __( 'To Pay', 'woocommerce-pos' ),
+        'paid'          => __( 'Paid', 'woocommerce-pos' ),
+        'unpaid'        => __( 'Unpaid', 'woocommerce-pos' ),
         'email-receipt' => __( 'Email Receipt', 'woocommerce-pos' ),
-        'open'      => _x( 'Open', 'order status, ie: open order in cart', 'woocommerce-pos' ),
-        'change'    => _x('Change', 'Money returned from cash sale', 'woocommerce-pos'),
+        'open'          => _x( 'Open', 'order status, ie: open order in cart', 'woocommerce-pos' ),
+        'change'        => _x( 'Change', 'Money returned from cash sale', 'woocommerce-pos' ),
         'support-form'  => __( 'Support Form', 'woocommerce-pos' ),
-        'system-status' => /* translators: woocommerce */ __( 'System Status', 'woocommerce' ),
+        /* translators: woocommerce */
+        'system-status' => __( 'System Status', 'woocommerce' ),
       ),
-      'buttons'   => array(
-        'checkout'  => /* translators: woocommerce */ __( 'Checkout', 'woocommerce' ),
-        'clear'     => _x( 'Clear', 'system status: delete local records', 'woocommerce-pos' ),
-        'close'     => /* translators: wordpress   */ __( 'Close' ),
-        'coupon'    => /* translators: woocommerce */ __( 'Coupon', 'woocommerce' ),
-        'discount'  => __( 'Discount', 'woocommerce-pos' ),
-        'email'     => /* translators: wordpress   */ __( 'Email' ),
-        'fee'       => /* translators: woocommerce */ __( 'Fee', 'woocommerce' ),
-        'new-order' => /* translators: woocommerce */ __( 'New Order', 'woocommerce' ),
-        'note'      => /* translators: woocommerce */ __( 'Note', 'woocommerce' ),
-        'print'     => /* translators: wordpress   */ __( 'Print' ),
+      'buttons'  => array(
+        /* translators: woocommerce */
+        'checkout'        =>  __( 'Checkout', 'woocommerce' ),
+        'clear'           => _x( 'Clear', 'system status: delete local records', 'woocommerce-pos' ),
+        /* translators: woocommerce */
+        'close'           => __( 'Close' ),
+        /* translators: woocommerce */
+        'coupon'          => __( 'Coupon', 'woocommerce' ),
+        'discount'        => __( 'Discount', 'woocommerce-pos' ),
+        /* translators: wordpress */
+        'email'           => __( 'Email' ),
+        /* translators: woocommerce */
+        'fee'             => __( 'Fee', 'woocommerce' ),
+        /* translators: woocommerce */
+        'new-order'       => __( 'New Order', 'woocommerce' ),
+        /* translators: woocommerce */
+        'note'            => __( 'Note', 'woocommerce' ),
+        /* translators: wordpress */
+        'print'           => __( 'Print' ),
         'process-payment' => __( 'Process Payment', 'woocommerce-pos' ),
-        'refresh'   => /* translators: wordpress   */ __( 'Refresh' ),
-        'restore'   => _x( 'Restore defaults', 'restore default settings', 'woocommerce-pos' ),
-        'return'    => _x( 'return', 'Numpad return key', 'woocommerce-pos' ),
+        /* translators: wordpress */
+        'refresh'         => __( 'Refresh' ),
+        'restore'         => _x( 'Restore defaults', 'restore default settings', 'woocommerce-pos' ),
+        'return'          => _x( 'return', 'Numpad return key', 'woocommerce-pos' ),
         'return-to-sale'  => __( 'Return to Sale', 'woocommerce-pos' ),
-        'save'      => /* translators: woocommerce */ __( 'Save Changes', 'woocommerce' ),
-        'send'      => __( 'Send', 'woocommerce-pos' ),
-        'shipping'  => /* translators: woocommerce */ __( 'Shipping', 'woocommerce' ),
-        'void'      => __( 'Void', 'woocommerce-pos' ),
-        'expand-all'=> /* translators: woocommerce */ __( 'Expand all', 'woocommerce' ),
-        'close-all' => /* translators: woocommerce */ __( 'Close all', 'woocommerce' ),
-        'legacy'    => __( 'Enable legacy server support', 'woocommerce-pos' ),
+        /* translators: woocommerce */
+        'save'            => __( 'Save Changes', 'woocommerce' ),
+        'send'            => __( 'Send', 'woocommerce-pos' ),
+        /* translators: woocommerce */
+        'shipping'        => __( 'Shipping', 'woocommerce' ),
+        'void'            => __( 'Void', 'woocommerce-pos' ),
+        /* translators: woocommerce */
+        'expand-all'      => __( 'Expand all', 'woocommerce' ),
+        /* translators: woocommerce */
+        'close-all'       => __( 'Close all', 'woocommerce' ),
+        'legacy'          => __( 'Enable legacy server support', 'woocommerce-pos' ),
       ),
-      'messages'  => array(
-        'choose'    => /* translators: woocommerce */ __( 'Choose an option', 'woocommerce' ),
-        'error'     => /* translators: woocommerce */ __( 'Sorry, there has been an error.', 'woocommerce' ),
-        'loading'   => /* translators: wordpress */__( 'Loading ...' ),
-        'success'   => /* translators: woocommerce */ __( 'Your changes have been saved.', 'woocommerce' ),
-        'browser'   => __( 'Your browser is not supported!', 'woocommerce-pos' ),
-        'legacy'    => __( 'Unable to use RESTful HTTP methods', 'woocommerce-pos' ),
-        'no-products' =>  /* translators: woocommerce */ __( 'No Products found', 'woocommerce' ),
-				'cart-empty' => /* translators: woocommerce */ __( 'Your cart is currently empty.', 'woocommerce' ),
-				'no-gateway' => /* translators: woocommerce */ __( 'No payment gateways enabled.', 'woocommerce-pos' )
+      'messages' => array(
+        /* translators: woocommerce */
+        'choose'      => __( 'Choose an option', 'woocommerce' ),
+        /* translators: woocommerce */
+        'error'       => __( 'Sorry, there has been an error.', 'woocommerce' ),
+        /* translators: woocommerce */
+        'loading'     => __( 'Loading ...' ),
+        /* translators: woocommerce */
+        'success'     => __( 'Your changes have been saved.', 'woocommerce' ),
+        'browser'     => __( 'Your browser is not supported!', 'woocommerce-pos' ),
+        'legacy'      => __( 'Unable to use RESTful HTTP methods', 'woocommerce-pos' ),
+        /* translators: woocommerce */
+        'no-products' => __( 'No Products found', 'woocommerce' ),
+        /* translators: woocommerce */
+        'cart-empty'  => __( 'Your cart is currently empty.', 'woocommerce' ),
+        'no-gateway'  => __( 'No payment gateways enabled.', 'woocommerce-pos' ),
+        /* translators: woocommerce */
+        'no-customer' => __( 'Customer not found', 'woocommerce' )
       ),
-      'plural'    => array(
-        'records'   => _x( 'record |||| records', 'eg: 23 records', 'woocommerce-pos' ),
+      'plural'   => array(
+        'records' => _x( 'record |||| records', 'eg: 23 records', 'woocommerce-pos' ),
       )
-    ));
+    ) );
 
   }
 

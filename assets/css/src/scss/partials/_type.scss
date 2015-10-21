@@ -92,6 +92,12 @@ small,
  *   <p>Text helpers</p>
  */
 
+$primary-text-color         : $brand-primary;
+$success-text-color         : #3c763d !default;
+$info-text-color            : #31708f !default;
+$warning-text-color         : #8a6d3b !default;
+$danger-text-color          : #a94442 !default;
+
 text {
   @at-root {
 
@@ -114,11 +120,11 @@ text {
     .#{current-module()}-uppercase      { text-transform: uppercase; }
     .#{current-module()}-capitalize     { text-transform: capitalize; }
 
-    @include text-emphasis-variant('.#{current-module()}-primary',  $brand-primary);
-    @include text-emphasis-variant('.#{current-module()}-success',  $brand-success);
-    @include text-emphasis-variant('.#{current-module()}-info',     $brand-info);
-    @include text-emphasis-variant('.#{current-module()}-warning',  $brand-warning);
-    @include text-emphasis-variant('.#{current-module()}-danger',   $brand-danger);
+    @include text-emphasis-variant('.#{current-module()}-primary',  $primary-text-color);
+    @include text-emphasis-variant('.#{current-module()}-success',  $success-text-color);
+    @include text-emphasis-variant('.#{current-module()}-info',     $info-text-color);
+    @include text-emphasis-variant('.#{current-module()}-warning',  $warning-text-color);
+    @include text-emphasis-variant('.#{current-module()}-danger',   $danger-text-color);
 
   }
 }

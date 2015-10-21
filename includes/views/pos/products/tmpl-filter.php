@@ -7,6 +7,10 @@
     </ul>
   </div>
   <input type="search" tabindex="1" class="form-control">
-  <a class="clear input-group-btn" href="#"><i class="icon-times-circle icon-lg"></i></a>
-  <span class="input-group-btn"><a class="btn btn-secondary" href="#" data-action="sync"><i class="icon-refresh"></i></a></span>
+    <span class="input-group-addon clear">
+    <i data-action="clear" class="icon-times-circle icon-lg"></i>
+  </span>
+  <span class="input-group-btn">
+    <a class="btn btn-secondary" href="#" data-action="sync"><i class="icon-refresh"></i></a>
+  </span>
 </div>

@@ -1,9 +1,9 @@
 $panel-bg                   : #fff !default;
-$panel-header-bg            : nth( $primaryPalette, 8 );
+$panel-header-bg            : nth( $primaryPalette, 6 );
 $panel-header-text-color    : $inverse-text-color;
 $panel-footer-bg            : nth( $primaryPalette, 2 );
 $panel-footer-color         : darken( nth( $primaryPalette, 2 ), 25% );
-$panel-footer-padding-y     : $padding-base-vertical/2;
+$panel-footer-padding-y     : $padding-base-vertical / 2;
 $panel-footer-padding-x     : $padding-base-horizontal;
 
 /**
@@ -35,22 +35,42 @@ panel {
       width: 100%;
 
       > div {
-        background: $panel-bg;
         @include flex(0 1 auto);
       }
     }
 
-    // Header
+    /**
+     * @name Panel Header Spec
+     *
+     * @markup
+     *   <div class="panel">
+     *     <div class="panel-header">
+     *       <div>
+     *         <h4>Header</h4>
+     *       </div>
+     *     </div>
+     *   </div>
+     */
     .#{current-module()}-header {
-      > div {
-        background: $panel-header-bg;
-        color: $panel-header-text-color;
+      background: $panel-header-bg;
+      color: $panel-header-text-color;
+
+      h4, p {
+        text-align: center;
+        margin: 0;
+        padding: 1em 0;
       }
+
+      p {
+        padding-top: 0;
+      }
+
     }
 
     // Body
     .#{current-module()}-body {
       overflow: auto;
+      background: $panel-bg;
     }
 
     /**

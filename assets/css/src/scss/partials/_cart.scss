@@ -1,35 +1,25 @@
-$cart-customer-padding-y  : $padding-base-vertical;
-$cart-customer-padding-x  : $padding-base-horizontal;
+$cart-customer-background : #fff;
 
+$cart-notes-background    : #fff;
 $cart-notes-padding-y     : $padding-base-vertical;
 $cart-notes-padding-x     : $padding-base-horizontal;
 
 $cart-actions-padding-y   : $padding-base-vertical;
 $cart-actions-padding-x   : $padding-base-horizontal;
 
+$pulse-in-bg-color        : lighten( $brand-success, 40% );
+//$pulse-in-bg-color        : #607d8b;
+$pulse-out-bg-color       : lighten( $brand-danger, 30% );
+//$pulse-out-bg-color       : #f2dede;
+
 cart {
   @at-root {
-
-    // hide empty
-    .#{current-module()} {
-
-      &.cart-empty {
-        .#{namespace('cart')}-totals,
-        .#{namespace('cart')}-customer,
-        .#{namespace('cart')}-actions,
-        .#{namespace('cart')}-notes {
-          display: none;
-        }
-      }
-
-    }
-
 
     /**
      * @name Cart Header
      *
      * @markup
-     *   <div class="list-header cart-header">
+     *   <div class="list-header cart cart-header">
      *     <div class="qty">Qty</div>
      *     <div class="title">Title</div>
      *     <div class="price">Price</div>
@@ -38,16 +28,13 @@ cart {
      *   </div>
      */
 
-    // columns
-    .#{current-module()}-header,
-    .#{current-module()}-item,
-    .#{current-module()}-totals, {
+    .#{current-module()} {
 
       .qty {
         @include flex(0 1 15%);
       }
       .title {
-        @include flex(1 0 auto);
+        @include flex(1);
       }
       .price {
         text-align: right;
@@ -59,6 +46,55 @@ cart {
       }
       .action {
         @include flex(0 1 52px);
+      }
+
+    }
+
+
+    // empty cart
+    .#{current-module()}-empty {
+
+      .#{namespace('cart')}-totals,
+      .#{namespace('cart')}-customer,
+      .#{namespace('cart')}-actions,
+      .#{namespace('cart')}-notes {
+        display: none;
+      }
+
+    }
+
+
+    /**
+     * @name Cart List
+     *
+     * @markup
+     *   <div class="list cart-list">
+     *     <ul>
+     *       <li class="simple">Simple</li>
+     *       <li class="variation">Variable</li>
+     *       <li class="Shipping">Shipping</li>
+     *       <li class="fee">Fee</li>
+     *       <li class="empty">Empty</li>
+     *     </ul>
+     *   </div>
+     */
+
+    .#{current-module()}-list {
+
+      li.shipping, li.fee {
+        border-top: 1px solid $list-border-color;
+      }
+
+      li.shipping ~ li.shipping, li.fee ~ li.fee {
+        border-top: none;
+      }
+
+      .pulse-in {
+        background: $pulse-in-bg-color;
+      }
+
+      .pulse-out {
+        background: $pulse-out-bg-color;
       }
 
     }
@@ -115,9 +151,12 @@ cart {
           position: absolute;
           top: 50%;
           margin-top: -11px; // half height of btn
-          right: 0;
+          right: -11px;
           i {
             @include single-transition(transform, 0.4s);
+            .drawer-open & {
+              @include rotate(180deg);
+            }
           }
         }
 
@@ -130,27 +169,64 @@ cart {
      * @name Cart Item Drawer
      *
      * @markup
-     *   <div class="list-item-drawer cart-item-drawer">
-     *     <div> <!-- marionette region -->
-     *       <div>
+     *   <div class="list-drawer cart-drawer">
+     *     <div>
+     *       <div class="list-row">
      *         <div>Cell</div>
      *         <div>Cell<br>New Line<br>New Line</div>
      *       </div>
-     *       <div>
+     *       <div class="list-row">
      *         <div>Cell</div>
      *         <div>Cell<br>New Line<br>New Line</div>
      *       </div>
      *     </div>
      *   </div>
      */
+    .#{current-module()}-drawer {
+
+      .list-row {
+        @include align-items(initial);
+
+        > div {
+
+          select {
+            margin-left: $padding-base-horizontal;
+          }
+
+          &:first-of-type {
+            @include flex(0 1 40%);
+            text-align: right;
+          }
+
+          &:last-of-type > span {
+            position: relative;
+
+            input {
+              width: 80%;
+            }
+
+            input, textarea {
+              margin-bottom: $padding-base-vertical;
+            }
+
+            a {
+              position: absolute;
+              top: 0;
+              right: 0
+            }
+          }
+
+        }
+
+      }
+
+    }
 
 
     /**
      * @name Cart Totals
      */
     .#{current-module()}-totals {
-
-      border-top: 2px solid $input-border-color;
 
       .order-total {
         font-size: 1.4em;
@@ -164,22 +240,14 @@ cart {
      */
     .#{current-module()}-customer {
 
+      background: $cart-customer-background;
       border-top: 2px solid $input-border-color;
-
-      > div {
-        @include display-flex;
-        @include align-items(center);
-
-        > div {
-          @include flex(1 0 auto);
-          padding: $cart-customer-padding-y $cart-customer-padding-x;
-
-        }
-      }
 
     }
 
     .#{current-module()}-notes {
+
+      background: $cart-notes-background;
 
       > div {
         border-top: 2px solid $input-border-color;
