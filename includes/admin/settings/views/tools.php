@@ -50,6 +50,20 @@
       </td>
     </tr>
 
+    <tr>
+      <th><?php _e( 'Local Data', 'woocommerce-pos' ); ?></th>
+      <td>
+        <a href="#"
+           class="button"
+           data-action="delete-local-data"
+           data-title="<?php esc_attr_e( 'Clear Local Data', 'woocommerce-pos' ); ?>"
+          >
+          <?php
+            _e( 'Clear Local Data', 'woocommerce-pos' );
+          ?>
+        </a>
+      </td>
+    </tr>
 
   </tbody>
 </table>

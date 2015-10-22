@@ -39,7 +39,15 @@
   {{#if on_sale}}<del>{{#list regular_price ' - '}}{{{money this}}}{{/list}}</del>{{/if}} {{#list price ' - '}}{{{money this}}}{{/list}}
 </div>
 {{#is type 'variable'}}
-<div class="action"><a data-action="variations" class="btn btn-success btn-circle" href="#"><i class="icon-chevron-right icon-lg"></i></a></div>
+<div class="action">
+  <a data-action="variations" href="#">
+    <i class="icon-chevron-circle-right"></i>
+  </a>
+</div>
 {{else}}
-<div class="action"><a data-action="add" class="btn btn-success btn-circle" href="#"><i class="icon-plus icon-lg"></i></a></div>
+<div class="action">
+  <a data-action="add" href="#">
+    <i class="icon-plus-circle"></i>
+  </a>
+</div>
 {{/is}}

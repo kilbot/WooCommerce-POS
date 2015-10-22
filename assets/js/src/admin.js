@@ -14,6 +14,11 @@ var ButtonsService = require('lib/components/buttons/service');
 var SettingsRouter = require('apps/settings/router');
 
 /**
+ * bootstrap Handlebars Helpers
+ */
+require('lib/utilities/handlebars-helpers');
+
+/**
  * Create the app
  */
 var app = new Application();

@@ -9,7 +9,7 @@ module.exports = ReceiptView.extend({
   template: function(){},
 
   onShow: function(){
-    var template = hbs.compile( $('#print-receipt').html() );
+    var template = hbs.compile( hbs.Templates.print.receipt ) ;
     this.window = this.el.contentWindow;
     this.window.document.write(template( this.data ));
   },

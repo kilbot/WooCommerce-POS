@@ -7,8 +7,8 @@ describe('apps/pos/cart/route.js', function () {
       './views/items': stub(),
       './views/totals': stub(),
       './views/notes': stub(),
-      'lib/components/buttons/view': stub(),
-      'lib/components/customer-select/view': stub()
+      './views/customer': stub(),
+      'lib/components/buttons/view': stub()
     });
     Route.prototype.initialize = stub();
 

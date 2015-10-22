@@ -1,9 +1,9 @@
 var Behavior = require('lib/config/behavior');
 var App = require('lib/config/application');
 var Radio = require('backbone.radio');
-var _ = require('lodash');
-var $ = require('jquery');
 var hbs = require('handlebars');
+var $ = require('jquery');
+var _ = require('lodash');
 
 /**
  *
@@ -15,6 +15,38 @@ var hasNoNames = function(customer){
     .compact()
     .isEmpty()
     .value();
+};
+
+/**
+ *
+ */
+var ajax = {
+  /**
+   * todo: use filtered collection instead for caching?
+   */
+  delay: 250,
+  transport: function (params, success, failure) {
+    var customers = Radio.request('entities', 'get', {
+      type: 'collection',
+      name: 'customers'
+    });
+    return customers.fetch({
+      // wp-admin requires auth
+      beforeSend: function(xhr){
+        xhr.setRequestHeader('X-WC-POS', 1);
+      },
+      data: 'filter[q]=' + params.data.q,
+      success: function(collection, response){
+        success(customers.parse(response));
+      },
+      error: failure
+    });
+  },
+  processResults: function (data) {
+    return {
+      results: data
+    };
+  }
 };
 
 /**
@@ -53,19 +85,10 @@ var formatSelection = function( customer ) {
 var CustomerSelect = Behavior.extend({
 
   initialize: function(){
-    var options = Radio.request('entities', 'get', {
-      type: 'option',
+    this.customers = Radio.request('entities', 'get', {
+      type: 'collection',
       name: 'customers'
     });
-    options.ajaxurl = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'ajaxurl'
-    });
-    options.wc_nonce = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'search_customers_nonce'
-    });
-    this.mergeOptions(options, ['guest', 'default', 'ajaxurl', 'wc_nonce']);
   },
 
   ui: {
@@ -76,39 +99,11 @@ var CustomerSelect = Behavior.extend({
   events: {
     'stickit:init @ui.select': function( e, name ){
       // options
-      var ajaxurl = this.getOption('ajaxurl');
-      var nonce = this.getOption('wc_nonce');
       this.view.select2 = this.view.select2 || {};
       this.view.select2[name] = {
         minimumInputLength: 3, // minimum 3 characters to trigger search
-        ajax: {
-          url: ajaxurl,
-          dataType: 'json',
-          delay: 250,
-          data: function (params) {
-            return {
-              term      : params.term, // search term
-              action    : 'woocommerce_json_search_customers',
-              security  : nonce
-            };
-          },
-          processResults: function (data) {
-            var terms = [];
-            if ( data ) {
-              $.each( data, function( id, text ) {
-                terms.push({
-                  id: id,
-                  text: text
-                });
-              });
-            }
-            return { results: terms };
-          },
-          cache: true
-        },
-        escapeMarkup: function( m ) {
-          return m;
-        },
+        ajax: ajax,
+        templateResult: formatResult,
         templateSelection: formatSelection
       };
     }
@@ -123,7 +118,7 @@ var CustomerSelect = Behavior.extend({
   },
 
   initSelection: function(){
-    var customer = this.getOption('default') || this.getOption('guest');
+    var customer = this.customers.getDefaultCustomer();
     var text = formatSelection( customer );
     this.ui.select
       .html( $('<option />').val(customer.id).text(text) )

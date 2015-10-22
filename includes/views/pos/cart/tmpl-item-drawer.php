@@ -1,6 +1,6 @@
 {{#if product_id}}
 <div class="list-row">
-  <div><label for="regular_price"><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>:</label></div>
+  <div><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>:</div>
   <div>
     <input name="regular_price" id="regular_price" class="form-control autogrow" type="text" data-numpad="amount" data-label="<?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>" />
   </div>
@@ -10,18 +10,20 @@
 
 {{#is type 'shipping'}}
 <div class="list-row">
-  <div><label for="method_id"><?php /* translators: woocommerce */ _e( 'Shipping Method', 'woocommerce' ); ?>:</label></div>
+  <div><?php /* translators: woocommerce */ _e( 'Shipping Method', 'woocommerce' ); ?>:</div>
   <div>
-    <select name="method_id" id="method_id"></select>
+    <select class="c-select" name="method_id" id="method_id"></select>
   </div>
 </div>
 {{/is}}
 
 <div class="list-row">
-  <div><label for="taxable"><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?>:</label></div>
+  <div><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?>:</div>
   <div>
-    <input type="checkbox" name="taxable" id="taxable">
-    <select name="tax_class" id="tax_class" {{#unless taxable}}disabled{{/unless}}></select>
+    <label class="c-input c-checkbox">
+      <input type="checkbox" name="taxable" id="taxable"><span class="c-indicator"></span>
+    </label>
+    <select class="c-select" name="tax_class" id="tax_class" {{#unless taxable}}disabled{{/unless}}></select>
   </div>
 </div>
 
@@ -33,10 +35,14 @@
       <span data-key="{{key}}">
         <input name="meta.label" value="{{label}}" type="text" class="form-control">
         <textarea name="meta.value" class="form-control">{{value}}</textarea>
-        <a href="#" class="btn btn-danger btn-circle btn-circle-sm" data-action="remove-meta"><i class="icon-times"></i></a>
+        <a href="#" data-action="remove-meta">
+          <i class="icon-remove"></i>
+        </a>
       </span>
     {{/each}}
-    <a href="#" class="btn btn-success btn-circle btn-circle-sm" data-action="add-meta"><i class="icon-plus"></i></a>
+    <a href="#" data-action="add-meta">
+      <i class="icon-add icon-lg"></i>
+    </a>
   </div>
 </div>
 {{/if}}

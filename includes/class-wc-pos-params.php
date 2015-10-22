@@ -32,7 +32,7 @@ class WC_POS_Params {
     $this->idbVersion      = WC_POS_Settings::get_idb_version();
 
     // frontend params
-    if( is_pos() ){
+    if( is_pos() ) {
       $this->auto_print    = wc_pos_get_option( 'checkout', 'auto_print_receipt' );
       $this->denominations = WC_POS_i18n::currency_denominations();
       $this->discount_keys = wc_pos_get_option( 'general', 'discount_quick_keys' );
@@ -45,6 +45,11 @@ class WC_POS_Params {
       $this->tax_classes   = WC_POS_Tax::tax_classes();
       $this->tax_rates     = WC_POS_Tax::tax_rates();
       $this->user          = $this->user();
+    }
+
+    // admin params
+    if( is_admin() ) {
+      $this->search_customers_nonce = wp_create_nonce( 'search-customers' );
     }
 
   }

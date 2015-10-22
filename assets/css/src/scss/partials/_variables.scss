@@ -15,6 +15,7 @@ $brand-danger                   : nth( $paletteRed, 6 );
 
 // Text
 $font-family-base               : 'Open Sans', Sans-Serif;
+$font-size-root-sm              : 12px !default;
 $font-size-root                 : 14px !default;
 
 $font-size-base                 : 1rem !default;
@@ -39,6 +40,7 @@ $padding-base-vertical          : .6rem !default;
 
 // Borders
 $border-color                   : lighten($base-text-color, 91%);
+$alternate-row-bg               : #fafafa;
 
 // Rounded corners
 $border-radius-base             : 3px !default;

@@ -1,78 +1,87 @@
-#wc-pos-settings-tabs {
-  ul {
-    margin: 0;
-    border-bottom: 1px solid #ccc;
-    padding: 9px 15px 0 10px;
-    li {
-      padding: 6px 10px;
-      font-weight: 700;
-      font-size: 15px;
-      line-height: 24px;
-      border-bottom: 1px solid #ccc;
-      &.active {
-        color: #000;
-        background: #f1f1f1;
-        border-bottom: none;
-        position: relative;
-        top: 1px;
-      }
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
+$settings-border-color        : #ccc;
+$settings-text-success-color  : #3c763d;
+$settings-text-error-color    : #a94442;
+
+
+.#{namespace('text')}-success {
+  color: $settings-text-success-color ;
 }
 
-#wc-pos-settings {
-  table.form-table {
-    margin-bottom: 20px;
-    line-height: 1;
-    th {
-      img {
-        margin: 2px -10px 0 0;
-        float: right;
-      }
-    }
-    td {
-      padding-right: 0;
-    }
-  }
+.#{namespace('text')}-error {
+  color: $settings-text-error-color ;
 }
 
-#wc-pos-settings-tools {
-  table {
-    td {
-      a.button {
+
+settings {
+  @at-root {
+
+    ##{current-module()} {
+
+      table.form-table {
+        margin-bottom: 20px;
+        line-height: 1;
+        th {
+          img {
+            margin: 2px -10px 0 0;
+            float: right;
+          }
+        }
+        td {
+          padding-right: 0;
+        }
+      }
+
+    }
+
+    ##{current-module()}-tabs {
+
+      ul {
+        margin: 0;
+        border-bottom: 1px solid $settings-border-color;
+        padding: 9px 15px 0 10px;
+
+        li {
+          padding: 6px 10px;
+          font-weight: 700;
+          font-size: 15px;
+          line-height: 24px;
+          border-bottom: 1px solid #ccc;
+          &.active {
+            color: #000;
+            background: #f1f1f1;
+            border-bottom: none;
+            position: relative;
+            top: 1px;
+          }
+          &:hover {
+            cursor: pointer;
+          }
+        }
+
+      }
+
+    }
+
+    ##{current-module()}-footer {
+      margin-top: 20px;
+      border-top: 1px solid lighten(#CFCFCF, 5%);
+      >div {
+        padding-top: 20px;
+        //    border-top: 1px solid lighten(#f1f1f1, 5%);
+      }
+      button {
         vertical-align: middle;
-        margin-right: 10px;
+      }
+      p.message {
+        display: inline-block;
+        margin: 0 0 0 10px;
+        line-height: 20px;
+        i {
+          margin-right: 5px;
+          vertical-align: middle;
+        }
       }
     }
-  }
-}
 
-#wc-pos-settings-footer {
-  margin-top: 20px;
-  border-top: 1px solid lighten(#CFCFCF, 5%);
-  >div {
-    padding-top: 20px;
-//    border-top: 1px solid lighten(#f1f1f1, 5%);
-  }
-  button {
-    vertical-align: middle;
-  }
-  p.message {
-    display: inline-block;
-    margin: 0 0 0 10px;
-    line-height: 20px;
-    i {
-      margin-right: 5px;
-      vertical-align: middle;
-    }
-    &.success {
-      color: $state-success-text;
-    }
-    &.error {
-      color: $state-danger-text;
-    }
   }
 }

@@ -9,7 +9,7 @@ var View = FormView.extend({
   template: 'general',
 
   attributes: {
-    id: 'wc-pos-settings-general'
+    id: 'wc_pos-settings-general'
   },
 
   behaviors: {

@@ -37,6 +37,7 @@ icon {
   *
   * @markup
   *
+    <i class="icon-add"></i> add
     <i class="icon-angle-down"></i> angle-down
     <i class="icon-angle-up"></i> angle-up
     <i class="icon-barcode"></i> barcode
@@ -46,6 +47,7 @@ icon {
     <i class="icon-chevron-left"></i> chevron-left
     <i class="icon-chevron-right"></i> chevron-right
     <i class="icon-chevron-up"></i> chevron-up
+    <i class="icon-chevron-circle-right"></i> chevron-circle-right
     <i class="icon-cog"></i> cog
     <i class="icon-coupons"></i> coupons
     <i class="icon-customers"></i> customers
@@ -59,11 +61,13 @@ icon {
     <i class="icon-note"></i> note
     <i class="icon-orders"></i> orders
     <i class="icon-plus"></i> plus
+    <i class="icon-plus-circle"></i> plus-circle
     <i class="icon-pos"></i> pos
     <i class="icon-products"></i> products
     <i class="icon-qrcode"></i> grcode
     <i class="icon-receipt"></i> receipt
     <i class="icon-refresh"></i> refresh
+    <i class="icon-remove"></i> remove
     <i class="icon-search"></i> search
     <i class="icon-success"></i> success
     <i class="icon-support"></i> support
@@ -76,41 +80,45 @@ icon {
   */
 
 $icons: (
-  "angle-down"     : "f107",
-  "angle-up"       : "f106",
-  "barcode"        : "e603",
-  "bars"           : "f0c9",
-  "check"          : "f00c",
-  "chevron-left"   : "f053",
-  "products"       : "e603",
-  "success"        : "f00c",
-  "chevron-down"   : "f078",
-  "chevron-right"  : "f054",
-  "chevron-up"     : "f077",
-  "cog"            : "f013",
-  "coupons"        : "e607",
-  "customers"      : "e606",
-  "delete"         : "e601",
-  "error"          : "f00d",
-  "globe"          : "f0ac",
-  "info-circle"    : "f05a",
-  "minus"          : "f068",
-  "more-horiz"     : "e608",
-  "more-vert"      : "e609",
-  "note"           : "e026",
-  "orders"         : "e602",
-  "plus"           : "f067",
-  "pos"            : "e600",
-  "qrcode"         : "e604",
-  "receipt"        : "e602",
-  "refresh"        : "f01e",
-  "search"         : "f002",
-  "support"        : "e605",
-  "times"          : "f00d",
-  "times-circle"   : "f057",
-  "user"           : "e606",
-  "woocommerce-pos": "e600",
-  "wordpress"      : "e60a"
+  "add"                  : "f055",
+  "angle-down"           : "f107",
+  "angle-up"             : "f106",
+  "barcode"              : "e603",
+  "bars"                 : "f0c9",
+  "check"                : "f00c",
+  "chevron-left"         : "f053",
+  "products"             : "e603",
+  "success"              : "f00c",
+  "chevron-down"         : "f078",
+  "chevron-right"        : "f054",
+  "chevron-up"           : "f077",
+  "chevron-circle-right" : "f138",
+  "cog"                  : "f013",
+  "coupons"              : "e607",
+  "customers"            : "e606",
+  "delete"               : "e601",
+  "error"                : "f00d",
+  "globe"                : "f0ac",
+  "info-circle"          : "f05a",
+  "minus"                : "f068",
+  "more-horiz"           : "e608",
+  "more-vert"            : "e609",
+  "note"                 : "e026",
+  "orders"               : "e602",
+  "plus"                 : "f067",
+  "plus-circle"          : "f055",
+  "pos"                  : "e600",
+  "qrcode"               : "e604",
+  "receipt"              : "e602",
+  "refresh"              : "f01e",
+  "remove"               : "f057",
+  "search"               : "f002",
+  "support"              : "e605",
+  "times"                : "f00d",
+  "times-circle"         : "f057",
+  "user"                 : "e606",
+  "woocommerce-pos"      : "e600",
+  "wordpress"            : "e60a"
 );
 
 icon {
@@ -128,6 +136,26 @@ icon {
       }
 
     }
+
+    // special cases
+    .#{current-module()}-add {
+      a & {
+        color: $tertiary-text-color;
+        &:hover {
+          color: $brand-success;
+        }
+      }
+    }
+
+    .#{current-module()}-remove {
+      a & {
+        color: $tertiary-text-color;
+        &:hover {
+          color: $brand-danger;
+        }
+      }
+    }
+
 
   }
 }
@@ -276,7 +304,7 @@ icon {
     .#{current-module()}-fail {
       font-family: monospace;
       &:before {
-        content: "⊙﹏⊙";
+        content: "¯\\_(ツ)_/¯"; // sass strips forward slash
       }
     }
 

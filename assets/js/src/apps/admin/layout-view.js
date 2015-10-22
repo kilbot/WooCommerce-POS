@@ -6,13 +6,13 @@ module.exports = LayoutView.extend({
 
   template: function(){
     return '' +
-      '<div id="wc-pos-admin"></div>' +
-      '<div id="wc-pos-modal"></div>';
+      '<div id="wc_pos-admin"></div>' +
+      '<div id="wc_pos-modal"></div>';
   },
 
   regions: {
-    main : '#wc-pos-admin',
-    modal: '#wc-pos-modal'
+    main : '#wc_pos-admin',
+    modal: '#wc_pos-modal'
   }
 
 });

@@ -61,6 +61,7 @@
 @import "partials/header";
 
 @import "partials/forms";
+@import "partials/custom-forms";
 @import "partials/buttons";
 @import "partials/css-fade-animations";
 @import "partials/icons";
@@ -71,11 +72,15 @@
 @import "partials/type";
 @import "partials/loading";
 @import "partials/list";
+@import "partials/tables";
 
 @import "partials/products";
 @import "partials/cart";
 @import "partials/checkout";
 @import "partials/receipt";
+@import "partials/support";
+@import "partials/print-preview";
 
 @import "partials/tooltip";
 @import "partials/dropdown";
+@import "partials/popover";

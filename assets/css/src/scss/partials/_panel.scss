@@ -35,7 +35,11 @@ panel {
       width: 100%;
 
       > div {
-        @include flex(0 1 auto);
+        @include flex(0 0 auto);
+
+        &.#{namespace('panel')}-body {
+          @include flex(0 1 auto);
+        }
       }
     }
 

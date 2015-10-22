@@ -24,14 +24,16 @@ module.exports = app.prototype.FormView = ItemView.extend({
       valid: function(view, attr) {
         view
           .$('input[name="' + attr + '"]')
+          .removeClass('form-control-error')
           .parent()
-          .removeClass('error');
+          .removeClass('has-error');
       },
       invalid: function(view, attr) {
         view
           .$('input[name="' + attr + '"]')
+          .addClass('form-control-error')
           .parent()
-          .addClass('error');
+          .addClass('has-error');
       }
     });
 

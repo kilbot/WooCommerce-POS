@@ -1,5 +1,5 @@
 $list-border-color              : $border-color;
-$list-alternate-bg-color        : #fafafa;
+$list-alternate-bg-color        : $alternate-row-bg;
 
 $list-header-padding-x          : $padding-base-horizontal;
 $list-header-padding-y          : $padding-base-vertical;
@@ -8,6 +8,8 @@ $list-header-color              : $inverse-text-color;
 
 $list-item-padding-x            : $padding-base-horizontal;
 $list-item-padding-y            : $padding-base-vertical;
+
+$list-row-action-icon-size      : 2.5em;
 
 $list-item-drawer-padding-x     : $padding-base-horizontal;
 $list-item-drawer-padding-y     : $padding-base-vertical;
@@ -29,7 +31,7 @@ list {
     /**
      * @name List
      *
-     * @state .striped - Stripe alternate rows
+     * @state .list-striped - Stripe alternate rows
      *
      * @markup
      *   <div class="list">
@@ -71,12 +73,17 @@ list {
 
       }
 
-      &.striped {
-        li:nth-of-type(even) {
-          background: $list-alternate-bg-color;
-        }
-      }
+    }
 
+
+    // Zebra-striping
+    //
+    // Default zebra-stripe styles (alternating gray and transparent backgrounds)
+
+    .#{current-module()}-striped {
+      li:nth-of-type(odd) {
+        background-color: $list-alternate-bg-color;
+      }
     }
 
 
@@ -128,6 +135,12 @@ list {
         @include flex(1);
         padding: $list-item-padding-y $list-item-padding-x;
 
+        &.action {
+          i {
+            font-size: $list-row-action-icon-size;
+          }
+        }
+
       }
 
     }
@@ -160,6 +173,10 @@ list {
 
       .#{namespace('list')}-row {
         border-top: 1px solid $list-item-drawer-border-color;
+      }
+
+      .#{namespace('c')}-input > input:not(:checked) ~ .#{namespace('c')}-indicator {
+        background: #fff;
       }
 
     }
@@ -327,6 +344,7 @@ list {
         display: inline-block;
         text-align: right;
         margin: 0;
+        padding: 0 $list-actions-padding-x;
       }
 
       &:first-of-type {

@@ -1,42 +1,26 @@
 @import "compass";
-@import "breakpoint";
 @import "partials/palette";
 @import "partials/variables";
 @import "partials/admin/variables";
 @import "partials/mixins";
 
-// Vendor
-//@import "partials/normalize";
-//
-//// Bootstrap
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/print";
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/dropdowns";
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/popovers";
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/modals";
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/tooltip";
-//
-//// select2
-//@import "../../../../node_modules/select2/src/scss/core";
-//
-//
-//
-///**
-// * POS ADMIN
-// */
-////@import "partials/select2";
-////@import "partials/loading";
-//@import "partials/hotkeys";
-//
-//@import "partials/modal";
-//@import "partials/admin/modal";
-//
-//@import "partials/admin/upgrade";
-//@import "partials/admin/settings";
-//@import "partials/admin/settings/general";
-//@import "partials/admin/settings/checkout";
-//@import "partials/admin/settings/access";
+// select2
+@import "../../../../node_modules/select2/src/scss/core";
+
+
+/**
+ * POS ADMIN
+ */
 
 @import "partials/css-fade-animations";
 @import "partials/icons";
+@import "partials/tooltip";
+@import "partials/modal";
+@import "partials/admin/modal";
+
+@import "partials/admin/settings";
+@import "partials/admin/settings/general";
+@import "partials/admin/settings/checkout";
+@import "partials/admin/settings/access";
+@import "partials/admin/settings/tools";
+@import "partials/admin/settings/hotkeys";

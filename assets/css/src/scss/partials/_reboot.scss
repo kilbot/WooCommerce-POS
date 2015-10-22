@@ -23,9 +23,13 @@ html {
 
 html {
   // Sets a specific default `font-size` for user with `rem` type scales.
-  font-size: $font-size-root;
+  font-size: $font-size-root-sm;
   // Changes the default tap highlight to be completely transparent in iOS.
   -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+  @include media-breakpoint-up(sm) {
+    font-size: $font-size-root;
+  }
 }
 
 body {
@@ -116,7 +120,7 @@ th {
 label {
   // Allow labels can use `margin` for spacing.
   display: inline-block;
-  margin-bottom: .5rem;
+  margin-bottom: .3rem;
 }
 
 input,

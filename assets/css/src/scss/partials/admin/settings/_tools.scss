@@ -1,0 +1,18 @@
+settings {
+  @at-root {
+
+    ##{current-module()}-tools {
+
+      table {
+        td {
+          a.button {
+            vertical-align: middle;
+            margin-right: 10px;
+          }
+        }
+      }
+
+    }
+
+  }
+}

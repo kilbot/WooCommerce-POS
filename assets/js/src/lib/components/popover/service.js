@@ -16,6 +16,7 @@ module.exports = Service.extend({
     if( options.target.data('popoverOpen') ){
       return;
     }
+
     this.layout = new Layout(options);
     this.layout.open();
     return this.layout;

@@ -68,7 +68,7 @@ checkout {
                 line-height: 2.4;
               }
               input {
-
+                @extend .form-control
               }
             }
           }

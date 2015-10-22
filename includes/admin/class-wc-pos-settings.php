@@ -47,7 +47,7 @@ class WC_POS_Admin_Settings {
    * @param $current_screen
    */
   public function conditional_init( $current_screen ) {
-    if( $current_screen->id == self::$screen_id ) {
+    if ( $current_screen->id == self::$screen_id ) {
 
       // Enqueue scripts for the settings page
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
@@ -70,21 +70,21 @@ class WC_POS_Admin_Settings {
    * @param $id
    * @return bool
    */
-  static function delete_settings($id){
-    return delete_option(self::DB_PREFIX . $id);
+  static function delete_settings( $id ) {
+    return delete_option( self::DB_PREFIX . $id );
   }
 
   /**
    * Delete all settings in WP options table
    */
-  static function delete_all_settings(){
+  static function delete_all_settings() {
     global $wpdb;
     $wpdb->query(
-      $wpdb->prepare("
+      $wpdb->prepare( "
         DELETE FROM {$wpdb->options}
         WHERE option_name
         LIKE '%s'",
-        self::DB_PREFIX.'%'
+        self::DB_PREFIX . '%'
       )
     );
   }
@@ -96,13 +96,6 @@ class WC_POS_Admin_Settings {
     wp_enqueue_style(
       WC_POS_PLUGIN_NAME . '-admin',
       WC_POS_PLUGIN_URL . 'assets/css/admin.min.css',
-      null,
-      WC_POS_VERSION
-    );
-
-    wp_enqueue_style(
-      WC_POS_PLUGIN_NAME . '-icons',
-      WC_POS_PLUGIN_URL . 'assets/css/admin-icons.min.css',
       null,
       WC_POS_VERSION
     );
@@ -119,13 +112,15 @@ class WC_POS_Admin_Settings {
 
     // register
     $external_libs = WC_POS_Template::get_external_js_libraries();
-    wp_register_script( 'underscore',     $external_libs['lodash'],     array( 'jquery' ), null, true );
-    wp_register_script( 'backbone.radio', $external_libs['radio'],      array( 'jquery', 'backbone', 'underscore' ), null, true );
-    wp_register_script( 'marionette',     $external_libs['marionette'], array( 'jquery', 'backbone', 'underscore' ), null, true );
-    wp_register_script( 'handlebars',     $external_libs['handlebars'], false, null, true );
-    wp_register_script( 'moment',         $external_libs['moment'],     false, null, true );
-    wp_register_script( 'accounting',     $external_libs['accounting'], false, null, true );
-    wp_register_script( 'select2',        $external_libs['select2'],    array( 'jquery' ), null, true );
+    wp_register_script( 'underscore', $external_libs[ 'lodash' ], array( 'jquery' ), null, true );
+    wp_register_script( 'backbone.radio', $external_libs[ 'radio' ], array( 'jquery', 'backbone', 'underscore' ), null, true );
+    wp_register_script( 'marionette', $external_libs[ 'marionette' ], array( 'jquery', 'backbone', 'underscore' ), null, true );
+    wp_register_script( 'handlebars', $external_libs[ 'handlebars' ], false, null, true );
+    wp_register_script( 'moment', $external_libs[ 'moment' ], false, null, true );
+    wp_register_script( 'accounting', $external_libs[ 'accounting' ], false, null, true );
+    wp_register_script( 'select2', $external_libs[ 'select2' ], array( 'jquery' ), null, true );
+    wp_register_script( 'tether', $external_libs[ 'tether' ], array( 'jquery' ), null, true );
+    wp_register_script( 'idb-wrapper', $external_libs[ 'idb-wrapper' ], false, null, true );
 
     // enqueue
     wp_enqueue_script( 'jquery-ui-sortable' );
@@ -134,8 +129,8 @@ class WC_POS_Admin_Settings {
 
     wp_enqueue_script(
       WC_POS_PLUGIN_NAME . '-admin-app',
-      WC_POS_PLUGIN_URL . 'assets/js/admin.'. $build .'.js',
-      array('backbone', 'backbone.radio', 'marionette', 'handlebars', 'accounting', 'moment', 'select2'),
+      WC_POS_PLUGIN_URL . 'assets/js/admin.' . $build . '.js',
+      array( 'backbone', 'backbone.radio', 'marionette', 'handlebars', 'accounting', 'moment', 'select2', 'tether', 'idb-wrapper' ),
       WC_POS_VERSION,
       true
     );
@@ -149,10 +144,10 @@ class WC_POS_Admin_Settings {
     );
 
     $scripts = apply_filters( 'woocommerce_pos_admin_enqueue_scripts', array() );
-    if( isset( $scripts['locale'] ) ) {
+    if ( isset( $scripts[ 'locale' ] ) ) {
       wp_enqueue_script(
         WC_POS_PLUGIN_NAME . '-js-locale',
-        $scripts['locale'],
+        $scripts[ 'locale' ],
         array( WC_POS_PLUGIN_NAME . '-admin-app' ),
         WC_POS_VERSION,
         true
@@ -169,7 +164,7 @@ class WC_POS_Admin_Settings {
       'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
       'nonce'   => wp_create_nonce( WC_POS_PLUGIN_NAME )
     );
-    echo '<script>POS.start('. json_encode($options) .');</script>';
+    echo '<script>POS.start(' . json_encode( $options ) . ');</script>';
   }
 
 }

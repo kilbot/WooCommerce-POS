@@ -6,14 +6,6 @@ var d = 'disabled';
 
 var Buttons = Behavior.extend({
   loadingText: polyglot.t('messages.loading'),
-  iconPrefix: 'icon-',
-
-  initialize: function(){
-    // test for wp-admin
-    if(window.adminpage){
-      this.iconPrefix = 'wc_pos-icon-';
-    }
-  },
 
   ui: {
     btns    : '.btn',
@@ -26,6 +18,14 @@ var Buttons = Behavior.extend({
     'click @ui.action': 'action',
     'click @ui.toggle': 'toggle',
     'state @ui.btns'  : 'setState'
+  },
+
+  namespace: function( str ){
+    // test for wp-admin
+    if(window.adminpage){
+      str = 'wc_pos-' + str;
+    }
+    return str;
   },
 
   action: function(e){
@@ -96,7 +96,7 @@ var Buttons = Behavior.extend({
   },
 
   icon: function(state){
-    return '<i class="' + this.iconPrefix + state + '"></i>';
+    return '<i class="' + this.namespace( 'icon-' + state ) + '"></i>';
   },
 
   updateInput: function(btn, state){
@@ -119,7 +119,7 @@ var Buttons = Behavior.extend({
     }
     this.ui.message
       .removeClass('loading success error')
-      .addClass(state)
+      .addClass( this.namespace( 'text-' + state ) )
       .html(message);
   },
 

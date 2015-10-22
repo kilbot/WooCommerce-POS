@@ -29,12 +29,12 @@ tooltip {
 
       &.in { opacity: $tooltip-opacity; }
 
-      &.tooltip-top,
+      &.#{namespace('tooltip')}-top,
       &.bs-tether-element-attached-bottom {
         padding: $tooltip-arrow-width 0;
         margin-top: -3px;
 
-        .tooltip-arrow {
+        .#{namespace('tooltip')}-arrow {
           bottom: 0;
           left: 50%;
           margin-left: -$tooltip-arrow-width;
@@ -42,12 +42,12 @@ tooltip {
           border-top-color: $tooltip-arrow-color;
         }
       }
-      &.tooltip-right,
+      &.#{namespace('tooltip')}-right,
       &.bs-tether-element-attached-left {
         padding: 0 $tooltip-arrow-width;
         margin-left: 3px;
 
-        .tooltip-arrow {
+        .#{namespace('tooltip')}-arrow {
           top: 50%;
           left: 0;
           margin-top: -$tooltip-arrow-width;
@@ -55,12 +55,12 @@ tooltip {
           border-right-color: $tooltip-arrow-color;
         }
       }
-      &.tooltip-bottom,
+      &.#{namespace('tooltip')}-bottom,
       &.bs-tether-element-attached-top {
         padding: $tooltip-arrow-width 0;
         margin-top: 3px;
 
-        .tooltip-arrow {
+        .#{namespace('tooltip')}-arrow {
           top: 0;
           left: 50%;
           margin-left: -$tooltip-arrow-width;
@@ -68,12 +68,12 @@ tooltip {
           border-bottom-color: $tooltip-arrow-color;
         }
       }
-      &.tooltip-left,
+      &.#{namespace('tooltip')}-left,
       &.bs-tether-element-attached-right {
         padding: 0 $tooltip-arrow-width;
         margin-left: -3px;
 
-        .tooltip-arrow {
+        .#{namespace('tooltip')}-arrow {
           top: 50%;
           right: 0;
           margin-top: -$tooltip-arrow-width;

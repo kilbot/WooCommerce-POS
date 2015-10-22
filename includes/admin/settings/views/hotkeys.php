@@ -6,7 +6,7 @@
   <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/hotkeys' ); ?>
 </p>
 
-<ul class="wc-pos-hotkeys">
+<ul class="wc_pos-hotkeys">
   <?php $keys = $this->get('hotkeys'); if($keys): foreach($keys as $id => $key): ?>
     <li>
       <input type="text" name="hotkeys.<?php esc_attr_e($id); ?>.key">

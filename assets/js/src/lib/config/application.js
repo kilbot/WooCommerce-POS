@@ -72,6 +72,12 @@ module.exports = Mn.Application.extend({
     _.set( this, path, value );
   },
 
+  // namespace prefix for WP Admin
+  namespace: function( str ){
+    var prefix = window.adminpage ? 'wc_pos-' : '' ;
+    return prefix + str;
+  },
+
   // extend app for third party plugins
   debug: debugFunction,
   polyglot: polyglot,

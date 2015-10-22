@@ -8,7 +8,7 @@ var View = FormView.extend({
   template: 'hotkeys',
 
   attributes: {
-    id: 'wc-pos-settings-hotkeys'
+    id: 'wc_pos-settings-hotkeys'
   },
 
   behaviors: {

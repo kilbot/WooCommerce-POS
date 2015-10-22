@@ -7,7 +7,7 @@ var Layout = LayoutView.extend({
   template: hbs.compile('' +
     '<div class="panel-header list-actions products-header"></div>' +
     '<div class="products-tabs"></div>' +
-    '<div class="panel-body list products-list striped"></div>' +
+    '<div class="panel-body list products-list list-striped"></div>' +
     '<div class="panel-footer products-footer"></div>'
   ),
 

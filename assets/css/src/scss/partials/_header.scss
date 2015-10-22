@@ -81,6 +81,14 @@ header {
           color: $menu-text-color;
 
         }
+
+        span {
+          display: none;
+          @include media-breakpoint-up(md) {
+            display: inline-block;
+          }
+        }
+
       }
 
     }

@@ -78,7 +78,16 @@ products {
       }
 
       .action {
-        @include flex(0 1 52px);
+        @include flex(0 1 48px);
+
+        // icon color
+        a {
+          display: block;
+          color: $brand-success;
+          &:hover {
+            color: darken($brand-success, 10%);
+          }
+        }
       }
 
     }

@@ -45,7 +45,7 @@ cart {
         @include flex(0 1 20%);
       }
       .action {
-        @include flex(0 1 52px);
+        @include flex(0 1 48px);
       }
 
     }
@@ -95,6 +95,16 @@ cart {
 
       .pulse-out {
         background: $pulse-out-bg-color;
+      }
+
+      .action {
+        // icon color
+        a {
+          color: $brand-danger;
+          &:hover {
+            color: darken($brand-danger, 10%);
+          }
+        }
       }
 
     }
@@ -185,13 +195,13 @@ cart {
     .#{current-module()}-drawer {
 
       .list-row {
-        @include align-items(initial);
+        //@include align-items(initial);
 
         > div {
 
-          select {
-            margin-left: $padding-base-horizontal;
-          }
+          //select {
+          //  margin-left: $padding-base-horizontal;
+          //}
 
           &:first-of-type {
             @include flex(0 1 40%);
@@ -200,19 +210,21 @@ cart {
 
           &:last-of-type > span {
             position: relative;
-
-            input {
-              width: 80%;
-            }
+            display: inline-block;
+            width: 100%;
 
             input, textarea {
               margin-bottom: $padding-base-vertical;
             }
 
+            input {
+              width: 80%;
+            }
+
             a {
               position: absolute;
               top: 0;
-              right: 0
+              right: $padding-base-horizontal;
             }
           }
 

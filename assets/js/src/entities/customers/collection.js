@@ -24,6 +24,10 @@ module.exports = DualCollection.extend({
     }
   },
 
+  getGuestCustomer: function(){
+    return this._guest;
+  },
+
   getDefaultCustomer: function(){
     return this._default;
   }

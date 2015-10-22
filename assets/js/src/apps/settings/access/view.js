@@ -7,12 +7,12 @@ var View = FormView.extend({
   template: 'access',
 
   attributes: {
-    id: 'wc-pos-settings-access'
+    id: 'wc_pos-settings-access'
   },
 
   ui: {
-    tabs    : '.wc-pos-access-tabs > li',
-    options : '.wc-pos-access-panel > li'
+    tabs    : '.wc_pos-access-tabs > li',
+    options : '.wc_pos-access-panel > li'
   },
 
   events: {

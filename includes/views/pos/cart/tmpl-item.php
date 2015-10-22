@@ -19,4 +19,8 @@
 <div class="price"><input type="text" name="item_price" data-label="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="amount" class="form-control autogrow"></div>
 {{/if}}
 <div class="total"></div>
-<div class="action"><a data-action="remove" class="btn btn-circle btn-danger" href="#"><i class="icon-times icon-lg"></i></a></div>
+<div class="action">
+  <a data-action="remove" href="#">
+    <i class="icon-times-circle"></i>
+  </a>
+</div>

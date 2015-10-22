@@ -8,7 +8,7 @@ var View = FormView.extend({
   template: 'checkout',
 
   attributes: {
-    id: 'wc-pos-settings-checkout'
+    id: 'wc_pos-settings-checkout'
   },
 
   modelEvents: {

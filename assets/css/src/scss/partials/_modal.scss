@@ -12,7 +12,7 @@ $modal-close-padding-x        : $padding-base-horizontal;
 
 $modal-content-bg             : #fff !default;
 $modal-content-border-color   : rgba(0,0,0,.2) !default;
-$modal-border-radius          : $border-radius-base;
+$modal-border-radius          : 0;
 
 $modal-backdrop-bg            : #000 !default;
 $modal-backdrop-opacity       : .5 !default;
@@ -118,7 +118,8 @@ modal {
     }
 
     // Modal background
-    .#{current-module()}-backdrop {
+    // @todo: bootstrap needs prefix for components?
+    .modal-backdrop, .#{current-module()}-backdrop {
       position: fixed;
       top: 0;
       right: 0;
@@ -177,7 +178,7 @@ modal {
 
     // Footer (for actions)
     .#{current-module()}-footer {
-      padding: $modal-footer-padding-y $modal-title-padding-x;
+      padding: $modal-footer-padding-y $modal-footer-padding-x;
       text-align: right; // right align buttons
       border-top: 1px solid $modal-footer-border-color;
       @include clearfix(); // clear it in case folks use .pull-* classes on buttons
@@ -200,6 +201,7 @@ modal {
         display: inline-block;
         text-align: right;
         margin: 0;
+        padding: 0 $modal-footer-padding-x;
       }
     }
 

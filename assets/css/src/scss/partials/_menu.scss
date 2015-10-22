@@ -1,7 +1,7 @@
 $menu-width             : 200px;
 $menu-bg                : nth( $primaryPalette, 10 );
 $menu-text-color        : $inverse-text-color;
-$menu-item-padding-y    : $padding-base-vertical / 2;
+$menu-item-padding-y    : $padding-base-vertical;
 $menu-item-padding-x    : $padding-base-horizontal;
 $menu-item-hover-color  : darken($link-color, 5%);
 

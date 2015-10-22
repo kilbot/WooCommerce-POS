@@ -22,7 +22,12 @@
 </li>
 <li class="list-row no-border">
   <div>
-    <small><label><input type="checkbox" name="reports[]" value="pos" checked="checked"> <?php _e( 'Append POS system report', 'woocommerce-pos' ); ?></label></small> <a href="#" class="toggle"><i class="icon-info-circle"></i></a>
+    <label class="c-input c-checkbox small">
+      <input type="checkbox" name="reports[]" value="pos" checked="checked">
+      <span class="c-indicator"></span>
+      <?php _e( 'Append POS system report', 'woocommerce-pos' ); ?>
+    </label>
+    <a href="#" class="toggle"><i class="icon-info-circle"></i></a>
     <textarea class="form-control" id="pos_status" name="pos_status" class="small" style="display:none" readonly>Shop URL: <?php echo get_bloginfo('url')."\n"; ?></textarea>
   </div>
 </li>

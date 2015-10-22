@@ -6,15 +6,15 @@ var hbs = require('handlebars');
 var Tmpl = require('./modal.hbs');
 var Radio = require('backbone.radio');
 var debug = require('debug')('modalLayout');
+var App = require('lib/config/application');
 require('bootstrap/dist/js/umd/modal');
 
 module.exports = LayoutView.extend({
   template: hbs.compile(Tmpl),
 
-  //className: 'modal',
+  // if wp-admin, add css prefix
   className: function(){
-    // if wp-admin, add css prefix
-    return window.adminpage ? 'wc_pos-modal' : 'modal';
+    return App.prototype.namespace('modal');
   },
 
   attributes: {

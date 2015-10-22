@@ -12,13 +12,13 @@
   <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/pos-access' ); ?>
 </p>
 
-<div class="wc-pos-access">
-  <ul class="wc-pos-access-tabs">
+<div class="wc_pos-access">
+  <ul class="wc_pos-access-tabs">
     <?php $data = $this->get(); if($data): foreach($data['roles'] as $slug => $role): ?>
       <li data-id="<?php echo $slug; ?>"><?php echo translate_user_role($role['name']); ?></li>
     <?php endforeach; endif; ?>
   </ul>
-  <ul class="wc-pos-access-panel">
+  <ul class="wc_pos-access-panel">
     <?php if($data): foreach($data['roles'] as $slug => $role): ?>
       <li id="<?php echo $slug; ?>">
         <ul>

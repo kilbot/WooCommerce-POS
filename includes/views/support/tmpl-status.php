@@ -11,7 +11,7 @@
 ?>
   <li class="list-row">
     <div class="result">
-      <i class="icon-<?php echo $pass ? 'success' : 'error'; ?> icon-lg"></i>
+      <i class="icon-<?php echo $pass ? 'success' : 'error'; ?> icon-lg text-<?php echo $pass ? 'success' : 'error'; ?>"></i>
     </div>
     <div class="title"><?php echo $title; ?></div>
     <div class="message">

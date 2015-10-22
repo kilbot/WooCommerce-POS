@@ -1,44 +1,49 @@
-var FormView = require('lib/config/form-view');
+var View = require('lib/config/layout-view');
 var App = require('lib/config/application');
-var CustomerSelect = require('lib/behaviors/customer-select');
-var _ = require('lodash');
+//var _ = require('lodash');
 var Radio = require('backbone.radio');
+var Customers = require('./customer-list');
 
-var View = FormView.extend({
+var View = View.extend({
   template: 'pos.cart.customer',
 
   className: 'list-row',
 
   initialize: function(){
-    var customers = Radio.request('entities', 'get', {
-      type: 'option',
+    this.customers = Radio.request('entities', 'get', {
+      type: 'filtered',
       name: 'customers'
     });
-    this.mergeOptions(customers, ['guest']);
+    var guest = this.customers.superset().getGuestCustomer();
+    this.mergeOptions(guest, ['guest']);
   },
 
-  behaviors: {
-    CustomerSelect: {
-      behaviorClass: CustomerSelect
-    }
+  regions: {
+    customers : '.customers-list'
   },
 
-  bindings: {
-    '#customer_id': 'customer_id'
+  ui: {
+    'dropDown'        : '.dropdown',
+    'customerSearch'  : 'input'
   },
 
   events: {
-    'select2:select [data-select="customer"]': 'selectCustomer',
-    'click [data-action="remove"]': 'removeCustomer'
+    'click [data-action="remove"]': 'removeCustomer',
+    'focus @ui.dropDown'    : 'setUpSearch',
+    'blur @ui.dropDown'     : 'tearDownSearch'
   },
 
-  modelEvents: {
-    'change:customer': 'render'
+  setUpSearch: function(){
+    this.ui.dropDown.addClass('open');
+
+    var view = new Customers({
+      collection: this.customers
+    });
+    this.getRegion('customers').show( view );
   },
 
-  selectCustomer: function(e){
-    var customer = _.get( e, ['params', 'data' ] );
-    this.model.save({ customer: customer }, { patch: true });
+  tearDownSearch: function(){
+    this.ui.dropDown.removeClass('open');
   },
 
   removeCustomer: function(){

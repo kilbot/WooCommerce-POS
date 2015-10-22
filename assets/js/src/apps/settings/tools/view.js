@@ -7,7 +7,7 @@ var View = ItemView.extend({
   template: 'tools',
 
   attributes: {
-    id: 'wc-pos-settings-tools'
+    id: 'wc_pos-settings-tools'
   },
 
   behaviors: {

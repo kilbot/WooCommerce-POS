@@ -134,8 +134,9 @@ module.exports = FormView.extend({
       .append('' +
         '<input class="form-control" type="text" name="meta.label">' +
         '<textarea class="form-control" name="meta.value"></textarea>' +
-        '<a href="#" class="btn btn-danger btn-circle btn-circle-sm" ' +
-        'data-action="remove-meta"><i class="icon icon-times"></i></a>'
+        '<a href="#" data-action="remove-meta">' +
+        '<i class="icon-remove icon-lg"></i>' +
+        '</a>'
       )
       .insertBefore( $(e.currentTarget) );
   },

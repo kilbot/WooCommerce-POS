@@ -22,7 +22,7 @@
     <tr>
       <th style="width:25%"><?php echo $title; ?></th>
       <td style="width:10%;text-align:center;" class="<?php echo $pass ? 'pass' : 'fail'; ?>">
-        <i class="wc_pos-icon-<?php echo $pass ? 'success' : 'error'; ?> wc_pos-icon-lg"></i>
+        <i class="wc_pos-text-<?php echo $pass ? 'success' : 'error'; ?> wc_pos-icon-<?php echo $pass ? 'success' : 'error'; ?> wc_pos-icon-lg"></i>
       </td>
       <td>
         <?php echo $message; ?>

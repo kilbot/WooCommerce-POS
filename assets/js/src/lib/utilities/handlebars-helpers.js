@@ -3,7 +3,7 @@ var hbs = require('handlebars');
 var accounting = require('accounting');
 var moment = require('moment');
 var Utils = require('lib/utilities/utils');
-//var Radio = require('backbone.radio');
+var App = require('lib/config/application');
 
 /**
  * is, compare helpers taken from
@@ -188,6 +188,9 @@ hbs.registerHelper('formatCustomerName', function(customer) {
   return name;
 });
 
+hbs.registerHelper('namespace', function(str){
+  return App.prototype.namespace(str);
+});
 
 //hbs.registerHelper('getOption', function(key){
 //  var lookup = key.split('.');

@@ -46,11 +46,13 @@ module.exports = LayoutView.extend({
 
   setup: function(options){
     _.defaults(options, {
-      container : 'body',
-      content   : ' ',
+      //container : 'body',
+      content   : function(){
+        return 'hi hi';
+      },
       delay     : 0,
       placement : 'right',
-      template  : this.el,
+      //template  : this.el,
       title     : '',
       trigger   : 'manual'
     });
