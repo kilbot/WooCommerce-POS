@@ -2,6 +2,7 @@ var Behavior = require('lib/config/behavior');
 var App = require('lib/config/application');
 var Modernizr = global['Modernizr'];
 var Radio = require('backbone.radio');
+var View = require('./view');
 var $ = require('jquery');
 var _ = require('lodash');
 
@@ -13,8 +14,7 @@ var NumpadBehavior = Behavior.extend({
 
   events: {
     'click @ui.target'      : 'numpadPopover',
-    'open:numpad @ui.input' : 'numpadPopover',
-    'keypress @ui.target'      : 'keyboardEntry'
+    'open:numpad @ui.input' : 'numpadPopover'
   },
 
   onRender: function() {
@@ -29,9 +29,8 @@ var NumpadBehavior = Behavior.extend({
 
   /* jshint -W071 */
   numpadPopover: function(e){
-    var target  = $(e.target),
-        name    = target.attr('name'),
-        options = _.clone( target.data() );
+    var name    = $(e.target).attr('name'),
+        options = _.clone( $(e.target).data() );
 
     // numpad
     _.defaults( options, {
@@ -42,41 +41,21 @@ var NumpadBehavior = Behavior.extend({
       options.original = this.view.model.get(options.original);
     }
 
-    var numpad = Radio.request('numpad', 'view', options);
+    var numpad = new View(options);
 
     this.listenTo(numpad, 'input', function(value){
-      target.popover('hide');
+      Radio.request('popover', 'close');
       this.view.model.set( name, value, { numpadChange: true } );
     });
 
-    // popover
-    target.one('shown.bs.popover', function(){
-      if(!Modernizr.touch) {
-        numpad.ui.input.select();
-      }
-    });
-
     _.defaults( options, {
-      target    : target,
-      view      : numpad,
-      parent    : this.view,
-      className : 'popover popover-numpad popover-dark-bg',
-      placement : 'bottom'
+      target : e.target,
+      view   : numpad
     });
 
     Radio.request('popover', 'open', options);
-  },
-  /* jshint +W071 */
-
-  keyboardEntry: function(e){
-    var target = $(e.target);
-    if( target.data('popoverOpen') ){
-      target.one('hidden.bs.popover', function(){
-        target.val( String.fromCharCode(e.keyCode) ).trigger('input');
-      });
-      target.popover('hide');
-    }
   }
+  /* jshint +W071 */
 
 });
 

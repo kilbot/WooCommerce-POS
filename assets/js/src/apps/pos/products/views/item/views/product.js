@@ -53,10 +53,9 @@ var Item = ItemView.extend({
     });
 
     var options = _.extend({
-      view   : view,
-      parent : this,
-      model  : this.model,
-      target : $(e.currentTarget)
+      view      : view,
+      target    : e.target,
+      position  : 'right middle'
     }, view.popover);
 
     Radio.request('popover', 'open', options);

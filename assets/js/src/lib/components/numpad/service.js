@@ -12,8 +12,7 @@ module.exports = Service.extend({
   },
 
   view: function(options){
-    var view = new View(options);
-    return view;
+    return new View(options);
   }
 
 });

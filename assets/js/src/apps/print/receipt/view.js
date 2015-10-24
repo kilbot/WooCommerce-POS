@@ -1,6 +1,5 @@
 var ReceiptView = require('lib/config/receipt-view');
 var hbs = require('handlebars');
-var $ = require('jquery');
 
 module.exports = ReceiptView.extend({
 

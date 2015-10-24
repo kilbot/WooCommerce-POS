@@ -83,7 +83,6 @@ module.exports = function(grunt) {
     // compass
     compass: {
       options: {
-        require: ['breakpoint'],
         sassDir: 'assets/css/src/scss',
         cssDir: 'assets/css/src',
         fontsDir: 'assets/fonts',

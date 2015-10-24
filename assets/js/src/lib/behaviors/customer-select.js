@@ -5,51 +5,6 @@ var _ = require('lodash');
 var $ = require('jquery');
 var hbs = require('handlebars');
 
-/**
- *
- */
-var hasNoNames = function(customer){
-  return _.chain(customer)
-    .pick('first_name', 'last_name')
-    .values()
-    .compact()
-    .isEmpty()
-    .value();
-};
-
-/**
- * select2 parse results
- */
-var formatResult = function( customer ) {
-  var format = '{{first_name}} {{last_name}} ' +
-    '{{#if email}}({{email}}){{/if}}';
-
-  if( hasNoNames(customer) ){
-    format = '{{username}} ({{email}})';
-  }
-
-  var template = hbs.compile(format);
-  return template(customer);
-};
-
-/**
- * select2 parse selection
- */
-var formatSelection = function( customer ) {
-  if( customer.text ) {
-    return customer.text;
-  }
-
-  var format = '{{first_name}} {{last_name}}';
-
-  if( hasNoNames(customer) ){
-    format = '{{username}}';
-  }
-
-  var template = hbs.compile(format);
-  return template(customer);
-};
-
 var CustomerSelect = Behavior.extend({
 
   initialize: function(){
@@ -108,8 +63,7 @@ var CustomerSelect = Behavior.extend({
         },
         escapeMarkup: function( m ) {
           return m;
-        },
-        templateSelection: formatSelection
+        }
       };
     }
   },
@@ -124,9 +78,9 @@ var CustomerSelect = Behavior.extend({
 
   initSelection: function(){
     var customer = this.getOption('default') || this.getOption('guest');
-    var text = formatSelection( customer );
+    var name = hbs.helpers.formatCustomerName( customer );
     this.ui.select
-      .html( $('<option />').val(customer.id).text(text) )
+      .html( $('<option />').val(customer.id).text(name) )
       .trigger('change');
   }
 

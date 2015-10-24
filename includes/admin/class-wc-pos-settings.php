@@ -119,7 +119,6 @@ class WC_POS_Admin_Settings {
     wp_register_script( 'moment', $external_libs[ 'moment' ], false, null, true );
     wp_register_script( 'accounting', $external_libs[ 'accounting' ], false, null, true );
     wp_register_script( 'select2', $external_libs[ 'select2' ], array( 'jquery' ), null, true );
-    wp_register_script( 'tether', $external_libs[ 'tether' ], array( 'jquery' ), null, true );
     wp_register_script( 'idb-wrapper', $external_libs[ 'idb-wrapper' ], false, null, true );
 
     // enqueue
@@ -130,7 +129,7 @@ class WC_POS_Admin_Settings {
     wp_enqueue_script(
       WC_POS_PLUGIN_NAME . '-admin-app',
       WC_POS_PLUGIN_URL . 'assets/js/admin.' . $build . '.js',
-      array( 'backbone', 'backbone.radio', 'marionette', 'handlebars', 'accounting', 'moment', 'select2', 'tether', 'idb-wrapper' ),
+      array( 'backbone', 'backbone.radio', 'marionette', 'handlebars', 'accounting', 'moment', 'select2', 'idb-wrapper' ),
       WC_POS_VERSION,
       true
     );

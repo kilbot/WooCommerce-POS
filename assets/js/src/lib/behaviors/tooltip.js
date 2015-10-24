@@ -1,28 +1,55 @@
 var Behavior = require('lib/config/behavior');
 var App = require('lib/config/application');
-var hbs = require('handlebars');
 var _ = require('lodash');
-require('bootstrap/dist/js/umd/tooltip');
-var Tmpl = require('./tooltip.hbs');
+var $ = require('jquery');
+var Drop = require('tether-drop');
+var App = require('lib/config/application');
+var namespace = App.prototype.namespace('tooltip');
+
+var _Drop = Drop.createContext({
+  classPrefix: namespace
+});
+
+var defaults = {
+  position: 'top center',
+  openOn: 'hover',
+  classes: namespace + '-theme-arrows',
+  constrainToWindow: true,
+  constrainToScrollParent: false,
+  remove: true
+};
 
 var TooltipBehavior = Behavior.extend({
 
+  _initialized: [],
+
   initialize: function(options){
-    var namespace = App.prototype.namespace('tooltip');
+    this.options = _.extend({}, defaults, options);
 
-    this.options = _.defaults( options, {
-      template  : hbs.compile(Tmpl)()
-    });
-
+    // define ui
     this.ui = {
       tooltip: '*[data-toggle="' + namespace + '"]'
     };
   },
 
-  onRender: function() {
-    if( this.ui.tooltip.length > 0 ){
-      this.ui.tooltip.tooltip( this.options );
+  events: {
+    'mouseenter @ui.tooltip': 'onFirstHover'
+  },
+
+  onFirstHover: function(e){
+    if(this._initialized.indexOf(e.target) !== -1) {
+      return;
     }
+
+    var options = _.extend({}, this.options, {
+      target  : e.target,
+      content : $(e.target).attr('title')
+    });
+    var drop = new _Drop(options);
+
+    this._initialized.push(e.target);
+
+    drop.open();
   }
 
 });

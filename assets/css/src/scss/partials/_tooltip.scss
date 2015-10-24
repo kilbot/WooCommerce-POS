@@ -7,6 +7,14 @@ $tooltip-arrow-color    : $tooltip-bg !default;
 $tooltip-max-width      : 200px !default;
 $tooltip-border-radius  : $border-radius-base;
 
+
+$themePrefix        : namespace('tooltip');
+$arrowSize          : 8px;
+$backgroundColor    : black;
+$color              : #eeeeee;
+$useDropShadow      : true;
+
+
 /**
  * @name Tooltip
  *
@@ -17,90 +25,111 @@ $tooltip-border-radius  : $border-radius-base;
 tooltip {
   @at-root {
 
-    .#{current-module()} {
-      position: absolute;
-      z-index: $zindex-tooltip;
-      display: block;
-      // Our parent element can be arbitrary since tooltips are by default inserted as a sibling of their target element.
-      // So reset our font and text properties to avoid inheriting weird values.
-      @include reset-text();
-      font-size: $font-size-sm;
-      opacity: 0;
+    @include tether($themePrefix: $themePrefix);
+    @include tether-theme-arrows($themePrefix: $themePrefix, $arrowSize: $arrowSize, $backgroundColor: $backgroundColor, $color: $color, $useDropShadow: $useDropShadow);
 
-      &.in { opacity: $tooltip-opacity; }
+    // Just a few additions
 
-      &.#{namespace('tooltip')}-top,
-      &.bs-tether-element-attached-bottom {
-        padding: $tooltip-arrow-width 0;
-        margin-top: -3px;
-
-        .#{namespace('tooltip')}-arrow {
-          bottom: 0;
-          left: 50%;
-          margin-left: -$tooltip-arrow-width;
-          border-width: $tooltip-arrow-width $tooltip-arrow-width 0;
-          border-top-color: $tooltip-arrow-color;
-        }
-      }
-      &.#{namespace('tooltip')}-right,
-      &.bs-tether-element-attached-left {
-        padding: 0 $tooltip-arrow-width;
-        margin-left: 3px;
-
-        .#{namespace('tooltip')}-arrow {
-          top: 50%;
-          left: 0;
-          margin-top: -$tooltip-arrow-width;
-          border-width: $tooltip-arrow-width $tooltip-arrow-width $tooltip-arrow-width 0;
-          border-right-color: $tooltip-arrow-color;
-        }
-      }
-      &.#{namespace('tooltip')}-bottom,
-      &.bs-tether-element-attached-top {
-        padding: $tooltip-arrow-width 0;
-        margin-top: 3px;
-
-        .#{namespace('tooltip')}-arrow {
-          top: 0;
-          left: 50%;
-          margin-left: -$tooltip-arrow-width;
-          border-width: 0 $tooltip-arrow-width $tooltip-arrow-width;
-          border-bottom-color: $tooltip-arrow-color;
-        }
-      }
-      &.#{namespace('tooltip')}-left,
-      &.bs-tether-element-attached-right {
-        padding: 0 $tooltip-arrow-width;
-        margin-left: -3px;
-
-        .#{namespace('tooltip')}-arrow {
-          top: 50%;
-          right: 0;
-          margin-top: -$tooltip-arrow-width;
-          border-width: $tooltip-arrow-width 0 $tooltip-arrow-width $tooltip-arrow-width;
-          border-left-color: $tooltip-arrow-color;
-        }
+    .#{$themePrefix}-element.#{$themePrefix}-theme-arrows {
+      //pointer-events: none;
+      z-index: 1000;
+      .#{$themePrefix}-content {
+        padding: 0.5em 1em;
       }
     }
 
-    // Wrapper for the tooltip content
-    .#{current-module()}-inner {
-      max-width: $tooltip-max-width;
-      padding: 3px 8px;
-      color: $tooltip-color;
-      text-align: center;
-      background-color: $tooltip-bg;
-      @include border-radius($tooltip-border-radius);
-    }
-
-    // Arrows
-    .#{current-module()}-arrow {
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-color: transparent;
-      border-style: solid;
-    }
 
   }
 }
+
+//
+//tooltip {
+//  @at-root {
+//
+//    .#{current-module()} {
+//      position: absolute;
+//      z-index: $zindex-tooltip;
+//      display: block;
+//      // Our parent element can be arbitrary since tooltips are by default inserted as a sibling of their target element.
+//      // So reset our font and text properties to avoid inheriting weird values.
+//      @include reset-text();
+//      font-size: $font-size-sm;
+//      opacity: 0;
+//
+//      &.in { opacity: $tooltip-opacity; }
+//
+//      &.#{namespace('tooltip')}-top,
+//      &.bs-tether-element-attached-bottom {
+//        padding: $tooltip-arrow-width 0;
+//        margin-top: -3px;
+//
+//        .#{namespace('tooltip')}-arrow {
+//          bottom: 0;
+//          left: 50%;
+//          margin-left: -$tooltip-arrow-width;
+//          border-width: $tooltip-arrow-width $tooltip-arrow-width 0;
+//          border-top-color: $tooltip-arrow-color;
+//        }
+//      }
+//      &.#{namespace('tooltip')}-right,
+//      &.bs-tether-element-attached-left {
+//        padding: 0 $tooltip-arrow-width;
+//        margin-left: 3px;
+//
+//        .#{namespace('tooltip')}-arrow {
+//          top: 50%;
+//          left: 0;
+//          margin-top: -$tooltip-arrow-width;
+//          border-width: $tooltip-arrow-width $tooltip-arrow-width $tooltip-arrow-width 0;
+//          border-right-color: $tooltip-arrow-color;
+//        }
+//      }
+//      &.#{namespace('tooltip')}-bottom,
+//      &.bs-tether-element-attached-top {
+//        padding: $tooltip-arrow-width 0;
+//        margin-top: 3px;
+//
+//        .#{namespace('tooltip')}-arrow {
+//          top: 0;
+//          left: 50%;
+//          margin-left: -$tooltip-arrow-width;
+//          border-width: 0 $tooltip-arrow-width $tooltip-arrow-width;
+//          border-bottom-color: $tooltip-arrow-color;
+//        }
+//      }
+//      &.#{namespace('tooltip')}-left,
+//      &.bs-tether-element-attached-right {
+//        padding: 0 $tooltip-arrow-width;
+//        margin-left: -3px;
+//
+//        .#{namespace('tooltip')}-arrow {
+//          top: 50%;
+//          right: 0;
+//          margin-top: -$tooltip-arrow-width;
+//          border-width: $tooltip-arrow-width 0 $tooltip-arrow-width $tooltip-arrow-width;
+//          border-left-color: $tooltip-arrow-color;
+//        }
+//      }
+//    }
+//
+//    // Wrapper for the tooltip content
+//    .#{current-module()}-inner {
+//      max-width: $tooltip-max-width;
+//      padding: 3px 8px;
+//      color: $tooltip-color;
+//      text-align: center;
+//      background-color: $tooltip-bg;
+//      @include border-radius($tooltip-border-radius);
+//    }
+//
+//    // Arrows
+//    .#{current-module()}-arrow {
+//      position: absolute;
+//      width: 0;
+//      height: 0;
+//      border-color: transparent;
+//      border-style: solid;
+//    }
+//
+//  }
+//}

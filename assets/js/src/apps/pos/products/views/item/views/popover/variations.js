@@ -19,7 +19,7 @@ var Variations = ItemView.extend({
   template: hbs.compile(Tmpl),
 
   popover: {
-    className: 'popover popover-variations popover-dark-bg'
+    classes: 'popover-theme-arrows popover-variations'
   },
 
   initialize: function(){
