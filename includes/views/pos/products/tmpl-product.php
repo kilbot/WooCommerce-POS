@@ -1,6 +1,6 @@
 <div class="img"><img src="{{featured_src}}" title="#{{id}}"></div>
 <div class="title">
-  <strong>{{title}}</strong>
+  <strong>{{title}}</strong>&nbsp;
   {{#with product_attributes}}
   <i class="icon-info-circle" data-toggle="tooltip" title="
     <dl>

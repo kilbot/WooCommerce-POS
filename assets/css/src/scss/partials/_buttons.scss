@@ -28,15 +28,15 @@ $btn-border-radius:              $border-radius-base !default;
 // Colors
 $btn-color:                      $text-color !default;
 $btn-bg:                         $input-bg !default;
-$btn-border:                     $input-border-color !default;
+$btn-border:                     darken($border-color, 5%);
 
 $btn-primary-color:              #fff !default;
 $btn-primary-bg:                 $brand-primary !default;
 $btn-primary-border:             $btn-primary-bg !default;
 
 $btn-secondary-color:            $link-color !default;
-$btn-secondary-bg:               $input-border-color !default;
-$btn-secondary-border:           $input-border-color !default;
+$btn-secondary-bg:               $btn-border;
+$btn-secondary-border:           $btn-border;
 
 $btn-info-color:                 #fff !default;
 $btn-info-bg:                    $brand-info !default;
@@ -82,6 +82,7 @@ btn {
 
       &,
       &:active,
+      &.active,
       &.pseudo-class-active {
         &:focus,
         &.pseudo-class-focus {
@@ -90,14 +91,17 @@ btn {
       }
 
       &:hover,
+      &.hover,
       &.pseudo-class-hover,
       &:focus,
+      &.focus
       &.pseudo-class-focus {
         color: $btn-color;
         text-decoration: none;
       }
 
       &:active,
+      &.active,
       &.pseudo-class-active {
         outline: 0;
         background-image: none;

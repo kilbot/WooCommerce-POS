@@ -36,7 +36,7 @@
         <input name="meta.label" value="{{label}}" type="text" class="form-control">
         <textarea name="meta.value" class="form-control">{{value}}</textarea>
         <a href="#" data-action="remove-meta">
-          <i class="icon-remove"></i>
+          <i class="icon-remove icon-lg"></i>
         </a>
       </span>
     {{/each}}

@@ -1,5 +1,5 @@
 /**
-  * @name Button Group
+  * @name Button Group Spec
   *
   * @markup
   * <div class="btn-group" role="group" aria-label="Basic example">
@@ -13,6 +13,34 @@ btn-group {
   @at-root {
 
     .#{current-module()} {
+      @include display-flex;
+
+      > .btn {
+        @include flex(1);
+
+        &:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+          border-radius: 0;
+        }
+
+        &:first-child {
+          margin-left: 0;
+
+          &:not(:last-child):not(.dropdown-toggle) {
+            @include border-right-radius(0);
+          }
+        }
+
+        &:last-child:not(:first-child) {
+          @include border-left-radius(0);
+        }
+      }
+
+      .btn + .btn,
+      .btn + .btn-group,
+      .btn-group + .btn,
+      .btn-group + .btn-group {
+        margin-left: -1px;
+      }
 
     }
 

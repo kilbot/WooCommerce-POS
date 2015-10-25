@@ -50,7 +50,8 @@ var NumpadBehavior = Behavior.extend({
 
     _.defaults( options, {
       target : e.target,
-      view   : numpad
+      view   : numpad,
+      classes: 'popover-theme-arrows popover-numpad'
     });
 
     Radio.request('popover', 'open', options);

@@ -4,10 +4,19 @@ var $ = require('jquery');
 var _ = require('lodash');
 var Mn = require('backbone.marionette');
 var App = require('lib/config/application');
+var namespace = App.prototype.namespace('popover');
 
 var _Drop = Drop.createContext({
-  classPrefix: App.prototype.namespace('popover')
+  classPrefix: namespace
 });
+
+var defaults = {
+  position: 'bottom center',
+  openOn: undefined, // manual trigger
+  classes: namespace + '-theme-arrows',
+  constrainToWindow: true,
+  constrainToScrollParent: false
+};
 
 module.exports = Service.extend({
   channelName: 'popover',
@@ -24,17 +33,10 @@ module.exports = Service.extend({
   },
 
   open: function(options) {
+    options = _.extend({}, defaults, options);
 
     // close any open popovers
     this.close();
-
-    // createContext defaults not working?
-    _.defaults(options, {
-      content   : '',
-      position  : 'bottom center',
-      classes   : 'popover-theme-arrows',
-      openOn    : undefined // manual trigger
-    });
 
     // new Drop instance
     this.drop = new _Drop(options);
@@ -51,6 +53,8 @@ module.exports = Service.extend({
     // show
     this.drop.region.show(options.view);
 
+    // return the drop instance
+    return this.drop;
   },
 
   close: function(){

@@ -1,3 +1,4 @@
+<div class="popover-body">
 {{#variations}}
   <strong>{{name}}</strong>
   {{#unless this.select}}
@@ -16,4 +17,7 @@
     </select>
   {{/if}}
 {{/variations}}
-<button class="btn btn-success" data-action="add" disabled>Add to Cart</button>
+</div>
+<div class="popover-footer">
+  <button class="btn btn-success" data-action="add" disabled>Add to Cart</button>
+</div>

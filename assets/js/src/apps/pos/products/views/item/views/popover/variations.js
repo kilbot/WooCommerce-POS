@@ -29,14 +29,12 @@ var Variations = ItemView.extend({
 
   templateHelpers: function(){
     var data = {};
-    data.variations = _.chain(this.model.get('attributes'))
-      .where({variation:true})
-      .sortBy(function(variation){
+    data.variations = _.chain( this.model.getVariationOptions() )
+      .each(function(variation){
         if(hasManyOptions(variation)){
           variation.select = true;
           variation.emptyOption = polyglot.t('messages.choose');
         }
-        return variation.position;
       })
       .value();
     return data;

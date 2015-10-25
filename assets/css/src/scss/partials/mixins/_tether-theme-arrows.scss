@@ -1,19 +1,17 @@
-@mixin tether-theme-arrows($themePrefix: "tether", $themeName: "arrows", $arrowSize: 16px, $arrowPointerEvents: null, $backgroundColor: white, $color: inherit, $useDropShadow: false) {
+@mixin tether-theme-arrows($themePrefix: "tether", $themeName: "arrows", $arrowSize: 16px, $arrowPointerEvents: null, $backgroundColor: white, $color: inherit, $useDropShadow: false, $borderRadius: 5px) {
   .#{$themePrefix}-element.#{$themePrefix}-theme-#{$themeName} {
     max-width: 100%;
     max-height: 100%;
     .#{$themePrefix}-content {
-      border-radius: 5px;
+      border-radius: $borderRadius;
       position: relative;
       font-family: inherit;
       background: $backgroundColor;
       color: $color;
-      padding: 1em;
-      font-size: 1.1em;
-      line-height: 1.5em;
       @if $useDropShadow {
-        transform: translateZ(0);
-        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+        @include box-shadow(0 6px 12px rgba(0,0,0,.175));
+        //transform: translateZ(0);
+        //filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
       }
       &:before {
         content: "";

@@ -1,83 +1,59 @@
-$zindex-popover                      : 1060 !default;
-
-$popover-bg                          : #fff !default;
-$popover-max-width                   : 276px !default;
-$popover-border-color                : rgba(0,0,0,.2) !default;
+$zindex-popover                      : 1060;
+$popover-bg                          : nth( $primaryPalette, 8 );
+$popover-text-color                  : $inverse-text-color;
 $popover-border-radius               : $border-radius-base;
-$popover-fallback-border-color       : #ccc !default;
+$popover-arrow-size                  : 8px;
+$useDropShadow                       : true;
 
-$popover-title-bg                    : darken($popover-bg, 3%) !default;
-
-$popover-arrow-width                 : 10px !default;
-$popover-arrow-color                 : $popover-bg !default;
-
-$popover-arrow-outer-width           : ($popover-arrow-width + 1) !default;
-$popover-arrow-outer-color           : fade-in($popover-border-color, 0.05) !default;
-$popover-arrow-outer-fallback-color  : darken($popover-fallback-border-color, 20%) !default;
-
-$themePrefix        : namespace('popover');
-$arrowSize          : 8px;
-$backgroundColor    : black;
-$color              : #eeeeee;
-$useDropShadow      : true;
+$popover-header-padding-y            : $padding-base-vertical;
+$popover-header-padding-x            : $padding-base-horizontal;
+$popover-body-padding-y              : $padding-base-vertical;
+$popover-body-padding-x              : $padding-base-horizontal;
+$popover-footer-padding-y            : $padding-base-vertical;
+$popover-footer-padding-x            : $padding-base-horizontal;
 
 /**
  * @name Popover
  *
  * @markup
-<div class="popover popover-theme-arrows popover-element popover-enabled popover-element-attached-center popover-target-attached-center popover-open popover-open-transitionend popover-pinned popover-pinned-top popover-pinned-bottom popover-out-of-bounds popover-out-of-bounds-left popover-after-open">
-  <div class="popover-content">
-    <div class="popover-title">Popover</div>
-    <div class="popover-body">Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</div>
+   <div class="popover popover-theme-arrows popover-element popover-open popover-element-attached-top popover-element-attached-center">
+    <div class="popover-content">
+      <div class="popover-header">Popover</div>
+      <div class="popover-body">Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</div>
+      <div class="popover-footer">Footer</div>
+    </div>
   </div>
-</div>
  */
 
 popover {
   @at-root {
 
-    @include tether($themePrefix: $themePrefix);
-    @include tether-theme-arrows($themePrefix: $themePrefix, $arrowSize: $arrowSize, $backgroundColor: $backgroundColor, $color: $color, $useDropShadow: $useDropShadow);
+    @include tether($themePrefix: current-module());
+    @include tether-theme-arrows($themePrefix: current-module(), $arrowSize: $popover-arrow-size, $backgroundColor: $popover-bg, $color: $popover-text-color, $useDropShadow: $useDropShadow, $borderRadius: $popover-border-radius);
 
-    // Just a few additions
+    .#{current-module()}-element.#{current-module()}-theme-arrows {
 
-    .#{$themePrefix}-element.#{$themePrefix}-theme-arrows {
-      //pointer-events: none;
-      z-index: 1000;
-      .#{$themePrefix}-content {
-        padding: 0.5em 1em;
+      z-index: $zindex-popover;
+
+      .#{namespace('popover')}-content {
+
       }
+
+      .#{namespace('popover')}-header {
+        padding: $popover-header-padding-y $popover-header-padding-x;
+        border-bottom: 1px solid lighten($popover-bg, 10%);
+      }
+
+      .#{namespace('popover')}-body {
+        padding: $popover-body-padding-y $popover-body-padding-x;
+      }
+
+      .#{namespace('popover')}-footer {
+        padding: $popover-footer-padding-y $popover-footer-padding-x;
+      }
+
     }
 
 
   }
 }
-
-//.popover-dark-bg {
-//  background-color: $numpad-bg;
-//  &.top > .arrow {
-//    border-top-color: $numpad-bg;
-//    &:after {
-//      border-top-color: $numpad-bg;
-//    }
-//  }
-//  &.right > .arrow {
-//    border-right-color: $numpad-bg;
-//    &:after {
-//      border-right-color: $numpad-bg;
-//    }
-//  }
-//  &.bottom > .arrow {
-//    border-bottom-color: $numpad-bg;
-//    &:after {
-//      border-bottom-color: $numpad-bg;
-//    }
-//  }
-//
-//  &.left > .arrow {
-//    border-left-color: $numpad-bg;
-//    &:after {
-//      border-left-color: $numpad-bg;
-//    }
-//  }
-//}

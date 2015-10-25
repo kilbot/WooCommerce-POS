@@ -38,9 +38,12 @@ $link-hover-color               : darken($link-color, 15%) !default;
 $padding-base-horizontal        : .6rem !default;
 $padding-base-vertical          : .6rem !default;
 
-// Borders
+// Forms, tables
 $border-color                   : lighten($base-text-color, 91%);
-$alternate-row-bg               : #fafafa;
+$alternate-row-bg               : #f9f9f9;
+$input-bg                       : #fafafa;
+$border-focus-color             : #66afe9 !default;
+$box-shadow-focus-color         : rgba(102,175,233,.6) !default;
 
 // Rounded corners
 $border-radius-base             : 3px !default;

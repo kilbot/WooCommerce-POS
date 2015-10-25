@@ -1,41 +1,43 @@
 $zindex-tooltip         : 1070 !default;
-$tooltip-color          : #fff !default;
-$tooltip-bg             : #000 !default;
+$tooltip-color          : #fff;
+$tooltip-bg             : #000;
 $tooltip-opacity        : .9 !default;
-$tooltip-arrow-width    : 5px !default;
-$tooltip-arrow-color    : $tooltip-bg !default;
+$tooltip-font-size      : $font-size-sm;
+$tooltip-arrow-size     : 5px !default;
 $tooltip-max-width      : 200px !default;
 $tooltip-border-radius  : $border-radius-base;
-
-
-$themePrefix        : namespace('tooltip');
-$arrowSize          : 8px;
-$backgroundColor    : black;
-$color              : #eeeeee;
-$useDropShadow      : true;
+$tooltip-padding-y      : $padding-base-vertical / 2;
+$tooltip-padding-x      : $padding-base-vertical;
+$useDropShadow          : false;
 
 
 /**
  * @name Tooltip
  *
  * @markup
- *   <a href="#fff" class="tooltip" title="Tooltip"><i class="icon-info-circle"></i></a>
+ *   <div class="class="tooltip tooltip-theme-arrows tooltip-element tooltip-open tooltip-element-attached-bottom tooltip-element-attached-center"">
+ *     <div class="tooltip-content">Sed posuere consectetur est at lobortis.</div>
+ *   </div>
  */
 
 tooltip {
   @at-root {
 
-    @include tether($themePrefix: $themePrefix);
-    @include tether-theme-arrows($themePrefix: $themePrefix, $arrowSize: $arrowSize, $backgroundColor: $backgroundColor, $color: $color, $useDropShadow: $useDropShadow);
+    @include tether($themePrefix: current-module());
+    @include tether-theme-arrows($themePrefix: current-module(), $arrowSize: $tooltip-arrow-size, $backgroundColor: $tooltip-bg, $color: $tooltip-color, $useDropShadow: $useDropShadow, $borderRadius: $tooltip-border-radius);
 
     // Just a few additions
+    .#{current-module()}-element.#{current-module()}-theme-arrows {
 
-    .#{$themePrefix}-element.#{$themePrefix}-theme-arrows {
-      //pointer-events: none;
-      z-index: 1000;
-      .#{$themePrefix}-content {
-        padding: 0.5em 1em;
+      z-index: $zindex-tooltip;
+      opacity: $tooltip-opacity;
+      max-width: $tooltip-max-width;
+      font-size: $tooltip-font-size;
+
+      .#{namespace('tooltip')}-content {
+        padding: $tooltip-padding-y $tooltip-padding-x;
       }
+
     }
 
 

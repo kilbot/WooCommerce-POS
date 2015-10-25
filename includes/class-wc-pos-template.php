@@ -153,8 +153,7 @@ class WC_POS_Template {
 
     // enqueue and print javascript
     $styles = apply_filters( 'woocommerce_pos_enqueue_head_css', array(
-      'pos-css'   => WC_POS_PLUGIN_URL . 'assets/css/pos.min.css?ver=' . WC_POS_VERSION,
-      'icons-css' => WC_POS_PLUGIN_URL . 'assets/css/icons.min.css?ver=' . WC_POS_VERSION
+      'pos-css'   => WC_POS_PLUGIN_URL . 'assets/css/pos.min.css?ver=' . WC_POS_VERSION
     ) );
 
     foreach ( $styles as $style ) {

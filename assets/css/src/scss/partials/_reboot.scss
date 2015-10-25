@@ -135,6 +135,9 @@ textarea {
   line-height: inherit;
   // iOS adds rounded borders by default
   border-radius: 0;
+
+  // prevent parent color leaking into form elements
+  color: $text-color;
 }
 
 textarea {

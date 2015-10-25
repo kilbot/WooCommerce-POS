@@ -1,86 +1,45 @@
 @import "compass";
-//@import "breakpoint";
+
+@import "partials/mixins";
 @import "partials/palette";
 @import "partials/variables";
-@import "partials/mixins";
 
-// Vendor
+// Reset
 @import "partials/normalize";
-
-// Bootstrap
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/print";
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/dropdowns";
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/popovers";
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/modals";
-//@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/tooltip";
-
-// select2
-//@import "../../../../node_modules/select2/src/scss/core";
-
-//
-//
-
-// POS front-end
-//@import "partials/scaffolding";
-//@import "partials/module";
-//@import "partials/loading";
-//@import "partials/common";
-//@import "partials/type";
-//@import "partials/header";
-//@import "partials/menu";
-//@import "partials/buttons";
-//@import "partials/tables";
-//@import "partials/forms";
-//@import "partials/alerts";
-//@import "partials/popover";
-//@import "partials/images";
-//
-//@import "partials/pos/products";
-//@import "partials/pos/cart";
-//@import "partials/pos/checkout";
-//@import "partials/pos/receipt";
-//
-
-//@import "partials/support";
-//
-//@import "partials/popover/numpad";
-//@import "partials/popover/variations";
-////@import "partials/select2";
-//@import "partials/modal";
-//
-//@import "partials/hotkeys";
-//
-//@import "partials/print-preview";
-
 @import "partials/reboot";
 @import "partials/utilities";
+
+// Scaffolding
+@import "partials/header";
 @import "partials/main";
 @import "partials/menu";
-@import "partials/header";
 
-@import "partials/forms";
-@import "partials/custom-forms";
+// Components
+@import "partials/button_group";
 @import "partials/buttons";
 @import "partials/css-fade-animations";
+@import "partials/custom-forms";
+@import "partials/dropdown";
+@import "partials/forms";
 @import "partials/icons";
 @import "partials/input-group";
-@import "partials/panel";
-@import "partials/tabs";
-@import "partials/modal";
-@import "partials/type";
-@import "partials/loading";
 @import "partials/list";
+@import "partials/loading";
+@import "partials/modal";
+@import "partials/numpad";
+@import "partials/panel";
+@import "partials/popover";
+@import "partials/popover/numpad";
+@import "partials/popover/variations";
 @import "partials/tables";
+@import "partials/tabs";
+@import "partials/tooltip";
+@import "partials/type";
 
-@import "partials/products";
+// POS components
 @import "partials/cart";
 @import "partials/checkout";
+@import "partials/print-preview";
+@import "partials/products";
 @import "partials/receipt";
 @import "partials/support";
-@import "partials/print-preview";
-
-@import "partials/tooltip";
-@import "partials/dropdown";
-@import "partials/popover";

@@ -145,10 +145,10 @@ var View = FormView.extend({
   ui: {
     input   : '.numpad-header input[name="value"]',
     toggle  : '.numpad-header .input-group',
-    common  : '.numpad-keys .common .btn',
-    discount: '.numpad-keys .discount .btn',
-    cash    : '.numpad-keys .cash .btn',
-    keys    : '.numpad-keys .btn'
+    common  : '.numpad-body .common .btn',
+    discount: '.numpad-body .discount .btn',
+    cash    : '.numpad-body .cash .btn',
+    keys    : '.numpad-body .btn'
   },
 
   events: {
