@@ -1,16 +1,16 @@
 modal {
-  @at-root {
+   @at-root {
 
-    .#{current-module()} {
-      z-index: 160000; // seriously
-    }
+     .#{current-module()} {
+       z-index: 160000; // seriously
+     }
 
-    .#{current-module()}-title {
-      font-size: 21px; // set explicitly
-    }
+     .#{current-module()}-title {
+       font-size: 21px; // set explicitly
+     }
 
-  }
-}
+   }
+ }
 
 //#wc-pos-modal{
 //  .wc_pos-modal {

@@ -1,8 +1,9 @@
 var View = require('lib/config/layout-view');
 var App = require('lib/config/application');
-//var _ = require('lodash');
+var _ = require('lodash');
 var Radio = require('backbone.radio');
 var Customers = require('./customer-list');
+var Dropdown = require('lib/behaviors/dropdown');
 
 var View = View.extend({
   template: 'pos.cart.customer',
@@ -12,10 +13,18 @@ var View = View.extend({
   initialize: function(){
     this.customers = Radio.request('entities', 'get', {
       type: 'filtered',
-      name: 'customers'
+      name: 'customers',
+      perPage : 10
     });
-    var guest = this.customers.superset().getGuestCustomer();
-    this.mergeOptions(guest, ['guest']);
+    this.mergeOptions({
+      guest: this.customers.superset().getGuestCustomer()
+    }, ['guest']);
+  },
+
+  behaviors: {
+    Dropdown: {
+      behaviorClass: Dropdown
+    }
   },
 
   regions: {
@@ -23,35 +32,72 @@ var View = View.extend({
   },
 
   ui: {
-    'dropDown'        : '.dropdown',
-    'customerSearch'  : 'input'
+    searchField     : 'input',
+    removeCustomer  : '*[data-action="remove"]'
   },
 
   events: {
-    'click [data-action="remove"]': 'removeCustomer',
-    'focus @ui.dropDown'    : 'setUpSearch',
-    'blur @ui.dropDown'     : 'tearDownSearch'
+    'input @ui.searchField'   : 'query',
+    'click @ui.removeCustomer': 'removeCustomer'
   },
 
-  setUpSearch: function(){
-    this.ui.dropDown.addClass('open');
+  query: function(){
+    var value = this.ui.searchField.val();
+    this._query(value);
+  },
 
+  _query: _.debounce( function(value){
+    this.customers
+      .query(value)
+      .firstPage();
+  }, 149),
+
+  modelEvents: {
+    'change:customer': 'render'
+  },
+
+  dropdownContent: function(){
+    this.customerSearch();
+    return this.getRegion('customers').el;
+  },
+
+  //onDropdownOpen: function(){
+  //
+  //},
+
+  onDropdownClose: function(){
+    // reset customers list
+    this.customers
+      .removeTransforms()
+      .setPerPage(10);
+  },
+
+  onTargetKeydown: function(e){
+    this.getRegion('customers').currentView.moveFocus(e.which);
+  },
+
+  customerSearch: function(){
     var view = new Customers({
       collection: this.customers
     });
+
+    this.listenTo(view, 'childview:customer:selected', function(view, args){
+      this.saveCustomer( args.model.toJSON() );
+    });
+
     this.getRegion('customers').show( view );
   },
 
-  tearDownSearch: function(){
-    this.ui.dropDown.removeClass('open');
+  removeCustomer: function(){
+    this.saveCustomer( this.getOption('guest') );
   },
 
-  removeCustomer: function(){
+  saveCustomer: function(customer){
     this.model.unset('customer', { silent: true });
     this.model.save({
-      customer_id: 0,
-      customer: this.getOption('guest')
-    }, { patch: true } );
+      customer_id: customer.id,
+      customer: customer
+    });
   }
 
 });

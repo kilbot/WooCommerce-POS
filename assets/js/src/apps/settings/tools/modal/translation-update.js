@@ -4,7 +4,7 @@ var EventSource = global['EventSource'];
 
 module.exports =  ItemView.extend({
   template: function(){
-    return '<i class="spinner"></i>';
+    return '<i class="wc_pos-icon-loading"></i>';
   },
 
   initialize: function (options) {
@@ -24,6 +24,10 @@ module.exports =  ItemView.extend({
     };
   },
 
+  ui: {
+    loading: '.wc_pos-icon-loading'
+  },
+
   onShow: function() {
     var view = this,
         url = this.constructURL(),
@@ -32,12 +36,12 @@ module.exports =  ItemView.extend({
     stream.onmessage = function(e){
       if( e.data === 'complete' ){
         this.close();
-        view.$('.spinner').hide();
+        view.ui.loading.hide();
         Radio.request('modal', 'update', { footer: {
           show: true
         }});
       } else {
-        view.$('.spinner').before('<p>' + e.data + '</p>');
+        view.ui.loading.before('<p>' + e.data + '</p>');
       }
     };
   },

@@ -1,3 +1,4 @@
+//var DualModel = require('lib/config/dual-model');
 var DualModel = require('lib/config/dual-model');
 var Radio = require('backbone.radio');
 var Utils = require('lib/utilities/utils');

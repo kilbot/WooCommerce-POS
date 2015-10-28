@@ -30,7 +30,6 @@ class WC_POS_Template {
       'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.3/backbone.marionette.min.js',
       'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.min.js',
       'idb-wrapper'  => 'https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.6.0/idbstore.min.js',
-      'select2'      => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js',
       'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js',
       'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
       'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js'
@@ -43,7 +42,6 @@ class WC_POS_Template {
       'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.3/backbone.marionette.js',
       'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.js',
       'idb-wrapper'  => 'https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.6.0/idbstore.min.js',
-      'select2'      => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.js',
       'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js',
       'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.js',
       'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.js'

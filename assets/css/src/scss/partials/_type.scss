@@ -50,10 +50,7 @@ h6, .h6 { font-size: $font-size-h6; }  // 14px
 a {
   color: $link-color;
   text-decoration: underline;
-
-  @include transition-property(all);
-  @include transition-duration(.2s);
-  @include transition-timing-function(ease-in-out);
+  @include transition(all .2s ease-in-out);
 
   @include hover-focus {
     color: $link-hover-color;

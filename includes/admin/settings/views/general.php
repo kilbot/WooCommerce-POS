@@ -6,7 +6,7 @@
 
 <h3><?php /* translators: woocommerce */ _e( 'General Options', 'woocommerce' ); ?></h3>
 
-<table class="form-table">
+<table class="wc_pos-form-table">
 
   <tr>
     <th scope="row">

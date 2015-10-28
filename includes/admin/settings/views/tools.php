@@ -59,7 +59,7 @@
            data-title="<?php esc_attr_e( 'Clear Local Data', 'woocommerce-pos' ); ?>"
           >
           <?php
-            _e( 'Clear Local Data', 'woocommerce-pos' );
+            _e( 'Clear All Local Data', 'woocommerce-pos' );
           ?>
         </a>
       </td>

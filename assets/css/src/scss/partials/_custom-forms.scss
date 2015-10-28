@@ -91,13 +91,12 @@ c {
 
     .#{current-module()}-indicator {
       position: absolute;
-      top: 50%;
+      top: 0.2rem;
       left: 0;
       display: block;
       width: 1rem;
       height: 1rem;
       //font-size: 65%;
-      margin-top: -0.5rem;
       line-height: 1;
       color: $c-indicator-color;
       text-align: center;

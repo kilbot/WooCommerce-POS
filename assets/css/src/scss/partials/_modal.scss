@@ -1,5 +1,5 @@
-$zindex-modal-bg              : 1040 !default;
-$zindex-modal                 : 1050 !default;
+$zindex-modal-bg              : 1040;
+$zindex-modal                 : 1050;
 
 $modal-inner-padding          : 15px !default;
 
@@ -32,6 +32,8 @@ $modal-sm                     : 300px !default;
 
 /**
   * @name Modal
+  *
+  * @state .error - Error Modal
   *
   * @markup
   <div class="modal-dialog" role="document">
@@ -102,7 +104,8 @@ modal {
     .#{current-module()}-dialog {
       position: relative;
       width: auto;
-      margin: 10px;
+      margin: 10px 0;
+      padding: 0 10px;
     }
 
     // Actual modal
@@ -214,6 +217,33 @@ modal {
       overflow: scroll;
     }
 
+    /**
+     * Error modal
+     */
+
+    .#{current-module()}-header {
+      .error & {
+        background: nth($paletteRed, 8);
+        border-color: lighten(nth($paletteRed, 8), 5%);
+        color: $inverse-text-color;
+
+        .#{namespace('btn')} {
+          @include button-variant($inverse-text-color, nth($paletteRed, 8), lighten(nth($paletteRed, 8), 5%));
+        }
+      }
+    }
+
+    .#{current-module()}-body {
+      .error & {
+        .raw-output {
+          width: 100%;
+          max-height: 200px;
+          overflow: scroll;
+        }
+      }
+    }
+
+
   }
 }
 
@@ -224,7 +254,7 @@ modal {
 @include media-breakpoint-up(sm) {
   // Automatically set modal's width for larger viewports
   .modal-dialog {
-    width: $modal-md;
+    max-width: $modal-md;
     margin: 30px auto;
   }
   .modal-content {
@@ -232,11 +262,11 @@ modal {
   }
 
   // Modal sizes
-  .modal-sm { width: $modal-sm; }
+  .modal-sm { max-width: $modal-sm; }
 }
 
 @include media-breakpoint-up(md) {
-  .modal-lg { width: $modal-lg; }
+  .modal-lg { max-width: $modal-lg; }
 }
 
 //#wc-pos-modal, #modal {

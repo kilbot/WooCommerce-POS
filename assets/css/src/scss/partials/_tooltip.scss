@@ -1,4 +1,4 @@
-$zindex-tooltip         : 1070 !default;
+$zindex-tooltip         : 1070;
 $tooltip-color          : #fff;
 $tooltip-bg             : #000;
 $tooltip-opacity        : .9 !default;
@@ -32,10 +32,11 @@ tooltip {
       z-index: $zindex-tooltip;
       opacity: $tooltip-opacity;
       max-width: $tooltip-max-width;
-      font-size: $tooltip-font-size;
 
       .#{namespace('tooltip')}-content {
         padding: $tooltip-padding-y $tooltip-padding-x;
+        font-size: $tooltip-font-size;
+        text-align: center;
       }
 
     }
@@ -43,95 +44,3 @@ tooltip {
 
   }
 }
-
-//
-//tooltip {
-//  @at-root {
-//
-//    .#{current-module()} {
-//      position: absolute;
-//      z-index: $zindex-tooltip;
-//      display: block;
-//      // Our parent element can be arbitrary since tooltips are by default inserted as a sibling of their target element.
-//      // So reset our font and text properties to avoid inheriting weird values.
-//      @include reset-text();
-//      font-size: $font-size-sm;
-//      opacity: 0;
-//
-//      &.in { opacity: $tooltip-opacity; }
-//
-//      &.#{namespace('tooltip')}-top,
-//      &.bs-tether-element-attached-bottom {
-//        padding: $tooltip-arrow-width 0;
-//        margin-top: -3px;
-//
-//        .#{namespace('tooltip')}-arrow {
-//          bottom: 0;
-//          left: 50%;
-//          margin-left: -$tooltip-arrow-width;
-//          border-width: $tooltip-arrow-width $tooltip-arrow-width 0;
-//          border-top-color: $tooltip-arrow-color;
-//        }
-//      }
-//      &.#{namespace('tooltip')}-right,
-//      &.bs-tether-element-attached-left {
-//        padding: 0 $tooltip-arrow-width;
-//        margin-left: 3px;
-//
-//        .#{namespace('tooltip')}-arrow {
-//          top: 50%;
-//          left: 0;
-//          margin-top: -$tooltip-arrow-width;
-//          border-width: $tooltip-arrow-width $tooltip-arrow-width $tooltip-arrow-width 0;
-//          border-right-color: $tooltip-arrow-color;
-//        }
-//      }
-//      &.#{namespace('tooltip')}-bottom,
-//      &.bs-tether-element-attached-top {
-//        padding: $tooltip-arrow-width 0;
-//        margin-top: 3px;
-//
-//        .#{namespace('tooltip')}-arrow {
-//          top: 0;
-//          left: 50%;
-//          margin-left: -$tooltip-arrow-width;
-//          border-width: 0 $tooltip-arrow-width $tooltip-arrow-width;
-//          border-bottom-color: $tooltip-arrow-color;
-//        }
-//      }
-//      &.#{namespace('tooltip')}-left,
-//      &.bs-tether-element-attached-right {
-//        padding: 0 $tooltip-arrow-width;
-//        margin-left: -3px;
-//
-//        .#{namespace('tooltip')}-arrow {
-//          top: 50%;
-//          right: 0;
-//          margin-top: -$tooltip-arrow-width;
-//          border-width: $tooltip-arrow-width 0 $tooltip-arrow-width $tooltip-arrow-width;
-//          border-left-color: $tooltip-arrow-color;
-//        }
-//      }
-//    }
-//
-//    // Wrapper for the tooltip content
-//    .#{current-module()}-inner {
-//      max-width: $tooltip-max-width;
-//      padding: 3px 8px;
-//      color: $tooltip-color;
-//      text-align: center;
-//      background-color: $tooltip-bg;
-//      @include border-radius($tooltip-border-radius);
-//    }
-//
-//    // Arrows
-//    .#{current-module()}-arrow {
-//      position: absolute;
-//      width: 0;
-//      height: 0;
-//      border-color: transparent;
-//      border-style: solid;
-//    }
-//
-//  }
-//}

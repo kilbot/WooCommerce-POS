@@ -21,22 +21,22 @@ var StatusRoute = Route.extend({
       label : polyglot.t('titles.system-status')
     });
 
-    this.ajaxurl = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'ajaxurl'
-    });
-
-    this.nonce = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'nonce'
-    });
+    //this.ajaxurl = Radio.request('entities', 'get', {
+    //  type: 'option',
+    //  name: 'ajaxurl'
+    //});
+    //
+    //this.nonce = Radio.request('entities', 'get', {
+    //  type: 'option',
+    //  name: 'nonce'
+    //});
   },
 
   fetch: function(){
     // if not fetched, need to fetch all local records
     var fetched = _.map(this.databases, this.fetchDB, this);
     // add the server tests
-    fetched.push( this._fetch() );
+    //fetched.push( this._fetch() );
     return $.when.apply($, fetched);
   },
 
@@ -62,7 +62,6 @@ var StatusRoute = Route.extend({
 
   showStatus: function(){
     var view = new Status({
-      tests: this.tests,
       storage: this.storageStatus()
     });
 

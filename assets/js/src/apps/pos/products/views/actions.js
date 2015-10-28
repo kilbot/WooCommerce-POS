@@ -3,6 +3,8 @@ var App = require('lib/config/application');
 var Filter = require('lib/behaviors/filter');
 var HotKeys = require('lib/behaviors/hotkeys');
 var Radio = require('backbone.radio');
+var Dropdown = require('lib/behaviors/dropdown');
+var $ = require('jquery');
 
 var Actions = View.extend({
   template: 'pos.products.filter',
@@ -31,6 +33,9 @@ var Actions = View.extend({
     },
     HotKeys: {
       behaviorClass: HotKeys
+    },
+    Dropdown: {
+      behaviorClass: Dropdown
     }
   },
 
@@ -46,12 +51,14 @@ var Actions = View.extend({
     searchField : 'input[type=search]'
   },
 
-  events: {
-    'click @ui.searchBtn' : 'barcodeModeOff',
-    'click @ui.barcodeBtn': 'barcodeModeOn'
+  onRender: function(){
+    this.barcodeModeOff();
   },
 
-  onRender: function(){
+  onDropdownSelect: function(e){
+    if( $(e.currentTarget).data('action') === 'barcode' ){
+      return this.barcodeModeOn();
+    }
     this.barcodeModeOff();
   },
 

@@ -4,8 +4,10 @@ var Tooltip = require('lib/behaviors/tooltip');
 var Radio = require('backbone.radio');
 
 module.exports = FormView.extend({
+
   tagName: 'table',
-  className: 'form-table',
+
+  className: 'wc_pos-form-table',
 
   initialize: function (options) {
     options = options || {};

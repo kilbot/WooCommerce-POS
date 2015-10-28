@@ -28,4 +28,4 @@
   </li>
 <?php endforeach; ?>
 
-<li class="sub-heading"><div><?php _e( 'Local Storage', 'woocommerce-pos' ); ?></div></li>
+<li class="list-row sub-heading"><div><?php _e( 'Local Storage', 'woocommerce-pos' ); ?></div></li>

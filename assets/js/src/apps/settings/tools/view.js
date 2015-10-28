@@ -17,11 +17,13 @@ var View = ItemView.extend({
   },
 
   ui: {
-    translation: '*[data-action="translation"]'
+    translation: '*[data-action="translation"]',
+    deleteData: '*[data-action="delete-local-data"]'
   },
 
   triggers: {
-    'click @ui.translation': 'translation:update'
+    'click @ui.translation': 'translation:update',
+    'click @ui.deleteData' : 'data:delete'
   }
 
 });

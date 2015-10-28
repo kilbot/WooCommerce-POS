@@ -4,11 +4,11 @@ module.exports = LayoutView.extend({
 
   tagName: 'section',
 
-  className: 'print-preview',
+  className: 'panel print-preview',
 
   template: function(){
     return '' +
-      '<div class="print-preview-iframe"></div>' +
+      '<div class="panel-body print-preview-iframe"></div>' +
       '<div class="print-preview-actions"></div>';
   },
 

@@ -6,7 +6,7 @@
 
 <h3><?php /* translators: woocommerce */ _e( 'Checkout Process', 'woocommerce' ); ?></h3>
 
-<table class="form-table">
+<table class="wc_pos-form-table">
 
   <tr class="order_status">
     <th scope="row">
@@ -60,8 +60,7 @@
   <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/security' ); ?>
 </p>
 
-<table class="form-table">
-
+<table class="wc_pos-form-table">
   <tr>
     <th scope="row"><?php _e( 'Gateway Display', 'woocommerce-pos' ) ?></th>
     <td>
@@ -120,7 +119,7 @@
   </tr>
 </table>
 
-<table id="tmpl-gateway-settings-modal" class="form-table" style="display:none">
+<table id="tmpl-gateway-settings-modal" style="display:none">
   <tr>
     <th scope="row">
       <label for="title"><?php /* translators: wordpress */ _e( 'Title' ); ?></label>

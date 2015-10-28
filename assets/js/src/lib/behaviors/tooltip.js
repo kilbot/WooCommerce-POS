@@ -33,21 +33,24 @@ var TooltipBehavior = Behavior.extend({
   },
 
   events: {
-    'mouseenter @ui.tooltip': 'onFirstHover'
+    'mouseenter @ui.tooltip': 'onHover'
   },
 
-  onFirstHover: function(e){
+  onHover: function(e){
     if(this._initialized.indexOf(e.target) !== -1) {
       return;
     }
 
+    // drop instance
     var options = _.extend({}, this.options, {
       target  : e.target,
       content : $(e.target).attr('title')
     });
     var drop = new _Drop(options);
-
     this._initialized.push(e.target);
+
+    // remove the title attribute to prevent browser hover
+    $(e.target).removeAttr('title');
 
     drop.open();
   }

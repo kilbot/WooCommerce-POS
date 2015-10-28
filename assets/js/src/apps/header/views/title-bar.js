@@ -39,7 +39,12 @@ var View = ItemView.extend({
       behaviorClass: HotKeys
     },
     Dropdown: {
-      behaviorClass: Dropdown
+      behaviorClass: Dropdown,
+      position: 'bottom right'
+      //tetherOptions: {
+      //  attachment: 'top right',
+      //  targetAttachment: 'bottom right'
+      //}
     }
   },
 

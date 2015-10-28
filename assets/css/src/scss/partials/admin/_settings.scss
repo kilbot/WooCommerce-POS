@@ -15,24 +15,6 @@ $settings-text-error-color    : #a94442;
 settings {
   @at-root {
 
-    ##{current-module()} {
-
-      table.form-table {
-        margin-bottom: 20px;
-        line-height: 1;
-        th {
-          img {
-            margin: 2px -10px 0 0;
-            float: right;
-          }
-        }
-        td {
-          padding-right: 0;
-        }
-      }
-
-    }
-
     ##{current-module()}-tabs {
 
       ul {

@@ -12,12 +12,14 @@
  * POS ADMIN
  */
 
+@import "partials/buttons";
 @import "partials/css-fade-animations";
 @import "partials/icons";
 @import "partials/tooltip";
 @import "partials/modal";
+@import "partials/admin/tooltip";
 @import "partials/admin/modal";
-
+@import "partials/admin/form-table";
 @import "partials/admin/settings";
 @import "partials/admin/settings/general";
 @import "partials/admin/settings/checkout";
