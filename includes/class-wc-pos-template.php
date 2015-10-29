@@ -32,7 +32,7 @@ class WC_POS_Template {
       'idb-wrapper'  => 'https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.6.0/idbstore.min.js',
       'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js',
       'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
-      'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js'
+      'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js',
     ),
     'debug' => array(
       'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js',
@@ -44,7 +44,7 @@ class WC_POS_Template {
       'idb-wrapper'  => 'https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.6.0/idbstore.min.js',
       'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js',
       'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.js',
-      'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.js'
+      'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.js',
     )
   );
 
@@ -176,6 +176,7 @@ class WC_POS_Template {
     $build = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'build' : 'min';
 
     $js = self::get_external_js_libraries();
+    $js[ 'scrollIntoView' ] = WC_POS_PLUGIN_URL . 'assets/js/vendor/jquery.scrollIntoView.min.js?ver=' . WC_POS_VERSION;
     $js[ 'app' ] = WC_POS_PLUGIN_URL . 'assets/js/app.' . $build . '.js?ver=' . WC_POS_VERSION;
     $scripts = apply_filters( 'woocommerce_pos_enqueue_footer_js', $js );
 

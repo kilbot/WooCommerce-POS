@@ -669,7 +669,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @param $updated_at_min
    * @return array
    */
-  static public function get_ids($updated_at_min){
+  public function get_ids($updated_at_min){
     $args = array(
       'post_type'     => array('shop_order'),
       'post_status'   => array('any'),

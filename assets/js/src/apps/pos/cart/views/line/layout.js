@@ -1,11 +1,28 @@
 var LayoutView = require('lib/config/layout-view');
 var ItemView = require('./views/item');
 var DrawerView = require('./views/drawer');
-//var bb = require('backbone');
+var $ = require('jquery');
 
 /**
  * @todo Abstract ListItemView
  */
+
+/* jshint -W071 */
+$.fn.selectText = function(){
+  var range, element = this[0];
+  if (document.body.createTextRange) {
+    range = document.body.createTextRange();
+    range.moveToElementText(element);
+    range.select();
+  } else if (window.getSelection) {
+    var selection = window.getSelection();
+    range = document.createRange();
+    range.selectNodeContents(element);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+};
+/* jshint +W071 */
 
 module.exports = LayoutView.extend({
 
@@ -58,37 +75,19 @@ module.exports = LayoutView.extend({
 
   pulse: function(opt) {
     if(opt === 'remove'){ return; }
-    var self = this,
-        list        = this.$el.closest('.list'),
-        scrollTop   = list.scrollTop(),
-        listTop     = list.position().top,
-        listBottom  = list.height() + listTop,
-        itemTop     = this.$el.position().top,
-        itemBottom  = this.$el.height() + itemTop,
-        type        = self.model.get( 'type' );
-
-    if( itemTop < listTop ) {
-      scrollTop -= ( listTop - itemTop );
-    }
-
-    if( itemBottom > listBottom ) {
-      scrollTop += ( itemTop - list.height() + 4 );
-    }
+    var el = this.$el, type = this.model.get( 'type' );
 
     // scroll to row
-    this.$el.addClass('pulse-in')
-      .closest('.list')
-      .animate({scrollTop: scrollTop}, 'fast', function() {
-        // focus title if shipping or fee
-        if( type === 'fee' || type === 'shipping' ) {
-          self.$('.title strong.action-edit-title').focus();
-        }
-
-        // pulse
-        self.$el.animate({backgroundColor: 'transparent'}, 500, function() {
-          self.$el.removeClass('pulse-in').removeAttr('style');
+    el.addClass('pulse-in')
+      .scrollIntoView({ complete: function(){
+        el.animate({backgroundColor: 'transparent'}, 500, function() {
+          $(this).removeClass('pulse-in').removeAttr('style');
+          if( type === 'fee' || type === 'shipping' ) {
+            $('.title strong', this).focus().selectText();
+          }
         });
-      }
-    );
+      }});
+
   }
+
 });

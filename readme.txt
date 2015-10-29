@@ -83,12 +83,16 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Important: WooCommerce POS now requires PHP 5.4 or higher
 * Important: WooCommerce POS now requires WooCommerce 2.3.7 or higher
 * Important: Pro users should update [WooCommerce POS Pro](http://woopos.com.au/pro) to version 0.4.5
+* Fix: Layout issues in Chrome 46+
 * Fix: POS permalink bug introduced in 0.4.2 - [22388f7](https://github.com/kilbot/WooCommerce-POS/commit/22388f7a6d91959b3b55fd07b6f973ba8eda01af)
 * Fix: POS Cash not recording amount tendered or change - [2ef2260](https://github.com/kilbot/WooCommerce-POS/commit/2ef226070eb4a2f966cd1d96c3fbd850b6baec34)
+* Fix: POS Cash and Card gateways not showing for some users
 * Fix: Permalink slugs should not begin with slash
 * Fix: Product variation popover where variant contains a comma or special character
 * Improve: POS template caching and performance
 * Improve: Plugin update notices - [08058a9](https://github.com/kilbot/WooCommerce-POS/commit/08058a99e89cf9c3612c7086534a576e99ae9435)
+* Improve: Customer search
+* New: (Pro) Edit customer details during checkout
 
 = 0.4.4 - 2015/08/26 =
 * Fix: cart totals going to zero with new fee or shipping line item - commit [35f547c](https://github.com/kilbot/WooCommerce-POS/commit/35f547cf40919736ff769702043489ff1698ec30)

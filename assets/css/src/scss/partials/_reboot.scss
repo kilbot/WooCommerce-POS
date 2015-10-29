@@ -3,6 +3,10 @@ $body-bg      : #e8e5df;
 
 // Builds on Normalize.css
 
+html, body {
+  height: 100%;
+}
+
 html {
   box-sizing: border-box;
 }

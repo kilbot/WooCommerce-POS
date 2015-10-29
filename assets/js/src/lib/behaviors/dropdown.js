@@ -58,11 +58,7 @@ var Dropdown = Behavior.extend({
   initDrop: function(target){
 
     // default is .dropdown-list
-    var content = _.result(
-      this.view,
-      'dropdownContent',
-      this.view.$('.dropdown-list')[0]
-    );
+    var content = this.view.dropdownContent || this.view.$('.dropdown-list')[0];
 
     // drop instance
     var options = _.extend({}, this.options, {

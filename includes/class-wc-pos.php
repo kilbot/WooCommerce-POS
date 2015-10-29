@@ -60,6 +60,7 @@ class WC_POS {
     new WC_POS_Gateways();
     new WC_POS_Products();
     new WC_POS_Template();
+    new WC_POS_Customers();
 
     // end global classes
     if( !is_admin() )

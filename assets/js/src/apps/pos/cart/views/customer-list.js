@@ -3,6 +3,7 @@ var InfiniteListView = require('lib/config/infinite-list-view');
 var polyglot = require('lib/utilities/polyglot');
 var Tmpl = require('./customer-list.hbs');
 var hbs = require('handlebars');
+var _ = require('lodash');
 
 var Customer = ItemView.extend({
   template: hbs.compile(Tmpl),
@@ -10,17 +11,8 @@ var Customer = ItemView.extend({
   triggers: {
     'click': 'customer:selected'
   },
-  events: {
-    mouseenter: 'onHover'
-  },
-  onHover: function(){
-    if(!this.hasFocus()){
-      this.trigger('focus');
-      this.addFocus();
-    }
-  },
   addFocus: function(){
-    this.$el.addClass('focus');
+    this.$el.addClass('focus').scrollIntoView();
   },
   removeFocus: function(){
     this.$el.removeClass('focus');
@@ -42,8 +34,10 @@ var Customers = InfiniteListView.extend({
   childView: Customer,
   emptyView: NoCustomer,
   childViewContainer: 'ul',
+  className: 'list-infinite dropdown-list',
 
-  initialize: function(){
+  initialize: function(options){
+    options = options || {};
     var filtered = this.collection;
     var customers = this.collection.superset();
 
@@ -53,14 +47,8 @@ var Customers = InfiniteListView.extend({
           customers.fullSync();
         });
     } else {
-      filtered
-        .removeTransforms()
-        .setPerPage(10);
+      filtered.query(options.filter);
     }
-
-    this.listenTo(filtered, 'sorted', function(){
-      console.log(arguments);
-    });
   },
 
   childEvents: {
@@ -86,27 +74,41 @@ var Customers = InfiniteListView.extend({
   },
 
   moveFocusDown: function(){
-    var child = this.getFocusedChild();
-    if(!child){
+    var next, nextChild, focused = this.getFocusedChild();
+    if(!focused){
       return this.children.first().addFocus();
     }
 
-    var nextChild = this.children.findByIndex( ++child._index );
+    _.each(this.children._views, function(child){
+      if(next){
+        nextChild = child;
+        next = false;
+      }
+      next = child === focused;
+    });
+
     if(nextChild){
-      child.removeFocus();
+      focused.removeFocus();
       nextChild.addFocus();
     }
   },
 
   moveFocusUp: function(){
-    var child = this.getFocusedChild();
-    if(!child){
+    var next, nextChild, focused = this.getFocusedChild();
+    if(!focused){
       return this.children.last().addFocus();
     }
 
-    var nextChild = this.children.findByIndex( --child._index );
+    _.eachRight(this.children._views, function(child){
+      if(next){
+        nextChild = child;
+        next = false;
+      }
+      next = child === focused;
+    });
+
     if(nextChild){
-      child.removeFocus();
+      focused.removeFocus();
       nextChild.addFocus();
     }
   },

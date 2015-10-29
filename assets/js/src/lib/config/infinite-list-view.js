@@ -11,15 +11,19 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
       '<div><i class="icon icon-spinner"></i>';
   },
 
-  initialize: function(){
+  constructor: function() {
+    Mn.CompositeView.apply(this, arguments);
+
     this.listenTo(this.collection.superset(), {
       'start:processQueue': this.startLoading,
       'end:processQueue': this.endLoading,
       'end:fullSync': this.checkOverflow
     });
+
     this.on({
-      'all': this.checkOverflow
+      'all': _.debounce( this.checkOverflow, 250 )
     });
+
     _.bindAll(this, 'onScroll', 'loadMore', 'getOverflow');
   },
 
@@ -34,20 +38,21 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
   //},
 
   onShow: function(){
-    this._parent.$el.scroll(this.onScroll);
+    this.container = this.$el.parent()[0];
+    this.$el.parent().scroll( _.throttle( this.onScroll, 250 ) );
   },
 
-  onScroll: _.throttle(function(){
+  onScroll: function(){
     if(this.getOverflow() < 100){
       this.loadMore();
     }
-  }, 200),
+  },
 
-  checkOverflow: _.debounce(function(){
+  checkOverflow: function(){
     if(this.getOverflow() < 100){
       this.loadMore();
     }
-  }, 200),
+  },
 
   /**
    * returns overflow at bottom in px
@@ -55,12 +60,10 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
    * @returns {number}
    */
   getOverflow: function(){
-    if(this._parent && this._parent.el.clientHeight) {
-      var sH = this._parent.el.scrollHeight,
-          cH = this._parent.el.clientHeight,
-          sT = this._parent.el.scrollTop;
-      return sH - cH - sT;
-    }
+    var sH = this.container.scrollHeight,
+        cH = this.container.clientHeight,
+        sT = this.container.scrollTop;
+    return sH - cH - sT;
   },
 
   loadMore: function() {

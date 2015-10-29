@@ -93,6 +93,10 @@ numpad {
         &.three-cols {
           @include flex(3);
         }
+
+        &.cash {
+          @include flex(2);
+        }
       }
 
       .row {

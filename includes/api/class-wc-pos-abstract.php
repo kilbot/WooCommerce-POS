@@ -37,6 +37,29 @@ abstract class WC_POS_API_Abstract {
   /**
    * @param $updated_at_min
    */
-  static protected function get_ids($updated_at_min){}
+  protected function get_ids($updated_at_min){}
+
+
+  /**
+   * Parse an RFC3339 datetime into a MySQl datetime
+   * mirrors woocommerce/includes/api/class-wc-api-server.php
+   *
+   * @param $datetime
+   * @return string
+   */
+  protected function parse_datetime( $datetime ) {
+    // Strip millisecond precision (a full stop followed by one or more digits)
+    if ( strpos( $datetime, '.' ) !== false ) {
+      $datetime = preg_replace( '/\.\d+/', '', $datetime );
+    }
+    // default timezone to UTC
+    $datetime = preg_replace( '/[+-]\d+:+\d+$/', '+00:00', $datetime );
+    try {
+      $datetime = new DateTime( $datetime, new DateTimeZone( 'UTC' ) );
+    } catch ( Exception $e ) {
+      $datetime = new DateTime( '@0' );
+    }
+    return $datetime->format( 'Y-m-d H:i:s' );
+  }
 
 }

@@ -18,6 +18,7 @@ class WC_POS_API_Customers extends WC_POS_API_Abstract {
   public function __construct() {
     add_action( 'pre_get_users', array( $this, 'pre_get_users' ) );
     add_action( 'pre_user_query', array( $this, 'pre_user_query' ) );
+    add_filter( 'woocommerce_api_customer_response', array( $this, 'customer_response' ), 10, 4 );
   }
 
   /**
@@ -26,7 +27,23 @@ class WC_POS_API_Customers extends WC_POS_API_Abstract {
    * @param $wp_user_query
    */
   public function pre_get_users( $wp_user_query ) {
-    $wp_user_query->query_vars['role'] = '';
+
+    $wp_user_query->query_vars[ 'role' ] = '';
+
+    if ( isset( $_GET[ 'filter' ] ) ) {
+
+      // add support for filter[in]
+      if ( isset( $_GET[ 'filter' ][ 'in' ] ) ) {
+        $wp_user_query->query_vars[ 'include' ] = explode( ',', $_GET[ 'filter' ][ 'in' ] );
+      }
+
+      // add support for filter[not_in]
+      if ( isset( $_GET[ 'filter' ][ 'not_in' ] ) ) {
+        $wp_user_query->query_vars[ 'exclude' ] = explode( ',', $_GET[ 'filter' ][ 'not_in' ] );
+      }
+
+    }
+
   }
 
   /**
@@ -64,7 +81,7 @@ class WC_POS_API_Customers extends WC_POS_API_Abstract {
       FROM $wpdb->users
       WHERE LOWER(user_nicename)
       LIKE '%".$term."%'
-      OR LOWER(user_email)
+      OR LOWER(user_login)
       LIKE '%".$term."%'
     ");
 
@@ -85,13 +102,36 @@ class WC_POS_API_Customers extends WC_POS_API_Abstract {
    * @param $updated_at_min
    * @return array
    */
-  static public function get_ids($updated_at_min){
+  public function get_ids($updated_at_min){
     $args = array(
       'fields' => 'ID'
     );
 
+    if($updated_at_min){
+      $args['meta_key']      = '_user_modified_gmt';
+      $args['meta_value']    = $this->parse_datetime( $updated_at_min );
+      $args['meta_compare']  = '>';
+    }
+
     $query = new WP_User_Query( $args );
     return array_map( 'intval', $query->results );
   }
+
+
+  /**
+   * - add `updated_at` to customer data
+   *
+   * @param $customer_data
+   * @param $customer
+   * @param $fields
+   * @param $server
+   * @return mixed
+   */
+  public function customer_response($customer_data, $customer, $fields, $server){
+    $timestamp = get_user_meta($customer->ID, '_user_modified_gmt', true);
+    $customer_data['updated_at'] = $server->format_datetime( $timestamp );
+    return $customer_data;
+  }
+
 
 }

@@ -29,23 +29,24 @@ var Model = DualModel.extend({
   /**
    *
    */
-  defaults: function(){
-    var customers = this.getEntities('customers'),
-        default_customer = customers['default'] || customers.guest || {};
-
-    return {
-      note          : '',
-      order_discount: 0,
-      customer_id   : default_customer.id,
-      customer      : default_customer
-    };
+  defaults: {
+    note            : '',
+    order_discount  : 0,
+    customer_id     : 0
   },
 
   /**
    * - attach tax settings
    * - attach cart & gateways if order is open
    */
-  initialize: function(){
+  /* jshint -W071, -W074 */
+  initialize: function(attributes){
+    attributes = attributes || {};
+
+    if(!attributes.customer){
+      var customers = this.getEntities('customers');
+      attributes.customer = customers['default'] || customers.guest || {};
+    }
 
     this.tax = this.getEntities('tax');
     this.tax_rates = this.getEntities('tax_rates');
@@ -62,6 +63,7 @@ var Model = DualModel.extend({
     });
 
   },
+  /* jshint +W071, +W074 */
 
   getEntities: function(name){
     return Radio.request('entities', 'get', {

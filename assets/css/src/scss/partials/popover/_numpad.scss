@@ -20,6 +20,12 @@ popover-numpad {
         }
       }
 
+      .#{namespace('numpad')}-cash {
+        .#{namespace('numpad')}-body {
+          width: 382px;
+        }
+      }
+
     }
 
   }
