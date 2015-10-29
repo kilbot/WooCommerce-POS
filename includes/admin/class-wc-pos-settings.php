@@ -109,10 +109,12 @@ class WC_POS_Admin_Settings {
     // deregister scripts
     wp_deregister_script( 'underscore' );
     wp_deregister_script( 'select2' );
+    wp_deregister_script( 'backbone' );
 
     // register
     $external_libs = WC_POS_Template::get_external_js_libraries();
     wp_register_script( 'underscore', $external_libs[ 'lodash' ], array( 'jquery' ), null, true );
+    wp_register_script( 'backbone', $external_libs[ 'backbone' ], array( 'jquery', 'underscore' ), null, true );
     wp_register_script( 'backbone.radio', $external_libs[ 'radio' ], array( 'jquery', 'backbone', 'underscore' ), null, true );
     wp_register_script( 'marionette', $external_libs[ 'marionette' ], array( 'jquery', 'backbone', 'underscore' ), null, true );
     wp_register_script( 'handlebars', $external_libs[ 'handlebars' ], false, null, true );
