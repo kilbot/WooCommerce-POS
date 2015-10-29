@@ -31,8 +31,7 @@ var Model = DualModel.extend({
    */
   defaults: {
     note            : '',
-    order_discount  : 0,
-    customer_id     : 0
+    order_discount  : 0
   },
 
   /**
@@ -45,7 +44,11 @@ var Model = DualModel.extend({
 
     if(!attributes.customer){
       var customers = this.getEntities('customers');
-      attributes.customer = customers['default'] || customers.guest || {};
+      var customer = customers['default'] || customers.guest || {};
+      this.set({
+        customer_id : customer.id,
+        customer    : customer
+      });
     }
 
     this.tax = this.getEntities('tax');

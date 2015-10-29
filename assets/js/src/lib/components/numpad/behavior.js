@@ -1,6 +1,5 @@
 var Behavior = require('lib/config/behavior');
 var App = require('lib/config/application');
-var Modernizr = global['Modernizr'];
 var Radio = require('backbone.radio');
 var View = require('./view');
 var $ = require('jquery');
@@ -18,7 +17,7 @@ var NumpadBehavior = Behavior.extend({
   },
 
   onRender: function() {
-    if(Modernizr.touch) {
+    if(window.Modernizr.touch) {
       this.ui.target.each(function(){
         if( $(this).is('input') ){
           $(this).attr('readonly', true);
@@ -27,7 +26,6 @@ var NumpadBehavior = Behavior.extend({
     }
   },
 
-  /* jshint -W071 */
   numpadPopover: function(e){
     var name    = $(e.target).attr('name'),
         options = _.clone( $(e.target).data() );
@@ -48,15 +46,22 @@ var NumpadBehavior = Behavior.extend({
       this.view.model.set( name, value, { numpadChange: true } );
     });
 
+    // popover
+    this._numpadPopover(numpad, options, e.target);
+  },
+
+  _numpadPopover: function(numpad, options, target){
     _.defaults( options, {
-      target : e.target,
+      target : target,
       view   : numpad,
       classes: 'popover-theme-arrows popover-numpad'
     });
 
     Radio.request('popover', 'open', options);
+
+    // @todo: remove this hack, popover & numpad should be uncoupled
+    numpad.$('input').focus().select();
   }
-  /* jshint +W071 */
 
 });
 

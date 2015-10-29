@@ -3,12 +3,12 @@
     <strong class="title">{{label}}</strong>
 
     {{#if input}}
-      <div class="input-group {{#if input.toggle}}input-toggle{{/if}}">
+      <div class="input-group {{#if input.toggle}}btn-group-toggle{{/if}}">
         {{#if input.left}}
           {{#if input.left.addOn}}<span class="input-group-addon">{{{input.left.addOn}}}</span>{{/if}}
           {{#if input.left.btn}}<span class="input-group-btn"><a href="#" data-btn="left" class="btn btn-secondary">{{{input.left.btn}}}</a></span>{{/if}}
         {{/if}}
-        <input type="text" name="value" class="form-control autogrow" readonly="readonly">
+        <input type="text" name="value" class="form-control autogrow">
         {{#if input.right}}
           {{#if input.right.btn}}<span class="input-group-btn"><a href="#" data-btn="right" class="btn btn-secondary">{{{input.right.btn}}}</a></span>{{/if}}
           {{#if input.right.addOn}}<span class="input-group-addon">{{{input.right.addOn}}}</span>{{/if}}

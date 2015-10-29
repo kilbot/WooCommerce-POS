@@ -98,11 +98,15 @@ var View = FormView.extend({
       observe: ['value', 'percentage', 'active'],
       onGet: function(arr){
         var val = arr[2] === 'percentage' ? arr[1] : arr[0];
-        var precision;
-        if(arr[2] === 'percentage' || this.numpad === 'quantity'){
-          precision = 'auto';
-        }
-        return Utils.formatNumber(val, precision);
+        //var precision;
+        //if(arr[2] === 'percentage' || this.numpad === 'quantity'){
+        //  precision = 'auto';
+        //}
+        //return Utils.formatNumber(val, precision);
+        return val;
+      },
+      onSet: function(val, opts){
+        opts.view.model.setActive(val);
       }
     },
     '.numpad-discount [data-btn="left"]': {
@@ -156,7 +160,14 @@ var View = FormView.extend({
     'click @ui.common'  : 'commonKeys',
     'click @ui.discount': 'discountKeys',
     'click @ui.cash'    : 'cashKeys',
-    'mousedown @ui.keys': 'keyPress'
+    'mousedown @ui.keys': 'keyPress',
+    'keyup @ui.input'   : 'enter'
+  },
+
+  onRender: function(){
+    if(window.Modernizr.touch) {
+      this.ui.input.attr('readonly', true);
+    }
   },
 
   toggle: function(e){
@@ -223,6 +234,12 @@ var View = FormView.extend({
   keyPress: function(){
     var sel = window.getSelection();
     this._hasSelection = sel.toString() === this.ui.input.val();
+  },
+
+  enter: function(e){
+    if(e.which === 13){
+      this.trigger('input', this.model.getFloatValue(), this.model);
+    }
   }
 
 });

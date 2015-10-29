@@ -44,5 +44,33 @@ btn-group {
 
     }
 
+
+    // numpad toggle
+    .#{current-module()}-toggle {
+      &:not(.toggle){
+        span:first-of-type .btn {
+          cursor: $cursor-disabled;
+          pointer-events: none; // Future-proof disabling of clicks
+          color: $text-color;
+          background: $border-color;
+          &:focus {
+            background: $border-color;
+          }
+        }
+      }
+      &.toggle {
+        span:last-of-type .btn {
+          cursor: $cursor-disabled;
+          pointer-events: none; // Future-proof disabling of clicks
+          color: $text-color;
+          background:$border-color;
+          &:focus {
+            background: $border-color;
+          }
+        }
+      }
+    }
+
+
   }
 }

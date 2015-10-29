@@ -34,10 +34,6 @@ module.exports = Service.extend({
     // insert template
     iframe.document.write(template);
 
-    // print events for IE 5+ & Firefox 6+
-    iframe.onbeforeprint = this.beforePrint;
-    iframe.onafterprint = this.afterPrint;
-
     // print once loaded
     var loaded = function(){
       iframe.focus(); // required for IE

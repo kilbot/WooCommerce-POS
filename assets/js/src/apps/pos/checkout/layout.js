@@ -12,8 +12,6 @@ var Layout = LayoutView.extend({
     );
   },
 
-  tagName: 'section',
-
   regions: {
     status  : '.checkout-status',
     list    : '.checkout-list',

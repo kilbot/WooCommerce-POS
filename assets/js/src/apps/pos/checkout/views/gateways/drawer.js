@@ -100,6 +100,11 @@ module.exports = FormView.extend({
 
   onShow: function() {
     this.$el.hide().slideDown(250);
+
+    if(window.Modernizr.touch){
+      this.$('#pos-cash-tendered').attr('readonly', true);
+      this.$('#pos-cashback').attr('readonly', true);
+    }
   },
 
   remove: function() {

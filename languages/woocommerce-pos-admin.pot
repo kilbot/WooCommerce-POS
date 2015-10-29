@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce POS 0.4.4\n"
+"Project-Id-Version: WooCommerce POS 0.4.5\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/kilbot/WooCommerce-POS-Language-Packs/issues\n"
-"POT-Creation-Date: 2015-08-28 07:49:46+00:00\n"
+"POT-Creation-Date: 2015-10-29 13:23:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,13 +32,24 @@ msgid "View POS"
 msgstr ""
 
 #: includes/admin/class-wc-pos-menu.php:53
-#: includes/admin/settings/views/checkout.php:102
+#: includes/admin/settings/views/checkout.php:101
 msgid "Upgrade to Pro"
 msgstr ""
 
 #: includes/admin/class-wc-pos-orders.php:95
 #: includes/admin/views/order-details.php:4
 msgid "Online"
+msgstr ""
+
+#: includes/admin/class-wc-pos-plugins.php:26
+#: includes/admin/class-wc-pos-settings.php:35
+#: includes/admin/class-wc-pos-settings.php:37
+#: includes/admin/settings/views/checkout.php:76
+#: includes/admin/settings/views/checkout.php:106
+#: includes/admin/settings/views/checkout.php:111
+#. translators: wordpress
+#. translators: woocommerce
+msgid "Settings"
 msgstr ""
 
 #: includes/admin/settings/class-wc-pos-access.php:25
@@ -137,31 +148,31 @@ msgid ""
 "only be done using a secure connnection."
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:66
+#: includes/admin/settings/views/checkout.php:65
 msgid "Gateway Display"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:74
+#: includes/admin/settings/views/checkout.php:73
 msgid "Online Status"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:75
+#: includes/admin/settings/views/checkout.php:74
 msgid "POS Status"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:76
+#: includes/admin/settings/views/checkout.php:75
 msgid "POS Settings"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:127
+#: includes/admin/settings/views/checkout.php:126
 msgid "Payment method title."
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:134
+#: includes/admin/settings/views/checkout.php:133
 msgid "Payment method description that will be shown in the POS."
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:140
+#: includes/admin/settings/views/checkout.php:139
 msgid "Icon"
 msgstr ""
 
@@ -233,6 +244,18 @@ msgstr ""
 msgid "Emulate RESTful HTTP methods to support legacy servers."
 msgstr ""
 
+#: includes/admin/settings/views/tools.php:54
+msgid "Local Data"
+msgstr ""
+
+#: includes/admin/settings/views/tools.php:59
+msgid "Clear Local Data"
+msgstr ""
+
+#: includes/admin/settings/views/tools.php:62
+msgid "Clear All Local Data"
+msgstr ""
+
 #: includes/admin/views/order-details.php:2
 msgid "Order type"
 msgstr ""
@@ -243,10 +266,16 @@ msgid ""
 "href=\"mailto:support@woopos.com.au\">support</a>"
 msgstr ""
 
-#: includes/class-wc-pos-activator.php:187
+#: includes/class-wc-pos-activator.php:188
 msgid ""
-"<strong>WooCommerce POS</strong> requires <a href=\"%s\">WooCommerce</a>. "
-"Please <a href=\"%s\">install and activate WooCommerce</a>"
+"<strong>WooCommerce POS</strong> requires <a href=\"%s\">WooCommerce %s or "
+"higher</a>. Please <a href=\"%s\">install and activate WooCommerce</a>"
+msgstr ""
+
+#: includes/class-wc-pos-activator.php:207
+msgid ""
+"<strong>WooCommerce POS</strong> requires PHP %s or higher. Read more "
+"information about <a href=\"%s\">how you can update</a>"
 msgstr ""
 
 #: includes/products/class-wc-pos-visibility.php:23
@@ -278,7 +307,7 @@ msgctxt "keyboard shortcuts"
 msgid "HotKeys"
 msgstr ""
 
-#: includes/admin/settings/views/checkout.php:144
+#: includes/admin/settings/views/checkout.php:143
 msgctxt "POS checkout settings"
 msgid "Show payment gateway icon."
 msgstr ""

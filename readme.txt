@@ -3,7 +3,7 @@ Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
 Requires at least: 4.0 & WooCommerce 2.3.7
 Tested up to: 4.3
-Stable tag: 0.4.4
+Stable tag: 0.4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: POS Cash and Card gateways not showing for some users
 * Fix: Permalink slugs should not begin with slash
 * Fix: Product variation popover where variant contains a comma or special character
+* Fix: Firebox bug where POS would be unresponsive after printing receipt
 * Improve: POS template caching and performance
 * Improve: Plugin update notices - [08058a9](https://github.com/kilbot/WooCommerce-POS/commit/08058a99e89cf9c3612c7086534a576e99ae9435)
 * Improve: Customer search

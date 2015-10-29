@@ -37,7 +37,8 @@ module.exports = function(grunt) {
         '!<%= app.css.src %>/**',
         '!<%= app.js.src %>/**',
         '!README.md',
-        '!coverage/**'
+        '!coverage/**',
+        '!styleguide/**'
       ]
     },
 
@@ -53,9 +54,7 @@ module.exports = function(grunt) {
       cssmin: {
         files: [
           '<%= app.css.src %>/pos.css',
-          '<%= app.css.src %>/admin.css',
-          '<%= app.css.src %>/icons.css',
-          '<%= app.css.src %>/admin-icons.css'
+          '<%= app.css.src %>/admin.css'
         ],
         tasks: ['cssmin']
       },
@@ -107,8 +106,6 @@ module.exports = function(grunt) {
         files: {
           'assets/css/pos.min.css': ['assets/css/src/pos.css'],
           'assets/css/admin.min.css':['assets/css/src/admin.css'],
-          'assets/css/icons.min.css':['assets/css/src/icons.css'],
-          'assets/css/admin-icons.min.css':['assets/css/src/admin-icons.css']
         }
       }
     },
@@ -244,6 +241,7 @@ module.exports = function(grunt) {
         options: {
           potFilename: 'woocommerce-pos.pot',
           exclude: [
+            'styleguide',
             'includes/admin/.*',
             'includes/products/.*',
             'includes/class-wc-pos-activator.php',
@@ -277,6 +275,9 @@ module.exports = function(grunt) {
       admin: {
         options: {
           potFilename: 'woocommerce-pos-admin.pot',
+          exclude: [
+            'styleguide'
+          ],
           include: [
             'includes/admin/.*',
             'includes/products/.*',

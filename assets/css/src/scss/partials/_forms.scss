@@ -98,8 +98,7 @@ form-control {
       // HTML5 says that controls under a fieldset > legend:first-child won't be
       // disabled if the fieldset is disabled. Due to implementation difficulty, we
       // don't honor that edge case; we style them as disabled anyway.
-      &:disabled,
-      &[readonly] {
+      &:disabled {
         background-color: $input-bg-disabled;
         // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
         opacity: 1;
@@ -194,69 +193,3 @@ form-control {
 
   }
 }
-
-// remove iOS rounded corners
-//input[type="text"], input[type="search"] {
-//  @include appearance(none);
-//  @include border-radius(0);
-//  border: 1px solid $input-border-color;
-//
-//  // disabled
-//  &[disabled],
-//  &[readonly],
-//  fieldset[disabled] & {
-//    background-color: $input-bg-disabled;
-//    opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
-//  }
-//
-//  &[disabled],
-//  fieldset[disabled] & {
-//    cursor: $cursor-disabled;
-//  }
-//}
-//
-//// remove border from contentediatble el
-//[contenteditable]:focus {
-//  outline: 0px solid transparent;
-//}
-//
-//
-//
-//// table forms
-//table.form-table {
-//  margin-bottom: $spacing;
-//  td {
-//    vertical-align: top;
-//    padding: $spacing/3;
-//  }
-//  label {
-//    color: $secondary-text-color;
-//    margin-bottom: $spacing/6;
-//    &:not(:last-child) {
-//      display: block;
-//    }
-//  }
-//  input[type="text"] {
-//    width: 100%;
-//    padding: $spacing/4 $spacing/2.4;
-//  }
-//  span.error-message {
-//    display: none;
-//  }
-//  .error {
-//    label {
-//      color: $state-danger-text;
-//    }
-//    input {
-//      border: 1px solid $state-danger-text;
-//    }
-//    span.error-message {
-//      display: block;
-//      width: 100%;
-//      color: $inverse-text-color;
-//      background-color: $state-danger-text;
-//      font-size: 0.8em;
-//      padding: $spacing/8;
-//    }
-//  }
-//}
