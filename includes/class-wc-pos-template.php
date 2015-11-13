@@ -296,17 +296,20 @@ class WC_POS_Template {
     if ( empty( $partials_dir ) )
       $partials_dir = self::get_template_dir();
 
-    $iterator = new RecursiveIteratorIterator(
-      new RecursiveDirectoryIterator( $partials_dir ),
+    $Directory = new RecursiveDirectoryIterator( $partials_dir );
+
+    $Iterator = new RecursiveIteratorIterator(
+      $Directory,
       RecursiveIteratorIterator::SELF_FIRST
     );
 
-    $regex = new RegexIterator(
-      $iterator, '/^.+tmpl-[a-z-]+\.php$/i',
+    $Regex = new RegexIterator(
+      $Iterator,
+			'/^.+tmpl-[a-z-]+\.php$/i',
       RecursiveRegexIterator::GET_MATCH
     );
 
-    $paths = array_keys( iterator_to_array( $regex ) );
+    $paths = array_keys( iterator_to_array( $Regex ) );
     $templates = array();
 
     foreach ( $paths as $path ) {
@@ -352,7 +355,7 @@ class WC_POS_Template {
    * @return string
    */
   static public function get_template_dir() {
-    return realpath( WC_POS_PLUGIN_PATH . 'includes/views' );
+    return WC_POS_PLUGIN_PATH . 'includes/views';
   }
 
   /**
@@ -446,6 +449,14 @@ class WC_POS_Template {
     $templates[ 'pos' ][ 'checkout' ][ 'gateways' ] = $this->gateways_templates();
 
     return apply_filters( 'woocommerce_pos_templates', $templates );
+  }
+
+  /**
+   * Returns path of print receipt template
+   */
+  static public function locate_print_receipt_template() {
+    $receipt_path = self::locate_template_file( WC_POS_PLUGIN_PATH . 'includes/views/print/tmpl-receipt.php' );
+    return apply_filters( 'woocommerce_pos_print_receipt_path', $receipt_path );
   }
 
 }

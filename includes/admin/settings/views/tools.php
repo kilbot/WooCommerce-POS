@@ -35,7 +35,10 @@
         <a href="<?php esc_attr_e( wc_pos_url('#print') ); ?>" target="_blank" class="button">
           <?php _e( 'View Sample Receipt', 'woocommerce-pos' ); ?>
         </a>
-        <?php printf( __( '<strong class="red">Template path:</strong> %s', 'woocommerce-pos' ), '<code style="font-size: 11px">'. WC_POS_Template::locate_template_file('print/tmpl-receipt.php') .'</code>' ); ?>
+        <?php
+          $template_path = WC_POS_Template::locate_print_receipt_template();
+          printf( __( '<strong class="red">Template path:</strong> %s', 'woocommerce-pos' ), '<code style="font-size: 11px">'. $template_path .'</code>' );
+        ?>
       </td>
     </tr>
 

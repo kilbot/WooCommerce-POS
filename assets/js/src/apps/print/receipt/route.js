@@ -14,9 +14,14 @@ var ReceiptRoute = Route.extend({
   },
 
   fetch: function() {
-    if (this.collection.length === 0) {
-      return this.collection.fetch({ remote: true });
-    }
+    return this.collection.fetch({
+      remote: true,
+      data: {
+        filter: {
+          limit: 1
+        }
+      }
+    });
   },
 
   render: function() {

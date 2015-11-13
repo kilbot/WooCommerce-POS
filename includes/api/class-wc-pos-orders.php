@@ -527,8 +527,7 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
   public function order_response( $order_data, $order, $fields, $server ) {
 
     // add cashier data
-    $cashier_details = isset( $order_data['cashier'] ) ? $order_data['cashier'] : array();
-    $order_data['cashier'] = $this->add_cashier_details( $order, $cashier_details );
+    $order_data['cashier'] = $this->add_cashier_details( $order );
 
     // add pos payment info
     $payment_details = isset( $order_data['payment_details'] ) ? $order_data['payment_details'] : array();
@@ -569,36 +568,48 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
 
   /**
    * @param $order
-   * @param array $cashier
    * @return array
    */
-  private function add_cashier_details( $order, array $cashier = array() ){
-    $cashier['id'] = get_post_meta( $order->id, '_pos_user', true);
-    $first_name = get_post_meta( $order->id, '_pos_user_first_name', true);
-    $last_name = get_post_meta( $order->id, '_pos_user_last_name', true);
-    if( !$first_name && !$last_name ) {
-      $user_info = get_userdata( $cashier['id'] );
-      $first_name = $user_info->first_name;
-      $last_name = $user_info->last_name;
-    }
-    $cashier['first_name'] = $first_name;
-    $cashier['last_name'] = $last_name;
-    return apply_filters( 'woocommerce_pos_order_response_cashier', $cashier, $order );
-  }
+  private function add_cashier_details( $order ) {
+
+		if ( !$cashier_id = get_post_meta( $order->id, '_pos_user', true ) ) {
+			return;
+		}
+
+		$first_name = get_post_meta( $order->id, '_pos_user_first_name', true );
+		$last_name = get_post_meta( $order->id, '_pos_user_last_name', true );
+		if ( !$first_name && !$last_name && $user_info = get_userdata( $cashier_id ) ) {
+			$first_name = $user_info->first_name;
+			$last_name = $user_info->last_name;
+		}
+
+		$cashier = array(
+			'id'         => $cashier_id,
+			'first_name' => $first_name,
+			'last_name'  => $last_name
+		);
+
+		return apply_filters( 'woocommerce_pos_order_response_cashier', $cashier, $order );
+
+	}
 
   /**
    * @param $order
-   * @param array $payment
+   * @param array $payment_details
    * @return array
    */
-  private function add_payment_details( $order, array $payment = array() ){
-    $payment['result']   = get_post_meta( $order->id, '_pos_payment_result', true );
-    $payment['message']  = get_post_meta( $order->id, '_pos_payment_message', true );
-    $payment['redirect'] = get_post_meta( $order->id, '_pos_payment_redirect', true );
-    if( isset( $payment['method_id'] ) && $payment['method_id'] == 'pos_cash' ){
-      $payment = WC_POS_Gateways_Cash::payment_details( $payment, $order );
+  private function add_payment_details( $order, array $payment_details ){
+
+    $payment_details['result']   = get_post_meta( $order->id, '_pos_payment_result', true );
+    $payment_details['message']  = get_post_meta( $order->id, '_pos_payment_message', true );
+    $payment_details['redirect'] = get_post_meta( $order->id, '_pos_payment_redirect', true );
+
+    if( isset( $payment_details['method_id'] ) && $payment_details['method_id'] == 'pos_cash' ){
+      $payment_details['method_pos_cash'] = WC_POS_Gateways_Cash::payment_details( $order );
     }
-    return apply_filters( 'woocommerce_pos_order_response_payment_details', $payment, $order );
+
+    return apply_filters( 'woocommerce_pos_order_response_payment_details', $payment_details, $order );
+
   }
 
   /**
