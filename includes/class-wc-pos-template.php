@@ -367,16 +367,23 @@ class WC_POS_Template {
 
     foreach ( self::locate_template_files( $partials_dir ) as $slug => $file ) {
       $keys = explode( substr( $slug, 0, 1 ), substr( $slug, 1 ) );
-      $template = array_reduce( array_reverse( $keys ), function ( $result, $key ) {
-        if ( is_string( $result ) )
-          $key = preg_replace( '/^tmpl-/i', '', $key );
-
-        return array( $key => $result );
-      }, self::template_output( $file ) );
+      $template = array_reduce( array_reverse( $keys ), 'self::reduce_templates_array', self::template_output( $file ) );
       $templates = array_merge_recursive( $templates, $template );
     }
 
     return $templates;
+  }
+
+
+  /**
+   * @param $result
+   * @param $key
+   * @return array
+   */
+  static private function reduce_templates_array( $result, $key ) {
+    if ( is_string( $result ) )
+      $key = preg_replace( '/^tmpl-/i', '', $key );
+    return array( $key => $result );
   }
 
   /**

@@ -81,8 +81,10 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 = 0.4.6 - 2015/11/** =
 * Important: Pro users should update [WooCommerce POS Pro](http://woopos.com.au/pro) to version 0.4.6
+* Fix: POS not showing for some users
 * Fix: issue with some product variation names, e.g.: 000, 00 and 0
 * Fix: display of print receipt path in settings
+* Tweak: Add Reply-To header to support emails
 
 = 0.4.5 - 2015/10/28 =
 * Important: WooCommerce POS now requires PHP 5.4 or higher
