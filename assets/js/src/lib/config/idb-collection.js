@@ -11,13 +11,12 @@ var Radio = require('backbone.radio');
 module.exports = app.prototype.IndexedDBCollection = Collection.extend({
   name          : 'store',
   storePrefix   : 'wc_pos_',
-  dbVersion     : 4005,
+  dbVersion     : 4006,
   keyPath       : 'local_id',
   autoIncrement : true,
   indexes       : [
     {name: 'local_id', keyPath: 'local_id', unique: true},
-    {name: 'id', keyPath: 'id', unique: true},
-    {name: 'status', keyPath: 'status', unique: false}
+    {name: 'id', keyPath: 'id', unique: true}
   ],
 
   constructor: function() {

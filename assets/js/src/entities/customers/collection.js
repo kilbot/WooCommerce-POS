@@ -7,10 +7,7 @@ module.exports = DualCollection.extend({
   name: 'customers',
   indexes: [
     {name: 'local_id', keyPath: 'local_id', unique: true},
-    {name: 'id', keyPath: 'id', unique: true},
-    {name: 'status', keyPath: 'status', unique: false},
-    {name: 'email', keyPath: 'email', unique: true},
-    {name: 'username', keyPath: 'username', unique: true}
+    {name: 'id', keyPath: 'id', unique: true}
   ],
 
   initialize: function(){

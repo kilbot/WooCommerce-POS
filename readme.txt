@@ -85,6 +85,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: issue with some product variation names, e.g.: 000, 00 and 0
 * Fix: display of print receipt path in settings
 * Tweak: Add Reply-To header to support emails
+* Tweak: remove hard dependence for unique customer email
 
 = 0.4.5 - 2015/10/28 =
 * Important: WooCommerce POS now requires PHP 5.4 or higher
