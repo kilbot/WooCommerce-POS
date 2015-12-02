@@ -11,16 +11,14 @@ module.exports = LayoutView.extend({
       '<header id="header"></header>' +
       '<div id="menu"></div>' +
       '<div id="tabs" class="tabs"></div>' +
-      '<main id="main"></main>' +
-      '<div id="modal"></div>';
+      '<main id="main"></main>';
   },
 
   regions: {
     header: '#header',
     menu  : '#menu',
     tabs  : '#tabs',
-    main  : '#main',
-    modal : '#modal'
+    main  : '#main'
   },
 
   initialize: function(){

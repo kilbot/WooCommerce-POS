@@ -49,6 +49,7 @@ module.exports = Mn.Application.extend({
 
     // bootstrap accounting settings
     accounting.settings = this.options.accounting;
+
   },
 
   /**

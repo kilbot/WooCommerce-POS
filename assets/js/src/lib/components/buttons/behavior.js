@@ -31,14 +31,16 @@ var Buttons = Behavior.extend({
   action: function(e){
     e.preventDefault();
     var action = $(e.target).data('action');
-    this.view.trigger('action:' + action, $(e.target), this.view, action );
+    this.view.triggerMethod('action:' + action, $(e.target), action);
+    //this.view.trigger('action:' + action, $(e.target), this.view, action );
   },
 
   toggle: function(e){
     e.preventDefault();
     this.enable().disable($(e.target));
     var toggle = $(e.target).data('toggle');
-    this.view.trigger('toggle:' + toggle, $(e.target), this.view, toggle);
+    this.view.triggerMethod('toggle:' + toggle, $(e.target), toggle);
+    //this.view.trigger('toggle:' + toggle, $(e.target), this.view, toggle);
   },
 
   enable: function(btn){

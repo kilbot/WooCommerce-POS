@@ -17,9 +17,7 @@ var View = ItemView.extend({
       header: {
         title: polyglot.t('titles.hotkeys')
       },
-      footer: {
-        show: false
-      }
+      footer: false
     };
   },
 

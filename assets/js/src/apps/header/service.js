@@ -3,7 +3,6 @@ var TitleBar = require('./views/title-bar');
 var Menu = require('./views/menu');
 var App = require('lib/config/application');
 var Radio = require('backbone.radio');
-var routerChannel = Radio.channel('router');
 var BrowserModal = require('./views/modals/browser');
 var _ = require('lodash');
 var Modernizr = global['Modernizr'];
@@ -16,10 +15,6 @@ var Service = Service.extend({
     this.header = options.headerContainer;
     this.menu = options.menuContainer;
 
-    this.listenToOnce(routerChannel, {
-      'route': this.browserCheck
-    });
-
     this.channel.reply({
       'update:title': this.updateTitle
     }, this);
@@ -28,6 +23,7 @@ var Service = Service.extend({
   onStart: function(){
     this.showTitleBar();
     this.showMenu();
+    this.browserCheck();
   },
 
   showTitleBar: function(){
@@ -51,13 +47,12 @@ var Service = Service.extend({
   },
 
   browserCheck: function(){
-    // smil targets all IE: http://caniuse.com/#feat=svg-smil
-    var props = ['flexbox', 'indexeddb', 'smil'],
+    var props = ['flexbox', 'indexeddb'],
         pass = _.every(props, function(prop){ return Modernizr[prop]; });
 
     if(!pass){
       var view = new BrowserModal();
-      Radio.request('modal', 'open', view);
+      Radio.request('modal', 'error', view);
     }
   },
 

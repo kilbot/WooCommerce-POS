@@ -8,21 +8,28 @@ module.exports = ItemView.extend({
   template: hbs.compile(Tmpl),
 
   initialize: function(options){
-    options = options || {};
-    var defaults = {
+    _.defaults(options, {
       title: polyglot.t('messages.loading'),
       close: polyglot.t('buttons.close')
-    };
-    this.data = _.defaults(options, defaults);
+    });
   },
 
   templateHelpers: function(){
-    this.data.iconPrefix = window.adminpage ? 'wc_pos-icon' : 'icon';
-    return this.data;
+    return this.options;
   },
 
-  onUpdate: function(options){
-    _.extend(this.data, options);
-    this.render();
+  ui: {
+    close: '[data-action="close"]',
+    title: 'h4'
+  },
+
+  triggers: {
+    'click @ui.close': 'action:close'
+  },
+
+  // helper method to update title
+  updateTitle: function( value ){
+    this.ui.title.text( value );
   }
+
 });

@@ -56,10 +56,7 @@ app.printApp = new PrintRouter({
   container: app.layout.getRegion('main')
 });
 
-app.modalService = new ModalService({
-  container: app.layout.getRegion('modal')
-});
-
+app.modalService = new ModalService();
 app.popoverService = new PopoverService();
 app.printService = new PrintService();
 app.tabsService = new TabsService();

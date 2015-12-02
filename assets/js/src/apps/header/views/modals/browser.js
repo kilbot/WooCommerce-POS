@@ -28,17 +28,14 @@ var View = ItemView.extend({
       'action'  : 'wc_pos_get_modal',
       'template': 'browser'
     }).always(function(template){
-      self.update(template);
+      self.$el.html(template);
     });
 
     this.modal.header = {
       title: polyglot.t('messages.browser')
     };
-  },
-
-  update: function(template){
-    this.$el.html(template);
   }
+
 });
 
 module.exports = View;

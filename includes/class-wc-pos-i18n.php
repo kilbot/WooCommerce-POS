@@ -393,7 +393,8 @@ class WC_POS_i18n {
         'cart-empty'  => __( 'Your cart is currently empty.', 'woocommerce' ),
         'no-gateway'  => __( 'No payment gateways enabled.', 'woocommerce-pos' ),
         /* translators: woocommerce */
-        'no-customer' => __( 'Customer not found', 'woocommerce' )
+        'no-customer' => __( 'Customer not found', 'woocommerce' ),
+        'private-browsing' => sprintf( __( 'WooCommerce POS will not work in <a href="%s">Private Mode</a>, please disable Private Browsing.', 'woocommerce-pos' ), 'https://wikipedia.org/wiki/Privacy_mode' ),
       ),
       'plural'   => array(
         'records' => _x( 'record |||| records', 'eg: 23 records', 'woocommerce-pos' ),

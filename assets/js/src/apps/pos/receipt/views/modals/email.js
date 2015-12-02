@@ -8,10 +8,8 @@ var View = ItemView.extend({
 
   template: hbs.compile(Tmpl),
 
-  viewOptions: ['email'],
-
   initialize: function(options){
-    this.mergeOptions(options, this.viewOptions);
+    this.mergeOptions(options, ['email']);
     this.modal = {
       header: {
         title: polyglot.t('titles.email-receipt')
@@ -35,10 +33,9 @@ var View = ItemView.extend({
   },
 
   templateHelpers: function(){
-    var data = {
+    return {
       email: this.email
     };
-    return data;
   },
 
   getEmail: function(){

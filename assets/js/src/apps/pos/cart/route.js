@@ -134,7 +134,7 @@ var CartRoute = Route.extend({
     });
 
     this.listenTo(view, {
-      'action:void': function(btn, view){
+      'action:void': function(){
         view.triggerMethod('disableButtons');
         this.layout.getRegion('list').currentView.voidCart( this.order );
       },

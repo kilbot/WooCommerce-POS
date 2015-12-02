@@ -26,29 +26,34 @@ var SettingsRoute = Route.extend({
     this.container.show(view);
   },
 
-  openModal: function(id, view){
+  openModal: function(id, v){
     var model = this.model.collection.add({
       id: 'gateway_' + id
     });
 
     if(!model.get('title')){
-      this.initModalData(model, view);
+      this.initModalData(model, v);
     }
 
-    var modal = new GatewaySettingsModal({
-      tmpl: view.modalTmpl,
+    var view = new GatewaySettingsModal({
+      tmpl: v.modalTmpl,
       model: model
     });
 
-    var self = this;
-    Radio.request('modal', 'open', modal)
-      .then(function(args){
-        var buttons = args.view.getButtons();
-        self.listenTo(buttons, 'action:save', function(btn){
-          model.save([], { buttons: btn });
-        });
-      });
+    var modal = Radio.request('modal', 'open', view);
 
+    this.listenTo( modal.currentView, {
+      'childview:action:save': function( view, btn ){
+        model.save([], { buttons: btn });
+      }
+    });
+
+    this.listenTo( model, {
+      'change:title': function( model, value ){
+        modal.currentView.getRegion('headerRegion')
+          .currentView.updateTitle(value);
+      }
+    });
   },
 
   initModalData: function(model, view){

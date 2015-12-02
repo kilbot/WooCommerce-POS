@@ -37,9 +37,7 @@ module.exports =  ItemView.extend({
       if( e.data === 'complete' ){
         this.close();
         view.ui.loading.hide();
-        Radio.request('modal', 'update', { footer: {
-          show: true
-        }});
+        view.triggerMethod('update:complete');
       } else {
         view.ui.loading.before('<p>' + e.data + '</p>');
       }

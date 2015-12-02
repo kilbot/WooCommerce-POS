@@ -170,7 +170,7 @@ module.exports = function(grunt) {
           accounting: 'accounting',
           moment: 'moment',
           select2: 'select2',
-          'idb-wrapper': 'IDBStore'
+          //'idb-wrapper': 'IDBStore'
         },
         cache: true,
         watch: true
@@ -205,25 +205,6 @@ module.exports = function(grunt) {
         files: {
           'assets/js/app.min.js': 'assets/js/app.build.js',
           'assets/js/admin.min.js': 'assets/js/admin.build.js'
-        }
-      },
-      // not used in production
-      // only provided as a convenience if internet is unavailable
-      vendor: {
-        files: {
-          'assets/js/vendor.bundle.js': [
-            'node_modules/jquery/dist/jquery.js',
-            'node_modules/lodash/index.js',
-            'node_modules/backbone/backbone.js',
-            'node_modules/backbone.radio/build/backbone.radio.js',
-            'node_modules/backbone.marionette/lib/backbone.marionette.js',
-            'node_modules/handlebars/dist/handlebars.js',
-            //'node_modules/idb-wrapper/idbstore.js',
-            'node_modules/select2/select2.js',
-            'node_modules/moment/moment.js',
-            'node_modules/accounting/accounting.js',
-            'node_modules/jquery-color/jquery.color.js'
-          ]
         }
       }
     },

@@ -7,6 +7,32 @@ var Collection = require('./collection');
 var app = require('./application');
 var IndexedDB = require('./idb/src/idb');
 var Radio = require('backbone.radio');
+var polyglot = require('lib/utilities/polyglot');
+var _ = require('lodash');
+
+var parseError = function( error ){
+
+  // errors thrown by idb-wrapper
+  if( error instanceof Error ){
+    return {
+      header: {
+        title: 'IDBError'
+      },
+      message: error.message
+    };
+  }
+
+  // errors thrown by indexedDB
+  var err = _.get(error, ['target', 'error']);
+  if( err instanceof window.DOMError ){
+    return {
+      header: {
+        title: err.title
+      },
+      message: err.message
+    };
+  }
+};
 
 module.exports = app.prototype.IndexedDBCollection = Collection.extend({
   name          : 'store',
@@ -30,10 +56,8 @@ module.exports = app.prototype.IndexedDBCollection = Collection.extend({
       autoIncrement : this.autoIncrement,
       indexes       : this.indexes,
       defaultErrorHandler : function(error){
-        Radio.trigger('global', 'error', {
-          status: error.target.error.name,
-          message: error.target.error.message
-        });
+        var result = parseError(error);
+        Radio.trigger('global', 'error', result);
       }
     };
 
@@ -42,10 +66,9 @@ module.exports = app.prototype.IndexedDBCollection = Collection.extend({
     this.db.open()
       // error opening db
       .fail(function(error){
-        Radio.trigger('global', 'error', {
-          status    : 'indexedDB error',
-          message   : error
-        });
+        var result = parseError(error);
+        result.message += ' ' + polyglot.t('messages.private-browsing');
+        Radio.trigger('global', 'error', result);
       });
   },
 

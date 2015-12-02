@@ -1,138 +1,120 @@
 var Service = require('lib/config/service');
-var Backbone = require('backbone');
-var LayoutView = require('./views/layout');
-var AlertView = require('./views/alert');
-var $ = require('jquery');
+var Modal = require('vex-js');
+var App = require('lib/config/application');
+var prefix = App.prototype.namespace('modal');
 var _ = require('lodash');
+var Layout = require('./layout.js');
+var bb = require('backbone');
+var mn = require('backbone.marionette');
 var globalChannel = require('backbone.radio').channel('global');
+
+// css classes
+Modal.baseClassNames = {
+  vex     : prefix,
+  content : prefix + '-content',
+  overlay : prefix + '-overlay',
+  close   : prefix + '-close',
+  closing : prefix + '-closing',
+  open    : prefix + '-open'
+};
 
 module.exports = Service.extend({
   channelName: 'modal',
 
-  initialize: function(options){
-    this.container = options.container;
-    this.start();
-  },
-
-  onStart: function(){
+  initialize: function(){
     this.channel.reply({
-      'open'    : this.open,
-      'close'   : this.close,
-      'alert'   : this.alert,
-      'confirm' : this.confirm,
-      'prompt'  : this.prompt
+      open    : this.open,
+      close   : this.close,
+      error   : this.error
     }, this);
 
-    this.layout = new LayoutView();
-    this.container.show(this.layout);
-
-    this.channel.reply({
-      'update': this.layout.update
-    }, this.layout);
-
+    // global error messages
     globalChannel.on({
       'error'   : this.error
     }, this);
-
-    this.listenTo(Backbone.history, {
-      'route' : this.onRoute
-    });
   },
 
-  onStop: function(){
-    delete this.layout;
-    this.container.reset();
-    this.channel.reset();
+  open: function(options){
+    options = this.parseOptions( options );
+
+    options = _.extend( {
+      showCloseButton       : false,
+      overlayClosesOnClick  : false
+    }, options );
+
+    var modal = Modal.open( options );
+    var region = new mn.Region({ el: modal });
+    options.className = undefined; // note className leaks into Layout View
+    return region.show( new Layout( options ) );
   },
 
-  onRoute: function(){
-    if (this.fragment !== Backbone.history.fragment) {
-      this.close();
-    }
+  close: function( id ){
+    id = parseInt( id, 10 );
+    return Modal.close( id );
   },
 
-  //alert: function(options){
-  //  var deferred = $.Deferred();
-  //  var view = new AlertView(options);
-  //
-  //  view.on({
-  //    'confirm' : deferred.resolve,
-  //    'cancel'  : deferred.resolve
-  //  });
-  //
-  //  return deferred;
-  //},
-  //
-  //confirm: function(options){
-  //  var deferred = $.Deferred();
-  //  var view = new ConfirmView(options);
-  //
-  //  view.on({
-  //    'confirm' : deferred.resolve,
-  //    'cancel'  : deferred.reject
-  //  });
-  //
-  //  return deferred;
-  //},
-  //
-  //prompt: function(options){
-  //  var deferred = $.Deferred();
-  //  var view = new PromptView(options);
-  //
-  //  view.on({
-  //    'submit' : deferred.resolve,
-  //    'cancel' : deferred.reject
-  //  });
-  //
-  //  return deferred;
-  //},
+  alert: function(){
 
-  open: function(view){
-    var self = this;
-    this.fragment = Backbone.history.fragment;
-    return this.close().then(function() {
-      self.isOpen = true;
-      return self.layout.open(view);
-    });
   },
 
-  close: function(){
-    if (this.isOpen) {
-      this.isOpen = false;
-      return this.layout.close();
-    } else {
-      return $.Deferred().resolve();
-    }
+  confirm: function(){
+
   },
 
-  error: function(options){
-    options = options || {};
+  prompt: function(){
 
-    if(options.jqXHR){
-      this.parseXHR(options);
+  },
+
+  error: function( options ){
+    options = _.extend( {
+      className   : 'error',
+      footer      : {
+        buttons: [
+          {
+            action: 'close'
+          }
+        ]
+      }
+    }, this.parseOptions( options ) );
+    return this.open( options );
+  },
+
+  parseOptions: function( options ){
+
+    // simple message
+    if( _.isString(options) ){
+      options = { message: options };
+
+    // backbone view
+    } else if( options instanceof bb.View ) {
+      options = {view: options};
+
+    // ajaxError
+    } else if( _.isObject( options ) && options.jqXHR ){
+      options = this.parseXHR( options );
     }
 
-    var view = new AlertView({
-      className : 'error',
-      title     : options.status,
-      message   : options.message,
-      raw       : options.raw
-    });
-
-    this.open(view);
+    return options;
   },
 
   parseXHR: function(options){
-    if( _.isObject(options.thrownError) ){
-      options.status = options.thrownError.name;
-      options.message = options.thrownError.message;
+    var title, message;
+    if( options.thrownError ){
+      title = options.thrownError.name;
+      message = options.thrownError.message;
     } else {
-      options.status = options.jqXHR.statusText;
+      title = options.jqXHR.statusText;
       if( options.jqXHR.responseJSON && options.jqXHR.responseJSON.errors[0] ){
-        options.message = options.jqXHR.responseJSON.errors[0].message;
+        message = options.jqXHR.responseJSON.errors[0].message;
       }
     }
-    options.raw = options.jqXHR.responseText;
+    return {
+      header: {
+        title: title
+      },
+      message: message,
+      raw: options.jqXHR.responseText
+    }
   }
 
 });

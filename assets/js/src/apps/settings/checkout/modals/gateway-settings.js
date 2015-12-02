@@ -1,7 +1,6 @@
 var FormView = require('lib/config/form-view');
 var $ = require('jquery');
 var Tooltip = require('lib/behaviors/tooltip');
-var Radio = require('backbone.radio');
 
 module.exports = FormView.extend({
 
@@ -34,14 +33,6 @@ module.exports = FormView.extend({
   behaviors: {
     Tooltip: {
       behaviorClass: Tooltip
-    }
-  },
-
-  modelEvents: {
-    'change:title': function(modal, value){
-      var update = {};
-      update.header = { title: value };
-      Radio.request('modal', 'update', update);
     }
   },
 

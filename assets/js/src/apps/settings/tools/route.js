@@ -29,7 +29,12 @@ var Tools = Route.extend({
     var view = new TranslationModal({
       title: title
     });
-    Radio.request('modal', 'open', view);
+
+    var modal = Radio.request('modal', 'open', view);
+
+    this.listenTo( view, 'update:complete', function(){
+      modal.currentView.getRegion('footerRegion').$el.show();
+    });
   },
 
   openDataDeleteModal: function(args){

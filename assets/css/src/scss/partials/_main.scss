@@ -41,7 +41,7 @@ main {
         padding: $section-padding-y $section-padding-x;
       }
 
-      > div {
+      > div:not(.loading) {
         @include display-flex;
         height: 100%;
 

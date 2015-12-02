@@ -7,8 +7,6 @@ var ButtonsBehavior = require('./behavior');
 
 module.exports = ItemView.extend({
 
-  viewOptions: ['buttons'],
-
   buttons: [{
     action: 'save',
     className: 'btn-primary'
@@ -17,7 +15,7 @@ module.exports = ItemView.extend({
   template: hbs.compile(tmpl),
 
   initialize: function(options){
-    this.mergeOptions(options, this.viewOptions);
+    this.mergeOptions(options, ['buttons']);
   },
 
   templateHelpers: function(){
