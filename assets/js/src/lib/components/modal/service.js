@@ -7,6 +7,7 @@ var Layout = require('./layout.js');
 var bb = require('backbone');
 var mn = require('backbone.marionette');
 var globalChannel = require('backbone.radio').channel('global');
+var JSON = window.JSON;
 
 // css classes
 Modal.baseClassNames = {
@@ -17,6 +18,34 @@ Modal.baseClassNames = {
   closing : prefix + '-closing',
   open    : prefix + '-open'
 };
+
+/* jshint  -W071, -W074 */
+var parseXHR = function(xhr, statusText, thrownError) {
+  thrownError = thrownError || {};
+  var options = { header: {} };
+
+  // header
+  if( _.isString(thrownError) ){
+    options.header.title = thrownError;
+  } else {
+    options.header.title = (thrownError.title || statusText);
+  }
+
+  // message
+  options.message = thrownError.message || _.get(
+      xhr,
+      ['responseJSON', 'errors', 0, 'message'],
+      JSON.stringify(xhr.responseText)
+    );
+
+  // raw output
+  if (options.message !== xhr.responseText) {
+    options.raw = xhr.responseText;
+  }
+
+  return options;
+};
+/* jshint +W071, +W074 */
 
 module.exports = Service.extend({
   channelName: 'modal',
@@ -79,42 +108,64 @@ module.exports = Service.extend({
     return this.open( options );
   },
 
-  parseOptions: function( options ){
+  /* jshint  -W074 */
+  parseOptions: function( options ) {
 
     // simple message
-    if( _.isString(options) ){
-      options = { message: options };
+    if ( _.isString(options) ) {
+      options = {message: options};
+    }
 
     // backbone view
-    } else if( options instanceof bb.View ) {
+    else if (options instanceof bb.View) {
       options = {view: options};
+    }
 
-    // ajaxError
-    } else if( _.isObject( options ) && options.jqXHR ){
-      options = this.parseXHR( options );
+    // errors thrown by idb-wrapper
+    else if (options instanceof Error) {
+      options = {
+        header: {
+          title: 'IDBError'
+        },
+        message: options.message
+      };
+    }
+
+    // other objects
+    else if ( _.isObject(options) ) {
+      options = this._parseObject(options);
     }
 
     return options;
   },
+  /* jshint  +W074 */
 
-  parseXHR: function(options){
-    var title, message;
-    if( options.thrownError ){
-      title = options.thrownError.name;
-      message = options.thrownError.message;
-    } else {
-      title = options.jqXHR.statusText;
-      if( options.jqXHR.responseJSON && options.jqXHR.responseJSON.errors[0] ){
-        message = options.jqXHR.responseJSON.errors[0].message;
-      }
+  _parseObject: function(options){
+    var err = _.get(options, ['target', 'error']);
+
+    // errors thrown by indexedDB
+    if (err instanceof window.DOMError) {
+      options = {
+        header: {
+          title: err.title
+        },
+        message: err.message
+      };
     }
-    return {
-      header: {
-        title: title
-      },
-      message: message,
-      raw: options.jqXHR.responseText
+
+    // backbone sync error
+    else if (options.xhr) {
+      options = parseXHR(
+        options.xhr, options.statusText, options.thrownError
+      );
     }
+
+    // raw jqXHR
+    else if (options.readyState) {
+      options = parseXHR(options);
+    }
+
+    return options;
   }
 
 });

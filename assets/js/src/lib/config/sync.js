@@ -24,19 +24,32 @@ bb.$.ajaxSetup({
   beforeSend: function(xhr){
     xhr.setRequestHeader('X-WC-POS', 1);
   },
-  timeout: 50000 // 50 seconds
-});
-
-// global ajax error handler
-bb.$( document ).ajaxError(function( event, jqXHR, ajaxSettings, thrownError ) {
-  Radio.trigger('global', 'error', {
-    jqXHR       : jqXHR,
-    thrownError : thrownError
-  });
+  // remove comments, eg: WP Super Cache
+  //dataFilter: function(data, type){
+  //  if( type === 'json' ){
+  //    return data.replace(/<!--[\s\S]*?-->/g, '');
+  //  }
+  //  return data;
+  //},
+  timeout: 50000 // 50 seconds,
 });
 
 // override Backbone.sync
 bb.sync = function(method, entity, options) {
+
+  // wrap sync errors, kick to error modal
+  var onError = options.error;
+  options.error = function( xhr, textStatus, errorThrown ){
+    Radio.trigger('global', 'error', {
+      xhr: xhr,
+      statusText: textStatus,
+      thrownError: errorThrown
+    });
+    if(onError) {
+      onError.call(options.context, xhr, textStatus, errorThrown);
+    }
+  };
+
   // idb
   if(!options.remote &&
     (entity.db || (entity.collection && entity.collection.db))){
