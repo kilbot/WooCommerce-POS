@@ -16,10 +16,6 @@ describe('apps/app/application.js', function() {
     beforeEach(function() {
       this.module.initialize();
     });
-
-    it('should create a layout', function() {
-      expect(this.LayoutView).to.have.been.calledWithNew;
-    });
   });
 
 });

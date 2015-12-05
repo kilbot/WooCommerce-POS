@@ -110,7 +110,6 @@ module.exports = Service.extend({
 
   /* jshint  -W074 */
   parseOptions: function( options ) {
-
     // simple message
     if ( _.isString(options) ) {
       options = {message: options};
@@ -122,7 +121,7 @@ module.exports = Service.extend({
     }
 
     // errors thrown by idb-wrapper
-    else if (options instanceof Error) {
+    else if (window.Error && options instanceof window.Error) {
       options = {
         header: {
           title: 'IDBError'
@@ -144,10 +143,10 @@ module.exports = Service.extend({
     var err = _.get(options, ['target', 'error']);
 
     // errors thrown by indexedDB
-    if (err instanceof window.DOMError) {
+    if (window.DOMError && err instanceof window.DOMError) {
       options = {
         header: {
-          title: err.title
+          title: err.name
         },
         message: err.message
       };

@@ -1,4 +1,5 @@
 var Application = require('apps/admin/application');
+var _ = require('lodash');
 
 /**
  * Services
@@ -26,20 +27,20 @@ var app = new Application();
 /**
  * ... add SubApps and Services
  */
-app.entities = new EntitiesService({
-  app: app
-});
+app.on('before:start', function(options) {
 
-app.settingsApp = new SettingsRouter({
-  container: app.layout.getRegion('main')
-});
+  // attach services to global App
+  _.extend(this, {
+    entitiesService : new EntitiesService(options),
+    settingsApp     : new SettingsRouter({
+      container     : this.layout.getRegion('main')
+    }),
+    modalService    : new ModalService(),
+    tabsService     : new TabsService(),
+    buttonsService  : new ButtonsService()
+  });
 
-app.modalApp = new ModalService({
-  container: app.layout.getRegion('modal')
 });
-
-app.tabsService = new TabsService();
-app.buttonsService = new ButtonsService();
 
 /**
  * Attach app to window for third party plugins

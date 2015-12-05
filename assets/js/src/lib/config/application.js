@@ -30,26 +30,11 @@ module.exports = Mn.Application.extend({
   },
 
   _initOptions: function( payload ){
-    payload = payload || {};
-
-    // templates
-    hbs.Templates = payload.templates || {};
-
-    // polyglot
-    polyglot.extend( payload.i18n );
-
-    // options
-    this.options = payload.params || {};
-
-    // debug
-    this._initDebug( this.options.debug );
-
-    // emulateHTTP
-    bb.emulateHTTP = this.options.emulateHTTP === true;
-
-    // bootstrap accounting settings
-    accounting.settings = this.options.accounting;
-
+    hbs.Templates = _.get( payload, 'templates', {} );
+    polyglot.extend( _.get( payload, 'i18n' ) );
+    this._initDebug( _.get( payload, ['params', 'debug'] ) );
+    bb.emulateHTTP = _.get( payload, ['params', 'emulateHTTP'], false );
+    accounting.settings = _.get( payload, ['params', 'accounting'] );
   },
 
   /**

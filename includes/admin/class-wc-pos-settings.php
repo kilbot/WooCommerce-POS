@@ -106,6 +106,22 @@ class WC_POS_Admin_Settings {
    */
   public function enqueue_admin_scripts() {
 
+    //
+//    global $wp_scripts;
+//    $wp_scripts->queue = array();
+    // or
+
+//    function pm_remove_all_scripts() {
+//      global $wp_scripts;
+//      $wp_scripts->queue = array();
+//    }
+//    add_action('wp_print_scripts', 'pm_remove_all_scripts', 100);
+//    function pm_remove_all_styles() {
+//      global $wp_styles;
+//      $wp_styles->queue = array();
+//    }
+//    add_action('wp_print_styles', 'pm_remove_all_styles', 100);
+
     // deregister scripts
     wp_deregister_script( 'underscore' );
     wp_deregister_script( 'select2' );
@@ -121,7 +137,7 @@ class WC_POS_Admin_Settings {
     wp_register_script( 'moment', $external_libs[ 'moment' ], false, null, true );
     wp_register_script( 'accounting', $external_libs[ 'accounting' ], false, null, true );
     wp_register_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js', array( 'jquery' ), null, true );
-    wp_register_script( 'idb-wrapper', $external_libs[ 'idb-wrapper' ], false, null, true );
+//    wp_register_script( 'idb-wrapper', $external_libs[ 'idb-wrapper' ], false, null, true );
 
     // enqueue
     wp_enqueue_script( 'jquery-ui-sortable' );
@@ -131,7 +147,7 @@ class WC_POS_Admin_Settings {
     wp_enqueue_script(
       WC_POS_PLUGIN_NAME . '-admin-app',
       WC_POS_PLUGIN_URL . 'assets/js/admin.' . $build . '.js',
-      array( 'backbone', 'backbone.radio', 'marionette', 'handlebars', 'accounting', 'moment', 'select2', 'idb-wrapper' ),
+      array( 'backbone', 'backbone.radio', 'marionette', 'handlebars', 'accounting', 'moment', 'select2' ),
       WC_POS_VERSION,
       true
     );

@@ -1,4 +1,5 @@
 var Application = require('apps/app/application');
+var _ = require('lodash');
 
 // sync config
 require('lib/config/sync');
@@ -35,33 +36,33 @@ var app = new Application();
 /**
  * ... add SubApps and Services
  */
-app.entitiesService = new EntitiesService({
-  app: app
-});
+app.on('before:start', function(options){
 
-app.headerService = new HeaderService({
-  headerContainer : app.layout.getRegion('header'),
-  menuContainer   : app.layout.getRegion('menu')
-});
+  // attach services to global App
+  _.extend( this, {
+    entitiesService   : new EntitiesService(options),
+    headerService     : new HeaderService({
+      headerContainer : this.layout.getRegion('header'),
+      menuContainer   : this.layout.getRegion('menu')
+    }),
+    posApp            : new POSRouter({
+      container       : this.layout.getRegion('main')
+    }),
+    supportApp        : new SupportRouter({
+      container       : this.layout.getRegion('main')
+    }),
+    printApp          : new PrintRouter({
+      container       : this.layout.getRegion('main')
+    }),
+    modalService      : new ModalService(),
+    popoverService    : new PopoverService(),
+    printService      : new PrintService(),
+    tabsService       : new TabsService(),
+    buttonsService    : new ButtonsService(),
+    numpadService     : new NumpadService()
+  } );
 
-app.posApp = new POSRouter({
-  container: app.layout.getRegion('main')
 });
-
-app.supportApp = new SupportRouter({
-  container: app.layout.getRegion('main')
-});
-
-app.printApp = new PrintRouter({
-  container: app.layout.getRegion('main')
-});
-
-app.modalService = new ModalService();
-app.popoverService = new PopoverService();
-app.printService = new PrintService();
-app.tabsService = new TabsService();
-app.buttonsService = new ButtonsService();
-app.numpadService = new NumpadService();
 
 /**
  * Attach app to window for third party plugins

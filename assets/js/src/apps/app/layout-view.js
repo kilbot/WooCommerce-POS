@@ -1,7 +1,10 @@
 var LayoutView = require('lib/config/layout-view');
 var $ = require('jquery');
+var _ = require('lodash');
 var Radio = require('backbone.radio');
 var globalChannel = Radio.channel('global');
+var HelpModal = require('./modals/help');
+var Combokeys = require('combokeys');
 
 module.exports = LayoutView.extend({
   el: '#page',
@@ -21,6 +24,10 @@ module.exports = LayoutView.extend({
     main  : '#main'
   },
 
+  keyEvents: {
+    'help': 'showHelpModal'
+  },
+
   initialize: function(){
     this.getRegion('main').on('show', this.setup, this);
     globalChannel.on('tab:label', this.updateTabLabel, this);
@@ -34,6 +41,22 @@ module.exports = LayoutView.extend({
       this.$el.removeClass('two-column');
       this.getRegion('tabs').empty();
     }
+
+    var hotkeys = Radio.request('entities', 'get', {
+        type: 'option',
+        name: 'hotkeys'
+      }) || {};
+
+    var combokeys = new Combokeys(document.documentElement);
+    _.each( this.keyEvents, function(callback, id) {
+      var trigger = hotkeys[id];
+      if ( !_.isFunction(callback) ) {
+        callback = this[callback];
+      }
+      combokeys.bind(trigger.key, function(e, combo){
+        callback.call(this, e, combo);
+      });
+    }, this);
   },
 
   showTabs: function(){
@@ -54,6 +77,11 @@ module.exports = LayoutView.extend({
 
   updateTabLabel: function(options){
     this.getRegion('main').tabs.setLabel(options);
+  },
+
+  showHelpModal: function() {
+    var view = new HelpModal();
+    Radio.request('modal', 'open', view);
   }
 
 });

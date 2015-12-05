@@ -18,6 +18,14 @@ var SettingsRouter = Router.extend({
       type: 'collection',
       name: 'settings'
     });
+    var settings = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'settings',
+      root: true
+    });
+    this.tabsArray = _.map(settings, function(setting){
+      return _.pick(setting, ['id', 'label']);
+    });
   },
 
   onBeforeEnter: function() {

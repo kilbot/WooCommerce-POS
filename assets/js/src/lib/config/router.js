@@ -6,6 +6,7 @@ var Route = require('./route');
 var app = require('./application');
 
 module.exports = app.prototype.Router = Mn.AppRouter.extend({
+
   constructor: function() {
     this.channel = bb.Radio.channel('router');
     this.on('all', this._onRouterEvent);

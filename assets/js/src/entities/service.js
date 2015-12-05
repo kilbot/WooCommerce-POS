@@ -4,8 +4,7 @@ var Orders = require('./orders/collection');
 var Cart = require('./cart/collection');
 var Customers = require('./customers/collection');
 var Coupons = require('./coupons/collection');
-var Settings = require('./settings/model');
-var SettingsCollection = require('./settings/collection');
+var Settings = require('./settings/collection');
 var Gateways = require('./gateways/collection');
 var FilteredCollection = require('lib/config/obscura');
 var debug = require('debug')('entities');
@@ -31,7 +30,7 @@ var EntitiesService = Service.extend({
     customers : Customers,
     coupons   : Coupons,
     gateways  : Gateways,
-    settings  : SettingsCollection
+    settings  : Settings
   },
 
   getMethods: {
@@ -39,7 +38,6 @@ var EntitiesService = Service.extend({
     model       : 'getModel',
     filtered    : 'getFiltered',
     option      : 'getOption',
-    settings    : 'getSettings',
     localStorage: 'getLocalStorage'
   },
 
@@ -118,19 +116,12 @@ var EntitiesService = Service.extend({
 
   /**
    * return an option set during app.start(options)
+   * todo: refactor, remove 'root' option special case
+   * have getParam & getOption? or move params to root?
    */
   getOption: function(options){
-    return this.app.getOption(options.name);
-  },
-
-  /**
-   * settings are App options that can be changed by the user
-   * eg: HotKeys are bootstrapped as start options, but also
-   * can be updated through the POS
-   */
-  getSettings: function(options){
-    var option = this.app.getOption(options.name);
-    return new Settings(option);
+    var path = options.root ? options.name : ['params', options.name];
+    return _.get( this.options, path );
   },
 
   setFilter: function(options){

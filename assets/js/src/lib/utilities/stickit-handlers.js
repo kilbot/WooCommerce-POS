@@ -12,6 +12,20 @@ bb.Stickit.addHandler({
 });
 
 /**
+ * Default select value
+ * - selects require a change event to update
+ * - this can cause problems with gateways, eg: month 01
+ */
+bb.Stickit.addHandler({
+  selector: 'select',
+  initialize: function($el, model, opt){
+    if( model.get(opt.observe) === undefined ){
+      model.set(opt.observe, $el.val());
+    }
+  }
+});
+
+/**
  * Select2
  */
 bb.Stickit.addHandler({

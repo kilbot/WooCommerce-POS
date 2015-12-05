@@ -2,10 +2,6 @@ var Service = require('lib/config/service');
 var TitleBar = require('./views/title-bar');
 var Menu = require('./views/menu');
 var App = require('lib/config/application');
-var Radio = require('backbone.radio');
-var BrowserModal = require('./views/modals/browser');
-var _ = require('lodash');
-var Modernizr = global['Modernizr'];
 
 var Service = Service.extend({
   channelName: 'header',
@@ -23,7 +19,6 @@ var Service = Service.extend({
   onStart: function(){
     this.showTitleBar();
     this.showMenu();
-    this.browserCheck();
   },
 
   showTitleBar: function(){
@@ -44,16 +39,6 @@ var Service = Service.extend({
     }, view);
 
     this.menu.show(view);
-  },
-
-  browserCheck: function(){
-    var props = ['flexbox', 'indexeddb'],
-        pass = _.every(props, function(prop){ return Modernizr[prop]; });
-
-    if(!pass){
-      var view = new BrowserModal();
-      Radio.request('modal', 'error', view);
-    }
   },
 
   onStop: function(){

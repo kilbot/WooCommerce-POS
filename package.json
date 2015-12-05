@@ -33,7 +33,7 @@
     "backbone.marionette": "^2.4.4",
     "backbone.radio": "^1.0.2",
     "backbone.stickit": "^0.9.2",
-    "combokeys": "^2.4.3",
+    "combokeys": "^2.4.4",
     "debug": "^2.2.0",
     "handlebars": "^4.0.5",
     "idb-wrapper": "kilbot/IDBWrapper",

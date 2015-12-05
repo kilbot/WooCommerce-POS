@@ -13,7 +13,7 @@ var _ = require('lodash');
 var parseError = function( error ){
 
   // errors thrown by idb-wrapper
-  if( error instanceof Error ){
+  if( window.Error && error instanceof window.Error ){
     return {
       header: {
         title: 'IDBError'
@@ -24,10 +24,10 @@ var parseError = function( error ){
 
   // errors thrown by indexedDB
   var err = _.get(error, ['target', 'error']);
-  if( err instanceof window.DOMError ){
+  if( window.DOMError && err instanceof window.DOMError ){
     return {
       header: {
-        title: err.title
+        title: err.name
       },
       message: err.message
     };

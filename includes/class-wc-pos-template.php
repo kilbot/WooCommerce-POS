@@ -53,9 +53,9 @@ class WC_POS_Template {
    */
   public function __construct() {
 
+    // todo: make params = payload
     if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
       add_action( 'wp_ajax_wc_pos_payload', array( $this, 'payload' ) );
-
       return;
     }
 

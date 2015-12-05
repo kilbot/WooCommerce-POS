@@ -1,6 +1,6 @@
 var Application = require('lib/config/application');
 var bb = require('backbone');
-var _ = require('lodash');
+//var _ = require('lodash');
 var LayoutView = require('./layout-view');
 var debug = require('debug')('admin');
 var Radio = require('backbone.radio');
@@ -9,11 +9,6 @@ var routerChannel = Radio.channel('router');
 module.exports = Application.extend({
 
   initialize: function() {
-
-    // init Root LayoutView
-    this.layout = new LayoutView();
-    this.layout.render();
-
     this.listenTo(routerChannel, {
       'before:enter:route' : this.onBeforeEnterRoute,
       'enter:route'        : this.onEnterRoute,
@@ -21,32 +16,12 @@ module.exports = Application.extend({
     });
   },
 
-  /**
-   * Set up application with start params
-   */
-  onBeforeStart: function(options){
-    options = options || {};
-
+  onBeforeStart: function(){
     debug( 'starting WooCommerce POS admin app' );
 
-    // get settings tabs
-    this.settingsApp.tabsArray = _.map(options.settings, function(setting){
-      return _.pick(setting, ['id', 'label']);
-    });
-
-    // get settings data
-    var data = _.map(options.settings, function(setting){
-      _.set(setting, ['data', 'id'], setting.id);
-      return setting.data;
-    });
-
-    // init settings
-    var settings = Radio.request('entities', 'get', {
-      type: 'collection',
-      name: 'settings'
-    });
-
-    settings.add( data );
+    // init Root LayoutView
+    this.layout = new LayoutView();
+    this.layout.render();
   },
 
   onStart: function(){
