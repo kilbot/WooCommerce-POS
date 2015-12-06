@@ -18,6 +18,18 @@ class WC_POS_Admin_Settings {
   static public $screen_id;
 
   /**
+   * @var array settings handlers
+   */
+  static public $handlers = array(
+    'general'   => 'WC_POS_Admin_Settings_General',
+    'checkout'  => 'WC_POS_Admin_Settings_Checkout',
+    'hotkeys'   => 'WC_POS_Admin_Settings_HotKeys',
+    'access'    => 'WC_POS_Admin_Settings_Access',
+    'tools'     => 'WC_POS_Admin_Settings_Tools',
+    'status'    => 'WC_POS_Admin_Settings_Status'
+  );
+
+  /**
    * Constructor
    */
   public function __construct() {
@@ -62,6 +74,14 @@ class WC_POS_Admin_Settings {
    */
   public function display_settings_page() {
     include 'views/settings.php';
+  }
+
+  /**
+   * Returns array of settings classes
+   * @return mixed|void
+   */
+  static public function handlers(){
+    return apply_filters( 'woocommerce_pos_admin_settings_handlers', self::$handlers);
   }
 
   /**
@@ -177,7 +197,7 @@ class WC_POS_Admin_Settings {
    */
   public function admin_inline_js() {
     $options = array(
-      'action'  => 'wc_pos_admin_settings_payload',
+      'action'  => 'wc_pos_admin_settings_params',
       'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
       'nonce'   => wp_create_nonce( WC_POS_PLUGIN_NAME )
     );

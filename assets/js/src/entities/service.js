@@ -116,12 +116,9 @@ var EntitiesService = Service.extend({
 
   /**
    * return an option set during app.start(options)
-   * todo: refactor, remove 'root' option special case
-   * have getParam & getOption? or move params to root?
    */
   getOption: function(options){
-    var path = options.root ? options.name : ['params', options.name];
-    return _.get( this.options, path );
+    return _.get( this.options, options.name );
   },
 
   setFilter: function(options){

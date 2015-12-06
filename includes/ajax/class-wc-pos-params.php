@@ -8,59 +8,69 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_Params {
+class WC_POS_AJAX_Params {
 
   /**
-   * Constructor
+   *
    */
-  public function __construct() {
-
-    // this should only be init after woocommerce_init
-    global $wp_actions;
-    if( ! isset($wp_actions['woocommerce_init']) ){
-      return;
-    }
-
-    // common params
-    $this->accounting      = $this->accounting();
-    $this->ajaxurl         = admin_url( 'admin-ajax.php', 'relative' );
-    $this->customers       = $this->customers();
-    $this->debug           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
-    $this->nonce           = wp_create_nonce( WC_POS_PLUGIN_NAME );
-    $this->wc_api          = get_woocommerce_api_url( '' );
-    $this->emulateHTTP     = get_option( 'woocommerce_pos_emulateHTTP' ) === '1';
-    $this->idbVersion      = WC_POS_Settings::get_idb_version();
-
-    // frontend params
-    if( is_pos() ) {
-      $this->auto_print    = wc_pos_get_option( 'checkout', 'auto_print_receipt' );
-      $this->denominations = WC_POS_i18n::currency_denominations();
-      $this->discount_keys = wc_pos_get_option( 'general', 'discount_quick_keys' );
-      $this->hotkeys       = wc_pos_get_option( 'hotkeys', 'hotkeys' );
-      $this->menu          = $this->menu();
-      $this->shipping      = $this->shipping_labels();
-      $this->store         = array( 'name' => get_bloginfo( 'name' ) );
-      $this->tabs          = $this->product_tabs();
-      $this->tax           = $this->tax();
-      $this->tax_classes   = WC_POS_Tax::tax_classes();
-      $this->tax_rates     = WC_POS_Tax::tax_rates();
-      $this->user          = $this->user();
-    }
-
-    // admin params
-    if( is_admin() ) {
-      $this->search_customers_nonce = wp_create_nonce( 'search-customers' );
-    }
-
+  public function params(){
+    $params = apply_filters( 'woocommerce_pos_params', $this->common_params() + $this->frontend_params(), $this );
+    return WC_POS_AJAX::response( $params );
   }
 
   /**
-   * Params payload for
-   * Converts class properties to array
-   * @return array
+   *
    */
-  public function payload() {
-    return apply_filters( 'woocommerce_pos_params', get_object_vars( $this ), $this );
+  public function admin_settings_params(){
+    $params = apply_filters( 'woocommerce_pos_admin_settings_params', $this->common_params() + $this->admin_params(), $this );
+    return WC_POS_AJAX::response( $params );
+  }
+
+  /**
+   *
+   */
+  private function common_params(){
+    return array(
+      'accounting'  => $this->accounting(),
+      'ajaxurl'     => admin_url( 'admin-ajax.php', 'relative' ),
+      'customers'   => $this->customers(),
+      'debug'       => defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG,
+      'nonce'       => wp_create_nonce( WC_POS_PLUGIN_NAME ),
+      'wc_api'      => get_woocommerce_api_url( '' ),
+      'emulateHTTP' => get_option( 'woocommerce_pos_emulateHTTP' ) === '1',
+      'idbVersion'  => WC_POS_AJAX_Settings::get_idb_version(),
+      'i18n'        => WC_POS_i18n::params()
+    );
+  }
+
+  /**
+   *
+   */
+  private function frontend_params(){
+    return array(
+      'auto_print'    => wc_pos_get_option( 'checkout', 'auto_print_receipt' ),
+      'denominations' => WC_POS_i18n::currency_denominations(),
+      'discount_keys' => wc_pos_get_option( 'general', 'discount_quick_keys' ),
+      'hotkeys'       => wc_pos_get_option( 'hotkeys', 'hotkeys' ),
+      'menu'          => $this->menu(),
+      'shipping'      => $this->shipping_labels(),
+      'store'         => array( 'name' => get_bloginfo( 'name' ) ),
+      'tabs'          => $this->product_tabs(),
+      'tax'           => $this->tax(),
+      'tax_classes'   => WC_POS_Tax::tax_classes(),
+      'tax_rates'     => WC_POS_Tax::tax_rates(),
+      'user'          => $this->user(),
+      'templates'     => WC_POS_Template::templates_payload()
+    );
+  }
+
+  /**
+   *
+   */
+  private function admin_params(){
+    return array(
+      'search_customers_nonce' => wp_create_nonce( 'search-customers' )
+    );
   }
 
   /**

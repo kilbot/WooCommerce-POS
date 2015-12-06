@@ -8,61 +8,32 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_Settings {
+class WC_POS_AJAX_Settings {
 
   /* @var string The db prefix for WP Options table */
   const DB_PREFIX = 'woocommerce_pos_';
-
-  /* @var WC_POS_Params instance */
-  private $params;
 
   /* @var array */
   private $settings;
 
   /**
-   * @var array settings handlers
-   */
-  static public $handlers = array(
-    'general'   => 'WC_POS_Admin_Settings_General',
-    'checkout'  => 'WC_POS_Admin_Settings_Checkout',
-    'hotkeys'   => 'WC_POS_Admin_Settings_HotKeys',
-    'access'    => 'WC_POS_Admin_Settings_Access',
-    'tools'     => 'WC_POS_Admin_Settings_Tools',
-    'status'    => 'WC_POS_Admin_Settings_Status'
-  );
-
-  /**
    *
    */
   public function __construct() {
-    add_action( 'wp_ajax_wc_pos_admin_settings_payload', array( $this, 'payload') );
     add_action( 'wp_ajax_wc_pos_admin_settings', array( $this, 'admin_settings') );
-  }
-
-  /**
-   * Returns array of settings classes
-   * @return mixed|void
-   */
-  static public function handlers(){
-    return apply_filters( 'woocommerce_pos_settings_handlers', self::$handlers);
+    add_filter( 'woocommerce_pos_admin_settings_params', array( $this, 'params') );
   }
 
   /**
    * AJAX payload
+   *
+   * @param array $params
+   * @return array
    */
-  public function payload(){
-    WC_POS_Server::check_ajax_referer();
-
-    $this->params = new WC_POS_Params();
-
-    $payload = array(
-      'templates' => $this->templates_payload(),
-      'settings'  => $this->settings,
-      'params'    => $this->params->payload(),
-      'i18n'      => WC_POS_i18n::payload()
-    );
-
-    WC_POS_Server::response( $payload );
+  public function params( array $params ){
+    $params['templates'] = $this->templates_payload();
+    $params['settings'] = $this->settings;
+    return $params;
   }
 
   /**
@@ -71,7 +42,7 @@ class WC_POS_Settings {
    */
   public function templates_payload(){
     $templates = array();
-    foreach(self::handlers() as $key => $handler){
+    foreach(WC_POS_Admin_Settings::handlers() as $key => $handler){
       $settings = $handler::get_instance();
       ob_start();
       $settings->output();
@@ -126,7 +97,7 @@ class WC_POS_Settings {
    * @return bool
    */
   static public function get_option( $id, $key = false ){
-    $handlers = (array) self::handlers();
+    $handlers = (array) WC_POS_Admin_Settings::handlers();
     if( !array_key_exists( $id, $handlers ) )
       return false;
 
@@ -179,7 +150,7 @@ class WC_POS_Settings {
 
       // else, find handler by id
     } else {
-      $handlers = (array) self::handlers();
+      $handlers = (array) WC_POS_Admin_Settings::handlers();
       if(!isset($handlers[$id]))
         return new WP_Error(
           'woocommerce_pos_settings_error',

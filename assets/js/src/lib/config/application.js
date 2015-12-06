@@ -29,29 +29,35 @@ module.exports = Mn.Application.extend({
     );
   },
 
-  _initOptions: function( payload ){
-    hbs.Templates = _.get( payload, 'templates', {} );
-    polyglot.extend( _.get( payload, 'i18n' ) );
-    this._initDebug( _.get( payload, ['params', 'debug'] ) );
-    bb.emulateHTTP = _.get( payload, ['params', 'emulateHTTP'], false );
-    accounting.settings = _.get( payload, ['params', 'accounting'] );
+  _initOptions: function( params ){
+    params = params || {};
+    accounting.settings = params.accounting;
+    bb.emulateHTTP = params.emulateHTTP || false;
+    hbs.Templates = params.templates || {};
+    polyglot.extend( params.i18n );
+    this._initDebug( params.debug );
   },
 
   /**
-   * todo: handle errors
    * @param options
    */
   start: function( options ){
     var self = this;
     $.getJSON(
       options.ajaxurl, {
-        action: options.action || 'wc_pos_payload',
+        action: options.action || 'wc_pos_params',
         security: options.nonce
-      }, function( payload ){
-        self._initOptions( payload );
-        Mn.Application.prototype.start.call(self, payload);
+      }, function( params ){
+        self._initOptions( params );
+        Mn.Application.prototype.start.call(self, params);
       }
-    );
+    ).fail(function(xhr, statusText, thrownError){
+      Radio.request('modal', 'error', {
+        xhr: xhr,
+        statusText: statusText,
+        thrownError: thrownError
+      });
+    });
   },
 
   set: function( path, value ){
@@ -79,5 +85,10 @@ Mn.TemplateCache.prototype.loadTemplate = function(templateId){
 };
 
 Mn.TemplateCache.prototype.compileTemplate = function(rawTemplate) {
-  return hbs.compile(rawTemplate);
+  try {
+    return hbs.compile(rawTemplate);
+  } catch(e) {
+    Radio.request('modal', 'error', e);
+    throw e;
+  }
 };

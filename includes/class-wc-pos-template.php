@@ -52,13 +52,6 @@ class WC_POS_Template {
    * Constructor
    */
   public function __construct() {
-
-    // todo: make params = payload
-    if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-      add_action( 'wp_ajax_wc_pos_payload', array( $this, 'payload' ) );
-      return;
-    }
-
     $this->slug = WC_POS_Admin_Permalink::get_slug();
     $this->regex = '^' . $this->slug . '/?$';
 
@@ -218,74 +211,6 @@ class WC_POS_Template {
   }
 
   /**
-   * Sanitize payment icon
-   * - some gateways include junk in icon property, eg: paypal link
-   *
-   * @param WC_Payment_Gateway $gateway
-   * @return string
-   */
-  protected function sanitize_icon( WC_Payment_Gateway $gateway ) {
-    $icon = $gateway->show_icon ? $gateway->get_icon() : '';
-    if ( $icon !== '' ) {
-      // simple preg_match
-      preg_match( '/< *img[^>]*src *= *["\']?([^"\']*)/i', $icon, $src );
-      $icon = $src[ 1 ];
-    }
-
-    return $icon;
-  }
-
-  /**
-   * Sanitize payment fields
-   * - some gateways include js in their payment fields
-   *
-   * @param WC_Payment_Gateway $gateway
-   * @return mixed|string
-   */
-  protected function sanitize_payment_fields( WC_Payment_Gateway $gateway ) {
-    $html = '';
-    if ( $gateway->has_fields() || $gateway->get_description() ) {
-
-      ob_start();
-      $gateway->payment_fields();
-      $html = ob_get_contents();
-      ob_end_clean();
-
-      // remove script tags
-      $html = $this->removeDomNodes( $html, '//script' );
-    }
-
-    return self::trim_html_string( $html );;
-  }
-
-  /**
-   * Removes dom nodes, eg: <script> elements
-   *
-   * @param $html
-   * @param $xpathString
-   * @return string
-   */
-  private function removeDomNodes( $html, $xpathString ) {
-    $dom = new DOMDocument;
-
-    // Libxml constants not available on all servers (Libxml < 2.7.8)
-    // $html->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-    $dom->loadHtml( '<div class="form-group">' . $html . '</div>' );
-    # remove <!DOCTYPE
-    $dom->removeChild( $dom->doctype );
-    # remove <html><body></body></html>
-    $dom->replaceChild( $dom->firstChild->firstChild->firstChild, $dom->firstChild );
-
-    // remove the required node
-    $xpath = new DOMXPath( $dom );
-    while ( $node = $xpath->query( $xpathString )->item( 0 ) ) {
-      $node->parentNode->removeChild( $node );
-    }
-
-    return $dom->saveHTML();
-  }
-
-  /**
    * Returns an assoc array of all default tmpl-*.php paths
    * - uses SPL iterators
    *
@@ -411,50 +336,10 @@ class WC_POS_Template {
   }
 
   /**
-   * @return array
-   */
-  private function gateways_templates() {
-    $settings = WC_POS_Admin_Settings_Checkout::get_instance();
-    $gateways = $settings->load_enabled_gateways();
-    $templates = array();
-
-    if ( $gateways ): foreach ( $gateways as $gateway ):
-      $this->params->gateways[] = array(
-        'method_id'    => $gateway->id,
-        'method_title' => esc_html( $gateway->get_title() ),
-        'icon'         => $this->sanitize_icon( $gateway ),
-        'active'       => $gateway->default
-      );
-      $templates[ $gateway->id ] = $this->sanitize_payment_fields( $gateway );
-    endforeach; endif;
-
-    return $templates;
-  }
-
-  /**
    * @return mixed|void
    */
-  public function payload() {
-    WC_POS_Server::check_ajax_referer();
-
-    $this->params = new WC_POS_Params();
-
-    $payload = array(
-      'templates' => $this->templates_payload(),
-      'params'    => $this->params->payload(),
-      'i18n'      => WC_POS_i18n::payload()
-    );
-
-    WC_POS_Server::response( $payload );
-  }
-
-  /**
-   * @return mixed|void
-   */
-  public function templates_payload() {
+  static public function templates_payload() {
     $templates = self::create_templates_array();
-    $templates[ 'pos' ][ 'checkout' ][ 'gateways' ] = $this->gateways_templates();
-
     return apply_filters( 'woocommerce_pos_templates', $templates );
   }
 

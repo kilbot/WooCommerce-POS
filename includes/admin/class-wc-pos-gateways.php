@@ -9,7 +9,7 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_Admin_Gateways extends WC_POS_Gateways {
+class WC_POS_Admin_Gateways {
 
   public function __construct() {
     add_filter( 'woocommerce_payment_gateways_setting_columns', array( $this, 'woocommerce_payment_gateways_setting_columns' ), 10, 1 );

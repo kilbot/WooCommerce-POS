@@ -120,11 +120,11 @@ module.exports = Service.extend({
       options = {view: options};
     }
 
-    // errors thrown by idb-wrapper
+    // errors thrown by idb-wrapper, handlebars
     else if (window.Error && options instanceof window.Error) {
       options = {
         header: {
-          title: 'IDBError'
+          title: options.name || 'Error'
         },
         message: options.message
       };

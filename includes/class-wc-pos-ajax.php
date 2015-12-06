@@ -18,16 +18,19 @@ class WC_POS_AJAX {
    */
   public function __construct() {
 
+    // subclasses
+    $params = new WC_POS_AJAX_Params();
+    new WC_POS_AJAX_Settings();
+
     $ajax_events = array(
       'get_all_ids'           => 'WC_POS_API',
       'get_modal'             => $this,
-      'get_print_template'    => $this,
-//      'set_product_visibilty' => $this,
       'email_receipt'         => $this,
       'send_support_email'    => $this,
       'test_http_methods'     => $this,
-//      'system_status'         => $this,
       'toggle_legacy_server'  => 'WC_POS_Status',
+      'params'                => $params,
+      'admin_settings_params' => $params
     );
 
     foreach ( $ajax_events as $ajax_event => $class ) {
@@ -39,24 +42,16 @@ class WC_POS_AJAX {
 
   }
 
+  /**
+   *
+   */
   public function get_modal() {
 
     if( isset( $_REQUEST['data']) )
       extract( $_REQUEST['data'] );
 
     include_once( dirname(__FILE__) . '/views/modals/' . $_REQUEST['template'] . '.php' );
-    die();
-  }
-
-  public function get_print_template() {
-
-    // check for custom template
-    $template_path_theme = '/woocommerce-pos/';
-    $template_path_plugin = WC_POS()->plugin_path. 'public/views/print/';
-
-    wc_get_template( $_REQUEST['template'] . '.php', null, $template_path_theme, $template_path_plugin );
-
-    die();
+    wp_die();
   }
 
   /**
@@ -113,7 +108,7 @@ class WC_POS_AJAX {
         'message' => __( 'There was an error sending the email', 'woocommerce-pos')
       );
     }
-    WC_POS_Server::response($response);
+    self::response($response);
   }
 
   /**
@@ -137,14 +132,14 @@ class WC_POS_AJAX {
       );
     }
 
-    WC_POS_Server::response($response);
+    self::response($response);
   }
 
   /**
    * Returns payload for any request for testing
    */
   public function test_http_methods(){
-    WC_POS_Server::response( array(
+    self::response( array(
       'method' => strtolower($_SERVER['REQUEST_METHOD']),
       'payload' => WC_POS_Server::get_raw_data()
     ));
@@ -155,7 +150,7 @@ class WC_POS_AJAX {
    */
   public function system_status(){
     $status = new WC_POS_Status();
-    WC_POS_Server::response( $status->output() );
+    self::response( $status->output() );
   }
 
   /**
@@ -169,8 +164,47 @@ class WC_POS_AJAX {
         __( 'Invalid security nonce', 'woocommerce-pos' ),
         array( 'status' => 401 )
       );
-      WC_POS_Server::response($result);
+      self::response($result);
     }
+  }
+
+  /**
+   * The below functions closely resemble output from the WC REST API
+   * This keeps response handling in the POS somewhat consistent
+   * between API and AJAX calls
+   *
+   * Output the result
+   * @param $result
+   */
+  static public function response($result){
+
+    header( 'Content-Type: application/json; charset=utf-8' );
+
+    if (is_wp_error($result)) {
+      $data = $result->get_error_data();
+      if ( is_array( $data ) && isset( $data['status'] ) ) {
+        status_header( $data['status'] );
+      }
+      $result = self::error_to_array( $result );
+    }
+
+    echo json_encode( $result );
+    wp_die();
+  }
+
+  /**
+   * Convert wp_error to array
+   * @param $error
+   * @return array
+   */
+  static private function error_to_array( $error ) {
+    $errors = array();
+    foreach ( (array) $error->errors as $code => $messages ) {
+      foreach ( (array) $messages as $message ) {
+        $errors[] = array( 'code' => $code, 'message' => $message );
+      }
+    }
+    return array( 'errors' => $errors );
   }
 
 }

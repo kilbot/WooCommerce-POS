@@ -1,12 +1,4 @@
 var Application = require('apps/app/application');
-var _ = require('lodash');
-
-// sync config
-require('lib/config/sync');
-
-/**
- * Services
- */
 var EntitiesService = require('entities/service');
 var HeaderService = require('apps/header/service');
 var ModalService = require('lib/components/modal/service');
@@ -15,13 +7,13 @@ var PrintService = require('lib/components/print/service');
 var TabsService = require('lib/components/tabs/service');
 var ButtonsService = require('lib/components/buttons/service');
 var NumpadService = require('lib/components/numpad/service');
-
-/**
- * SubApps
- */
 var POSRouter = require('apps/pos/router');
 var SupportRouter = require('apps/support/router');
 var PrintRouter = require('apps/print/router');
+var _ = require('lodash');
+
+// sync config
+require('lib/config/sync');
 
 /**
  * bootstrap Handlebars Helpers
@@ -34,7 +26,19 @@ require('lib/utilities/handlebars-helpers');
 var app = new Application();
 
 /**
- * ... add SubApps and Services
+ * ... add Services
+ */
+_.extend( app, {
+  modalService      : new ModalService(),
+  buttonsService    : new ButtonsService(),
+  popoverService    : new PopoverService(),
+  printService      : new PrintService(),
+  tabsService       : new TabsService(),
+  numpadService     : new NumpadService()
+} );
+
+/**
+ *  ... add Services which require layout and params
  */
 app.on('before:start', function(options){
 
@@ -53,13 +57,7 @@ app.on('before:start', function(options){
     }),
     printApp          : new PrintRouter({
       container       : this.layout.getRegion('main')
-    }),
-    modalService      : new ModalService(),
-    popoverService    : new PopoverService(),
-    printService      : new PrintService(),
-    tabsService       : new TabsService(),
-    buttonsService    : new ButtonsService(),
-    numpadService     : new NumpadService()
+    })
   } );
 
 });

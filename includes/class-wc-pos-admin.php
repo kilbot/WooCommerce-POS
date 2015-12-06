@@ -25,6 +25,7 @@ class WC_POS_Admin {
   public function init() {
     new WC_POS_Admin_Menu();
     new WC_POS_Admin_Settings();
+    new WC_POS_Admin_Gateways();
   }
 
   /**

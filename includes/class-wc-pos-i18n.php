@@ -303,7 +303,7 @@ class WC_POS_i18n {
    *
    * @return mixed
    */
-  static public function payload() {
+  static public function params() {
 
     return apply_filters( 'woocommerce_pos_i18n', array(
       'titles'   => array(

@@ -10,8 +10,8 @@ module.exports = Collection.extend({
     models = Radio.request('entities', 'get', {
       type: 'option',
       name: 'gateways'
-    });
-    if( _(models).pluck('active').compact().isEmpty() ){
+    }) || [];
+    if( models.length > 0 && _(models).pluck('active').compact().isEmpty() ){
       models[0].active = true;
     }
     return Collection.prototype.constructor.call(this, models, options);
