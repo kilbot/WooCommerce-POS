@@ -1,14 +1,8 @@
-var FormView = require('lib/config/form-view');
+var SettingsView = require('lib/config/settings-view');
 var App = require('lib/config/application');
 var $ = require('jquery');
 
-var View = FormView.extend({
-
-  template: 'access',
-
-  attributes: {
-    id: 'wc_pos-settings-access'
-  },
+var View = SettingsView.extend({
 
   ui: {
     tabs    : '.wc_pos-access-tabs > li',
@@ -17,10 +11,6 @@ var View = FormView.extend({
 
   events: {
     'click @ui.tabs' : 'onTabClick'
-  },
-
-  modelEvents: {
-    'change:id': 'render'
   },
 
   onRender: function(){

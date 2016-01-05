@@ -4,11 +4,12 @@ var _ = require('lodash');
 var Numpad = require('lib/components/numpad/behavior');
 var Utils = require('lib/utilities/utils');
 var polyglot = require('lib/utilities/polyglot');
+var hbs = require('handlebars');
 
 module.exports = FormView.extend({
 
   initialize: function() {
-    this.template = 'pos.checkout.gateways.' + this.model.id;
+    this.template = hbs.compile( this.model.get('payment_fields') );
     this.order_total = this.model.collection.order.get('total');
     this.updateStatusMessage();
   },

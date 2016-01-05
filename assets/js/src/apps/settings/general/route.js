@@ -18,7 +18,8 @@ var General = Route.extend({
 
   render: function() {
     var view = new View({
-      model: this.model
+      model: this.model,
+      template: this.model.template
     });
     this.container.show(view);
   }
@@ -26,4 +27,4 @@ var General = Route.extend({
 });
 
 module.exports = General;
-App.prototype.set('SettingsApp.General.Route', General);
+App.prototype.set('SettingsApp.Receipts.Route', General);

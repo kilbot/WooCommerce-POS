@@ -9,8 +9,8 @@ module.exports = ItemView.extend({
 
   initialize: function(options){
     _.defaults(options, {
-      title: polyglot.t('messages.loading'),
-      close: polyglot.t('buttons.close')
+      title: polyglot.t('messages.loading', { _ : 'Loading' }),
+      close: polyglot.t('buttons.close', { _ : 'Close' })
     });
   },
 

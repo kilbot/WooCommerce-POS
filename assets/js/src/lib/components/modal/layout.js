@@ -10,6 +10,7 @@ var defaultModal = {
   header: {
     title: ''
   },
+  tabs: false,
   footer: {
     buttons: [
       {
@@ -30,9 +31,10 @@ module.exports = LayoutView.extend({
   initialize: function( options ){
     options = _.defaults( options, {
       header: _.get(options, ['view', 'modal', 'header'], defaultModal.header),
+      tabs  : _.get(options, ['view', 'modal', 'tabs'], defaultModal.tabs),
       footer: _.get(options, ['view', 'modal', 'footer'], defaultModal.footer)
     });
-    this.mergeOptions( options, ['header', 'footer', 'view'] );
+    this.mergeOptions( options, ['header', 'tabs', 'footer', 'view'] );
   },
 
   childEvents: {
@@ -44,12 +46,14 @@ module.exports = LayoutView.extend({
   templateHelpers: function(){
     return {
       header: !!this.header,
+      tabs  : !!this.tabs,
       footer: !!this.footer
     };
   },
 
   onShow: function(){
     if( this.header ){ this.showHeader( this.header ); }
+    if( this.tabs ){ this.showTabs( this.tabs ); }
     this.showBody();
     if( this.footer ){ this.showFooter( this.footer ); }
   },
@@ -62,6 +66,20 @@ module.exports = LayoutView.extend({
 
     var region = this.addRegion( 'headerRegion', container );
     var view = new Header( options );
+    region.show( view );
+  },
+
+  showTabs: function( options ){
+    var container = this.$('[class$="modal-tabs"]');
+    if( container.length === 0 ){
+      return;
+    }
+
+    var view = Radio.request('tabs', 'view', {
+      tabs: options
+    });
+
+    var region = this.addRegion( 'tabsRegion', container );
     region.show( view );
   },
 

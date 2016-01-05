@@ -1,7 +1,7 @@
 var Service = require('lib/config/service');
 var TabsView = require('./views/tabs');
 var TabsCollection = require('./entities/collection');
-//var _ = require('lodash');
+var _ = require('lodash');
 
 module.exports = Service.extend({
   channelName: 'tabs',
@@ -17,16 +17,28 @@ module.exports = Service.extend({
    */
   tabsView: function(options){
     options = options || {};
-    return new TabsView({
-      collection: this.tabsCollection(options)
-    });
-  },
+    _.defaults( options, { collection: new TabsCollection(options.tabs) } );
 
-  /**
-   *
-   */
-  tabsCollection: function(options){
-    return new TabsCollection(options.tabs);
+    if( options.adminTabs ){
+      _.defaults( options, {
+        tagName: 'div',
+        className: 'tabs nav-tab-wrapper',
+        childViewOptions: function(){
+          return {
+            tagName: 'a',
+            className: 'nav-tab',
+            activeClassName: 'nav-tab-active',
+            attributes: function(){
+              return {
+                href: '#' + this.model.id
+              };
+            }
+          };
+        }
+      });
+    }
+
+    return new TabsView( options );
   }
 
 });

@@ -136,7 +136,8 @@ module.exports = function(grunt) {
       options: {
         entry: {
           app: './<%= app.js.src %>/app.js',
-          admin: './<%= app.js.src %>/admin.js'
+          'admin-settings': './<%= app.js.src %>/admin-settings.js',
+          'admin-system-status': './<%= app.js.src %>/admin-system-status.js'
         },
         module: {
           loaders: [
@@ -204,7 +205,8 @@ module.exports = function(grunt) {
       app: {
         files: {
           'assets/js/app.min.js': 'assets/js/app.build.js',
-          'assets/js/admin.min.js': 'assets/js/admin.build.js'
+          'assets/js/admin-settings.min.js': 'assets/js/admin-settings.build.js',
+          'assets/js/admin-system-status.min.js': 'assets/js/admin-system-status.build.js'
         }
       }
     },
@@ -222,11 +224,10 @@ module.exports = function(grunt) {
         options: {
           potFilename: 'woocommerce-pos.pot',
           exclude: [
+            'assets',
+            'languages',
             'styleguide',
-            'includes/admin/.*',
-            'includes/products/.*',
-            'includes/class-wc-pos-activator.php',
-            'includes/class-wc-pos-deactivator.php'
+            'tests',
           ],
           processPot: function( pot ) {
             var translation,
@@ -253,45 +254,45 @@ module.exports = function(grunt) {
           }
         }
       },
-      admin: {
-        options: {
-          potFilename: 'woocommerce-pos-admin.pot',
-          exclude: [
-            'styleguide'
-          ],
-          include: [
-            'includes/admin/.*',
-            'includes/products/.*',
-            'includes/class-wc-pos-activator.php',
-            'includes/class-wc-pos-deactivator.php'
-          ],
-          processPot: function( pot ) {
-            var translation,
-              excluded_meta = [
-                'Plugin Name of the plugin/theme',
-                'Plugin URI of the plugin/theme',
-                'Author of the plugin/theme',
-                'Author URI of the plugin/theme',
-                'Description of the plugin/theme',
-                'translators: woocommerce-pos',
-                'translators: woocommerce',
-                'translators: woocommerce-admin',
-                'translators: wordpress'
-              ];
-
-            for ( translation in pot.translations[''] ) {
-              if ( 'undefined' !== typeof pot.translations[''][ translation ].comments.extracted ) {
-                if ( excluded_meta.indexOf( pot.translations[''][ translation ].comments.extracted ) >= 0 ) {
-                  //console.log( 'Excluded meta: ' + pot.translations[''][ translation ].comments.extracted );
-                  delete pot.translations[''][ translation ];
-                }
-              }
-            }
-
-            return pot;
-          }
-        }
-      }
+      //admin: {
+      //  options: {
+      //    potFilename: 'woocommerce-pos-admin.pot',
+      //    exclude: [
+      //      'styleguide'
+      //    ],
+      //    include: [
+      //      'includes/admin/.*',
+      //      'includes/products/.*',
+      //      'includes/class-wc-pos-activator.php',
+      //      'includes/class-wc-pos-deactivator.php'
+      //    ],
+      //    processPot: function( pot ) {
+      //      var translation,
+      //        excluded_meta = [
+      //          'Plugin Name of the plugin/theme',
+      //          'Plugin URI of the plugin/theme',
+      //          'Author of the plugin/theme',
+      //          'Author URI of the plugin/theme',
+      //          'Description of the plugin/theme',
+      //          'translators: woocommerce-pos',
+      //          'translators: woocommerce',
+      //          'translators: woocommerce-admin',
+      //          'translators: wordpress'
+      //        ];
+      //
+      //      for ( translation in pot.translations[''] ) {
+      //        if ( 'undefined' !== typeof pot.translations[''][ translation ].comments.extracted ) {
+      //          if ( excluded_meta.indexOf( pot.translations[''][ translation ].comments.extracted ) >= 0 ) {
+      //            //console.log( 'Excluded meta: ' + pot.translations[''][ translation ].comments.extracted );
+      //            delete pot.translations[''][ translation ];
+      //          }
+      //        }
+      //      }
+      //
+      //      return pot;
+      //    }
+      //  }
+      //}
     },
 
     // copy staging build to staging site, excluding dev files

@@ -18,8 +18,8 @@
     <dd>{{#list options ', '}}<a href="#" data-name="{{../name}}">{{this}}</a>{{/list}}</dd>
     {{/each}}
     <dt></dt><dd>
-      <a href="#" data-action="expand" class="expand-all"><?php /* translators: woocommerce */ _e( 'Expand all', 'woocommerce' ); ?></a>
-      <a href="#" data-action="close" class="close-all"><?php /* translators: woocommerce */ _e( 'Close all', 'woocommerce' ); ?></a>
+      <a href="#" data-action="expand" class="expand-all"><?php /* translators: woocommerce */ _e( 'Expand', 'woocommerce' ); ?></a>
+      <a href="#" data-action="close" class="close-all"><?php /* translators: woocommerce */ _e( 'Close', 'woocommerce' ); ?></a>
     </dd>
   </dl>
   {{/with}}

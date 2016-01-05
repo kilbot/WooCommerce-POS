@@ -1,5 +1,6 @@
 var bb = require('backbone');
 var app = require('./application');
+var sync = require('lib/config/sync');
 
 module.exports = app.prototype.Collection = bb.Collection.extend({
   constructor: function() {
@@ -18,8 +19,6 @@ module.exports = app.prototype.Collection = bb.Collection.extend({
     return resp && resp[this.name] ? resp[this.name] : resp ;
   },
 
-  sync: function(){
-    return bb.sync.apply(this, arguments);
-  }
+  sync: sync
 
 });

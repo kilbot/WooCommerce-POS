@@ -152,9 +152,9 @@ class WC_POS_Activator {
    * Check version number, runs every admin page load
    */
   private function version_check(){
-    $old = WC_POS_AJAX_Settings::get_db_version();
+    $old = WC_POS_Admin_Settings::get_db_version();
     if( version_compare( $old, WC_POS_VERSION, '<' ) ){
-      WC_POS_AJAX_Settings::bump_versions();
+      WC_POS_Admin_Settings::bump_versions();
       $this->db_upgrade( $old, WC_POS_VERSION );
     }
   }

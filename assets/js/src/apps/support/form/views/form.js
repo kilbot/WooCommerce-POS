@@ -1,36 +1,29 @@
-var ItemView = require('lib/config/item-view');
+var FormView = require('lib/config/form-view');
 var $ = require('jquery');
 
-module.exports = ItemView.extend({
+module.exports = FormView.extend({
   tagName: 'ul',
   template: 'support.form',
 
   ui: {
-    toggle : '.toggle',
-    status : '#pos_status',
-    message: 'div[data-name="message"]'
+    toggle : '.toggle'
   },
 
   events: {
-    'click @ui.toggle': 'toggleReport',
-    'focusout @ui.message': 'focusout'
+    'click @ui.toggle': 'toggleReport'
   },
 
-  onRender: function(){
-    this.ui.status.append('\n*** Browser Info ***\n\n' +
-      navigator.userAgent + '; ' + $('html').attr('class') + '\n\n');
+  bindings: {
+    '*[data-name="name"]'     : 'name',
+    '*[data-name="email"]'    : 'email',
+    '*[data-name="message"]'  : 'message',
+    '*[name="append_report"]' : 'append_report',
+    '*[name="report"]'        : 'report'
   },
 
   toggleReport: function(e) {
     e.preventDefault();
     $(e.currentTarget).next('textarea').toggle();
-  },
-
-  focusout: function(e){
-    var element = $(e.target);
-    if (!element.text().replace(' ', '').length) {
-      element.empty();
-    }
   }
 
 });

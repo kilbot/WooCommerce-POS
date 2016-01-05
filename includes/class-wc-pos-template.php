@@ -33,6 +33,7 @@ class WC_POS_Template {
       'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js',
       'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
       'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js',
+//      'idb-shim'     => 'https://cdn.rawgit.com/axemclion/IndexedDBShim/master/dist/indexeddbshim.min.js'
     ),
     'debug' => array(
       'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js',
@@ -45,6 +46,7 @@ class WC_POS_Template {
       'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js',
       'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.js',
       'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.js',
+//      'idb-shim'     => 'https://cdn.rawgit.com/axemclion/IndexedDBShim/master/dist/indexeddbshim.js'
     )
   );
 
@@ -101,7 +103,7 @@ class WC_POS_Template {
     add_action( 'woocommerce_pos_footer', array( $this, 'footer' ) );
 
     // now show the page
-    include 'views/template.php';
+    include 'views/main.php';
     exit;
 
   }
@@ -208,147 +210,6 @@ class WC_POS_Template {
       return '<script src="' . $script . '"></script>';
 
     return '<script>' . $script . '</script>';
-  }
-
-  /**
-   * Returns an assoc array of all default tmpl-*.php paths
-   * - uses SPL iterators
-   *
-   * @param $partials_dir
-   * @return array
-   */
-  static public function locate_default_template_files( $partials_dir = '' ) {
-    if ( empty( $partials_dir ) )
-      $partials_dir = self::get_template_dir();
-
-    $Directory = new RecursiveDirectoryIterator( $partials_dir );
-
-    $Iterator = new RecursiveIteratorIterator(
-      $Directory,
-      RecursiveIteratorIterator::SELF_FIRST
-    );
-
-    $Regex = new RegexIterator(
-      $Iterator,
-			'/^.+tmpl-[a-z-]+\.php$/i',
-      RecursiveRegexIterator::GET_MATCH
-    );
-
-    $paths = array_keys( iterator_to_array( $Regex ) );
-    $templates = array();
-
-    foreach ( $paths as $path ) {
-      $slug = str_replace( array( $partials_dir, '.php' ), '', $path );
-      $templates[ $slug ] = $path;
-    };
-
-    return $templates;
-  }
-
-  /**
-   * Returns an array of template paths
-   *
-   * @param $partials_dir
-   * @return array
-   */
-  static public function locate_template_files( $partials_dir = '' ) {
-    $files = array();
-    foreach ( self::locate_default_template_files( $partials_dir ) as $slug => $path ) {
-      $files[ $slug ] = self::locate_template_file( $path );
-    };
-
-    return $files;
-  }
-
-  /**
-   * Locate a single template partial
-   *
-   * @param string $default_path
-   * @return string
-   */
-  static public function locate_template_file( $default_path = '' ) {
-    $custom_path1 = str_replace( self::get_template_dir(), 'woocommerce-pos', $default_path );
-    $custom_path2 = str_replace( 'tmpl-', '', $custom_path1 );
-    $custom = locate_template( array( $custom_path1, $custom_path2 ) );
-
-    return $custom ? $custom : $default_path;
-  }
-
-  /**
-   * Returns the partials directory
-   *
-   * @return string
-   */
-  static public function get_template_dir() {
-    return WC_POS_PLUGIN_PATH . 'includes/views';
-  }
-
-  /**
-   * @param $partials_dir
-   * @return array
-   */
-  static public function create_templates_array( $partials_dir = '' ) {
-    $templates = array();
-
-    foreach ( self::locate_template_files( $partials_dir ) as $slug => $file ) {
-      $keys = explode( substr( $slug, 0, 1 ), substr( $slug, 1 ) );
-      $template = array_reduce( array_reverse( $keys ), 'self::reduce_templates_array', self::template_output( $file ) );
-      $templates = array_merge_recursive( $templates, $template );
-    }
-
-    return $templates;
-  }
-
-
-  /**
-   * @param $result
-   * @param $key
-   * @return array
-   */
-  static private function reduce_templates_array( $result, $key ) {
-    if ( is_string( $result ) )
-      $key = preg_replace( '/^tmpl-/i', '', $key );
-    return array( $key => $result );
-  }
-
-  /**
-   * Output template partial as string
-   *
-   * @param $file
-   * @return string
-   */
-  static public function template_output( $file ) {
-    ob_start();
-    include $file;
-    $template = ob_get_clean();
-
-    return self::trim_html_string( $template );
-  }
-
-  /**
-   * Remove newlines and code spacing
-   *
-   * @param $str
-   * @return mixed
-   */
-  static private function trim_html_string( $str ) {
-    return preg_replace( '/^\s+|\n|\r|\s+$/m', '', $str );
-  }
-
-  /**
-   * @return mixed|void
-   */
-  static public function templates_payload() {
-    $templates = self::create_templates_array();
-    return apply_filters( 'woocommerce_pos_templates', $templates );
-  }
-
-  /**
-   * Returns path of print receipt template
-   */
-  static public function locate_print_receipt_template() {
-    $receipt_path = self::locate_template_file( WC_POS_PLUGIN_PATH . 'includes/views/print/tmpl-receipt.php' );
-    return apply_filters( 'woocommerce_pos_print_receipt_path', $receipt_path );
   }
 
 }

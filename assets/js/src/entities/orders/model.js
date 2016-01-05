@@ -259,13 +259,17 @@ var Model = DualModel.extend({
   },
 
   /**
-   *
+   * @todo remove extraneous attrs, eg: payment_fields
    */
   processGateway: function(){
     var data = this.gateways.findWhere({ active: true }).toJSON();
     this.set({
       payment_details: data
     });
+  },
+
+  emailReceipt: function(email){
+    return App.prototype.post( this.url() + 'email/' + email );
   }
 
 });

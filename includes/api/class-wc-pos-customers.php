@@ -10,23 +10,59 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_API_Customers extends WC_POS_API_Abstract {
+if ( ! defined( 'ABSPATH' ) ) {
+  exit; // Exit if accessed directly
+}
+
+class WC_POS_API_Customers extends WC_API_Customers {
+
 
   /**
-   * Constructor
+   * Get Customers
+   *
+   * @param null  $fields
+   * @param array $filter
+   * @param int   $page
+   * @return array
    */
-  public function __construct() {
-    add_action( 'pre_get_users', array( $this, 'pre_get_users' ) );
-    add_action( 'pre_user_query', array( $this, 'pre_user_query' ) );
-    add_filter( 'woocommerce_api_customer_response', array( $this, 'customer_response' ), 10, 4 );
+  public function get_customers( $fields = null, $filter = array(), $page = 1 ) {
+
+    // add query actions
+    add_action( 'pre_get_users', array( $this, 'wc_pos_api_pre_get_users' ) );
+    add_action( 'pre_user_query', array( $this, 'wc_pos_api_pre_user_query' ) );
+
+    // special case for all customer ids
+    if( $fields == 'id' && isset( $filter['limit'] ) && $filter['limit'] == -1 ){
+      return array( 'customers' => $this->wc_pos_api_get_all_ids( $filter ) );
+    }
+
+    // resume parent
+    return parent::get_customers( $fields, $filter, $page );
+
   }
+
+
+  /**
+   * - add `updated_at` to customer data
+   *
+   * @param int  $id
+   * @param null $fields
+   * @return array
+   */
+  public function get_customer( $id, $fields = null ){
+    $data = parent::get_customer( $id, $fields );
+    $timestamp = get_user_meta( $id , '_user_modified_gmt', true);
+    $data['customer']['updated_at'] = $this->server->format_datetime( $timestamp );
+    return $data;
+  }
+
 
   /**
    * Removes the role='customer' restraint
    * todo: add this option to settings
    * @param $wp_user_query
    */
-  public function pre_get_users( $wp_user_query ) {
+  public function wc_pos_api_pre_get_users( $wp_user_query ) {
 
     $wp_user_query->query_vars[ 'role' ] = '';
 
@@ -47,23 +83,26 @@ class WC_POS_API_Customers extends WC_POS_API_Abstract {
   }
 
   /**
+   *
+   *
    * @param $wp_user_query
    */
-  public function pre_user_query( $wp_user_query ) {
+  public function wc_pos_api_pre_user_query( $wp_user_query ) {
 
     // customer search
-    $term = $wp_user_query->query_vars['search'];
-    if (!empty($term)){
-      $this->customer_search($term, $wp_user_query);
+    $term = $wp_user_query->query_vars[ 'search' ];
+    if ( !empty( $term ) ) {
+      $this->wc_pos_api_customer_search( $term, $wp_user_query );
     }
   }
 
   /**
-   * Extends customer search
+   * Extends customer search, allows more fields
+   *
    * @param $term
    * @param $wp_user_query
    */
-  private function customer_search($term, $wp_user_query){
+  private function wc_pos_api_customer_search($term, $wp_user_query){
     global $wpdb;
 
     // search usermeta table
@@ -99,38 +138,33 @@ class WC_POS_API_Customers extends WC_POS_API_Abstract {
 
   /**
    * Returns array of all user ids
-   * @param $updated_at_min
-   * @return array
+   *
+   * @param array $filter
+   * @return array|void
    */
-  public function get_ids($updated_at_min){
+  private function wc_pos_api_get_all_ids( $filter = array() ){
     $args = array(
-      'fields' => 'ID'
+      'fields' => 'ID',
+      'orderby' => 'ID'
     );
 
-    if($updated_at_min){
+    if( isset( $filter['updated_at_min'] ) ){
       $args['meta_key']      = '_user_modified_gmt';
-      $args['meta_value']    = $this->parse_datetime( $updated_at_min );
+      $args['meta_value']    = $this->server->parse_datetime( $filter['updated_at_min'] );
       $args['meta_compare']  = '>';
     }
 
     $query = new WP_User_Query( $args );
-    return array_map( 'intval', $query->results );
+    return array_map( array( $this, 'wc_pos_api_format_id' ), $query->results );
   }
 
 
   /**
-   * - add `updated_at` to customer data
-   *
-   * @param $customer_data
-   * @param $customer
-   * @param $fields
-   * @param $server
-   * @return mixed
+   * @param $id
+   * @return array
    */
-  public function customer_response($customer_data, $customer, $fields, $server){
-    $timestamp = get_user_meta($customer->ID, '_user_modified_gmt', true);
-    $customer_data['updated_at'] = $server->format_datetime( $timestamp );
-    return $customer_data;
+  private function wc_pos_api_format_id( $id ) {
+    return array( 'id' => $id );
   }
 
 

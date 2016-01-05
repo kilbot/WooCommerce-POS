@@ -22,7 +22,10 @@ module.exports = ItemView.extend({
     _.each(this.buttons, function(button){
       var type = button.type || 'button';
       button[type] = true;
-      button.label = button.label || polyglot.t('buttons.' + button.action);
+      button.label = button.label ||
+        polyglot.t('buttons.' + button.action, {
+          _ : _.capitalize( button.action )
+        });
     });
     return {
       buttons: this.buttons

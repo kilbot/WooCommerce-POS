@@ -4,10 +4,8 @@ var Layout = require('./layout');
 var Status = require('./views/status');
 var $ = require('jquery');
 var _ = require('lodash');
-//var Modernizr = global['Modernizr'];
 var Radio = require('backbone.radio');
 var polyglot = require('lib/utilities/polyglot');
-//var debug = require('debug')('systemStatus');
 
 var StatusRoute = Route.extend({
 
@@ -20,16 +18,6 @@ var StatusRoute = Route.extend({
       tab   : 'right',
       label : polyglot.t('titles.system-status')
     });
-
-    //this.ajaxurl = Radio.request('entities', 'get', {
-    //  type: 'option',
-    //  name: 'ajaxurl'
-    //});
-    //
-    //this.nonce = Radio.request('entities', 'get', {
-    //  type: 'option',
-    //  name: 'nonce'
-    //});
   },
 
   fetch: function(){
@@ -38,16 +26,6 @@ var StatusRoute = Route.extend({
     // add the server tests
     //fetched.push( this._fetch() );
     return $.when.apply($, fetched);
-  },
-
-  _fetch: function(){
-    //var self = this;
-    //return $.getJSON( this.ajaxurl, {
-    //  action: 'wc_pos_system_status',
-    //  security: this.nonce
-    //}, function( resp ){
-    //  self.tests = resp;
-    //});
   },
 
   render: function(){

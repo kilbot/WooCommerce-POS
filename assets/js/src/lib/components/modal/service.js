@@ -96,7 +96,7 @@ module.exports = Service.extend({
 
   error: function( options ){
     options = _.extend( {
-      className   : 'error',
+      className   : App.prototype.namespace('error'),
       footer      : {
         buttons: [
           {

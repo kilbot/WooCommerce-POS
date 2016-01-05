@@ -1,19 +1,10 @@
-var FormView = require('lib/config/form-view');
+var SettingsView = require('lib/config/settings-view');
 var $ = require('jquery');
 var App = require('lib/config/application');
 var Tooltip = require('lib/behaviors/tooltip');
 var Sortable = require('lib/behaviors/sortable');
 
-var View = FormView.extend({
-  template: 'checkout',
-
-  attributes: {
-    id: 'wc_pos-settings-checkout'
-  },
-
-  modelEvents: {
-    'change:id': 'render'
-  },
+var View = SettingsView.extend({
 
   onRender: function(){
     var self = this;
@@ -52,4 +43,4 @@ var View = FormView.extend({
 });
 
 module.exports = View;
-App.prototype.set('SettingsApp.View');
+App.prototype.set('SettingsApp.Checkout.View');

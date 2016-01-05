@@ -17,29 +17,16 @@ settings {
 
     ##{current-module()}-tabs {
 
-      ul {
-        margin: 0;
+      .nav-tab-wrapper {
         border-bottom: 1px solid $settings-border-color;
-        padding: 9px 15px 0 10px;
+        padding: 9px 15px 0 0;
+        line-height: inherit;
+      }
 
-        li {
-          padding: 6px 10px;
-          font-weight: 700;
-          font-size: 15px;
-          line-height: 24px;
-          border-bottom: 1px solid #ccc;
-          &.active {
-            color: #000;
-            background: #f1f1f1;
-            border-bottom: none;
-            position: relative;
-            top: 1px;
-          }
-          &:hover {
-            cursor: pointer;
-          }
+      .nav-tab {
+        &:hover, &:active, &:focus {
+          outline: 0;
         }
-
       }
 
     }

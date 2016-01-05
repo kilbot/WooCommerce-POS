@@ -29,11 +29,11 @@ module.exports = LayoutView.extend({
   },
 
   initialize: function(){
-    this.getRegion('main').on('show', this.setup, this);
+    this.getRegion('main').on('show', this.onMainShow, this);
     globalChannel.on('tab:label', this.updateTabLabel, this);
   },
 
-  setup: function(layout){
+  onMainShow: function(layout){
     if(layout.columns && layout.columns === 2){
       this.$el.addClass('two-column');
       this.showTabs();
@@ -41,7 +41,9 @@ module.exports = LayoutView.extend({
       this.$el.removeClass('two-column');
       this.getRegion('tabs').empty();
     }
+  },
 
+  onShow: function(){
     var hotkeys = Radio.request('entities', 'get', {
         type: 'option',
         name: 'hotkeys'

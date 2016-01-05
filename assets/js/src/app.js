@@ -12,9 +12,6 @@ var SupportRouter = require('apps/support/router');
 var PrintRouter = require('apps/print/router');
 var _ = require('lodash');
 
-// sync config
-require('lib/config/sync');
-
 /**
  * bootstrap Handlebars Helpers
  */

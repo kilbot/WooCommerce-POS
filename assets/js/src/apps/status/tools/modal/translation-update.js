@@ -45,15 +45,12 @@ module.exports =  ItemView.extend({
   },
 
   constructURL: function(){
-    var ajaxurl = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'ajaxurl'
-    });
     var nonce = Radio.request('entities', 'get', {
       type: 'option',
       name: 'nonce'
     });
-
-    return ajaxurl + '?action=wc_pos_update_translations&security=' + nonce;
+    return window.ajaxurl +
+      '?action=wc_pos_update_translations&security=' +
+      nonce;
   }
 });

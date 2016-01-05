@@ -3,28 +3,20 @@ var Router = require('lib/config/router');
 var LayoutView = require('./layout-view');
 var General = require('./general/route');
 var Checkout = require('./checkout/route');
+var Receipts = require('./receipts/route');
 var HotKeys = require('./hotkeys/route');
 var Access = require('./access/route');
-var Tools = require('./tools/route');
-var Status = require('./status/route');
 var bb = require('backbone');
 var Radio = bb.Radio;
 var _ = require('lodash');
 
 var SettingsRouter = Router.extend({
+
   initialize: function(options) {
     this.container = options.container;
     this.collection = Radio.request('entities', 'get', {
       type: 'collection',
       name: 'settings'
-    });
-    var settings = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'settings',
-      root: true
-    });
-    this.tabsArray = _.map(settings, function(setting){
-      return _.pick(setting, ['id', 'label']);
     });
   },
 
@@ -38,10 +30,9 @@ var SettingsRouter = Router.extend({
     ''        : 'showGeneral',
     'general' : 'showGeneral',
     'checkout': 'showCheckout',
+    'receipts': 'showReceipts',
     'hotkeys' : 'showHotkeys',
-    'access'  : 'showAccess',
-    'tools'   : 'showTools',
-    'status'  : 'showStatus'
+    'access'  : 'showAccess'
   },
 
   onBeforeRoute: function() {
@@ -49,30 +40,16 @@ var SettingsRouter = Router.extend({
   },
 
   showTabs: function(){
-    var hash = bb.history.getHash() || 'general';
-    var tab = _.findWhere( this.tabsArray, { id: hash } );
-    if( tab ){
-      tab.active = true;
-    }
-
     // this.tabsArray is added during POS.onBeforeStart
     var view = Radio.request('tabs', 'view', {
-      tabs: this.tabsArray
-    });
-
-    this.listenTo(view, 'show', function(){
-      // use wordpress admin styles
-      view.$el.addClass('nav-tab-wrapper');
-      view.children.each(function(child){
-        child.$el.addClass('nav-tab');
-      });
+      tabs: this.collection.tabsArray,
+      adminTabs: true
     });
 
     this.listenTo(view.collection, 'change:active', function(model, active){
       if(active){
         this.navigate(model.id, {
-          trigger: true,
-          replace: true
+          trigger: true
         });
       }
     });
@@ -98,6 +75,15 @@ var SettingsRouter = Router.extend({
     });
   },
 
+  showReceipts: function(){
+    var model = this.collection.get('receipts');
+    this.showFooter({model: model});
+    return new Receipts({
+      container : this.layout.getRegion('settings'),
+      model: model
+    });
+  },
+
   showHotkeys: function(){
     var model = this.collection.get('hotkeys');
     this.showFooter({model: model});
@@ -113,18 +99,6 @@ var SettingsRouter = Router.extend({
     return new Access({
       container : this.layout.getRegion('settings'),
       model: model
-    });
-  },
-
-  showTools: function(){
-    return new Tools({
-      container : this.layout.getRegion('settings')
-    });
-  },
-
-  showStatus: function(){
-    return new Status({
-      container : this.layout.getRegion('settings')
     });
   },
 

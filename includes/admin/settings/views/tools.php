@@ -36,7 +36,8 @@
           <?php _e( 'View Sample Receipt', 'woocommerce-pos' ); ?>
         </a>
         <?php
-          $template_path = WC_POS_Template::locate_print_receipt_template();
+//          $template_path = WC_POS_Template::locate_print_receipt_template();
+          $template_path = '';
           printf( __( '<strong class="red">Template path:</strong> %s', 'woocommerce-pos' ), '<code style="font-size: 11px">'. $template_path .'</code>' );
         ?>
       </td>

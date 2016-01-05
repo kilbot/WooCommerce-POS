@@ -20,10 +20,11 @@ module.exports = Application.extend({
   onStart: function(){
     // check browser
     if( ! this.browserCheck() ){
-      return Radio.request('modal', 'error', new BrowserModal());
+      Radio.request('modal', 'error', new BrowserModal());
     }
 
-    // start header service
+    // start app layout
+    this.layout.triggerMethod('show');
     this.headerService.start();
 
     // start router

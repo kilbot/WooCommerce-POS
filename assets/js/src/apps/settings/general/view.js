@@ -1,16 +1,10 @@
-var FormView = require('lib/config/form-view');
+var SettingsView = require('lib/config/settings-view');
 var $ = require('jquery');
 var App = require('lib/config/application');
 var CustomerSelect = require('lib/behaviors/customer-select');
 var Tooltip = require('lib/behaviors/tooltip');
 
-var View = FormView.extend({
-
-  template: 'general',
-
-  attributes: {
-    id: 'wc_pos-settings-general'
-  },
+var View = SettingsView.extend({
 
   behaviors: {
     Tooltip: {

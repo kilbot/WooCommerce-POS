@@ -10,31 +10,60 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_API_Coupons extends WC_POS_API_Abstract {
+if ( ! defined( 'ABSPATH' ) ) {
+  exit; // Exit if accessed directly
+}
+
+class WC_POS_API_Coupons extends WC_API_Coupons {
+
+  /**
+   * Add special case for all coupon ids
+   *
+   * @param null  $fields
+   * @param array $filter
+   * @param int   $page
+   * @return array
+   */
+  public function get_coupons( $fields = null, $filter = array(), $page = 1 ) {
+    if( $fields == 'id' && isset( $filter['limit'] ) && $filter['limit'] == -1 ){
+      return array( 'coupons' => $this->get_all_ids( $filter ) );
+    }
+    return parent::get_coupons( $fields, $filter, $page );
+  }
 
   /**
    * Returns array of all coupon ids
-   * @param $updated_at_min
-   * @return array
+   *
+   * @param array $filter
+   * @return array|void
    */
-  public function get_ids($updated_at_min){
+  private function get_all_ids( $filter = array() ) {
     $args = array(
-      'post_type'     => array('shop_coupon'),
-      'post_status'   => array('publish'),
-      'posts_per_page'=>  -1,
-      'fields'        => 'ids'
+      'post_type'      => array( 'shop_coupon' ),
+      'post_status'    => array( 'publish' ),
+      'posts_per_page' => -1,
+      'fields'         => 'ids'
     );
 
-    if($updated_at_min){
-      $args['date_query'][] = array(
+    if ( isset( $filter[ 'updated_at_min' ] ) ) {
+      $args[ 'date_query' ][] = array(
         'column'    => 'post_modified_gmt',
-        'after'     => $updated_at_min,
+        'after'     => $filter[ 'updated_at_min' ],
         'inclusive' => false
       );
     }
 
     $query = new WP_Query( $args );
-    return array_map( 'intval', $query->posts );
+    return array_map( array( $this, 'format_id' ), $query->posts );
+  }
+
+
+  /**
+   * @param $id
+   * @return array
+   */
+  private function format_id( $id ) {
+    return array( 'id' => $id );
   }
 
 }

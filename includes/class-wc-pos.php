@@ -21,8 +21,11 @@ class WC_POS {
       spl_autoload_register( array( $this, 'autoload' ) );
     }
 
+    // global helper functions
+    require_once WC_POS_PLUGIN_PATH . 'includes/wc-pos-functions.php';
+
     add_action( 'init', array( $this, 'init' ) );
-    add_action( 'woocommerce_api_loaded', array( $this, 'load_woocommerce_api_patches') );
+    add_action( 'woocommerce_api_loaded', array( $this, 'load_woocommerce_pos_api') );
     do_action( 'woocommerce_pos_loaded' );
 
   }
@@ -52,37 +55,46 @@ class WC_POS {
    */
   public function init() {
 
-    // global helper functions
-    require_once WC_POS_PLUGIN_PATH . 'includes/wc-pos-functions.php';
-
     // common classes
     new WC_POS_i18n();
     new WC_POS_Gateways();
     new WC_POS_Products();
     new WC_POS_Customers();
 
-    // frontend classes
-    if( !is_admin() ){
+    // admin only
+    if( is_admin() && !(defined('DOING_AJAX') && DOING_AJAX) ){
+      new WC_POS_Admin();
+    }
+
+    // frontend only
+    else {
       new WC_POS_Template();
     }
 
-    // ajax only
-    elseif( defined('DOING_AJAX') && DOING_AJAX ){
-      new WC_POS_AJAX();
-    }
-
-    // admin only
-    else {
-      new WC_POS_Admin();
-    }
+    // load integrations
+    $this->integrations();
 
   }
 
   /**
-   *
+   * Loads the POS API and patches to the WC REST API
    */
-  public function load_woocommerce_api_patches(){
-    new WC_POS_API();
+  public function load_woocommerce_pos_api(){
+    if( is_pos() ){
+      new WC_POS_API();
+    }
+  }
+
+  /**
+   * Loads POS integrations with third party plugins
+   */
+  private function integrations(){
+
+    // WooCommerce Bookings - http://www.woothemes.com/products/woocommerce-bookings/
+    if( class_exists( 'WC-Bookings' ) ){
+      new WC_POS_Integrations_Bookings();
+    }
+
   }
 
 }

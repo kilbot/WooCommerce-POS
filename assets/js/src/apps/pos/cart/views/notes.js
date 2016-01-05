@@ -10,7 +10,7 @@ module.exports = ItemView.extend({
 
   events: {
     'click'   : 'edit',
-    'keypress'  : 'saveOnEnter',
+    'keypress': 'saveOnEnter',
     'blur'    : 'save'
   },
 

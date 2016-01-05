@@ -1,8 +1,13 @@
-{{#each []}}
-<li class="{{id}}">
-  <a href="{{href}}">
-    <i class="icon-{{id}} icon-lg"></i>
-    {{label}}
-  </a>
-</li>
-{{/each}}
+<div class="menu-overlay"></div>
+<nav class="menu-content">
+  <ul>
+    {{#each []}}
+      <li class="{{id}}">
+        <a href="{{href}}">
+          <i class="icon-{{id}} icon-lg"></i>
+          {{label}}
+        </a>
+      </li>
+    {{/each}}
+  </ul>
+</nav>

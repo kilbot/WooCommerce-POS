@@ -17,6 +17,16 @@ var View = ItemView.extend({
       header: {
         title: polyglot.t('titles.hotkeys')
       },
+      tabs: [
+        {
+          id: 1,
+          label: 'Tab 1'
+        },
+        {
+          id: 2,
+          label: 'Tab 2'
+        }
+      ],
       footer: false
     };
   },

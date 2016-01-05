@@ -70,7 +70,7 @@ class WC_POS_Gateways_Card extends WC_Payment_Gateway {
     $order = new WC_Order( $order_id );
 
     // update pos_cash data
-    $data = WC_POS_Server::get_raw_data();
+    $data = WC_POS_API::get_raw_data();
     $cashback = isset( $data['payment_details']['pos-cashback'] ) ? wc_format_decimal( $data['payment_details']['pos-cashback'] ) : 0 ;
 
     if( $cashback !== 0 ) {

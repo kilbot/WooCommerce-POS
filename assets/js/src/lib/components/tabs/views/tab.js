@@ -3,13 +3,15 @@ var ItemView = require('lib/config/item-view');
 var Tmpl = require('./tab.hbs');
 
 var View = ItemView.extend({
+
   tagName: 'li',
+
   template: hbs.compile(Tmpl),
 
-  className: function () {
-    if (this.model.get('active')) {
-      return 'active';
-    }
+  activeClassName: 'active',
+
+  initialize: function( options ){
+    this.mergeOptions( options, ['activeClassName'] );
   },
 
   modelEvents: {
@@ -18,7 +20,7 @@ var View = ItemView.extend({
   },
 
   toggleActive: function(){
-    this.$el.toggleClass('active', this.model.get('active'));
+    this.$el.toggleClass(this.activeClassName, this.model.get('active'));
   },
 
   triggers: {

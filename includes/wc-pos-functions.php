@@ -56,6 +56,22 @@ function is_pos( $type = false ) {
 }
 
 /**
+ *
+ */
+function is_pos_admin() {
+  if ( function_exists( 'getallheaders' )
+    && $headers = getallheaders()
+    && isset( $headers['X-WC-POS-ADMIN'] )
+  ) {
+    return $headers['X-WC-POS-ADMIN'];
+  } elseif ( isset( $_SERVER[ 'HTTP_X_WC_POS_ADMIN' ] ) ) {
+    return $_SERVER[ 'HTTP_X_WC_POS_ADMIN' ];
+  }
+
+  return false;
+}
+
+    /**
  * Add or update a WordPress option.
  * The option will _not_ auto-load by default.
  *
@@ -123,4 +139,14 @@ function wc_pos_get_option( $id, $key = false ){
 
   $settings = $handlers[$id]::get_instance();
   return $settings->get( $key );
+}
+
+/**
+ * Remove newlines and code spacing
+ *
+ * @param $str
+ * @return mixed
+ */
+function wc_pos_trim_html_string( $str ) {
+  return preg_replace( '/^\s+|\n|\r|\s+$/m', '', $str );
 }

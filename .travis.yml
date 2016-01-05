@@ -31,7 +31,7 @@ install:
   - git clone https://github.com/kilbot/WooCommerce-POS-Test-Plugin.git wp-content/plugins/woocommerce-pos-test
   # apache
   - sudo apt-get update
-  - sudo apt-get install apache2 libapache2-mod-fastcgi
+  - sudo apt-get install apache2
   # enable php-fpm
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - sudo a2enmod rewrite actions fastcgi alias

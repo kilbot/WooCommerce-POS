@@ -1,3 +1,4 @@
+$menu-zindex            : 1000;
 $menu-width             : 200px;
 $menu-bg                : nth( $primaryPalette, 10 );
 $menu-text-color        : $inverse-text-color;
@@ -10,28 +11,35 @@ $menu-item-hover-color  : darken($link-color, 5%);
  *
  * @markup
  *  <div class="menu-open">
- *    <nav id="menu">
- *      <ul>
- *        <li><a href="#777"><i class="icon-woocommerce-pos icon-lg"></i> Item</a></li>
- *        <li><a href="#777"><i class="icon-products icon-lg"></i> Item</a></li>
- *        <li class="support"><a href="#777"><i class="icon-support icon-lg"></i> Item</a></li>
- *        <li><a href="#777"><i class="icon-wordpress icon-lg"></i> Item</a></li>
- *      </ul>
- *    </nav>
+ *    <div id="menu">
+ *      <nav class="menu-content">
+ *        <ul>
+ *          <li><a href="#777"><i class="icon-woocommerce-pos icon-lg"></i> Item</a></li>
+ *          <li><a href="#777"><i class="icon-products icon-lg"></i> Item</a></li>
+ *          <li class="support"><a href="#777"><i class="icon-support icon-lg"></i> Item</a></li>
+ *          <li><a href="#777"><i class="icon-wordpress icon-lg"></i> Item</a></li>
+ *        </ul>
+ *      </nav>
+ *      <div class="menu-overlay"></div>
+ *    </div>
  *  </div>
  */
 
 menu {
   @at-root {
 
-    ##{current-module()} {
+    ##{current-module()}{
+      position: fixed;
+      z-index: $menu-zindex;
+    }
+
+    .#{current-module()}-content {
 
       width: $menu-width;
       background: $menu-bg;
       position: fixed;
       height: 100%;
       top: 0;
-      z-index: 9999;
       @include box-shadow(inset -10px 0 6px -9px rgba(0, 0, 0, .7));
       @include translate3d(-($menu-width),0,0);
       @include transition(transform .2s cubic-bezier(.16, .68, .43, .99));
@@ -80,9 +88,23 @@ menu {
 
     }
 
+    // overlay
+    .#{current-module()}-overlay {
+      position: fixed;
+      background: rgba(0, 0, 0, .4);
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: none;
+    }
+
     // open
-    .#{current-module()}-open ##{current-module()} {
+    .#{current-module()}-open .#{current-module()}-content {
       @include translate3d(0,0,0);
+    }
+    .#{current-module()}-open .#{current-module()}-overlay {
+      display: block;
     }
 
   }

@@ -1,7 +1,6 @@
 var ItemView = require('lib/config/item-view');
 var Radio = require('backbone.radio');
 var App = require('lib/config/application');
-var $ = require('jquery');
 var polyglot = require('lib/utilities/polyglot');
 
 var View = ItemView.extend({
@@ -19,17 +18,15 @@ var View = ItemView.extend({
 
   initialize: function(){
     var self = this,
-      ajaxurl = Radio.request('entities', 'get', {
+      wc_api = Radio.request('entities', 'get', {
       type: 'option',
-      name: 'ajaxurl'
+      name: 'wc_api'
     });
 
-    $.get( ajaxurl, {
-      'action'  : 'wc_pos_get_modal',
-      'template': 'browser'
-    }).always(function(template){
-      self.$el.html(template);
-    });
+    App.prototype.getJSON( wc_api + 'pos/templates/modal/browser' )
+      .done( function(tmpl){
+        self.$el.html(tmpl);
+      });
 
     this.modal.header = {
       title: polyglot.t('messages.browser')

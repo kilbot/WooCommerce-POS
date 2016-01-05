@@ -4,7 +4,7 @@ var EmulateHTTP = require('lib/behaviors/emulateHTTP');
 
 var View = ItemView.extend({
 
-  template: 'status',
+  template: 'settings.status',
 
   attributes: {
     id: 'wc_pos-settings-status'

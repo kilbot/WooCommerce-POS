@@ -35,9 +35,13 @@ If you would like to help translate WooCommerce POS into your language please ch
 WooCommerce POS is a WordPress plugin which requires [WordPress](http://wordpress.org) 3.8+ and [WooCommerce](wordpress.org/plugins/woocommerce) 2.2+.
 
 To develop the plugin locally you will first have to set up a local server with WordPress and WooCommerce installed.
-If this is your first time setting up a local development environment you may want to check out [Varying Vagrant Vagrants](https://github.com/Varying-Vagrant-Vagrants/VVV) or [Chassis](https://github.com/Chassis/Chassis).
+If this is your first time setting up a local development environment you may want to check out [Varying Vagrant Vagrants (VVV)](https://github.com/Varying-Vagrant-Vagrants/VVV) or [Chassis](https://github.com/Chassis/Chassis).
 
 ### Installation
+
+The following installation instructions assume you have `git`, `nodejs` and `npm` installed. 
+VVV comes bundled with these and a bunch of other goodies so it is the recommended development environment for WooCommerce POS.
+If you have VVV intalled you should use `vagarnt ssh` to enter the virtual machine and then continue with the instructions.
 
 Navigate to your local `wp-content/plugins` directory and clone the project. 
 The recursive flag will init and update any submodules. 

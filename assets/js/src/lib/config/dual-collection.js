@@ -176,14 +176,11 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
 
   /**
    * Get array of all entity ids from the server
+   * @todo remove optimised endpoint
    * - optionally get ids modified since last_update
-   * - uses ajax for performance
    */
   getRemoteIds: function(last_update){
-    var ajaxurl = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'ajaxurl'
-    });
+    var self = this;
 
     if(last_update){
       debug('getting updated ids from server since ' + last_update);
@@ -191,10 +188,19 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
       debug('getting all ids from server');
     }
 
-    return $.getJSON( ajaxurl, {
-      action        : 'wc_pos_get_all_ids',
-      type          : this.name,
-      updated_at_min: last_update
+    return this.sync('read', this, {
+      remote: true,
+      data: {
+        fields: 'id',
+        filter: {
+          limit: -1,
+          updated_at_min: last_update
+        }
+      }
+    })
+    // default WC REST API returns { products: [{ id: 1 }, { id: 2 } ...
+    .then(function(resp){
+      return _.pluck( self.parse(resp), 'id' );
     });
   },
 

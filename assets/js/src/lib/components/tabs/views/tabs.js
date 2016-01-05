@@ -2,8 +2,11 @@ var CollectionView = require('lib/config/collection-view');
 var Tab = require('./tab');
 
 var View = CollectionView.extend({
+
   tagName: 'ul',
+
   childView: Tab,
+
   attributes: {
     'class' : 'tabs',
     'role'  : 'tablist'

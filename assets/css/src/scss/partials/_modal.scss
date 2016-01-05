@@ -123,7 +123,7 @@ modal {
       /**
        * Error modal
        */
-      .error & {
+      .#{namespace('error')} & {
         background: nth($paletteRed, 8);
         border-color: lighten(nth($paletteRed, 8), 5%);
         color: $inverse-text-color;

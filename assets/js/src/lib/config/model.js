@@ -1,7 +1,7 @@
 var bb = require('backbone');
 var app = require('./application');
 var _ = require('lodash');
-//var Radio = require('backbone.radio');
+var sync = require('lib/config/sync');
 
 // parsing functions
 var parse = {
@@ -37,6 +37,8 @@ module.exports = app.prototype.Model = bb.Model.extend({
     }, this);
 
     return data;
-  }
+  },
+
+  sync: sync
 
 });

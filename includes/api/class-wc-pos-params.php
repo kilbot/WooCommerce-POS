@@ -1,29 +1,52 @@
 <?php
+
 /**
  * POS App parameters
  *
- * @class    WC_POS_Params
+ * @class    WC_POS_API_Params
  * @package  WooCommerce POS
  * @author   Paul Kilmurray <paul@kilbot.com.au>
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_AJAX_Params {
+if ( ! defined( 'ABSPATH' ) ) {
+  exit; // Exit if accessed directly
+}
+
+class WC_POS_API_Params extends WC_API_Resource {
+
+  protected $base = '/pos/params';
 
   /**
+   * Register routes for POS Params
    *
+   * GET /pos
+   *
+   * @param array $routes
+   * @return array
    */
-  public function params(){
-    $params = apply_filters( 'woocommerce_pos_params', $this->common_params() + $this->frontend_params(), $this );
-    return WC_POS_AJAX::response( $params );
+  public function register_routes( array $routes ){
+
+    # GET /pos/params
+    $routes[ $this->base ] = array(
+      array( array( $this, 'get_params' ), WC_API_Server::READABLE )
+    );
+
+    return $routes;
+
   }
 
   /**
-   *
+   * @param null $wc_pos_admin
+   * @return array
    */
-  public function admin_settings_params(){
-    $params = apply_filters( 'woocommerce_pos_admin_settings_params', $this->common_params() + $this->admin_params(), $this );
-    return WC_POS_AJAX::response( $params );
+  public function get_params( $wc_pos_admin = null ){
+    if( $wc_pos_admin ){
+      $params = apply_filters( 'woocommerce_pos_{$wc_pos_admin}_params', $this->common_params() + $this->admin_params(), $this );
+    } else {
+      $params = apply_filters( 'woocommerce_pos_params', $this->common_params() + $this->frontend_params(), $this );
+    }
+    return $params;
   }
 
   /**
@@ -32,14 +55,11 @@ class WC_POS_AJAX_Params {
   private function common_params(){
     return array(
       'accounting'  => $this->accounting(),
-      'ajaxurl'     => admin_url( 'admin-ajax.php', 'relative' ),
       'customers'   => $this->customers(),
       'debug'       => defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG,
       'nonce'       => wp_create_nonce( WC_POS_PLUGIN_NAME ),
-      'wc_api'      => get_woocommerce_api_url( '' ),
       'emulateHTTP' => get_option( 'woocommerce_pos_emulateHTTP' ) === '1',
-      'idbVersion'  => WC_POS_AJAX_Settings::get_idb_version(),
-      'i18n'        => WC_POS_i18n::params()
+      'idbVersion'  => WC_POS_Admin_Settings::get_idb_version()
     );
   }
 
@@ -59,8 +79,7 @@ class WC_POS_AJAX_Params {
       'tax'           => $this->tax(),
       'tax_classes'   => WC_POS_Tax::tax_classes(),
       'tax_rates'     => WC_POS_Tax::tax_rates(),
-      'user'          => $this->user(),
-      'templates'     => WC_POS_Template::templates_payload()
+      'user'          => $this->user()
     );
   }
 
@@ -200,8 +219,12 @@ class WC_POS_AJAX_Params {
     global $current_user;
 
     return array(
-      'id'      => $current_user->ID,
-      'display_name'  => $current_user->display_name
+      'id'           => $current_user->ID,
+      'username'     => $current_user->user_login,
+      'first_name'   => $current_user->user_firstname,
+      'last_name'    => $current_user->user_lastname,
+      'display_name' => $current_user->display_name,
+      'email'        => $current_user->user_email
     );
   }
 

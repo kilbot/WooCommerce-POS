@@ -16,8 +16,6 @@ class WC_POS_API {
    *
    */
   public function __construct() {
-    if( ! is_pos() )
-      return;
 
     // remove wc api authentication
     // - relies on ->api and ->authentication being publicly accessible
@@ -30,27 +28,66 @@ class WC_POS_API {
       $_GET['_method'] = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
     }
 
+    add_filter( 'woocommerce_api_classes', array( $this, 'api_classes' ) );
     add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 0 );
     add_filter( 'woocommerce_api_dispatch_args', array( $this, 'dispatch_args'), 10, 2 );
     add_filter( 'woocommerce_api_query_args', array( $this, 'woocommerce_api_query_args' ), 10, 2 );
   }
 
   /**
+   * Load API classes
+   *
+   * @param array $classes
+   * @return array
+   */
+  public function api_classes( array $classes ){
+
+    // common classes
+    array_push(
+      $classes,
+      'WC_POS_API_Products',
+      'WC_POS_API_Orders',
+      'WC_POS_API_Customers',
+      'WC_POS_API_Coupons',
+      'WC_POS_API_Payload',
+      'WC_POS_API_Params',
+      'WC_POS_API_i18n',
+      'WC_POS_API_Templates'
+    );
+
+    // frontend only
+    if( current_user_can('access_woocommerce_pos') ){
+      array_push( $classes, 'WC_POS_API_Gateways', 'WC_POS_API_Support' );
+    }
+
+    // admin only
+    if( current_user_can('manage_woocommerce_pos') ){
+      array_push( $classes, 'WC_POS_API_Settings' );
+    }
+
+    return $classes;
+  }
+
+
+  /**
    * Bypass authentication for WC REST API
+   * @todo use OAuth, how to handle manage no access?
+   *
    * @return WP_User object
    */
   public function wc_api_authentication() {
     global $current_user;
     $user = $current_user;
 
-    if( ! user_can( $user->ID, 'access_woocommerce_pos' ) )
-      $user = new WP_Error(
-        'woocommerce_pos_authentication_error',
-        __( 'User not authorized to access WooCommerce POS', 'woocommerce-pos' ),
-        array( 'status' => 401 )
-      );
+    if( user_can( $user->ID, 'access_woocommerce_pos' ) ) {
+      return $user;
+    }
 
-    return $user;
+    return new WP_Error(
+      'woocommerce_pos_authentication_error',
+      __( 'User not authorized to access WooCommerce POS', 'woocommerce-pos' ),
+      array( 'status' => 401 )
+    );
   }
 
   /**
@@ -59,34 +96,24 @@ class WC_POS_API {
    * @return mixed
    */
   public function dispatch_args($args, $callback){
-    $wc_api_handler = get_class($callback[0]);
 
-    $has_data = in_array( $args['_method'], array(2, 4, 8) ) && isset( $args['data'] ) && is_array( $args['data'] );
-    if( $has_data ){
-      // remove status
-      if( array_key_exists('status', $args['data']) ){
-        unset($args['data']['status']);
-      }
+    // note: using headers rather than query params, easier to manage through the js app
+    $args['wc_pos_admin'] = is_pos_admin();
+
+    // parse data from js app
+    if( ! isset( $args['data'] ) || ! isset( $args['data']['status'] ) ){
+      return $args;
     }
 
-    switch($wc_api_handler){
-      case 'WC_API_Products':
-        new WC_POS_API_Products();
-        break;
-      case 'WC_API_Orders':
-        if( $has_data && !isset( $args['data']['order'] ) ){
-          $data = $args['data'];
-          unset( $args['data'] );
-          $args['data']['order'] = $data;
-        }
-        new WC_POS_API_Orders();
-        break;
-      case 'WC_API_Customers':
-        new WC_POS_API_Customers();
-        break;
-      case 'WC_API_Coupons':
-        new WC_POS_API_Coupons();
-        break;
+    if( in_array( $args['data']['status'], array('CREATE_FAILED', 'UPDATE_FAILED') )){
+      unset($args['data']['status']); // remove status
+
+      // a hack to put data in the right format
+      if( $args['_route'] == '/orders' ){
+        $args['data'] = array(
+          'order' => $args['data']
+        );
+      }
     }
 
     return $args;
@@ -116,27 +143,15 @@ class WC_POS_API {
   }
 
   /**
-   * Get all the ids for a given post_type
-   * @return json
+   * Raw payload
+   * @return array|mixed|string
    */
-  static public function get_all_ids() {
-    $entity = isset($_REQUEST['type']) ? $_REQUEST['type'] : false;
-    $updated_at_min = isset($_REQUEST['updated_at_min']) ? $_REQUEST['updated_at_min'] : false;
-    $class_name = 'WC_POS_API_' . ucfirst( $entity );
-    $handler = new $class_name();
-
-    if(method_exists($handler, 'get_ids')){
-      $result = call_user_func(array($handler, 'get_ids'), $updated_at_min);
-    } else {
-      $result = new WP_Error(
-        'woocommerce_pos_get_ids_error',
-        /* translators: woocommerce */
-        sprintf( __( 'There was an error calling %s::%s', 'woocommerce' ), 'WC_POS_API', $entity ),
-        array( 'status' => 500 )
-      );
+  static public function get_raw_data() {
+    global $HTTP_RAW_POST_DATA;
+    if ( !isset( $HTTP_RAW_POST_DATA ) ) {
+      $HTTP_RAW_POST_DATA = trim(file_get_contents('php://input'));
     }
-
-    WC_POS_Server::response($result);
+    return json_decode( $HTTP_RAW_POST_DATA, true);
   }
 
 }

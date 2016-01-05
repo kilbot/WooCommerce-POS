@@ -37,7 +37,16 @@ class WC_POS_Admin_Settings_Abstract {
    */
   public function output(){
     include 'views/' . $this->id . '.php';
-    do_action( 'woocommerce_pos_' . $this->id . '_settings_after_output', $this );
+  }
+
+  /**
+   * Catch output and format
+   */
+  public function get_template(){
+    ob_start();
+    $this->output();
+    $template = wc_pos_trim_html_string( ob_get_clean() );
+    return apply_filters( 'woocommerce_pos_' . $this->id . '_settings_template', $template, $this );
   }
 
   /**
