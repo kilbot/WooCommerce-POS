@@ -12,7 +12,7 @@ var ButtonsService = require('lib/components/buttons/service');
 /**
  * SubApps
  */
-var SettingsRouter = require('apps/settings/router');
+var StatusRouter = require('apps/status/router');
 
 /**
  * bootstrap Handlebars Helpers
@@ -29,14 +29,14 @@ var app = new Application({
 });
 
 /**
- * ... add Services which require layout and params
+ * ... add SubApps and Services
  */
 app.on('before:start', function(options) {
 
   // attach services to global App
   _.extend(this, {
     entitiesService : new EntitiesService(options),
-    settingsApp     : new SettingsRouter({
+    statusApp       : new StatusRouter({
       container     : this.layout.getRegion('main')
     })
   });

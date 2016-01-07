@@ -22,7 +22,7 @@ module.exports = Service.extend({
     if( options.adminTabs ){
       _.defaults( options, {
         tagName: 'div',
-        className: 'tabs nav-tab-wrapper',
+        className: 'nav-tab-wrapper',
         childViewOptions: function(){
           return {
             tagName: 'a',

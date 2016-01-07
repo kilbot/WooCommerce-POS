@@ -30,20 +30,6 @@
     </tr>
 
     <tr>
-      <th><?php _e( 'Receipt Template', 'woocommerce-pos' ); ?></th>
-      <td>
-        <a href="<?php esc_attr_e( wc_pos_url('#print') ); ?>" target="_blank" class="button">
-          <?php _e( 'View Sample Receipt', 'woocommerce-pos' ); ?>
-        </a>
-        <?php
-//          $template_path = WC_POS_Template::locate_print_receipt_template();
-          $template_path = '';
-          printf( __( '<strong class="red">Template path:</strong> %s', 'woocommerce-pos' ), '<code style="font-size: 11px">'. $template_path .'</code>' );
-        ?>
-      </td>
-    </tr>
-
-    <tr>
       <th><?php _e( 'Legacy Server Support', 'woocommerce-pos' ); ?></th>
       <td>
         <?php $toggle = get_option('woocommerce_pos_emulateHTTP') === '1'; ?>

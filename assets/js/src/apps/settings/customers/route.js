@@ -2,7 +2,7 @@ var Route = require('lib/config/route');
 var App = require('lib/config/application');
 var View = require('./view');
 
-var General = Route.extend({
+var Customers = Route.extend({
 
   initialize: function( options ) {
     options = options || {};
@@ -11,7 +11,7 @@ var General = Route.extend({
   },
 
   fetch: function() {
-    if(this.model && this.model.isNew()){
+    if(this.model.isNew()){
       return this.model.fetch();
     }
   },
@@ -26,5 +26,5 @@ var General = Route.extend({
 
 });
 
-module.exports = General;
-App.prototype.set('SettingsApp.General.Route', General);
+module.exports = Customers;
+App.prototype.set('SettingsApp.Customers.Route', Customers);

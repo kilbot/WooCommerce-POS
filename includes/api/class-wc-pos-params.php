@@ -57,7 +57,6 @@ class WC_POS_API_Params extends WC_API_Resource {
       'accounting'  => $this->accounting(),
       'customers'   => $this->customers(),
       'debug'       => defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG,
-      'nonce'       => wp_create_nonce( WC_POS_PLUGIN_NAME ),
       'emulateHTTP' => get_option( 'woocommerce_pos_emulateHTTP' ) === '1',
       'idbVersion'  => WC_POS_Admin_Settings::get_idb_version()
     );
@@ -88,7 +87,8 @@ class WC_POS_API_Params extends WC_API_Resource {
    */
   private function admin_params(){
     return array(
-      'search_customers_nonce' => wp_create_nonce( 'search-customers' )
+      'search_customers_nonce' => wp_create_nonce( 'search-customers' ),
+      'nonce'       => wp_create_nonce( WC_POS_PLUGIN_NAME ),
     );
   }
 

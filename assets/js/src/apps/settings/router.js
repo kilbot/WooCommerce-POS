@@ -27,12 +27,13 @@ var SettingsRouter = Router.extend({
   },
 
   routes: {
-    ''        : 'showGeneral',
-    'general' : 'showGeneral',
-    'checkout': 'showCheckout',
-    'receipts': 'showReceipts',
-    'hotkeys' : 'showHotkeys',
-    'access'  : 'showAccess'
+    ''          : 'showGeneral',
+    'general'   : 'showGeneral',
+    'customers' : 'showCustomers',
+    'checkout'  : 'showCheckout',
+    'receipts'  : 'showReceipts',
+    'hotkeys'   : 'showHotkeys',
+    'access'    : 'showAccess'
   },
 
   onBeforeRoute: function() {
@@ -61,6 +62,15 @@ var SettingsRouter = Router.extend({
     var model = this.collection.get('general');
     this.showFooter({model: model});
     return new General({
+      container : this.layout.getRegion('settings'),
+      model: model
+    });
+  },
+
+  showCustomers: function(){
+    var model = this.collection.get('customers');
+    this.showFooter({model: model});
+    return new Checkout({
       container : this.layout.getRegion('settings'),
       model: model
     });

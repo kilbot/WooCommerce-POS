@@ -19,6 +19,7 @@ class WC_POS_Admin_Settings extends WC_POS_Admin_Abstract {
    */
   static public $handlers = array(
     'general'   => 'WC_POS_Admin_Settings_General',
+    'customers' => 'WC_POS_Admin_Settings_Customers',
     'checkout'  => 'WC_POS_Admin_Settings_Checkout',
     'receipts'  => 'WC_POS_Admin_Settings_Receipts',
     'hotkeys'   => 'WC_POS_Admin_Settings_HotKeys',
@@ -53,7 +54,7 @@ class WC_POS_Admin_Settings extends WC_POS_Admin_Abstract {
    * @return mixed|void
    */
   static public function handlers(){
-    return apply_filters( 'woocommerce_pos_admin_settings_handlers', self::$handlers);
+    return apply_filters( 'woocommerce_pos_admin_settings_handlers', self::$handlers );
   }
 
   /**

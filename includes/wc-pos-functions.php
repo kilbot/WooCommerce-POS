@@ -42,12 +42,12 @@ function is_pos( $type = false ) {
 
   // test for WC REST API requests, ie: matched request header
   if( $type == 'ajax' || !$type ) {
-    if ( function_exists( 'getallheaders' )
-         && is_array( getallheaders() )
-         && array_key_exists( 'X-WC-POS', getallheaders() )
-    ) {
+    // check server global first
+    if( isset( $_SERVER['HTTP_X_WC_POS'] ) && $_SERVER['HTTP_X_WC_POS'] == 1 ){
       return true;
-    } elseif ( isset( $_SERVER['HTTP_X_WC_POS'] ) && $_SERVER['HTTP_X_WC_POS'] == 1 ) {
+    }
+    // backup check getallheaders() - can cause problems
+    if ( function_exists( 'getallheaders' ) && is_array( getallheaders() ) && array_key_exists( 'X-WC-POS', getallheaders() ) ) {
       return true;
     }
   }

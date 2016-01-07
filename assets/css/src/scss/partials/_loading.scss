@@ -26,8 +26,22 @@ loading {
   }
 }
 
-//.module .loading {
-//  p {
-//    background: white;
-//  }
-//}
+/**
+ * special case loading page
+ */
+$pulse-name : namespace('pulse');
+
+@include keyframes($pulse-name) {
+  0% { @include scale(0.9);  }
+  50% { @include scale(1);  }
+  100% { @include scale(0.9);  }
+}
+
+#page > i.icon-pos {
+  font-size: 40em;
+  font-size: 40vw;
+  color: nth( $primaryPalette, 10 );
+  width: 100%;
+  text-align: center;
+  @include animation($pulse-name 20s infinite linear);
+}

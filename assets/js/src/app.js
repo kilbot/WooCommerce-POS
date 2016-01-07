@@ -20,19 +20,14 @@ require('lib/utilities/handlebars-helpers');
 /**
  * Create the app ...
  */
-var app = new Application();
-
-/**
- * ... add Services
- */
-_.extend( app, {
+var app = new Application({
   modalService      : new ModalService(),
   buttonsService    : new ButtonsService(),
   popoverService    : new PopoverService(),
   printService      : new PrintService(),
   tabsService       : new TabsService(),
   numpadService     : new NumpadService()
-} );
+});
 
 /**
  *  ... add Services which require layout and params

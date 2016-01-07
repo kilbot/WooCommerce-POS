@@ -725,7 +725,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param array $filter
    * @return array|void
    */
-  private function get_all_ids( $filter = array() ){
+  private function wc_pos_api_get_all_ids( $filter = array() ){
     $args = array(
       'post_type'     => array('shop_order'),
       'post_status'   => array('any'),
@@ -742,7 +742,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
     }
 
     $query = new WP_Query( $args );
-    return array_map( array( $this, 'format_id' ), $query->posts );
+    return array_map( array( $this, 'wc_pos_api_format_id' ), $query->posts );
   }
 
 
@@ -750,7 +750,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $id
    * @return array
    */
-  private function format_id( $id ){
+  private function wc_pos_api_format_id( $id ){
     return array( 'id' => $id );
   }
 

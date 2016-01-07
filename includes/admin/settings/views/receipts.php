@@ -4,7 +4,7 @@
    */
 ?>
 
-<h3><?php _e( 'Receipts', 'woocommerce-pos' ); ?></h3>
+<h3><?php _e( 'Receipt Options', 'woocommerce-pos' ); ?></h3>
 
 <table class="wc_pos-form-table">
 
@@ -31,6 +31,27 @@
         <option value="esc-pos">ESC/POS via network printer</option>
       </select>
     </td>
+  </tr>
+
+  <tr>
+    <th scope="row">
+      <label for="customer_roles"><?php _e( 'Receipt Template', 'woocommerce-pos' ) ?></label>
+    </th>
+    <td>
+      <p>
+        <?php
+          $template_path = 'yadda yadda';
+          printf( __( '<strong class="red">Template path:</strong> %s', 'woocommerce-pos' ), '<code style="font-size: 11px">'. $template_path .'</code>' );
+        ?>
+      </p>
+      <a href="#" class="button" data-action="preview-receipt">
+        <?php _e( 'View Sample Receipt', 'woocommerce-pos' ); ?>
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2" id="receipt-preview" style="display:none;"></td>
   </tr>
 
 </table>
