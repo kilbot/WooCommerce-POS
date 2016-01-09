@@ -452,12 +452,18 @@ class WC_POS_API_Orders extends WC_API_Orders {
     add_filter('option_woocommerce_'. $gateway_id .'_settings', array($this, 'wc_pos_api_force_enable_gateway'));
     $settings = WC_POS_Admin_Settings_Checkout::get_instance();
     $gateways = $settings->load_enabled_gateways();
-    $response = $gateways[ $gateway_id ]->process_payment( $order_id );
 
-    if(isset($response['result']) && $response['result'] == 'success'){
-      $this->wc_pos_api_payment_success($gateway_id, $order_id, $response);
+    if( isset( $gateways[ $gateway_id ] ) ) {
+
+      $response = $gateways[ $gateway_id ]->process_payment( $order_id );
+      if ( isset( $response[ 'result' ] ) && $response[ 'result' ] == 'success' ) {
+        $this->wc_pos_api_payment_success( $gateway_id, $order_id, $response );
+      } else {
+        $this->wc_pos_api_payment_failure( $gateway_id, $order_id, $response );
+      }
+
     } else {
-      $this->wc_pos_api_payment_failure($gateway_id, $order_id, $response);
+      $this->wc_pos_api_payment_failure( $gateway_id, $order_id, '' );
     }
 
     // switch back to logged in user

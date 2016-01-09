@@ -2,8 +2,6 @@
 
 class Integration_Test_WC_POS {
 
-  private $wp_root;
-
   public function __construct(){
 
     ini_set( 'display_errors','on' );
