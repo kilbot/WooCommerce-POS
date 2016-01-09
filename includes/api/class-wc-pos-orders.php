@@ -449,7 +449,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
 
     // load the gateways & process payment
     $gateway_id = $data['payment_details']['method_id'];
-    add_filter('option_woocommerce_'. $gateway_id .'_settings', array($this, 'force_enable_gateway'));
+    add_filter('option_woocommerce_'. $gateway_id .'_settings', array($this, 'wc_pos_api_force_enable_gateway'));
     $settings = WC_POS_Admin_Settings_Checkout::get_instance();
     $gateways = $settings->load_enabled_gateways();
     $response = $gateways[ $gateway_id ]->process_payment( $order_id );

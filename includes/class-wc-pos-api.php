@@ -91,6 +91,8 @@ class WC_POS_API {
   }
 
   /**
+   * @todo this is a total hack, need to find a way to customise bb remote sync
+   *
    * @param $args
    * @param $callback
    * @return mixed
@@ -109,7 +111,7 @@ class WC_POS_API {
       unset($args['data']['status']); // remove status
 
       // a hack to put data in the right format
-      if( $args['_route'] == '/orders' ){
+      if( substr( $args['_route'], 0, 7 ) == '/orders' ){
         $args['data'] = array(
           'order' => $args['data']
         );

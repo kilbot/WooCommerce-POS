@@ -200,16 +200,12 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
 
     // get all product ids
     $this->log_in_user();
-    $client = new GuzzleHttp\Client();
-    $response = $client->get( admin_url('admin-ajax.php'), array(
-      'query' => array(
-        'action' => 'wc_pos_get_all_ids',
-        'type' => 'products',
-        'security' => wp_create_nonce( WC_POS_PLUGIN_NAME )
-      ),
-      'headers' => array( 'X-WC-POS' => '1' ),
-      'exceptions' => false
-    ));
+    $response = $this->client->get('', [
+      'query' => [
+        'filter[fields]' => 'id',
+        'filter[limit]'=> '-1'
+      ]
+    ]);
     $this->log_out_user();
     $this->assertNotContains( $product['id'], $response->json() );
 
