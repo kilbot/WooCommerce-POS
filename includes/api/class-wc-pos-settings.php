@@ -17,9 +17,6 @@ class WC_POS_API_Settings extends WC_API_Resource {
 
   protected $base = '/pos/settings';
 
-  /* @var string The db prefix for WP Options table */
-  const DB_PREFIX = 'woocommerce_pos_';
-
   /**
    * Register routes for POS Settings
    *
@@ -49,6 +46,8 @@ class WC_POS_API_Settings extends WC_API_Resource {
   /**
    * @param string $id
    * @return array
+   *
+   * @todo move business logic to WC_POS_Admin_Settings
    */
   public function get_settings( $id = '', $wc_pos_admin = null ){
     $payload = $handlers = array();
@@ -64,28 +63,17 @@ class WC_POS_API_Settings extends WC_API_Resource {
 
     // single settings
     if( $id && isset( $handlers[$id] ) ){
-      $handler = $handlers[$id];
-      return $this->get_setting( $handler::get_instance() );
+      $class = $handlers[$id];
+      $handler = $class::get_instance();
+      return $handler->get_payload();
     }
 
-    foreach($handlers as $key => $handler){
-      $payload[] = $this->get_setting( $handler::get_instance() );
+    foreach($handlers as $key => $class){
+      $handler = $class::get_instance();
+      $payload[] = $handler->get_payload();
     }
 
     return $payload;
-  }
-
-  /**
-   * @param $handler
-   * @return array
-   */
-  private function get_setting( $handler ) {
-    return array(
-      'id'       => $handler->id,
-      'label'    => $handler->label,
-      'data'     => $handler->get(),
-      'template' => $handler->get_template()
-    );
   }
 
   /**
@@ -123,7 +111,25 @@ class WC_POS_API_Settings extends WC_API_Resource {
     return $handler->delete();
   }
 
+  /**
+   * Delete all settings in WP options table
+   */
+  public function delete_all_settings() {
+    global $wpdb;
+    $wpdb->query(
+      $wpdb->prepare( "
+        DELETE FROM {$wpdb->options}
+        WHERE option_name
+        LIKE '%s'",
+        WC_POS_Admin_Settings::DB_PREFIX . '%'
+      )
+    );
+  }
 
+  /**
+   * @param $id
+   * @return WC_POS_Admin_Settings_Gateways|WP_Error
+   */
   private function get_settings_handler( $id ){
 
     if( ! $id ){

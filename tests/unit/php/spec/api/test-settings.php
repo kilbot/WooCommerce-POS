@@ -1,0 +1,41 @@
+<?php
+
+class SettingsAPITest extends WP_UnitTestCase {
+
+  private $settings_api;
+
+  function setUp(){
+    $this->settings_api = new WC_POS_API_Settings( $this->mock_api_server() );
+  }
+
+  function mock_api_server(){
+    $stub = $this->getMockBuilder('WC_API_Server')
+      ->disableOriginalConstructor()
+      ->getMock();
+
+    return $stub;
+  }
+
+//  function test_delete_settings(){
+//    update_option( WC_POS_Admin_Settings::DB_PREFIX . 'test', 'dummy' );
+//    $this->settings_api->delete_settings('test');
+//    $settings = get_option(WC_POS_Admin_Settings::DB_PREFIX . 'test');
+//    $this->assertFalse($settings);
+//  }
+
+  function test_delete_all_settings(){
+    update_option( WC_POS_Admin_Settings::DB_PREFIX . 'test1', 'dummy' );
+    update_option( WC_POS_Admin_Settings::DB_PREFIX . 'test2', 'dummy' );
+    $this->settings_api->delete_all_settings();
+
+    global $wpdb;
+    $prefix = WC_POS_Admin_Settings::DB_PREFIX;
+    $rows = $wpdb->get_var( "
+      SELECT COUNT(*) FROM {$wpdb->options}
+      WHERE option_name
+      LIKE '{$prefix}%'"
+    );
+
+    $this->assertEquals( $rows, 0 );
+  }
+}

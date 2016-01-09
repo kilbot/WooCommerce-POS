@@ -20,38 +20,26 @@
 
   <tr class="print_receipt_method">
     <th scope="row">
-      <label for="order_status"><?php _e( 'Receipt Printing', 'woocommerce-pos' ); ?> (<?php _e( 'Experimental', 'woocommerce-pos' ); ?>)</label>
+      <label for="order_status"><?php _e( 'Print Method', 'woocommerce-pos' ); ?> (<?php _e( 'Experimental', 'woocommerce-pos' ); ?>)</label>
       <img title="<?php esc_attr_e( 'Blah blah', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="wc_pos-tooltip">
     </th>
     <td>
       <select name="print_method" id="print_method">
         <option value="html">HTML via Browser</option>
-        <option value="qz-tray">HTML via QZ Tray</option>
-        <option value="epos-xml">ePOS/XML via network printer</option>
-        <option value="esc-pos">ESC/POS via network printer</option>
+        <optgroup label="Network Printer">
+          <option value="ip-html">HTML via IP</option>
+          <option value="ip-xml">ePOS/XML via IP</option>
+          <option value="ip-esc">ESC/POS via IP</option>
+        </optgroup>
+        <optgroup label="QZ Tray">
+          <option value="qz-tray-html">HTML via QZ Tray</option>
+          <option value="qz-tray-xml">ePOS/XML via QZ Tray</option>
+          <option value="qz-tray-esc">ESC/POS via QZ Tray</option>
+        </optgroup>
       </select>
-    </td>
-  </tr>
-
-  <tr>
-    <th scope="row">
-      <label for="customer_roles"><?php _e( 'Receipt Template', 'woocommerce-pos' ) ?></label>
-    </th>
-    <td>
       <p>
-        <?php
-          $template_path = 'yadda yadda';
-          printf( __( '<strong class="red">Template path:</strong> %s', 'woocommerce-pos' ), '<code style="font-size: 11px">'. $template_path .'</code>' );
-        ?>
+        <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/receipts/print-method' ); ?>
       </p>
-      <a href="#" class="button" data-action="preview-receipt">
-        <?php _e( 'View Sample Receipt', 'woocommerce-pos' ); ?>
-      </a>
     </td>
   </tr>
-
-  <tr>
-    <td colspan="2" id="receipt-preview" style="display:none;"></td>
-  </tr>
-
 </table>

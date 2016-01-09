@@ -1,21 +1,22 @@
 var FormView = require('./form-view');
 var app = require('./application');
 var $ = require('jquery');
-var _ = require('lodash');
 var Tooltip = require('lib/behaviors/tooltip');
+var hbs = require('handlebars');
 
 module.exports = app.prototype.SettingsView = FormView.extend({
 
-  constructor: function(options) {
-    var id = _.get( options, ['model', 'id'] );
 
-    this.template = 'settings.' + id;
-
-    this.attributes = {
-      id: 'wc_pos-settings-' + id
+  attributes: function(){
+    return {
+      id : 'wc_pos-settings-' + this.model.id
     };
+  },
 
-    return FormView.prototype.constructor.apply(this, arguments);
+  constructor: function() {
+    // setup model first
+    FormView.prototype.constructor.apply(this, arguments);
+    this.template = hbs.compile( this.model.template );
   },
 
   behaviors: {

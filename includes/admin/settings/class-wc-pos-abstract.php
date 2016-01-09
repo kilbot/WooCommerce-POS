@@ -12,31 +12,58 @@
 class WC_POS_Admin_Settings_Abstract {
 
   protected static $instance;
+
   protected $defaults;
+
   public $current_user_authorized = true;
+
+  protected $section_handlers = array();
 
   /**
    * Returns the Singleton instance of this class.
    * - late static binding requires PHP 5.3+
+   *
    * @return Singleton
    */
   public static function get_instance() {
     $class = get_called_class();
-    if (null === static::$instance) {
+    if ( null === static::$instance ) {
       static::$instance = new $class();
     }
+
     return static::$instance;
   }
 
-  protected function __construct() {}
-  protected function __clone() {}
-  protected function __wakeup() {}
+  protected function __construct() {
+  }
+
+  protected function __clone() {
+  }
+
+  protected function __wakeup() {
+  }
+
+  /**
+   * @return array
+   */
+  public function get_payload() {
+    return array(
+      'id'       => $this->id,
+      'label'    => $this->label,
+      'data'     => $this->get(),
+      'template' => $this->get_template(),
+      'sections' => $this->get_sections()
+    );
+  }
 
   /**
    * Output the view file
    */
-  public function output(){
-    include 'views/' . $this->id . '.php';
+  public function output() {
+    $file = dirname(__FILE__) . '/views/' . $this->id . '.php';
+    if ( is_readable( $file ) ) {
+      include $file;
+    }
   }
 
   /**
@@ -101,6 +128,20 @@ class WC_POS_Admin_Settings_Abstract {
 //    return json_encode( $this->get(), JSON_FORCE_OBJECT ); // empty array as object??
     $data = $this->get();
     return $data ? json_encode( $data ) : false;
+  }
+
+  /**
+   *
+   */
+  public function get_sections(){
+    $sections = array();
+
+    foreach( $this->section_handlers as $class ){
+      $handler = $class::get_instance();
+      $sections[] = $handler->get_payload();
+    }
+
+    return $sections;
   }
 
 }

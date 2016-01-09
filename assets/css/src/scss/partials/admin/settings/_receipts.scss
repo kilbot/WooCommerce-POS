@@ -1,0 +1,32 @@
+settings {
+  @at-root {
+
+    ##{current-module()}-receipts {
+
+    }
+
+  }
+}
+
+/**
+ * Receipts sections
+ */
+receipt {
+  @at-root {
+
+    ##{current-module()}-template-preview {
+
+      padding: 8px;
+      border: 1px solid #dcdcdc;
+      margin: 16px 0;
+
+      iframe {
+        width: 100%;
+        height: 600px;
+        background: #fff;
+      }
+
+    }
+
+  }
+}

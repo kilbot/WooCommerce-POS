@@ -1,15 +1,19 @@
 <?php
 
-class TemplateTest extends WP_UnitTestCase {
+class TemplateAPITest extends WP_UnitTestCase {
 
   protected $template;
 
   public function setUp(){
-    $this->template = new WC_POS_Template();
+    $this->template = new WC_POS_API_Templates( $this->mock_api_server() );
   }
 
-  public function tearDown() {
+  function mock_api_server(){
+    $stub = $this->getMockBuilder('WC_API_Server')
+      ->disableOriginalConstructor()
+      ->getMock();
 
+    return $stub;
   }
 
   public function test_locate_default_template_files(){

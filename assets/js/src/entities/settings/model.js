@@ -4,6 +4,12 @@ var DeepModel = require('lib/config/deep-model');
 
 module.exports = DeepModel.extend({
 
+  initialize: function( attrs, options ){
+    options = options || {};
+    this.template = options.template;
+    this.sections = options.sections;
+  }
+
   //updateButtonState: function(options){
   //  var success = options.success,
   //      error = options.error,

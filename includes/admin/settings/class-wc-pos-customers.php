@@ -22,11 +22,4 @@ class WC_POS_Admin_Settings_Customers extends WC_POS_Admin_Settings_Abstract {
     );
   }
 
-  /**
-   * include relative to this file
-   */
-  public function output() {
-    include 'views/customers.php';
-  }
-
 }

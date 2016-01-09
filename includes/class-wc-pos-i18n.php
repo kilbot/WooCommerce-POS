@@ -43,15 +43,14 @@ class WC_POS_i18n {
   public function load_plugin_textdomain() {
 
     $locale = apply_filters( 'plugin_locale', get_locale(), 'woocommerce-pos' );
-    $dir = trailingslashit( WP_LANG_DIR );
 
-    load_textdomain( 'woocommerce-pos', $dir . 'woocommerce-pos/woocommerce-pos-' . $locale . '.mo' );
-    load_textdomain( 'woocommerce-pos', $dir . 'plugins/woocommerce-pos-' . $locale . '.mo' );
+    load_textdomain( 'woocommerce-pos', WP_LANG_DIR . '/woocommerce-pos/woocommerce-pos-' . $locale . '.mo' );
+    load_textdomain( 'woocommerce-pos', WP_LANG_DIR . '/plugins/woocommerce-pos-' . $locale . '.mo' );
 
     // load woocommerce admin translations
     if ( ! is_admin() && is_pos() ) {
-      load_textdomain( 'woocommerce', $dir . 'woocommerce/woocommerce-admin-' . $locale . '.mo' );
-      load_textdomain( 'woocommerce', $dir . 'plugins/woocommerce-admin-' . $locale . '.mo' );
+      load_textdomain( 'woocommerce', WP_LANG_DIR . '/woocommerce/woocommerce-admin-' . $locale . '.mo' );
+      load_textdomain( 'woocommerce', WP_LANG_DIR . '/plugins/woocommerce-admin-' . $locale . '.mo' );
     }
 
   }

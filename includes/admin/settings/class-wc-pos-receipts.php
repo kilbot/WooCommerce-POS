@@ -20,8 +20,9 @@ class WC_POS_Admin_Settings_Receipts extends WC_POS_Admin_Settings_Abstract {
     $this->id    = 'receipts';
     $this->label = __( 'Receipts', 'woocommerce-pos' );
 
-    $this->defaults = array(
-      'print_method' => 'html'
+    $this->section_handlers = array(
+      'WC_POS_Admin_Settings_Receipt_Options',
+      'WC_POS_Admin_Settings_Receipt_Template'
     );
   }
 

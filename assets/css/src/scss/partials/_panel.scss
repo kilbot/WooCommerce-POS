@@ -73,8 +73,9 @@ panel {
 
     // Body
     .#{current-module()}-body {
-      overflow: auto;
       background: $panel-bg;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     /**

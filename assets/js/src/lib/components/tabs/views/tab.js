@@ -12,6 +12,11 @@ var View = ItemView.extend({
 
   initialize: function( options ){
     this.mergeOptions( options, ['activeClassName'] );
+
+    // add active className
+    if( this.model.get('active') ){
+      this.$el.addClass( this.activeClassName );
+    }
   },
 
   modelEvents: {

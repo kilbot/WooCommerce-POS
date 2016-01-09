@@ -8,14 +8,9 @@ module.exports = ReceiptView.extend({
   template: function(){},
 
   onShow: function(){
-    var template = hbs.compile( hbs.Templates.print.receipt ) ;
+    var template = hbs.compile( this.options.receipt_template ) ;
     this.window = this.el.contentWindow;
     this.window.document.write(template( this.data ));
-  },
-
-  print: function(){
-    this.window.focus(); // required for IE
-    this.window.print();
   }
 
 });

@@ -17,10 +17,7 @@ var General = Route.extend({
   },
 
   render: function() {
-    var view = new View({
-      model: this.model,
-      template: this.model.template
-    });
+    var view = new View({ model: this.model });
     this.container.show(view);
   }
 

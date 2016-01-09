@@ -21,16 +21,21 @@ module.exports = Collection.extend({
     });
 
     // tack on tabsArray, @todo find a better way
-    this.tabsArray = [];
+    this.tabsArray = _.map( settings,
+      _.partial( _.ary(_.pick, 2), _, ['id', 'label'] )
+    );
 
-    models = _.map(settings, function(setting){
-      var attrs = setting.data || {};
-      attrs.id = setting.id;
-      this.tabsArray.push({ id: setting.id, label: setting.label });
-      return attrs;
-    }, this);
+    models = this.parseSettings( settings );
 
     return Collection.prototype.constructor.call(this, models, options);
+  },
+
+  parseSettings: function(settings){
+    return _.map(settings, function(setting){
+      var attrs = setting.data || {};
+      attrs.id = setting.id;
+      return new Model( attrs, setting );
+    }, this);
   }
 
 });

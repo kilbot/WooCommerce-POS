@@ -32,6 +32,7 @@ var SettingsRouter = Router.extend({
     'customers' : 'showCustomers',
     'checkout'  : 'showCheckout',
     'receipts'  : 'showReceipts',
+    'receipts/:section'  : 'showReceipts',
     'hotkeys'   : 'showHotkeys',
     'access'    : 'showAccess'
   },
@@ -46,6 +47,12 @@ var SettingsRouter = Router.extend({
       tabs: this.collection.tabsArray,
       adminTabs: true
     });
+
+    // check hash and set tab active
+    var activeTab = view.collection.get( bb.history.getHash().split('/')[0] );
+    if( activeTab ){
+      activeTab.set({ active: true }, { silent: true });
+    }
 
     this.listenTo(view.collection, 'change:active', function(model, active){
       if(active){

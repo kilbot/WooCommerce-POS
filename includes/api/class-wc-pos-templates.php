@@ -32,6 +32,11 @@ class WC_POS_API_Templates extends WC_API_Resource {
       array( array( $this, 'get_templates' ), WC_API_Server::READABLE )
     );
 
+    # GET /pos/templates
+    $routes[ $this->base . '/receipt' ] = array(
+      array( array( $this, 'get_receipt_template' ), WC_API_Server::READABLE )
+    );
+
     # GET /pos/templates/modal/<id>
     $routes[ $this->base . '/modal/(?P<id>\w+)' ] = array(
       array( array( $this, 'get_modal' ), WC_API_Server::READABLE )
@@ -164,7 +169,8 @@ class WC_POS_API_Templates extends WC_API_Resource {
     if( is_readable( $file ) ){
       ob_start();
       include $file;
-      $template = ob_get_clean();
+      $template = ob_get_contents();
+      ob_end_clean();
     }
 
     return wc_pos_trim_html_string( $template );
@@ -173,8 +179,8 @@ class WC_POS_API_Templates extends WC_API_Resource {
   /**
    * Returns path of print receipt template
    */
-  static public function locate_print_receipt_template() {
-    $receipt_path = self::locate_template_file( WC_POS_PLUGIN_PATH . 'includes/views/print/tmpl-receipt.php' );
+  public function locate_print_receipt_template() {
+    $receipt_path = $this->locate_template_file( WC_POS_PLUGIN_PATH . 'includes/views/print/tmpl-receipt.php' );
     return apply_filters( 'woocommerce_pos_print_receipt_path', $receipt_path );
   }
 
@@ -188,6 +194,14 @@ class WC_POS_API_Templates extends WC_API_Resource {
     $template = $this->template_output( $file );
 
     return $template;
+  }
+
+  /**
+   *
+   */
+  public function get_receipt_template(){
+    $file = $this->locate_print_receipt_template();
+    return $this->template_output( $file );
   }
 
 }

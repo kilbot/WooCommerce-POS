@@ -23,6 +23,7 @@ class Unit_Test_WC_POS {
   public function load_wc_pos() {
     require_once WP_CONTENT_DIR . '/plugins/woocommerce/woocommerce.php';
     require_once dirname( __FILE__ ) . '/../../../woocommerce-pos.php';
+    WC()->api->includes();
   }
 
   /**
@@ -38,6 +39,9 @@ class Unit_Test_WC_POS {
       // vvv
       require_once '/home/vagrant/.composer/vendor/autoload.php';
     }
+
+    // extra functions and factories
+
 
   }
 

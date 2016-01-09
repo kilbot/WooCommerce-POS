@@ -38,6 +38,18 @@ module.exports = Service.extend({
       });
     }
 
+    if( options.adminSubTabs ){
+      _.defaults( options, {
+        className: 'wc_pos-sub-nav-tab-wrapper',
+        childViewOptions: function(){
+          return {
+            className: 'wc_pos-sub-nav-tab',
+            activeClassName: 'wc_pos-sub-nav-tab-active'
+          };
+        }
+      });
+    }
+
     return new TabsView( options );
   }
 

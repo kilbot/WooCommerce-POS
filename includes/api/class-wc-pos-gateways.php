@@ -100,7 +100,7 @@ class WC_POS_API_Gateways extends WC_API_Resource {
       $html = $this->removeDomNodes( $html, '//script' );
     }
 
-    return wc_pos_trim_html_string( $html );;
+    return wc_pos_trim_html_string( $html );
   }
 
   /**
@@ -115,14 +115,16 @@ class WC_POS_API_Gateways extends WC_API_Resource {
       return preg_replace('/<script.+?<\/script>/im', '', $html);
     }
 
-    $dom = new DOMDocument;
+    $dom = new DOMDocument();
 
     // Libxml constants not available on all servers (Libxml < 2.7.8)
     // $html->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-    $dom->loadHtml( '<div class="form-group">' . $html . '</div>' );
+    $dom->loadHtml( '<?xml encoding="UTF-8">' . '<div class="form-group">' . $html . '</div>' );
     # remove <!DOCTYPE
     $dom->removeChild( $dom->doctype );
-    # remove <html><body></body></html>
+    # remove <?xml encoding="UTF-8">
+    $dom->removeChild( $dom->firstChild );
+    # <html><body></body></html>
     $dom->replaceChild( $dom->firstChild->firstChild->firstChild, $dom->firstChild );
 
     // remove the required node

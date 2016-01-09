@@ -25,18 +25,18 @@ Mn.TemplateCache.prototype.compileTemplate = function(rawTemplate) {
  */
 module.exports = function( data ){
   data = data || {};
-  var settings = _.get(data, ['params', 'settings']),
-      gateways = _.get(data, ['params', 'gateways']);
+  //var settings = _.get(data, ['params', 'settings']);
+  var gateways = _.get(data, ['params', 'gateways']);
 
   // extend template var above
   _.extend( templates, data.templates );
 
-  if( settings ){
-    templates.settings = _.reduce( settings, function( result, setting ){
-      result[setting.id] = setting.template;
-      return result;
-    }, {} );
-  }
+  //if( settings ){
+  //  templates.settings = _.reduce( settings, function( result, setting ){
+  //    result[setting.id] = setting.template;
+  //    return result;
+  //  }, {} );
+  //}
 
   if( gateways ){
     templates.settings = _.reduce( gateways, function( result, gateway ){

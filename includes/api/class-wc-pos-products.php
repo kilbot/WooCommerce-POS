@@ -254,11 +254,10 @@ class WC_POS_API_Products extends WC_API_Products {
    * @return array
    */
   private function wc_pos_api_filter_response_data( array $data, $product ){
-    $id = isset( $data['id'] ) ? $data['id'] : '';
-    $barcode = get_post_meta( $id, $this->barcode_meta_key, true );
+    $barcode = get_post_meta( $product->id, $this->barcode_meta_key, true );
 
-    $data['featured_src'] = $this->wc_pos_api_get_thumbnail( $id );
-    $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $barcode, $id );
+    $data['featured_src'] = $this->wc_pos_api_get_thumbnail( $product->id );
+    $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $barcode, $product->id );
 
     // allow decimal stock quantities, fixed in WC 2.4
     if( version_compare( WC()->version, '2.4', '<' ) ){
