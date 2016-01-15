@@ -45,6 +45,7 @@ class WC_POS_Admin_Settings_Access extends WC_POS_Admin_Settings_Abstract {
    */
   public function get($key = false){
     return array(
+      'id' => $this->id,
       'roles' => $this->get_role_caps()
     );
   }

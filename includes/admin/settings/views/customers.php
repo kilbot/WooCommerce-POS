@@ -20,10 +20,15 @@
     </td>
   </tr>
 
+  <?php
+    // WordPress 4.4 allows role__in and role__not_in
+    global $wp_version;
+    if( version_compare($wp_version, '4.4', '>=') ):
+  ?>
   <tr>
     <th scope="row">
       <label for="customer_roles"><?php _e( 'Customer Roles', 'woocommerce-pos' ) ?></label>
-      <img title="<?php esc_attr_e( 'blah blah', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="wc_pos-tooltip">
+      <img title="<?php esc_attr_e( 'Select which user roles are available as POS customers', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="wc_pos-tooltip">
     </th>
     <td>
       <select name="customer_roles" id="customer_roles" class="select2" style="width:250px" multiple>
@@ -39,5 +44,6 @@
       </select>
     </td>
   </tr>
+  <?php endif; ?>
 
 </table>

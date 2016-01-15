@@ -6,27 +6,24 @@
 
 <h3><?php _e( 'Receipt Template', 'woocommerce-pos' ); ?></h3>
 
-<table class="wc_pos-form-table">
+<div class="wc_pos-receipt-template-display">
 
-  <tr>
-    <th scope="row">
-      <label for="customer_roles"><?php _e( 'Receipt Template', 'woocommerce-pos' ) ?></label>
-    </th>
-    <td>
-      <p>
-        <?php
-          $template_path = 'yadda yadda';
-          printf( __( '<strong class="red">Template path:</strong> %s', 'woocommerce-pos' ), '<code style="font-size: 11px">'. $template_path .'</code>' );
-        ?>
-      </p>
-      <a href="#" class="button" data-action="preview-receipt">
-        <?php _e( 'View Sample Receipt', 'woocommerce-pos' ); ?>
-      </a>
-    </td>
-  </tr>
+  <div class="wc_pos-settings-panel wc_pos-receipt-template-editor">
+    <div class="wc_pos-settings-panel-header">
+      <h4><?php /* translators: wordpress */ _e('Code'); ?></h4>
+    </div>
+    <div class="wc_pos-settings-panel-body">
+      <div id="wc_pos-ace-editor"></div>
+    </div>
+    <div class="wc_pos-settings-panel-footer"></div>
+  </div>
 
-  <tr>
-    <td colspan="2" id="receipt-preview" style="display:none;"></td>
-  </tr>
+  <div class="wc_pos-settings-panel wc_pos-receipt-template-preview">
+    <div class="wc_pos-settings-panel-header">
+      <h4><?php /* translators: wordpress */ _e('Preview'); ?></h4>
+    </div>
+    <div class="wc_pos-settings-panel-body"></div>
+    <div class="wc_pos-settings-panel-footer"></div>
+  </div>
 
-</table>
+</div>

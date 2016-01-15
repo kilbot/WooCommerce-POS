@@ -144,7 +144,7 @@ class WC_POS_i18n {
    */
   public function update_translations() {
     // security
-    WC_POS_Server::check_ajax_referer();
+    WC_POS_AJAX::check_ajax_referer();
 
     header( "Content-Type: text/event-stream" );
     header( "Cache-Control: no-cache" );

@@ -1,8 +1,14 @@
 var Behavior = require('lib/config/behavior');
 var App = require('lib/config/application');
 var $ = require('jquery');
+var _ = require('lodash');
 var polyglot = require('lib/utilities/polyglot');
 var d = 'disabled';
+
+/**
+ * @todo refactor
+ * Button behavior here is a little too specific, can't be reused
+ */
 
 var Buttons = Behavior.extend({
   loadingText: polyglot.t('messages.loading'),
@@ -102,12 +108,15 @@ var Buttons = Behavior.extend({
   },
 
   updateInput: function(btn, state){
-    btn.removeClass('loading success error');
+    var classes = _.map(['loading', 'success', 'error'], this.namespace )
+      .join(' ');
+    btn.removeClass( classes );
     if(state !== 'reset'){
       btn.addClass(state);
     }
   },
 
+  /* jshint -W071 */
   updateMessage: function(message, state){
     if(message === null){
       message = polyglot.t('messages.' + state);
@@ -119,11 +128,17 @@ var Buttons = Behavior.extend({
     if(state === 'reset'){
       message = '';
     }
+
+    var classes = _.map(
+      ['text-loading', 'text-success', 'text-error'], this.namespace
+    ).join(' ');
+
     this.ui.message
-      .removeClass('loading success error')
+      .removeClass( classes )
       .addClass( this.namespace( 'text-' + state ) )
       .html(message);
   },
+  /* jshint +W071 */
 
   onMessage: function(message, state){
     this.updateMessage(message, state);

@@ -14,18 +14,52 @@ settings {
 receipt {
   @at-root {
 
-    ##{current-module()}-template-preview {
+    .#{current-module()}-template-display {
 
-      padding: 8px;
-      border: 1px solid #dcdcdc;
-      margin: 16px 0;
+      @include display-flex;
+
+      > div {
+        @include flex(1);
+        @include display-flex;
+        @include flex-direction(column);
+
+        &:first-of-type {
+          margin-right: 4px;
+        }
+
+        &:last-of-type {
+          margin-left: 4px;
+        }
+      }
+
+      .#{namespace('settings-panel-body')} {
+        @include flex(1);
+      }
+
+    }
+
+    .#{current-module()}-template-editor {
+
+      .#{namespace('settings-panel-body')} {
+        position: relative;
+      }
+
+      ##{namespace('ace-editor')} {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+
+    }
+
+    .#{current-module()}-template-preview {
 
       iframe {
         width: 100%;
-        height: 600px;
-        background: #fff;
+        height: 550px;
       }
-
     }
 
   }

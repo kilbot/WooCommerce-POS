@@ -33,6 +33,10 @@ module.exports =  ItemView.extend({
         url = this.constructURL(),
         stream = new EventSource(url);
 
+    stream.onerror = function(){
+      Radio.request('modal', 'error', 'EventSource error');
+    };
+
     stream.onmessage = function(e){
       if( e.data === 'complete' ){
         this.close();
@@ -42,6 +46,7 @@ module.exports =  ItemView.extend({
         view.ui.loading.before('<p>' + e.data + '</p>');
       }
     };
+
   },
 
   constructURL: function(){

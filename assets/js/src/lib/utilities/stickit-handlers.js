@@ -22,6 +22,9 @@ bb.Stickit.addHandler({
     if( model.get(opt.observe) === undefined ){
       model.set(opt.observe, $el.val());
     }
+  },
+  afterUpdate: function( $el ){
+    $el.trigger('change');
   }
 });
 

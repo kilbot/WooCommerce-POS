@@ -163,7 +163,7 @@ class WC_POS_API_Templates extends WC_API_Resource {
    * @param $file
    * @return string
    */
-  public function template_output( $file ) {
+  public function template_output( $file, $trim = true ) {
     $template = '';
 
     if( is_readable( $file ) ){
@@ -173,7 +173,7 @@ class WC_POS_API_Templates extends WC_API_Resource {
       ob_end_clean();
     }
 
-    return wc_pos_trim_html_string( $template );
+    return $trim ? wc_pos_trim_html_string( $template ) : $template ;
   }
 
   /**
@@ -199,9 +199,16 @@ class WC_POS_API_Templates extends WC_API_Resource {
   /**
    *
    */
-  public function get_receipt_template(){
-    $file = $this->locate_print_receipt_template();
-    return $this->template_output( $file );
+  public function get_receipt_template() {
+    $default_path = '';
+    $path = $this->locate_print_receipt_template();
+
+    return array(
+      'path'         => $path,
+      'default_path' => $default_path,
+      'custom'       => $path != $default_path,
+      'template'     => $this->template_output( $path, false )
+    );
   }
 
 }

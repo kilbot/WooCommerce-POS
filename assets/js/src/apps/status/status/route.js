@@ -7,6 +7,7 @@ var Status = Route.extend({
   initialize: function( options ) {
     options = options || {};
     this.container = options.container;
+    this.model = options.model;
   },
 
   fetch: function(){
@@ -14,7 +15,7 @@ var Status = Route.extend({
   },
 
   render: function() {
-    var view = new View();
+    var view = new View({ model: this.model });
     this.container.show(view);
   }
 

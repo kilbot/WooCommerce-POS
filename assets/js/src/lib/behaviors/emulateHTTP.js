@@ -19,22 +19,24 @@ var EmulateHTTP = Behavior.extend({
   toggle: function(e) {
     e.preventDefault();
 
-    var ajaxurl = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'ajaxurl'
-    });
-
     var nonce = Radio.request('entities', 'get', {
       type: 'option',
       name: 'nonce'
     });
 
-    $.getJSON( ajaxurl, {
+    $.getJSON( window.ajaxurl, {
       action: 'wc_pos_toggle_legacy_server',
       enable: $(e.target).data('action').split('-').pop() === 'enable',
       security: nonce
     }, function(){
       window.location.reload();
+    })
+    .fail( function( xhr, statusText, thrownError ) {
+      Radio.request( 'modal', 'error', {
+        xhr: xhr,
+        statusText: statusText,
+        thrownError: thrownError
+      } );
     });
   }
 

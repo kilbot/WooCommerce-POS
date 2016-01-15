@@ -20,26 +20,35 @@
 
   <tr class="print_receipt_method">
     <th scope="row">
-      <label for="order_status"><?php _e( 'Print Method', 'woocommerce-pos' ); ?> (<?php _e( 'Experimental', 'woocommerce-pos' ); ?>)</label>
-      <img title="<?php esc_attr_e( 'Blah blah', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="wc_pos-tooltip">
+      <label for="print_method"><?php _e( 'Default Print Method', 'woocommerce-pos' ); ?> (<?php _e( 'Experimental', 'woocommerce-pos' ); ?>)</label>
     </th>
     <td>
       <select name="print_method" id="print_method">
-        <option value="html">HTML via Browser</option>
-        <optgroup label="Network Printer">
-          <option value="ip-html">HTML via IP</option>
-          <option value="ip-xml">ePOS/XML via IP</option>
-          <option value="ip-esc">ESC/POS via IP</option>
-        </optgroup>
-        <optgroup label="QZ Tray">
-          <option value="qz-tray-html">HTML via QZ Tray</option>
-          <option value="qz-tray-xml">ePOS/XML via QZ Tray</option>
-          <option value="qz-tray-esc">ESC/POS via QZ Tray</option>
-        </optgroup>
+        <option value="browser">Browser</option>
+        <option value="network">Network</option>
+        <option value="qz-tray">QZ Tray</option>
       </select>
+      <input id="network_printer_address" name="network_printer_address" type="text" placeholder="e.g.: http://192.168.192.168/cgi-bin/epos/service.cgi">
       <p>
         <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/receipts/print-method' ); ?>
       </p>
     </td>
   </tr>
+
+  <tr class="print_receipt_method">
+    <th scope="row">
+      <label for="template_language"><?php _e( 'Default Receipt Template Language', 'woocommerce-pos' ); ?> (<?php _e( 'Experimental', 'woocommerce-pos' ); ?>)</label>
+    </th>
+    <td>
+      <select name="template_language" id="template_language">
+        <option value="html">HTML</option>
+        <option value="epos-print">ePOS Print</option>
+        <option value="escp">ESC/POS</option>
+      </select>
+      <p>
+        <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/receipts/template-language' ); ?>
+      </p>
+    </td>
+  </tr>
+
 </table>

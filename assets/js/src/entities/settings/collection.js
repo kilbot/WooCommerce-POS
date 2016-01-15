@@ -32,9 +32,7 @@ module.exports = Collection.extend({
 
   parseSettings: function(settings){
     return _.map(settings, function(setting){
-      var attrs = setting.data || {};
-      attrs.id = setting.id;
-      return new Model( attrs, setting );
+      return new Model( setting.data, setting );
     }, this);
   }
 

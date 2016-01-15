@@ -2,6 +2,7 @@ var App = require('lib/config/application');
 var Router = require('lib/config/router');
 var LayoutView = require('./layout-view');
 var General = require('./general/route');
+var Customers = require('./customers/route');
 var Checkout = require('./checkout/route');
 var Receipts = require('./receipts/route');
 var HotKeys = require('./hotkeys/route');
@@ -77,7 +78,7 @@ var SettingsRouter = Router.extend({
   showCustomers: function(){
     var model = this.collection.get('customers');
     this.showFooter({model: model});
-    return new Checkout({
+    return new Customers({
       container : this.layout.getRegion('settings'),
       model: model
     });
@@ -94,10 +95,9 @@ var SettingsRouter = Router.extend({
 
   showReceipts: function(){
     var model = this.collection.get('receipts');
-    this.showFooter({model: model});
     return new Receipts({
-      container : this.layout.getRegion('settings'),
-      model: model
+      model: model,
+      layout: this.layout
     });
   },
 
@@ -141,10 +141,24 @@ var SettingsRouter = Router.extend({
 
     this.listenTo(view, {
       'action:save': function(btn){
-        options.model.save([], { buttons: btn });
+        btn.trigger('state', [ 'loading', '' ]);
+        options.model.save()
+          .done( function(){
+            btn.trigger('state', [ 'success', null ]);
+          })
+          .fail( function(){
+            btn.trigger('state', ['error', null ]);
+          });
       },
       'action:restore': function(btn){
-        options.model.destroy({ buttons: btn });
+        btn.trigger('state', [ 'loading', '' ]);
+        options.model.fetch({ data: { defaults: true } })
+          .done( function(){
+            btn.trigger('state', [ 'success', null ]);
+          })
+          .fail( function(){
+            btn.trigger('state', ['error', null ]);
+          });
       }
     });
 

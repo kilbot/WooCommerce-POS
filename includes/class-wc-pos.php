@@ -61,6 +61,11 @@ class WC_POS {
     new WC_POS_Products();
     new WC_POS_Customers();
 
+    // ajax only
+    if( is_admin() && (defined('DOING_AJAX') && DOING_AJAX) ){
+      new WC_POS_AJAX();
+    }
+
     // admin only
     if( is_admin() && !(defined('DOING_AJAX') && DOING_AJAX) ){
       new WC_POS_Admin();

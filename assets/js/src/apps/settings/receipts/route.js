@@ -17,7 +17,8 @@ var Receipts = Route.extend({
 
   initialize: function( options ) {
     options = options || {};
-    this.container = options.container;
+    this.container = options.layout.getRegion('settings');
+    this.footer = options.layout.getRegion('footer');
     this.model = options.model;
     this.collection = this.model.collection;
 
@@ -72,6 +73,7 @@ var Receipts = Route.extend({
 
   showReceiptOptions: function(){
     var model = this.collection.get('receipt_options');
+    this.showFooter({model: model});
     var route = new ReceiptOptionsRoute({
       container : this.layout.getRegion('section'),
       model: model
@@ -86,32 +88,54 @@ var Receipts = Route.extend({
       model: model
     });
     route.enter();
-  }
+  },
 
-  //togglePreview: function( args ) {
-  //  var previewArea = _.get(args, ['view', 'ui', 'previewArea']);
-  //
-  //  if( ! previewArea ){
-  //    return;
-  //  }
-  //
-  //  if( ! this.rm ) {
-  //    this.initPreview( previewArea );
-  //  }
-  //
-  //  previewArea.slideToggle();
-  //},
-  //
-  //initPreview: function( previewArea ){
-  //  this.rm = new Mn.RegionManager();
-  //  var region = this.rm.addRegion('preview', previewArea);
-  //
-  //  var route = new ReceiptRoute({
-  //    container: region
-  //  });
-  //
-  //  route.enter();
-  //}
+  showFooter: function(options){
+
+    _.defaults(options, {
+      buttons: [
+        {
+          action    : 'save',
+          className : 'button-primary',
+          icon      : 'append'
+        },{
+          type: 'message'
+        },{
+          action    : 'restore',
+          className : 'button-secondary alignright',
+          icon      : 'prepend'
+        }
+      ]
+    });
+
+    var view = Radio.request('buttons', 'view', options);
+
+    this.listenTo(view, {
+      'action:save': function(btn){
+        btn.trigger('state', [ 'loading', '' ]);
+        options.model.save()
+          .done( function(){
+            btn.trigger('state', [ 'success', null ]);
+          })
+          .fail( function(){
+            btn.trigger('state', ['error', null ]);
+          });
+      },
+      'action:restore': function(btn){
+        btn.trigger('state', [ 'loading', '' ]);
+        options.model.fetch({ data: { defaults: true } })
+          .done( function(){
+            btn.trigger('state', [ 'success', null ]);
+          })
+          .fail( function(){
+            btn.trigger('state', ['error', null ]);
+          });
+      }
+    });
+
+    this.footer.show(view);
+
+  }
 
 });
 

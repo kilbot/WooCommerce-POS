@@ -58,13 +58,27 @@ class WC_POS_API_Customers extends WC_API_Customers {
 
 
   /**
-   * Removes the role='customer' restraint
-   * todo: add this option to settings
+   *
    * @param $wp_user_query
    */
   public function wc_pos_api_pre_get_users( $wp_user_query ) {
+    global $wp_version;
 
     $wp_user_query->query_vars[ 'role' ] = '';
+
+    // WordPress 4.4 allows role__in and role__not_in
+    if( version_compare($wp_version, '4.4', '>=') ) {
+      $roles = wc_pos_get_option( 'customers', 'customer_roles' );
+
+      if( is_array( $roles ) && ! in_array( 'all', $roles ) ){
+        $wp_user_query->query_vars[ 'role__in' ] = $roles;
+      }
+
+      // special case: no customer roles
+      if( is_null( $roles ) ){
+        // ?
+      }
+    }
 
     if ( isset( $_GET[ 'filter' ] ) ) {
 

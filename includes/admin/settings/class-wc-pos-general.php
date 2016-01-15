@@ -13,6 +13,11 @@ class WC_POS_Admin_Settings_General extends WC_POS_Admin_Settings_Abstract {
 
   protected static $instance;
 
+  public $flush_local_data = array(
+    'pos_only_products',
+    'decimal_qty'
+  );
+
   /**
    * Each settings tab requires an id and label
    */

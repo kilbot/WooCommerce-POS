@@ -45,11 +45,19 @@ class WC_POS_API_Settings extends WC_API_Resource {
 
   /**
    * @param string $id
+   * @param null   $wc_pos_admin
    * @return array
    *
-   * @todo move business logic to WC_POS_Admin_Settings
+   * @todo refactor, get_settings returns payload, edit_settings returns data
+   * @todo move business logic to WC_POS_Admin_Settings?
    */
-  public function get_settings( $id = '', $wc_pos_admin = null ){
+  public function get_settings( $id = '', $wc_pos_admin = null, $defaults = false ){
+
+    // @todo remove this special hack for 'restore default settings'
+    if( $defaults ){
+      return $this->delete_settings( $id );
+    }
+
     $payload = $handlers = array();
 
     switch ($wc_pos_admin) {
@@ -78,9 +86,15 @@ class WC_POS_API_Settings extends WC_API_Resource {
 
   /**
    * @param string $id
+   * @param        $data
    * @return array|WP_Error
+   * @throws WC_API_Exception
    */
-  public function edit_settings( $id = '' ){
+  public function edit_settings( $id = '', $data ){
+
+    if( !$data ){
+      throw new WC_API_Exception( 'woocommerce_pos_api_missing_settings_data', sprintf( __( 'No %1$s data specified to edit %1$s', 'woocommerce' ), 'settings' ), 400 );
+    }
 
     $handler = $this->get_settings_handler( $id );
 
@@ -88,9 +102,11 @@ class WC_POS_API_Settings extends WC_API_Resource {
       return $handler;
     }
 
-    // todo bump idbVersion
+    if( $handler->flush_local_data($data) ){
+      WC_POS_Admin_Settings::bump_idb_version();
+    }
 
-    return $handler->set( WC_POS_API::get_raw_data() );
+    return $handler->set( $data );
   }
 
 
@@ -106,7 +122,9 @@ class WC_POS_API_Settings extends WC_API_Resource {
       return $handler;
     }
 
-    // todo bump idbVersion
+    if( $handler->flush_local_data() ){
+      WC_POS_Admin_Settings::bump_idb_version();
+    }
 
     return $handler->delete();
   }
@@ -144,6 +162,13 @@ class WC_POS_API_Settings extends WC_API_Resource {
     $gateway_id = preg_replace( '/^gateway_/', '', strtolower( $id ), 1, $count );
     if($count) {
       return new WC_POS_Admin_Settings_Gateways( $gateway_id );
+    }
+
+    // special case: receipt_
+    $receipts_section = preg_replace( '/^receipt_/', '', strtolower( $id ), 1, $count );
+    if($count) {
+      $class = 'WC_POS_Admin_Settings_Receipt_' . ucfirst( $receipts_section );
+      return new $class();
     }
 
     // else, find handler by id

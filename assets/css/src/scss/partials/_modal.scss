@@ -169,10 +169,22 @@ modal {
       .raw-output {
         width: 100%;
         max-height: 200px;
-        overflow: scroll;
-        font-family: monospace;
+        overflow-y: auto;
         background: $raw-bg;
         border: 1px solid $raw-border-color;
+
+        h4 {
+          line-height: 1;
+          color: $secondary-text-color;
+          padding: $modal-body-padding-y $modal-body-padding-x 0;
+          margin: 0;
+        }
+
+        p {
+          font-family: monospace;
+          margin: 0;
+          padding: $modal-body-padding-y $modal-body-padding-x;
+        }
       }
     }
 

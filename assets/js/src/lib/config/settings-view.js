@@ -6,7 +6,6 @@ var hbs = require('handlebars');
 
 module.exports = app.prototype.SettingsView = FormView.extend({
 
-
   attributes: function(){
     return {
       id : 'wc_pos-settings-' + this.model.id
@@ -23,10 +22,6 @@ module.exports = app.prototype.SettingsView = FormView.extend({
     Tooltip: {
       behaviorClass: Tooltip
     }
-  },
-
-  modelEvents: {
-    'change:id': 'render'
   },
 
   onRender: function(){

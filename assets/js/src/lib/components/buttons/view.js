@@ -5,6 +5,10 @@ var tmpl = require('./buttons.hbs');
 var polyglot = require('lib/utilities/polyglot');
 var ButtonsBehavior = require('./behavior');
 
+/**
+ * @todo initialize buttons with a callback
+ */
+
 module.exports = ItemView.extend({
 
   buttons: [{

@@ -1,10 +1,11 @@
 var Route = require('lib/config/route');
 var Radio = require('backbone.radio');
 var LayoutView = require('./layout-view');
-var ReceiptPreview = require('./preview');
-var ReceiptAction = require('./actions');
+var Preview = require('./preview');
+var PreviewActions = require('./actions');
 var App = require('lib/config/application');
 var $ = require('jquery');
+var polyglot = require('lib/utilities/polyglot');
 
 var ReceiptRoute = Route.extend({
 
@@ -19,8 +20,8 @@ var ReceiptRoute = Route.extend({
     });
   },
 
-  fetch: function() {
-    return $.when( this.fetchOrder(), this.fetchTemplate() );
+  fetch: function(){
+    return $.when( this.fetchTemplate(), this.fetchOrder() );
   },
 
   fetchOrder: function(){
@@ -49,35 +50,96 @@ var ReceiptRoute = Route.extend({
 
   render: function() {
     this.layout = new LayoutView({
-      model: this.model
+      model: this.model,
+      template_data: this.template
     });
     this.listenTo( this.layout, 'show', this.showReceiptTemplate );
     this.container.show(this.layout);
   },
 
   showReceiptTemplate: function(){
+    this.showReceiptTemplateEditorActions();
     this.showReceiptTemplatePreview();
-    this.showReceiptTemplateActions();
+    this.showReceiptTemplatePreviewActions();
   },
 
   showReceiptTemplatePreview: function(){
-    var view = new ReceiptPreview({
+    var view = new Preview({
       model: this.collection.at(0),
-      receipt_template: this.template
+      receipt_template: this.template.template
     });
     this.layout.getRegion('preview').show(view);
   },
 
-  showReceiptTemplateActions: function(){
-    var view = new ReceiptAction();
-
+  showReceiptTemplatePreviewActions: function(){
+    var view = new PreviewActions();
     this.listenTo( view, 'print', this.print );
-
-    this.layout.getRegion('actions').show(view);
+    this.layout.getRegion('previewActions').show(view);
   },
 
   print: function(){
     this.layout.getRegion('preview').currentView.el.contentWindow.print();
+  },
+
+  showReceiptTemplateEditorActions: function(){
+    var self = this;
+    var view = Radio.request('buttons', 'view', {
+      buttons: this.getEditorActions()
+    });
+
+    this.listenTo(view, {
+      'action:save': function(btn){
+        btn.trigger('state', [ 'loading', '' ]);
+        self.enter();
+        //options.model.save()
+        //  .done( function(){
+        //    btn.trigger('state', [ 'success', null ]);
+        //  })
+        //  .fail( function(){
+        //    btn.trigger('state', ['error', null ]);
+        //  });
+      },
+      'action:delete': function(btn){
+        btn.trigger('state', [ 'loading', '' ]);
+        //options.model.fetch({ data: { defaults: true } })
+        //  .done( function(){
+        //    btn.trigger('state', [ 'success', null ]);
+        //  })
+        //  .fail( function(){
+        //    btn.trigger('state', ['error', null ]);
+        //  });
+      }
+    });
+
+    this.layout.getRegion('editorActions').show(view);
+  },
+
+  getEditorActions: function(){
+    if( this.template.custom ){
+      return [
+        {
+          action    : 'save',
+          className : 'button-primary',
+          icon      : 'append'
+        },{
+          //  type: 'message'
+          //},{
+          action    : 'delete',
+          label     : polyglot.t('buttons.delete-template'),
+          className : 'button-secondary alignright',
+          icon      : 'prepend'
+        }
+      ];
+    }
+
+    return [
+      {
+        action    : 'copy',
+        label     : polyglot.t('buttons.copy-file'),
+        className : 'button-primary',
+        icon      : 'append'
+      }
+    ];
   }
 
 });

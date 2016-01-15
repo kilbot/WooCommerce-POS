@@ -1,19 +1,15 @@
 var ItemView = require('lib/config/item-view');
 var App = require('lib/config/application');
-var EmulateHTTP = require('lib/behaviors/emulateHTTP');
+var hbs = require('handlebars');
 
 var View = ItemView.extend({
-
-  template: 'settings.status',
 
   attributes: {
     id: 'wc_pos-settings-status'
   },
 
-  behaviors: {
-    EmulateHTTP: {
-      behaviorClass: EmulateHTTP
-    }
+  initialize: function(){
+    this.template = hbs.compile( this.model.template );
   }
 
 });

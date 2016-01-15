@@ -89,7 +89,9 @@ class WC_POS_API_i18n extends WC_API_Resource {
    * @return array
    */
   private function common_titles(){
-    return array();
+    return array(
+      'more-info' => __( 'More info', 'woocommerce-pos' ),
+    );
   }
 
   /**
@@ -140,12 +142,16 @@ class WC_POS_API_i18n extends WC_API_Resource {
   /**
    * @return array
    */
-  private function common_buttons(){
+  private function common_buttons() {
     return array(
       /* translators: woocommerce */
-      'save'            => __( 'Save Changes', 'woocommerce' ),
-      /* translators: woocommerce */
-      'close'           => __( 'Close' ),
+      'save'    => __( 'Save Changes', 'woocommerce' ),
+      /* translators: wordpress */
+      'close'   => __( 'Close' ),
+      /* translators: wordpress */
+      'disable' => __( 'Disable' ),
+      /* translators: wordpress */
+      'enable'  => __( 'Enable' )
     );
   }
 
@@ -155,6 +161,10 @@ class WC_POS_API_i18n extends WC_API_Resource {
   private function admin_buttons(){
     return array(
       'restore'         => _x( 'Restore defaults', 'restore default settings', 'woocommerce-pos' ),
+      /* translators: woocommerce */
+      'delete-template' => __( 'Delete template file', 'woocommerce' ),
+      /* translators: woocommerce */
+      'copy-file'       => __( 'Copy file to theme', 'woocommerce' ),
     );
   }
 

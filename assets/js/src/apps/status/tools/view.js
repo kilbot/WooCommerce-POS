@@ -1,14 +1,14 @@
 var ItemView = require('lib/config/item-view');
 var App = require('lib/config/application');
+var hbs = require('handlebars');
 var EmulateHTTP = require('lib/behaviors/emulateHTTP');
 
 var View = ItemView.extend({
 
-  template: 'settings.tools',
-
   attributes: {
     id: 'wc_pos-settings-tools'
   },
+
 
   behaviors: {
     EmulateHTTP: {
@@ -17,13 +17,17 @@ var View = ItemView.extend({
   },
 
   ui: {
-    translation: '*[data-action="translation"]',
-    deleteData: '*[data-action="delete-local-data"]'
+    translation : '*[data-action="translation"]',
+    deleteData  : '*[data-action="delete-local-data"]'
   },
 
   triggers: {
-    'click @ui.translation': 'translation:update',
-    'click @ui.deleteData' : 'data:delete'
+    'click @ui.translation'  : 'translation:update',
+    'click @ui.deleteData'   : 'data:delete'
+  },
+
+  initialize: function(){
+    this.template = hbs.compile( this.model.template );
   }
 
 });

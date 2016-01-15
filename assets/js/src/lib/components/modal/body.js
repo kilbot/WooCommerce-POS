@@ -1,14 +1,16 @@
 var ItemView = require('lib/config/item-view');
 var hbs = require('handlebars');
 var Tmpl = require('./body.hbs');
-//var _ = require('lodash');
-//var polyglot = require('lib/utilities/polyglot');
+var _ = require('lodash');
+var polyglot = require('lib/utilities/polyglot');
 
 module.exports = ItemView.extend({
   template: hbs.compile(Tmpl),
 
   templateHelpers: function(){
-    return this.options;
+    return _.extend({
+      moreInfo: polyglot.t('titles.more-info')
+    }, this.options );
   },
 
   ui: {

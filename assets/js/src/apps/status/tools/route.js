@@ -10,10 +10,11 @@ var Tools = Route.extend({
   initialize: function( options ) {
     options = options || {};
     this.container = options.container;
+    this.model = options.model;
   },
 
   render: function() {
-    var view = new View();
+    var view = new View({ model: this.model });
     this.listenTo(view, {
       'translation:update': this.openTranslationModal,
       'data:delete'       : this.openDataDeleteModal

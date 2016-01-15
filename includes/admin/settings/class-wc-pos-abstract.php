@@ -15,6 +15,8 @@ class WC_POS_Admin_Settings_Abstract {
 
   protected $defaults;
 
+  protected $flush_local_data = null;
+
   public $current_user_authorized = true;
 
   protected $section_handlers = array();
@@ -92,7 +94,7 @@ class WC_POS_Admin_Settings_Abstract {
   public function get($key = false){
     $data = get_option( $this->option_name() );
     if(!$data){
-      $data = apply_filters( 'woocommerce_pos_' . $this->id . '_settings_defaults', $this->defaults );
+      $data = apply_filters( 'woocommerce_pos_' . $this->id . '_settings_defaults', $this->get_defaults() );
     }
     if($key && is_array($data)) {
       $data = array_key_exists($key, $data) ? $data[$key] : false;
@@ -142,6 +144,24 @@ class WC_POS_Admin_Settings_Abstract {
     }
 
     return $sections;
+  }
+
+  /**
+   * Return setting defaults. Merge with settings id.
+   */
+  public function get_defaults(){
+    return wp_parse_args( array(
+      'id' => $this->id,
+    ), $this->defaults );
+  }
+
+  /**
+   * @param $data
+   * @return bool
+   */
+  public function flush_local_data( $data = array() ){
+    $keys = apply_filters( 'woocommerce_pos_' . $this->id . '_settings_flush_local_data', $this->flush_local_data );
+    return ! is_null( $keys );
   }
 
 }

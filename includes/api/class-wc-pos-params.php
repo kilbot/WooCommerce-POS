@@ -58,7 +58,8 @@ class WC_POS_API_Params extends WC_API_Resource {
       'customers'   => $this->customers(),
       'debug'       => defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG,
       'emulateHTTP' => get_option( 'woocommerce_pos_emulateHTTP' ) === '1',
-      'idbVersion'  => WC_POS_Admin_Settings::get_idb_version()
+      'idbVersion'  => WC_POS_Admin_Settings::get_idb_version(),
+      'store'         => array( 'name' => get_bloginfo( 'name' ) )
     );
   }
 
@@ -73,7 +74,6 @@ class WC_POS_API_Params extends WC_API_Resource {
       'hotkeys'       => wc_pos_get_option( 'hotkeys', 'hotkeys' ),
       'menu'          => $this->menu(),
       'shipping'      => $this->shipping_labels(),
-      'store'         => array( 'name' => get_bloginfo( 'name' ) ),
       'tabs'          => $this->product_tabs(),
       'tax'           => $this->tax(),
       'tax_classes'   => WC_POS_Tax::tax_classes(),
@@ -170,9 +170,9 @@ class WC_POS_API_Params extends WC_API_Resource {
    */
   private function customers() {
 
-    $user_id = wc_pos_get_option( 'general', 'logged_in_user' ) ?
+    $user_id = wc_pos_get_option( 'customers', 'logged_in_user' ) ?
       get_current_user_id() :
-      wc_pos_get_option( 'general', 'default_customer' );
+      wc_pos_get_option( 'customers', 'default_customer' );
 
     if( $user_id ) {
       $user = get_userdata($user_id);

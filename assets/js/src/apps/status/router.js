@@ -51,14 +51,18 @@ var StatusRouter = Router.extend({
   },
 
   showTools: function(){
+    var model = this.collection.get('tools');
     return new Tools({
-      container : this.layout.getRegion('settings')
+      container : this.layout.getRegion('settings'),
+      model: model
     });
   },
 
   showStatus: function(){
+    var model = this.collection.get('status');
     return new Status({
-      container : this.layout.getRegion('settings')
+      container : this.layout.getRegion('settings'),
+      model: model
     });
   }
 
