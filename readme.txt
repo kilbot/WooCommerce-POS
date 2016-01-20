@@ -59,16 +59,18 @@ To install a WordPress Plugin manually:
 
 = Where can I find more information on WooCommerce POS? =
 There is more information on our website at [woopos.com.au](http://woopos.com.au).
-Try:
-* [FAQ](http://woopos.com.au/faq)
-* [Documentation](http://woopos.com.au/docs)
-* [Blog](http://woopos.com.au/blog)
+
+* FAQ - http://woopos.com.au/faq
+* Documentation - http://woopos.com.au/docs
+* Blog - http://woopos.com.au/blog
 
 = Where can I request a feature? =
 Visit the [Roadmap](http://woopos.com.au/roadmap) for information on what is coming in the next version of WooCommerce POS. If your feature isn't mentioned leave a request in the comments.
 
 = Where can I get support? =
-WooCommerce POS has a support page within the plugin (eg: http://*<yourstore>*/pos/#support). If you are experiencing an error or problem please visit this support page and send a message using the form provided. This form will attach important information we need to assist you.
+WooCommerce POS has a support page within the plugin (eg: http://*yourstore*/pos/#support). If you are experiencing an error or problem please visit this support page and send a message using the form provided. This form will attach important information we need to assist you.
+
+If your problem prevents you from accessing the support page within the POS, please contact [support@woopos.com.au](mailto:support@woopos.com.au).
 
 = Where can I report bugs? =
 Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.com/kilbot/WooCommerce-POS/issues).
@@ -79,13 +81,16 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
-= 0.4.6 - 2015/11/** =
+= 0.4.6 - 2016/01/** =
 * Important: Pro users should update [WooCommerce POS Pro](http://woopos.com.au/pro) to version 0.4.6
-* Fix: POS not showing for some users
+* New: Receipt print methods for thermal printers (experimental)
+* New: Receipt templates for epos-print and ESC/POS languages (experimental)
+* New: Receipt template editor for custom receipts
+* Fix: Checkout settings not showing for some users
 * Fix: issue with some product variation names, e.g.: 000, 00 and 0
-* Fix: display of print receipt path in settings
 * Tweak: Add Reply-To header to support emails
 * Tweak: remove hard dependence for unique customer email
+* Numerous other tweaks and improvements
 
 = 0.4.5 - 2015/10/28 =
 * Important: WooCommerce POS now requires PHP 5.4 or higher

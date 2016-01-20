@@ -36,6 +36,8 @@ class WC_POS_Admin_Status extends WC_POS_Admin_Abstract {
       'wc_pos_system_status',
       array( $this, 'display_system_status_page' )
     );
+
+    parent::admin_menu();
   }
 
   /**

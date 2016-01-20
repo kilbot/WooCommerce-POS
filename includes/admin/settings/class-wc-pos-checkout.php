@@ -52,7 +52,7 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
         $ordered_gateways[ ++$i ] = $gateway;
       }
       $settings = new WC_POS_Admin_Settings_Gateways($gateway->id);
-      $settings->merge_settings($gateway);
+      $settings->merge_settings($gateway); // @todo remove this, use get_title() etc
       apply_filters( 'woocommerce_pos_load_gateway', $gateway );
     }
 

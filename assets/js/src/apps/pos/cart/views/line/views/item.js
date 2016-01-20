@@ -19,9 +19,10 @@ module.exports = FormView.extend({
   },
 
   templateHelpers: function(){
-    var type = this.model.get('type');
     return {
-      product: (type !== 'shipping' && type !== 'fee')
+      product   : this.model.type === 'product',
+      shipping  : this.model.type === 'shipping',
+      fee       : this.model.type === 'fee'
     };
   },
 
@@ -49,11 +50,6 @@ module.exports = FormView.extend({
     'click @ui.more'  : 'drawer:toggle'
   },
 
-  modelEvents: {
-    'change:title'        : 'save',
-    'change:method_title' : 'save'
-  },
-
   bindings: {
     'input[name="quantity"]' : {
       observe: 'quantity',
@@ -62,10 +58,12 @@ module.exports = FormView.extend({
       },
       onSet: Utils.unformat
     },
-    '*[data-name="title"]' : {
-      observe: 'title',
-      events: ['blur']
-    },
+
+    // product: name, shipping: method_title, fee: title
+    '*[data-name="name"]' : { observe: 'name', events: ['blur'] },
+    '*[data-name="method_title"]' : {observe: 'method_title', events: ['blur']},
+    '*[data-name="title"]' : { observe: 'title', events: ['blur'] },
+
     'dl.meta': {
       observe: 'meta',
       updateMethod: 'html',
@@ -77,7 +75,6 @@ module.exports = FormView.extend({
         return row;
       }
     },
-    '*[data-name="method_title"]': 'method_title',
     'input[name="item_price"]': {
       observe: 'item_price',
       onGet: Utils.formatNumber,
@@ -102,11 +99,6 @@ module.exports = FormView.extend({
         }
       }
     }
-  },
-
-  save: function(){
-    console.log(arguments);
-    this.model.save();
   },
 
   removeItem: function(e) {

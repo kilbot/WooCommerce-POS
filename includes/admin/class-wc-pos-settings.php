@@ -40,6 +40,8 @@ class WC_POS_Admin_Settings extends WC_POS_Admin_Abstract {
       'wc_pos_settings',
       array( $this, 'display_settings_page' )
     );
+
+    parent::admin_menu();
   }
 
   /**

@@ -43,11 +43,9 @@ class WC_POS_Gateways {
    */
   public function payment_gateways( array $gateways ) {
     // don't show POS gateways on WC settings page
-    if( is_admin() && function_exists('get_current_screen') ){
-      $screen = get_current_screen();
-      if( !empty($screen) && $screen->id == 'woocommerce_page_wc-settings' ) {
-        return $gateways;
-      }
+    global $plugin_page;
+    if( $plugin_page == 'wc-settings' ){
+      return $gateways;
     }
 
     return array_merge($gateways, array(

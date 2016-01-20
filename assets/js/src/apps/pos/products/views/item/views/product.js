@@ -36,7 +36,7 @@ var Item = ItemView.extend({
 
   addToCart: function(e){
     e.preventDefault();
-    Radio.request('router', 'add:to:cart', {model: this.model});
+    Radio.request('router', 'add:to:cart', this.model);
   },
 
   variationsPopover: function(e){

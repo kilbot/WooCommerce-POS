@@ -1,278 +1,118 @@
-//var DualModel = require('lib/config/dual-model');
 var DualModel = require('lib/config/dual-model');
-var Radio = require('backbone.radio');
-var Utils = require('lib/utilities/utils');
+var Cart = require('../cart/collection');
+var _ = require('lodash');
 var debug = require('debug')('order');
-var App = require('lib/config/application');
-var $ = require('jquery');
+var Radio = require('backbone.radio');
 
-var Model = DualModel.extend({
+module.exports = DualModel.extend({
   name: 'order',
+
   fields: [
     'customer.first_name',
     'customer.last_name',
     'customer.email'
   ],
 
-  /**
-   * Orders with the following status are closed for editing
-   */
-  //closedStatus: [
-  //  'completed',
-  //  'on-hold',
-  //  'cancelled',
-  //  'refunded',
-  //  'processing',
-  //  'failed'
-  //],
-
-  /**
-   *
-   */
   defaults: {
-    note            : '',
-    order_discount  : 0
+    note : ''
+  },
+
+  initialize: function(){
+    // clone tax settings
+    this.tax = _.clone( this.getSettings( 'tax' ) );
+    this.tax_rates = _.clone( this.getSettings( 'tax_rates' ) );
   },
 
   /**
-   * - attach tax settings
-   * - attach cart & gateways if order is open
+   * convenience method to get settings
    */
-  /* jshint -W071, -W074 */
-  initialize: function(attributes){
-    attributes = attributes || {};
-
-    if(!attributes.customer){
-      var customers = this.getEntities('customers');
-      var customer = customers['default'] || customers.guest || {};
-      this.set({
-        customer_id : customer.id,
-        customer    : customer
-      });
-    }
-
-    this.tax = this.getEntities('tax');
-    this.tax_rates = this.getEntities('tax_rates');
-
-    if( this.isEditable() ){
-      this.attachCart();
-      this.attachGateways();
-    }
-
-    // order_discount input
-    this.on({
-      'change:order_discount': this.calcTotals,
-      'change:status': this.isEditable
-    });
-
-  },
-  /* jshint +W071, +W074 */
-
-  getEntities: function(name){
+  getSettings: function(name){
     return Radio.request('entities', 'get', {
-      type: 'option',
-      name: name
-    }) || {};
+        type: 'option',
+        name: name
+      }) || {};
   },
 
   /**
-   * is order editable method, sets _open true or false
+   * can order be changed
+   * - perhaps check an array of closed stati?
    */
-  isEditable: function(){
-    //return !_.contains(this.closedStatus, this.get('status'));
-    return this.get('status') === undefined || this.isDelayed();
-    //return this.isDelayed();
+  isEditable: function( status ){
+    status = status || this.get('status');
+    return status === undefined || this.isDelayed( status );
   },
 
-  /**
-   * Remove items from cart before destroy
-   */
-  destroy: function(options){
-    var self = this;
-    return this.cart.db.removeBatch( this.cart.pluck('local_id') )
-      .always(function(){
-        return DualModel.prototype.destroy.call(self, options);
-      });
+  attachCart: function( attributes ){
+    this.cart = new Cart( null, { order: this } );
+
+    // add line_items, shipping_lines and fee_lines
+    this.cart.set( attributes.line_items, { parse: true, remove: false } );
+    this.cart.set( attributes.shipping_lines,
+      { parse: true, remove: false, type: 'shipping' }
+    );
+    this.cart.set( attributes.fee_lines,
+      { parse: true, remove: false, type: 'fee' }
+    );
+
+    //delete attributes.line_items; ?
+
+    this.cart.on( 'change add remove', function(){
+      this.save(); // note don't pass arguments
+    }, this );
   },
 
-  /**
-   * Attach cart
-   */
-  attachCart: function(){
-    var cart = Radio.request('entities', 'get', {
-      init : true,
-      type : 'collection',
-      name : 'cart'
-    });
-
-    cart.order_id = this.id;
-
-    this.listenTo(cart, {
-      'add change' : this.calcTotals,
-      'remove'     : this.itemRemoved
-    });
-
-    if(cart.db){
-      cart.db.open().then(function(){
-        cart.fetchCartItems();
-      });
+  save: function(attributes, options){
+    if( this.cart && this.cart.length === 0 ){
+      return this.destroy( options );
     }
 
-    this.cart = cart;
+    this.updateTotals();
+    debug('save order', this);
+
+    return DualModel.prototype.save.call(this, attributes, options);
   },
 
-  /**
-   * remove cart items from idb after successful order
-   */
-  clearCart: function(){
-    if(this.cart){
-      this.cart.db.removeBatch( this.cart.pluck('local_id') );
-    }
-  },
+  parse: function(resp) {
+    resp = DualModel.prototype.parse.call(this, resp);
 
-  /**
-   * Attach gateways
-   */
-  attachGateways: function(){
-    this.gateways = Radio.request('entities', 'get', {
-      init : true,
-      type : 'collection',
-      name : 'gateways'
-    });
-  },
-
-  /**
-   *
-   */
-  itemRemoved: function(){
-    if(this.cart.length > 0){
-      return this.calcTotals();
-    }
-    return this.destroy();
-  },
-
-  /**
-   * Sum cart totals
-   * todo: too many statements
-   */
-  /* jshint -W071 */
-  calcTotals: function(){
-    var total_tax     = 0,
-        subtotal_tax  = 0,
-        shipping_tax  = 0,
-        cart_discount_tax = 0,
-        subtotal      = this.cart.sum('subtotal'),
-        total         = this.cart.sum('total'),
-        cart_discount = subtotal - total,
-        order_discount = this.get('order_discount');
-
-    if( this.tax.calc_taxes === 'yes' ) {
-      total_tax         = this.cart.sum('total_tax');
-      subtotal_tax      = this.cart.sum('subtotal_tax');
-      shipping_tax      = this.cart.sum('total_tax', 'shipping');
-      cart_discount_tax = subtotal_tax - total_tax;
+    if( resp && this.isEditable( resp.status ) && !this.cart ){
+      this.attachCart( resp );
     }
 
-    total += total_tax;
-    total -= order_discount;
-
-    // tax_lines will merge the data - possibly due to deep model
-    // clear tax_lines before save to ensure clean data
-    this.unset('tax_lines', { silent: true });
-
-    // create totals object
-    var totals = {
-      'total'             : Utils.round( total, 4 ),
-      'subtotal'          : Utils.round( subtotal, 4 ),
-      'total_tax'         : Utils.round( total_tax, 4 ),
-      'subtotal_tax'      : Utils.round( subtotal_tax, 4 ),
-      'shipping_tax'      : Utils.round( shipping_tax, 4 ),
-      'cart_discount'     : Utils.round( cart_discount, 4 ),
-      'cart_discount_tax' : Utils.round( cart_discount_tax, 4 ),
-      'tax_lines'         : this.cart.itemizedTax()
-    };
-
-    this.save(totals);
-    debug('update totals', totals);
-  },
-  /* jshint +W071 */
-
-  /**
-   * Convenience method to sum attributes
-   */
-  sum: function(array){
-    var sum = 0;
-    for (var i = 0; i < array.length; i++) {
-      sum += parseFloat( this.get(array[i]) );
-    }
-    return sum;
+    return resp;
   },
 
-  /**
-   * process order
-   * todo: remoteSync resolves w/ an array of models, should match sync?
-   */
-  process: function(){
-    var self = this;
+  toJSON: function(options) {
+    var attrs = _.clone(this.attributes);
 
-    return $.when( this.processCart() )
-      .then(function(){
-        return self.processGateway();
-      })
-      .then(function(){
-        var method = self.get('id') ? 'update' : 'create';
-        return self.remoteSync(method);
-      })
-      .then(function(array){
-        var model = array[0];
-        if(model.get('status') === 'failed'){
-          model.save({ status: 'UPDATE_FAILED' });
+    if( this.isEditable() && this.cart ){
+      attrs.line_items = [];
+      attrs.shipping_lines = [];
+      attrs.fee_lines = [];
+
+      this.cart.each( function(model) {
+        if( model.type === 'shipping' ){
+          attrs.shipping_lines.push( model.toJSON(options) );
+        } else if ( model.type === 'fee' ) {
+          attrs.fee_lines.push( model.toJSON(options) );
+        } else {
+          attrs.line_items.push( model.toJSON(options) );
         }
       });
+    }
+
+    return attrs;
   },
 
-  /**
-   *
-   */
-  processCart: function(){
-    var obj = {
-      product : [],
-      shipping: [],
-      fee     : []
+  updateTotals: function(){
+    var totals = {
+      total         : this.cart.sum('total'),
+      subtotal      : this.cart.sum('subtotal'),
+      total_tax     : this.cart.sum('total_tax'),
+      subtotal_tax  : this.cart.sum('subtotal_tax')
     };
 
-    this.cart.each(function(model){
-      var type = model.get('type');
-      if(type !== 'shipping' && type !== 'fee'){
-        type = 'product';
-      }
-      obj[type].push( model.toJSON() );
-    });
-
-    // set
-    this.set({
-      line_items    : obj.product,
-      shipping_lines: obj.shipping,
-      fee_lines     : obj.fee,
-      tax_lines     : this.cart.itemizedTax() // reset for retry
-    });
-  },
-
-  /**
-   * @todo remove extraneous attrs, eg: payment_fields
-   */
-  processGateway: function(){
-    var data = this.gateways.findWhere({ active: true }).toJSON();
-    this.set({
-      payment_details: data
-    });
-  },
-
-  emailReceipt: function(email){
-    return App.prototype.post( this.url() + 'email/' + email );
+    this.set(totals);
   }
 
 });
-
-module.exports = Model;
-App.prototype.set('Entities.Order.Model', Model);

@@ -52,6 +52,9 @@
             _e( 'Clear All Local Data', 'woocommerce-pos' );
           ?>
         </a>
+        <?php
+          _e( '<strong class="red">Note:</strong> Make sure the POS is not open in another tab.', 'woocommerce-pos' );
+        ?>
       </td>
     </tr>
 

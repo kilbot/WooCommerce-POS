@@ -1,7 +1,7 @@
 {{#if product}}
 <div class="qty"><input type="text" name="quantity" data-label="<?php /* translators: woocommerce */ _e( 'Quantity', 'woocommerce' ); ?>" data-numpad="quantity" class="form-control autogrow"></div>
 <div class="title">
-  <strong data-name="title" contenteditable="true">{{title}}</strong>
+  <strong data-name="name" contenteditable="true">{{name}}</strong>
   <dl class="meta"></dl>
   <a data-action="more" href="#" class="btn btn-default btn-circle-sm"><i class="icon-angle-down"></i></a>
 </div>
@@ -9,9 +9,10 @@
 {{else}}
 <div class="qty"></div>
 <div class="title">
-  {{#if method_title}}
+  {{#if shipping}}
   <strong data-name="method_title" contenteditable="true">{{method_title}}</strong>
-  {{else}}
+  {{/if}}
+  {{#if fee}}
   <strong data-name="title" contenteditable="true">{{title}}</strong>
   {{/if}}
   <a data-action="more" href="#" class="btn btn-default btn-circle-sm"><i class="icon-angle-down"></i></a>

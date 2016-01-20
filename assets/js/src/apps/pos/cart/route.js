@@ -145,17 +145,10 @@ var CartRoute = Route.extend({
       //  this.layout.getRegion('totals').currentView.showDiscountRow();
       //},
       'action:fee': function(){
-        this.order.cart.addToCart({
-          type  : 'fee',
-          title : polyglot.t('titles.fee')
-        });
+        this.order.cart.add( null, { type: 'fee' } );
       },
       'action:shipping': function(){
-        this.order.cart.addToCart({
-          type        : 'shipping',
-          method_title: polyglot.t('titles.shipping'),
-          method_id   : '' // todo: settings
-        });
+        this.order.cart.add( null, { type: 'shipping' });
       },
       'action:checkout': function(){
         this.navigate('checkout/' + this.order.id, { trigger: true });

@@ -25,29 +25,31 @@ class WC_POS_Admin_Abstract {
    */
   public function __construct() {
     add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-    add_action( 'current_screen', array( $this, 'conditional_init' ) );
   }
 
   /**
    *
-   *
-   * @param $current_screen
    */
-  public function conditional_init( $current_screen ) {
-    if ( $current_screen->id == $this->screen_id ) {
-
+  public function conditional_init() {
       // Enqueue scripts for the admin pages
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ), 99 );
       add_action( 'admin_print_scripts', array( $this, 'admin_print_scripts' ) );
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ), 99 );
       add_action( 'admin_print_footer_scripts', array( $this, 'print_footer_scripts' ), 99 );
+  }
+
+  /**
+   *
+   */
+  public function admin_menu(){
+    if( $this->screen_id ){
+      add_action( 'load-' . $this->screen_id, array( $this, 'conditional_init' ) );
     }
   }
 
   /**
    *
    */
-  public function admin_menu(){}
   public function enqueue_admin_scripts(){}
 
   /**

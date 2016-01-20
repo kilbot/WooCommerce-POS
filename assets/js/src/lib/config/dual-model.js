@@ -41,8 +41,8 @@ module.exports = app.prototype.DualModel = DeepModel.extend({
     return !!this.get(this.remoteIdAttribute);
   },
 
-  isDelayed: function() {
-    var status = this.get('status');
+  isDelayed: function( status ) {
+    status = status || this.get('status');
     return status === this.states['update'] ||
            status === this.states['create'] ||
            status === this.states['delete'];

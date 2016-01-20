@@ -1,21 +1,16 @@
 var DualCollection = require('lib/config/dual-collection');
 var Model = require('./model');
-var $ = require('jquery');
 var _ = require('lodash');
+var $ = require('jquery');
 var bb = require('backbone');
 
 module.exports = DualCollection.extend({
-  model: Model,
-  name: 'orders',
-  _syncDelayed: false,
 
-  /**
-   * Open orders first
-   */
-  //comparator: function( model ){
-  //  if( model.get('id') === undefined ) { return 0; }
-  //  return 1;
-  //},
+  model: Model,
+
+  name: 'orders',
+
+  _syncDelayed: false,
 
   /**
    *
@@ -24,11 +19,30 @@ module.exports = DualCollection.extend({
     var order = this.get(id);
 
     if( !order && id !== 'new' ){
-      order = _.first( this.openOrders() );
+      order = _.first( this.getOpenOrders() );
     }
 
     this.active = order;
     return order;
+  },
+
+  /**
+   *
+   */
+  getOpenOrders: function(){
+    return this.filter(function(model){
+      return model.isEditable();
+    });
+  },
+
+  /**
+   *
+   */
+  addToCart: function(options){
+    this.getActiveOrder()
+      .then(function(order){
+        order.cart.add(options, { parse: true });
+      });
   },
 
   /**
@@ -54,34 +68,25 @@ module.exports = DualCollection.extend({
     return deferred.promise();
   },
 
-  addToCart: function(options){
-    this.getActiveOrder()
-      .then(function(order){
-        order.cart.addToCart(options);
-      });
-  },
-
+  /**
+   *
+   */
   create: function(){
     var deferred = new $.Deferred();
 
     // Safari has a problem with create, perhaps an autoincrement problem?
     // Set local_id as timestamp milliseconds
-    DualCollection.prototype.create.call(this, { local_id: Date.now() }, {
+    DualCollection.prototype.create.call(this, {
+      local_id: Date.now(),
+      status: 'CREATE_FAILED'
+    }, {
       wait: true,
+      parse: true,
       success: deferred.resolve,
       error: deferred.reject
     });
 
     return deferred.promise();
-  },
-
-  /**
-   *
-   */
-  openOrders: function(){
-    return this.filter(function(model){
-      return model.isEditable();
-    });
   }
 
 });

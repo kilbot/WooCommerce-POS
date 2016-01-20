@@ -43,8 +43,6 @@ class WC_POS_Tax {
 
     foreach( self::tax_classes() as $class => $label ) {
       if( $rate = WC_Tax::get_base_tax_rates( $class ) ){
-        // WC_Tax returns a assoc array with int as keys = world of pain in js
-        // possibly change $key to $rate['id']
         $rates[$class] = $rate;
       }
     }

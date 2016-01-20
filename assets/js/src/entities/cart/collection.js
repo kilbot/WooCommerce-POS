@@ -1,150 +1,76 @@
-var IndexedDBCollection = require('lib/config/idb-collection');
-var Model = require('./model');
-var _ = require('lodash');
 var bb = require('backbone');
+var _ = require('lodash');
 
-module.exports = IndexedDBCollection.extend({
-  model: Model,
-  name: 'cart',
-  indexes: [
-    {name: 'local_id', keyPath: 'local_id', unique: true},
-    {name: 'order', keyPath: 'order', unique: false},
-    {name: 'type', keyPath: 'type', unique: false}
-  ],
+var subclasses = {
+  product   : require('./models/product'),
+  shipping  : require('./models/shipping'),
+  fee       : require('./models/fee')
+};
+
+module.exports = bb.Collection.extend({
 
   /**
-   * Whitelist of attributes taken from product model
+   * Order cart: products, then shipping, then fees
    */
-  productAttributes: [
-    'order',
-    'title',
-    'local_id',
-    'product_id',
-    'type',
-    'price',
-    'regular_price',
-    'sale_price',
-    'taxable',
-    'tax_status',
-    'tax_class',
-    'attributes',
-    'meta',         // variation meta
-    'method_title', // shipping
-    'method_id'     // shipping
-  ],
-
   comparator: function( model ){
-    var type = model.get( 'type' );
-    if( type === 'fee' ) { return 2; }
-    if( type === 'shipping' ) { return 1; }
+    if( model.type === 'fee' ) { return 2; }
+    if( model.type === 'shipping' ) { return 1; }
     return 0;
   },
 
-  /**
-   * If collection has order_id, query idb for index: 'order' = order_id
-   * onSuccess add items to collection
-   */
-  fetchCartItems: function () {
-    if(!this.order_id){
-      return;
-    }
-
-    var onSuccess = this.add.bind(this);
-    var keyRange = this.db.store.makeKeyRange({
-      only: this.order_id
-    });
-
-    this.db.store.query(onSuccess, {
-      index: 'order',
-      keyRange: keyRange
-    });
+  model: function(attributes, options){
+    var type = _.get( options, ['type'], 'product' );
+    return new subclasses[type](attributes, options);
   },
 
-  // convenience method to sum attributes in collection
-  sum: function(attribute, type){
-    var col = this.toJSON();
-    if(type){ col = _.where(col, {type: type}); }
-    return _.pluck(col, attribute).reduce(function(a, b){return a + b;}, 0);
-  },
-
-  /**
-   * add/increase item
-   * also prune attributes
-   */
-  /* jshint -W071, -W074 */
-  addToCart: function(options){
+  initialize: function(models, options){
     options = options || {};
-    var model, attributes = options.model || options;
-    if(attributes instanceof bb.Model){
-      attributes = attributes.toJSON();
-    }
-
-    if(attributes.id){
-      model = this.findWhere({ product_id: attributes.id });
-      attributes.product_id = attributes.id;
-      delete attributes.id;
-    }
-
-    if(model){
-      model.quantity('increase');
-    } else {
-      model = this._addToCart(attributes);
-    }
-
-    model.trigger('pulse');
-  },
-  /* jshint +W071, +W074 */
-
-  _addToCart: function(attributes){
-    attributes.order = this.order_id;
-
-    // turn variation attributes into line item meta
-    if(attributes.type === 'variation'){
-      attributes.meta = _.map(attributes.attributes, function(variant, idx){
-        return {
-          key: ++idx,
-          label: variant.name,
-          value: variant.option
-        };
-      });
-    }
-
-    return this.add(_.pick(attributes, this.productAttributes));
+    this.order = options.order;
   },
 
-  itemizedTax: function(){
-    var items = _.clone(this.toJSON(), true);
-    var taxes = _.map(items, function(item){
-      if(!item.tax) { return; }
-      _.each(item.tax, function(tax){
-        tax.shipping = item.type === 'shipping' ? tax.total : 0 ;
-      });
-      return item.tax;
-    });
-    var obj = this.sumTaxes(taxes);
+  /**
+   * Cart items should always be init with attributes, not bb.Model
+   * - convert product models to attributes
+   * - parse attributes, eg: productModel.id = cartModel.product_id
+   * - if count = 1 for product id, bump quantity
+   */
+  add: function( models, options ){
+    var self = this,
+      parsedAttrs = [],
+      type = _.get( options, ['type'], 'product' );
 
-    // convert obj to array to be consistent with WC REST API output
-    var arr = [];
-    _.each(obj, function(value, key){
-      //value.rate_id = parseInt(key, 10);
-      value.rate_id = key.toString(); // make sure it's a string
-      arr.push(value);
-    });
+    models = !_.isArray(models) ? [models] : models;
 
-    return arr;
-  },
-
-  sumTaxes: function(taxes){
-    return _.reduce(taxes, function(result, tax){
-      return _.merge(result, tax, function(a, b){
-        if(a){
-          b.total += a.total;
-          b.subtotal += a.subtotal;
-          b.shipping += a.shipping;
+    _.each(models, function(model){
+      var attrs = model instanceof bb.Model ? model.toJSON() : model;
+      attrs = subclasses[type].prototype.parse( attrs );
+      if( type === 'product' ){
+        var products = self.where({ product_id: attrs.product_id });
+        if( products.length === 1 ){
+          products[0].quantity('increase').trigger('pulse');
+          return;
         }
-        return b;
-      });
-    }, {});
+      }
+      return parsedAttrs.push(attrs);
+    });
+
+    var model = bb.Collection.prototype.add.call(this, parsedAttrs, options);
+    if( model instanceof bb.Model ){
+      model.trigger('pulse');
+    }
+    return model;
+  },
+
+  /**
+   * convenience method to sum attributes in cart
+   */
+  sum: function(attribute, type){
+    return this.reduce( function( sum, model ){
+      if( type && type !== model.type ){
+        return sum;
+      }
+      return sum + parseFloat( model.get(attribute) );
+    }, 0 );
   }
 
 });
