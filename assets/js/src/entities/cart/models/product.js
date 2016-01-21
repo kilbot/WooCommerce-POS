@@ -1,6 +1,7 @@
 var Model = require('./abstract');
 var _ = require('lodash');
 var Utils = require('lib/utilities/utils');
+var debug = require('debug')('productCartItem');
 
 /**
  * Whitelist of attributes taken from product model
@@ -28,6 +29,8 @@ module.exports = Model.extend({
   },
 
   initialize: function(){
+    Model.prototype.initialize.apply( this, arguments );
+
     // additional product listeners
     this.on( 'change:quantity change:regular_price', this.updateTotals );
   },
@@ -66,6 +69,7 @@ module.exports = Model.extend({
     };
 
     this.set(totals);
+    debug('update cart item', this);
   },
   /* jshint +W071 */
 

@@ -65,11 +65,11 @@ module.exports = bb.Collection.extend({
    * convenience method to sum attributes in cart
    */
   sum: function(attribute, type){
-    return this.reduce( function( sum, model ){
+    return this.reduce( function( total, model ){
       if( type && type !== model.type ){
-        return sum;
+        return total;
       }
-      return sum + parseFloat( model.get(attribute) );
+      return _.sum([ total, model.get(attribute) ]);
     }, 0 );
   }
 

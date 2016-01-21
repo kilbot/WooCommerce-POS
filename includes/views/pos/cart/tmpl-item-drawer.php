@@ -1,21 +1,20 @@
-{{#if product_id}}
+{{#if product}}
 <div class="list-row">
   <div><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>:</div>
   <div>
     <input name="regular_price" id="regular_price" class="form-control autogrow" type="text" data-numpad="amount" data-label="<?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>" />
   </div>
 </div>
-
 {{/if}}
 
-{{#is type 'shipping'}}
+{{#if shipping}}
 <div class="list-row">
   <div><?php /* translators: woocommerce */ _e( 'Shipping Method', 'woocommerce' ); ?>:</div>
   <div>
     <select class="c-select" name="method_id" id="method_id"></select>
   </div>
 </div>
-{{/is}}
+{{/if}}
 
 <div class="list-row">
   <div><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?>:</div>
@@ -27,7 +26,7 @@
   </div>
 </div>
 
-{{#if product_id}}
+{{#if product}}
 <div class="list-row">
   <div><?php /* translators: woocommerce */ _e( 'Add&nbsp;meta', 'woocommerce' ); ?>:</div>
   <div>

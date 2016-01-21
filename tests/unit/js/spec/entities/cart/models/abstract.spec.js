@@ -39,7 +39,7 @@ describe('entities/cart/models/abstract.js', function () {
     expect(sum).equals(5.79);
   });
 
-  it('should init with a tax_rate collection for calc_tax = \'yes\'', function(){
+  it('should init with a tax_rate collection for calc_taxes = \'yes\'', function(){
 
     var model = new Model();
     expect( model.taxes ).to.be.undefined;
@@ -48,7 +48,7 @@ describe('entities/cart/models/abstract.js', function () {
       collection: {
         order : {
           tax: {
-            calc_tax: 'yes'
+            calc_taxes: 'yes'
           },
           tax_rates: dummy_tax_US
         }
@@ -66,7 +66,7 @@ describe('entities/cart/models/abstract.js', function () {
       collection: {
         order : {
           tax: {
-            calc_tax: 'yes'
+            calc_taxes: 'yes'
           },
           tax_rates: dummy_tax_GB
         }
@@ -89,7 +89,7 @@ describe('entities/cart/models/abstract.js', function () {
       collection: {
         order : {
           tax: {
-            calc_tax: 'yes'
+            calc_taxes: 'yes'
           },
           tax_rates: dummy_tax_US
         }

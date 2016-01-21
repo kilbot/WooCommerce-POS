@@ -119,4 +119,110 @@ describe('entities/orders/model.js', function () {
 
   });
 
+  it('should have a convience method to combine itemized taxes', function(){
+
+    var model = new OrderModel();
+
+    var itemizedTaxes1 = [{
+      compound: true,
+      rate: "20.0000",
+      rate_id: "1",
+      shipping: true,
+      subtotal: _.random(10, true),
+      title: "TAX 1",
+      total: _.random(10, true)
+    }, {
+      compound: true,
+      rate: "5.0000",
+      rate_id: "2",
+      shipping: true,
+      subtotal: _.random(10, true),
+      title: "TAX 2",
+      total: _.random(10, true)
+    }];
+
+    var itemizedTaxes2 = [{
+      compound: true,
+      rate: "20.0000",
+      rate_id: "1",
+      shipping: true,
+      subtotal: _.random(10, true),
+      title: "TAX 1",
+      total: _.random(10, true)
+    }, {
+      compound: true,
+      rate: "2.0000",
+      rate_id: "3",
+      shipping: true,
+      subtotal: _.random(10, true),
+      title: "TAX 3",
+      total: _.random(10, true)
+    }];
+
+    // make clone so originals are preserved for check
+    var total = itemizedTaxes1[0].total + itemizedTaxes2[0].total;
+    var subtotal = itemizedTaxes1[0].subtotal + itemizedTaxes2[0].subtotal;
+
+    expect( model.mergeItemizedTaxes( [itemizedTaxes1, itemizedTaxes2] ) ).to.eql(
+      [{
+        compound: true,
+        rate: "20.0000",
+        rate_id: "1",
+        shipping: true,
+        subtotal: subtotal,
+        title: "TAX 1",
+        total: total
+      }, {
+        compound: true,
+        rate: "5.0000",
+        rate_id: "2",
+        shipping: true,
+        subtotal: itemizedTaxes1[1].subtotal,
+        title: "TAX 2",
+        total: itemizedTaxes1[1].total
+      }, {
+        compound: true,
+        rate: "2.0000",
+        rate_id: "3",
+        shipping: true,
+        subtotal: itemizedTaxes2[1].subtotal,
+        title: "TAX 3",
+        total: itemizedTaxes2[1].total
+      }]
+    );
+
+  });
+
+  it('should have a convience method to sum itemized taxes', function() {
+
+    var model = new OrderModel();
+
+    var itemizedTaxes = [{
+      compound: true,
+      rate: "20.0000",
+      rate_id: "1",
+      shipping: true,
+      subtotal: _.random(10, true),
+      title: "TAX 1",
+      total: _.random(10, true)
+    }, {
+      compound: true,
+      rate: "2.0000",
+      rate_id: "3",
+      shipping: true,
+      subtotal: _.random(10, true),
+      title: "TAX 3",
+      total: _.random(10, true)
+    }];
+
+    // make clone so originals are preserved for check
+    var total = itemizedTaxes[0].total + itemizedTaxes[1].total;
+    var subtotal = itemizedTaxes[0].subtotal + itemizedTaxes[1].subtotal;
+
+    expect( model.sumItemizedTaxes( itemizedTaxes ) ).equals( total );
+    expect( model.sumItemizedTaxes( itemizedTaxes, 'subtotal' ) ).equals( subtotal );
+
+  });
+
+
 });

@@ -3,6 +3,7 @@ var Cart = require('../cart/collection');
 var _ = require('lodash');
 var debug = require('debug')('order');
 var Radio = require('backbone.radio');
+var Utils = require('lib/utilities/utils');
 
 module.exports = DualModel.extend({
   name: 'order',
@@ -17,10 +18,15 @@ module.exports = DualModel.extend({
     note : ''
   },
 
-  initialize: function(){
+  /**
+   * add tax settings early for use by cart
+   * - cart set up during parse, parse called by constructor on new Order
+   */
+  constructor: function(){
     // clone tax settings
     this.tax = _.clone( this.getSettings( 'tax' ) );
     this.tax_rates = _.clone( this.getSettings( 'tax_rates' ) );
+    DualModel.apply( this, arguments );
   },
 
   /**
@@ -72,6 +78,10 @@ module.exports = DualModel.extend({
     return DualModel.prototype.save.call(this, attributes, options);
   },
 
+  /**
+   * Attach cart during parse
+   * - allows order to change status, ie: become editable
+   */
   parse: function(resp) {
     resp = DualModel.prototype.parse.call(this, resp);
 
@@ -82,37 +92,148 @@ module.exports = DualModel.extend({
     return resp;
   },
 
+  /**
+   *
+   */
   toJSON: function(options) {
     var attrs = _.clone(this.attributes);
 
     if( this.isEditable() && this.cart ){
+      var taxes = [],
+          shipping_taxes = [];
+
       attrs.line_items = [];
       attrs.shipping_lines = [];
       attrs.fee_lines = [];
 
       this.cart.each( function(model) {
+
         if( model.type === 'shipping' ){
           attrs.shipping_lines.push( model.toJSON(options) );
+          if( model.taxes ){
+            shipping_taxes.push( model.taxes.toJSON() );
+          }
         } else if ( model.type === 'fee' ) {
           attrs.fee_lines.push( model.toJSON(options) );
         } else {
           attrs.line_items.push( model.toJSON(options) );
         }
+
+        if( model.taxes ){
+          taxes.push( model.taxes.toJSON() );
+        }
+
       });
+
+      attrs.tax_lines = this.mergeItemizedTaxes( taxes );
+      attrs.shipping_tax = this.sumItemizedTaxes(
+        this.mergeItemizedTaxes( shipping_taxes )
+      );
     }
 
     return attrs;
   },
 
+  /**
+   *
+   */
   updateTotals: function(){
+    var total         = this.cart.sum('total'),
+        subtotal      = this.cart.sum('subtotal'),
+        total_tax     = this.cart.sum('total_tax'),
+        subtotal_tax  = this.cart.sum('subtotal_tax'),
+        cart_discount = subtotal - total,
+        cart_discount_tax = subtotal_tax - total_tax;
+
+    total += total_tax;
+
     var totals = {
-      total         : this.cart.sum('total'),
-      subtotal      : this.cart.sum('subtotal'),
-      total_tax     : this.cart.sum('total_tax'),
-      subtotal_tax  : this.cart.sum('subtotal_tax')
+      'total'             : Utils.round( total, 4 ),
+      'subtotal'          : Utils.round( subtotal, 4 ),
+      'total_tax'         : Utils.round( total_tax, 4 ),
+      'subtotal_tax'      : Utils.round( subtotal_tax, 4 ),
+      'cart_discount'     : Utils.round( cart_discount, 4 ),
+      'cart_discount_tax' : Utils.round( cart_discount_tax, 4 )
     };
 
     this.set(totals);
+    debug('update totals', totals);
+  },
+
+  /**
+   * Takes an array of itemized taxes and merges them into one combined array
+   * - model.taxes.toJSON() ensures a shallow clone
+   */
+  mergeItemizedTaxes: function( taxes ){
+    return _.reduce( taxes, function( merged, line_taxes ){
+      _.each( line_taxes, function( tax ){
+        var orig = _.find( merged, { rate_id: tax.rate_id } );
+        if( orig ){
+          orig.total = _.sum([ orig.total, tax.total ]);
+          orig.subtotal = _.sum([ orig.subtotal, tax.subtotal ]);
+        } else {
+          merged.push( tax );
+        }
+      } );
+      return merged;
+    }) || [];
+  },
+
+  /**
+   *
+   */
+  sumItemizedTaxes: function( taxes, attr ){
+    attr = attr || 'total';
+    return _.chain( taxes )
+      .map( function( tax ) {
+        return tax[attr];
+      })
+      .sum()
+      .value();
+  },
+
+  /**
+   * Value displayed in cart
+   */
+  getDisplayTotal: function(){
+    if( this.tax.tax_display_cart === 'incl' ) {
+      return this.sum(['total', 'total_tax']);
+    } else {
+      return this.get('total');
+    }
+  },
+
+  /**
+   * Convenience method to sum attributes
+   */
+  sum: function(array){
+    var sum = 0;
+    for (var i = 0; i < array.length; i++) {
+      sum += this.get(array[i]);
+    }
+    return Utils.round(sum, 4);
+  },
+
+  /**
+   * Value displayed in cart
+   */
+  getDisplaySubtotal: function(){
+    if( this.tax.tax_display_cart === 'incl' ) {
+      return this.sum(['subtotal', 'subtotal_tax']);
+    } else {
+      return this.get('subtotal');
+    }
+  },
+
+  /**
+   * Value displayed in cart
+   */
+  getDisplayCartDiscount: function(){
+    if( this.tax.tax_display_cart === 'incl' ) {
+      return this.sum(['cart_discount', 'cart_discount_tax']);
+    } else {
+      return this.get('cart_discount');
+    }
   }
 
 });

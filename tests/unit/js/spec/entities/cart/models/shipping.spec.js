@@ -51,7 +51,7 @@ describe('entities/cart/models/shipping.js', function () {
         collection: {
           order : {
             tax: {
-              calc_tax: 'yes',
+              calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
             tax_rates: dummy_tax_GB
@@ -75,7 +75,7 @@ describe('entities/cart/models/shipping.js', function () {
         collection: {
           order : {
             tax: {
-              calc_tax: 'yes',
+              calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
             tax_rates: dummy_tax_GB
@@ -99,7 +99,7 @@ describe('entities/cart/models/shipping.js', function () {
         collection: {
           order : {
             tax: {
-              calc_tax: 'yes',
+              calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
             tax_rates: {
@@ -127,7 +127,7 @@ describe('entities/cart/models/shipping.js', function () {
         collection: {
           order : {
             tax: {
-              calc_tax: 'yes',
+              calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
             tax_rates: {
@@ -159,7 +159,7 @@ describe('entities/cart/models/shipping.js', function () {
         collection: {
           order : {
             tax: {
-              calc_tax: 'yes',
+              calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
             tax_rates: dummy_tax_US
@@ -183,7 +183,7 @@ describe('entities/cart/models/shipping.js', function () {
         collection: {
           order : {
             tax: {
-              calc_tax: 'yes',
+              calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
             tax_rates: dummy_tax_US
@@ -207,7 +207,7 @@ describe('entities/cart/models/shipping.js', function () {
         collection: {
           order : {
             tax: {
-              calc_tax: 'yes',
+              calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
             tax_rates: {
@@ -235,7 +235,7 @@ describe('entities/cart/models/shipping.js', function () {
         collection: {
           order : {
             tax: {
-              calc_tax: 'yes',
+              calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
             tax_rates: {

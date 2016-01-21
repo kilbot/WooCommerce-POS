@@ -11,6 +11,14 @@ module.exports = FormView.extend({
 
   template: 'pos.cart.item-drawer',
 
+  templateHelpers: function(){
+    return {
+      product   : this.model.type === 'product',
+      shipping  : this.model.type === 'shipping',
+      fee       : this.model.type === 'fee'
+    };
+  },
+
   behaviors: {
     AutoGrow: {
       behaviorClass: AutoGrow

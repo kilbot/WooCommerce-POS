@@ -6,15 +6,12 @@ var debug = require('debug')('cartItem');
 
 module.exports = bb.Model.extend({
 
-  constructor: function(){
-    // set attributes, parse if required
-    bb.Model.apply(this, arguments);
-
+  initialize: function(){
     // copy tax info from order collection
     this.tax_options = _.get( this, ['collection', 'order', 'tax'], {} );
 
     // attach tax_rates collection
-    if( this.tax_options.calc_tax === 'yes' ){
+    if( this.tax_options.calc_taxes === 'yes' ){
       this.attachTaxes({
         prices_include_tax: this.tax_options.prices_include_tax
       });
@@ -34,11 +31,11 @@ module.exports = bb.Model.extend({
     this.taxes = new Taxes( [], _.extend( { line_item : this }, options ) );
     this.on( 'change:taxable change:tax_class', function(){
       this.resetTaxes();
-      this.updateTotals();
     }, this );
     this.resetTaxes();
   },
 
+  /* jshint -W071 */
   updateTotals: function(){
     var item_price = this.get('item_price'),
         item_tax   = 0;
@@ -60,12 +57,9 @@ module.exports = bb.Model.extend({
     };
 
     this.set(totals);
-  },
-
-  set: function(){
     debug('update cart item', this);
-    bb.Model.prototype.set.apply(this, arguments);
   },
+  /* jshint +W071 */
 
   resetTaxes: function(){
     var tax_rates = null;
@@ -77,6 +71,8 @@ module.exports = bb.Model.extend({
     }
 
     this.taxes.reset( tax_rates, { parse: true } );
+
+    this.updateTotals();
   },
 
   /**
@@ -88,6 +84,28 @@ module.exports = bb.Model.extend({
       sum += this.get(array[i]);
     }
     return Utils.round(sum, 4);
+  },
+
+  /**
+   * Value displayed in cart
+   */
+  getDisplayTotal: function(){
+    if( this.tax_options.tax_display_cart === 'incl' ) {
+      return this.sum(['total', 'total_tax']);
+    } else {
+      return this.get('total');
+    }
+  },
+
+  /**
+   * Value displayed in cart
+   */
+  getDisplaySubtotal: function(){
+    if( this.tax_options.tax_display_cart === 'incl' ) {
+      return this.sum(['subtotal', 'subtotal_tax']);
+    } else {
+      return this.get('subtotal');
+    }
   }
 
 });

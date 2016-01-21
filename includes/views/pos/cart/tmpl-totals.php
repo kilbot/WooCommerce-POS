@@ -17,7 +17,7 @@
 <li class="list-row tax">
   <div>
     {{#if ../../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
-    {{label}}:
+    {{title}}:
   </div>
   <div class="total">{{{money total}}}</div>
   <div class="action"></div>

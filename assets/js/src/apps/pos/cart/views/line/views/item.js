@@ -1,7 +1,5 @@
 var FormView = require('lib/config/form-view');
 var Utils = require('lib/utilities/utils');
-var bb = require('backbone');
-var Radio = bb.Radio;
 var AutoGrow = require('lib/behaviors/autogrow');
 var Numpad = require('lib/components/numpad/behavior');
 var _ = require('lodash');
@@ -10,13 +8,6 @@ module.exports = FormView.extend({
   template: 'pos.cart.item',
 
   className: 'list-row',
-
-  initialize: function() {
-    this.tax = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'tax'
-    }) || {};
-  },
 
   templateHelpers: function(){
     return {
@@ -83,20 +74,16 @@ module.exports = FormView.extend({
     '.total': {
       observe: ['total', 'subtotal', 'tax_class', 'taxable'],
       updateMethod: 'html',
-      onGet: function(value) {
-        if( this.tax.tax_display_cart === 'incl' ) {
-          value[0] = this.model.sum(['total', 'total_tax']);
-          value[1] = this.model.sum(['subtotal', 'subtotal_tax']);
+      onGet: function() {
+        var total     = this.model.getDisplayTotal(),
+            subtotal  = this.model.getDisplaySubtotal();
+
+        if( ! subtotal || total === subtotal ){
+          return Utils.formatMoney( total );
         }
 
-        var total     = Utils.formatMoney(value[0]),
-            subtotal  = Utils.formatMoney(value[1]);
-
-        if(total !== subtotal){
-          return '<del>' + subtotal + '</del> <ins>' + total + '</ins>';
-        } else {
-          return total;
-        }
+        return '<del>' + Utils.formatMoney( subtotal ) + '</del> ' +
+          '<ins>' + Utils.formatMoney( total ) + '</ins>';
       }
     }
   },
