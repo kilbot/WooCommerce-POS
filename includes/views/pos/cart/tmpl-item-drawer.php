@@ -31,9 +31,9 @@
   <div><?php /* translators: woocommerce */ _e( 'Add&nbsp;meta', 'woocommerce' ); ?>:</div>
   <div>
     {{#each meta}}
-      <span data-key="{{key}}">
-        <input name="meta.label" value="{{label}}" type="text" class="form-control">
-        <textarea name="meta.value" class="form-control">{{value}}</textarea>
+      <span data-index="{{@index}}">
+        <input name="meta.{{@index}}.label" type="text" class="form-control">
+        <textarea name="meta.{{@index}}.value" class="form-control"></textarea>
         <a href="#" data-action="remove-meta">
           <i class="icon-remove icon-lg"></i>
         </a>

@@ -2,10 +2,9 @@ var FormView = require('lib/config/form-view');
 var Utils = require('lib/utilities/utils');
 var AutoGrow = require('lib/behaviors/autogrow');
 var Numpad = require('lib/components/numpad/behavior');
-var $ = require('jquery');
+var Radio = require('backbone.radio');
 var _ = require('lodash');
-var bb = require('backbone');
-var Radio = bb.Radio;
+var $ = require('jquery');
 
 module.exports = FormView.extend({
 
@@ -30,20 +29,17 @@ module.exports = FormView.extend({
 
   ui: {
     addMeta     : '*[data-action="add-meta"]',
-    removeMeta  : '*[data-action="remove-meta"]',
-    metaLabel   : 'input[name="meta.label"]',
-    metaValue   : 'textarea[name="meta.value"]'
+    removeMeta  : '*[data-action="remove-meta"]'
   },
 
   events: {
-    'click @ui.addMeta'     : 'addMetaFields',
-    'click @ui.removeMeta'  : 'removeMetaFields',
-    'blur @ui.metaLabel'    : 'updateMeta',
-    'blur @ui.metaValue'    : 'updateMeta'
+    'click @ui.addMeta'     : 'addMeta',
+    'click @ui.removeMeta'  : 'removeMeta'
   },
 
   modelEvents: {
-    'pulse': 'pulse'
+    'pulse'       : 'pulse',
+    'change:meta' : 'render'
   },
 
   bindings: {
@@ -82,6 +78,23 @@ module.exports = FormView.extend({
         },
         comparator: function(){}
       }
+    },
+    '*[name^="meta"]': {
+      observe: 'meta',
+      events: ['blur'],
+      update: function( $el, meta ){
+        _.each( meta, function( row, idx ){
+          this.$('input[name="meta.' + idx + '.label"]').val( row.label );
+          this.$('textarea[name="meta.' + idx + '.value"]').val( row.value );
+        }, this );
+      },
+      onSet: function(){
+        var obj = {};
+        this.$('*[name^="meta"]').each(function(){
+          _.set( obj, $(this).attr('name'), $(this).val());
+        });
+        return obj.meta;
+      }
     }
   },
 
@@ -101,67 +114,27 @@ module.exports = FormView.extend({
     }
   },
 
-  updateMeta: function(e) {
-    var el        = $(e.target),
-        name      = el.attr('name').split('.'),
-        attribute = name[0],
-        value     = el.val(),
-        data      = {},
-        self      = this;
-
-    var newValue = function(){
-      var key = el.parent('span').data('key');
-      var meta = ( self.model.get('meta') || [] );
-
-      // select row (or create new one)
-      var row = _.where( meta, { 'key': key } );
-      row = row.length > 0 ? row[0] : { 'key': key };
-      row[ name[1] ] = value;
-
-      // add the change row and make unique on key
-      meta.push(row);
-      return _.uniq( meta, 'key' );
-    };
-
-    if( name.length > 1 && attribute === 'meta' ) {
-      value = newValue();
+  addMeta: function(e){
+    e.preventDefault();
+    var meta = this.model.get('meta');
+    if( !_.isArray(meta) ){
+      meta = [];
     }
-
-    data[ attribute ] = value;
-
-    this.model.set(data);
+    meta = meta.slice();
+    meta.push({ label: '', value: '' });
+    this.model.set({ meta: meta });
   },
 
-  addMetaFields: function(e){
+  removeMeta: function(e) {
     e.preventDefault();
-
-    var row = $(e.currentTarget).prev('span').data('key');
-    var i = row ? row + 1 : 1 ;
-
-    $('<span data-key="'+ i +'" />')
-      .append('' +
-        '<input class="form-control" type="text" name="meta.label">' +
-        '<textarea class="form-control" name="meta.value"></textarea>' +
-        '<a href="#" data-action="remove-meta">' +
-        '<i class="icon-remove icon-lg"></i>' +
-        '</a>'
-      )
-      .insertBefore( $(e.currentTarget) );
-  },
-
-  removeMetaFields: function(e){
-    e.preventDefault();
-
-    var row = $(e.currentTarget).parent('span'),
-        meta = ( this.model.get('meta') || [] ),
-        index = _.findIndex( meta, { 'key': row.data('key') } );
-
-    if( index >= 0 ){
-      meta.splice( index, 1 );
-      this.model.set({ 'meta': meta });
+    var index = $(e.target).closest('span').data('index');
+    var meta = this.model.get('meta');
+    if( !_.isArray(meta) ){
+      meta = [];
     }
-
-    row.remove();
+    meta = meta.slice();
+    _.pullAt( meta, index );
+    this.model.set({ meta: meta });
   }
 
 });
