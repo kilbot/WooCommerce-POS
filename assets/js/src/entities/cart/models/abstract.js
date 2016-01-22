@@ -6,6 +6,12 @@ var debug = require('debug')('cartItem');
 
 module.exports = bb.Model.extend({
 
+  constructor: function( attributes, options ){
+    // always parse by default
+    options = _.defaults( { parse: true }, options );
+    bb.Model.call(this, attributes, options );
+  },
+
   initialize: function(){
     // copy tax info from order collection
     this.tax_options = _.get( this, ['collection', 'order', 'tax'], {} );
@@ -20,60 +26,64 @@ module.exports = bb.Model.extend({
     // update on change item_price
     this.on( 'change:item_price', this.updateTotals );
 
-    // set item price on init, this wil kick off updateLineTotals
-    if( this.get('item_price') === undefined ) {
-      var price = parseFloat( this.get('price') );
-      this.set({ 'item_price': _.isNaN(price) ? 0 : price });
-    }
+    // calc on init
+    this.updateTotals();
   },
 
+  /**
+   *
+   */
+  parse: function( attributes ){
+    attributes = attributes || {};
+    var attrs = _.clone( attributes ); // probably unnecessary
+
+    if( attributes.item_price ){
+      return attrs;
+    }
+
+    attrs.item_price = parseFloat( attributes.price || 0 );
+    return attrs;
+  },
+
+  /**
+   * @todo init with saved itemized taxes?
+   */
   attachTaxes: function(options){
-    this.taxes = new Taxes( [], _.extend( { line_item : this }, options ) );
+    this.taxes = new Taxes(
+      this.getTaxesRates(),
+      _.extend( { parse: true, line_item : this }, options )
+    );
+
     this.on( 'change:taxable change:tax_class', function(){
-      this.resetTaxes();
+      this.taxes.reset( this.getTaxesRates(), { parse: true } );
+      this.updateTotals();
     }, this );
-    this.resetTaxes();
   },
 
   /* jshint -W071 */
   updateTotals: function(){
-    var item_price = this.get('item_price'),
-        item_tax   = 0;
+    var total       = this.get('item_price'),
+        total_tax   = 0;
 
     if( this.taxes ){
-      this.taxes.calcTaxes( this.get('item_price') );
-      item_tax = this.taxes.sum('total');
+      total_tax = this.taxes.calcTaxes( this.get('item_price') );
     }
 
     // if price does not include tax
     if( this.tax_options.prices_include_tax === 'yes' ) {
-      item_price -= item_tax;
+      total -= total_tax;
     }
 
     // create totals object
     var totals = {
-      'total_tax' : Utils.round( item_tax, 4 ),
-      'total'     : Utils.round( item_price, 4 )
+      'total_tax' : Utils.round( total_tax, 4 ),
+      'total'     : Utils.round( total, 4 )
     };
 
     this.set(totals);
     debug('update cart item', this);
   },
   /* jshint +W071 */
-
-  resetTaxes: function(){
-    var tax_rates = null;
-
-    if( this.get('taxable') ){
-      tax_rates = _.get(
-        this, ['collection', 'order', 'tax_rates', this.get('tax_class') ], null
-      );
-    }
-
-    this.taxes.reset( tax_rates, { parse: true } );
-
-    this.updateTotals();
-  },
 
   /**
    * Convenience method to sum attributes
@@ -106,6 +116,15 @@ module.exports = bb.Model.extend({
     } else {
       return this.get('subtotal');
     }
+  },
+
+  getTaxesRates: function(){
+    if( this.get('taxable') ){
+      return _.get(
+        this, ['collection', 'order', 'tax_rates', this.get('tax_class') ], null
+      );
+    }
+    return null;
   }
 
 });

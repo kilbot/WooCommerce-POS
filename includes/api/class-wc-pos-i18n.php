@@ -198,6 +198,8 @@ class WC_POS_API_i18n extends WC_API_Resource {
       /* translators: woocommerce */
       'shipping'        => __( 'Shipping', 'woocommerce' ),
       'void'            => __( 'Void', 'woocommerce-pos' ),
+      'split'           => __( 'Split', 'woocommerce-pos' ),
+      'combine'         => __( 'Combine', 'woocommerce-pos' ),
     );
   }
 

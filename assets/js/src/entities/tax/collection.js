@@ -54,6 +54,8 @@ module.exports = bb.Collection.extend({
       }
       tax.set( attr, ( taxes[ tax.id ] * qty ) );
     }, this);
+
+    return this.sum( attr );
   },
 
   /**
@@ -64,8 +66,6 @@ module.exports = bb.Collection.extend({
   calcInclusiveTax: function( price, qty, attr ){
     var regular_tax_rates  = 0,
         compound_tax_rates = 0,
-        regular_tax_rate = 1,
-        compound_tax_rate = 1,
         non_compound_price = 0;
 
     // defaults
@@ -80,9 +80,7 @@ module.exports = bb.Collection.extend({
       }
     }, this);
 
-    regular_tax_rate  += regular_tax_rates;
-    compound_tax_rate += compound_tax_rates;
-    non_compound_price = price / compound_tax_rate;
+    non_compound_price = price / ( 1 + compound_tax_rates );
 
     this.each(function(tax) {
       var the_rate = tax.getRate();
@@ -90,15 +88,16 @@ module.exports = bb.Collection.extend({
 
       if ( tax.get('compound') ) {
         the_price = price;
-        the_rate  = the_rate / compound_tax_rate;
+        the_rate  = the_rate / ( 1 + compound_tax_rates );
       }  else {
         the_price = non_compound_price;
-        the_rate  = the_rate / regular_tax_rate;
+        the_rate  = the_rate / ( 1 + regular_tax_rates );
       }
 
       tax.set( attr, ( the_rate * the_price * qty ) );
-
     }, this);
+
+    return this.sum( attr );
   },
 
   // move rate_id key to part of rate model

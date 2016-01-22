@@ -129,7 +129,7 @@ module.exports = FormView.extend({
 
     data[ attribute ] = value;
 
-    this.model.save(data);
+    this.model.set(data);
   },
 
   addMetaFields: function(e){
@@ -158,8 +158,7 @@ module.exports = FormView.extend({
 
     if( index >= 0 ){
       meta.splice( index, 1 );
-      this.model.save({ 'meta': meta });
-      this.model.trigger('change:meta');
+      this.model.set({ 'meta': meta });
     }
 
     row.remove();

@@ -38,10 +38,10 @@ module.exports = DualCollection.extend({
   /**
    *
    */
-  addToCart: function(options){
+  addToCart: function( product ){
     this.getActiveOrder()
       .then(function(order){
-        order.cart.add(options, { parse: true });
+        order.cart.add( product, { parse: true } );
       });
   },
 

@@ -11,12 +11,13 @@ var productAttributes = [
   'name',
   'type',
   'price',
+  'item_price',
   'regular_price',
-  'sale_price',
   'taxable',
   'tax_status',
   'tax_class',
   'attributes',
+  'quantity',
   'meta' // variation meta
 ];
 
@@ -39,33 +40,30 @@ module.exports = Model.extend({
   updateTotals: function(){
     var quantity          = this.get('quantity'),
         item_price        = this.get('item_price'),
-        regular_price     = parseFloat( this.get('regular_price') ),
-        item_tax          = 0,
-        item_subtotal_tax = 0;
+        regular_price     = this.get('regular_price'),
+        total             = item_price * quantity,
+        subtotal          = regular_price * quantity,
+        total_tax         = 0,
+        subtotal_tax      = 0;
 
     // calc total and subtotal taxes
     if( this.taxes ){
-      this.taxes.calcTaxes( item_price, quantity, 'total' );
-      this.taxes.calcTaxes( regular_price, quantity, 'subtotal' );
-      item_tax = this.taxes.sum('total');
-      item_subtotal_tax = this.taxes.sum('subtotal');
+      total_tax = this.taxes.calcTaxes(item_price, quantity, 'total');
+      subtotal_tax = this.taxes.calcTaxes(regular_price, quantity, 'subtotal');
     }
 
     // if price does not include tax
     if( this.tax_options.prices_include_tax === 'yes' ) {
-      regular_price -= item_subtotal_tax;
-      item_price -= item_tax;
+      subtotal -= subtotal_tax;
+      total -= total_tax;
     }
 
     // create totals object
     var totals = {
-      'item_subtotal'     : Utils.round( regular_price, 4 ),
-      'item_subtotal_tax' : Utils.round( item_subtotal_tax, 4 ),
-      'item_tax'          : Utils.round( item_tax, 4 ),
-      'subtotal'          : Utils.round( regular_price * quantity, 4 ),
-      'subtotal_tax'      : Utils.round( item_subtotal_tax * quantity, 4 ),
-      'total_tax'         : Utils.round( item_tax * quantity, 4 ),
-      'total'             : Utils.round( item_price * quantity, 4 )
+      'subtotal'          : Utils.round( subtotal, 4 ),
+      'subtotal_tax'      : Utils.round( subtotal_tax, 4 ),
+      'total_tax'         : Utils.round( total_tax, 4 ),
+      'total'             : Utils.round( total, 4 )
     };
 
     this.set(totals);
@@ -74,21 +72,22 @@ module.exports = Model.extend({
   /* jshint +W071 */
 
   // parsing Product Model to Cart Model
+  /* jshint -W074 */
   parse: function( attributes ){
-    var attr = _.clone( attributes ) || {};
-    if( attr.product_id ){
-      return attr; // already in the right format
+    attributes = attributes || {};
+    if( attributes.product_id ){
+      return attributes; // already in the right format
     }
 
-    // id becomes product_id
-    attr.product_id = attr.id;
-
-    // title becomes name
-    attr.name = attr.title;
+    var attrs = _.extend( Model.prototype.parse.call( this, attributes ), {
+      product_id    : attributes.id,
+      name          : attributes.title,
+      regular_price : parseFloat( attributes.regular_price || 0 )
+    } );
 
     // turn variation attributes into line item meta
-    if(attr.type === 'variation'){
-      attr.meta = _.map(attr.attributes, function(variant, idx){
+    if(attributes.type === 'variation'){
+      attrs.meta = _.map(attributes.attributes, function(variant, idx){
         return {
           key: ++idx,
           label: variant.name,
@@ -98,8 +97,9 @@ module.exports = Model.extend({
     }
 
     // return subset of attributes
-    return _.pick(attr, productAttributes);
+    return _.pick(attrs, productAttributes);
   },
+  /* jshint +W074 */
 
   /*
    * Convenience method to increase or decrease quantity

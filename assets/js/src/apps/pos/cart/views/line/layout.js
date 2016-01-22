@@ -47,9 +47,11 @@ module.exports = LayoutView.extend({
   onRender: function(){
     var view = new ItemView({ model: this.model });
 
-    this.listenTo( view, 'drawer:open', this.openDrawer );
-    this.listenTo( view, 'drawer:close', this.closeDrawer );
-    this.listenTo( view, 'drawer:toggle', this.toggleDrawer );
+    this.listenTo(view, {
+      'drawer:open'   : this.openDrawer,
+      'drawer:close'  : this.closeDrawer,
+      'drawer:toggle' : this.toggleDrawer
+    });
 
     this.getRegion('item').show(view);
   },

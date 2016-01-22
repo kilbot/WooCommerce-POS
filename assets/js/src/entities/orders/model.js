@@ -4,6 +4,7 @@ var _ = require('lodash');
 var debug = require('debug')('order');
 var Radio = require('backbone.radio');
 var Utils = require('lib/utilities/utils');
+var App = require('lib/config/application');
 
 module.exports = DualModel.extend({
   name: 'order',
@@ -67,6 +68,9 @@ module.exports = DualModel.extend({
     }, this );
   },
 
+  /**
+   *
+   */
   save: function(attributes, options){
     if( this.cart && this.cart.length === 0 ){
       return this.destroy( options );
@@ -95,6 +99,7 @@ module.exports = DualModel.extend({
   /**
    *
    */
+  /* jshint -W071 */
   toJSON: function(options) {
     var attrs = _.clone(this.attributes);
 
@@ -106,17 +111,22 @@ module.exports = DualModel.extend({
       attrs.shipping_lines = [];
       attrs.fee_lines = [];
 
+      /* jshint -W074 */
       this.cart.each( function(model) {
 
-        if( model.type === 'shipping' ){
-          attrs.shipping_lines.push( model.toJSON(options) );
-          if( model.taxes ){
-            shipping_taxes.push( model.taxes.toJSON() );
-          }
-        } else if ( model.type === 'fee' ) {
-          attrs.fee_lines.push( model.toJSON(options) );
-        } else {
-          attrs.line_items.push( model.toJSON(options) );
+        switch( model.type ) {
+          case 'shipping':
+            attrs.shipping_lines.push( model.toJSON(options) );
+            if( model.taxes ){
+              shipping_taxes.push( model.taxes.toJSON() );
+            }
+            break;
+          case 'fee':
+            attrs.fee_lines.push( model.toJSON(options) );
+            break;
+          case 'product':
+            attrs.line_items.push( model.toJSON(options) );
+            break;
         }
 
         if( model.taxes ){
@@ -124,6 +134,7 @@ module.exports = DualModel.extend({
         }
 
       });
+      /* jshint +W074 */
 
       attrs.tax_lines = this.mergeItemizedTaxes( taxes );
       attrs.shipping_tax = this.sumItemizedTaxes(
@@ -133,9 +144,10 @@ module.exports = DualModel.extend({
 
     return attrs;
   },
+  /* jshint +W071 */
 
   /**
-   *
+   * @todo this could be part of model.save( attributes )?
    */
   updateTotals: function(){
     var total         = this.cart.sum('total'),
@@ -157,7 +169,6 @@ module.exports = DualModel.extend({
     };
 
     this.set(totals);
-    debug('update totals', totals);
   },
 
   /**
@@ -234,6 +245,13 @@ module.exports = DualModel.extend({
     } else {
       return this.get('cart_discount');
     }
+  },
+
+  /**
+   * Email receipt via ajax
+   */
+  emailReceipt: function(email){
+    return App.prototype.post( this.url() + 'email/' + email );
   }
 
 });

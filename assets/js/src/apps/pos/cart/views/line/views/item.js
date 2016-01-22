@@ -3,6 +3,7 @@ var Utils = require('lib/utilities/utils');
 var AutoGrow = require('lib/behaviors/autogrow');
 var Numpad = require('lib/components/numpad/behavior');
 var _ = require('lodash');
+var polyglot = require('lib/utilities/polyglot');
 
 module.exports = FormView.extend({
   template: 'pos.cart.item',
@@ -29,16 +30,26 @@ module.exports = FormView.extend({
   ui: {
     remove  : '*[data-action="remove"]',
     more    : '*[data-action="more"]',
+    split   : '*[data-action="split"]',
+    combine : '*[data-action="combine"]',
     title   : '.title'
   },
 
   events: {
-    'click @ui.remove': 'removeItem',
-    'click @ui.title': 'focusTitle'
+    'click @ui.remove'  : 'removeItem',
+    'click @ui.title'   : 'focusTitle',
+    'click @ui.split'   : function(e){
+      if(e) { e.preventDefault(); }
+      this.model.trigger( 'split', this.model );
+    },
+    'click @ui.combine' : function(e){
+      if(e) { e.preventDefault(); }
+      this.model.trigger( 'combine', this.model );
+    }
   },
 
   triggers: {
-    'click @ui.more'  : 'drawer:toggle'
+    'click @ui.more'    : 'drawer:toggle'
   },
 
   bindings: {
@@ -48,6 +59,19 @@ module.exports = FormView.extend({
         return Utils.formatNumber(value, 'auto');
       },
       onSet: Utils.unformat
+    },
+
+    // split / combine
+    '.qty span': {
+      observe: 'quantity',
+      updateMethod: 'html',
+      onGet: function(value){
+        if( value > 1 ){
+          return '<a href="#" data-action="split">' +
+            polyglot.t('buttons.split') +
+            '</a>';
+        }
+      }
     },
 
     // product: name, shipping: method_title, fee: title

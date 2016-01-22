@@ -2,6 +2,7 @@ describe('entities/cart/models/product.js', function () {
 
   var dummy_products = require('./../../../../data/products.json');
   var Model = require('entities/cart/models/product');
+  var Utils = require('lib/utilities/utils');
 
   var dummy_tax_GB = {
     '': {
@@ -34,7 +35,7 @@ describe('entities/cart/models/product.js', function () {
       return product.type === 'simple';
     });
 
-    var model = new Model( product, { parse: true } );
+    var model = new Model( product );
 
     expect(model.id).to.be.undefined;
     expect(model.get('title')).to.be.undefined;
@@ -51,7 +52,7 @@ describe('entities/cart/models/product.js', function () {
     var variation = product.variations[0];
     variation.type = 'variation';
 
-    var model = new Model( variation, { parse: true } );
+    var model = new Model( variation );
 
     expect(model.id).to.be.undefined;
     expect(model.get('meta')).to.eql([{
@@ -65,7 +66,7 @@ describe('entities/cart/models/product.js', function () {
   it('should have a quantity convenience method ', function() {
 
     var product = dummy_products.products[0];
-    var model = new Model( product, { parse: true } );
+    var model = new Model( product );
 
     expect(model.get('quantity')).equals(1);
     model.quantity('increase');
@@ -77,8 +78,7 @@ describe('entities/cart/models/product.js', function () {
   it("should initiate with the correct values (no tax)", function() {
 
     var product = dummy_products.products[0];
-    product.taxable = false;
-    var model = new Model( product, { parse: true } );
+    var model = new Model( _.extend( {}, product, { taxable: false } ) );
     expect(model.get('item_price')).equal( parseFloat( product.price ) );
     expect(model.get('total')).equal( parseFloat( product.price ) );
 
@@ -87,13 +87,13 @@ describe('entities/cart/models/product.js', function () {
   it("should re-calculate on quantity change to any floating point number", function() {
 
     var product = dummy_products.products[0];
-    var model = new Model( product, { parse: true } );
+    var model = new Model( product );
 
     var quantity = _.random(10, true);
     model.set( { 'quantity': quantity } );
 
     expect(model.get('quantity')).equal(quantity);
-    expect(model.get('total')).equal( parseFloat( ( product.price * quantity ).toFixed(4) ) );
+    expect(model.get('total')).equal( Utils.round( product.price * quantity, 4 ) );
 
   });
 
@@ -246,6 +246,31 @@ describe('entities/cart/models/product.js', function () {
 
     });
 
+    it("should re-calculate exclusive tax on quantity change to any floating point number", function() {
+
+      var model = new Model(product, {
+        collection: {
+          order : {
+            tax: {
+              calc_taxes: 'yes',
+              prices_include_tax: 'no'
+            },
+            tax_rates: dummy_tax_GB
+          }
+        }
+      });
+
+      var quantity = _.random(10, true);
+      model.set( { 'taxable': true, 'tax_class': '', quantity: quantity } );
+
+      expect(model.get('item_price')).equal(2);
+      expect(model.get('subtotal')).equal( Utils.round( 3 * quantity, 4 ) );
+      expect(model.get('subtotal_tax')).equal( Utils.round( 0.6 * quantity, 4 ) );
+      expect(model.get('total')).equal( Utils.round( 2 * quantity, 4 ) );
+      expect(model.get('total_tax')).equal( Utils.round( 0.4 * quantity, 4 ) );
+
+    });
+
     it("should calculate the correct inclusive tax", function() {
 
       var model = new Model(product, {
@@ -273,6 +298,31 @@ describe('entities/cart/models/product.js', function () {
       //var tax = this.model.get('tax');
       //expect(tax[1].total).equal(0.3333);
       //expect(tax[1].subtotal).equal(0.5);
+
+    });
+
+    it("should re-calculate inclusive tax on quantity change to any floating point number", function() {
+
+      var model = new Model(product, {
+        collection: {
+          order : {
+            tax: {
+              calc_taxes: 'yes',
+              prices_include_tax: 'yes'
+            },
+            tax_rates: dummy_tax_GB
+          }
+        }
+      });
+
+      var quantity = _.random(10, true);
+      model.set( { 'taxable': true, 'tax_class': '', quantity: quantity } );
+
+      expect(model.get('item_price')).equal(2);
+      expect(model.get('subtotal')).equal( Utils.round( 2.5 * quantity, 4 ) );
+      expect(model.get('subtotal_tax')).equal( Utils.round( 0.5 * quantity, 4 ) );
+      expect(model.get('total')).equal( Utils.round( 1.6666666 * quantity, 4 ) );
+      expect(model.get('total_tax')).equal( Utils.round( 0.3333333 * quantity, 4 ) );
 
     });
 
@@ -437,6 +487,31 @@ describe('entities/cart/models/product.js', function () {
       //expect(tax[4].subtotal).equal(0.3);
       //expect(tax[5].total).equal(0.044);
       //expect(tax[5].subtotal).equal(0.066);
+
+    });
+
+    it("should re-calculate exclusive tax on quantity change to any floating point number", function() {
+
+      var model = new Model(product, {
+        collection: {
+          order : {
+            tax: {
+              calc_taxes: 'yes',
+              prices_include_tax: 'no'
+            },
+            tax_rates: dummy_tax_US
+          }
+        }
+      });
+
+      var quantity = _.random(10, true);
+      model.set( { 'taxable': true, 'tax_class': '', quantity: quantity } );
+
+      expect(model.get('item_price')).equal(2);
+      expect(model.get('subtotal')).equal( Utils.round( 3 * quantity, 4 ) );
+      expect(model.get('subtotal_tax')).equal( Utils.round( 0.366 * quantity, 4 ) );
+      expect(model.get('total')).equal( Utils.round( 2 * quantity, 4 ) );
+      expect(model.get('total_tax')).equal( Utils.round( 0.244 * quantity, 4 ) );
 
     });
 

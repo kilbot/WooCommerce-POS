@@ -2,6 +2,7 @@ describe('entities/orders/model.js', function () {
 
   var dummy_order = require('./../../../data/order.json');
   var OrderModel = require('entities/orders/model');
+  var Utils = require('lib/utilities/utils');
 
   it('should be in a valid state', function () {
     var model = new OrderModel();
@@ -224,5 +225,77 @@ describe('entities/orders/model.js', function () {
 
   });
 
+  it('should be match the dummy order', function(){
+
+    var model = new OrderModel(null, { parse: true });
+    model.sync = sinon.stub();
+
+    model.tax = {
+      calc_taxes: 'yes',
+      prices_include_tax: 'no'
+    };
+
+    model.tax_rates = {
+      '': {
+        4: {rate: '5.0000', label: 'Standard', shipping: 'yes', compound: 'no'},
+      },
+      'reduced-rate': {
+        5: {rate: '10.0000', label: 'Tax', shipping: 'yes', compound: 'no'}
+      }
+    };
+
+    expect( model.cart ).to.be.instanceOf( Backbone.Collection );
+
+    // 2 x 546
+    model.cart.add( {
+      id: 546,
+      price: '21.99',
+      regular_price: '21.99',
+      tax_class: "reduced-rate",
+      taxable: true,
+      title: 'Premium Quality'
+    }, { parse: true } );
+
+    model.cart.add( {
+      id: 546,
+      price: '21.99',
+      regular_price: '21.99',
+      tax_class: 'reduced-rate',
+      taxable: true,
+      title: 'Premium Quality'
+    }, { parse: true } );
+
+    // 1 x 613
+    model.cart.add( {
+      id: 613,
+      price: '19.99',
+      regular_price: '19.99',
+      tax_class: '',
+      taxable: true,
+      title: 'Ship Your Idea',
+      attributes: [{
+        name: 'Color',
+        option: 'Black'
+      }]
+    }, { parse: true } );
+
+    // 1 x shipping
+    model.cart.add( {
+      price: '10.00',
+      tax_class: '',
+      taxable: true,
+      method_id: 'flat_rate',
+      method_title: 'Flat Rate'
+    }, { parse: true, type: 'shipping' } );
+
+    expect( Utils.round( model.get('total'), 2 ) ).equals( parseFloat( dummy_order.order.total ) );
+
+    // POS subtotal includes shipping and fees
+    var subtotal = parseFloat( dummy_order.order.subtotal ) + parseFloat( dummy_order.order.total_shipping );
+    expect( Utils.round( model.get('subtotal'), 2 ) ).equals( subtotal );
+
+    expect( Utils.round( model.get('total_tax'), 2 ) ).equals( parseFloat( dummy_order.order.total_tax ) );
+
+  });
 
 });

@@ -86,4 +86,25 @@ describe('entities/cart/collection.js', function () {
 
   });
 
+  it('should split products', function(){
+
+    // add product
+    this.collection.add({ id: 123, title: 'Product 123', quantity: 3 });
+    expect(this.collection.length).equals(1);
+    this.collection.split( this.collection.at(0) );
+    expect(this.collection.length).equals(3);
+
+  });
+
+  it('should split products with float quantities', function(){
+
+    // add product
+    this.collection.add({ id: 123, title: 'Product 123', quantity: 3.25 });
+    expect(this.collection.length).equals(1);
+    this.collection.split( this.collection.at(0) );
+    expect(this.collection.length).equals(4);
+    expect(this.collection.at(0).get('quantity')).equals(0.25);
+
+  });
+
 });

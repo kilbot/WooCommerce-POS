@@ -1,5 +1,7 @@
 {{#if product}}
-<div class="qty"><input type="text" name="quantity" data-label="<?php /* translators: woocommerce */ _e( 'Quantity', 'woocommerce' ); ?>" data-numpad="quantity" class="form-control autogrow"></div>
+<div class="qty">
+  <input type="text" name="quantity" data-label="<?php /* translators: woocommerce */ _e( 'Quantity', 'woocommerce' ); ?>" data-numpad="quantity" class="form-control autogrow"> <span></span>
+</div>
 <div class="title">
   <strong data-name="name" contenteditable="true">{{name}}</strong>
   <dl class="meta"></dl>
