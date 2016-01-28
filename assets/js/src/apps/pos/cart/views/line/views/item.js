@@ -36,7 +36,6 @@ module.exports = FormView.extend({
   },
 
   events: {
-    'click @ui.remove'  : 'removeItem',
     'click @ui.title'   : 'focusTitle',
     'click @ui.split'   : function(e){
       if(e) { e.preventDefault(); }
@@ -49,7 +48,8 @@ module.exports = FormView.extend({
   },
 
   triggers: {
-    'click @ui.more'    : 'drawer:toggle'
+    'click @ui.more'    : 'drawer:toggle',
+    'click @ui.remove'  : 'item:remove'
   },
 
   bindings: {
@@ -112,14 +112,9 @@ module.exports = FormView.extend({
     }
   },
 
-  removeItem: function(e) {
-    if(e) { e.preventDefault(); }
-    var self = this;
+  fadeOut: function(){
     this.ui.remove.attr('disabled', 'true');
-    this.$el.addClass('pulse-out')
-      .fadeOut(500, function(){
-      self.model.destroy();
-    });
+    return this.$el.addClass('pulse-out').fadeOut(500);
   },
 
   focusTitle: function(){

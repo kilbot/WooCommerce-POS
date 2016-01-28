@@ -36,7 +36,11 @@ module.exports = bb.Collection.extend({
    * - always parse attributes, eg: productModel.id = cartModel.product_id
    * - if count = 1 for product id, bump quantity
    */
+  /* jshint -W071, -W074 */
   add: function( models, options ){
+    if ( ! models ) {
+      return;
+    }
     options = options || {};
     models = !_.isArray(models) ? [models] : models;
 
@@ -64,6 +68,7 @@ module.exports = bb.Collection.extend({
     } );
     return models;
   },
+  /* jshint +W071, +W074 */
 
   /**
    * convenience method to sum attributes in cart

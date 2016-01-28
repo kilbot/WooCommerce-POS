@@ -38,7 +38,6 @@ module.exports = FormView.extend({
   },
 
   modelEvents: {
-    'pulse'       : 'pulse',
     'change:meta' : 'render'
   },
 
@@ -100,18 +99,6 @@ module.exports = FormView.extend({
 
   onShow: function() {
     this.$el.hide().slideDown(250);
-  },
-
-  remove: function() {
-    this.$el.slideUp( 250, function() {
-      FormView.prototype.remove.call(this);
-    }.bind(this));
-  },
-
-  pulse: function(type){
-    if(type === 'remove'){
-      return this.$el.slideUp(250);
-    }
   },
 
   addMeta: function(e){

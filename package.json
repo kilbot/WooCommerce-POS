@@ -45,7 +45,8 @@
     "normalize.css": "^3.0.3",
     "select2": "^4.0.0",
     "tether": "^1.1.1",
-    "tether-drop": "^1.4.1"
+    "tether-drop": "^1.4.1",
+    "vex-js": "^2.3.4"
   },
   "devDependencies": {
     "chai": "^3.4.1",

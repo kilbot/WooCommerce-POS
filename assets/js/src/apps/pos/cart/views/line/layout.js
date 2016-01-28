@@ -45,15 +45,16 @@ module.exports = LayoutView.extend({
   },
 
   onRender: function(){
-    var view = new ItemView({ model: this.model });
+    this.itemView = new ItemView({ model: this.model });
 
-    this.listenTo(view, {
+    this.listenTo(this.itemView, {
       'drawer:open'   : this.openDrawer,
       'drawer:close'  : this.closeDrawer,
-      'drawer:toggle' : this.toggleDrawer
+      'drawer:toggle' : this.toggleDrawer,
+      'item:remove'   : this.removeItem
     });
 
-    this.getRegion('item').show(view);
+    this.getRegion('item').show(this.itemView);
   },
 
   openDrawer: function(){
@@ -90,6 +91,20 @@ module.exports = LayoutView.extend({
         });
       }});
 
+  },
+
+  removeItem: function(){
+    var self = this;
+    $.when( this.fadeOut() ).done( function(){
+      self.model.destroy();
+    });
+  },
+
+  fadeOut: function(){
+    var item = this.getRegion('item').currentView;
+    if( item ){
+      return item.fadeOut();
+    }
   }
 
 });

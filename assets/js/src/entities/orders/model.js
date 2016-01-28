@@ -63,8 +63,12 @@ module.exports = DualModel.extend({
 
     //delete attributes.line_items; ?
 
-    this.cart.on( 'change add remove', function(){
-      this.save(); // note don't pass arguments
+    this.cart.on( 'change add remove reset', function(){
+      if( this.cart && this.cart.length === 0 ){
+        this.destroy();
+      } else {
+        this.save();
+      }
     }, this );
   },
 
@@ -72,11 +76,10 @@ module.exports = DualModel.extend({
    *
    */
   save: function(attributes, options){
-    if( this.cart && this.cart.length === 0 ){
-      return this.destroy( options );
+    if( this.cart && this.cart.length > 0 ){
+      this.updateTotals();
     }
 
-    this.updateTotals();
     debug('save order', this);
 
     return DualModel.prototype.save.call(this, attributes, options);

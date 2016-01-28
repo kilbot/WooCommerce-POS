@@ -54,7 +54,6 @@ module.exports = DualCollection.extend({
 
     if(!this.active){
       this.create().then(function(order){
-        order.cart.order_id = order.id;
         self.active = order;
         if(bb.history.getHash() === 'cart/new') {
           bb.history.navigate('cart/' + order.id);

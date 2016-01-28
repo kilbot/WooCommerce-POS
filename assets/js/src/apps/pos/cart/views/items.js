@@ -3,6 +3,7 @@ var CollectionView = require('lib/config/collection-view');
 var LineItem = require('./line/layout');
 var App = require('lib/config/application');
 var polyglot = require('lib/utilities/polyglot');
+var $ = require('jquery');
 
 var Empty = ItemView.extend({
   tagName: 'li',
@@ -16,13 +17,13 @@ var View = CollectionView.extend({
   tagName: 'ul',
   childView: LineItem,
   emptyView: Empty,
-  voidCart: function( order ){
-    this.children.each(function(child){
-      if( child instanceof Empty ){
-        order.destroy();
-      } else {
-        child.getRegion('item').currentView.removeItem();
-      }
+  voidCart: function(){
+    var self = this;
+    var fadeAll = this.children.map( function( child ){
+      return child.fadeOut();
+    } );
+    $.when.apply( $, fadeAll ).done( function() {
+      self.collection.reset();
     });
   }
 });

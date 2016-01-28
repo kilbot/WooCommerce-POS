@@ -4,8 +4,6 @@ module.exports = ItemView.extend({
   tagName: 'ul',
   template: 'pos.cart.totals',
 
-  // todo: why is this necessary?!
-  // view should re-render automatically on model change
   modelEvents: {
     'change': 'render'
   },
