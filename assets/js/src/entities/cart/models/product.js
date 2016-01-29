@@ -79,9 +79,10 @@ module.exports = Model.extend({
       return attributes; // already in the right format
     }
 
-    var attrs = _.extend( Model.prototype.parse.call( this, attributes ), {
+    var attrs = _.extend( attributes, {
       product_id    : attributes.id,
       name          : attributes.title,
+      item_price    : parseFloat( attributes.price || 0 ),
       regular_price : parseFloat( attributes.regular_price || 0 )
     } );
 

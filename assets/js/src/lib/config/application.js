@@ -35,7 +35,7 @@ var Application = Mn.Application.extend({
    * force wc_api to have trailing slash
    */
   start: function( options ){
-    options = options || {};
+    options = _.isString(options) ? { wc_api: options } : options || {};
     var params, self = this, wc_api = options.wc_api.replace(/\/?$/, '/');
 
     // get payload

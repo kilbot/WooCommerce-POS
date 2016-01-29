@@ -141,6 +141,16 @@ class WC_POS_API {
       unset( $request_args['not_in'] );
     }
 
+    /**
+     * This is a safe guard against overloading the POS
+     * - some theme developers use pre_get_posts to alter the no. of posts/products
+     * - $query->set( 'posts_per_page', LARGE/-1 ) will grind the POS to a halt
+     * - ensure the default is 10, unless specifically requested by the POS
+     */
+    if( empty( $args['posts_per_page'] ) ){
+      $args['posts_per_page'] = 10;
+    }
+
     return $args;
   }
 

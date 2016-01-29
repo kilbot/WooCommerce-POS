@@ -10,12 +10,6 @@ var Access = Route.extend({
     this.model = options.model;
   },
 
-  fetch: function() {
-    if(this.model.isNew()){
-      return this.model.fetch();
-    }
-  },
-
   render: function() {
     var view = new View({
       model: this.model

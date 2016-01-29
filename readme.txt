@@ -86,6 +86,9 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: Receipt print methods for thermal printers (experimental)
 * New: Receipt templates for epos-print and ESC/POS languages (experimental)
 * New: Receipt template editor for custom receipts
+* New: Settings for default Shipping and Fee line items
+* New: Setting for which customer roles to display in the POS
+* New: Split products into multiple lines in the cart
 * Fix: Checkout settings not showing for some users
 * Fix: issue with some product variation names, e.g.: 000, 00 and 0
 * Tweak: Add Reply-To header to support emails

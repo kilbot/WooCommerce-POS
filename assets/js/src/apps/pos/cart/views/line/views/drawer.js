@@ -72,7 +72,7 @@ module.exports = FormView.extend({
         collection: function(){
           return Radio.request('entities', 'get', {
             type: 'option',
-            name: 'shipping'
+            name: 'shipping.labels'
           });
         },
         comparator: function(){}
@@ -99,6 +99,12 @@ module.exports = FormView.extend({
 
   onShow: function() {
     this.$el.hide().slideDown(250);
+  },
+
+  remove: function() {
+    this.$el.slideUp( 250, function() {
+      $(this).remove();
+    });
   },
 
   addMeta: function(e){

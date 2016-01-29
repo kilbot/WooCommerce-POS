@@ -71,9 +71,10 @@ class WC_POS_API_Params extends WC_API_Resource {
       'auto_print'    => wc_pos_get_option( 'checkout', 'auto_print_receipt' ),
       'denominations' => WC_POS_i18n::currency_denominations(),
       'discount_keys' => wc_pos_get_option( 'general', 'discount_quick_keys' ),
+      'fee'           => wc_pos_get_option( 'general', 'fee' ),
       'hotkeys'       => wc_pos_get_option( 'hotkeys', 'hotkeys' ),
       'menu'          => $this->menu(),
-      'shipping'      => $this->shipping_labels(),
+      'shipping'      => $this->shipping(),
       'tabs'          => $this->product_tabs(),
       'tax'           => $this->tax(),
       'tax_classes'   => WC_POS_Tax::tax_classes(),
@@ -226,6 +227,15 @@ class WC_POS_API_Params extends WC_API_Resource {
       'display_name' => $current_user->display_name,
       'email'        => $current_user->user_email
     );
+  }
+
+  /**
+   *
+   */
+  private function shipping(){
+    $shipping = wc_pos_get_option( 'general', 'shipping' );
+    $shipping['labels'] = self::shipping_labels();
+    return $shipping;
   }
 
   /**

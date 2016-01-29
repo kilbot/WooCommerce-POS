@@ -42,8 +42,13 @@
 
 <?php do_action('woocommerce_pos_footer'); ?>
 
-<?php $options = array( 'wc_api' => get_woocommerce_api_url(null) ); ?>
-<script>POS.start(<?php echo json_encode($options) ?>);</script>
+<script>
+  if(window.POS){
+    POS.start('<?php echo get_woocommerce_api_url(null); ?>');
+  } else {
+    alert('<?php _e('POS assets failed to load', 'woocommerce-pos'); ?>');
+  }
+</script>
 
 </body>
 </html>

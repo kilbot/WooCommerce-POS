@@ -76,8 +76,13 @@ class WC_POS_Admin_Abstract {
    * Start the Admin App
    */
   public function print_footer_scripts() {
-    $options = array( 'wc_api'  => get_woocommerce_api_url(null) );
-    echo '<script>POS.start(' . json_encode( $options ) . ');</script>';
+    echo '<script>
+    if(window.POS){
+      POS.start(\'' . get_woocommerce_api_url(null) . '\');
+    } else {
+      alert(\'' . __('POS assets failed to load', 'woocommerce-pos') . '\');
+    }
+    </script>';
   }
 
   /**

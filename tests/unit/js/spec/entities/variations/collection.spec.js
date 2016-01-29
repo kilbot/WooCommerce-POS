@@ -19,15 +19,15 @@ describe('entities/variations/collection.js', function () {
   });
 
   it('should return the price range', function(){
-    variations.range('price').should.eql([ '30.00', '35.00' ]);
+    variations.range('price').should.eql([ 30, 35 ]);
   });
 
   it('should return the regular_price range', function(){
-    variations.range('regular_price').should.eql([ '35.00' ]);
+    variations.range('regular_price').should.eql([ 35 ]);
   });
 
   it('should return the sale_price range', function(){
-    variations.range('sale_price').should.eql([ '30.00' ]);
+    variations.range('sale_price').should.eql([ 30 ]);
   });
 
 });

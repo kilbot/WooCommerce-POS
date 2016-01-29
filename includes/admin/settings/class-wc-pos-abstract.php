@@ -147,12 +147,10 @@ class WC_POS_Admin_Settings_Abstract {
   }
 
   /**
-   * Return setting defaults. Merge with settings id.
+   * Return setting defaults
    */
   public function get_defaults(){
-    return wp_parse_args( array(
-      'id' => $this->id,
-    ), $this->defaults );
+    return $this->defaults;
   }
 
   /**

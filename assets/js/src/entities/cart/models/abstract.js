@@ -7,7 +7,7 @@ var debug = require('debug')('cartItem');
 module.exports = bb.Model.extend({
 
   constructor: function( attributes, options ){
-    // always parse by default
+    // always parse attributes by default
     options = _.defaults( { parse: true }, options );
     bb.Model.call(this, attributes, options );
   },
@@ -23,26 +23,16 @@ module.exports = bb.Model.extend({
       });
     }
 
+    // make sure there is an item_price
+    if( this.get('item_price') === undefined ){
+      this.set({ item_price: parseFloat( this.get('price') || 0 ) });
+    }
+
     // update on change item_price
     this.on( 'change:item_price', this.updateTotals );
 
     // calc on init
     this.updateTotals();
-  },
-
-  /**
-   *
-   */
-  parse: function( attributes ){
-    attributes = attributes || {};
-    var attrs = _.clone( attributes ); // probably unnecessary
-
-    if( attributes.item_price ){
-      return attrs;
-    }
-
-    attrs.item_price = parseFloat( attributes.price || 0 );
-    return attrs;
   },
 
   /**

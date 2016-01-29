@@ -27,7 +27,13 @@ class WC_POS_Admin_Settings_General extends WC_POS_Admin_Settings_Abstract {
     $this->label = __( 'General', 'woocommerce' );
 
     $this->defaults = array(
-      'discount_quick_keys' => array('5', '10', '20', '25')
+      'discount_quick_keys' => array('5', '10', '20', '25'),
+      'shipping' => array(
+        'taxable' => true
+      ),
+      'fee' => array(
+        'taxable' => true
+      )
     );
   }
 

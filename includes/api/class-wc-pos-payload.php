@@ -49,8 +49,9 @@ class WC_POS_API_Payload extends WC_API_Resource {
       'templates' => $wc_api->WC_POS_API_Templates->get_templates( $wc_pos_admin ),
     );
 
-    $payload['params']['settings'] = $wc_api->WC_POS_API_Settings->get_settings( '', $wc_pos_admin );
-    if( ! $wc_pos_admin ){
+    if( $wc_pos_admin ){
+      $payload['params']['settings'] = $wc_api->WC_POS_API_Settings->get_settings( '', $wc_pos_admin );
+    } else {
       $payload['params']['gateways'] = $wc_api->WC_POS_API_Gateways->get_gateways();
     }
 

@@ -25,15 +25,10 @@ module.exports = Collection.extend({
       _.partial( _.ary(_.pick, 2), _, ['id', 'label'] )
     );
 
-    models = this.parseSettings( settings );
+    //models = this.parseSettings( settings );
+    options = _.extend( {}, options, { parse: true } );
 
-    return Collection.prototype.constructor.call(this, models, options);
-  },
-
-  parseSettings: function(settings){
-    return _.map(settings, function(setting){
-      return new Model( setting.data, setting );
-    }, this);
+    return Collection.prototype.constructor.call(this, settings, options);
   }
 
 });

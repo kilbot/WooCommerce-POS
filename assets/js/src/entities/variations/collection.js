@@ -40,10 +40,10 @@ module.exports = Collection.extend({
   /* jshint +W074 */
 
   range: function(attr){
-    var attrs = this.compact( this.pluck(attr)), min = 0, max = 0;
+    var attrs = this.compact( this.pluck(attr) ), min = 0, max = 0;
     if( !_.isEmpty(attrs) ) {
-      min = _(attrs).min();
-      max = _(attrs).max();
+      min = parseFloat( _(attrs).min() );
+      max = parseFloat( _(attrs).max() );
     }
     return _.uniq([min, max]);
   }

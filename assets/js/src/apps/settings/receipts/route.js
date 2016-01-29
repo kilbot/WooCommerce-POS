@@ -21,9 +21,7 @@ var Receipts = Route.extend({
     this.footer = options.layout.getRegion('footer');
     this.model = options.model;
     this.collection = this.model.collection;
-
-    var models = this.collection.parseSettings( this.model.sections );
-    this.collection.add( models );
+    this.collection.add( this.model.sections, { parse: true } );
   },
 
   render: function( section ) {

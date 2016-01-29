@@ -1,15 +1,23 @@
 var Model = require('./abstract');
 var polyglot = require('lib/utilities/polyglot');
+var Radio = require('backbone.radio');
+var _ = require('lodash');
 
 module.exports = Model.extend({
 
   type: 'shipping',
 
   defaults: function(){
+    var shipping = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'shipping'
+    });
     return {
-      method_title  : polyglot.t('titles.shipping'),
-      taxable       : true,
-      method_id     : ''
+      method_title  : _.get( shipping, 'name', polyglot.t('titles.shipping') ),
+      method_id     : _.get( shipping, 'method', '' ),
+      taxable       : _.get( shipping, 'taxable', true ),
+      tax_class     : _.get( shipping, 'tax_class', '' ),
+      price         : _.get( shipping, 'price', 0 )
     };
   },
 
