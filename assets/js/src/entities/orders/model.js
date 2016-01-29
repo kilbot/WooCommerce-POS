@@ -63,7 +63,7 @@ module.exports = DualModel.extend({
 
     //delete attributes.line_items; ?
 
-    this.cart.on( 'change add remove reset', function(){
+    this.cart.on( 'change add remove', function(){
       if( this.cart && this.cart.length === 0 ){
         this.destroy();
       } else {

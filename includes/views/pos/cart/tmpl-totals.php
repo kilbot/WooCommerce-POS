@@ -20,7 +20,11 @@
     {{title}}:
   </div>
   <div class="total">{{{money total}}}</div>
-  <div class="action"></div>
+  <div class="action">
+    <a href="#" data-action="toggle-tax">
+      <i class="icon-remove icon-lg"></i>
+    </a>
+  </div>
 </li>
 {{/compare}}
 {{/each}}
@@ -31,7 +35,11 @@
     <?php echo esc_html( WC()->countries->tax_or_vat() ); ?>:
   </div>
   <div class="total">{{{money total_tax}}}</div>
-  <div class="action"></div>
+  <div class="action">
+    <a href="#" data-action="toggle-tax">
+      <i class="icon-remove icon-lg"></i>
+    </a>
+  </div>
 </li>
 {{/if}}
 {{/compare}}

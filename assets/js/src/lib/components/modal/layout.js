@@ -29,17 +29,20 @@ module.exports = LayoutView.extend({
   template: hbs.compile(Tmpl),
 
   initialize: function( options ){
+    // this.$el.data() = this.options
     options = _.defaults( options, {
       header: _.get(options, ['view', 'modal', 'header'], defaultModal.header),
       tabs  : _.get(options, ['view', 'modal', 'tabs'], defaultModal.tabs),
       footer: _.get(options, ['view', 'modal', 'footer'], defaultModal.footer)
     });
-    this.mergeOptions( options, ['header', 'tabs', 'footer', 'view'] );
+    this.mergeOptions( options, ['header', 'tabs', 'footer', 'view', 'id'] );
+    this.render();
   },
 
   childEvents: {
     'action:close' : function(){
-      Radio.request( 'modal', 'close', this.el.id );
+      //Radio.request( 'modal', 'close', this.$el.data().vex.id );
+      Radio.request( 'modal', 'close', this.id );
     }
   },
 
@@ -51,7 +54,7 @@ module.exports = LayoutView.extend({
     };
   },
 
-  onShow: function(){
+  onRender: function(){
     if( this.header ){ this.showHeader( this.header ); }
     if( this.tabs ){ this.showTabs( this.tabs ); }
     this.showBody();

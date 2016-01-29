@@ -8,6 +8,14 @@ module.exports = ItemView.extend({
     'change': 'render'
   },
 
+  ui: {
+    toggleTax: 'a[data-action="toggle-tax"]'
+  },
+
+  events: {
+    'click @ui.toggleTax': 'toggleTax'
+  },
+
   /**
    *
    */
@@ -24,6 +32,10 @@ module.exports = ItemView.extend({
     }
 
     return data;
+  },
+
+  toggleTax: function(e){
+    if(e){ e.preventDefault(); }
   }
 
 });

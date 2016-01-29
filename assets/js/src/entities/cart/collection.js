@@ -63,9 +63,9 @@ module.exports = bb.Collection.extend({
     }, this);
 
     models = bb.Collection.prototype.add.call(this, parsedAttrs, options);
-    _.each( models, function( model ){
-      model.trigger('pulse');
-    } );
+    if( ! options.split ){
+      this.pulseModels(models);
+    }
     return models;
   },
   /* jshint +W071, +W074 */
@@ -92,15 +92,22 @@ module.exports = bb.Collection.extend({
       for( var i = 0; i < duplicate; i++ ){
         models.push( attributes );
       }
-      this.add(models, {
+      models = this.add(models, {
         at: ( model.collection.indexOf( model ) + 1 ),
         split: true,
         silent: true
       });
       model.set({ quantity: qty - duplicate });
       model.collection.trigger('reset'); // re-render the cart
+      this.pulseModels(models);
     }
 
+  },
+
+  pulseModels: function(models){
+    _.each( models, function( model ){
+      model.trigger('pulse');
+    } );
   }
 
 });

@@ -135,8 +135,11 @@ var CartRoute = Route.extend({
 
     this.listenTo(view, {
       'action:void': function(){
+        var order = this.order;
         view.triggerMethod('disableButtons');
-        this.layout.getRegion('list').currentView.voidCart();
+        this.layout.getRegion('list').currentView.fadeCart().done(function(){
+          order.destroy();
+        });
       },
       'action:note': function(){
         this.layout.getRegion('note').currentView.showNoteField();

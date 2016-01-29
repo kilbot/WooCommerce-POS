@@ -1,3 +1,5 @@
+$product-row-action-icon-size      : 2.5em;
+
 products {
   @at-root {
 
@@ -88,6 +90,12 @@ products {
             color: darken($brand-success, 10%);
           }
         }
+
+        // icon size
+        i {
+          font-size: $product-row-action-icon-size;
+        }
+
       }
 
     }

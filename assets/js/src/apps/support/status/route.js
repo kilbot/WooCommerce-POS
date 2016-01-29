@@ -9,7 +9,7 @@ var polyglot = require('lib/utilities/polyglot');
 
 var StatusRoute = Route.extend({
 
-  databases: ['products', 'orders', 'cart', 'customers'],
+  databases: ['products', 'orders', 'customers'],
 
   initialize: function(options){
     this.container = options.container;

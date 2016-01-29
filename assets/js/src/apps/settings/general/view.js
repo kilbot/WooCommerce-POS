@@ -17,9 +17,6 @@ var View = SettingsView.extend({
   },
 
   modelEvents: {
-    'all': function(e){
-      console.log(e);
-    },
     'change:shipping.taxable': function(model, toggle){
       this.ui.shippingTaxClass.prop('disabled', !toggle);
     },

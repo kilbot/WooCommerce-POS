@@ -92,7 +92,7 @@ modal {
       bottom: 0;
       left: 0;
 
-      &.vex.vex-closing {
+      .#{namespace('modal')}.#{namespace('modal-closing')} & {
         @include animation($modal-fade-out-name 0.5s);
       }
     }
@@ -109,6 +109,10 @@ modal {
       margin: 0 auto;
       // Remove focus outline from opened modal
       outline: 0;
+
+      .#{namespace('modal')}.#{namespace('modal-closing')} & {
+        @include animation($modal-fade-out-name 0.5s);
+      }
     }
 
     // Modal header

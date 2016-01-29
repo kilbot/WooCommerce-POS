@@ -12,6 +12,8 @@ $pulse-in-bg-color        : lighten( $brand-success, 40% );
 $pulse-out-bg-color       : lighten( $brand-danger, 30% );
 //$pulse-out-bg-color       : #f2dede;
 
+$cart-row-action-icon-size : 2.5em;
+
 cart {
   @at-root {
 
@@ -170,6 +172,13 @@ cart {
           }
         }
 
+      }
+
+      .action {
+        // icon size
+        i {
+          font-size: $cart-row-action-icon-size;
+        }
       }
 
     }

@@ -76,8 +76,7 @@ module.exports = LayoutView.extend({
     }
   },
 
-  pulse: function(opt) {
-    if(opt === 'remove'){ return; }
+  pulse: function() {
     var el = this.$el, type = this.model.get( 'type' );
 
     // scroll to row

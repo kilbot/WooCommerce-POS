@@ -17,14 +17,11 @@ var View = CollectionView.extend({
   tagName: 'ul',
   childView: LineItem,
   emptyView: Empty,
-  voidCart: function(){
-    var self = this;
+  fadeCart: function(){
     var fadeAll = this.children.map( function( child ){
       return child.fadeOut();
     } );
-    $.when.apply( $, fadeAll ).done( function() {
-      self.collection.reset();
-    });
+    return $.when.apply( $, fadeAll );
   }
 });
 

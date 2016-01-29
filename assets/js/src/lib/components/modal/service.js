@@ -5,7 +5,6 @@ var prefix = App.prototype.namespace('modal');
 var _ = require('lodash');
 var Layout = require('./layout.js');
 var bb = require('backbone');
-var mn = require('backbone.marionette');
 var globalChannel = require('backbone.radio').channel('global');
 var JSON = window.JSON;
 
@@ -71,14 +70,19 @@ module.exports = Service.extend({
       overlayClosesOnClick  : false
     }, options );
 
-    var modal = Modal.open( options );
-    var region = new mn.Region({ el: modal });
-    options.className = undefined; // note className leaks into Layout View
-    return region.show( new Layout( options ) );
+    var afterOpen = options.afterOpen;
+    options.afterOpen = function( $el, opts ){
+      opts.el = $el;
+      opts.layout = new Layout( opts );
+      if(afterOpen){
+        afterOpen( $el, opts );
+      }
+    };
+
+    return Modal.open( options );
   },
 
   close: function( id ){
-    id = parseInt( id, 10 );
     return Modal.close( id );
   },
 

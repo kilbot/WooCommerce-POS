@@ -9,8 +9,6 @@ $list-header-color              : $inverse-text-color;
 $list-item-padding-x            : $padding-base-horizontal;
 $list-item-padding-y            : $padding-base-vertical;
 
-$list-row-action-icon-size      : 2.5em;
-
 $list-item-drawer-padding-x     : $padding-base-horizontal;
 $list-item-drawer-padding-y     : $padding-base-vertical;
 $list-item-drawer-bg            : $list-border-color;
@@ -137,9 +135,7 @@ list {
         word-wrap: break-word;
 
         &.action {
-          i {
-            font-size: $list-row-action-icon-size;
-          }
+          text-align: center;
         }
 
       }
