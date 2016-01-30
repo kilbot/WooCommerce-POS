@@ -4,6 +4,25 @@ describe('entities/orders/model.js', function () {
   var OrderModel = require('entities/orders/model');
   var Utils = require('lib/utilities/utils');
 
+  var dummy_tax_GB = {
+    '': {
+      1: {rate: '20.0000', label: 'VAT', shipping: 'yes', compound: 'yes'}
+    },
+    'reduced-rate': {
+      2: {rate: '5.0000', label: 'VAT', shipping: 'yes', compound: 'yes'}
+    },
+    'zero-rate': {
+      3: {rate: '0.0000', label: 'VAT', shipping: 'yes', compound: 'yes'}
+    }
+  }
+
+  var dummy_tax_US = {
+    '': {
+      4: {rate: '10.0000', label: 'VAT', shipping: 'yes', compound: 'no'},
+      5: {rate: '2.0000', label: 'VAT', shipping: 'yes', compound: 'yes'}
+    }
+  }
+
   it('should be in a valid state', function () {
     var model = new OrderModel();
     expect(model).to.be.ok;
@@ -227,22 +246,29 @@ describe('entities/orders/model.js', function () {
 
   it('should be match the dummy order', function(){
 
-    var model = new OrderModel(null, { parse: true });
-    model.sync = sinon.stub();
-
-    model.tax = {
-      calc_taxes: 'yes',
-      prices_include_tax: 'no'
-    };
-
-    model.tax_rates = {
-      '': {
-        4: {rate: '5.0000', label: 'Standard', shipping: 'yes', compound: 'no'},
+    var Model = OrderModel.extend({
+      getSettings: function(name){
+        if( name === 'tax' ){
+          return {
+            calc_taxes: 'yes',
+            prices_include_tax: 'no'
+          };
+        }
+        if( name === 'tax_rates' ){
+          return {
+            '': {
+              4: {rate: '5.0000', label: 'Standard', shipping: 'yes', compound: 'no'},
+            },
+            'reduced-rate': {
+              5: {rate: '10.0000', label: 'Tax', shipping: 'yes', compound: 'no'}
+            }
+          };
+        }
       },
-      'reduced-rate': {
-        5: {rate: '10.0000', label: 'Tax', shipping: 'yes', compound: 'no'}
-      }
-    };
+      sync: stub()
+    });
+
+    var model = new Model(null, { parse: true });
 
     expect( model.cart ).to.be.instanceOf( Backbone.Collection );
 
@@ -296,6 +322,52 @@ describe('entities/orders/model.js', function () {
 
     expect( Utils.round( model.get('total_tax'), 2 ) ).equals( parseFloat( dummy_order.order.total_tax ) );
 
+  });
+
+  it('should parse tax rates', function(){
+    var model = new OrderModel();
+    model.getSettings = function(name){
+      if( name === 'tax_rates' ){
+        return dummy_tax_GB;
+      }
+    };
+    expect( model.parseTaxRates() ).eqls({
+      all: true,
+      rate_1: true,
+      rate_2: true,
+      rate_3: true
+    });
+
+  });
+
+  it('should return an array of tax rates for a given tax_class', function(){
+    var model = new OrderModel();
+    model.getSettings = function(name){
+      if( name === 'tax_rates' ){
+        return dummy_tax_GB;
+      }
+    };
+    model.parseTaxRates();
+    expect( model.getTaxRates('') ).eqls([{
+      rate_id: '1',
+      rate: '20.0000',
+      title: 'VAT',
+      shipping: true,
+      compound: true,
+      enabled: true,
+      total: 0,
+      subtotal: 0
+    }]);
+    expect( model.getTaxRates('reduced-rate') ).eqls([{
+      rate_id: '2',
+      rate: '5.0000',
+      title: 'VAT',
+      shipping: true,
+      compound: true,
+      enabled: true,
+      total: 0,
+      subtotal: 0
+    }]);
   });
 
 });

@@ -14,13 +14,11 @@ module.exports = bb.Model.extend({
 
   initialize: function(){
     // copy tax info from order collection
-    this.tax_options = _.get( this, ['collection', 'order', 'tax'], {} );
+    this.tax = _.get( this, ['collection', 'order', 'tax'], {} );
 
     // attach tax_rates collection
-    if( this.tax_options.calc_taxes === 'yes' ){
-      this.attachTaxes({
-        prices_include_tax: this.tax_options.prices_include_tax
-      });
+    if( this.tax.calc_taxes === 'yes' ){
+      this.attachTaxes();
     }
 
     // make sure there is an item_price
@@ -36,16 +34,16 @@ module.exports = bb.Model.extend({
   },
 
   /**
-   * @todo init with saved itemized taxes?
+   *
    */
-  attachTaxes: function(options){
-    this.taxes = new Taxes(
-      this.getTaxesRates(),
-      _.extend( { parse: true, line_item : this }, options )
-    );
+  attachTaxes: function(){
+    this.taxes = new Taxes( this.getTaxRates(), {
+      prices_include_tax: this.tax.prices_include_tax,
+      line_item: this
+    });
 
     this.on( 'change:taxable change:tax_class', function(){
-      this.taxes.reset( this.getTaxesRates(), { parse: true } );
+      this.taxes.reset( this.getTaxRates() );
       this.updateTotals();
     }, this );
   },
@@ -60,7 +58,7 @@ module.exports = bb.Model.extend({
     }
 
     // if price does not include tax
-    if( this.tax_options.prices_include_tax === 'yes' ) {
+    if( this.tax.prices_include_tax === 'yes' ) {
       total -= total_tax;
     }
 
@@ -70,8 +68,8 @@ module.exports = bb.Model.extend({
       'total'     : Utils.round( total, 4 )
     };
 
-    this.set(totals);
     debug('update cart item', this);
+    this.set(totals);
   },
   /* jshint +W071 */
 
@@ -90,7 +88,7 @@ module.exports = bb.Model.extend({
    * Value displayed in cart
    */
   getDisplayTotal: function(){
-    if( this.tax_options.tax_display_cart === 'incl' ) {
+    if( this.tax.tax_display_cart === 'incl' ) {
       return this.sum(['total', 'total_tax']);
     } else {
       return this.get('total');
@@ -101,20 +99,33 @@ module.exports = bb.Model.extend({
    * Value displayed in cart
    */
   getDisplaySubtotal: function(){
-    if( this.tax_options.tax_display_cart === 'incl' ) {
+    if( this.tax.tax_display_cart === 'incl' ) {
       return this.sum(['subtotal', 'subtotal_tax']);
     } else {
       return this.get('subtotal');
     }
   },
 
-  getTaxesRates: function(){
+  /**
+   * Wrapper for order.getTaxRates(), checks if line item is taxable
+   */
+  getTaxRates: function(){
+    var tax_rates = null;
     if( this.get('taxable') ){
-      return _.get(
-        this, ['collection', 'order', 'tax_rates', this.get('tax_class') ], null
-      );
+      tax_rates = this.collection.order.getTaxRates( this.get('tax_class') );
     }
-    return null;
+    return tax_rates;
+  },
+
+  /**
+   * Clean up attached taxes
+   */
+  destroy: function(){
+    if( this.taxes ){
+      this.taxes.reset( null, { silent: true } );
+      this.taxes.stopListening();
+    }
+    bb.Model.prototype.destroy.apply(this, arguments);
   }
 
 });

@@ -21,7 +21,7 @@
   </div>
   <div class="total">{{{money total}}}</div>
   <div class="action">
-    <a href="#" data-action="toggle-tax">
+    <a href="#" data-action="toggle-tax" data-rate_id="{{rate_id}}">
       <i class="icon-remove icon-lg"></i>
     </a>
   </div>

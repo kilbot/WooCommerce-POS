@@ -7,7 +7,8 @@ module.exports = bb.Model.extend({
 
   defaults: {
     total     : 0,
-    subtotal  : 0
+    subtotal  : 0,
+    enabled   : true
   },
 
   getRate: function(){

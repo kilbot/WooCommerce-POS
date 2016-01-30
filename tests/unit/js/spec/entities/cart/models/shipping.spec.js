@@ -45,7 +45,6 @@ describe('entities/cart/models/shipping.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 10
       }, {
         collection: {
@@ -54,7 +53,12 @@ describe('entities/cart/models/shipping.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(){
+              return dummy_tax_GB[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
@@ -69,7 +73,6 @@ describe('entities/cart/models/shipping.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 10
       }, {
         collection: {
@@ -78,7 +81,12 @@ describe('entities/cart/models/shipping.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(){
+              return dummy_tax_GB[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
@@ -93,7 +101,6 @@ describe('entities/cart/models/shipping.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 10
       }, {
         collection: {
@@ -102,10 +109,13 @@ describe('entities/cart/models/shipping.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: {
-              '': {
+            getTaxRates: function(){
+              return {
                 1: {rate: '20.0000', label: 'VAT', shipping: 'no', compound: 'yes'}
-              }
+              };
+            },
+            taxRateEnabled: function(){
+              return true;
             }
           }
         }
@@ -121,7 +131,6 @@ describe('entities/cart/models/shipping.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 10
       }, {
         collection: {
@@ -130,10 +139,13 @@ describe('entities/cart/models/shipping.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: {
-              '': {
+            getTaxRates: function(){
+              return {
                 1: {rate: '20.0000', label: 'VAT', shipping: 'no', compound: 'yes'}
-              }
+              };
+            },
+            taxRateEnabled: function(){
+              return true;
             }
           }
         }
@@ -153,7 +165,6 @@ describe('entities/cart/models/shipping.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 10
       }, {
         collection: {
@@ -162,7 +173,12 @@ describe('entities/cart/models/shipping.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: dummy_tax_US
+            getTaxRates: function(){
+              return dummy_tax_US[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
@@ -177,7 +193,6 @@ describe('entities/cart/models/shipping.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 10
       }, {
         collection: {
@@ -186,7 +201,12 @@ describe('entities/cart/models/shipping.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: dummy_tax_US
+            getTaxRates: function(){
+              return dummy_tax_US[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
@@ -201,7 +221,6 @@ describe('entities/cart/models/shipping.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 10
       }, {
         collection: {
@@ -210,11 +229,14 @@ describe('entities/cart/models/shipping.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: {
-              '': {
+            getTaxRates: function(){
+              return {
                 4: {rate: '10.0000', label: 'VAT', shipping: 'yes', compound: 'no'},
                 5: {rate: '2.0000', label: 'VAT', shipping: 'no', compound: 'yes'}
-              }
+              };
+            },
+            taxRateEnabled: function(){
+              return true;
             }
           }
         }
@@ -229,7 +251,6 @@ describe('entities/cart/models/shipping.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 10
       }, {
         collection: {
@@ -238,11 +259,14 @@ describe('entities/cart/models/shipping.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: {
-              '': {
+            getTaxRates: function(){
+              return {
                 4: {rate: '10.0000', label: 'VAT', shipping: 'no', compound: 'no'},
                 5: {rate: '2.0000', label: 'VAT', shipping: 'yes', compound: 'yes'}
-              }
+              };
+            },
+            taxRateEnabled: function(){
+              return true;
             }
           }
         }

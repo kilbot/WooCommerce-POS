@@ -27,15 +27,34 @@ describe('entities/tax/collection.js', function () {
   });
 
   it('should parse tax rates from POS params', function(){
-    var collection = new Collection( dummy_tax_US[''], { parse: true } );
+    var collection = new Collection( dummy_tax_US[''] );
     expect(collection).to.have.length(2);
     expect(collection.pluck('rate_id')).to.eql(['4', '5']);
   });
 
   it('update rate collection on tax_class change', function(){
-    var collection = new Collection( dummy_tax_US[''], { parse: true } );
-    expect(collection).to.have.length(2);
-    expect(collection.pluck('rate_id')).to.eql(['4', '5']);
+    var collection = new Collection( dummy_tax_GB[''] );
+    collection.reset( dummy_tax_GB['reduced-rate'] );
+    expect(collection).to.have.length(1);
+    expect(collection.pluck('rate_id')).to.eql(['2']);
+  });
+
+  it('toggle taxes enabled true/false', function(){
+    var collection = new Collection( dummy_tax_US[''] );
+    expect(collection.pluck('enabled')).to.eql([true, true]);
+
+    collection.toggleTaxes({ all: false });
+    expect(collection.pluck('enabled')).to.eql([false, false]);
+
+    collection.toggleTaxes({
+      all: true,
+      rate_1: true,
+      rate_2: true,
+      rate_3: true,
+      rate_4: true,
+      rate_5: false
+    });
+    expect(collection.pluck('enabled')).to.eql([true, false]);
   });
 
 });

@@ -1,4 +1,5 @@
 var ItemView = require('lib/config/form-view');
+var $ = require('jquery');
 
 module.exports = ItemView.extend({
   tagName: 'ul',
@@ -36,6 +37,8 @@ module.exports = ItemView.extend({
 
   toggleTax: function(e){
     if(e){ e.preventDefault(); }
+    var rate_id = $(e.currentTarget).data('rate_id');
+    this.model.toggleTax( rate_id );
   }
 
 });

@@ -8,9 +8,10 @@ module.exports = bb.Collection.extend({
 
   /**
    * attach line_item early for use by parse
+   * - always parse
    */
   constructor: function( models, options ){
-    options = options || {};
+    options = _.extend({}, options, { parse: true });
     this.line_item = options.line_item;
 
     // set calcTaxes method
@@ -20,7 +21,7 @@ module.exports = bb.Collection.extend({
       this.calcTaxes = this.calcExclusiveTax;
     }
 
-    bb.Collection.apply(this, arguments);
+    bb.Collection.call(this, models, options);
   },
 
   /**
@@ -100,8 +101,13 @@ module.exports = bb.Collection.extend({
     return this.sum( attr );
   },
 
-  // move rate_id key to part of rate model
+  /**
+   * move rate_id key to part of rate model
+   */
   parse: function( rates ){
+    if( _.isArray( rates ) ){
+      return rates; // already parsed
+    }
     var type = _.get( this, ['line_item', 'type'] );
 
     return _.chain(rates)
@@ -119,13 +125,37 @@ module.exports = bb.Collection.extend({
   /**
    * convenience method to sum taxes
    */
-  sum: function(attribute, type){
+  sum: function(attribute){
     return this.reduce( function( sum, model ){
-      if( type && type !== model.type ){
-        return sum;
+      if( model.get('enabled') ){
+        return sum + parseFloat( model.get(attribute) );
       }
-      return sum + parseFloat( model.get(attribute) );
+      return sum;
     }, 0 );
+  },
+
+  /**
+   * Always parse on reset
+   */
+  reset: function( models, options ){
+    options = _.extend({}, options, { parse: true });
+    bb.Collection.prototype.reset.call( this, models, options );
+  },
+
+  /**
+   *
+   */
+  toggleTaxes: function( enabled_taxes ){
+    enabled_taxes = enabled_taxes || {};
+    if( enabled_taxes.all === false ){
+      return this.invoke('set', { enabled: false });
+    }
+    _.each( enabled_taxes, function( enabled, id ){
+      var model = this.get( id.replace('rate_', '') );
+      if( model ){
+        model.set({ enabled: enabled });
+      }
+    }, this);
   }
 
 });

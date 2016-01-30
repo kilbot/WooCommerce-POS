@@ -105,7 +105,6 @@ describe('entities/cart/models/product.js', function () {
     it("should match the Woo unit test for inclusive tax", function() {
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 9.99
       }, {
         collection: {
@@ -114,7 +113,12 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(){
+              return dummy_tax_GB[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
@@ -127,7 +131,6 @@ describe('entities/cart/models/product.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 9.99
       }, {
         collection: {
@@ -136,7 +139,12 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(){
+              return dummy_tax_GB[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
@@ -149,7 +157,6 @@ describe('entities/cart/models/product.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 100
       }, {
         collection: {
@@ -158,11 +165,14 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: {
-              '': {
+            getTaxRates: function(){
+              return {
                 1: {rate: '5.0000', label: 'GST', shipping: 'yes', compound: 'no'},
                 2: {rate: '8.5000', label: 'PST', shipping: 'yes', compound: 'yes'}
-              }
+              };
+            },
+            taxRateEnabled: function(){
+              return true;
             }
           }
         }
@@ -181,7 +191,6 @@ describe('entities/cart/models/product.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 100
       }, {
         collection: {
@@ -190,11 +199,14 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: {
-              '': {
+            getTaxRates: function(){
+              return {
                 1: {rate: '5.0000', label: 'GST', shipping: 'yes', compound: 'no'},
                 2: {rate: '8.5000', label: 'PST', shipping: 'yes', compound: 'yes'}
-              }
+              };
+            },
+            taxRateEnabled: function(){
+              return true;
             }
           }
         }
@@ -225,13 +237,18 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(){
+              return dummy_tax_GB[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': '' });
+      model.set({ 'taxable': true });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
@@ -255,13 +272,18 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(){
+              return dummy_tax_GB[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
 
       var quantity = _.random(10, true);
-      model.set( { 'taxable': true, 'tax_class': '', quantity: quantity } );
+      model.set( { 'taxable': true, quantity: quantity } );
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal( Utils.round( 3 * quantity, 4 ) );
@@ -280,13 +302,18 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(){
+              return dummy_tax_GB[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': '' });
+      model.set({ 'taxable': true });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(2.5);
@@ -310,13 +337,18 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(){
+              return dummy_tax_GB[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
 
       var quantity = _.random(10, true);
-      model.set( { 'taxable': true, 'tax_class': '', quantity: quantity } );
+      model.set( { 'taxable': true, quantity: quantity } );
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal( Utils.round( 2.5 * quantity, 4 ) );
@@ -335,14 +367,18 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(tax_class){
+              return dummy_tax_GB[tax_class];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': '' });
-      model.set({ 'tax_class': 'reduced-rate' });
+      model.set({ 'taxable': true, 'tax_class': 'reduced-rate' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
@@ -367,14 +403,18 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(tax_class){
+              return dummy_tax_GB[tax_class];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': '' });
-      model.set({ 'tax_class': 'reduced-rate' });
+      model.set({ 'taxable': true, 'tax_class': 'reduced-rate' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(2.8571);
@@ -399,14 +439,18 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(tax_class){
+              return dummy_tax_GB[tax_class];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': '' });
-      model.set({ 'tax_class': 'zero-rate' });
+      model.set({ 'taxable': true, 'tax_class': 'zero-rate' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
@@ -430,14 +474,18 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function( tax_class ){
+              return dummy_tax_GB[tax_class];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': '' });
-      model.set({ 'tax_class': 'zero-rate' });
+      model.set({ 'taxable': true, 'tax_class': 'zero-rate' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
@@ -467,13 +515,18 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: dummy_tax_US
+            getTaxRates: function(){
+              return dummy_tax_US[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': '' });
+      model.set({ 'taxable': true });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
@@ -499,13 +552,18 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: dummy_tax_US
+            getTaxRates: function(){
+              return dummy_tax_US[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
 
       var quantity = _.random(10, true);
-      model.set( { 'taxable': true, 'tax_class': '', quantity: quantity } );
+      model.set( { 'taxable': true, quantity: quantity } );
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal( Utils.round( 3 * quantity, 4 ) );
@@ -524,13 +582,18 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: dummy_tax_US
+            getTaxRates: function(){
+              return dummy_tax_US[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': '' });
+      model.set({ 'taxable': true });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(2.6738);
@@ -556,18 +619,21 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: {
-              '': {
+            getTaxRates: function(){
+              return {
                 4: {rate: '10.0000', label: 'VAT', shipping: 'yes', compound: 'no'},
                 5: {rate: '2.0000', label: 'VAT', shipping: 'yes', compound: 'no'}
-              }
+              };
+            },
+            taxRateEnabled: function(){
+              return true;
             }
           }
         }
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': '' });
+      model.set({ 'taxable': true });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
@@ -593,18 +659,21 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: {
-              '': {
+            getTaxRates: function(){
+              return {
                 4: {rate: '10.0000', label: 'VAT', shipping: 'yes', compound: 'no'},
                 5: {rate: '2.0000', label: 'VAT', shipping: 'yes', compound: 'no'}
-              }
+              };
+            },
+            taxRateEnabled: function(){
+              return true;
             }
           }
         }
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': '' });
+      model.set({ 'taxable': true });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(2.6786);
@@ -630,14 +699,18 @@ describe('entities/cart/models/product.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: dummy_tax_US
+            getTaxRates: function( tax_class ){
+              return dummy_tax_US[tax_class];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': '' });
-      model.set({ 'tax_class': 'reduced-rate' });
+      model.set({ 'taxable': true, 'tax_class': 'reduced-rate' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);

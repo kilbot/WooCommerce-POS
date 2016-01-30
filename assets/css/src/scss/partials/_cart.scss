@@ -162,7 +162,7 @@ cart {
         a {
           position: absolute;
           top: 50%;
-          margin-top: -11px; // half height of btn
+          margin-top: -9px; // half height of btn
           right: -11px;
           i {
             @include single-transition(transform, 0.4s);

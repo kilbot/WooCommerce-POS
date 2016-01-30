@@ -46,7 +46,6 @@ describe('entities/cart/models/fee.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 10
       }, {
         collection: {
@@ -55,7 +54,12 @@ describe('entities/cart/models/fee.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'no'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(){
+              return dummy_tax_GB[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
@@ -70,7 +74,6 @@ describe('entities/cart/models/fee.js', function () {
 
       var model = new Model({
         taxable: true,
-        tax_class: '',
         price: 10
       }, {
         collection: {
@@ -79,7 +82,12 @@ describe('entities/cart/models/fee.js', function () {
               calc_taxes: 'yes',
               prices_include_tax: 'yes'
             },
-            tax_rates: dummy_tax_GB
+            getTaxRates: function(){
+              return dummy_tax_GB[''];
+            },
+            taxRateEnabled: function(){
+              return true;
+            }
           }
         }
       });
@@ -96,7 +104,6 @@ describe('entities/cart/models/fee.js', function () {
 
     var model = new Model({
       taxable: true,
-      tax_class: '',
       price: 10
     }, {
       collection: {
@@ -105,7 +112,12 @@ describe('entities/cart/models/fee.js', function () {
             calc_taxes: 'yes',
             prices_include_tax: 'no'
           },
-          tax_rates: dummy_tax_GB
+          getTaxRates: function(){
+            return dummy_tax_GB[''];
+          },
+          taxRateEnabled: function(){
+            return true;
+          }
         }
       }
     });
@@ -117,7 +129,6 @@ describe('entities/cart/models/fee.js', function () {
 
     var model = new Model({
       taxable: true,
-      tax_class: '',
       price: 10
     }, {
       collection: {
@@ -126,7 +137,12 @@ describe('entities/cart/models/fee.js', function () {
             calc_taxes: 'yes',
             prices_include_tax: 'no'
           },
-          tax_rates: dummy_tax_GB
+          getTaxRates: function(){
+            return dummy_tax_GB[''];
+          },
+          taxRateEnabled: function(){
+            return true;
+          }
         }
       }
     });

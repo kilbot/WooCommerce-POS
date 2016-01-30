@@ -1,7 +1,9 @@
 @font-face {
   font-family: 'WooCommercePOS';
-  src: url('../fonts/woocommerce-pos.eot?v=0.3.1');
-  src: url('../fonts/woocommerce-pos.eot?#iefix&v=0.3.1') format('embedded-opentype'), url('../fonts/woocommerce-pos.woff?v=0.3.1') format('woff'), url('../fonts/woocommerce-pos.ttf?v=0.3.1') format('truetype'), url('../fonts/woocommerce-pos.svg?v=0.3.1#woocommerceposregular') format('svg');
+  src:
+      url('../fonts/woocommerce-pos.ttf?nkmeb4') format('truetype'),
+      url('../fonts/woocommerce-pos.woff?nkmeb4') format('woff'),
+      url('../fonts/woocommerce-pos.svg?nkmeb4#woocommerce-pos') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -16,6 +18,7 @@ icon {
       font-weight: normal;
       font-variant: normal;
       text-transform: none;
+      line-height: 1;
       /* Better Font Rendering =========== */
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -47,7 +50,10 @@ icon {
     <i class="icon-chevron-left"></i> chevron-left
     <i class="icon-chevron-right"></i> chevron-right
     <i class="icon-chevron-up"></i> chevron-up
+    <i class="icon-chevron-circle-down"></i> chevron-circle-down
+    <i class="icon-chevron-circle-left"></i> chevron-circle-left
     <i class="icon-chevron-circle-right"></i> chevron-circle-right
+    <i class="icon-chevron-circle-up"></i> chevron-circle-up
     <i class="icon-cog"></i> cog
     <i class="icon-coupons"></i> coupons
     <i class="icon-customers"></i> customers
@@ -92,7 +98,10 @@ $icons: (
   "chevron-down"         : "f078",
   "chevron-right"        : "f054",
   "chevron-up"           : "f077",
+  "chevron-circle-down"  : "e900",
+  "chevron-circle-left"  : "e902",
   "chevron-circle-right" : "f138",
+  "chevron-circle-up"    : "e901",
   "cog"                  : "f013",
   "coupons"              : "e607",
   "customers"            : "e606",
@@ -225,7 +234,7 @@ icon {
 icon {
   @at-root {
 
-    .#{current-module()}-lg, {
+    .#{current-module()}-lg {
       font-size: 1.33333333em;
     }
     .#{current-module()}-2x {

@@ -5,6 +5,7 @@ var debug = require('debug')('order');
 var Radio = require('backbone.radio');
 var Utils = require('lib/utilities/utils');
 var App = require('lib/config/application');
+var Taxes = require('../tax/collection');
 
 module.exports = DualModel.extend({
   name: 'order',
@@ -26,7 +27,7 @@ module.exports = DualModel.extend({
   constructor: function(){
     // clone tax settings
     this.tax = _.clone( this.getSettings( 'tax' ) );
-    this.tax_rates = _.clone( this.getSettings( 'tax_rates' ) );
+
     DualModel.apply( this, arguments );
   },
 
@@ -47,29 +48,6 @@ module.exports = DualModel.extend({
   isEditable: function( status ){
     status = status || this.get('status');
     return status === undefined || this.isDelayed( status );
-  },
-
-  attachCart: function( attributes ){
-    this.cart = new Cart( null, { order: this } );
-
-    // add line_items, shipping_lines and fee_lines
-    this.cart.set( attributes.line_items, { parse: true, remove: false } );
-    this.cart.set( attributes.shipping_lines,
-      { parse: true, remove: false, type: 'shipping' }
-    );
-    this.cart.set( attributes.fee_lines,
-      { parse: true, remove: false, type: 'fee' }
-    );
-
-    //delete attributes.line_items; ?
-
-    this.cart.on( 'change add remove', function(){
-      if( this.cart && this.cart.length === 0 ){
-        this.destroy();
-      } else {
-        this.save();
-      }
-    }, this );
   },
 
   /**
@@ -94,9 +72,36 @@ module.exports = DualModel.extend({
 
     if( resp && this.isEditable( resp.status ) && !this.cart ){
       this.attachCart( resp );
+      resp.taxes = this.parseTaxRates( resp.taxes );
     }
 
     return resp;
+  },
+
+  /**
+   * Attach cart during parse, allows updates from server
+   */
+  attachCart: function( attributes ){
+    this.cart = new Cart( null, { order: this } );
+
+    // add line_items, shipping_lines and fee_lines
+    this.cart.set( attributes.line_items, { parse: true, remove: false } );
+    this.cart.set( attributes.shipping_lines,
+      { parse: true, remove: false, type: 'shipping' }
+    );
+    this.cart.set( attributes.fee_lines,
+      { parse: true, remove: false, type: 'fee' }
+    );
+
+    //delete attributes.line_items; ?
+
+    this.cart.on( 'change add remove', function(){
+      if( this.cart && this.cart.length === 0 ){
+        this.destroy();
+      } else {
+        this.save();
+      }
+    }, this );
   },
 
   /**
@@ -255,6 +260,87 @@ module.exports = DualModel.extend({
    */
   emailReceipt: function(email){
     return App.prototype.post( this.url() + 'email/' + email );
+  },
+
+  /**
+   * Clean up attached cart
+   */
+  destroy: function(){
+    if( this.cart ){
+      this.cart.reset( null, { silent: true } );
+      this.cart.stopListening();
+    }
+    DualModel.prototype.destroy.apply(this, arguments);
+  },
+
+  /**
+   * Toggle taxes
+   */
+  toggleTax: function( rate_id ){
+    if( rate_id ){
+      var val = ! this.get( 'taxes.rate_' + rate_id );
+      this.set( 'taxes.rate_' + rate_id, val );
+    } else {
+      this.set( 'taxes.all', ! this.get( 'taxes.all' ) );
+    }
+
+    //
+    if( this.tax_rates ){
+      var enabled_taxes = this.get('taxes');
+      _.each( this.tax_rates, function( taxes ){
+        taxes.toggleTaxes( enabled_taxes );
+      });
+    }
+  },
+
+  /**
+   * Setup tax data for this order
+   * - parse tax_rates into bb Collections
+   * - set enabled = true for each rate
+   */
+  parseTaxRates: function( enabled_taxes ){
+    var tax_rates = this.getSettings( 'tax_rates' );
+    this.tax_rates = {};
+
+    // parse tax_rates
+    _.each( tax_rates, function( tax_rate, tax_class ){
+      var taxes = new Taxes( tax_rate );
+      taxes.toggleTaxes( enabled_taxes );
+      this.tax_rates[ tax_class ] = taxes;
+    }, this);
+
+    // exit early if attribute exists
+    if( enabled_taxes ){
+      return enabled_taxes;
+    }
+
+    // set enabled taxes
+    return _.reduce( tax_rates, function( obj, tax_rate ){
+      _.each( tax_rate, function( tax, rate_id ){
+        obj[ 'rate_' + rate_id ] = true;
+      } );
+      return obj;
+    }, { all: true } );
+  },
+
+  /**
+   * Check if tax rate is enabled by rate_id
+   */
+  taxRateEnabled: function( rate_id ){
+    if( ! this.get( 'taxes.all' ) ){
+      return false;
+    }
+    return this.get( 'taxes.rate_' + rate_id );
+  },
+
+  /**
+   * Returns this.tax_rates.toJSON() for a given tax_rate
+   */
+  getTaxRates: function( tax_class ){
+    if( this.tax_rates ){
+      var taxes = this.tax_rates[tax_class];
+      return taxes.toJSON();
+    }
   }
 
 });

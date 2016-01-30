@@ -53,7 +53,7 @@ module.exports = Model.extend({
     }
 
     // if price does not include tax
-    if( this.tax_options.prices_include_tax === 'yes' ) {
+    if( this.tax.prices_include_tax === 'yes' ) {
       subtotal -= subtotal_tax;
       total -= total_tax;
     }

@@ -44,13 +44,18 @@ describe('entities/cart/models/abstract.js', function () {
     var model = new Model();
     expect( model.taxes ).to.be.undefined;
 
-    var model = new Model( { taxable: true, tax_class: '' }, {
+    var model = new Model( { taxable: true }, {
       collection: {
         order : {
           tax: {
             calc_taxes: 'yes'
           },
-          tax_rates: dummy_tax_US
+          getTaxRates: function(){
+            return dummy_tax_US[''];
+          },
+          taxRateEnabled: function(){
+            return true;
+          }
         }
       }
     });
@@ -68,7 +73,12 @@ describe('entities/cart/models/abstract.js', function () {
           tax: {
             calc_taxes: 'yes'
           },
-          tax_rates: dummy_tax_GB
+          getTaxRates: function( tax_class ){
+            return dummy_tax_GB[tax_class];
+          },
+          taxRateEnabled: function(){
+            return true;
+          }
         }
       }
     });
@@ -85,13 +95,18 @@ describe('entities/cart/models/abstract.js', function () {
 
   it('should reset tax rates on taxable change', function(){
 
-    var model = new Model( { taxable: false, tax_class: '' }, {
+    var model = new Model( { taxable: false }, {
       collection: {
         order : {
           tax: {
             calc_taxes: 'yes'
           },
-          tax_rates: dummy_tax_US
+          getTaxRates: function(){
+            return dummy_tax_US[''];
+          },
+          taxRateEnabled: function(){
+            return true;
+          }
         }
       }
     });
