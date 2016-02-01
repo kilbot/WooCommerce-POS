@@ -33,6 +33,7 @@ btn-group {
         &:last-child:not(:first-child) {
           @include border-left-radius(0);
         }
+
       }
 
       .btn + .btn,

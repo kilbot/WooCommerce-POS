@@ -35,12 +35,12 @@
         <input name="meta.{{@index}}.label" type="text" class="form-control">
         <textarea name="meta.{{@index}}.value" class="form-control"></textarea>
         <a href="#" data-action="remove-meta">
-          <i class="icon-remove icon-lg"></i>
+          <i class="icon-remove icon-lg icon-secondary"></i>
         </a>
       </span>
     {{/each}}
     <a href="#" data-action="add-meta">
-      <i class="icon-add icon-lg"></i>
+      <i class="icon-add icon-lg icon-secondary"></i>
     </a>
   </div>
 </div>

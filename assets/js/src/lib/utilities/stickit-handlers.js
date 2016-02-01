@@ -72,3 +72,21 @@ bb.Stickit.addHandler({
     return val;
   }
 });
+
+/**
+ * Default stickit updateMethod = 'html' for contenteditable
+ * - change updateMethod to 'text'
+ * - update on 'blur'
+ * - filter html input
+ */
+bb.Stickit.addHandler({
+  selector: '[contenteditable=true]',
+  updateMethod: 'text',
+  events: ['blur'],
+  onSet: function(val, obj){
+    if( val !== this.$(obj.selector).html() ){
+      this.$(obj.selector).text( val );
+    }
+    return val;
+  }
+});

@@ -42,6 +42,10 @@ module.exports = bb.Model.extend({
       line_item: this
     });
 
+    // listen to tax toggle on order
+    this.listenTo( this.taxes, 'change:enabled', this.updateTotals );
+
+    // on change in line item tax options
     this.on( 'change:taxable change:tax_class', function(){
       this.taxes.reset( this.getTaxRates() );
       this.updateTotals();

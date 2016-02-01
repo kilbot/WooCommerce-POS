@@ -1,7 +1,21 @@
 var DualCollection = require('lib/config/dual-collection');
-var Model = require('./model');
+
+var subclasses = {
+  simple   : require('./models/simple'),
+  variable : require('./models/variable')
+};
 
 module.exports = DualCollection.extend({
-  model: Model,
+
+  /**
+   * Init model based on product type
+   */
+  model: function(attributes, options){
+    attributes = attributes || {};
+    var Subclass = subclasses[attributes.type] || subclasses['simple'];
+    return new Subclass(attributes, options);
+  },
+
   name: 'products'
+
 });

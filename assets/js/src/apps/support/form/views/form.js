@@ -6,7 +6,7 @@ module.exports = FormView.extend({
   template: 'support.form',
 
   ui: {
-    toggle : '.toggle'
+    toggle : '[data-action="toggle"]'
   },
 
   events: {

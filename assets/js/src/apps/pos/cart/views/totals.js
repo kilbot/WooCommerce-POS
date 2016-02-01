@@ -32,9 +32,17 @@ module.exports = ItemView.extend({
       data.cart_discount = this.model.getDisplayCartDiscount();
     }
 
+    // sum for disabled taxes
+    data.total_tax = this.model.sumItemizedTaxes(
+      this.model.get('tax_lines'), 'total'
+    );
+
     return data;
   },
 
+  /**
+   *
+   */
   toggleTax: function(e){
     if(e){ e.preventDefault(); }
     var rate_id = $(e.currentTarget).data('rate_id');

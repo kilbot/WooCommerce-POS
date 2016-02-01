@@ -30,4 +30,11 @@ describe('entities/variations/collection.js', function () {
     variations.range('sale_price').should.eql([ 30 ]);
   });
 
+  it('should return an array of the available variation options', function(){
+    variations.getVariationOptions().should.eql([{
+      name: 'Color',
+      options: [ "Black", "Blue" ]
+    }]);
+  });
+
 });

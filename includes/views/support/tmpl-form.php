@@ -17,7 +17,7 @@
       <span class="c-indicator"></span>
       <?php _e( 'Append POS system report', 'woocommerce-pos' ); ?>
     </label>
-    <a href="#" class="toggle"><i class="icon-info-circle"></i></a>
+    <a href="#" data-action="toggle"><i class="icon-info-circle"></i></a>
     <textarea class="form-control" name="report" class="small" style="display:none" readonly></textarea>
   </div>
 </li>

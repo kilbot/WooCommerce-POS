@@ -25,6 +25,18 @@ module.exports = bb.Collection.extend({
   },
 
   /**
+   * Listen to the order model for tax toggle
+   */
+  initialize: function( models, options ){
+    var order = options.order || _.get(this.line_item, ['collection', 'order']);
+
+    // listen for order tax toggle
+    this.listenTo( order, 'change:taxes', function(){
+      this.toggleTaxes( order.get('taxes') );
+    });
+  },
+
+  /**
    * Calculate the line item tax total
    * based on the calc_exclusive_tax function in
    * woocommerce/includes/class-wc-tax.php

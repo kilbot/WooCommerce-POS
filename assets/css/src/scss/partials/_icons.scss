@@ -146,10 +146,29 @@ icon {
 
     }
 
+    // common icon colors
+    .#{current-module()}-secondary {
+      a & {
+        color: $secondary-text-color;
+        &:hover {
+          color: $brand-primary;
+        }
+      }
+    }
+
+    .#{current-module()}-tertiary {
+      a & {
+        color: $tertiary-text-color;
+        &:hover {
+          color: $brand-primary;
+        }
+      }
+    }
+
     // special cases
     .#{current-module()}-add {
       a & {
-        color: $tertiary-text-color;
+        //color: $tertiary-text-color;
         &:hover {
           color: $brand-success;
         }
@@ -158,7 +177,7 @@ icon {
 
     .#{current-module()}-remove {
       a & {
-        color: $tertiary-text-color;
+        //color: $tertiary-text-color;
         &:hover {
           color: $brand-danger;
         }

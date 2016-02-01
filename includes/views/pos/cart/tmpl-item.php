@@ -5,7 +5,7 @@
 <div class="title">
   <strong data-name="name" contenteditable="true">{{name}}</strong>
   <dl class="meta"></dl>
-  <a data-action="more" href="#"><i class="icon-chevron-circle-down icon-lg"></i></a>
+  <a data-action="more" href="#"><i class="icon-chevron-circle-down icon-lg icon-tertiary"></i></a>
 </div>
 <div class="price"><input type="text" name="item_price" data-label="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" data-original="regular_price" data-percentage="off" class="form-control autogrow"></div>
 {{else}}
@@ -17,7 +17,7 @@
   {{#if fee}}
   <strong data-name="title" contenteditable="true">{{title}}</strong>
   {{/if}}
-  <a data-action="more" href="#"><i class="icon-chevron-circle-down icon-lg"></i></a>
+  <a data-action="more" href="#"><i class="icon-chevron-circle-down icon-lg icon-tertiary"></i></a>
 </div>
 <div class="price"><input type="text" name="item_price" data-label="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="amount" class="form-control autogrow"></div>
 {{/if}}

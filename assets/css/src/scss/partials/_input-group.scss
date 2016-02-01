@@ -121,6 +121,11 @@ input-group {
       font-size: 0;
       white-space: nowrap;
 
+      // give icons the same line-height at the input
+      i {
+        line-height: 1.5;
+      }
+
       // Negative margin for spacing, position for bringing hovered/focused/actived
       // element above the siblings.
       > .btn {

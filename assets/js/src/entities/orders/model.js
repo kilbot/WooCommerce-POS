@@ -283,14 +283,6 @@ module.exports = DualModel.extend({
     } else {
       this.set( 'taxes.all', ! this.get( 'taxes.all' ) );
     }
-
-    //
-    if( this.tax_rates ){
-      var enabled_taxes = this.get('taxes');
-      _.each( this.tax_rates, function( taxes ){
-        taxes.toggleTaxes( enabled_taxes );
-      });
-    }
   },
 
   /**
@@ -304,7 +296,7 @@ module.exports = DualModel.extend({
 
     // parse tax_rates
     _.each( tax_rates, function( tax_rate, tax_class ){
-      var taxes = new Taxes( tax_rate );
+      var taxes = new Taxes( tax_rate, { order: this } );
       taxes.toggleTaxes( enabled_taxes );
       this.tax_rates[ tax_class ] = taxes;
     }, this);
@@ -334,7 +326,7 @@ module.exports = DualModel.extend({
   },
 
   /**
-   * Returns this.tax_rates.toJSON() for a given tax_rate
+   * Returns parsed tax rates for a given tax_rate
    */
   getTaxRates: function( tax_class ){
     if( this.tax_rates ){

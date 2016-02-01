@@ -89,6 +89,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: Settings for default Shipping and Fee line items
 * New: Setting for which customer roles to display in the POS
 * New: Split products into multiple lines in the cart
+* New: Toggle order taxes
 * Fix: Checkout settings not showing for some users
 * Fix: issue with some product variation names, e.g.: 000, 00 and 0
 * Tweak: Add Reply-To header to support emails

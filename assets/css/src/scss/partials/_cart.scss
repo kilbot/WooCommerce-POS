@@ -253,6 +253,11 @@ cart {
         font-size: 1.4em;
       }
 
+      .disabled {
+        text-decoration: line-through;
+        color: $secondary-text-color;
+      }
+
     }
 
 

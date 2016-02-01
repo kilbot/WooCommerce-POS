@@ -75,9 +75,10 @@ module.exports = FormView.extend({
     },
 
     // product: name, shipping: method_title, fee: title
-    '*[data-name="name"]' : { observe: 'name', events: ['blur'] },
-    '*[data-name="method_title"]' : {observe: 'method_title', events: ['blur']},
-    '*[data-name="title"]' : { observe: 'title', events: ['blur'] },
+    // note: contenteditable=true comes with filter and events: ['blur']
+    '*[data-name="name"]' : { observe: 'name' },
+    '*[data-name="method_title"]' : {observe: 'method_title' },
+    '*[data-name="title"]' : { observe: 'title' },
 
     'dl.meta': {
       observe: 'meta',
