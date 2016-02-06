@@ -1,40 +1,55 @@
-var ItemView = require('lib/config/item-view');
+var FormView = require('lib/config/form-view');
+var hbs = require('handlebars');
 var _ = require('lodash');
 
-module.exports = ItemView.extend({
-  template: _.template( '<%= note %>' ),
+module.exports = FormView.extend({
+
+  template: hbs.compile( '{{note}}' ),
+
+  attributes: {
+    contenteditable: true,
+    style: 'display:none'
+  },
 
   modelEvents: {
-    'change:note': 'render'
-  },
-
-  events: {
-    'click'   : 'edit',
-    'keypress': 'saveOnEnter',
-    'blur'    : 'save'
-  },
-
-  onShow: function() {
-    this.showOrHide();
-  },
-
-  showOrHide: function() {
-    if( this.model.get('note') === '' ) {
-      this.$el.hide();
+    'change:note': function(){
+      this.model.save();
     }
   },
 
-  edit: function() {
-    this.$el.attr('contenteditable','true').focus();
+  events: {
+    'keypress': 'saveOnEnter'
   },
 
-  save: function() {
-    var value = this.$el.text();
+  bindings: {
+    ':el': {
+      observe: 'note',
+      onGet: function (val) {
+        val = _.isString(val) ? val.trim() : '';
+        if (val) {
+          this.$el.show();
+        } else {
+          this.$el.hide();
+        }
+        return val;
+      },
+      onSet: function (val) {
+        val = _.isString(val) ? val.trim() : '';
+        if (val !== this.$el.html()) {
+          this.$el.text(val);
+        }
+        if (val) {
+          this.$el.show();
+        } else {
+          this.$el.hide();
+        }
+        return val;
+      }
+    }
+  },
 
-    // validate and save
-    this.model.save({ note: value });
-    this.$el.attr('contenteditable','false');
-    this.showOrHide();
+  showNoteField: function(){
+    this.$el.show().focus();
   },
 
   saveOnEnter: function(e) {
@@ -43,10 +58,6 @@ module.exports = ItemView.extend({
       e.preventDefault();
       this.$el.blur();
     }
-  },
-
-  showNoteField: function() {
-    this.$el.show();
-    this.$el.attr('contenteditable','true').focus();
   }
+
 });

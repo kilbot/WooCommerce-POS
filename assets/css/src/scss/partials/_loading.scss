@@ -39,7 +39,8 @@ $pulse-name : namespace('pulse');
 
 #page > i.icon-pos {
   font-size: 40em;
-  font-size: 40vw;
+  font-size: 50vh;
+  line-height: 100vh;
   color: nth( $primaryPalette, 10 );
   width: 100%;
   text-align: center;

@@ -79,16 +79,16 @@ module.exports = LayoutView.extend({
   pulse: function() {
     var el = this.$el, type = this.model.get( 'type' );
 
-    // scroll to row
+    // @todo: do a better scrollTo for multiple pulses
+    el.scrollIntoView();
+
     el.addClass('pulse-in')
-      .scrollIntoView({ complete: function(){
-        el.animate({backgroundColor: 'transparent'}, 500, function() {
-          $(this).removeClass('pulse-in').removeAttr('style');
-          if( type === 'fee' || type === 'shipping' ) {
-            $('.title strong', this).focus().selectText();
-          }
-        });
-      }});
+      .animate({backgroundColor: 'transparent'}, 500, function() {
+        $(this).removeClass('pulse-in').removeAttr('style');
+        if( type === 'fee' || type === 'shipping' ) {
+          $('.title strong', this).focus().selectText();
+        }
+      });
 
   },
 

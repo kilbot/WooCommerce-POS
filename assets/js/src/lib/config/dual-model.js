@@ -4,20 +4,27 @@ var _ = require('lodash');
 var debug = require('debug')('dualModel');
 
 module.exports = app.prototype.DualModel = DeepModel.extend({
+
   idAttribute: 'local_id',
+
   remoteIdAttribute: 'id',
+
   fields: ['title'],
 
-  validate: function(attrs){
-    var obj = {};
-    if(attrs[this.idAttribute]) {
-      obj[this.idAttribute] = parseInt(attrs[this.idAttribute], 10);
-    }
-    if(attrs[this.remoteIdAttribute]){
-      obj[this.remoteIdAttribute] = parseInt(attrs[this.remoteIdAttribute], 10);
-    }
-    this.set(obj, {silent: true});
+  defaults: {
+    status: 'CREATE_FAILED'
   },
+
+//validate: function(attrs){
+//  var obj = {};
+//  if(attrs[this.idAttribute]) {
+//    obj[this.idAttribute] = parseInt(attrs[this.idAttribute], 10);
+//  }
+//  if(attrs[this.remoteIdAttribute]){
+//    obj[this.remoteIdAttribute] = parseInt(attrs[this.remoteIdAttribute], 10);
+//  }
+//  this.set(obj, {silent: true});
+//},
 
   url: function(){
     var remoteId = this.get(this.remoteIdAttribute),

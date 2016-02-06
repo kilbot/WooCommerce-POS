@@ -4,6 +4,32 @@ var $ = require('jquery');
 var _ = require('lodash');
 var Route = require('./route');
 var app = require('./application');
+var LayoutView = require('./layout-view');
+
+/**
+ * Columned layout
+ * - fix at two col for now
+ */
+var ColumnLayout = LayoutView.extend({
+
+  className: 'left-active',
+
+  initialize: function(options){
+    this.mergeOptions(options, ['columns']);
+  },
+
+  template: function(){
+    return '' +
+      '<section id="left"></section>' +
+      '<section id="right"></section>';
+  },
+
+  regions: {
+    left: '#left',
+    right: '#right'
+  }
+
+});
 
 module.exports = app.prototype.Router = Mn.AppRouter.extend({
 
@@ -28,10 +54,19 @@ module.exports = app.prototype.Router = Mn.AppRouter.extend({
     }
   },
 
+  /**
+   *
+   */
   execute: function(callback, args) {
     var self = this;
 
     if (!this.active) {
+
+      // attach layout if columns
+      if( this.columns ){
+        this.layout = new ColumnLayout({ columns: this.columns });
+      }
+
       this.triggerMethod.apply(this, ['before:enter'].concat(args));
     }
 

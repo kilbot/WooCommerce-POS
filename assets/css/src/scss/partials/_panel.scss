@@ -76,6 +76,12 @@ panel {
       background: $panel-bg;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+
+      /**
+       * prevent body from collapsing completely
+       * @todo: panel-body can be 1 row, so anything over 20px is too much
+       */
+      min-height: 20px;
     }
 
     /**
@@ -94,7 +100,6 @@ panel {
       > div {
         background: $panel-footer-bg;
         @include clearfix();
-        line-height: 1;
       }
 
       .info {
@@ -102,6 +107,7 @@ panel {
         color: $panel-footer-color;
         float: right;
         font-style: italic;
+        line-height: 1;
       }
 
     }

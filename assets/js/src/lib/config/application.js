@@ -14,11 +14,13 @@ var initDebug = function( debug ){
     debugFunction.enable('*');
   }
   Radio.DEBUG = debug;
+  /* jshint -W117 */
   console.info(
     'Debugging is ' +
     ( debug ? 'on' : 'off' )  +
     ', visit http://woopos.com.au/docs/debugging'
   );
+  /* jshint +W117 */
 };
 
 var Application = Mn.Application.extend({

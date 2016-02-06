@@ -10,10 +10,7 @@ var FormRoute = Route.extend({
 
   initialize: function(options){
     this.container = options.container;
-    this.setTabLabel({
-      tab   : 'left',
-      label : polyglot.t('titles.support-form')
-    });
+    this.setTabLabel( polyglot.t('titles.support-form') );
   },
 
   render: function(){

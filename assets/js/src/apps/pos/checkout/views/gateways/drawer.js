@@ -5,13 +5,24 @@ var Numpad = require('lib/components/numpad/behavior');
 var Utils = require('lib/utilities/utils');
 var polyglot = require('lib/utilities/polyglot');
 var hbs = require('handlebars');
+var App = require('lib/config/application');
+var Radio = require('backbone.radio');
 
-module.exports = FormView.extend({
+var View = FormView.extend({
+
+  tagName: 'form',
+
+  attributes: {
+    style: 'display:none' // start drawer closed
+  },
 
   initialize: function() {
-    this.template = hbs.compile( this.model.get('payment_fields') );
+    this.template = hbs.compile( this.model.getPaymentFields() );
     this.order_total = this.model.collection.order.get('total');
     this.updateStatusMessage();
+
+    // alert third party plugins that gateway has init
+    Radio.trigger( 'checkout', 'gateway:init:' + this.model.id, this );
   },
 
   templateHelpers: function(){
@@ -100,7 +111,9 @@ module.exports = FormView.extend({
   },
 
   onShow: function() {
-    this.$el.hide().slideDown(250);
+    // allow third party to setup before show
+    $.when( this.deferShow.call( this ) )
+      .then( this.slideDown.bind(this) );
 
     if(window.Modernizr.touch){
       this.$('#pos-cash-tendered').attr('readonly', true);
@@ -108,10 +121,20 @@ module.exports = FormView.extend({
     }
   },
 
+  slideDown: function(){
+    this.$el.slideDown(250);
+  },
+
   remove: function() {
-    this.$el.slideUp( 250, function() {
-      FormView.prototype.remove.call(this);
-    }.bind(this));
+    // allow third party to setup before remove
+    this.slideUp();
+
+    $.when( this.deferRemove.call( this ) )
+      .then( FormView.prototype.remove.bind(this) );
+  },
+
+  slideUp: function(){
+    return this.$el.slideUp( 250 );
   },
 
   calcChange: function(tendered){
@@ -124,6 +147,15 @@ module.exports = FormView.extend({
     this.model.collection.order.set({
       'payment_details.message': this.model.get('message')
     });
-  }
+  },
+
+  /**
+   * Allow third party gateways to setup, teardown and submit payment details
+   */
+  deferShow: function(){},
+  deferRemove: function(){}
 
 });
+
+module.exports = View;
+App.prototype.set('POSApp.Checkout.Views.Gateways.Drawer', View);

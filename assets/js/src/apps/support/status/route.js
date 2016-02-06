@@ -14,10 +14,7 @@ var StatusRoute = Route.extend({
   initialize: function(options){
     this.container = options.container;
     this.collection = options.collection;
-    this.setTabLabel({
-      tab   : 'right',
-      label : polyglot.t('titles.system-status')
-    });
+    this.setTabLabel( polyglot.t('titles.system-status') );
   },
 
   fetch: function(){

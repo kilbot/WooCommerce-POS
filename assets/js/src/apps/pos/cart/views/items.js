@@ -19,6 +19,9 @@ var View = CollectionView.extend({
   emptyView: Empty,
   fadeCart: function(){
     var fadeAll = this.children.map( function( child ){
+      if( child instanceof Empty ){
+        return;
+      }
       return child.fadeOut();
     } );
     return $.when.apply( $, fadeAll );

@@ -8,7 +8,8 @@ var Radio = require('backbone.radio');
 var globalChannel = Radio.channel('global');
 
 module.exports = app.prototype.Route = Mn.Object.extend({
-  constructor: function() {
+  constructor: function( options ) {
+    this.mergeOptions( options, ['column'] );
     this.initialize.apply(this, arguments);
   },
 
@@ -57,8 +58,16 @@ module.exports = app.prototype.Route = Mn.Object.extend({
   fetch  : function() {},
   render : function() {},
 
-  setTabLabel: function(options){
-    globalChannel.trigger('tab:label', options);
+  /**
+   * Helper function to set the columned layout tabs
+   */
+  setTabLabel: function(label){
+    if( this.column ){
+      globalChannel.trigger('tab:label', {
+        tab   : this.column,
+        label : label
+      });
+    }
   }
 
 });

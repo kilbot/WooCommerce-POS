@@ -18,10 +18,7 @@ var ReceiptRoute = Route.extend({
     this.container = options.container;
     this.collection = options.collection;
     this.autoPrint = options.autoPrint;
-    this.setTabLabel({
-      tab   : 'right',
-      label : polyglot.t('titles.receipt')
-    });
+    this.setTabLabel( polyglot.t('titles.receipt') );
     this.tax = Radio.request('entities', 'get', {
       type: 'option',
       name: 'tax'

@@ -69,73 +69,96 @@ describe('entities/orders/model.js', function () {
     //
     //});
 
-  it('should save on change to the cart', function(){
+  it('should save on change to the cart', function( done ){
 
     var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
     var model = new OrderModel( order, { parse: true }  );
 
-    model.sync = sinon.stub();
+
+    // Note: stubbing w/ my own function because sinon is weird with debounce
+    model.sync = function( method ){
+      expect( method ).equals( 'update' );
+      done();
+    };
 
     var cart_item = model.cart.at(0);
     cart_item.set({ quantity: 3 });
 
-    expect( model.sync ).to.have.been.calledWith( 'update' );
-
   });
 
-  it('should save on add item to cart', function(){
+  it('should save on add item to cart', function( done ){
 
     var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
     var model = new OrderModel( order, { parse: true }  );
 
-    model.sync = sinon.stub();
+    // Note: stubbing w/ my own function because sinon is weird with debounce
+    model.sync = function( method ){
+      expect( method ).equals( 'update' );
+      done();
+    };
 
     model.cart.add({ id: 123 });
 
-    expect( model.sync ).to.have.been.calledWith( 'update' );
+  });
+
+  it('should debounce save on add items to cart', function( done ){
+
+    // need to add editable order to attach gateways
+    var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
+    var model = new OrderModel( order, { parse: true }  );
+
+    var callCount = 0;
+
+    // Note: stubbing w/ my own function because sinon is weird with debounce
+    model.sync = function( method ){
+      callCount++;
+      expect( method ).equals( 'update' );
+    };
+
+    // trigger change
+    for( var i = 0; i < 10; i++ ){
+      model.cart.add({ id: i });
+    }
+
+    expect( callCount ).equals( 0 );
+
+    setTimeout(function() {
+      expect( callCount ).equals( 1 );
+      done();
+    }, 150);
 
   });
 
-  it('should save on remove item to cart', function(){
+  it('should save on remove item to cart', function( done ){
 
     var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
     var model = new OrderModel( order, { parse: true }  );
 
-    model.sync = sinon.stub();
+    // Note: stubbing w/ my own function because sinon is weird with debounce
+    model.sync = function( method ){
+      expect( method ).equals( 'update' );
+      done();
+    };
 
     var cart_item = model.cart.at(0);
     model.cart.remove(cart_item);
 
-    expect( model.sync ).to.have.been.calledWith( 'update' );
-
   });
 
-  it('should destroy order if cart is empty', function(){
+  it('should destroy order if cart is empty', function( done ){
 
     var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
     var model = new OrderModel( order, { parse: true }  );
 
-    model.sync = sinon.stub();
+    // Note: stubbing w/ my own function because sinon is weird with debounce
+    model.sync = function( method ){
+      expect( method ).equals( 'delete' );
+      done();
+    };
 
-    // http://stackoverflow.com/questions/10858935/cleanest-way-to-destroy-every-model-in-a-collection-in-backbone
-
-    //_.each( model.cart.toArray(), function(cart_item) {
-    //  if( model.cart.length > 1 ){
-    //    model.cart.remove(cart_item, { silent: true });
-    //  } else {
-    //    model.cart.remove(cart_item);
-    //  }
-    //});
-// OR
     while (cart_item = model.cart.first()) {
-      if( model.cart.length > 1 ){
-        model.cart.remove(cart_item, { silent: true });
-      } else {
-        model.cart.remove(cart_item);
-      }
+      model.cart.remove(cart_item);
     }
-
-    expect( model.sync ).to.have.been.calledWith( 'delete' );
 
   });
 
@@ -244,7 +267,7 @@ describe('entities/orders/model.js', function () {
 
   });
 
-  it('should be match the dummy order', function(){
+  it('should be match the dummy order', function( done ){
 
     var Model = OrderModel.extend({
       getSettings: function(name){
@@ -264,13 +287,22 @@ describe('entities/orders/model.js', function () {
             }
           };
         }
-      },
-      sync: stub()
+      }
     });
 
     var model = new Model(null, { parse: true });
 
     expect( model.cart ).to.be.instanceOf( Backbone.Collection );
+
+    // Note: stubbing w/ my own function because sinon is weird with debounce
+    model.sync = function(){
+      expect( Utils.round( model.get('total'), 2 ) ).equals( parseFloat( dummy_order.order.total ) );
+      // POS subtotal includes shipping and fees
+      var subtotal = parseFloat( dummy_order.order.subtotal ) + parseFloat( dummy_order.order.total_shipping );
+      expect( Utils.round( model.get('subtotal'), 2 ) ).equals( subtotal );
+      expect( Utils.round( model.get('total_tax'), 2 ) ).equals( parseFloat( dummy_order.order.total_tax ) );
+      done();
+    };
 
     // 2 x 546
     model.cart.add( {
@@ -313,14 +345,6 @@ describe('entities/orders/model.js', function () {
       method_id: 'flat_rate',
       method_title: 'Flat Rate'
     }, { parse: true, type: 'shipping' } );
-
-    expect( Utils.round( model.get('total'), 2 ) ).equals( parseFloat( dummy_order.order.total ) );
-
-    // POS subtotal includes shipping and fees
-    var subtotal = parseFloat( dummy_order.order.subtotal ) + parseFloat( dummy_order.order.total_shipping );
-    expect( Utils.round( model.get('subtotal'), 2 ) ).equals( subtotal );
-
-    expect( Utils.round( model.get('total_tax'), 2 ) ).equals( parseFloat( dummy_order.order.total_tax ) );
 
   });
 
@@ -368,6 +392,66 @@ describe('entities/orders/model.js', function () {
       total: 0,
       subtotal: 0
     }]);
+  });
+
+  it('should attach and init gateways (if Editable)', function(){
+
+    // need to add editable order to attach gateways
+    var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
+    var model = new OrderModel( order, { parse: true }  );
+
+    model.sync = sinon.stub();
+
+    expect( model.gateways ).to.be.instanceOf( Backbone.Collection );
+    // expect one gateway parsed from payment_details
+    expect( model.gateways.length ).equals(1);
+    expect( model.gateways.at( 0).id ).equals( dummy_order.order.payment_details.method_id );
+
+  });
+
+  it('should save on change to the gateways', function( done ){
+
+    // need to add editable order to attach gateways
+    var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
+    var model = new OrderModel( order, { parse: true }  );
+
+    // Note: stubbing w/ my own function because sinon is weird with debounce
+    model.sync = function( method ){
+      expect( method ).equals( 'update' );
+      done();
+    };
+
+    // trigger change
+    model.gateways.trigger('change');
+
+  });
+
+  it('should debounce save on changes to the gateways', function( done ){
+
+    // need to add editable order to attach gateways
+    var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
+    var model = new OrderModel( order, { parse: true }  );
+
+    var callCount = 0;
+
+    // Note: stubbing w/ my own function because sinon is weird with debounce
+    model.sync = function( method ){
+      callCount++;
+      expect( method ).equals( 'update' );
+    };
+
+    // trigger change
+    for( var i = 0; i < 10; i++ ){
+      model.gateways.trigger('change');
+    }
+
+    expect( callCount ).equals( 0 );
+
+    setTimeout(function() {
+      expect( callCount ).equals( 1 );
+      done();
+    }, 150);
+
   });
 
 });

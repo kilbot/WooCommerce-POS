@@ -20,7 +20,7 @@ module.exports = Model.extend({
     this.defaults = {
       type  : 'variation',
       title : options.title
-    }
+    };
 
     Model.apply( this, arguments );
   }

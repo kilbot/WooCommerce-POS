@@ -12,22 +12,27 @@ tabs {
      * @name Tabs Spec
      *
      * @markup
-     * <ul class="tabs">
-     *  <li>Item 1</li>
-     *  <li class="active">Item 2</li>
-     *  <li>Item 3</li>
-     *  <li><i class="icon-plus"></i></li>
-     * </ul>
+     * <div class="tabs">
+     *   <ul>
+     *     <li>Item 1</li>
+     *     <li class="active">Item 2</li>
+     *     <li>Item 3</li>
+     *     <li><i class="icon-plus"></i></li>
+     *   </ul>
+     * </div>
      */
 
     .#{current-module()} {
       background: $tabs-background;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      @include clearfix();
 
-      > li {
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        @include clearfix();
+      }
+
+      li {
         //display: inline-block;
         float: left;
         background: $tab-item-background;
@@ -37,17 +42,25 @@ tabs {
 
         &.active {
           background: $tab-active-background;
+          cursor: default;
+        }
+
+        // icons
+        i {
+          line-height: 1.5;
         }
 
         /**
          * @name Removable Tabs Spec
          *
          * @markup
-         * <ul class="tabs">
-         *  <li><a href="#777" class="tab-remove"><i class="icon-times-circle"></i></a> Item 1</li>
-         *  <li class="active"><a href="#777" class="tab-remove"><i class="icon-times-circle"></i></a> Item 2</li>
-         *  <li><a href="#777" class="tab-remove"><i class="icon-times-circle"></i></a> Item 3</li>
-         * </ul>
+         * <div class="tabs">
+         *  <ul>
+         *    <li><a href="#777" class="tab-remove"><i class="icon-times-circle"></i></a> Item 1</li>
+         *    <li class="active"><a href="#777" class="tab-remove"><i class="icon-times-circle"></i></a> Item 2</li>
+         *    <li><a href="#777" class="tab-remove"><i class="icon-times-circle"></i></a> Item 3</li>
+         *  </ul>
+         * </div>
          */
         > .tab-remove {
           color: $secondary-text-color;

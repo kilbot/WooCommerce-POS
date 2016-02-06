@@ -1,25 +1,29 @@
 var Collection = require('lib/config/collection');
 var Model = require('./model');
 var Radio = require('backbone.radio');
-var _ = require('lodash');
 
+/**
+ * @todo: abstract a tabbed collection
+ */
 module.exports = Collection.extend({
   model: Model,
 
-  constructor: function(models, options) {
-    models = Radio.request('entities', 'get', {
+  /**
+   * Construct with gateway settings, mix in saved attributes
+   */
+  constructor: function( models, options ) {
+    var settings = Radio.request('entities', 'get', {
       type: 'option',
       name: 'gateways'
     }) || [];
-    if( models.length > 0 && _(models).pluck('active').compact().isEmpty() ){
-      models[0].active = true;
-    }
-    return Collection.prototype.constructor.call(this, models, options);
-  },
 
-  initialize: function() {
-    this._isNew = false;
+    Collection.prototype.constructor.call(this, settings, options);
+
     this.on( 'change:active', this.onChangeActive );
+
+    if( models ){
+      this.set( models, { remove: false } );
+    }
   },
 
   onChangeActive: function(model, active) {
@@ -29,5 +33,14 @@ module.exports = Collection.extend({
         tab.set({ active: false });
       }
     });
+  },
+
+  getActiveGateway: function(){
+    return this.findWhere({ active: true });
+  },
+
+  getPaymentDetails: function(){
+    return this.getActiveGateway().toJSON();
   }
+
 });

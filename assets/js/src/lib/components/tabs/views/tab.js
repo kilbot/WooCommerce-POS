@@ -1,46 +1,49 @@
-var hbs = require('handlebars');
 var ItemView = require('lib/config/item-view');
 var Tmpl = require('./tab.hbs');
+var hbs = require('handlebars');
+var _ = require('lodash');
 
-var View = ItemView.extend({
+module.exports = ItemView.extend({
 
   tagName: 'li',
 
   template: hbs.compile(Tmpl),
 
-  activeClassName: 'active',
-
-  initialize: function( options ){
-    this.mergeOptions( options, ['activeClassName'] );
-
-    // add active className
-    if( this.model.get('active') ){
-      this.$el.addClass( this.activeClassName );
+  events: {
+    click: function(e){
+      e.preventDefault();
+      if( ! this.$el.hasClass(this.activeClassName) ){
+        this.trigger('click', this);
+      }
     }
   },
 
-  modelEvents: {
-    'change:active': 'toggleActive',
-    'change:label' : 'render' // why does this not auto render?!
+  label: {
+    observe: 'label'
   },
 
-  toggleActive: function(){
-    this.$el.toggleClass(this.activeClassName, this.model.get('active'));
+  initialize: function(options){
+    this.mergeOptions(options, ['label', 'activeClassName']);
+
+    // re-render on change to observed attribute
+    if( this.label.observe ){
+      this.listenTo( this.model, 'change:' + this.label.observe, this.render );
+    }
   },
 
-  triggers: {
-    'click': 'tab:clicked',
-    'click *[data-action="remove"]': 'remove:tab'
-  },
+  /**
+   * Poor man's stickit
+   */
+  templateHelpers: function(){
+    var label = this.model.get( this.label.observe );
 
-  onTabClicked: function () {
-    this.model.set({active: true});
-  },
+    if( this.label && this.label.onGet ){
+      label = this.label.onGet( label, this.model  );
+    }
 
-  onRemoveTab: function(){
-    this.model.collection.remove(this.model);
+    return {
+      label: label || _.result( this, 'label' )
+    };
   }
 
 });
-
-module.exports = View;

@@ -1,13 +1,16 @@
 var DualModel = require('lib/config/dual-model');
 var Cart = require('../cart/collection');
+var Gateways = require('../gateways/collection');
 var _ = require('lodash');
 var debug = require('debug')('order');
 var Radio = require('backbone.radio');
-var Utils = require('lib/utilities/utils');
 var App = require('lib/config/application');
 var Taxes = require('../tax/collection');
+var $ = require('jquery');
+var polyglot = require('lib/utilities/polyglot');
+var Utils = require('lib/utilities/utils');
 
-module.exports = DualModel.extend({
+var OrderModel = DualModel.extend({
   name: 'order',
 
   fields: [
@@ -16,19 +19,14 @@ module.exports = DualModel.extend({
     'customer.email'
   ],
 
-  defaults: {
-    note : ''
-  },
-
   /**
    * add tax settings early for use by cart
-   * - cart set up during parse, parse called by constructor on new Order
+   * - always be parsin'
    */
-  constructor: function(){
+  constructor: function( attributes, options ){
     // clone tax settings
     this.tax = _.clone( this.getSettings( 'tax' ) );
-
-    DualModel.apply( this, arguments );
+    DualModel.call( this, attributes, _.extend( { parse: true }, options ) );
   },
 
   /**
@@ -53,15 +51,51 @@ module.exports = DualModel.extend({
   /**
    *
    */
-  save: function(attributes, options){
-    if( this.cart && this.cart.length > 0 ){
+  save: _.debounce( function(){
+
+    // Safari doesn't like empty keyPath, perhaps an autoincrement problem?
+    // Set local_id as timestamp milliseconds
+    if( this.id === 'new' ){
+      //this.set({ local_id: Date.now() });
+      this.unset('local_id');
+    }
+
+    if( this.cart ){
       this.updateTotals();
     }
 
-    debug('save order', this);
+    var self = this;
 
-    return DualModel.prototype.save.call(this, attributes, options);
-  },
+    // if remote save, let gateway do it's thing
+
+    return $.when( this.deferSave.call(this) )
+      .then( function(){
+        debug('save order', self);
+        return DualModel.prototype.save.apply(self, arguments);
+      });
+
+  }, 10),
+
+  //save: function(){
+  //  if( this.cart && this.cart.length > 0 ){
+  //    this.updateTotals();
+  //  }
+  //
+  //  var self = this;
+  //  var args = arguments;
+  //
+  //  return $.when( this.deferSave.call(this) )
+  //    .then( function(){
+  //      debug('save order', self);
+  //      return DualModel.prototype.save.apply(self, args);
+  //    });
+  //
+  //},
+
+  /**
+   *  Allow third party plugins to defer the order save
+   */
+  deferSave: function(){},
 
   /**
    * Attach cart during parse
@@ -70,9 +104,10 @@ module.exports = DualModel.extend({
   parse: function(resp) {
     resp = DualModel.prototype.parse.call(this, resp);
 
-    if( resp && this.isEditable( resp.status ) && !this.cart ){
-      this.attachCart( resp );
+    if( resp && this.isEditable( resp.status ) ){
       resp.taxes = this.parseTaxRates( resp.taxes );
+      this.attachCart( resp );
+      this.attachGateways( resp );
     }
 
     return resp;
@@ -82,18 +117,22 @@ module.exports = DualModel.extend({
    * Attach cart during parse, allows updates from server
    */
   attachCart: function( attributes ){
+    if( this.cart ){
+      return;
+    }
+
     this.cart = new Cart( null, { order: this } );
 
     // add line_items, shipping_lines and fee_lines
-    this.cart.set( attributes.line_items, { parse: true, remove: false } );
+    this.cart.set( attributes.line_items,
+      { parse: true, remove: false }
+    );
     this.cart.set( attributes.shipping_lines,
       { parse: true, remove: false, type: 'shipping' }
     );
     this.cart.set( attributes.fee_lines,
       { parse: true, remove: false, type: 'fee' }
     );
-
-    //delete attributes.line_items; ?
 
     this.cart.on( 'change add remove', function(){
       if( this.cart && this.cart.length === 0 ){
@@ -105,12 +144,28 @@ module.exports = DualModel.extend({
   },
 
   /**
+   * Attach gateways
+   */
+  attachGateways: function( attributes ){
+    if( this.gateways ){
+      return;
+    }
+
+    this.gateways = new Gateways( attributes.payment_details, { order: this } );
+
+    this.gateways.on( 'change', function(){
+      this.save();
+    }, this );
+  },
+
+  /**
    *
    */
   /* jshint -W071 */
   toJSON: function(options) {
     var attrs = _.clone(this.attributes);
 
+    // process cart collection
     if( this.isEditable() && this.cart ){
       var taxes = [],
           shipping_taxes = [];
@@ -148,6 +203,11 @@ module.exports = DualModel.extend({
       attrs.shipping_tax = this.sumItemizedTaxes(
         this.mergeItemizedTaxes( shipping_taxes )
       );
+    }
+
+    // process gateways
+    if( this.isEditable() && this.gateways ){
+      attrs.payment_details = this.gateways.getPaymentDetails();
     }
 
     return attrs;
@@ -333,6 +393,18 @@ module.exports = DualModel.extend({
       var taxes = this.tax_rates[tax_class];
       return taxes.toJSON();
     }
+  },
+
+  /**
+   * Helper function to construct the tab label
+   * @todo: give users options on what to display, eg: customer name
+   */
+  getLabel: function(){
+    return polyglot.t('titles.cart') + ': ' +
+      Utils.formatMoney(this.get('total'));
   }
 
 });
+
+module.exports = OrderModel;
+App.prototype.set('Entities.Order.Model', OrderModel);

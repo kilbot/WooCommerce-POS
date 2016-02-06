@@ -73,6 +73,7 @@ module.exports = Service.extend({
     var afterOpen = options.afterOpen;
     options.afterOpen = function( $el, opts ){
       opts.el = $el;
+
       // @todo pass smaller options object to Layout
       opts.layout = new Layout( opts );
       if(afterOpen){

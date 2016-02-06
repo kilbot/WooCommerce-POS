@@ -3,9 +3,7 @@
     "require" : true,
     "module"  : true,
     "exports" : true,
-    "console" : true,
-    "global"  : true,
-    "__VERSION__": true
+    "global"  : true
   },
 
   "predef": ["-Promise"],

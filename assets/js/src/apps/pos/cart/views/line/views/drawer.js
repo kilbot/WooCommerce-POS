@@ -5,10 +5,15 @@ var Numpad = require('lib/components/numpad/behavior');
 var Radio = require('backbone.radio');
 var _ = require('lodash');
 var $ = require('jquery');
+var App = require('lib/config/application');
 
-module.exports = FormView.extend({
+var View = FormView.extend({
 
   template: 'pos.cart.item-drawer',
+
+  attributes: {
+    style: 'display:none' // start drawer closed
+  },
 
   templateHelpers: function(){
     return {
@@ -98,7 +103,7 @@ module.exports = FormView.extend({
   },
 
   onShow: function() {
-    this.$el.hide().slideDown(250);
+    this.$el.slideDown(250);
   },
 
   remove: function() {
@@ -131,3 +136,6 @@ module.exports = FormView.extend({
   }
 
 });
+
+module.exports = View;
+App.prototype.set('POSApp.Cart.Views.Line.Drawer', View);

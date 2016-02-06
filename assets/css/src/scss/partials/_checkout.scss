@@ -53,8 +53,9 @@ checkout {
         }
 
         .drawer {
-          > div {
+          > form {
             padding: $gateway-padding-y $gateway-padding-x;
+            margin: 0;
             fieldset {
               border: 0;
               padding: 0;
@@ -63,11 +64,12 @@ checkout {
             .form-row {
               @include clearfix();
               label {
-                float: left;
-                margin-right: $gateway-padding-x;
-                line-height: 2.4;
+                //float: left;
+                //margin-right: $gateway-padding-x;
+                //line-height: 2.4;
               }
-              input {
+              // special case for SV Braintree, uses div instead of input
+              input, .wc-braintree-hosted-field {
                 @extend .form-control
               }
             }

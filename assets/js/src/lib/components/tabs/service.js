@@ -1,6 +1,5 @@
 var Service = require('lib/config/service');
 var TabsView = require('./views/tabs');
-var TabsCollection = require('./entities/collection');
 var _ = require('lodash');
 
 module.exports = Service.extend({
@@ -17,7 +16,6 @@ module.exports = Service.extend({
    */
   tabsView: function(options){
     options = options || {};
-    _.defaults( options, { collection: new TabsCollection(options.tabs) } );
 
     if( options.adminTabs ){
       _.defaults( options, {

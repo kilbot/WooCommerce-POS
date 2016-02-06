@@ -3,9 +3,8 @@ var Model = require('lib/config/model');
 var TabModel = Model.extend({
   defaults: {
     id: '',
-    label: 'Tab',
-    active: false,
-    fixed: true
+    label: 'Tab', // space
+    active: false
   }
 });
 

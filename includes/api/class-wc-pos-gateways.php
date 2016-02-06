@@ -55,7 +55,8 @@ class WC_POS_API_Gateways extends WC_API_Resource {
         'method_title'    => esc_html( $gateway->get_title() ),
         'icon'            => $this->sanitize_icon( $gateway ),
         'active'          => $gateway->default,
-        'payment_fields'  => $this->sanitize_payment_fields( $gateway )
+        'payment_fields'  => $this->sanitize_payment_fields( $gateway ),
+        'params'          => apply_filters('woocommerce_pos_gateway_' . strtolower( $gateway->id ) . '_params', array(), $gateway, $this )
       );
     endforeach; endif;
 
@@ -117,14 +118,17 @@ class WC_POS_API_Gateways extends WC_API_Resource {
 
     $dom = new DOMDocument();
 
+    // suppress warnings for malformed HTML
+    libxml_use_internal_errors(true);
+
     // Libxml constants not available on all servers (Libxml < 2.7.8)
     // $html->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
     $dom->loadHtml( '<?xml encoding="UTF-8">' . '<div class="form-group">' . $html . '</div>' );
-    # remove <!DOCTYPE
+    // remove <!DOCTYPE
     $dom->removeChild( $dom->doctype );
-    # remove <?xml encoding="UTF-8">
+    // remove <?xml encoding="UTF-8">
     $dom->removeChild( $dom->firstChild );
-    # <html><body></body></html>
+    // <html><body></body></html>
     $dom->replaceChild( $dom->firstChild->firstChild->firstChild, $dom->firstChild );
 
     // remove the required node

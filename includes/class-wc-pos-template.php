@@ -171,7 +171,7 @@ class WC_POS_Template {
     $build = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'build' : 'min';
 
     $js = self::get_external_js_libraries();
-    $js[ 'scrollIntoView' ] = WC_POS_PLUGIN_URL . 'assets/js/vendor/jquery.scrollIntoView.min.js?ver=' . WC_POS_VERSION;
+    $js[ 'scrollIntoView' ] = WC_POS_PLUGIN_URL . 'assets/js/vendor/jquery.scrollIntoView.' . $build . '.js?ver=' . WC_POS_VERSION;
     $js[ 'app' ] = WC_POS_PLUGIN_URL . 'assets/js/app.' . $build . '.js?ver=' . WC_POS_VERSION;
     $scripts = apply_filters( 'woocommerce_pos_enqueue_footer_js', $js );
 

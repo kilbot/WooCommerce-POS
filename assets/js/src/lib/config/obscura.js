@@ -7,6 +7,7 @@ var PaginatedCollection = require('./obscura/paginated');
 var proxyCollection = require('backbone-collection-proxy');
 var proxyEvents = require('./obscura/proxy-events');
 var query = require('./obscura/query');
+var app = require('./application');
 
 // extend FilteredCollection with query methods
 _.extend(FilteredCollection.prototype, query);
@@ -134,7 +135,7 @@ _.each(unsupportedMethods, function (method) {
   methods[method] = function () {
     throw new Error(
       'Backbone.Obscura: Unsupported method: ' +
-      method + 'called on read-only proxy'
+      method + ' called on read-only proxy'
     );
   };
 });
@@ -144,5 +145,5 @@ Obscura = Backbone.Collection.extend(Obscura.prototype);
 Obscura.FilteredCollection = FilteredCollection;
 Obscura.SortedCollection = SortedCollection;
 Obscura.PaginatedCollection = PaginatedCollection;
-module.exports = Obscura;
+module.exports = app.prototype.Obscura = Obscura;
 /* jshint +W071, +W003, +W021 */

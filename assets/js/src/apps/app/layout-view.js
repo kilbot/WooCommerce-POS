@@ -1,5 +1,4 @@
 var LayoutView = require('lib/config/layout-view');
-var $ = require('jquery');
 var _ = require('lodash');
 var Radio = require('backbone.radio');
 var globalChannel = Radio.channel('global');
@@ -13,7 +12,7 @@ module.exports = LayoutView.extend({
     return '' +
       '<header id="header"></header>' +
       '<div id="menu"></div>' +
-      '<div id="tabs" class="tabs"></div>' +
+      '<div id="tabs"></div>' +
       '<main id="main"></main>';
   },
 
@@ -34,7 +33,7 @@ module.exports = LayoutView.extend({
   },
 
   onMainShow: function(layout){
-    if(layout.columns && layout.columns === 2){
+    if(layout.columns && layout.columns.length === 2){
       this.$el.addClass('two-column');
       this.showTabs();
     } else {
@@ -62,23 +61,30 @@ module.exports = LayoutView.extend({
   },
 
   showTabs: function(){
-    var tabs = this.getRegion('main').tabs = Radio.request('tabs', 'view', {
-      tabs: [
-        {id: 'left'},
-        {id: 'right'}
-      ]
+    var tabs = Radio.request('tabs', 'view', {
+      collection : [
+        { id: 'left', active: true },
+        { id: 'right' }
+      ],
+      activeId: 'left'
     });
-    this.listenTo(tabs.collection, 'active:tab', this.toggleLayout);
+
+    this.listenTo( tabs, 'childview:click', function(tab){
+      this.toggleLayout( tab.model.id );
+    });
+
+    this.getRegion('main').tabs = tabs;
     this.getRegion('tabs').show(tabs);
   },
 
-  toggleLayout: function(model){
-    $('#main').removeClass('left-active right-active');
-    $('#main').addClass(model.id + '-active');
+  toggleLayout: function(id){
+    this.getRegion('main').currentView.$el
+      .removeClass('left-active right-active')
+      .addClass(id + '-active');
   },
 
   updateTabLabel: function(options){
-    this.getRegion('main').tabs.setLabel(options);
+    this.getRegion('tabs').currentView.setLabel(options);
   },
 
   showHelpModal: function() {

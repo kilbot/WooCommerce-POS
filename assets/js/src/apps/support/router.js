@@ -1,5 +1,4 @@
 var Router = require('lib/config/router');
-var LayoutView = require('./layout');
 var FormRoute = require('./form/route');
 var StatusRoute = require('./status/route');
 var Radio = require('backbone.radio');
@@ -7,6 +6,8 @@ var Collection = require('lib/config/collection');
 var $ = require('jquery');
 
 module.exports = Router.extend({
+
+  columns: ['left', 'right'],
 
   routes: {
     'support' : 'showStatus'
@@ -18,7 +19,6 @@ module.exports = Router.extend({
   },
 
   onBeforeEnter: function() {
-    this.layout = new LayoutView();
     this.container.show(this.layout);
     this.updateTitle();
     this.showForm();
@@ -32,7 +32,8 @@ module.exports = Router.extend({
 
   showForm: function(){
     var route = new FormRoute({
-      container  : this.layout.getRegion('left')
+      container : this.layout.getRegion('left'),
+      column    : this.columns[0]
     });
     route.enter();
   },
@@ -40,7 +41,8 @@ module.exports = Router.extend({
   showStatus: function(){
     return new StatusRoute({
       container  : this.layout.getRegion('right'),
-      collection : this.collection
+      collection : this.collection,
+      column     : this.columns[1]
     });
   }
 

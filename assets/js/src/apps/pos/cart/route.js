@@ -6,9 +6,7 @@ var NotesView = require('./views/notes');
 var CustomerView = require('./views/customer');
 var Buttons = require('lib/components/buttons/view');
 //var debug = require('debug')('cart');
-var _ = require('lodash');
 var App = require('lib/config/application');
-var Utils = require('lib/utilities/utils');
 var polyglot = require('lib/utilities/polyglot');
 
 var CartRoute = Route.extend({
@@ -16,77 +14,103 @@ var CartRoute = Route.extend({
   initialize: function( options ) {
     options = options || {};
     this.container  = options.container;
-    this.collection = options.collection;
-    this.setTabLabel({
-      tab   : 'right',
-      label : polyglot.t('titles.cart')
+    this.filtered = options.filtered;
+    this.collection = options.filtered.superset();
+    this.setTabLabel( polyglot.t('titles.cart') );
+
+    this.listenTo( this.filtered, {
+      destroy: function(){
+        this.render();
+      }
     });
-  },
-
-  fetch: function() {
-    if (this.collection.isNew()) {
-      return this.collection.fetch({ silent: true });
-    }
-  },
-
-  onFetch: function(id){
-    this.order = this.collection.setActiveOrder(id);
-
-    if(this.order){
-      this.setTabLabel({
-        tab   : 'right',
-        label : this.tabLabel(this.order)
-      });
-
-      this.listenTo( this.order, 'change:total', function(model){
-        this.setTabLabel({
-          tab   : 'right',
-          label : this.tabLabel(model)
-        });
-      });
-    }
-  },
-
-  render: function() {
-    this.layout = new LayoutView({
-      order: this.order
-    });
-
-    this.listenTo( this.layout, 'show', this.onShow );
-
-    this.container.show( this.layout );
-  },
-
-  onRender: function(){
-    if( this.order && !this.order.isEditable() ){
-      this.navigate('receipt/' + this.order.id, { trigger: true });
-    }
-  },
-
-  onShow: function(){
-    if(!this.order){
-      return this.noActiveOrder();
-    }
-
-    this.showCart();
-    this.showTotals();
-    this.showCustomer();
-    this.showActions();
-    this.showNotes();
   },
 
   /**
-   * Empty Cart
+   *
    */
-  noActiveOrder: function(){
-    var view = new ItemsView();
-    this.layout.getRegion('list').show(view);
-    _.invoke([
-      this.layout.getRegion('totals'),
-      this.layout.getRegion('customer'),
-      this.layout.getRegion('actions'),
-      this.layout.getRegion('note')
-    ], 'empty');
+  addToCart: function( products ){
+    if( this.activeOrder ){
+
+      // if new, wait for save to complete, then render
+      if( this.activeOrder.id === 'new' ) {
+        this.listenToOnce(this.activeOrder, {
+          'sync': function ( model ) {
+            this.render( model.id );
+          }
+        });
+      }
+
+      this.activeOrder.cart.add( products );
+    }
+  },
+
+  /**
+   * Fetch orders from idb if new
+   */
+  fetch: function() {
+    if (this.collection.isNew()) {
+      return this.collection.fetch();
+    }
+  },
+
+  /**
+   *
+   */
+  render: function(id) {
+    this.setActiveOrder( id );
+    this.updateTabLabel();
+    this.layout = new LayoutView();
+    this.listenTo( this.layout, 'show', this.onShow );
+    this.container.show( this.layout );
+  },
+
+  /**
+   *
+   */
+  setActiveOrder: function(id){
+    if( ! this.collection.get('new') ){
+      this.collection.add({ local_id: 'new' });
+    }
+
+    this.activeOrder = this.collection.get(id);
+
+    if( ! this.activeOrder ){
+      this.activeOrder = this.filtered.first();
+    }
+
+    if( ! this.activeOrder.isEditable() ){
+      this.navigate('receipt/' + this.activeOrder.id, { trigger: true });
+    }
+  },
+
+  /**
+   *
+   */
+  updateTabLabel: function(){
+    this.setTabLabel( this.activeOrder.getLabel() );
+    this.listenTo( this.activeOrder, 'change:total', function(model){
+      this.setTabLabel( model.getLabel() );
+    });
+  },
+
+  /**
+   *
+   */
+  onShow: function(){
+    this.showCart();
+    this._showCart();
+  },
+
+  /**
+   *
+   */
+  _showCart: function(){
+    if( this.activeOrder.cart.length > 0 ){
+      this.showTotals();
+      this.showCustomer();
+      this.showActions();
+      this.showNotes();
+    }
   },
 
   /**
@@ -94,7 +118,7 @@ var CartRoute = Route.extend({
    */
   showCart: function() {
     var view = new ItemsView({
-      collection: this.order.cart
+      collection: this.activeOrder.cart
     });
     this.layout.getRegion('list').show(view);
   },
@@ -104,15 +128,17 @@ var CartRoute = Route.extend({
    */
   showTotals: function() {
     var view = new TotalsView({
-      model: this.order
+      model: this.activeOrder
     });
-    this.on('discount:clicked', view.showDiscountRow);
     this.layout.getRegion('totals').show(view);
   },
 
+  /**
+   *
+   */
   showCustomer: function(){
     var view = new CustomerView({
-      model: this.order
+      model: this.activeOrder
     });
     this.layout.getRegion('customer').show( view );
   },
@@ -135,7 +161,7 @@ var CartRoute = Route.extend({
 
     this.listenTo(view, {
       'action:void': function(){
-        var order = this.order;
+        var order = this.activeOrder;
         view.triggerMethod('disableButtons');
         this.layout.getRegion('list').currentView.fadeCart().done(function(){
           order.destroy();
@@ -154,7 +180,7 @@ var CartRoute = Route.extend({
         this.order.cart.add( {}, { type: 'shipping' });
       },
       'action:checkout': function(){
-        this.navigate('checkout/' + this.order.id, { trigger: true });
+        this.navigate('checkout/' + this.activeOrder.id, { trigger: true });
       }
     });
 
@@ -166,18 +192,10 @@ var CartRoute = Route.extend({
    */
   showNotes: function() {
     var view = new NotesView({
-      model: this.order
+      model: this.activeOrder
     });
     this.on( 'note:clicked', view.showNoteField );
     this.layout.getRegion('note').show( view );
-  },
-
-  tabLabel: function(order){
-    var prefix = polyglot.t('titles.cart'),
-      total = order.get('total'),
-      formatTotal = Utils.formatMoney(total);
-
-    return prefix + ': ' + formatTotal;
   }
 
 });

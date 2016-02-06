@@ -94,11 +94,9 @@ module.exports = bb.Collection.extend({
       }
       models = this.add(models, {
         at: ( model.collection.indexOf( model ) + 1 ),
-        split: true,
-        silent: true
+        split: true
       });
       model.set({ quantity: qty - duplicate });
-      model.collection.trigger('reset'); // re-render the cart
       this.pulseModels(models);
     }
 

@@ -37,14 +37,7 @@ module.exports = FormView.extend({
 
   events: {
     'click @ui.title'   : 'focusTitle',
-    'click @ui.split'   : function(e){
-      if(e) { e.preventDefault(); }
-      this.model.trigger( 'split', this.model );
-    },
-    'click @ui.combine' : function(e){
-      if(e) { e.preventDefault(); }
-      this.model.trigger( 'combine', this.model );
-    }
+    'click @ui.split'   : 'split'
   },
 
   triggers: {
@@ -120,6 +113,11 @@ module.exports = FormView.extend({
 
   focusTitle: function(){
     this.ui.title.find('strong').focus();
+  },
+
+  split: function(e){
+    if(e) { e.preventDefault(); }
+    this.model.trigger( 'split', this.model );
   }
 
 });

@@ -18,7 +18,7 @@ var Item = ItemView.extend({
   },
 
   events: {
-    'click @ui.add' : 'addToCart',
+    'click @ui.add'      : 'addToCart',
     'click @ui.vpopover' : 'variationsPopover',
     'click @ui.vdrawer'  : 'variationsDrawer'
   },

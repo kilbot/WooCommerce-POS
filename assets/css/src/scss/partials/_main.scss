@@ -58,12 +58,12 @@ main {
       .two-column & {
         top: 68px;
 
-        &.left-active {
+        .left-active {
           #right {
             display: none;
           }
         }
-        &.right-active {
+        .right-active {
           #left {
             display: none;
           }
@@ -76,8 +76,8 @@ main {
         .two-column & {
           top: 38px;
 
-          &.left-active #right,
-          &.right-active #left {
+          .left-active #right,
+          .right-active #left {
             @include display-flex;
           }
 

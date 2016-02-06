@@ -13,10 +13,7 @@ var CheckoutRoute = Route.extend({
     options = options || {};
     this.container = options.container;
     this.collection = options.collection;
-    this.setTabLabel({
-      tab   : 'right',
-      label : polyglot.t('titles.checkout')
-    });
+    this.setTabLabel( polyglot.t('titles.checkout') );
   },
 
   fetch: function(){
@@ -88,7 +85,14 @@ var CheckoutRoute = Route.extend({
       },
       'action:process-payment': function(btn){
         btn.trigger('state', 'loading');
-        this.order.process()
+
+        // alert third party plugins that gateway has init
+        if( this.order.gateways ){
+          var gateway = this.order.gateways.getActiveGateway();
+          Radio.trigger('checkout', 'order:payment:' + gateway.id, this.order);
+        }
+
+        this.order.save({}, { remote: true })
           .always(function(){
             btn.trigger('state', 'reset');
           });

@@ -32,6 +32,9 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
     );
   }
 
+  /**
+   * @return mixed|void
+   */
   public function load_gateways() {
     $gateways = WC_Payment_Gateways::instance()->payment_gateways;
     $order = $this->get('gateway_order');
@@ -53,31 +56,37 @@ class WC_POS_Admin_Settings_Checkout extends WC_POS_Admin_Settings_Abstract {
       }
       $settings = new WC_POS_Admin_Settings_Gateways($gateway->id);
       $settings->merge_settings($gateway); // @todo remove this, use get_title() etc
-      apply_filters( 'woocommerce_pos_load_gateway', $gateway );
     }
 
     ksort( $ordered_gateways, SORT_NUMERIC );
-    return $ordered_gateways;
+    return apply_filters( 'woocommerce_pos_load_gateways', $ordered_gateways );
   }
 
-  public function load_enabled_gateways(){
+  /**
+   * @return mixed|void
+   */
+  public function load_enabled_gateways() {
     $gateways = $this->load_gateways();
     $enabled = $this->get_enabled_gateway_ids();
-    $default = $this->get('default_gateway');
-    $_gateways = array();
+    $default = $this->get( 'default_gateway' );
+    $enabled_gateways = array();
 
-    if($gateways): foreach($gateways as $gateway):
+    if ( $gateways ): foreach ( $gateways as $gateway ):
       $id = $gateway->id;
-      if(in_array($id, $enabled) && isset($gateway->pos) && $gateway->pos){
+      if ( in_array( $id, $enabled ) && isset( $gateway->pos ) && $gateway->pos ) {
         $gateway->default = $id == $default;
-//        $gateway->enabled = 'yes'; // gets stomped later by init_settings()
-        $_gateways[$id] = $gateway;
+        // $gateway->enabled = 'yes'; // gets stomped later by init_settings()
+        $enabled_gateways[ $id ] = $gateway;
       }
     endforeach; endif;
 
-    return $_gateways;
+    return apply_filters( 'woocommerce_pos_load_enabled_gateways', $enabled_gateways );
   }
 
+  /**
+   * Convenience function, returns POS enabled gateway ids
+   * @return array
+   */
   public function get_enabled_gateway_ids(){
     return array_keys( (array) $this->get('enabled'), true);
   }

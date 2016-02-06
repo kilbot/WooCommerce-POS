@@ -16,10 +16,7 @@ module.exports = Route.extend({
       name    : 'products',
       perPage : 10
     });
-    this.setTabLabel({
-      tab   : 'left',
-      label : polyglot.t('titles.products')
-    });
+    this.setTabLabel( polyglot.t('titles.products') );
   },
 
   fetch: function() {
@@ -59,17 +56,22 @@ module.exports = Route.extend({
   },
 
   showTabs: function() {
+    var tabSettings = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'tabs'
+    });
+
     var view = Radio.request('tabs', 'view', {
-      tabs: this.tabsArray()
+      collection: _.map( tabSettings, function( obj ){
+        return obj;
+      })
     });
 
-    this.listenTo(view.collection, 'active:tab', function(model) {
-      this.filtered.query('tab', model.id);
+    this.listenTo(view, 'childview:click', function(tab) {
+      this.filtered.query('tab', tab.model.id);
     });
 
-    // show tabs component
     this.layout.getRegion('tabs').show(view);
-    this.tabs = view;
   },
 
   showProducts: function() {
@@ -77,14 +79,6 @@ module.exports = Route.extend({
       collection: this.filtered
     });
     this.layout.getRegion('list').show(view);
-  },
-
-  tabsArray: function(){
-    var tabs = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'tabs'
-    });
-    return _.map(tabs);
   },
 
   showPagination: function(){

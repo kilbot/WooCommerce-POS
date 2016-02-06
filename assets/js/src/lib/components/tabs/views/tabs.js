@@ -1,32 +1,89 @@
-var CollectionView = require('lib/config/collection-view');
+var CompositeView = require('lib/config/composite-view');
+var hbs = require('handlebars');
+var Tmpl = require('./tabs.hbs');
 var Tab = require('./tab');
+var App = require('lib/config/application');
+var bb = require('backbone');
+var TabsCollection = require('../entities/collection');
 
-var View = CollectionView.extend({
+var Tabs = CompositeView.extend({
 
-  tagName: 'ul',
+  template: hbs.compile(Tmpl),
+
+  childViewContainer: '[role="tablist"]',
 
   childView: Tab,
 
   attributes: {
-    'class' : 'tabs',
-    'role'  : 'tablist'
+    'class' : 'tabs'
   },
 
-  setActive: function(id){
-    var model = this.collection.get(id);
-    model.set({active: true});
+  activeClassName: 'active',
+
+  initialize: function(options){
+    options = options || {};
+
+    // store options
+    this.mergeOptions(options, [
+      'activeId',        // current active model id
+      'activeClassName', // className for active tab
+      'label'            // label string or function
+    ]);
+
+    //
+    if( options.collection instanceof bb.Collection ){
+      return;
+    }
+
+    this.collection = new TabsCollection( options.collection );
   },
 
+  /**
+   * Pick options to pass to childview
+   */
+  childViewOptions: function( model ){
+    // pass default options
+    var options = {
+      activeClassName : 'active'
+    };
+
+    // pass label options
+    if( this.label ){
+      options.label = this.label;
+    }
+
+    // init with active class
+    if( this.activeId === model.id ){
+      options.className = this.activeClassName;
+    }
+
+    return options;
+  },
+
+  /**
+   * On child click, toggle active class
+   */
+  childEvents: {
+    click: function( activeView ){
+      this.children.each(function( childView ){
+        if( childView === activeView ){
+          return childView.$el.addClass( this.activeClassName );
+        }
+        childView.$el.removeClass( this.activeClassName );
+      }, this);
+    }
+  },
+
+  /**
+   * Helper function to set label
+   */
   setLabel: function(options){
     options = options || {};
-    var model = this.collection.get(options.tab);
-    model.set({label: options.label});
-  },
-
-  onShow: function(){
-    // last call for active tabs
-    this.collection.ensureActiveTab();
+    var model = this.collection.get( options.tab );
+    model.set({ label: options.label });
   }
+
 });
 
-module.exports = View;
+module.exports = Tabs;
+App.prototype.set('Components.Tabs.View', Tabs);

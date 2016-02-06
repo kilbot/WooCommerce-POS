@@ -159,6 +159,7 @@ hbs.registerHelper('formatDay', function(day, options){
   return moment().isoWeekday(idx).format(f);
 });
 
+/* jshint -W117 */
 hbs.registerHelper('debug', function(optionalValue) {
   console.log('Current Context');
   console.log('====================');
@@ -170,6 +171,7 @@ hbs.registerHelper('debug', function(optionalValue) {
     console.log(optionalValue);
   }
 });
+/* jshint +W117 */
 
 hbs.registerHelper('formatCustomerName', function(customer) {
   var name = _(customer).pick(['first_name','last_name'])

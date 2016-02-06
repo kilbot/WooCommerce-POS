@@ -13,7 +13,7 @@ before(function() {
 beforeEach(function() {
   this.sinon = sinon.sandbox.create();
   //this.server = sinon.fakeServer.create();
-  //this.clock = this.sandbox.useFakeTimers();
+  //this.clock = sinon.useFakeTimers();
   global.stub = this.sinon.stub.bind(this.sinon);
   global.spy  = this.sinon.spy.bind(this.sinon);
 });
@@ -21,4 +21,5 @@ beforeEach(function() {
 afterEach(function() {
   this.sinon.restore();
   //this.server.restore();
+  //this.clock.restore();
 });

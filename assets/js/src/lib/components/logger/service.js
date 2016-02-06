@@ -21,8 +21,10 @@ module.exports = Service.extend({
   /**
    * eg: jqXHR.fail
    */
+  /* jshint -W117 */
   error: function(options){
     console.log(options);
   }
+  /* jshint +W117 */
 
 });

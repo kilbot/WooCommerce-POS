@@ -18,7 +18,7 @@ class WC_POS_Gateways {
    */
   public function __construct() {
     add_action( 'woocommerce_payment_gateways', array( $this, 'payment_gateways' ) );
-    add_action( 'woocommerce_pos_load_gateway', array( $this, 'load_gateway' ) );
+    add_action( 'woocommerce_pos_load_gateways', array( $this, 'load_gateways' ) );
 
     static::$instance = $this;
   }
@@ -56,12 +56,14 @@ class WC_POS_Gateways {
 
   /**
    * Enable POS gateways
-   * @param $gateway
+   * @param $gateways
    * @return bool
    */
-  public function load_gateway( WC_Payment_Gateway $gateway ) {
-    $gateway->pos = in_array( $gateway->id, array( 'pos_cash', 'pos_card', 'paypal' ) );
-    return $gateway;
+  public function load_gateways( $gateways ) {
+    foreach( $gateways as $gateway ){
+      $gateway->pos = in_array( $gateway->id, array( 'pos_cash', 'pos_card', 'paypal' ) );
+    }
+    return $gateways;
   }
 
 }
