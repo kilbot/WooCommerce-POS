@@ -11,10 +11,10 @@ module.exports = function(method, entity, options) {
 
   // wrap sync errors, kick to error modal
   var onError = options.error;
-  options.error = function( xhr, textStatus, errorThrown ){
-    App.prototype._onError(  xhr, textStatus, errorThrown  );
+  options.error = function(){
+    App.prototype._onError.apply(this, arguments);
     if(onError) {
-      onError.call(options.context, xhr, textStatus, errorThrown);
+      onError.apply(options.context, arguments);
     }
   };
 

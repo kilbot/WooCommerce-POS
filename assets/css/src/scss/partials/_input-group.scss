@@ -123,7 +123,7 @@ input-group {
 
       // give icons the same line-height at the input
       i {
-        line-height: 1.5;
+        line-height: inherit;
       }
 
       // Negative margin for spacing, position for bringing hovered/focused/actived

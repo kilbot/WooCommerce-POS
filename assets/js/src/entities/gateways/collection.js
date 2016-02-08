@@ -40,7 +40,10 @@ module.exports = Collection.extend({
   },
 
   getPaymentDetails: function(){
-    return this.getActiveGateway().toJSON();
+    var activeGateway = this.getActiveGateway();
+    if( activeGateway ){
+      return activeGateway.toJSON();
+    }
   }
 
 });

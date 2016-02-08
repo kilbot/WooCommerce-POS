@@ -91,6 +91,8 @@ class WC_POS_API_i18n extends WC_API_Resource {
   private function common_titles(){
     return array(
       'more-info' => __( 'More info', 'woocommerce-pos' ),
+      /* translators: woocommerce */
+      'error'     => __( 'Error', 'woocommerce' ),
     );
   }
 

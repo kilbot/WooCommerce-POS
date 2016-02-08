@@ -14,12 +14,9 @@ var setHeaders = function(xhr){
   }
 };
 
-var onError = function(xhr, statusText, thrownError){
-  Radio.request('modal', 'error', {
-    xhr: xhr,
-    statusText: statusText,
-    thrownError: thrownError
-  });
+var onError = function(){
+  var args = Array.prototype.slice.call(arguments);
+  Radio.trigger('global', 'error', args);
 };
 
 // remove comments, eg: WP Super Cache

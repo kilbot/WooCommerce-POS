@@ -1,21 +1,23 @@
 var ItemView = require('lib/config/item-view');
 var hbs = require('handlebars');
 var Tmpl = require('./header.hbs');
-var _ = require('lodash');
 var polyglot = require('lib/utilities/polyglot');
 
 module.exports = ItemView.extend({
+
+  title: polyglot.t('messages.loading', { _ : 'Loading' }),
+  close: polyglot.t('buttons.close', { _ : 'Close' }),
   template: hbs.compile(Tmpl),
 
   initialize: function(options){
-    _.defaults(options, {
-      title: polyglot.t('messages.loading', { _ : 'Loading' }),
-      close: polyglot.t('buttons.close', { _ : 'Close' })
-    });
+    this.mergeOptions( options, ['title', 'close'] );
   },
 
   templateHelpers: function(){
-    return this.options;
+    return {
+      title: this.title,
+      close: this.close
+    };
   },
 
   ui: {

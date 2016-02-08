@@ -31,10 +31,13 @@ var CartRoute = Route.extend({
   addToCart: function( products ){
     if( this.activeOrder ){
 
-      // if new, wait for save to complete, then render
+      // if new, wait for save to complete, then:
+      // - update the url
+      // - re-render
       if( this.activeOrder.id === 'new' ) {
         this.listenToOnce(this.activeOrder, {
           'sync': function ( model ) {
+            this.navigate( 'cart/' + model.id );
             this.render( model.id );
           }
         });
@@ -174,10 +177,10 @@ var CartRoute = Route.extend({
       //  this.layout.getRegion('totals').currentView.showDiscountRow();
       //},
       'action:fee': function(){
-        this.order.cart.add( {}, { type: 'fee' } );
+        this.activeOrder.cart.add( {}, { type: 'fee' } );
       },
       'action:shipping': function(){
-        this.order.cart.add( {}, { type: 'shipping' });
+        this.activeOrder.cart.add( {}, { type: 'shipping' });
       },
       'action:checkout': function(){
         this.navigate('checkout/' + this.activeOrder.id, { trigger: true });

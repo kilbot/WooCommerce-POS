@@ -49,9 +49,9 @@ var OrderModel = DualModel.extend({
   },
 
   /**
-   *
+   * Order saves on any change to cart, debounce total calcs and db saves
    */
-  save: _.debounce( function(){
+  save: _.debounce( function( attributes, options ){
 
     // Safari doesn't like empty keyPath, perhaps an autoincrement problem?
     // Set local_id as timestamp milliseconds
@@ -71,26 +71,10 @@ var OrderModel = DualModel.extend({
     return $.when( this.deferSave.call(this) )
       .then( function(){
         debug('save order', self);
-        return DualModel.prototype.save.apply(self, arguments);
+        return DualModel.prototype.save.call(self, attributes, options);
       });
 
-  }, 10),
-
-  //save: function(){
-  //  if( this.cart && this.cart.length > 0 ){
-  //    this.updateTotals();
-  //  }
-  //
-  //  var self = this;
-  //  var args = arguments;
-  //
-  //  return $.when( this.deferSave.call(this) )
-  //    .then( function(){
-  //      debug('save order', self);
-  //      return DualModel.prototype.save.apply(self, args);
-  //    });
-  //
-  //},
+  }, 20),
 
   /**
    *  Allow third party plugins to defer the order save
@@ -400,8 +384,11 @@ var OrderModel = DualModel.extend({
    * @todo: give users options on what to display, eg: customer name
    */
   getLabel: function(){
-    return polyglot.t('titles.cart') + ': ' +
-      Utils.formatMoney(this.get('total'));
+    var title = polyglot.t('titles.cart');
+    if( this.id !== 'new' ){
+      title += ' ' + Utils.formatMoney( this.get('total') );
+    }
+    return title;
   }
 
 });

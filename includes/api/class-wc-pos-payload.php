@@ -27,7 +27,7 @@ class WC_POS_API_Payload extends WC_API_Resource {
    */
   public function register_routes( array $routes ) {
 
-    # GET /pos/params
+    # GET /pos
     $routes[ $this->base ] = array(
       array( array( $this, 'get_payload' ), WC_API_Server::READABLE )
     );

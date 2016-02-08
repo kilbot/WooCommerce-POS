@@ -1,16 +1,17 @@
 var LayoutView = require('lib/config/layout-view');
 var Radio = require('backbone.radio');
+var Header = require('./header/view');
+var Dialog = require('./dialog/view');
+var $ = require('jquery');
 var _ = require('lodash');
-var Header = require('./header');
-var Body = require('./body');
-var Tmpl = require('./modal.hbs');
-var hbs = require('handlebars');
+var bb = require('backbone');
 
-var defaultModal = {
-  header: {
-    title: ''
-  },
-  tabs: false,
+module.exports = LayoutView.extend({
+
+  // default header options (not false)
+  header: {},
+
+  // default footer options (save button)
   footer: {
     buttons: [
       {
@@ -21,92 +22,93 @@ var defaultModal = {
         className: 'btn-primary'
       }
     ]
-  }
-};
+  },
 
-module.exports = LayoutView.extend({
-
-  template: hbs.compile(Tmpl),
+  // template with regions is created during render
+  template: false,
 
   initialize: function( options ){
-    // this.$el.data() = this.options
-    options = _.defaults( options, {
-      header: _.get(options, ['view', 'modal', 'header'], defaultModal.header),
-      tabs  : _.get(options, ['view', 'modal', 'tabs'], defaultModal.tabs),
-      footer: _.get(options, ['view', 'modal', 'footer'], defaultModal.footer)
-    });
-    this.mergeOptions( options, ['header', 'tabs', 'footer', 'view', 'id'] );
-    this.render();
+    this.mergeOptions( options, ['view', 'prefix'] );
+    this.header = _.get(this, ['view', 'modal', 'header'], this.header);
+    this.footer = _.get(this, ['view', 'modal', 'footer'], this.footer);
   },
 
   childEvents: {
     'action:close' : function(){
-      //Radio.request( 'modal', 'close', this.$el.data().vex.id );
-      Radio.request( 'modal', 'close', this.id );
+      Radio.request( 'modal', 'close', this.$el.data().vex.id );
     }
-  },
-
-  templateHelpers: function(){
-    return {
-      header: !!this.header,
-      tabs  : !!this.tabs,
-      footer: !!this.footer
-    };
   },
 
   onRender: function(){
-    if( this.header ){ this.showHeader( this.header ); }
-    if( this.tabs ){ this.showTabs( this.tabs ); }
+    if( this.header ){
+      this.showHeader();
+    }
+
     this.showBody();
-    if( this.footer ){ this.showFooter( this.footer ); }
+
+    if( this.footer ){
+      this.showFooter();
+    }
   },
 
-  showHeader: function( options ){
-    var container = this.$('[class$="modal-header"]');
-    if( container.length === 0 ){
-      return;
+  /**
+   * Creates header div and inits region (if required)
+   */
+  showHeader: function(){
+    var view,
+      className = this.prefix + '-header',
+      container = $('<div/>', { 'class': className });
+
+    this.$el.append( container );
+    var region = this.addRegion( 'headerRegion', '.' + className );
+
+    if( this.header instanceof bb.View ){
+      view = this.header;
+    } else {
+      view = new Header( this.header );
     }
 
-    var region = this.addRegion( 'headerRegion', container );
-    var view = new Header( options );
     region.show( view );
   },
 
-  showTabs: function( options ){
-    var container = this.$('[class$="modal-tabs"]');
-    if( container.length === 0 ){
-      return;
-    }
-
-    var view = Radio.request('tabs', 'view', {
-      tabs: options
-    });
-
-    var region = this.addRegion( 'tabsRegion', container );
-    region.show( view );
-  },
-
+  /**
+   * Creates body div and inits region
+   */
   showBody: function(){
-    var container = this.$('[class$="modal-body"]');
-    if( container.length === 0 ){
-      return;
+    var view,
+      className = this.prefix + '-body',
+      container = $('<div/>', { 'class': className });
+
+    this.$el.append( container );
+    var region = this.addRegion( 'bodyRegion', '.' + className );
+
+    if( this.view instanceof bb.View ){
+      view = this.view;
+    } else {
+      view = new Dialog({ message: this.view });
     }
 
-    var region = this.addRegion( 'bodyRegion', container );
-    var view = this.view || new Body(this.options);
     region.show( view );
   },
 
-  showFooter: function( options ){
-    options = options || {};
-    var container = this.$('[class$="modal-footer"]');
+  /**
+   * Creates footer div and inits region (if required)
+   */
+  showFooter: function(){
+    var view,
+      className = this.prefix + '-footer',
+      container = $('<div/>', { 'class': className });
 
-    if( container.length && options.buttons ){
-      var region = this.addRegion( 'footerRegion', container );
-      var view = Radio.request('buttons', 'view', options);
-      region.$el.toggle( options.show !== false );
-      region.show( view );
+    this.$el.append( container );
+    var region = this.addRegion( 'footerRegion', '.' + className );
+
+    if( this.footer instanceof bb.View ){
+      view = this.footer;
+    } else {
+      view = Radio.request('buttons', 'view', this.footer);
     }
+
+    region.show( view );
   }
 
 });

@@ -2,175 +2,91 @@ var Service = require('lib/config/service');
 var Modal = require('vex-js');
 var App = require('lib/config/application');
 var prefix = App.prototype.namespace('modal');
+var Layout = require('./layout');
+var Radio = require('backbone.radio');
 var _ = require('lodash');
-var Layout = require('./layout.js');
 var bb = require('backbone');
-var globalChannel = require('backbone.radio').channel('global');
-var JSON = window.JSON;
+var ErrorView = require('./error/view');
 
-// css classes
-Modal.baseClassNames = {
+// change Vex default options
+_.extend( Modal.defaultOptions, {
+  showCloseButton       : false,
+  overlayClosesOnClick  : false
+});
+
+// change Vex default css classes
+_.extend( Modal.baseClassNames, {
   vex     : prefix,
   content : prefix + '-content',
   overlay : prefix + '-overlay',
   close   : prefix + '-close',
   closing : prefix + '-closing',
   open    : prefix + '-open'
-};
-
-/* jshint  -W071, -W074 */
-var parseXHR = function(xhr, statusText, thrownError) {
-  thrownError = thrownError || {};
-  var options = { header: {} };
-
-  // header
-  if( _.isString(thrownError) ){
-    options.header.title = thrownError;
-  } else {
-    options.header.title = (thrownError.title || statusText);
-  }
-
-  // message
-  options.message = thrownError.message || _.get(
-      xhr,
-      ['responseJSON', 'errors', 0, 'message'],
-      JSON.stringify(xhr.responseText)
-    );
-
-  // raw output
-  if (options.message !== xhr.responseText) {
-    options.raw = xhr.responseText;
-  }
-
-  return options;
-};
-/* jshint +W071, +W074 */
+});
 
 module.exports = Service.extend({
   channelName: 'modal',
 
   initialize: function(){
+
+    /**
+     * Modals can be requested directly
+     */
     this.channel.reply({
       open    : this.open,
       close   : this.close,
       error   : this.error
     }, this);
 
-    // global error messages
-    globalChannel.on({
-      'error'   : this.error
+    /**
+     * or triggered on the global channel
+     * - error on global channel could be used by another service, eg: Logger
+     */
+    Radio.channel('global').on({
+      error   : this.error
     }, this);
+
   },
 
+  /**
+   * Open modal
+   */
+  /* jshint -W074 */
   open: function(options){
-    options = this.parseOptions( options );
+    options = options || {};
 
-    options = _.extend( {
-      showCloseButton       : false,
-      overlayClosesOnClick  : false
-    }, options );
+    if( _.isString(options) || options instanceof bb.View ){
+      options = { view: options };
+    }
 
-    var afterOpen = options.afterOpen;
-    options.afterOpen = function( $el, opts ){
-      opts.el = $el;
-
-      // @todo pass smaller options object to Layout
-      opts.layout = new Layout( opts );
-      if(afterOpen){
-        afterOpen( $el, opts );
-      }
+    options.afterOpen = options.afterOpen || function( $el, opts ){
+      opts.layout = new Layout({
+        el      : $el,
+        view    : options.view,
+        prefix  : prefix
+      });
+      opts.layout.render();
     };
 
     return Modal.open( options );
   },
+  /* jshint -W074 */
 
   close: function( id ){
     return Modal.close( id );
   },
 
-  alert: function(){
-
-  },
-
-  confirm: function(){
-
-  },
-
-  prompt: function(){
-
-  },
-
-  error: function( options ){
-    options = _.extend( {
-      className   : App.prototype.namespace('error'),
-      footer      : {
-        buttons: [
-          {
-            action: 'close'
-          }
-        ]
-      }
-    }, this.parseOptions( options ) );
-    return this.open( options );
-  },
-
-  /* jshint  -W074 */
-  parseOptions: function( options ) {
-    // simple message
-    if ( _.isString(options) ) {
-      options = {message: options};
-    }
-
-    // backbone view
-    else if (options instanceof bb.View) {
-      options = {view: options};
-    }
-
-    // errors thrown by idb-wrapper, handlebars
-    else if (window.Error && options instanceof window.Error) {
-      options = {
-        header: {
-          title: options.name || 'Error'
-        },
-        message: options.message
-      };
-    }
-
-    // other objects
-    else if ( _.isObject(options) ) {
-      options = this._parseObject(options);
-    }
-
-    return options;
-  },
-  /* jshint  +W074 */
-
-  _parseObject: function(options){
-    var err = _.get(options, ['target', 'error']);
-
-    // errors thrown by indexedDB
-    if (window.DOMError && err instanceof window.DOMError) {
-      options = {
-        header: {
-          title: err.name
-        },
-        message: err.message
-      };
-    }
-
-    // backbone sync error
-    else if (options.xhr) {
-      options = parseXHR(
-        options.xhr, options.statusText, options.thrownError
-      );
-    }
-
-    // raw jqXHR
-    else if (options.readyState) {
-      options = parseXHR(options);
-    }
-
-    return options;
+  /**
+   * error modal
+   */
+  error: function( error ){
+    var view = new ErrorView({
+      error: error
+    });
+    return this.open({
+      view: view,
+      className: prefix + '-error'
+    });
   }
 
 });

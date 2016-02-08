@@ -23,10 +23,14 @@ var CheckoutRoute = Route.extend({
   },
 
   onFetch: function(id){
-    this.order = this.collection.setActiveOrder(id);
+    this.activeOrder = this.collection.get(id);
 
-    if(this.order){
-      this.listenTo( this.order, 'change:status', function(model){
+    if( this.activeOrder && ! this.activeOrder.isEditable() ){
+      this.navigate('receipt/' + this.activeOrder.id, { trigger: true });
+    }
+
+    if(this.activeOrder){
+      this.listenTo( this.activeOrder, 'change:status', function(model){
         if(!model.isEditable() && model.get('status') !== 'failed'){
           this.navigate('receipt/' + model.id, { trigger: true });
         }
@@ -46,23 +50,17 @@ var CheckoutRoute = Route.extend({
     this.container.show(this.layout);
   },
 
-  onRender: function(){
-    if( this.order && !this.order.isEditable() ){
-      this.navigate('receipt/' + this.order.id, { trigger: true });
-    }
-  },
-
   showStatus: function(){
     var view = new StatusView({
-      model: this.order
+      model: this.activeOrder
     });
     this.layout.getRegion('status').show(view);
   },
 
   showGateways: function(){
-    this.order.gateways.order = this.order;
+    this.activeOrder.gateways.order = this.activeOrder;
     var view = new GatewaysView({
-      collection: this.order.gateways
+      collection: this.activeOrder.gateways
     });
     this.layout.getRegion('list').show(view);
   },
@@ -81,21 +79,27 @@ var CheckoutRoute = Route.extend({
 
     this.listenTo(view, {
       'action:return-to-sale': function(){
-        this.navigate('cart/' + this.order.id, { trigger: true });
+        this.navigate('cart/' + this.activeOrder.id, { trigger: true });
       },
       'action:process-payment': function(btn){
         btn.trigger('state', 'loading');
 
         // alert third party plugins that gateway has init
-        if( this.order.gateways ){
-          var gateway = this.order.gateways.getActiveGateway();
-          Radio.trigger('checkout', 'order:payment:' + gateway.id, this.order);
+        if( this.activeOrder.gateways ){
+          var gateway = this.activeOrder.gateways.getActiveGateway();
+          var trigger = 'order:payment:' + gateway.id;
+          Radio.trigger('checkout', trigger, this.activeOrder );
         }
 
-        this.order.save({}, { remote: true })
-          .always(function(){
-            btn.trigger('state', 'reset');
-          });
+        var always = function(){
+          btn.trigger('state', 'reset');
+        };
+
+        this.activeOrder.save({}, {
+          remote: true,
+          success: always,
+          error: always
+        });
       }
     });
 

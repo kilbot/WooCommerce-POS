@@ -133,20 +133,6 @@ var POSRouter = Router.extend({
     if(this._currentRoute instanceof CartRoute){
       this._currentRoute.addToCart(products);
     }
-  },
-
-  addOrder: function(order){
-    if(this._currentRoute instanceof CartRoute){
-      //bb.history.navigate('cart/' + order.id);
-      this.execute(this.showCart, [order.id]);
-    }
-  },
-
-  removeOrder: function(){
-    if(this._currentRoute instanceof CartRoute){
-      bb.history.navigate('');
-      this.execute(this.showCart);
-    }
   }
 
 });

@@ -10,6 +10,7 @@ var FilteredCollection = require('lib/config/obscura');
 var debug = require('debug')('entities');
 var App = require('lib/config/application');
 var _ = require('lodash');
+var Radio = require('backbone.radio');
 var storage = global.localStorage || window.localStorage;
 var JSON = global.JSON || window.JSON;
 
@@ -141,11 +142,19 @@ var EntitiesService = Service.extend({
 
   getLocalStorage: function(options){
     options = options || {};
-    var data = storage.getItem('wc_pos_' + options.name);
+    var data;
+
+    try {
+      data = storage.getItem('wc_pos_' + options.name);
+    } catch (error) {
+      return Radio.channel('global', 'error', error);
+    }
+
     var obj = this.deserialize(data);
     if(options.key && obj && obj[options.key]){
       return obj[options.key];
     }
+
     return obj;
   },
 
@@ -153,22 +162,44 @@ var EntitiesService = Service.extend({
     options = options || {};
     var data = options.data;
     var old = this.getLocalStorage({name: options.name});
+
     if( _.isObject(old) && _.isObject(data) ){
       data = _.extend(old, data);
     }
-    storage.setItem('wc_pos_' + options.name, this.serialize(data));
+
+    try {
+      storage.setItem('wc_pos_' + options.name, this.serialize(data));
+    } catch (error) {
+      return Radio.channel('global', 'error', error);
+    }
   },
 
+  /* jshint -W074 */
   remove: function(options){
     options = options || {};
+
     if(options.type === 'localStorage' && options.name && options.key){
       var data = this.getLocalStorage({name: options.name});
       delete data[options.key];
-      storage.setItem('wc_pos_' + options.name, JSON.stringify(data));
+
+      try {
+        storage.setItem('wc_pos_' + options.name, JSON.stringify(data));
+      } catch (error) {
+        return Radio.channel('global', 'error', error);
+      }
+
     } else {
-      storage.removeItem('wc_pos_' + options.name);
+
+      try {
+        storage.removeItem('wc_pos_' + options.name);
+      } catch (error) {
+        return Radio.channel('global', 'error', error);
+      }
+
     }
+
   },
+  /* jshint +W074 */
 
   idbCollections: function(){
     return _.reduce( this.getAllCollections(), function(result, col, key){
