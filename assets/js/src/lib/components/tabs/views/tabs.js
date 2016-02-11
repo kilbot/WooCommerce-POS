@@ -15,16 +15,20 @@ var Tabs = CompositeView.extend({
   childView: Tab,
 
   attributes: {
-    'class' : 'tabs'
+    'class' : App.prototype.namespace('tabs')
   },
 
   activeClassName: 'active',
+
+  tabsTagName: 'ul',
 
   initialize: function(options){
     options = options || {};
 
     // store options
     this.mergeOptions(options, [
+      'tabsTagName',     // childViewContainer tagName
+      'tabsClassName',   // childViewContainer tagName
       'activeId',        // current active model id
       'activeClassName', // className for active tab
       'label'            // label string or function
@@ -38,10 +42,17 @@ var Tabs = CompositeView.extend({
     this.collection = new TabsCollection( options.collection );
   },
 
+  templateHelpers: function(){
+    return {
+      tabsTagName: this.tabsTagName,
+      tabsClassName: this.tabsClassName
+    };
+  },
+
   /**
    * Pick options to pass to childview
    */
-  childViewOptions: function( model ){
+  childViewOptions: function( model, idx ){
     // pass default options
     var options = {
       activeClassName : 'active'
@@ -53,7 +64,7 @@ var Tabs = CompositeView.extend({
     }
 
     // init with active class
-    if( this.activeId === model.id ){
+    if( ! this.activeId && idx === 0 || this.activeId === model.id ){
       options.className = this.activeClassName;
     }
 

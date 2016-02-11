@@ -91,7 +91,7 @@ class WC_POS_API {
   }
 
   /**
-   * @todo this is a total hack, need to find a way to customise bb remote sync
+   * @todo this is a total hack, need to customise bb remote sync
    *
    * @param $args
    * @param $callback

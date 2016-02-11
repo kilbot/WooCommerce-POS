@@ -43,24 +43,36 @@ var SettingsRouter = Router.extend({
   },
 
   showTabs: function(){
-    // this.tabsArray is added during POS.onBeforeStart
-    var view = Radio.request('tabs', 'view', {
-      tabs: this.collection.tabsArray,
-      adminTabs: true
+    var settings = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'settings'
     });
 
-    // check hash and set tab active
-    var activeTab = view.collection.get( bb.history.getHash().split('/')[0] );
-    if( activeTab ){
-      activeTab.set({ active: true }, { silent: true });
-    }
+    // get active tab from url fragment
+    var activeId = bb.history.getHash().split('/')[0] || 'general';
 
-    this.listenTo(view.collection, 'change:active', function(model, active){
-      if(active){
-        this.navigate(model.id, {
-          trigger: true
-        });
+    // pass id & label collection to tabs
+    var view = Radio.request('tabs', 'view', {
+      collection: _.map( settings,
+        _.partial( _.ary(_.pick, 2), _, ['id', 'label'] )
+      ),
+      tabsTagName: 'div',
+      tabsClassName: 'nav-tab-wrapper',
+      activeClassName: 'nav-tab-active',
+      childViewOptions: function( model ){
+        var options = {
+          tagName: 'a',
+          className: 'nav-tab'
+        };
+        if( model.id === activeId ){
+          options.className += ' nav-tab-active';
+        }
+        return options;
       }
+    });
+
+    this.listenTo(view, 'childview:click', function(view){
+      this.navigate(view.model.id, { trigger: true });
     });
 
     this.layout.getRegion('tabs').show(view);

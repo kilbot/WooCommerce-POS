@@ -20,12 +20,6 @@ module.exports = Collection.extend({
       name: 'settings'
     });
 
-    // tack on tabsArray, @todo find a better way
-    this.tabsArray = _.map( settings,
-      _.partial( _.ary(_.pick, 2), _, ['id', 'label'] )
-    );
-
-    //models = this.parseSettings( settings );
     options = _.extend( {}, options, { parse: true } );
 
     return Collection.prototype.constructor.call(this, settings, options);

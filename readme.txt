@@ -25,7 +25,7 @@ You can see a demo of the WooCommerce POS plugin in action by going to [http://d
 
 = REQUIREMENTS =
 * WooCommerce >= 2.3.7
-* PHP 5.4+
+* PHP >= 5.4, [PHP 7 or HHVM give best performance](http://talks.php.net/oz15#/wpbench)
 * [A modern browser](http://woopos.com.au/faq/browser-compatibility/)
 * [A good web host](http://woopos.com.au/wpe)
 

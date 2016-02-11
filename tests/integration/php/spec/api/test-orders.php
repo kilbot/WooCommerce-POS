@@ -118,7 +118,7 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
   /**
    *
    */
-  public function test_order_with_product(){
+  public function test_create_order_with_product(){
     // get a random product
     $product = $this->get_random_product();
 
@@ -139,6 +139,43 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(1, $data['order']['total_line_items_quantity']);
   }
+
+  /**
+   *
+   */
+//  public function test_edit_order_with_product(){
+//    // get a random product
+//    $product = $this->get_random_product();
+//
+//    // filter product
+//    $product = $this->filter_line_item($product);
+//
+//    // create order
+//    $response = $this->client->post('', array(
+//      'json' => array(
+//        'status' => 'CREATE_FAILED',
+//        'line_items' => array(
+//          $product
+//        )
+//      )
+//    ));
+//    $this->assertEquals(201, $response->getStatusCode());
+//
+//    // now edit order
+//    $response = $this->client->post('', array(
+//      'json' => array(
+//        'status' => 'CREATE_FAILED',
+//        'line_items' => array(
+//          $product
+//        )
+//      )
+//    ));
+//
+//    $this->assertEquals(201, $response->getStatusCode());
+//    $data = $response->json();
+//    $this->assertArrayHasKey('order', $data);
+//    $this->assertEquals(1, $data['order']['total_line_items_quantity']);
+//  }
 
   /**
    * Test (int) stock adjustment

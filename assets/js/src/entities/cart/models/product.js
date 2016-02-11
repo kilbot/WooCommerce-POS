@@ -26,7 +26,8 @@ module.exports = Model.extend({
   type: 'product',
 
   defaults: {
-    quantity: 1
+    id        : null,
+    quantity  : 1
   },
 
   initialize: function(){

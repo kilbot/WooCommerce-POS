@@ -2,6 +2,16 @@ var ItemView = require('lib/config/item-view');
 var Radio = require('backbone.radio');
 var EventSource = global['EventSource'];
 
+var constructURL = function(){
+  var nonce = Radio.request('entities', 'get', {
+    type: 'option',
+    name: 'nonce'
+  });
+  return window.ajaxurl +
+    '?action=wc_pos_update_translations&security=' +
+    nonce;
+};
+
 module.exports =  ItemView.extend({
   template: function(){
     return '<i class="wc_pos-icon-loading"></i>';
@@ -15,7 +25,6 @@ module.exports =  ItemView.extend({
         title: options.title
       },
       footer: {
-        show: false,
         buttons: [{
           action: 'close',
           className: 'button'
@@ -30,11 +39,11 @@ module.exports =  ItemView.extend({
 
   onShow: function() {
     var view = this,
-        url = this.constructURL(),
+        url = constructURL(),
         stream = new EventSource(url);
 
-    stream.onerror = function(){
-      Radio.request('modal', 'error', 'EventSource error');
+    stream.onerror = function( error ){
+      Radio.trigger('global', 'error', error);
     };
 
     stream.onmessage = function(e){
@@ -47,15 +56,5 @@ module.exports =  ItemView.extend({
       }
     };
 
-  },
-
-  constructURL: function(){
-    var nonce = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'nonce'
-    });
-    return window.ajaxurl +
-      '?action=wc_pos_update_translations&security=' +
-      nonce;
   }
 });

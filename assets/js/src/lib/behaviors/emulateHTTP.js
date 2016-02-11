@@ -24,19 +24,12 @@ var EmulateHTTP = Behavior.extend({
       name: 'nonce'
     });
 
-    $.getJSON( window.ajaxurl, {
+    App.prototype.getJSON( window.ajaxurl, {
       action: 'wc_pos_toggle_legacy_server',
       enable: $(e.target).data('action').split('-').pop() === 'enable',
       security: nonce
     }, function(){
       window.location.reload();
-    })
-    .fail( function( xhr, statusText, thrownError ) {
-      Radio.request( 'modal', 'error', {
-        xhr: xhr,
-        statusText: statusText,
-        thrownError: thrownError
-      } );
     });
   }
 

@@ -22,7 +22,10 @@ var parseResponseJSON = function( json ){
  */
 /* jshint -W071, -W074 */
 var parseObject = function( obj ){
-  var result = {};
+  var result = {
+    title: obj.title || obj.name,
+    message: obj.message
+  };
 
   // looks like jqXHR
   if( obj.promise && obj.setRequestHeader ){
@@ -33,15 +36,7 @@ var parseObject = function( obj ){
     };
   }
 
-  // Error obj, used by idb-wrapper
-  if( _.isError( obj ) ){
-    result = {
-      title: obj.name,
-      message: obj.message
-    };
-  }
-
-  // IndexedDB transaction errors and other Events
+  // Error Events
   if( obj.target && obj.target.error ){
     result = {
       title: obj.target.error.name,

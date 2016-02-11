@@ -32,9 +32,10 @@ var Tools = Route.extend({
     });
 
     var modal = Radio.request('modal', 'open', view);
+    modal.getRegion('footerRegion').$el.hide();
 
     this.listenTo( view, 'update:complete', function(){
-      modal.currentView.getRegion('footerRegion').$el.show();
+      modal.getRegion('footerRegion').$el.show();
     });
   },
 

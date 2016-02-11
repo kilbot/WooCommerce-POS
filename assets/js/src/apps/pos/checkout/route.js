@@ -6,6 +6,7 @@ var StatusView = require('./views/status');
 var GatewaysView = require('./views/gateways');
 var polyglot = require('lib/utilities/polyglot');
 var Radio = require('backbone.radio');
+require('./integrations');
 
 var CheckoutRoute = Route.extend({
 
@@ -22,32 +23,34 @@ var CheckoutRoute = Route.extend({
     }
   },
 
-  onFetch: function(id){
+  /**
+   *
+   */
+  render: function( id ){
     this.activeOrder = this.collection.get(id);
 
-    if( this.activeOrder && ! this.activeOrder.isEditable() ){
-      this.navigate('receipt/' + this.activeOrder.id, { trigger: true });
+    if( ! this.activeOrder ){
+      // return to cart
+      return this.navigate('cart', { trigger: true });
     }
 
-    if(this.activeOrder){
-      this.listenTo( this.activeOrder, 'change:status', function(model){
-        if(!model.isEditable() && model.get('status') !== 'failed'){
-          this.navigate('receipt/' + model.id, { trigger: true });
-        }
-      });
+    if( ! this.activeOrder.isEditable() ){
+      // go to receipts
+      return this.navigate('receipt/' + this.activeOrder.id, { trigger: true });
     }
+
+    this.layout = new LayoutView();
+    this.listenTo( this.layout, 'show', this.onShow );
+    this.container.show(this.layout);
   },
 
-  render: function(){
-    this.layout = new LayoutView();
-
-    this.listenTo( this.layout, 'show', function(){
-      this.showStatus();
-      this.showGateways();
-      this.showActions();
-    });
-
-    this.container.show(this.layout);
+  /**
+   *
+   */
+  onShow: function(){
+    this.showStatus();
+    this.showGateways();
+    this.showActions();
   },
 
   showStatus: function(){
@@ -84,26 +87,46 @@ var CheckoutRoute = Route.extend({
       'action:process-payment': function(btn){
         btn.trigger('state', 'loading');
 
+        // options object
+        // - may be extended by gateway
+        var self = this, options = { remote: true };
+
         // alert third party plugins that gateway has init
         if( this.activeOrder.gateways ){
           var gateway = this.activeOrder.gateways.getActiveGateway();
           var trigger = 'order:payment:' + gateway.id;
-          Radio.trigger('checkout', trigger, this.activeOrder );
+          Radio.trigger('checkout', trigger, this.activeOrder, options );
         }
 
-        var always = function(){
-          btn.trigger('state', 'reset');
-        };
-
-        this.activeOrder.save({}, {
-          remote: true,
-          success: always,
-          error: always
-        });
+        // now save
+        this.activeOrder.save({}, options)
+          .done( self.onProcessPayment.bind(this) )
+          .always( function(){
+            btn.trigger('state', 'reset');
+          });
       }
     });
 
     this.layout.getRegion('actions').show(view);
+  },
+
+  /**
+   *
+   */
+  onProcessPayment: function(){
+
+    if( this.activeOrder.get('status') !== 'failed' ){
+      // order has been processed, go to receipt
+      return this.navigate('receipt/' + this.activeOrder.id, { trigger: true });
+    }
+
+    // silently save, will change status to UPDATE_FAILED
+    this.activeOrder.save( {}, { silent: true } );
+
+    Radio.trigger('global', 'error', {
+      title: 'Payment Error',
+      message: this.activeOrder.get('payment_details.message')
+    });
   }
 
 });

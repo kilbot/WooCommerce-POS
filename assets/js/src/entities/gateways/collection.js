@@ -19,7 +19,7 @@ module.exports = Collection.extend({
 
     Collection.prototype.constructor.call(this, settings, options);
 
-    this.on( 'change:active', this.onChangeActive );
+    this.on( 'change', this.onChangeActive );
 
     if( models ){
       this.set( models, { remove: false } );

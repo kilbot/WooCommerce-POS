@@ -68,12 +68,13 @@ module.exports = Service.extend({
       opts.layout.render();
     };
 
-    return Modal.open( options );
+    var modal = Modal.open( options );
+    return modal.data().vex.layout; // return the LayoutView
   },
   /* jshint -W074 */
 
   close: function( id ){
-    return Modal.close( id );
+    Modal.close( id );
   },
 
   /**

@@ -40,7 +40,9 @@ module.exports = ItemView.extend({
   },
 
   templateHelpers: function(){
-    return this.error;
+    var isArray = _.isArray( this.error.message ) &&
+      this.error.message.length > 1;
+    return _.extend( { isArray: isArray }, this.error );
   }
 
 });

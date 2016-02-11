@@ -16,13 +16,18 @@ var View = FormView.extend({
     style: 'display:none' // start drawer closed
   },
 
+  constructor: function( options ){
+    options = options || {};
+    if( options.model ){
+      Radio.trigger( 'checkout', 'gateway:' + options.model.id, this );
+    }
+    FormView.apply( this, arguments );
+  },
+
   initialize: function() {
     this.template = hbs.compile( this.model.getPaymentFields() );
     this.order_total = this.model.collection.order.get('total');
     this.updateStatusMessage();
-
-    // alert third party plugins that gateway has init
-    Radio.trigger( 'checkout', 'gateway:init:' + this.model.id, this );
   },
 
   templateHelpers: function(){
@@ -111,9 +116,7 @@ var View = FormView.extend({
   },
 
   onShow: function() {
-    // allow third party to setup before show
-    $.when( this.deferShow.call( this ) )
-      .then( this.slideDown.bind(this) );
+    this.$el.slideDown(250);
 
     if(window.Modernizr.touch){
       this.$('#pos-cash-tendered').attr('readonly', true);
@@ -121,20 +124,10 @@ var View = FormView.extend({
     }
   },
 
-  slideDown: function(){
-    this.$el.slideDown(250);
-  },
-
   remove: function() {
-    // allow third party to setup before remove
-    this.slideUp();
-
-    $.when( this.deferRemove.call( this ) )
-      .then( FormView.prototype.remove.bind(this) );
-  },
-
-  slideUp: function(){
-    return this.$el.slideUp( 250 );
+    this.$el.slideUp( 250, function() {
+      FormView.prototype.remove.call(this);
+    }.bind(this));
   },
 
   calcChange: function(tendered){
@@ -143,17 +136,11 @@ var View = FormView.extend({
     this.model.set({ message: msg, 'pos-cash-change': change });
   },
 
-  updateStatusMessage: function(){
+  updateStatusMessage: function() {
     this.model.collection.order.set({
       'payment_details.message': this.model.get('message')
     });
-  },
-
-  /**
-   * Allow third party gateways to setup, teardown and submit payment details
-   */
-  deferShow: function(){},
-  deferRemove: function(){}
+  }
 
 });
 

@@ -56,7 +56,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
     $routes = parent::register_routes( $routes );
 
     # POST /orders/<order_id>/email/<email>
-    $routes[ $this->base . '/(?P<order_id>\d+)/email/(?P<email>.+)'] = array(
+    $routes[ $this->base . '/(?P<order_id>\d+)/email/(?P<email>.+)' ] = array(
       array( array( $this, 'wc_pos_api_email_receipt' ), WC_API_SERVER::CREATABLE | WC_API_Server::ACCEPT_DATA )
     );
 
@@ -141,7 +141,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @return array
    */
   public function wc_pos_api_edit_order_data(array $data, $order_id){
-//    $this->delete_order_items($order_id);
+    $this->delete_order_items($order_id);
     return $this->wc_pos_api_create_order_data($data);
   }
 
@@ -436,25 +436,25 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $order_id
    * @param $data
    */
-  public function wc_pos_api_process_payment( $order_id, $data ){
+  public function wc_pos_api_process_payment( $order_id, $data ) {
 
-    if( !isset($data['payment_details']) ){
+    if ( !isset( $data[ 'payment_details' ] ) ) {
       return;
     }
 
     // some gateways check if a user is signed in, so let's switch to customer
     $logged_in_user = get_current_user_id();
-    $customer_id = isset( $data['customer_id'] ) ? $data['customer_id'] : 0 ;
+    $customer_id = isset( $data[ 'customer_id' ] ) ? $data[ 'customer_id' ] : 0;
     wp_set_current_user( $customer_id );
 
     // load the gateways & process payment
-    $gateway_id = $data['payment_details']['method_id'];
-    add_filter('option_woocommerce_'. $gateway_id .'_settings', array($this, 'wc_pos_api_force_enable_gateway'));
+    $gateway_id = $data[ 'payment_details' ][ 'method_id' ];
+    add_filter( 'option_woocommerce_' . $gateway_id . '_settings', array( $this, 'wc_pos_api_force_enable_gateway' ) );
     $settings = WC_POS_Admin_Settings_Checkout::get_instance();
     $gateways = $settings->load_enabled_gateways();
 
-    if( isset( $gateways[ $gateway_id ] ) ) {
-
+    if ( isset( $gateways[ $gateway_id ] ) ) {
+      do_action( 'woocommerce_pos_process_' . strtolower( $gateway_id ) . '_payment', $order_id, $data );
       $response = $gateways[ $gateway_id ]->process_payment( $order_id );
       if ( isset( $response[ 'result' ] ) && $response[ 'result' ] == 'success' ) {
         $this->wc_pos_api_payment_success( $gateway_id, $order_id, $response );
@@ -478,10 +478,11 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $data
    * @return mixed
    */
-  public function wc_pos_api_force_enable_gateway($data){
-    if(isset($data['enabled'])){
-      $data['enabled'] = 'yes';
+  public function wc_pos_api_force_enable_gateway($data) {
+    if ( isset( $data[ 'enabled' ] ) ) {
+      $data[ 'enabled' ] = 'yes';
     }
+
     return $data;
   }
 
@@ -765,16 +766,16 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * Delete all order items
    * @param $order_id
    */
-  private function delete_order_items($order_id){
+  private function delete_order_items($order_id) {
     global $wpdb;
     $order_item_ids = $wpdb->get_col( $wpdb->prepare( "
-			SELECT      order_item_id
-			FROM        {$wpdb->prefix}woocommerce_order_items
-			WHERE       order_id = %d
-		", $order_id ) );
+      SELECT      order_item_id
+      FROM        {$wpdb->prefix}woocommerce_order_items
+      WHERE       order_id = %d
+    ", $order_id ) );
 
-    foreach($order_item_ids as $item_id){
-      wc_delete_order_item($item_id);
+    foreach ( $order_item_ids as $item_id ) {
+      wc_delete_order_item( $item_id );
     }
   }
 

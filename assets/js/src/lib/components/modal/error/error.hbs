@@ -1,4 +1,12 @@
-<p>{{{message}}}</p>
+{{#unless isArray}}
+  <p>{{{message}}}</p>
+{{else}}
+  <ul>
+    {{#each message}}
+      <li>{{{this}}}</li>
+    {{/each}}
+  </ul>
+{{/unless}}
 {{#if raw}}
   <div class="raw-output">
     <h5>{{moreInfo}}</h5>

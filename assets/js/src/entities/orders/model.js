@@ -50,8 +50,13 @@ var OrderModel = DualModel.extend({
 
   /**
    * Order saves on any change to cart, debounce total calcs and db saves
+   * - options.deferSave allows third party gateways to defer payment processing
    */
-  save: _.debounce( function( attributes, options ){
+  /* jshint -W074 */
+  save: function( attributes, options ){
+    options = options || {};
+    options.deferSave = options.deferSave || _.noop;
+    var self = this;
 
     // Safari doesn't like empty keyPath, perhaps an autoincrement problem?
     // Set local_id as timestamp milliseconds
@@ -64,22 +69,14 @@ var OrderModel = DualModel.extend({
       this.updateTotals();
     }
 
-    var self = this;
-
-    // if remote save, let gateway do it's thing
-
-    return $.when( this.deferSave.call(this) )
+    return $.when( options.deferSave )
       .then( function(){
         debug('save order', self);
         return DualModel.prototype.save.call(self, attributes, options);
       });
 
-  }, 20),
-
-  /**
-   *  Allow third party plugins to defer the order save
-   */
-  deferSave: function(){},
+  },
+  /* jshint +W074 */
 
   /**
    * Attach cart during parse
@@ -88,8 +85,9 @@ var OrderModel = DualModel.extend({
   parse: function(resp) {
     resp = DualModel.prototype.parse.call(this, resp);
 
-    if( resp && this.isEditable( resp.status ) ){
-      resp.taxes = this.parseTaxRates( resp.taxes );
+    // if open order with no cart, ie: new from idb or changed status
+    if( this.isEditable( resp.status ) && ! this.cart ){
+      resp.taxes = this.attachTaxes( resp.taxes );
       this.attachCart( resp );
       this.attachGateways( resp );
     }
@@ -101,10 +99,6 @@ var OrderModel = DualModel.extend({
    * Attach cart during parse, allows updates from server
    */
   attachCart: function( attributes ){
-    if( this.cart ){
-      return;
-    }
-
     this.cart = new Cart( null, { order: this } );
 
     // add line_items, shipping_lines and fee_lines
@@ -131,15 +125,41 @@ var OrderModel = DualModel.extend({
    * Attach gateways
    */
   attachGateways: function( attributes ){
-    if( this.gateways ){
-      return;
-    }
-
     this.gateways = new Gateways( attributes.payment_details, { order: this } );
 
     this.gateways.on( 'change', function(){
       this.save();
     }, this );
+  },
+
+  /**
+   * Attach taxes
+   * - parse tax_rates into bb Collections
+   * - set enabled = true for each rate
+   */
+  attachTaxes: function( enabled_taxes ){
+    var tax_rates = this.getSettings( 'tax_rates' );
+    this.tax_rates = {};
+
+    // parse tax_rates
+    _.each( tax_rates, function( tax_rate, tax_class ){
+      var taxes = new Taxes( tax_rate, { order: this } );
+      taxes.toggleTaxes( enabled_taxes );
+      this.tax_rates[ tax_class ] = taxes;
+    }, this);
+
+    // exit early if attribute exists
+    if( enabled_taxes ){
+      return enabled_taxes;
+    }
+
+    // set enabled taxes
+    return _.reduce( tax_rates, function( obj, tax_rate ){
+      _.each( tax_rate, function( tax, rate_id ){
+        obj[ 'rate_' + rate_id ] = true;
+      } );
+      return obj;
+    }, { all: true } );
   },
 
   /**
@@ -327,36 +347,6 @@ var OrderModel = DualModel.extend({
     } else {
       this.set( 'taxes.all', ! this.get( 'taxes.all' ) );
     }
-  },
-
-  /**
-   * Setup tax data for this order
-   * - parse tax_rates into bb Collections
-   * - set enabled = true for each rate
-   */
-  parseTaxRates: function( enabled_taxes ){
-    var tax_rates = this.getSettings( 'tax_rates' );
-    this.tax_rates = {};
-
-    // parse tax_rates
-    _.each( tax_rates, function( tax_rate, tax_class ){
-      var taxes = new Taxes( tax_rate, { order: this } );
-      taxes.toggleTaxes( enabled_taxes );
-      this.tax_rates[ tax_class ] = taxes;
-    }, this);
-
-    // exit early if attribute exists
-    if( enabled_taxes ){
-      return enabled_taxes;
-    }
-
-    // set enabled taxes
-    return _.reduce( tax_rates, function( obj, tax_rate ){
-      _.each( tax_rate, function( tax, rate_id ){
-        obj[ 'rate_' + rate_id ] = true;
-      } );
-      return obj;
-    }, { all: true } );
   },
 
   /**

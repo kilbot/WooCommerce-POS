@@ -7,6 +7,14 @@ module.exports = ItemView.extend({
 
   tagName: 'li',
 
+  attributes: function(){
+    if( this.tagName === 'a' ){
+      return {
+        href: '#'
+      };
+    }
+  },
+
   template: hbs.compile(Tmpl),
 
   events: {

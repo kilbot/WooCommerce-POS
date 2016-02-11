@@ -34,29 +34,30 @@ var Receipts = Route.extend({
   },
 
   showSectionTabs: function(){
-    var view = Radio.request('tabs', 'view', {
-      tabs: _.map( this.model.sections,
-        _.partial( _.ary(_.pick, 2), _, ['id', 'label'] )
-      ),
-      adminSubTabs: true
-    });
 
     // check hash and set tab active
-    var activeTab = view.collection.get(
-      _.invert( hashMap )[ bb.history.getHash() ]
-    );
-    if( activeTab ){
-      activeTab.set({ active: true });
-    } else {
-      view.collection.at(0).set({ active: true });
-    }
+    var activeId = _.invert( hashMap )[ bb.history.getHash() ] ||
+      'receipt_options';
 
-    this.listenTo(view.collection, 'change:active', function(model, active){
-      if(active){
-        this.navigate(hashMap[model.id], {
-          trigger: true
-        });
+    var view = Radio.request('tabs', 'view', {
+      collection: _.map( this.model.sections,
+        _.partial( _.ary(_.pick, 2), _, ['id', 'label'] )
+      ),
+      tabsClassName: 'wc_pos-sub-nav-tab-wrapper',
+      activeClassName: 'wc_pos-sub-nav-tab-active',
+      childViewOptions: function( model ){
+        var options = {
+          className: 'wc_pos-sub-nav-tab'
+        };
+        if( model.id === activeId ){
+          options.className += ' wc_pos-sub-nav-tab-active';
+        }
+        return options;
       }
+    });
+
+    this.listenTo(view, 'childview:click', function(view){
+      this.navigate(hashMap[view.model.id], { trigger: true });
     });
 
     this.layout.getRegion('tabs').show(view);

@@ -92,4 +92,5 @@ module.exports = app.prototype.Router = Mn.AppRouter.extend({
   },
 
   triggerMethod: Mn.triggerMethod
+
 });

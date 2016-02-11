@@ -37,7 +37,7 @@ describe('entities/cart/models/product.js', function () {
 
     var model = new Model( product );
 
-    expect(model.id).to.be.undefined;
+    expect(model.id).to.be.null;
     expect(model.get('title')).to.be.undefined;
     expect(model.get('name')).to.equal(product.title);
 
@@ -54,7 +54,7 @@ describe('entities/cart/models/product.js', function () {
 
     var model = new Model( variation );
 
-    expect(model.id).to.be.undefined;
+    expect(model.id).to.be.null;
     expect(model.get('meta')).to.eql([{
       key: 1,
       label: 'Color',

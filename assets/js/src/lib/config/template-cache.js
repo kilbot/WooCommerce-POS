@@ -13,8 +13,7 @@ Mn.TemplateCache.prototype.compileTemplate = function(rawTemplate) {
   try {
     return hbs.compile(rawTemplate);
   } catch(e) {
-    Radio.request('modal', 'error', e);
-    throw e;
+    Radio.trigger('global', 'error', e);
   }
 };
 

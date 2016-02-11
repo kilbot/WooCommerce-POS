@@ -13,6 +13,7 @@ module.exports = Model.extend({
       name: 'shipping'
     });
     return {
+      id            : null,
       method_title  : _.get( shipping, 'name', polyglot.t('titles.shipping') ),
       method_id     : _.get( shipping, 'method', '' ),
       taxable       : _.get( shipping, 'taxable', true ),

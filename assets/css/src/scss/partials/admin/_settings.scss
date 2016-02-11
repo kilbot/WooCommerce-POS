@@ -19,15 +19,11 @@ settings {
 
       .nav-tab-wrapper {
         border-bottom: 1px solid $settings-border-color;
-        //padding: 9px 15px 0 0;
-        //line-height: inherit;
       }
 
-      //.nav-tab {
-      //  &:hover, &:active, &:focus {
-      //    outline: 0;
-      //  }
-      //}
+      .nav-tab-active:focus {
+        @include box-shadow(none);
+      }
 
     }
 

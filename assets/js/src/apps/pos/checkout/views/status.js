@@ -7,11 +7,8 @@ var Tmpl = require('./status.hbs');
 var _ = require('lodash');
 
 var View = ItemView.extend({
+
   template: hbs.compile(Tmpl),
-
-  initialize: function(){
-
-  },
 
   templateHelpers: function(){
     return {

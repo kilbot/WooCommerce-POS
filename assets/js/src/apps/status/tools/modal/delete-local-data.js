@@ -27,7 +27,6 @@ module.exports =  ItemView.extend({
         title: options.title
       },
       footer: {
-        show: false,
         buttons: [{
           action: 'close',
           className: 'button'
