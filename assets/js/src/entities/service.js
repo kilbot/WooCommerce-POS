@@ -140,6 +140,7 @@ var EntitiesService = Service.extend({
     return value || undefined;
   },
 
+  /* jshint -W071 */
   getLocalStorage: function(options){
     options = options || {};
     var data;
@@ -157,6 +158,7 @@ var EntitiesService = Service.extend({
 
     return obj;
   },
+  /* jshint +W071 */
 
   setLocalStorage: function(options){
     options = options || {};
@@ -174,7 +176,7 @@ var EntitiesService = Service.extend({
     }
   },
 
-  /* jshint -W074 */
+  /* jshint -W071, -W074 */
   remove: function(options){
     options = options || {};
 
@@ -199,7 +201,7 @@ var EntitiesService = Service.extend({
     }
 
   },
-  /* jshint +W074 */
+  /* jshint +W071, +W074 */
 
   idbCollections: function(){
     return _.reduce( this.getAllCollections(), function(result, col, key){

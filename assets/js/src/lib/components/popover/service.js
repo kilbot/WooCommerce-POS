@@ -1,12 +1,12 @@
 var Service = require('lib/config/service');
-var Drop = require('tether-drop');
+var TetherDrop = require('tether-drop');
 var $ = require('jquery');
 var _ = require('lodash');
 var Mn = require('backbone.marionette');
 var App = require('lib/config/application');
 var namespace = App.prototype.namespace('popover');
 
-var _Drop = Drop.createContext({
+var Drop = TetherDrop.createContext({
   classPrefix: namespace
 });
 
@@ -39,7 +39,7 @@ module.exports = Service.extend({
     this.close();
 
     // new Drop instance
-    this.drop = new _Drop(options);
+    this.drop = new Drop(options);
 
     // attach region
     this.drop.region = new Mn.Region({

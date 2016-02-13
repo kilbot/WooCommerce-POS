@@ -80,7 +80,7 @@ class WC_POS_Admin_Settings extends WC_POS_Admin_Abstract {
     wp_register_script( 'handlebars', $external_libs[ 'handlebars' ], false, null, true );
     wp_register_script( 'moment', $external_libs[ 'moment' ], false, null, true );
     wp_register_script( 'accounting', $external_libs[ 'accounting' ], false, null, true );
-    wp_register_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js', array( 'jquery' ), null, true );
+    wp_register_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js', array( 'jquery' ), null, true );
     wp_register_script( 'ace', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js', false, null, true );
 //    wp_register_script( 'idb-wrapper', $external_libs[ 'idb-wrapper' ], false, null, true );
 

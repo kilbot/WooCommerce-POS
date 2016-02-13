@@ -16,13 +16,14 @@ var View = LayoutView.extend({
     editor: '#wc_pos-ace-editor'
   },
 
-  /* jshint -W101 */
   regions: {
-    editorActions   : '.wc_pos-receipt-template-editor .wc_pos-settings-panel-footer',
-    preview         : '.wc_pos-receipt-template-preview .wc_pos-settings-panel-body',
-    previewActions  : '.wc_pos-receipt-template-preview .wc_pos-settings-panel-footer'
+    editorActions   :
+      '.wc_pos-receipt-template-editor .wc_pos-settings-panel-footer',
+    preview         :
+      '.wc_pos-receipt-template-preview .wc_pos-settings-panel-body',
+    previewActions  :
+      '.wc_pos-receipt-template-preview .wc_pos-settings-panel-footer'
   },
-  /* jshint +W101 */
 
   onShow: function(){
     var editor = window.ace.edit( this.ui.editor[0] );

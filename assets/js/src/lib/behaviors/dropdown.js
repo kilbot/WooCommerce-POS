@@ -1,12 +1,11 @@
 var Behavior = require('lib/config/behavior');
-var App = require('lib/config/application');
 var $ = require('jquery');
 var _ = require('lodash');
-var Drop = require('tether-drop');
+var TetherDrop = require('tether-drop');
 var App = require('lib/config/application');
 var namespace = App.prototype.namespace('dropdown');
 
-var _Drop = Drop.createContext({
+var Drop = TetherDrop.createContext({
   classPrefix: namespace
 });
 
@@ -65,7 +64,7 @@ var Dropdown = Behavior.extend({
       target  : target,
       content : content
     });
-    this.drop = new _Drop(options);
+    this.drop = new Drop(options);
 
     // drop events
     this.drop.on('open', this.onOpen);

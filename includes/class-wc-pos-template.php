@@ -23,27 +23,27 @@ class WC_POS_Template {
   /** @var array external libraries */
   static public $external_libs = array(
     'min'   => array(
-      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js',
+      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js',
       'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js',
       'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js',
       'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.2/backbone.radio.min.js',
       'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.4/backbone.marionette.min.js',
       'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js',
 //      'idb-wrapper'  => 'https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.6.1/idbstore.min.js',
-      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js',
+      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js',
       'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
       'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js',
 //      'idb-shim'     => 'https://cdn.rawgit.com/axemclion/IndexedDBShim/master/dist/indexeddbshim.min.js'
     ),
     'debug' => array(
-      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js',
+      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.js',
       'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js',
       'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone.js',
       'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.2/backbone.radio.js',
       'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.4/backbone.marionette.js',
       'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js',
 //      'idb-wrapper'  => 'https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.6.1/idbstore.min.js',
-      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js',
+      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.js',
       'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.js',
       'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.js',
 //      'idb-shim'     => 'https://cdn.rawgit.com/axemclion/IndexedDBShim/master/dist/indexeddbshim.js'
