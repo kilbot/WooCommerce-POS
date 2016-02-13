@@ -38,16 +38,13 @@ checkout {
           &:hover {
             color: nth($primaryPalette, 8);
           }
-          h5 {
+          > div {
             padding: $gateway-padding-y $gateway-padding-x;
-            margin: 0;
-            //font-size: 18px;
-            //line-height: 25px;
             cursor: pointer;
-            img {
-              max-height: 25px;
-              vertical-align: middle;
-              margin-left: $gateway-padding-x;
+
+            h5 {
+              margin: 0 $gateway-padding-x 0 0;
+              display: inline-block;
             }
           }
         }

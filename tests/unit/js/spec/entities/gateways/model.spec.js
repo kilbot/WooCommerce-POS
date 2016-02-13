@@ -23,7 +23,7 @@ describe('entities/gateways/model.js', function () {
     var gateway = new Gateway(settings);
 
     // only store necessary data, ie: no need to save templates
-    var whitelist = ['active', 'icon', 'method_id', 'method_title'];
+    var whitelist = ['active', 'method_id', 'method_title'];
     expect( gateway.toJSON() ).eqls( _.pick( settings, whitelist ) );
   });
 

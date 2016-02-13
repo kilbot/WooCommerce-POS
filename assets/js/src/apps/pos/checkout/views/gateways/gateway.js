@@ -1,21 +1,21 @@
 var ItemView = require('lib/config/item-view');
 var hbs = require('handlebars');
-//var $ = require('jquery');
+var Tmpl = require('./gateway.hbs');
 
 module.exports = ItemView.extend({
-  tagName: 'h5',
-  template: hbs.compile('' +
-    '{{method_title}}' +
-    '{{#if icon}}<img src="{{icon}}">{{/if}}'
-  ),
+
+  template: hbs.compile(Tmpl),
 
   events: {
-    'click': 'makeActive'
+    'click': function(){
+      this.model.set({ active: true });
+    }
   },
 
-  makeActive: function(){
-    this.model.set({
-      active: true
-    });
+  templateHelpers: function(){
+    return {
+      icons: this.model.getIcons()
+    };
   }
+
 });

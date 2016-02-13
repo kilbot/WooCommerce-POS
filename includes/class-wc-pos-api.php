@@ -102,22 +102,6 @@ class WC_POS_API {
     // note: using headers rather than query params, easier to manage through the js app
     $args['wc_pos_admin'] = is_pos_admin();
 
-    // parse data from js app
-    if( ! isset( $args['data'] ) || ! isset( $args['data']['status'] ) ){
-      return $args;
-    }
-
-    if( in_array( $args['data']['status'], array('CREATE_FAILED', 'UPDATE_FAILED') )){
-      unset($args['data']['status']); // remove status
-
-      // a hack to put data in the right format
-      if( substr( $args['_route'], 0, 7 ) == '/orders' ){
-        $args['data'] = array(
-          'order' => $args['data']
-        );
-      }
-    }
-
     return $args;
   }
 
@@ -150,6 +134,10 @@ class WC_POS_API {
     if( empty( $args['posts_per_page'] ) ){
       $args['posts_per_page'] = 10;
     }
+
+    // remove relevanssi
+    remove_filter('posts_request', 'relevanssi_prevent_default_request');
+    remove_filter('the_posts', 'relevanssi_query');
 
     return $args;
   }

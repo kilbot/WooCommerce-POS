@@ -14,22 +14,27 @@ if ( ! defined( 'ABSPATH' ) ) {
   exit; // Exit if accessed directly
 }
 
-class WC_POS_API_Coupons extends WC_API_Coupons {
+class WC_POS_API_Coupons extends WC_API_Resource {
+
+  /** @var string $base the route base */
+  protected $base = '/coupons';
 
   /**
-   * Add special case for all coupon ids
+   * Register routes for POS Coupons
    *
-   * @param null  $fields
-   * @param array $filter
-   * @param int   $page
+   * @param array $routes
    * @return array
    */
-  public function get_coupons( $fields = null, $filter = array(), $page = 1 ) {
-    if( $fields == 'id' && isset( $filter['limit'] ) && $filter['limit'] == -1 ){
-      return array( 'coupons' => $this->wc_pos_api_get_all_ids( $filter ) );
-    }
-    return parent::get_coupons( $fields, $filter, $page );
+  public function register_routes( $routes ) {
+
+    # GET /coupons/ids
+    $routes[ $this->base . '/ids'] = array(
+      array( array( $this, 'get_all_ids' ), WC_API_Server::READABLE ),
+    );
+
+    return $routes;
   }
+
 
   /**
    * Returns array of all coupon ids
@@ -37,7 +42,7 @@ class WC_POS_API_Coupons extends WC_API_Coupons {
    * @param array $filter
    * @return array|void
    */
-  private function wc_pos_api_get_all_ids( $filter = array() ) {
+  public function get_all_ids( $filter = array() ) {
     $args = array(
       'post_type'      => array( 'shop_coupon' ),
       'post_status'    => array( 'publish' ),
@@ -54,7 +59,7 @@ class WC_POS_API_Coupons extends WC_API_Coupons {
     }
 
     $query = new WP_Query( $args );
-    return array_map( array( $this, 'wc_pos_api_format_id' ), $query->posts );
+    return array_map( array( $this, 'format_id' ), $query->posts );
   }
 
 
@@ -62,7 +67,7 @@ class WC_POS_API_Coupons extends WC_API_Coupons {
    * @param $id
    * @return array
    */
-  private function wc_pos_api_format_id( $id ) {
+  private function format_id( $id ) {
     return array( 'id' => $id );
   }
 

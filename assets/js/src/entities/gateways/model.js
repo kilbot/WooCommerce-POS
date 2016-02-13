@@ -13,10 +13,11 @@ module.exports = Model.extend({
     attributes = attributes || {};
     this.payment_fields = attributes.payment_fields;
     this.params = attributes.params;
+    this.icons = attributes.icons;
 
     attributes = _.pick(
       attributes,
-      ['active', 'icon', 'method_id', 'method_title']
+      ['active', 'method_id', 'method_title']
     );
 
     Model.call( this, attributes, options );
@@ -28,6 +29,10 @@ module.exports = Model.extend({
 
   getParams: function(){
     return this.params;
+  },
+
+  getIcons: function(){
+    return this.icons;
   }
 
 });

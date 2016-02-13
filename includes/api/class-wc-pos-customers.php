@@ -14,45 +14,55 @@ if ( ! defined( 'ABSPATH' ) ) {
   exit; // Exit if accessed directly
 }
 
-class WC_POS_API_Customers extends WC_API_Customers {
+class WC_POS_API_Customers extends WC_API_Resource {
+
+  /** @var string $base the route base */
+  protected $base = '/customers';
 
 
   /**
-   * Get Customers
+   * @param WC_API_Server $server
+   */
+  public function __construct( WC_API_Server $server ) {
+    parent::__construct( $server );
+    add_filter( 'woocommerce_api_customer_response', array( $this, 'customer_response' ), 10, 4 );
+
+    if( $server->path === $this->base ){
+      add_action( 'pre_get_users', array( $this, 'pre_get_users' ) );
+      add_action( 'pre_user_query', array( $this, 'pre_user_query' ) );
+    }
+  }
+
+
+  /**
+   * Register routes for POS Customers
    *
-   * @param null  $fields
-   * @param array $filter
-   * @param int   $page
+   * @param array $routes
    * @return array
    */
-  public function get_customers( $fields = null, $filter = array(), $page = 1 ) {
+  public function register_routes( $routes ) {
 
-    // add query actions
-    add_action( 'pre_get_users', array( $this, 'wc_pos_api_pre_get_users' ) );
-    add_action( 'pre_user_query', array( $this, 'wc_pos_api_pre_user_query' ) );
+    # GET /customers/ids
+    $routes[ $this->base . '/ids'] = array(
+      array( array( $this, 'get_all_ids' ), WC_API_Server::READABLE ),
+    );
 
-    // special case for all customer ids
-    if( $fields == 'id' && isset( $filter['limit'] ) && $filter['limit'] == -1 ){
-      return array( 'customers' => $this->wc_pos_api_get_all_ids( $filter ) );
-    }
-
-    // resume parent
-    return parent::get_customers( $fields, $filter, $page );
-
+    return $routes;
   }
 
 
   /**
    * - add `updated_at` to customer data
    *
-   * @param int  $id
-   * @param null $fields
-   * @return array
+   * @param $data
+   * @param $customer
+   * @param $fields
+   * @param $server
+   * @return
    */
-  public function get_customer( $id, $fields = null ){
-    $data = parent::get_customer( $id, $fields );
-    $timestamp = get_user_meta( $id , '_user_modified_gmt', true);
-    $data['customer']['updated_at'] = $this->server->format_datetime( $timestamp );
+  public function customer_response( $data, $customer, $fields, $server ){
+    $timestamp = get_user_meta( $customer->ID , '_user_modified_gmt', true);
+    $data['updated_at'] = $server->format_datetime( $timestamp );
     return $data;
   }
 
@@ -61,7 +71,7 @@ class WC_POS_API_Customers extends WC_API_Customers {
    *
    * @param $wp_user_query
    */
-  public function wc_pos_api_pre_get_users( $wp_user_query ) {
+  public function pre_get_users( $wp_user_query ) {
     global $wp_version;
 
     $wp_user_query->query_vars[ 'role' ] = '';
@@ -101,12 +111,12 @@ class WC_POS_API_Customers extends WC_API_Customers {
    *
    * @param $wp_user_query
    */
-  public function wc_pos_api_pre_user_query( $wp_user_query ) {
+  public function pre_user_query( $wp_user_query ) {
 
     // customer search
     $term = $wp_user_query->query_vars[ 'search' ];
     if ( !empty( $term ) ) {
-      $this->wc_pos_api_customer_search( $term, $wp_user_query );
+      $this->customer_search( $term, $wp_user_query );
     }
   }
 
@@ -116,7 +126,7 @@ class WC_POS_API_Customers extends WC_API_Customers {
    * @param $term
    * @param $wp_user_query
    */
-  private function wc_pos_api_customer_search($term, $wp_user_query){
+  private function customer_search($term, $wp_user_query){
     global $wpdb;
 
     // search usermeta table
@@ -156,7 +166,7 @@ class WC_POS_API_Customers extends WC_API_Customers {
    * @param array $filter
    * @return array|void
    */
-  private function wc_pos_api_get_all_ids( $filter = array() ){
+  public function get_all_ids( $filter = array() ){
     $args = array(
       'fields' => 'ID',
       'orderby' => 'ID'
@@ -169,7 +179,7 @@ class WC_POS_API_Customers extends WC_API_Customers {
     }
 
     $query = new WP_User_Query( $args );
-    return array_map( array( $this, 'wc_pos_api_format_id' ), $query->results );
+    return array_map( array( $this, 'format_id' ), $query->results );
   }
 
 
@@ -177,7 +187,7 @@ class WC_POS_API_Customers extends WC_API_Customers {
    * @param $id
    * @return array
    */
-  private function wc_pos_api_format_id( $id ) {
+  private function format_id( $id ) {
     return array( 'id' => $id );
   }
 

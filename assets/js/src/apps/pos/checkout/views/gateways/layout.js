@@ -5,24 +5,30 @@ var DrawerView = require('./drawer');
 module.exports = LayoutView.extend({
   tagName: 'li',
 
+  className: function(){
+    if( this.model.get('active') ){
+      return 'active';
+    }
+  },
+
   template: function() {
     return '<div class="gateway"></div><div class="drawer"></div>';
   },
 
   regions: {
-    gatewayRegion: '.gateway',
-    drawerRegion: '.drawer'
+    gateway: '.gateway',
+    drawer: '.drawer'
   },
 
-  initialize: function(){
-    this.listenTo(this.model, 'change:active', this.toggleDrawer);
+  modelEvents: {
+    'change:active': 'toggleActive'
   },
 
   onRender: function(){
     var view = new GatewayView({
       model: this.model
     });
-    this.gatewayRegion.show(view);
+    this.getRegion('gateway').show(view);
   },
 
   onShow: function(){
@@ -33,22 +39,23 @@ module.exports = LayoutView.extend({
 
   openDrawer: function(){
     var view = new DrawerView({
-      model: this.model
+      model: this.model,
+      template: this.model.getPaymentFields()
     });
-    this.drawerRegion.show(view);
-    this.$el.addClass('active');
+    this.getRegion('drawer').show(view);
   },
 
   closeDrawer: function(){
-    this.drawerRegion.empty();
-    this.$el.removeClass('active');
+    this.getRegion('drawer').empty();
   },
 
-  toggleDrawer: function(){
-    if( this.drawerRegion.hasView() ){
-      this.closeDrawer();
-    } else {
-      this.openDrawer();
+  toggleActive: function( model, active ){
+    if( active ){
+      this.$el.addClass('active');
+      return this.openDrawer();
     }
+    this.$el.removeClass('active');
+    return this.closeDrawer();
   }
+
 });

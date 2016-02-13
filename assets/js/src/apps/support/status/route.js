@@ -80,7 +80,11 @@ var StatusRoute = Route.extend({
 
     collection.clear()
       .then(function(){
-        self.render();
+        return self.render();
+      })
+      .done(function(){
+        collection._isNew = true;
+        collection.queue = [];
       });
   }
 

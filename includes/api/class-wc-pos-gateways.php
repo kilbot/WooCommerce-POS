@@ -53,7 +53,7 @@ class WC_POS_API_Gateways extends WC_API_Resource {
       $payload[] = array(
         'method_id'       => $gateway->id,
         'method_title'    => esc_html( $gateway->get_title() ),
-        'icon'            => $this->sanitize_icon( $gateway ),
+        'icons'           => $this->sanitize_icons( $gateway ),
         'active'          => $gateway->default,
         'payment_fields'  => $this->sanitize_payment_fields( $gateway ),
         'params'          => apply_filters('woocommerce_pos_gateway_' . strtolower( $gateway->id ) . '_params', array(), $gateway, $this )
@@ -70,15 +70,14 @@ class WC_POS_API_Gateways extends WC_API_Resource {
    * @param WC_Payment_Gateway $gateway
    * @return string
    */
-  private function sanitize_icon( WC_Payment_Gateway $gateway ) {
-    $icon = $gateway->show_icon ? $gateway->get_icon() : '';
-    if ( $icon !== '' ) {
-      // simple preg_match
-      preg_match( '/< *img[^>]*src *= *["\']?([^"\']*)/i', $icon, $src );
-      $icon = $src[ 1 ];
+  private function sanitize_icons( WC_Payment_Gateway $gateway ) {
+    $icons = $gateway->show_icon ? $gateway->get_icon() : '';
+
+    if ( $icons !== '' ) {
+      $icons = $this->parseImgSrc($icons);
     }
 
-    return $icon;
+    return $icons;
   }
 
   /**
@@ -101,7 +100,7 @@ class WC_POS_API_Gateways extends WC_API_Resource {
       $html = $this->removeDomNodes( $html, '//script' );
     }
 
-    return wc_pos_trim_html_string( $html );
+    return $html;
   }
 
   /**
@@ -124,6 +123,7 @@ class WC_POS_API_Gateways extends WC_API_Resource {
     // Libxml constants not available on all servers (Libxml < 2.7.8)
     // $html->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
     $dom->loadHtml( '<?xml encoding="UTF-8">' . '<div class="form-group">' . $html . '</div>' );
+    $dom->preserveWhiteSpace = false;
     // remove <!DOCTYPE
     $dom->removeChild( $dom->doctype );
     // remove <?xml encoding="UTF-8">
@@ -138,6 +138,33 @@ class WC_POS_API_Gateways extends WC_API_Resource {
     }
 
     return $dom->saveHTML();
+  }
+
+  /**
+   * @param $html
+   * @return array
+   */
+  private function parseImgSrc( $html ){
+    if( ! class_exists('DOMDocument') ){
+      // simple preg_match
+      preg_match_all( '/< *img[^>]*src *= *["\']?([^"\']*)/i', $html, $matches );
+      return $matches[ 1 ];
+    }
+
+    $icons = array();
+    $dom = new DOMDocument();
+
+    // suppress warnings for malformed HTML
+    libxml_use_internal_errors(true);
+
+    $dom->loadHTML($html);
+    $dom->preserveWhiteSpace = false;
+    $images = $dom->getElementsByTagName('img');
+    foreach ($images as $image) {
+      $icons[] = $image->getAttribute('src');
+    }
+
+    return $icons;
   }
 
 }

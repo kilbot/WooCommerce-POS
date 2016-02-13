@@ -19,7 +19,7 @@ module.exports = Collection.extend({
 
     Collection.prototype.constructor.call(this, settings, options);
 
-    this.on( 'change', this.onChangeActive );
+    this.on( 'change:active', this.onChangeActive );
 
     if( models ){
       this.set( models, { remove: false } );
@@ -27,10 +27,11 @@ module.exports = Collection.extend({
   },
 
   onChangeActive: function(model, active) {
-    if(!active){ return; }
-    this.each( function(tab) {
-      if( model.id !== tab.id ) {
-        tab.set({ active: false });
+    if( ! active ){ return; }
+
+    this.each( function( gateway ) {
+      if( model.id !== gateway.id ) {
+        gateway.set({ active: false });
       }
     });
   },

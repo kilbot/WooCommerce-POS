@@ -71,6 +71,11 @@ input-group {
       position: relative;
       display: flex;
 
+      // give icons the same line-height at the input
+      i {
+        line-height: inherit;
+      }
+
       .form-control {
         position: relative;
         z-index: 2;
@@ -120,11 +125,6 @@ input-group {
       // `font-size` in combination with `inline-block` on buttons.
       font-size: 0;
       white-space: nowrap;
-
-      // give icons the same line-height at the input
-      i {
-        line-height: inherit;
-      }
 
       // Negative margin for spacing, position for bringing hovered/focused/actived
       // element above the siblings.

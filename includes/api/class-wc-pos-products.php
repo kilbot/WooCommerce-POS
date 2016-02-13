@@ -14,7 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
   exit; // Exit if accessed directly
 }
 
-class WC_POS_API_Products extends WC_API_Products {
+class WC_POS_API_Products extends WC_API_Resource {
+
+  /** @var string $base the route base */
+  protected $base = '/products';
 
   /* @var string Barcode postmeta */
   public $barcode_meta_key;
@@ -99,31 +102,29 @@ class WC_POS_API_Products extends WC_API_Products {
 
     // allow third party plugins to change the barcode postmeta field
     $this->barcode_meta_key = apply_filters( 'woocommerce_pos_barcode_meta_key', '_sku' );
-    add_filter( 'woocommerce_api_product_response', array( $this, 'wc_pos_api_product_response' ), 10, 4 );
+    add_filter( 'woocommerce_api_product_response', array( $this, 'product_response' ), 10, 4 );
 
+    if( $server->path === $this->base ){
+      add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+      add_filter( 'posts_where', array( $this, 'posts_where' ), 10 , 2 );
+    }
   }
 
 
   /**
-   * Add special case for all product ids
+   * Register routes for POS Products
    *
-   * @param null  $fields
-   * @param null  $type
-   * @param array $filter
-   * @param int   $page
+   * @param array $routes
    * @return array
    */
-  public function get_products( $fields = null, $type = null, $filter = array(), $page = 1 ) {
+  public function register_routes( $routes ) {
 
-    if( $fields == 'id' && isset( $filter['limit'] ) && $filter['limit'] == -1 ){
-      return array( 'products' => $this->wc_pos_api_get_all_ids( $filter ) );
-    }
+    # GET /products/ids
+    $routes[ $this->base . '/ids'] = array(
+      array( array( $this, 'get_all_ids' ), WC_API_Server::READABLE ),
+    );
 
-    // add hooks
-    add_action( 'pre_get_posts', array( $this, 'wc_pos_api_pre_get_posts' ) );
-    add_filter( 'posts_where', array( $this, 'wc_pos_api_posts_where' ), 10 , 2 );
-
-    return parent::get_products( $fields, $type, $filter, $page );
+    return $routes;
   }
 
 
@@ -138,7 +139,7 @@ class WC_POS_API_Products extends WC_API_Products {
    *
    * @return array modified data array $product_data
    */
-  public function wc_pos_api_product_response( $data, $product, $fields, $server ) {
+  public function product_response( $data, $product, $fields, $server ) {
     $type = isset( $data['type'] ) ? $data['type'] : '';
 
     // variable products
@@ -146,17 +147,17 @@ class WC_POS_API_Products extends WC_API_Products {
       // nested variations
       foreach( $data['variations'] as &$variation ) :
         $_product = wc_get_product( $variation['id'] );
-        $variation = $this->wc_pos_api_filter_response_data( $variation, $_product );
-        $variation['attributes'] = $this->wc_pos_api_patch_variation_attributes( $_product );
+        $variation = $this->filter_response_data( $variation, $_product );
+        $variation['attributes'] = $this->patch_variation_attributes( $_product );
       endforeach;
     endif;
 
     // variation
     if( $type == 'variation' ) :
-      $data['attributes'] = $this->wc_pos_api_patch_variation_attributes( $product );
+      $data['attributes'] = $this->patch_variation_attributes( $product );
     endif;
 
-    return $this->wc_pos_api_filter_response_data( $data, $product );
+    return $this->filter_response_data( $data, $product );
   }
 
 
@@ -166,7 +167,7 @@ class WC_POS_API_Products extends WC_API_Products {
    * @param $product
    * @return array
    */
-  private function wc_pos_api_patch_variation_attributes( $product ){
+  private function patch_variation_attributes( $product ){
     $patched_attributes = array();
     $attributes = $product->get_attributes();
     $variation_attributes = $product->get_variation_attributes();
@@ -182,8 +183,8 @@ class WC_POS_API_Products extends WC_API_Products {
 
       if( isset( $attributes[$slug] ) ){
         $patched_attributes[] = array(
-          'name'    => $this->wc_pos_api_get_variation_name( $attributes[$slug] ),
-          'option'  => $this->wc_pos_api_get_variation_option( $product, $attributes[$slug], $option )
+          'name'    => $this->get_variation_name( $attributes[$slug] ),
+          'option'  => $this->get_variation_option( $product, $attributes[$slug], $option )
         );
       }
 
@@ -197,7 +198,7 @@ class WC_POS_API_Products extends WC_API_Products {
    * @param $attribute
    * @return null|string
    */
-  private function wc_pos_api_get_variation_name( $attribute ){
+  private function get_variation_name( $attribute ){
     if( $attribute['is_taxonomy'] ){
       global $wpdb;
       $name = str_replace( 'pa_', '', $attribute['name'] );
@@ -222,7 +223,7 @@ class WC_POS_API_Products extends WC_API_Products {
    * @param $attribute
    * @return mixed
    */
-  private function wc_pos_api_get_variation_option( $product, $attribute, $option ){
+  private function get_variation_option( $product, $attribute, $option ){
     $name = $option;
 
     // taxonomy attributes
@@ -253,10 +254,10 @@ class WC_POS_API_Products extends WC_API_Products {
    * @param $product
    * @return array
    */
-  private function wc_pos_api_filter_response_data( array $data, $product ){
+  private function filter_response_data( array $data, $product ){
     $barcode = get_post_meta( $product->id, $this->barcode_meta_key, true );
 
-    $data['featured_src'] = $this->wc_pos_api_get_thumbnail( $product->id );
+    $data['featured_src'] = $this->get_thumbnail( $product->id );
     $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $barcode, $product->id );
 
     // allow decimal stock quantities, fixed in WC 2.4
@@ -277,7 +278,7 @@ class WC_POS_API_Products extends WC_API_Products {
    * @param int $id
    * @return string
    */
-  private function wc_pos_api_get_thumbnail($id){
+  private function get_thumbnail($id){
     $image = false;
     $thumb_id = get_post_thumbnail_id( $id );
 
@@ -294,8 +295,7 @@ class WC_POS_API_Products extends WC_API_Products {
   /**
    * @param $query
    */
-  public function wc_pos_api_pre_get_posts($query){
-
+  public function pre_get_posts($query){
     // store original meta_query
     $meta_query = $query->get( 'meta_query' );
 
@@ -336,7 +336,7 @@ class WC_POS_API_Products extends WC_API_Products {
    * @param $query
    * @return mixed
    */
-  public function wc_pos_api_posts_where( $where, $query ) {
+  public function posts_where( $where, $query ) {
     global $wpdb;
 
     if( isset( $_GET['filter'] ) ){
@@ -379,7 +379,7 @@ class WC_POS_API_Products extends WC_API_Products {
    * @param array $filter
    * @return array|void
    */
-  private function wc_pos_api_get_all_ids( $filter = array() ){
+  public function get_all_ids( $filter = array() ){
     $args = array(
       'post_type'     => array('product'),
       'post_status'   => array('publish'),
@@ -396,7 +396,7 @@ class WC_POS_API_Products extends WC_API_Products {
     }
 
     $query = new WP_Query( $args );
-    return array_map( array( $this, 'wc_pos_api_format_id' ), $query->posts );
+    return array( 'products' => array_map( array( $this, 'format_id' ), $query->posts ) );
   }
 
 
@@ -404,7 +404,7 @@ class WC_POS_API_Products extends WC_API_Products {
  * @param $id
  * @return array
  */
-  private function wc_pos_api_format_id( $id ){
+  private function format_id( $id ){
     return array( 'id' => $id );
   }
 

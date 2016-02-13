@@ -29,10 +29,10 @@
     </th>
     <td>
       <input type="checkbox" name="admin_emails" id="admin_emails" />
-      <label for="order_emails"><?php _e( 'Enable admin emails', 'woocommerce-pos' ); ?></label>
+      <label for="admin_emails"><?php _e( 'Enable admin emails', 'woocommerce-pos' ); ?></label>
       <br>
       <input type="checkbox" name="customer_emails" id="customer_emails" />
-      <label for="order_emails"><?php _e( 'Enable customer emails', 'woocommerce-pos' ); ?></label>
+      <label for="customer_emails"><?php _e( 'Enable customer emails', 'woocommerce-pos' ); ?></label>
     </td>
   </tr>
 

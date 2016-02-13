@@ -19,6 +19,7 @@ class WC_POS_API_Support extends WC_API_Resource {
 
   public $support_email = 'support@woopos.com.au';
 
+
   /**
    * Register routes for POS Params
    *
@@ -59,7 +60,9 @@ class WC_POS_API_Support extends WC_API_Resource {
       $message .= $this->get_active_plugins();
     }
 
-    if( wp_mail( $this->support_email, 'WooCommerce POS Support', $message, $headers ) ) {
+    $support_email = apply_filters( 'woocommerce_pos_support_email', $this->support_email );
+
+    if( wp_mail( $support_email, 'WooCommerce POS Support', $message, $headers ) ) {
       return array(
         'result' => 'success',
         'message' => __( 'Email sent', 'woocommerce-pos')

@@ -14,50 +14,55 @@ if ( ! defined( 'ABSPATH' ) ) {
   exit; // Exit if accessed directly
 }
 
-class WC_POS_API_Orders extends WC_API_Orders {
+class WC_POS_API_Orders {
+
+  /** @var string $base the route base */
+  protected $base = '/orders';
 
   /** @var array Contains the raw order data */
   private $data = array();
   private $flag = false;
 
+
   /**
    * @param WC_API_Server $server
    */
   public function __construct( WC_API_Server $server ) {
-    parent::__construct( $server );
-
-    // order data
-    add_filter( 'woocommerce_api_create_order_data', array( $this, 'wc_pos_api_create_order_data') );
-    add_filter( 'woocommerce_api_edit_order_data', array( $this, 'wc_pos_api_edit_order_data'), 10, 2 );
-    add_action( 'woocommerce_api_create_order', array( $this, 'wc_pos_api_create_order') );
-    add_action( 'woocommerce_api_edit_order', array( $this, 'wc_pos_api_edit_order') );
-
-    // payment
-    add_action( 'woocommerce_pos_process_payment', array( $this, 'wc_pos_api_process_payment' ), 10, 2 );
-    add_action( 'woocommerce_payment_complete', array( $this, 'wc_pos_api_payment_complete' ), 10, 1 );
 
     // order response
-    add_filter( 'woocommerce_api_order_response', array( $this, 'wc_pos_api_order_response' ), 10, 4 );
+    add_filter( 'woocommerce_api_order_response', array( $this, 'order_response' ), 10, 4 );
 
     // order emails
-    add_filter( 'woocommerce_email', array( $this, 'wc_pos_api_woocommerce_email' ), 99 );
+    add_filter( 'woocommerce_email', array( $this, 'woocommerce_email' ), 99 );
+
+    if( substr( $server->path, 0, strlen( $this->base ) ) === $this->base ){
+      // order data
+      add_filter( 'woocommerce_api_dispatch_args', array( $this, 'dispatch_args' ), 10, 2 );
+
+      add_filter( 'woocommerce_api_create_order_data', array( $this, 'create_order_data') );
+      add_filter( 'woocommerce_api_edit_order_data', array( $this, 'edit_order_data'), 10, 2 );
+      add_action( 'woocommerce_api_create_order', array( $this, 'create_order') );
+      add_action( 'woocommerce_api_edit_order', array( $this, 'edit_order') );
+
+      // payment
+      add_action( 'woocommerce_pos_process_payment', array( $this, 'process_payment' ), 10, 2 );
+      add_action( 'woocommerce_payment_complete', array( $this, 'payment_complete' ), 10, 1 );
+    }
+
   }
 
 
   /**
    * Register routes for POS Orders
    *
-   * GET /pos
-   *
    * @param array $routes
    * @return array
    */
   public function register_routes( $routes ) {
-    $routes = parent::register_routes( $routes );
 
     # POST /orders/<order_id>/email/<email>
     $routes[ $this->base . '/(?P<order_id>\d+)/email/(?P<email>.+)' ] = array(
-      array( array( $this, 'wc_pos_api_email_receipt' ), WC_API_SERVER::CREATABLE | WC_API_Server::ACCEPT_DATA )
+      array( array( $this, 'email_receipt' ), WC_API_SERVER::CREATABLE | WC_API_Server::ACCEPT_DATA )
     );
 
     return $routes;
@@ -65,19 +70,24 @@ class WC_POS_API_Orders extends WC_API_Orders {
 
 
   /**
-   * Add special case for all product ids
+   * Parse data sent by POS
    *
-   * @param null  $fields
-   * @param array $filter
-   * @param null  $status
-   * @param int   $page
+   * @param array $args
+   * @param $callback
    * @return array
    */
-  public function get_orders( $fields = null, $filter = array(), $status = null, $page = 1 ) {
-    if( $fields == 'id' && isset( $filter['limit'] ) && $filter['limit'] == -1 ){
-      return array( 'orders' => $this->wc_pos_api_get_all_ids( $filter ) );
+  public function dispatch_args( $args, $callback ){
+    if( !isset( $args['data'] ) ){
+      return $args;
     }
-    return parent::get_orders( $fields, $filter, $status, $page );
+
+    if( !isset( $args['data']['order'] ) ){
+      $args['data'] = array(
+        'order' => $args['data']
+      );
+    }
+
+    return $args;
   }
 
 
@@ -87,23 +97,20 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param array $data
    * @return array
    */
-  public function wc_pos_api_create_order_data(array $data){
-
-    // store raw http data
-    $this->data = $data;
+  public function create_order_data(array $data){
 
     // add filters & actions for create order
-    add_filter( 'woocommerce_product_tax_class', array( $this, 'wc_pos_api_product_tax_class' ), 10, 2 );
-    add_filter( 'woocommerce_get_product_from_item', array( $this, 'wc_pos_api_get_product_from_item' ), 10, 3 );
-    add_filter( 'pre_option_woocommerce_tax_based_on', array( $this, 'wc_pos_api_woocommerce_tax_based_on' ) );
-    add_filter( 'woocommerce_find_rates', array( $this, 'wc_pos_api_find_rates'), 10, 2 );
-    add_action( 'woocommerce_order_add_product', array( $this, 'wc_pos_api_order_add_product'), 10, 5 );
-    add_action( 'updated_order_item_meta', array( $this, 'wc_pos_api_updated_order_item_meta'), 10, 4 );
+    add_filter( 'woocommerce_product_tax_class', array( $this, 'product_tax_class' ), 10, 2 );
+    add_filter( 'woocommerce_get_product_from_item', array( $this, 'get_product_from_item' ), 10, 3 );
+    add_filter( 'pre_option_woocommerce_tax_based_on', array( $this, 'woocommerce_tax_based_on' ) );
+    add_filter( 'woocommerce_find_rates', array( $this, 'find_rates'), 10, 2 );
+    add_action( 'woocommerce_order_add_product', array( $this, 'order_add_product'), 10, 5 );
+    add_action( 'updated_order_item_meta', array( $this, 'updated_order_item_meta'), 10, 4 );
 
     // WC API < 2.4 has a bug if $fee['taxable'] = false
     // set $fee['taxable'] = true and use random tax_class so not tax is calculated
-    if( version_compare( WC()->version, '2.4', '<' ) && isset($this->data['fee_lines']) ){
-      foreach( $this->data['fee_lines'] as &$fee ){
+    if( version_compare( WC()->version, '2.4', '<' ) && isset($data['fee_lines']) ){
+      foreach( $data['fee_lines'] as &$fee ){
         if( !isset($fee['taxable']) || $fee['taxable'] == false ){
           $fee['taxable'] = true;
           $fee['tax_class'] = 'upgrade-woocommerce-' . time();
@@ -114,21 +121,29 @@ class WC_POS_API_Orders extends WC_API_Orders {
     // WC handling of shipping is FUBAR
     // if order has shipping line, we'll have to calc the tax ourselves
     // also recalc total tax for negative fee lines
-    $has_fee = isset($this->data['fee_lines']) && !empty($this->data['fee_lines']);
-    $has_shipping = isset($this->data['shipping_lines']) && !empty($this->data['shipping_lines']);
+    $has_fee = isset($data['fee_lines']) && !empty($data['fee_lines']);
+    $has_shipping = isset($data['shipping_lines']) && !empty($data['shipping_lines']);
 
     if( $has_shipping )
-      add_action( 'woocommerce_order_add_shipping', array( $this, 'wc_pos_api_order_add_shipping'), 10, 3 );
+      add_action( 'woocommerce_order_add_shipping', array( $this, 'order_add_shipping'), 10, 3 );
 
     if( $has_fee || $has_shipping )
-      add_filter( 'update_post_metadata', array( $this, 'wc_pos_api_update_post_metadata'), 10, 5 );
+      add_filter( 'update_post_metadata', array( $this, 'update_post_metadata'), 10, 5 );
 
     // populate customer data
     $customer_id = isset( $data['customer_id'] ) ? $data['customer_id'] : 0 ;
-    if($customer_id){
-      $this->data['billing_address'] = $this->wc_pos_api_get_customer_details($customer_id, 'billing');
-      $this->data['shipping_address'] = $this->wc_pos_api_get_customer_details($customer_id, 'shipping');
+    if( $customer_id ){
+      $data['billing_address'] = $this->get_customer_details($customer_id, 'billing');
+      $data['shipping_address'] = $this->get_customer_details($customer_id, 'shipping');
     }
+
+    // remove status
+    if( isset( $data['status'] ) && $data['status'] == 'CREATE_FAILED' ){
+      unset( $data['status'] );
+    }
+
+    // store data
+    $this->data = $data;
 
     return $this->data;
   }
@@ -140,9 +155,16 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $order_id
    * @return array
    */
-  public function wc_pos_api_edit_order_data(array $data, $order_id){
+  public function edit_order_data(array $data, $order_id){
+
+    // remove status
+    if( isset( $data['status'] ) && $data['status'] == 'UPDATE_FAILED' ){
+      unset( $data['status'] );
+    }
+
     $this->delete_order_items($order_id);
-    return $this->wc_pos_api_create_order_data($data);
+
+    return $this->create_order_data($data);
   }
 
   /**
@@ -151,13 +173,13 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $product
    * @return string
    */
-  public function wc_pos_api_product_tax_class($tax_class, $product){
+  public function product_tax_class($tax_class, $product){
 
     $id = isset($product->id) ? $product->id: false;
     $id = isset($product->variation_id) ? $product->variation_id: $id;
 
     if($id){
-      $item = $this->wc_pos_api_get_line_item($id);
+      $item = $this->get_line_item($id);
       if( isset( $item['tax_class'] ) ){
         $tax_class = sanitize_text_field( $item['tax_class'] );
       }
@@ -173,13 +195,13 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $WC_Product
    * @return mixed
    */
-  public function wc_pos_api_get_product_from_item($product, $item, $WC_Product){
+  public function get_product_from_item($product, $item, $WC_Product){
 
     $id = isset($product->id) ? $product->id: false;
     $id = isset($product->variation_id) ? $product->variation_id: $id;
 
     if($id){
-      $data = $this->wc_pos_api_get_line_item($id);
+      $data = $this->get_line_item($id);
       if( isset( $data['taxable'] ) ){
         // api has options true/false
         // tax_status has options taxable/shipping/none
@@ -199,13 +221,13 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $qty
    * @param $args
    */
-  public function wc_pos_api_order_add_product($order_id, $item_id, $product, $qty, $args){
+  public function order_add_product($order_id, $item_id, $product, $qty, $args){
 
     $id = isset($product->id) ? $product->id: false;
     $id = isset($product->variation_id) ? $product->variation_id: $id;
 
     if($id){
-      $data = $this->wc_pos_api_get_line_item($id);
+      $data = $this->get_line_item($id);
 
       // update title
       if( isset( $data['title'] ) ){
@@ -218,7 +240,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
 
       // update meta
       if( isset( $data['meta'] ) && !empty( $data['meta'] ) ){
-        $this->wc_pos_api_add_product_meta( $item_id, $data['meta'] );
+        $this->add_product_meta( $item_id, $data['meta'] );
       }
 
     }
@@ -230,7 +252,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $item_id
    * @param array $meta
    */
-  private function wc_pos_api_add_product_meta($item_id, array $meta){
+  private function add_product_meta($item_id, array $meta){
 
     // line meta
     foreach($meta as $m) {
@@ -247,8 +269,8 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $item_id
    * @param $rate
    */
-  public function wc_pos_api_order_add_shipping($order_id, $item_id, $rate){
-    $shipping_line = $this->wc_pos_api_get_shipping_line($rate, $item_id);
+  public function order_add_shipping($order_id, $item_id, $rate){
+    $shipping_line = $this->get_shipping_line($rate, $item_id);
 
     if($shipping_line && isset($shipping_line['tax'])){
       $taxes = array();
@@ -265,7 +287,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * Short circuit get_option('woocommerce_tax_based_on') as shop base
    * @return string
    */
-  public function wc_pos_api_woocommerce_tax_based_on(){
+  public function woocommerce_tax_based_on(){
     return 'base';
   }
 
@@ -275,7 +297,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $args
    * @return array
    */
-  public function wc_pos_api_find_rates( $matched_tax_rates, $args ){
+  public function find_rates( $matched_tax_rates, $args ){
     if ( $matched_tax_rates ) {
       foreach ( $matched_tax_rates as &$rate ) {
         $rate['shipping'] = 'no';
@@ -288,7 +310,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * Retrieve line_item from raw data
    * @param $product_id
    */
-  private function wc_pos_api_get_line_item($product_id){
+  private function get_line_item($product_id){
     if(!isset($this->data['line_items']))
       return;
 
@@ -304,7 +326,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $rate
    * @param $item_id
    */
-  private function wc_pos_api_get_shipping_line($rate, $item_id){
+  private function get_shipping_line($rate, $item_id){
     if(!isset($this->data['shipping_lines']))
       return;
 
@@ -328,7 +350,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $meta_key
    * @param $meta_value
    */
-  public function wc_pos_api_updated_order_item_meta($meta_id, $order_id, $meta_key, $meta_value){
+  public function updated_order_item_meta($meta_id, $order_id, $meta_key, $meta_value){
 
     if($meta_key == '_line_tax_data'){
       $line_subtotal_taxes = isset($meta_value['subtotal']) ? $meta_value['subtotal'] : array();
@@ -353,7 +375,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $prev_value
    * @return null
    */
-  public function wc_pos_api_update_post_metadata($null, $order_id, $meta_key, $meta_value, $prev_value){
+  public function update_post_metadata($null, $order_id, $meta_key, $meta_value, $prev_value){
 
     // we want last update to _order_shipping after $order->calculate_taxes()
     // set flag true on first pass
@@ -410,7 +432,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * Create order complete
    * @param $order_id
    */
-  public function wc_pos_api_create_order( $order_id ){
+  public function create_order( $order_id ){
     // pos meta
     global $current_user;
     get_currentuserinfo();
@@ -426,7 +448,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * Edit order complete
    * @param $order_id
    */
-  public function wc_pos_api_edit_order( $order_id ){
+  public function edit_order( $order_id ){
     // payment
     do_action( 'woocommerce_pos_process_payment', $order_id, $this->data);
   }
@@ -436,7 +458,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $order_id
    * @param $data
    */
-  public function wc_pos_api_process_payment( $order_id, $data ) {
+  public function process_payment( $order_id, $data ) {
 
     if ( !isset( $data[ 'payment_details' ] ) ) {
       return;
@@ -449,7 +471,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
 
     // load the gateways & process payment
     $gateway_id = $data[ 'payment_details' ][ 'method_id' ];
-    add_filter( 'option_woocommerce_' . $gateway_id . '_settings', array( $this, 'wc_pos_api_force_enable_gateway' ) );
+    add_filter( 'option_woocommerce_' . $gateway_id . '_settings', array( $this, 'force_enable_gateway' ) );
     $settings = WC_POS_Admin_Settings_Checkout::get_instance();
     $gateways = $settings->load_enabled_gateways();
 
@@ -457,13 +479,13 @@ class WC_POS_API_Orders extends WC_API_Orders {
       do_action( 'woocommerce_pos_process_' . strtolower( $gateway_id ) . '_payment', $order_id, $data );
       $response = $gateways[ $gateway_id ]->process_payment( $order_id );
       if ( isset( $response[ 'result' ] ) && $response[ 'result' ] == 'success' ) {
-        $this->wc_pos_api_payment_success( $gateway_id, $order_id, $response );
+        $this->payment_success( $gateway_id, $order_id, $response );
       } else {
-        $this->wc_pos_api_payment_failure( $gateway_id, $order_id, $response );
+        $this->payment_failure( $gateway_id, $order_id, $response );
       }
 
     } else {
-      $this->wc_pos_api_payment_failure( $gateway_id, $order_id, '' );
+      $this->payment_failure( $gateway_id, $order_id, '' );
     }
 
     // switch back to logged in user
@@ -478,7 +500,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $data
    * @return mixed
    */
-  public function wc_pos_api_force_enable_gateway($data) {
+  public function force_enable_gateway($data) {
     if ( isset( $data[ 'enabled' ] ) ) {
       $data[ 'enabled' ] = 'yes';
     }
@@ -491,7 +513,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $order_id
    * @param $response
    */
-  private function wc_pos_api_payment_success($gateway_id, $order_id, $response){
+  private function payment_success($gateway_id, $order_id, $response){
 
     // capture any instructions
     ob_start();
@@ -501,7 +523,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
 
     // redirect
     if( isset($response['redirect']) ){
-      $response['messages'] = $this->wc_pos_api_payment_redirect($gateway_id, $order_id, $response);
+      $response['messages'] = $this->payment_redirect($gateway_id, $order_id, $response);
     }
 
     update_post_meta( $order_id, '_pos_payment_result', 'success' );
@@ -513,7 +535,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $order_id
    * @param $response
    */
-  private function wc_pos_api_payment_failure($gateway_id, $order_id, $response){
+  private function payment_failure($gateway_id, $order_id, $response){
     $message = isset($response['messages']) ? $response['messages'] : wc_get_notices( 'error' );
 
     // if messages empty give generic response
@@ -531,7 +553,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $response
    * @return string
    */
-  private function wc_pos_api_payment_redirect($gateway_id, $order_id, $response){
+  private function payment_redirect($gateway_id, $order_id, $response){
     $message = $response['messages'];
 
     // compare url fragments
@@ -554,7 +576,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
   /**
    * @param $order_id
    */
-  public function wc_pos_api_payment_complete( $order_id ) {
+  public function payment_complete( $order_id ) {
 
     // update order status
     $order = new WC_Order( $order_id );
@@ -574,23 +596,23 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $server
    * @return array
    */
-  public function wc_pos_api_order_response( $order_data, $order, $fields, $server ) {
+  public function order_response( $order_data, $order, $fields, $server ) {
 
     // add cashier data
-    $order_data['cashier'] = $this->wc_pos_api_add_cashier_details( $order );
+    $order_data['cashier'] = $this->add_cashier_details( $order );
 
     // add pos payment info
     $payment_details = isset( $order_data['payment_details'] ) ? $order_data['payment_details'] : array();
-    $order_data['payment_details'] = $this->wc_pos_api_add_payment_details( $order, $payment_details );
+    $order_data['payment_details'] = $this->add_payment_details( $order, $payment_details );
 
     // addresses
-//    $order_data['billing_address'] = $this->wc_pos_api_filter_address($order_data['billing_address'], $order);
-//    $order_data['shipping_address'] = $this->wc_pos_api_filter_address($order_data['shipping_address'], $order, 'shipping');
+//    $order_data['billing_address'] = $this->filter_address($order_data['billing_address'], $order);
+//    $order_data['shipping_address'] = $this->filter_address($order_data['shipping_address'], $order, 'shipping');
 
     // allow decimal quantity
     // fixed in WC 2.4+
     if( version_compare( WC()->version, '2.4', '<' ) && wc_pos_get_option( 'general', 'decimal_qty' ) ){
-      $order_data['line_items'] = $this->wc_pos_api_filter_qty($order_data['line_items']);
+      $order_data['line_items'] = $this->filter_qty($order_data['line_items']);
     }
 
     // add subtotal_tax
@@ -620,7 +642,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $order
    * @return array
    */
-  private function wc_pos_api_add_cashier_details( $order ) {
+  private function add_cashier_details( $order ) {
 
 		if ( !$cashier_id = get_post_meta( $order->id, '_pos_user', true ) ) {
 			return;
@@ -648,7 +670,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param array $payment_details
    * @return array
    */
-  private function wc_pos_api_add_payment_details( $order, array $payment_details ){
+  private function add_payment_details( $order, array $payment_details ){
 
     $payment_details['result']   = get_post_meta( $order->id, '_pos_payment_result', true );
     $payment_details['message']  = get_post_meta( $order->id, '_pos_payment_message', true );
@@ -669,7 +691,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param string $type
    * @return array
    */
-  private function wc_pos_api_filter_address( $address, $order, $type = 'billing' ){
+  private function filter_address( $address, $order, $type = 'billing' ){
     $fields = apply_filters('woocommerce_admin_'.$type.'_fields', false);
     if( $fields ){
       $address = array();
@@ -687,7 +709,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $type_to_load
    * @return mixed|void
    */
-  private function wc_pos_api_get_customer_details( $user_id, $type_to_load ){
+  private function get_customer_details( $user_id, $type_to_load ){
     $customer_data = array(
       $type_to_load . '_first_name' => get_user_meta( $user_id, $type_to_load . '_first_name', true ),
       $type_to_load . '_last_name'  => get_user_meta( $user_id, $type_to_load . '_last_name', true ),
@@ -716,49 +738,12 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $line_items
    * @return mixed
    */
-  private function wc_pos_api_filter_qty($line_items){
+  private function filter_qty($line_items){
     foreach( $line_items as &$item ){
       $qty = wc_get_order_item_meta( $item['id'], '_qty' );
       $item['quantity'] = wc_stock_amount( $qty );
     }
     return $line_items;
-  }
-
-
-  /**
-   * Returns array of all order ids
-   * optionally return ids updated_at_min
-   *
-   * @param array $filter
-   * @return array|void
-   */
-  private function wc_pos_api_get_all_ids( $filter = array() ){
-    $args = array(
-      'post_type'     => array('shop_order'),
-      'post_status'   => array('any'),
-      'posts_per_page'=> -1,
-      'fields'        => 'ids'
-    );
-
-    if( isset( $filter['updated_at_min'] ) ){
-      $args['date_query'][] = array(
-        'column'    => 'post_modified_gmt',
-        'after'     => $filter['updated_at_min'],
-        'inclusive' => false
-      );
-    }
-
-    $query = new WP_Query( $args );
-    return array_map( array( $this, 'wc_pos_api_format_id' ), $query->posts );
-  }
-
-
-  /**
-   * @param $id
-   * @return array
-   */
-  private function wc_pos_api_format_id( $id ){
-    return array( 'id' => $id );
   }
 
 
@@ -783,21 +768,21 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * WC email notifications
    * @param WC_Emails $wc_emails
    */
-  public function wc_pos_api_woocommerce_email(WC_Emails $wc_emails) {
+  public function woocommerce_email(WC_Emails $wc_emails) {
 
     if( ! wc_pos_get_option( 'checkout', 'customer_emails' ) ){
-      $this->wc_pos_api_remove_customer_emails($wc_emails);
+      $this->remove_customer_emails($wc_emails);
     }
 
     if( ! wc_pos_get_option( 'checkout', 'admin_emails' ) ){
-      $this->wc_pos_api_remove_admin_emails($wc_emails);
+      $this->remove_admin_emails($wc_emails);
     }
   }
 
   /**
    * @param WC_Emails $wc_emails
    */
-  private function wc_pos_api_remove_customer_emails(WC_Emails $wc_emails){
+  private function remove_customer_emails(WC_Emails $wc_emails){
     remove_action(
       'woocommerce_order_status_pending_to_processing_notification',
       array(
@@ -824,7 +809,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
   /**
    * @param WC_Emails $wc_emails
    */
-  private function wc_pos_api_remove_admin_emails(WC_Emails $wc_emails){
+  private function remove_admin_emails(WC_Emails $wc_emails){
     // send 'woocommerce_low_stock_notification'
     // send 'woocommerce_no_stock_notification'
     // send 'woocommerce_product_on_backorder_notification'
@@ -880,7 +865,7 @@ class WC_POS_API_Orders extends WC_API_Orders {
    * @param $email
    * @return array
    */
-  static public function wc_pos_api_email_receipt( $order_id, $email ) {
+  static public function email_receipt( $order_id, $email ) {
     $order = wc_get_order( absint( $order_id ) );
 
     if ( is_object( $order ) ) {

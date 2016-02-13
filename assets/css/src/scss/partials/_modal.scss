@@ -122,6 +122,7 @@ modal {
 
       > div {
         @include display-flex;
+        @include align-items(stretch);
       }
 
       /**

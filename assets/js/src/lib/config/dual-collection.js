@@ -176,11 +176,12 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
 
   /**
    * Get array of all entity ids from the server
-   * @todo remove optimised endpoint
+   * - optimised endpoint
    * - optionally get ids modified since last_update
    */
   getRemoteIds: function(last_update){
     var self = this;
+    var url = _.result(this, 'url') + '/ids';
 
     if(last_update){
       debug('getting updated ids from server since ' + last_update);
@@ -189,6 +190,7 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
     }
 
     return this.sync('read', this, {
+      url: url,
       remote: true,
       data: {
         fields: 'id',
