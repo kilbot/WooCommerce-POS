@@ -6,13 +6,12 @@ var Customers = require('./customers/collection');
 var Coupons = require('./coupons/collection');
 var Settings = require('./settings/collection');
 var Gateways = require('./gateways/collection');
-var FilteredCollection = require('lib/config/obscura');
+var FilteredCollection = require('backbone.obscura');
 var debug = require('debug')('entities');
 var App = require('lib/config/application');
 var _ = require('lodash');
 var Radio = require('backbone.radio');
 var storage = global.localStorage || window.localStorage;
-var JSON = global.JSON || window.JSON;
 
 var EntitiesService = Service.extend({
   channelName: 'entities',
@@ -131,11 +130,11 @@ var EntitiesService = Service.extend({
   },
 
   serialize: function(value){
-    return JSON.stringify(value);
+    return window.JSON.stringify(value);
   },
 
   deserialize: function(value){
-    try { value = JSON.parse(value); }
+    try { value = window.JSON.parse(value); }
     catch(e) { debug(e); }
     return value || undefined;
   },

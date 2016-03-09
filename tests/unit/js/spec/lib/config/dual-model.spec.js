@@ -1,21 +1,29 @@
 describe('lib/config/dual-model.js', function () {
 
-  beforeEach(function () {
-    this.ajaxSync = stub().resolves('hi');
-    var DualModel = proxyquire('lib/config/dual-model', {
-      './deep-model': Backbone.Model.extend({
-        sync: this.ajaxSync
-      })
-    });
-    this.model = new DualModel();
-  });
+  var Model = require('lib/config/dual-model');
 
   it('should be in a valid state', function() {
-    this.model.should.be.ok;
+    var model = new Model();
+    model.should.be.ok;
   });
 
-  it('save with the correct delayed status', function() {
-    this.model.save({title: 'Foo'});
+  it('should have a \'isDelayed\' method', function() {
+
+    var model = new Model({}, {
+      collection: {
+        states: {
+          'update' : 'UPDATE_FAILED',
+          'create' : 'CREATE_FAILED',
+          'delete' : 'DELETE_FAILED'
+        }
+      }
+    });
+
+    expect( model.isDelayed() ).to.be.false;
+
+    model.set({ _state: 'CREATE_FAILED' });
+    expect( model.isDelayed() ).to.be.true;
+
   });
 
 });

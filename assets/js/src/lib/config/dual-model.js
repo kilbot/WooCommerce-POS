@@ -1,34 +1,22 @@
-var DeepModel = require('./deep-model');
-var app = require('./application');
+var bb = require('backbone');
+var IDBModel = require('./idb-model');
 var _ = require('lodash');
-//var debug = require('debug')('dualModel');
+var app = require('./application');
 
-module.exports = app.prototype.DualModel = DeepModel.extend({
+module.exports = app.prototype.DualModel = IDBModel.extend({
 
   idAttribute: 'local_id',
 
   remoteIdAttribute: 'id',
 
-  fields: ['title'],
-
-  defaults: {
-    status: 'CREATE_FAILED'
+  isDelayed: function(state){
+    state = state || this.get('_state');
+    return _.includes(this.collection.states, state);
   },
-
-//validate: function(attrs){
-//  var obj = {};
-//  if(attrs[this.idAttribute]) {
-//    obj[this.idAttribute] = parseInt(attrs[this.idAttribute], 10);
-//  }
-//  if(attrs[this.remoteIdAttribute]){
-//    obj[this.remoteIdAttribute] = parseInt(attrs[this.remoteIdAttribute], 10);
-//  }
-//  this.set(obj, {silent: true});
-//},
 
   url: function(){
     var remoteId = this.get(this.remoteIdAttribute),
-        urlRoot = _.result(this.collection, 'url');
+      urlRoot = _.result(this.collection, 'url');
 
     if(remoteId){
       return '' + urlRoot + '/' + remoteId + '/';
@@ -36,82 +24,72 @@ module.exports = app.prototype.DualModel = DeepModel.extend({
     return urlRoot;
   },
 
-  // delayed states
-  states: {
-    //'patch'  : 'UPDATE_FAILED',
-    'update' : 'UPDATE_FAILED',
-    'create' : 'CREATE_FAILED',
-    'delete' : 'DELETE_FAILED'
+  sync: function( method, model, options ){
+    options = options || {};
+    this.setLocalState( method );
+    if( options.remote ){
+      return this.remoteSync( method, model, options );
+    }
+    return bb.sync.call( this, method, model, options );
+  },
+
+  remoteSync: function( method, model, options ){
+    var self = this, opts = _.extend({}, options, {
+      remote: false,
+      success: false
+    });
+    return bb.sync.call( this, method, model, opts )
+      .then( function(){
+        var remoteMethod = self.getRemoteMethod();
+        opts.remote = true;
+        return bb.sync.call( self, remoteMethod, model, opts );
+      })
+      .then( function( resp ){
+        resp = options.parse ? model.parse(resp, options) : resp;
+        model.set( resp );
+        opts.remote = false;
+        opts.success = options.success;
+        return bb.sync.call( self, 'update', model, opts );
+      });
+  },
+
+  setLocalState: function( method ){
+    method = method === 'patch' ? 'update' : method;
+    if( method === 'update' && !this.hasRemoteId() ){
+      method = 'create';
+    }
+    if( method === 'create' && this.hasRemoteId() ){
+      method = 'update';
+    }
+    this.set({ _state: this.collection.states[method] });
+  },
+
+  getRemoteMethod: function(){
+    return _.invert( this.collection.states )[ this.get('_state') ];
   },
 
   hasRemoteId: function() {
-    return !!this.get(this.remoteIdAttribute);
+    return !!this.get( this.remoteIdAttribute );
   },
 
-  isDelayed: function( status ) {
-    status = status || this.get('status');
-    return status === this.states['update'] ||
-           status === this.states['create'] ||
-           status === this.states['delete'];
-  },
-
-  /**
-   * - sync to idb with correct status
-   * - if remote, sync to remote
-   */
-  sync: function(method, model, options){
+  toJSON: function( options ){
     options = options || {};
-    var opts = _.clone(options);
-    opts.remote = undefined;
-    var m = method === 'patch' ? 'update' : method;
-
-    this.setStatus(m);
-    return DeepModel.prototype.sync.call(this, m, model, opts)
-      .then(function(){
-        if(options.remote){
-          return model.remoteSync(null, model, options);
-        }
-      });
+    var json = IDBModel.prototype.toJSON.apply( this, arguments );
+    if( options.remote && this.name ) {
+      var nested = {};
+      nested[this.name] = json;
+      return nested;
+    }
+    return json;
   },
 
-  remoteSync: function(method, model, options){
-    model = model || this;
+  parse: function( resp, options ) {
     options = options || {};
-    options.remote = true;
-    method = method || model.getMethod();
-
-    return DeepModel.prototype.sync.call(this, method, model, options)
-      .then(function(resp){
-        if(resp){
-          var data = model.parse(resp);
-          return model.merge(data);
-        }
-      });
-  },
-
-  setStatus: function(method){
-    if(this.states[method]){
-      if(method === 'update' && !this.hasRemoteId()){
-        method = 'create';
-      }
-      this.set({ status: this.states[method] });
+    if( options.remote ){
+      resp = resp && resp[this.name] ? resp[this.name] : resp;
+      //resp._state = undefined;
     }
-  },
-
-  getMethod: function(){
-    return _.invert( this.states )[ this.get('status') ];
-  },
-
-  merge: function(resp){
-    // todo: merge
-    // - merge should take bb & json?
-    this.set(resp);
-    if(this.isDelayed()){
-      this.unset('status');
-    }
-    if(this.collection && this.collection.db){
-      return this.collection.merge( this.toJSON() );
-    }
+    return IDBModel.prototype.parse.call( this, resp, options );
   }
 
 });

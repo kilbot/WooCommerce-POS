@@ -2,7 +2,6 @@ var Route = require('lib/config/route');
 var App = require('lib/config/application');
 var Layout = require('./layout');
 var Status = require('./views/status');
-var $ = require('jquery');
 var _ = require('lodash');
 var Radio = require('backbone.radio');
 var polyglot = require('lib/utilities/polyglot');
@@ -11,6 +10,8 @@ var StatusRoute = Route.extend({
 
   databases: ['products', 'orders', 'customers'],
 
+  counts: {},
+
   initialize: function(options){
     this.container = options.container;
     this.collection = options.collection;
@@ -18,11 +19,8 @@ var StatusRoute = Route.extend({
   },
 
   fetch: function(){
-    // if not fetched, need to fetch all local records
-    var fetched = _.map(this.databases, this.fetchDB, this);
-    // add the server tests
-    //fetched.push( this._fetch() );
-    return $.when.apply($, fetched);
+    var counts = _.map(this.databases, this.getCount, this);
+    return Promise.all(counts);
   },
 
   render: function(){
@@ -50,7 +48,7 @@ var StatusRoute = Route.extend({
   storageStatus: function(){
     return _.map(this.databases, function(db){
       var title = polyglot.t('titles.' + db),
-          count = this[db].length,
+          count = this[db].db.length,
           message = title + ': ' + count + ' ' +
             polyglot.t('plural.records', count);
       return {
@@ -63,15 +61,13 @@ var StatusRoute = Route.extend({
     }, this);
   },
 
-  fetchDB: function(db){
+  getCount: function(db){
     this[db] = Radio.request('entities', 'get', {
       type: 'collection',
       name: db
     });
 
-    if(this[db].isNew()){
-      return this[db].fetch();
-    }
+    return this[db].count();
   },
 
   clearDB: function(db){
@@ -81,10 +77,6 @@ var StatusRoute = Route.extend({
     collection.clear()
       .then(function(){
         return self.render();
-      })
-      .done(function(){
-        collection._isNew = true;
-        collection.queue = [];
       });
   }
 

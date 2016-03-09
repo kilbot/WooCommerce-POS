@@ -9,6 +9,9 @@ var accounting = require('accounting');
 var ajax = require('./ajax');
 var templateCache = require('./template-cache');
 
+/**
+ *
+ */
 var initDebug = function( debug ){
   if( debug ){
     debugFunction.enable('*');
@@ -79,6 +82,7 @@ var Application = Mn.Application.extend({
 
 /**
  * Extend Application prototype
+ * - custom Backbone.sync
  */
 _.extend( Application.prototype, ajax );
 

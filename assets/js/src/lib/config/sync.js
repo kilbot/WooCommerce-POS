@@ -3,29 +3,21 @@
 // - retry for server timeouts
 
 var bb = require('backbone');
-var App = require('lib/config/application');
-var idbSync = require('./idb/src/sync');
 var ajaxSync = bb.sync;
+var idbSync = require('./idb-sync');
+var App = require('./application');
 
-module.exports = function(method, entity, options) {
+bb.sync = function(method, entity, options) {
 
-  // wrap sync errors, kick to error modal
-  var onError = options.error;
-  options.error = function(){
-    App.prototype._onError.apply(this, arguments);
-    if(onError) {
-      onError.apply(options.context, arguments);
-    }
-  };
+  // wrap sync errors
+  App.prototype.wrapError(options);
 
-  // idb
-  if(!options.remote &&
-    (entity.db || (entity.collection && entity.collection.db))){
-    return idbSync.apply(this, [method, entity, options]);
+  if( !options.remote && entity.db ) {
+    return idbSync.apply(this, arguments);
   }
 
   // add headers, global data etc
-  App.prototype._ajaxSetup( options );
+  App.prototype.ajaxSetup( options );
 
-  return ajaxSync.apply(this, [method, entity, options]);
+  return ajaxSync.apply(this, arguments);
 };

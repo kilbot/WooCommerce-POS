@@ -81,7 +81,7 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
   public function test_create_order(){
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED'
+        'order' => array()
       )
     ));
     // 201 = created
@@ -104,8 +104,9 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // update note
     $response = $this->client->put($order_id, array(
       'json' => array(
-        'note' => 'updated',
-        'status' => 'UPDATE_FAILED'
+        'order' => array(
+          'note' => 'updated'
+        )
       )
     ));
 
@@ -128,9 +129,10 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'line_items' => array(
-          $product
+        'order' => array(
+          'line_items' => array(
+            $product
+          )
         )
       )
     ));
@@ -195,14 +197,15 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order with payment details
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'line_items' => array(
-          $product
-        ),
-        'payment_details' => array(
-          'method_id' => 'pos_cash',
-          'method_title' => 'Test Cash Payment',
-          'paid' => true
+        'order' => array(
+          'line_items' => array(
+            $product
+          ),
+          'payment_details' => array(
+            'method_id' => 'pos_cash',
+            'method_title' => 'Test Cash Payment',
+            'paid' => true
+          )
         )
       )
     ));
@@ -240,14 +243,15 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order with payment details
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'line_items' => array(
-          $product
-        ),
-        'payment_details' => array(
-          'method_id' => 'pos_cash',
-          'method_title' => 'Test Cash Payment',
-          'paid' => true
+        'order' => array(
+          'line_items' => array(
+            $product
+          ),
+          'payment_details' => array(
+            'method_id' => 'pos_cash',
+            'method_title' => 'Test Cash Payment',
+            'paid' => true
+          )
         )
       )
     ));
@@ -277,9 +281,10 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'line_items' => array(
-          $product
+        'order' => array(
+          'line_items' => array(
+            $product
+          )
         )
       )
     ));
@@ -303,10 +308,11 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'line_items' => array(
-          $product
-        )
+        'order' => array(
+          'line_items' => array(
+            $product
+          )
+        ),
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
@@ -335,9 +341,10 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'line_items' => array(
-          $product
+        'order' => array(
+          'line_items' => array(
+            $product
+          )
         )
       )
     ));
@@ -365,9 +372,10 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'line_items' => array(
-          $product
+        'order' => array(
+          'line_items' => array(
+            $product
+          )
         )
       )
     ));
@@ -396,9 +404,10 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'line_items' => array(
-          $product
+        'order' => array(
+          'line_items' => array(
+            $product
+          )
         )
       )
     ));
@@ -424,9 +433,10 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'fee_lines' => array(
-          $fee
+        'order' => array(
+          'fee_lines' => array(
+            $fee
+          )
         )
       )
     ));
@@ -457,9 +467,10 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'fee_lines' => array(
-          $fee
+        'order' => array(
+          'fee_lines' => array(
+            $fee
+          )
         )
       )
     ));
@@ -490,9 +501,10 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'fee_lines' => array(
-          $fee
+        'order' => array(
+          'fee_lines' => array(
+            $fee
+          )
         )
       )
     ));
@@ -519,9 +531,10 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'fee_lines' => array(
-          $fee
+        'order' => array(
+          'fee_lines' => array(
+            $fee
+          )
         )
       )
     ));
@@ -550,9 +563,10 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'fee_lines' => array(
-          $fee
+        'order' => array(
+          'fee_lines' => array(
+            $fee
+          )
         )
       )
     ));
@@ -590,12 +604,13 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'line_items' => array(
-          $product
-        ),
-        'fee_lines' => array(
-          $fee
+        'order' => array(
+          'line_items' => array(
+            $product
+          ),
+          'fee_lines' => array(
+            $fee
+          )
         )
       )
     ));
@@ -624,9 +639,10 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'shipping_lines' => array(
-          $shipping
+        'order' => array(
+          'shipping_lines' => array(
+            $shipping
+          )
         )
       )
     ));
@@ -659,12 +675,13 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'shipping_lines' => array(
-          $shipping
-        ),
-        // note: shipping_tax required
-        'shipping_tax' => 2
+        'order' => array(
+          'shipping_lines' => array(
+            $shipping
+          ),
+          // note: shipping_tax required
+          'shipping_tax' => 2
+        )
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
@@ -698,12 +715,13 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     // create order
     $response = $this->client->post('', array(
       'json' => array(
-        'status' => 'CREATE_FAILED',
-        'shipping_lines' => array(
-          $shipping
-        ),
-        // note: shipping_tax required
-        'shipping_tax' => 0.5
+        'order' => array(
+          'shipping_lines' => array(
+            $shipping
+          ),
+          // note: shipping_tax required
+          'shipping_tax' => 0.5
+        )
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());

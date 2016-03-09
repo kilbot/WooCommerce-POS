@@ -1,4 +1,4 @@
-<div class="img"><img src="{{featured_src}}" title="#{{id}}"></div>
+<div class="img">{{#if featured_src}}<img src="{{featured_src}}" title="#{{id}}">{{/if}}</div>
 <div class="title">
   <strong>{{title}}</strong>&nbsp;
   {{#with product_attributes}}

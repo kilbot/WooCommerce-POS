@@ -69,7 +69,7 @@ var parseArray = function( arr ){
     result.title = arr[1];
   }
 
-  // error thrown, SyntaxError
+  // error thrown, eg: SyntaxError
   if( _.isError( arr[2] ) && ! result.message ){
     _.extend( result, parseObject( arr[2] ) );
   }

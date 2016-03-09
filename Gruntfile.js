@@ -125,7 +125,8 @@ module.exports = function(grunt) {
         '!./assets/js/src/lib/config/obscura/query/**/*.js',
         '!./assets/js/src/lib/config/obscura/sorted/**/*.js',
         '!./assets/js/src/lib/config/deep-model/**/*.js',
-        '!./assets/js/src/lib/config/idb/**/*.js'
+        '!./assets/js/src/lib/config/idb/**/*.js',
+        '!./assets/js/src/lib/config/dual/**/*.js'
       ],
       tests: [
         './test/**/*.js'
@@ -171,7 +172,7 @@ module.exports = function(grunt) {
           accounting: 'accounting',
           moment: 'moment',
           select2: 'select2',
-          //'idb-wrapper': 'IDBStore'
+          'idb-wrapper': 'IDBStore'
         },
         cache: true,
         watch: true

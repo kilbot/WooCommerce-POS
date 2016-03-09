@@ -91,8 +91,7 @@ describe('entities/products/models/variable.js', function () {
   it('should attach a collection of variations', function() {
     var variableProduct = _.findWhere(dummy_products.products, { id: 40 });
     var product = new Model( variableProduct, { parse: true } );
-    expect( product.variations ).to.be.an.instanceof( Backbone.Collection );
-    expect( product.variations.length).equals( variableProduct.variations.length );
+    expect(product.variations.length).equals( variableProduct.variations.length );
   });
 
   it('should return Product variations', function(){

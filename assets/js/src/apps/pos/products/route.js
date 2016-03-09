@@ -22,15 +22,9 @@ module.exports = Route.extend({
   fetch: function() {
     var collection = this.filtered.superset();
     if( collection.isNew() ){
-      return collection.fetch()
-        .then(function(){
-          collection.fullSync();
-        });
+      return collection.firstSync();
     } else {
-      this.filtered
-        .resetFilters()
-        .removeSort()
-        .setPage(0);
+      this.filtered.removeTransforms();
     }
   },
 

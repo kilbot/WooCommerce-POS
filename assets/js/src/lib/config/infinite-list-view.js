@@ -8,7 +8,7 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
   template: function(){
     return '<div></div>' +
       '<ul></ul>' +
-      '<div><i class="icon icon-spinner"></i>';
+      '<div><i class="icon icon-spinner"></i></div>';
   },
 
   constructor: function() {
@@ -68,14 +68,14 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
 
   loadMore: function() {
     // get next page from filtered collection
-    if (this.collection.hasNextPage()) {
-      return this.collection.appendNextPage();
-    }
+    //if (this.collection.hasNextPage()) {
+    //  return this.collection.appendNextPage();
+    //}
 
     // load more from queue
-    if (this.collection.superset().queue.length > 0) {
-      this.remoteFetchMore();
-    }
+    //if (this.collection.superset().queue.length > 0) {
+    //  this.remoteFetchMore();
+    //}
   },
 
   remoteFetchMore: function(){

@@ -27,17 +27,14 @@ var View = ItemView.extend({
 
   initialize: function(){
     this.listenTo(this.collection.superset(), {
-      'end:fullSync': this.render
+      'count': this.render
     });
   },
 
   templateHelpers: function(){
-    var queue = this.collection.superset().queue.length;
     return {
       showing : this.collection.length,
-      local   : this.collection.superset().length,
-      queue   : queue,
-      hasQueue: queue > 0
+      local   : _.max([this.collection.superset().db.length, this.collection.length])
     };
   }
 

@@ -3,16 +3,14 @@
     "require" : true,
     "module"  : true,
     "exports" : true,
-    "global"  : true
+    "global"  : true,
+    "Promise" : true
   },
-
-  "predef": ["-Promise"],
 
   "bitwise"       : false,
   "camelcase"     : false,
   "curly"         : true,
   "eqeqeq"        : true,
-  "es3"           : true,
   "forin"         : true,
   "immed"         : true,
   "indent"        : 2,
@@ -31,7 +29,7 @@
   "maxdepth"      : 3,
   "maxstatements" : 8,
   "maxcomplexity" : 4,
-  "maxlen"        : 80,
+  "maxlen"        : 100,
 
   "asi"           : false,
   "boss"          : false,

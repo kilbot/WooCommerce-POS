@@ -1,6 +1,6 @@
 var Model = require('./abstract');
 var Variations = require('../../variations/collection');
-var FilteredCollection = require('lib/config/obscura');
+var FilteredCollection = require('backbone.obscura');
 var _ = require('lodash');
 
 module.exports = Model.extend({

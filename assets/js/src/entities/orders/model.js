@@ -40,12 +40,11 @@ var OrderModel = DualModel.extend({
   },
 
   /**
-   * can order be changed
-   * - perhaps check an array of closed stati?
+   *
    */
-  isEditable: function( status ){
-    status = status || this.get('status');
-    return status === undefined || this.isDelayed( status );
+  isEditable: function( state ){
+    state = state || this.get('_state');
+    return this.isDelayed( state );
   },
 
   /**
@@ -83,10 +82,15 @@ var OrderModel = DualModel.extend({
    * - allows order to change status, ie: become editable
    */
   parse: function(resp) {
-    resp = DualModel.prototype.parse.call(this, resp);
+    resp = DualModel.prototype.parse.apply(this, arguments);
 
-    // if open order with no cart, ie: new from idb or changed status
-    if( this.isEditable( resp.status ) && ! this.cart ){
+    // if new
+    if( resp.local_id === 'new' ){
+      resp._state = this.collection.states.create;
+    }
+
+    // if open order with no cart, ie: new from idb or changed state
+    if( this.isEditable( resp._state ) && ! this.cart ){
       resp.taxes = this.attachTaxes( resp.taxes );
       this.attachCart( resp );
       this.attachGateways( resp );

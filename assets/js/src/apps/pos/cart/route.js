@@ -100,8 +100,10 @@ var CartRoute = Route.extend({
    *
    */
   onShow: function(){
-    this.showCart();
-    this._showCart();
+    if( this.activeOrder && this.activeOrder.cart ){
+      this.showCart();
+      this._showCart();
+    }
   },
 
   /**

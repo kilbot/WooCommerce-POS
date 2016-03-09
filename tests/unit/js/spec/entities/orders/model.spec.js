@@ -1,8 +1,17 @@
 describe('entities/orders/model.js', function () {
 
   var dummy_order = require('./../../../data/order.json');
+  var OrderCollection = require('entities/orders/collection');
   var OrderModel = require('entities/orders/model');
   var Utils = require('lib/utilities/utils');
+
+  // order model needs to be part of an order collection
+  OrderModel = OrderModel.extend({
+    collection: {
+      db: true,
+      states: OrderCollection.prototype.states
+    }
+  });
 
   var dummy_tax_GB = {
     '': {
@@ -32,7 +41,7 @@ describe('entities/orders/model.js', function () {
 
     // parse is not an option on set, only on init .. also automatically on fetch and save
     //this.model.set( dummy_order, { parse: true } );
-    var model = new OrderModel( dummy_order, { parse: true } );
+    var model = new OrderModel( dummy_order, { parse: true, remote: true } );
     expect(model.attributes).to.have.property('id');
 
     var model = new OrderModel( dummy_order.order, { parse: true } );
@@ -40,18 +49,17 @@ describe('entities/orders/model.js', function () {
 
   });
 
-  it('should not change order on export', function(){
-    var model = new OrderModel( dummy_order, { parse: true } );
+  it('should not change order on export (adds local _state)', function(){
+    var model = new OrderModel( dummy_order.order, { parse: true } );
     expect( model.toJSON() ).to.eql( dummy_order.order );
   });
 
   it('should parse line_items, shipping_lines and fee_lines into a Cart collection (if isEditable)', function(){
 
-    // change status to CREATE_FAILED
-    var order = _.defaults( { status: 'CREATE_FAILED' }, dummy_order.order );
+    // change state to CREATE_FAILED
+    var order = _.defaults( { _state: 'CREATE_FAILED' }, dummy_order.order );
     var model = new OrderModel( order, { parse: true }  );
     expect( model.cart ).to.be.instanceOf( Backbone.Collection );
-
     expect( model.cart.length ).to.equal( order.line_items.length + order.shipping_lines.length + order.fee_lines.length );
 
   });
@@ -62,7 +70,7 @@ describe('entities/orders/model.js', function () {
     //it('should export line_items, shipping_lines and fee_lines from Cart collection (if Editable)', function(){
     //
     //  // change status to UPDATE_FAILED
-    //  var order = _.defaults( { status: 'UPDATE_FAILED' }, dummy_order.order );
+    //  var order = _.defaults( { _state: 'UPDATE_FAILED' }, dummy_order.order );
     //  var model = new OrderModel( order, { parse: true }  );
     //
     //  expect( model.toJSON() ).to.containSubset( order );
@@ -71,7 +79,7 @@ describe('entities/orders/model.js', function () {
 
   it('should save on change to the cart', function( done ){
 
-    var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
+    var order = _.defaults( { _state: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
     var model = new OrderModel( order, { parse: true }  );
 
 
@@ -88,7 +96,7 @@ describe('entities/orders/model.js', function () {
 
   it('should save on add item to cart', function( done ){
 
-    var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
+    var order = _.defaults( { _state: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
     var model = new OrderModel( order, { parse: true }  );
 
     // Note: stubbing w/ my own function because sinon is weird with debounce
@@ -104,7 +112,7 @@ describe('entities/orders/model.js', function () {
   //it('should debounce save on add items to cart', function( done ){
   //
   //  // need to add editable order to attach gateways
-  //  var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
+  //  var order = _.defaults( { _state: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
   //  var model = new OrderModel( order, { parse: true }  );
   //
   //  var callCount = 0;
@@ -131,7 +139,7 @@ describe('entities/orders/model.js', function () {
 
   it('should save on remove item to cart', function( done ){
 
-    var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
+    var order = _.defaults( { _state: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
     var model = new OrderModel( order, { parse: true }  );
 
     // Note: stubbing w/ my own function because sinon is weird with debounce
@@ -147,7 +155,7 @@ describe('entities/orders/model.js', function () {
 
   //it('should destroy order if cart is empty', function( done ){
   //
-  //  var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
+  //  var order = _.defaults( { _state: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
   //  var model = new OrderModel( order, { parse: true }  );
   //
   //  // Note: stubbing w/ my own function because sinon is weird with debounce
@@ -290,7 +298,7 @@ describe('entities/orders/model.js', function () {
       }
     });
 
-    var model = new Model(null, { parse: true });
+    var model = new Model({ _state: 'CREATE_FAILED' }, { parse: true });
 
     expect( model.cart ).to.be.instanceOf( Backbone.Collection );
 
@@ -392,7 +400,7 @@ describe('entities/orders/model.js', function () {
   it('should attach and init gateways (if Editable)', function(){
 
     // need to add editable order to attach gateways
-    var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
+    var order = _.defaults( { _state: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
     var model = new OrderModel( order, { parse: true }  );
 
     model.sync = sinon.stub();
@@ -407,7 +415,7 @@ describe('entities/orders/model.js', function () {
   it('should save on change to the gateways', function( done ){
 
     // need to add editable order to attach gateways
-    var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
+    var order = _.defaults( { _state: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
     var model = new OrderModel( order, { parse: true }  );
 
     // Note: stubbing w/ my own function because sinon is weird with debounce
@@ -424,7 +432,7 @@ describe('entities/orders/model.js', function () {
   //it('should debounce save on changes to the gateways', function( done ){
   //
   //  // need to add editable order to attach gateways
-  //  var order = _.defaults( { status: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
+  //  var order = _.defaults( { _state: 'UPDATE_FAILED', local_id: 1 }, dummy_order.order );
   //  var model = new OrderModel( order, { parse: true }  );
   //
   //  var callCount = 0;

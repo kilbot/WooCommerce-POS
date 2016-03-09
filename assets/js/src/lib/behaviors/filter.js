@@ -62,9 +62,7 @@ var Filter = Behavior.extend({
    *
    */
   _query: _.debounce( function(value){
-    this.view.collection
-      .query(value)
-      .firstPage();
+    this.view.collection.filterBy('search', value);
   }, 149),
 
   /**

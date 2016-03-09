@@ -36,9 +36,6 @@ class WC_POS_API_Orders {
     add_filter( 'woocommerce_email', array( $this, 'woocommerce_email' ), 99 );
 
     if( substr( $server->path, 0, strlen( $this->base ) ) === $this->base ){
-      // order data
-      add_filter( 'woocommerce_api_dispatch_args', array( $this, 'dispatch_args' ), 10, 2 );
-
       add_filter( 'woocommerce_api_create_order_data', array( $this, 'create_order_data') );
       add_filter( 'woocommerce_api_edit_order_data', array( $this, 'edit_order_data'), 10, 2 );
       add_action( 'woocommerce_api_create_order', array( $this, 'create_order') );
@@ -66,28 +63,6 @@ class WC_POS_API_Orders {
     );
 
     return $routes;
-  }
-
-
-  /**
-   * Parse data sent by POS
-   *
-   * @param array $args
-   * @param $callback
-   * @return array
-   */
-  public function dispatch_args( $args, $callback ){
-    if( !isset( $args['data'] ) ){
-      return $args;
-    }
-
-    if( !isset( $args['data']['order'] ) ){
-      $args['data'] = array(
-        'order' => $args['data']
-      );
-    }
-
-    return $args;
   }
 
 
@@ -644,26 +619,26 @@ class WC_POS_API_Orders {
    */
   private function add_cashier_details( $order ) {
 
-		if ( !$cashier_id = get_post_meta( $order->id, '_pos_user', true ) ) {
-			return;
-		}
+    if ( !$cashier_id = get_post_meta( $order->id, '_pos_user', true ) ) {
+      return;
+    }
 
-		$first_name = get_post_meta( $order->id, '_pos_user_first_name', true );
-		$last_name = get_post_meta( $order->id, '_pos_user_last_name', true );
-		if ( !$first_name && !$last_name && $user_info = get_userdata( $cashier_id ) ) {
-			$first_name = $user_info->first_name;
-			$last_name = $user_info->last_name;
-		}
+    $first_name = get_post_meta( $order->id, '_pos_user_first_name', true );
+    $last_name = get_post_meta( $order->id, '_pos_user_last_name', true );
+    if ( !$first_name && !$last_name && $user_info = get_userdata( $cashier_id ) ) {
+      $first_name = $user_info->first_name;
+      $last_name = $user_info->last_name;
+    }
 
-		$cashier = array(
-			'id'         => $cashier_id,
-			'first_name' => $first_name,
-			'last_name'  => $last_name
-		);
+    $cashier = array(
+      'id'         => $cashier_id,
+      'first_name' => $first_name,
+      'last_name'  => $last_name
+    );
 
-		return apply_filters( 'woocommerce_pos_order_response_cashier', $cashier, $order );
+    return apply_filters( 'woocommerce_pos_order_response_cashier', $cashier, $order );
 
-	}
+  }
 
   /**
    * @param $order

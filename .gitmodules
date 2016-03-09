@@ -1,21 +1,3 @@
-[submodule "assets/js/src/lib/config/obscura/filtered"]
-	path = assets/js/src/lib/config/obscura/filtered
-	url = https://github.com/kilbot/backbone-filtered-collection.git
-[submodule "assets/js/src/lib/config/obscura/sorted"]
-	path = assets/js/src/lib/config/obscura/sorted
-	url = https://github.com/kilbot/backbone-sorted-collection.git
-[submodule "assets/js/src/lib/config/obscura/paginated"]
-	path = assets/js/src/lib/config/obscura/paginated
-	url = https://github.com/kilbot/backbone-paginated-collection.git
-[submodule "assets/js/src/lib/config/obscura/query"]
-	path = assets/js/src/lib/config/obscura/query
-	url = https://github.com/kilbot/backbone-query.git
-[submodule "assets/js/src/lib/config/deep-model"]
-	path = assets/js/src/lib/config/deep-model
-	url = https://github.com/kilbot/backbone-deep-model.git
-[submodule "assets/js/src/lib/config/idb"]
-	path = assets/js/src/lib/config/idb
-	url = https://github.com/kilbot/backbone-idb.git
 [submodule "styleguide"]
 	path = styleguide
 	url = https://github.com/kilbot/WooCommerce-POS-StyleGuide.git

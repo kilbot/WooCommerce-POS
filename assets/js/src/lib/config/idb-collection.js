@@ -1,70 +1,110 @@
-/**
- * TODO: merge sync/idb.js & sync/idbsync.js?
- */
-
 var Collection = require('./collection');
-//var debug = require('debug')('idbCollection');
 var app = require('./application');
-var IndexedDB = require('./idb/src/idb');
 var Radio = require('backbone.radio');
+var IDBModel = require('./idb-model');
+var IDBAdapter = require('./idb-adapter');
+var _ = require('lodash');
 
-module.exports = app.prototype.IndexedDBCollection = Collection.extend({
-  name          : 'store',
-  storePrefix   : 'wc_pos_',
-  dbVersion     : 4006,
-  keyPath       : 'local_id',
-  autoIncrement : true,
-  indexes       : [
-    {name: 'local_id', keyPath: 'local_id', unique: true},
-    {name: 'id', keyPath: 'id', unique: true}
-  ],
+module.exports = app.prototype.IDBCollection = Collection.extend({
 
-  constructor: function() {
-    Collection.apply(this, arguments);
+  model: IDBModel,
 
-    var options = {
-      storeName     : this.name,
-      storePrefix   : this.storePrefix,
-      dbVersion     : this.dbVersion,
-      keyPath       : this.keyPath,
-      autoIncrement : this.autoIncrement,
-      indexes       : this.indexes,
-      defaultErrorHandler : function(error){
-        Radio.trigger('global', 'error', error);
-      }
+  name       : 'store',
+  storePrefix: 'wc_pos_',
+
+  /**
+   *
+   */
+  constructor: function () {
+    var opts = {
+      storeName    : this.name,
+      storePrefix  : this.storePrefix,
+      dbVersion    : this.dbVersion,
+      keyPath      : this.keyPath,
+      autoIncrement: this.autoIncrement,
+      indexes      : this.indexes,
+      pageSize     : this.pageSize
     };
 
-    this.db = new IndexedDB(options, this);
+    this.db = new IDBAdapter(opts);
     this.versionCheck();
-    this.db.open()
-      // error opening db
-      .fail(function(error){
-        Radio.trigger('global', 'error', error);
-      });
-  },
 
-  merge: function(models){
-    var self = this;
-    return this.db.merge(models)
-      .then(function(){
-        var models = Array.prototype.slice.apply(arguments);
-        return self.add(models, {merge: true});
-      });
+    Collection.apply(this, arguments);
   },
 
   /**
    * Clears the IDB storage and resets the collection
    */
-  clear: function(){
-    if(!this.db){
-      return;
-    }
-
+  clear: function () {
     var self = this;
     return this.db.open()
-      .then(function(){
+      .then(function () {
         self.reset();
+        self._isNew = true;
         return self.db.clear();
+      });
+  },
+
+  /**
+   *
+   */
+  count: function () {
+    var self = this;
+    return this.db.open()
+      .then(function () {
+        return self.db.count();
+      })
+      .then(function (count) {
+        self.trigger('count', count);
+      });
+  },
+
+  /**
+   *
+   */
+  putBatch: function (models, options) {
+    options = options || {};
+    var self = this;
+    if (_.isEmpty(models)) {
+      models = this.getChangedModels();
+    }
+    if (!models) {
+      return;
+    }
+    return this.db.open()
+      .then(function () {
+        return self.db.putBatch(models, options);
+      });
+  },
+
+  /**
+   *
+   */
+  getChangedModels: function () {
+    return this.filter(function (model) {
+      return model.isNew() || model.hasChanged();
+    });
+  },
+
+  /**
+   *
+   */
+  removeBatch: function (models, options) {
+    options = options || {};
+    var self = this;
+    if (_.isEmpty(models)) {
+      return;
+    }
+    return this.db.open()
+      .then(function () {
+        return self.db.removeBatch(models);
+      })
+      .then(function () {
+        self.remove(models);
+        if (options.success) {
+          options.success(self, models, options);
+        }
+        return models;
       });
   },
 
@@ -74,24 +114,24 @@ module.exports = app.prototype.IndexedDBCollection = Collection.extend({
    * this version check will compare the version numbers
    * idb is flushed on version change
    */
-  versionCheck: function(){
+  versionCheck: function () {
     var name = this.name;
 
-    var newVersion = parseInt( Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'idbVersion'
-    }), 10 ) || 0;
-    var oldVersion = parseInt( Radio.request('entities', 'get', {
-      type: 'localStorage',
-      name: name + '_idbVersion'
-    }), 10 ) || 0;
+    var newVersion = parseInt(Radio.request('entities', 'get', {
+        type: 'option',
+        name: 'idbVersion'
+      }), 10) || 0;
+    var oldVersion = parseInt(Radio.request('entities', 'get', {
+        type: 'localStorage',
+        name: name + '_idbVersion'
+      }), 10) || 0;
 
-    if( newVersion !== oldVersion ){
-      this.clear().then(function(){
+    if (newVersion !== oldVersion) {
+      this.clear().then(function () {
         Radio.request('entities', 'set', {
-          type : 'localStorage',
-          name : name + '_idbVersion',
-          data : newVersion
+          type: 'localStorage',
+          name: name + '_idbVersion',
+          data: newVersion
         });
       });
     }

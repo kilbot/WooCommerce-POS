@@ -53,7 +53,7 @@ module.exports = {
       success: callback
     });
 
-    return $.ajax( options ).fail(onError);
+    return $.ajax( options ).fail( onError );
   },
   /* jshint +W072 */
 
@@ -66,7 +66,15 @@ module.exports = {
   },
 
   // attach for use by bb.sync config
-  _ajaxSetup: ajaxSetup,
-  _onError: onError
+  ajaxSetup: ajaxSetup,
+  onError: onError,
+
+  wrapError: function(options){
+    var error = options.error;
+    options.error = function(){
+      onError.apply(this, arguments);
+      error.apply(this, arguments);
+    };
+  }
 
 };
