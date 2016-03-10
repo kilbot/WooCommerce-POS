@@ -29,9 +29,9 @@ install:
   # apache
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
-  - test $(phpenv version-name) == "5.4" \
+  - test $(phpenv version-name) = "5.4" \
     && sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-  - test $(phpenv version-name) == "7.0" \
+  - test $(phpenv version-name) = "7.0" \
     && sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
   - sudo a2enmod rewrite actions fastcgi alias
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
@@ -71,7 +71,7 @@ script:
   #    - ./node_modules/.bin/pioneer
 
 after_success:
-  - test $(phpenv version-name) == "7.0" \
+  - test $(phpenv version-name) = "7.0" \
     && phpunit -c phpunit.xml.dist \
     && php vendor/bin/coveralls -v \
     && grunt coverage
