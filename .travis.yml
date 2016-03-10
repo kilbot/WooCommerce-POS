@@ -1,8 +1,15 @@
 language: php
 
-php:
-  - '5.4'
-#  - '7.0'
+matrix:
+  include:
+    - php: "5.4"
+      env:
+        - PHP_FPM_DEFAULT=php-fpm.conf.default
+        - PHP_FPM=php-fpm.conf
+    - php: "7.0"
+      env:
+        - PHP_FPM_DEFAULT=php-fpm.d/www.conf.default
+        - PHP_FPM=php-fpm.d/www.conf
 
 addons:
   hosts:
@@ -11,20 +18,14 @@ addons:
 env:
   - WP_VERSION=latest WP_MULTISITE=0
   #    - WP_VERSION=latest WP_MULTISITE=1
-  #    - WP_VERSION=3.8 WP_MULTISITE=0
-  #    - WP_VERSION=3.8 WP_MULTISITE=1
 
 before_install:
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install stable
   - git submodule update --init --recursive
 
 install:
-  # php libraries
-  - composer require satooshi/php-coveralls:~0.6.1@stable
-  - composer require guzzlehttp/guzzle:~5
-  - composer require 10up/wp_mock:dev-master
   # install wordpress & woocommerce & test theme
-  - bash tests/unit/php/bin/install-travis-wp-tests.sh woopos_tests root '' localhost $WP_VERSION
+  - bash tests/unit/php/bin/install.sh woopos_tests root '' localhost $WP_VERSION
   - mkdir /tmp/wordpress/wp-content/plugins/woocommerce-pos/
   - mv * .[^.]* /tmp/wordpress/wp-content/plugins/woocommerce-pos/
   - mv /tmp/wordpress/* ./
@@ -33,9 +34,7 @@ install:
   # apache
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
-  # enable php-fpm, try both dirs for php5 and php7
-  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf 2>/dev/null
-#  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf 2>/dev/null
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/$PHP_FPM_DEFAULT ~/.phpenv/versions/$(phpenv version-name)/etc/$PHP_FPM
   - sudo a2enmod rewrite actions fastcgi alias
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
@@ -65,13 +64,17 @@ before_script:
   - cd wp-content/plugins/woocommerce-pos/
   - npm install -g grunt-cli
   - npm install
+  - composer install
 
 script:
   - grunt test
-  - phpunit -c phpunit.xml.dist
-  - phpunit -c phpunit.int.xml
+  - phpunit -c tests/unit/php/phpunit.xml
+  - phpunit -c tests/integration/php/phpunit.xml
   #    - ./node_modules/.bin/pioneer
 
-after_script:
-  - php vendor/bin/coveralls -v
-  - grunt coverage
+after_success:
+  if [ $(phpenv version-name) == "7.0" ]; then
+    phpunit -c phpunit.xml.dist
+    php vendor/bin/coveralls -v
+    grunt coverage
+  fi

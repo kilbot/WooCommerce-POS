@@ -1,6 +1,6 @@
 describe('entities/service.js', function () {
 
-  var Marionette = require('backbone.marionette');
+  //var Marionette = require('backbone.marionette');
 
   beforeEach(function () {
 
@@ -199,8 +199,8 @@ describe('entities/service.js', function () {
     this.module.should.respondTo('idbCollections');
   });
 
-  afterEach(function () {
-    Backbone.Radio.reset();
-  });
+  //afterEach(function () {
+  //  Backbone.Radio.reset();
+  //});
 
 });

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ $# -lt 3 ]; then
-  echo "usage: $0 <db-name> <db-user> <db-pass> [db-host] [wp-version]"
+  echo "usage: $0 <db-name> <db-user> <db-pass> [db-host] [wp-version] [wc-version]"
   exit 1
 fi
 
@@ -10,21 +10,17 @@ DB_USER=$2
 DB_PASS=$3
 DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
+WC_VERSION=${6-latest}
 
-#WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
-#WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress/}
 WP_TESTS_DIR=/tmp/wordpress-tests-lib
-WP_CORE_DIR=/tmp/wordpress/
-TRAVIS_BUILD_DIR=${TRAVIS_BUILD_DIR}
-
-WP_TESTS_DOMAIN=woopos.dev
-WP_TESTS_EMAIL=support@woopos.com.au
+WP_TEMP_DIR=/tmp/wordpress/
+WP_CORE_DIR=${TRAVIS_BUILD_DIR-/tmp/wordpress/}/
 
 download() {
   if [ `which curl` ]; then
-      curl -s "$1" > "$2";
+    curl -s "$1" > "$2";
   elif [ `which wget` ]; then
-      wget -nv -O "$2" "$1"
+    wget -nv -O "$2" "$1"
   fi
 }
 
@@ -36,8 +32,8 @@ else
   grep '[0-9]+\.[0-9]+(\.[0-9]+)?' /tmp/wp-latest.json
   LATEST_VERSION=$(grep -o '"version":"[^"]*' /tmp/wp-latest.json | sed 's/"version":"//')
   if [[ -z "$LATEST_VERSION" ]]; then
-    echo "Latest WordPress version could not be found"
-    exit 1
+   echo "Latest WordPress version could not be found"
+   exit 1
   fi
   WP_TESTS_TAG="tags/$LATEST_VERSION"
 fi
@@ -46,11 +42,11 @@ set -ex
 
 install_wp() {
 
-  if [ -d $WP_CORE_DIR ]; then
+  if [ -d $WP_TEMP_DIR ]; then
     return;
   fi
 
-  mkdir -p $WP_CORE_DIR
+  mkdir -p $WP_TEMP_DIR
 
   if [ $WP_VERSION == 'latest' ]; then
     local ARCHIVE_NAME='latest'
@@ -59,9 +55,9 @@ install_wp() {
   fi
 
   download https://wordpress.org/${ARCHIVE_NAME}.tar.gz  /tmp/wordpress.tar.gz
-  tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
+  tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_TEMP_DIR
 
-  download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
+  download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_TEMP_DIR/wp-content/db.php
 }
 
 install_test_suite() {
@@ -83,13 +79,11 @@ install_test_suite() {
 
   if [ ! -f wp-tests-config.php ]; then
     download https://develop.svn.wordpress.org/${WP_TESTS_TAG}/wp-tests-config-sample.php "$WP_TESTS_DIR"/wp-tests-config.php
-    sed $ioption "s:dirname( __FILE__ ) . '/src/':'$TRAVIS_BUILD_DIR/':" "$WP_TESTS_DIR"/wp-tests-config.php
+    sed $ioption "s:dirname( __FILE__ ) . '/src/':'$WP_CORE_DIR':" "$WP_TESTS_DIR"/wp-tests-config.php
     sed $ioption "s/youremptytestdbnamehere/$DB_NAME/" "$WP_TESTS_DIR"/wp-tests-config.php
     sed $ioption "s/yourusernamehere/$DB_USER/" "$WP_TESTS_DIR"/wp-tests-config.php
     sed $ioption "s/yourpasswordhere/$DB_PASS/" "$WP_TESTS_DIR"/wp-tests-config.php
     sed $ioption "s|localhost|${DB_HOST}|" "$WP_TESTS_DIR"/wp-tests-config.php
-    sed $ioption "s/example.org/$WP_TESTS_DOMAIN/" "$WP_TESTS_DIR"/wp-tests-config.php
-    sed $ioption "s/admin@example.org/$WP_TESTS_EMAIL/" "$WP_TESTS_DIR"/wp-tests-config.php
   fi
 
 }
@@ -112,9 +106,29 @@ install_db() {
   fi
 
   # create database
+  mysqladmin -f drop $DB_NAME || true
   mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA || true
+}
+
+install_woocommerce() {
+
+  # set up woocommerce if it doesn't exist && no travis build
+  if [ ! -d $WP_CORE_DIR/wp-content/plugins/woocommerce ] && [ ! $TRAVIS_BUILD_DIR ]; then
+
+    if [ $WC_VERSION == 'latest' ]; then
+     local ARCHIVE_NAME='woocommerce.zip'
+    else
+     local ARCHIVE_NAME="woocommerce.$WC_VERSION.zip"
+    fi
+
+    download https://downloads.wordpress.org/plugin/${ARCHIVE_NAME} /tmp/woocommerce.zip
+    unzip -qo /tmp/woocommerce.zip -d $WP_CORE_DIR/wp-content/plugins
+
+  fi
+
 }
 
 install_wp
 install_test_suite
 install_db
+install_woocommerce

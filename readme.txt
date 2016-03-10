@@ -4,8 +4,8 @@ Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, s
 Requires at least: 4.0 & WooCommerce 2.3.7
 Tested up to: 4.3
 Stable tag: 0.4.5
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License: GPL-3.0
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Finally, a Point of Sale plugin for WooCommerce! Sell online and in your physical retail store - no monthly fees, no need to sync inventory.
 
@@ -81,7 +81,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
-= 0.4.6 - 2016/01/** =
+= 0.4.6 - 2016/03/** =
 * Important: Pro users should update [WooCommerce POS Pro](http://woopos.com.au/pro) to version 0.4.6
 * New: Receipt print methods for thermal printers (experimental)
 * New: Receipt templates for epos-print and ESC/POS languages (experimental)

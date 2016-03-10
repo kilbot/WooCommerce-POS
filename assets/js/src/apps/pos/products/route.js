@@ -20,12 +20,12 @@ module.exports = Route.extend({
   },
 
   fetch: function() {
-    var collection = this.filtered.superset();
-    if( collection.isNew() ){
-      return collection.firstSync();
-    } else {
-      this.filtered.removeTransforms();
-    }
+    //var collection = this.filtered.superset();
+    //if( collection.isNew() ){
+    //  return collection.firstSync();
+    //} else {
+    //  this.filtered.removeTransforms();
+    //}
   },
 
   render: function() {

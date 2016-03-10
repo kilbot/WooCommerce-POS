@@ -18,15 +18,7 @@ class Integration_Test_WC_POS {
    */
   public function includes(){
     require_once(__DIR__.'/../../../../../../wp-load.php');
-
-    if( is_readable( 'vendor/autoload.php' ) ){
-      // travis
-      require_once 'vendor/autoload.php';
-    } else {
-      // vvv
-      require_once '/home/vagrant/.composer/vendor/autoload.php';
-    }
-
+    require_once 'vendor/autoload.php';
   }
 
   public function setup(){

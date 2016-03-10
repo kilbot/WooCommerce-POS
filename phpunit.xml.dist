@@ -9,12 +9,12 @@
   >
   <testsuites>
     <testsuite name="WooCommerce POS Unit Tests">
-      <directory prefix="test-" suffix=".php">./tests/unit/php/spec/</directory>
+      <directory prefix="test-" suffix=".php">tests/unit/php/spec/</directory>
     </testsuite>
   </testsuites>
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="false">
-      <directory suffix=".php">./includes</directory>
+      <directory suffix=".php">includes</directory>
     </whitelist>
   </filter>
   <logging>

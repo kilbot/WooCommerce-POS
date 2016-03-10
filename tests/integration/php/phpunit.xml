@@ -1,5 +1,5 @@
 <phpunit
-  bootstrap="tests/integration/php/bootstrap.php"
+  bootstrap="bootstrap.php"
   backupGlobals="false"
   colors="true"
   convertErrorsToExceptions="true"
@@ -9,7 +9,7 @@
   >
   <testsuites>
     <testsuite name="WooCommerce POS Integration Tests">
-      <directory prefix="test-" suffix=".php">./tests/integration/php/spec/</directory>
+      <directory prefix="test-" suffix=".php">spec</directory>
     </testsuite>
   </testsuites>
 </phpunit>

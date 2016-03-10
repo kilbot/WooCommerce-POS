@@ -53,7 +53,7 @@ git clone --recursive https://github.com/kilbot/WooCommerce-POS.git woocommerce-
 Then, navigate into the root directory of the project and install the dependencies.
 
 ```sh
-cd woocommerce-pos && npm install
+cd woocommerce-pos && npm install && composer install
 ```
 
 ### Building the project
@@ -71,3 +71,7 @@ grunt deploy
 ```
 
 This will create a zip archive of the plugin which you can then install via your WordPress admin.
+
+### We are hiring!
+
+We are looking for talented PHP and JS developers to work full or part time on WooCommerce POS. To apply simply submit a pull request.

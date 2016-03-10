@@ -13,14 +13,11 @@ class Unit_Test_WC_POS {
     $this->includes();
 
     require_once $this->wp_tests_dir . '/includes/functions.php';
-    
-    tests_add_filter( 'muplugins_loaded', array( $this, 'load_wc_pos' ) );
-
+    tests_add_filter( 'muplugins_loaded', array( $this, 'load' ) );
     require_once $this->wp_tests_dir . '/includes/bootstrap.php';
-//    activate_plugin(WP_CONTENT_DIR . '/plugins/woocommerce/woocommerce.php');
   }
 
-  public function load_wc_pos() {
+  public function load() {
     require_once WP_CONTENT_DIR . '/plugins/woocommerce/woocommerce.php';
     require_once dirname( __FILE__ ) . '/../../../woocommerce-pos.php';
     WC()->api->includes();
@@ -31,23 +28,9 @@ class Unit_Test_WC_POS {
    * include composer autoloader
    */
   public function includes(){
-
-    if( is_readable( 'vendor/autoload.php' ) ){
-      // travis
-      require_once 'vendor/autoload.php';
-    } else {
-      // vvv
-      require_once '/home/vagrant/.composer/vendor/autoload.php';
-    }
-
+    require_once 'vendor/autoload.php';
     // extra functions and factories
-
-
   }
-
-//  public function install_wc_pos() {
-//    WC_POS_Activator::activate(true);
-//  }
 
 }
 
