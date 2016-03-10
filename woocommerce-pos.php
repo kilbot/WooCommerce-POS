@@ -18,28 +18,51 @@
  *
  */
 
+namespace WC_POS;
+
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if ( ! defined( '\WPINC' ) ) {
   die;
 }
 
 /**
  * Define plugin constants.
  */
-define( 'WC_POS_VERSION', '0.4.6-beta' );
-define( 'WC_POS_PLUGIN_NAME', 'woocommerce-pos' );
-define( 'WC_POS_PLUGIN_FILE', plugin_basename( __FILE__ ) ); // 'woocommerce-pos/woocommerce-pos.php'
-define( 'WC_POS_PLUGIN_PATH', trailingslashit( plugin_dir_path( __FILE__ ) ) );
-define( 'WC_POS_PLUGIN_URL', trailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
+define( __NAMESPACE__ . '\VERSION', '0.4.6-beta' );
+define( __NAMESPACE__ . '\PLUGIN_NAME', 'woocommerce-pos' );
+define( __NAMESPACE__ . '\PLUGIN_FILE', plugin_basename( __FILE__ ) ); // 'woocommerce-pos/woocommerce-pos.php'
+define( __NAMESPACE__ . '\PLUGIN_PATH', trailingslashit( plugin_dir_path( __FILE__ ) ) );
+define( __NAMESPACE__ . '\PLUGIN_URL', trailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
 
 /**
- * The code that runs during plugin activation.
+ * Autoloader
  */
-require_once WC_POS_PLUGIN_PATH . 'includes/class-wc-pos-activator.php';
-new WC_POS_Activator( plugin_basename( __FILE__ ) );
+if ( !function_exists( 'spl_autoload_register' ) ) {
+  return;
+}
+
+spl_autoload_register( __NAMESPACE__ . '\\autoload' );
+function autoload( $cls ) {
+  $cls = ltrim( $cls, '\\' );
+  if( substr( $cls, 0, strlen( __NAMESPACE__ ) ) !== __NAMESPACE__ ) {
+    return;
+  }
+
+  $cls = str_replace( __NAMESPACE__, '', $cls );
+  $file = PLUGIN_PATH . 'includes' . str_replace( '\\', DIRECTORY_SEPARATOR, strtolower( $cls ) ) . '.php';
+  if(is_readable($file)){
+    require_once( $file );
+  } else {
+    $break = '';
+  }
+}
 
 /**
- * The code that runs during plugin deactivation.
+ * Activate plugin
  */
-require_once WC_POS_PLUGIN_PATH . 'includes/class-wc-pos-deactivator.php';
-new WC_POS_Deactivator( plugin_basename( __FILE__ ) );
+new Activator();
+
+/**
+ * Deactivate plugin
+ */
+new Deactivator();

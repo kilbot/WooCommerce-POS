@@ -1,6 +1,12 @@
 <?php
 
-class ProductsAPITest extends PHPUnit_Framework_TestCase {
+namespace WC_POS\Integration_Tests\API;
+
+use GuzzleHttp\Client;
+use PHPUnit_Framework_TestCase;
+use WC_POS\Admin\Settings;
+
+class ProductsTest extends PHPUnit_Framework_TestCase {
 
   protected $client;
 
@@ -8,7 +14,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
    *
    */
   public function setUp() {
-    $this->client = new GuzzleHttp\Client([
+    $this->client = new Client([
       'base_url' => get_woocommerce_api_url( 'products/' ),
       'defaults' => [
         'exceptions' => false,
@@ -90,7 +96,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     $random_qty = rand(0, 999) / 100;
 
     // set the decimal_qty option
-    $option_key = WC_POS_Admin_Settings::DB_PREFIX . 'general';
+    $option_key = Settings::DB_PREFIX . 'general';
     update_option( $option_key, array('decimal_qty' => true) );
 
     // change the stock to decimal
@@ -123,7 +129,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     $random_qty = rand(0, 999) / 100;
 
     // set the decimal_qty option
-    $option_key = WC_POS_Admin_Settings::DB_PREFIX . 'general';
+    $option_key = Settings::DB_PREFIX . 'general';
     update_option( $option_key, array('decimal_qty' => true) );
 
     // change the stock to decimal
@@ -152,7 +158,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
   public function test_pos_only_products(){
 
     // activate POS Only products
-    $option_key = WC_POS_Admin_Settings::DB_PREFIX . 'general';
+    $option_key = Settings::DB_PREFIX . 'general';
     update_option( $option_key, array('pos_only_products' => true) );
 
     // get random product
@@ -168,7 +174,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(200, $response->getStatusCode());
 
     // get product via website
-    $client = new GuzzleHttp\Client();
+    $client = new Client();
     $response = $client->get( get_home_url(), array(
       'query' => array(
         'p' => $product['id']
@@ -187,7 +193,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
   public function test_online_only_products(){
 
     // activate POS Only products
-    $option_key = WC_POS_Admin_Settings::DB_PREFIX . 'general';
+    $option_key = Settings::DB_PREFIX . 'general';
     update_option( $option_key, array('pos_only_products' => true) );
 
     // get random product
@@ -215,7 +221,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
 //    $this->assertEmpty($data['product']);
 
     // get product via website
-    $client = new GuzzleHttp\Client();
+    $client = new Client();
     $response = $client->get( get_home_url(), array(
       'query' => array(
         'p' => $product['id']

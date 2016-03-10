@@ -1,11 +1,17 @@
 <?php
 
-class SettingsAPITest extends WP_UnitTestCase {
+namespace WC_POS\Unit_Tests\API;
+
+use WC_POS\Admin\Settings as Admin_Settings;
+use WC_POS\API\Settings;
+use WP_UnitTestCase;
+
+class SettingsTest extends WP_UnitTestCase {
 
   private $settings_api;
 
   function setUp(){
-    $this->settings_api = new WC_POS_API_Settings( $this->mock_api_server() );
+    $this->settings_api = new Settings( $this->mock_api_server() );
   }
 
   function mock_api_server(){
@@ -24,12 +30,12 @@ class SettingsAPITest extends WP_UnitTestCase {
 //  }
 
   function test_delete_all_settings(){
-    update_option( WC_POS_Admin_Settings::DB_PREFIX . 'test1', 'dummy' );
-    update_option( WC_POS_Admin_Settings::DB_PREFIX . 'test2', 'dummy' );
+    update_option( Admin_Settings::DB_PREFIX . 'test1', 'dummy' );
+    update_option( Admin_Settings::DB_PREFIX . 'test2', 'dummy' );
     $this->settings_api->delete_all_settings();
 
     global $wpdb;
-    $prefix = WC_POS_Admin_Settings::DB_PREFIX;
+    $prefix = Admin_Settings::DB_PREFIX;
     $rows = $wpdb->get_var( "
       SELECT COUNT(*) FROM {$wpdb->options}
       WHERE option_name

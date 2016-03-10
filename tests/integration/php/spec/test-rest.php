@@ -1,11 +1,16 @@
 <?php
 
-class RESTAPITest extends PHPUnit_Framework_TestCase {
+namespace WC_POS\Integration_Tests;
+
+use GuzzleHttp\Client;
+use PHPUnit_Framework_TestCase;
+
+class RestTest extends PHPUnit_Framework_TestCase {
 
   protected $client;
 
   public function setUp() {
-    $this->client = new GuzzleHttp\Client([
+    $this->client = new Client([
       'base_url' => get_woocommerce_api_url( '' ),
       'defaults' => ['exceptions' => false]
     ]);

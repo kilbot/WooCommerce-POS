@@ -1,6 +1,10 @@
 <?php
 
-class WC_Functions_Test extends WP_UnitTestCase {
+namespace WC_POS\Unit_Tests;
+
+use WP_UnitTestCase;
+
+class WC_Functions extends WP_UnitTestCase {
 
   public function test_wc_round_tax_total() {
     // Issue suggests this should be 22.34

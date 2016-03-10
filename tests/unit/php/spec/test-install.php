@@ -1,11 +1,16 @@
 <?php
 
-class InstallTest extends WP_UnitTestCase {
+namespace WC_POS\Unit_Tests;
+
+use WC_POS\Activator;
+use WP_UnitTestCase;
+
+class Install extends WP_UnitTestCase {
 
   private $activator;
 
   function setUp(){
-    $this->activator = new WC_POS_Activator('');
+    $this->activator = new Activator();
     wp_set_current_user(1);
   }
 

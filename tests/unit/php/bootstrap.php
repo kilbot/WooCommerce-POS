@@ -1,6 +1,8 @@
 <?php
 
-class Unit_Test_WC_POS {
+namespace WC_POS;
+
+class Unit_Tests {
 
   private $wp_tests_dir;
 
@@ -34,4 +36,4 @@ class Unit_Test_WC_POS {
 
 }
 
-new Unit_Test_WC_POS();
+new Unit_Tests();

@@ -17,7 +17,7 @@
  * @return string|void
  */
 function wc_pos_url( $page = '' ) {
-  $slug = WC_POS_Admin_Permalink::get_slug();
+  $slug = WC_POS\Admin\Permalink::get_slug();
   return home_url( $slug . '/' .$page );
 }
 
@@ -133,7 +133,7 @@ function wc_pos_locate_template($path = ''){
  * @return bool
  */
 function wc_pos_get_option( $id, $key = false ){
-  $handlers = (array) WC_POS_Admin_Settings::handlers();
+  $handlers = (array) WC_POS\Admin\Settings::handlers();
   if( ! array_key_exists( $id, $handlers ) )
     return false;
 

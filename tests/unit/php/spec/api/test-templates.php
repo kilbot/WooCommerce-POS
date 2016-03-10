@@ -1,11 +1,16 @@
 <?php
 
-class TemplateAPITest extends WP_UnitTestCase {
+namespace WC_POS\Unit_Tests\API;
+
+use WP_UnitTestCase;
+use WC_POS\API\Templates;
+
+class TemplateTest extends WP_UnitTestCase {
 
   protected $template;
 
   public function setUp(){
-    $this->template = new WC_POS_API_Templates( $this->mock_api_server() );
+    $this->template = new Templates( $this->mock_api_server() );
   }
 
   function mock_api_server(){
@@ -19,7 +24,7 @@ class TemplateAPITest extends WP_UnitTestCase {
   public function test_locate_default_template_files(){
 
     // create test template
-    $test_dir = WC_POS_PLUGIN_PATH . 'includes/views/test';
+    $test_dir = \WC_POS\PLUGIN_PATH . 'includes/views/test';
     $test_file = $test_dir. '/tmpl-test.php';
 
     if( !is_dir( $test_dir ) )
@@ -37,7 +42,7 @@ class TemplateAPITest extends WP_UnitTestCase {
   public function test_locate_template_files(){
 
     // create test template
-    $test_dir = WC_POS_PLUGIN_PATH . 'includes/views/test';
+    $test_dir = \WC_POS\PLUGIN_PATH . 'includes/views/test';
     $test_file = $test_dir. '/tmpl-test.php';
 
     if( !is_dir( $test_dir ) )

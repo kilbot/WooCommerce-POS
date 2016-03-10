@@ -1,6 +1,11 @@
 <?php
 
-class ProductsAPITest extends WP_UnitTestCase {
+namespace WC_POS\Unit_Tests\API;
+
+use WP_UnitTestCase;
+use WC_POS\API\Products;
+
+class ProductsTest extends WP_UnitTestCase {
 
   private $products_api;
   private $product;
@@ -8,7 +13,7 @@ class ProductsAPITest extends WP_UnitTestCase {
   private $sku = 'sku12345';
 
   function setUp(){
-    $this->products_api = new WC_POS_API_Products( $this->mock_api_server() );
+    $this->products_api = new Products( $this->mock_api_server() );
 
     // create product
     $this->product = wc_get_product( $this->mock_product() );

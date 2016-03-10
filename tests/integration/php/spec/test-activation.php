@@ -1,11 +1,16 @@
 <?php
 
+namespace WC_POS\Integration_Tests;
+
+use GuzzleHttp\Client;
+use PHPUnit_Framework_TestCase;
+
 class ActivationTest extends PHPUnit_Framework_TestCase {
 
   protected $client;
 
   public function setUp() {
-    $this->client = new GuzzleHttp\Client([
+    $this->client = new Client([
       'defaults' => ['exceptions' => false],
     ]);
   }

@@ -1,11 +1,17 @@
 <?php
 
-class OrdersAPITest extends PHPUnit_Framework_TestCase {
+namespace WC_POS\Integration_Tests\API;
+
+use GuzzleHttp\Client;
+use PHPUnit_Framework_TestCase;
+use WC_POS\Admin\Settings;
+
+class OrdersTest extends PHPUnit_Framework_TestCase {
 
   protected $client;
 
   public function setUp() {
-    $this->client = new GuzzleHttp\Client([
+    $this->client = new Client([
       'base_url' => get_woocommerce_api_url( 'orders/' ),
       'defaults' => [
         'exceptions' => false,
@@ -209,6 +215,7 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
         )
       )
     ));
+
     $this->assertEquals(201, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('order', $data);
@@ -233,7 +240,7 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
     $product['quantity'] = $random_qty;
 
     // set the decimal_qty option
-    $option_key = WC_POS_Admin_Settings::DB_PREFIX . 'general';
+    $option_key = Settings::DB_PREFIX . 'general';
     update_option( $option_key, array('decimal_qty' => true) );
 
     // inject stock value to db
@@ -255,6 +262,7 @@ class OrdersAPITest extends PHPUnit_Framework_TestCase {
         )
       )
     ));
+
     $this->assertEquals(201, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('order', $data);

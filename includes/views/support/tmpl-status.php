@@ -1,5 +1,5 @@
 <?php
-  $status = new WC_POS_Status();
+  $status = new \WC_POS\Status();
   foreach( $status->output() as $test ):
   $args = wp_parse_args( $test, array(
     'pass' => false,

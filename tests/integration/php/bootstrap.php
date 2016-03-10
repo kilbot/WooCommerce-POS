@@ -1,6 +1,10 @@
 <?php
 
-class Integration_Test_WC_POS {
+namespace WC_POS;
+
+use WC_Tax;
+
+class Integration_Tests {
 
   public function __construct(){
 
@@ -43,7 +47,7 @@ class Integration_Test_WC_POS {
     $wpdb->query("TRUNCATE TABLE {$wpdb->prefix}woocommerce_tax_rates");
     $wpdb->query("TRUNCATE TABLE {$wpdb->prefix}woocommerce_tax_rate_locations");
 
-    $file = WC_POS_PLUGIN_PATH . 'tests/data/sample_tax_rates.csv';
+    $file = \WC_POS\PLUGIN_PATH . 'tests/data/sample_tax_rates.csv';
     $delimiter = ',';
 
     $loop = 0;
@@ -81,4 +85,4 @@ class Integration_Test_WC_POS {
 
 }
 
-new Integration_Test_WC_POS();
+new Integration_Tests();
