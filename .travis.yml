@@ -1,23 +1,18 @@
 language: php
 
-matrix:
-  include:
-    - php: "5.4"
-      env:
-        - PHP_FPM_DEFAULT=php-fpm.conf.default
-        - PHP_FPM=php-fpm.conf
-    - php: "7.0"
-      env:
-        - PHP_FPM_DEFAULT=php-fpm.d/www.conf.default
-        - PHP_FPM=php-fpm.d/www.conf
-
-addons:
-  hosts:
-    - woopos.dev
+php:
+  - "5.4"
+  - "7.0"
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
   #    - WP_VERSION=latest WP_MULTISITE=1
+  #    - WP_VERSION=3.8 WP_MULTISITE=0
+  #    - WP_VERSION=3.8 WP_MULTISITE=1
+
+addons:
+  hosts:
+    - woopos.dev
 
 before_install:
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install stable
@@ -34,7 +29,11 @@ install:
   # apache
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
-  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/$PHP_FPM_DEFAULT ~/.phpenv/versions/$(phpenv version-name)/etc/$PHP_FPM
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then
+      sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf 2>/dev/null
+    else
+      sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf 2>/dev/null
+    fi
   - sudo a2enmod rewrite actions fastcgi alias
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
@@ -73,7 +72,7 @@ script:
   #    - ./node_modules/.bin/pioneer
 
 after_success:
-  if [ $(phpenv version-name) == "7.0" ]; then
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then
     phpunit -c phpunit.xml.dist
     php vendor/bin/coveralls -v
     grunt coverage
