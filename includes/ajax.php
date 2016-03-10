@@ -34,7 +34,7 @@ class Ajax {
    * Verifies the AJAX request
    */
   static public function check_ajax_referer(){
-    $pass = check_ajax_referer( WC_POS_PLUGIN_NAME, 'security', false );
+    $pass = check_ajax_referer( PLUGIN_NAME, 'security', false );
     if(!$pass){
       $result = new \WP_Error(
         'woocommerce_pos_invalid_nonce',

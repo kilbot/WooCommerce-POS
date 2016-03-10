@@ -11,7 +11,9 @@
 
 namespace WC_POS\Admin\Settings\Receipt;
 
-class Options extends WC_POS\Admin\Settings\Page {
+use WC_POS\Admin\Settings\Page;
+
+class Options extends Page {
 
   protected static $instance;
 

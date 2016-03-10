@@ -11,6 +11,8 @@
 
 namespace WC_POS\Admin;
 
+use WC_POS\Template;
+
 class Settings extends Page {
 
   /* @var string JS var with page id, used for API requests */
@@ -20,12 +22,12 @@ class Settings extends Page {
    * @var array settings handlers
    */
   static public $handlers = array(
-    'general'   => 'WC_POS\Admin\Settings\General',
-    'customers' => 'WC_POS\Admin\Settings\Customers',
-    'checkout'  => 'WC_POS\Admin\Settings\Checkout',
-    'receipts'  => 'WC_POS\Admin\Settings\Receipts',
-    'hotkeys'   => 'WC_POS\Admin\Settings\HotKeys',
-    'access'    => 'WC_POS\Admin\Settings\Access'
+    'general'   => '\WC_POS\Admin\Settings\General',
+    'customers' => '\WC_POS\Admin\Settings\Customers',
+    'checkout'  => '\WC_POS\Admin\Settings\Checkout',
+    'receipts'  => '\WC_POS\Admin\Settings\Receipts',
+    'hotkeys'   => '\WC_POS\Admin\Settings\HotKeys',
+    'access'    => '\WC_POS\Admin\Settings\Access'
   );
 
   /**
@@ -33,7 +35,7 @@ class Settings extends Page {
    */
   public function admin_menu() {
     $this->screen_id = add_submenu_page(
-      WC_POS_PLUGIN_NAME,
+      \WC_POS\PLUGIN_NAME,
       /* translators: wordpress */
       __( 'Settings' ),
       /* translators: wordpress */
@@ -74,7 +76,7 @@ class Settings extends Page {
     wp_deregister_script( 'backbone' );
 
     // register
-    $external_libs = WC_POS_Template::get_external_js_libraries();
+    $external_libs = Template::get_external_js_libraries();
     wp_register_script( 'lodash', $external_libs[ 'lodash' ], array( 'jquery' ), null, true );
     wp_register_script( 'backbone', $external_libs[ 'backbone' ], array( 'jquery', 'lodash' ), null, true );
     wp_register_script( 'backbone.radio', $external_libs[ 'radio' ], array( 'jquery', 'backbone', 'lodash' ), null, true );
@@ -84,24 +86,23 @@ class Settings extends Page {
     wp_register_script( 'accounting', $external_libs[ 'accounting' ], false, null, true );
     wp_register_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js', array( 'jquery' ), null, true );
     wp_register_script( 'ace', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js', false, null, true );
-//    wp_register_script( 'idb-wrapper', $external_libs[ 'idb-wrapper' ], false, null, true );
 
     // enqueue
     wp_enqueue_script( 'jquery-ui-sortable' );
 
-    $build = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'build' : 'min';
+    $build = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? 'build' : 'min';
 
     wp_enqueue_script(
-      WC_POS_PLUGIN_NAME . '-admin-settings-app',
-      WC_POS\PLUGIN_URL . 'assets/js/admin-settings.' . $build . '.js',
+      \WC_POS\PLUGIN_NAME . '-admin-settings-app',
+      \WC_POS\PLUGIN_URL . 'assets/js/admin-settings.' . $build . '.js',
       array( 'backbone', 'backbone.radio', 'marionette', 'handlebars', 'accounting', 'moment', 'select2', 'ace' ),
-      WC_POS_VERSION,
+      \WC_POS\VERSION,
       true
     );
 
     wp_enqueue_script(
       'eventsource-polyfill',
-      WC_POS\PLUGIN_URL . 'assets/js/vendor/eventsource.min.js',
+      \WC_POS\PLUGIN_URL . 'assets/js/vendor/eventsource.min.js',
       array(),
       null,
       true
@@ -110,10 +111,10 @@ class Settings extends Page {
     $scripts = apply_filters( 'woocommerce_pos_admin_enqueue_scripts', array() );
     if ( isset( $scripts[ 'locale' ] ) ) {
       wp_enqueue_script(
-        WC_POS_PLUGIN_NAME . '-js-locale',
+        \WC_POS\PLUGIN_NAME . '-js-locale',
         $scripts[ 'locale' ],
-        array( WC_POS_PLUGIN_NAME . '-admin-settings-app' ),
-        WC_POS_VERSION,
+        array( \WC_POS\PLUGIN_NAME . '-admin-settings-app' ),
+        \WC_POS\VERSION,
         true
       );
     }

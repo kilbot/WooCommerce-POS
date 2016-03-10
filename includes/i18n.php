@@ -46,13 +46,13 @@ class i18n {
 
     $locale = apply_filters( 'plugin_locale', get_locale(), 'woocommerce-pos' );
 
-    load_textdomain( 'woocommerce-pos', WP_LANG_DIR . '/woocommerce-pos/woocommerce-pos-' . $locale . '.mo' );
-    load_textdomain( 'woocommerce-pos', WP_LANG_DIR . '/plugins/woocommerce-pos-' . $locale . '.mo' );
+    load_textdomain( 'woocommerce-pos', \WP_LANG_DIR . '/woocommerce-pos/woocommerce-pos-' . $locale . '.mo' );
+    load_textdomain( 'woocommerce-pos', \WP_LANG_DIR . '/plugins/woocommerce-pos-' . $locale . '.mo' );
 
     // load woocommerce admin translations
     if ( ! is_admin() && is_pos() ) {
-      load_textdomain( 'woocommerce', WP_LANG_DIR . '/woocommerce/woocommerce-admin-' . $locale . '.mo' );
-      load_textdomain( 'woocommerce', WP_LANG_DIR . '/plugins/woocommerce-admin-' . $locale . '.mo' );
+      load_textdomain( 'woocommerce', \WP_LANG_DIR . '/woocommerce/woocommerce-admin-' . $locale . '.mo' );
+      load_textdomain( 'woocommerce', \WP_LANG_DIR . '/plugins/woocommerce-admin-' . $locale . '.mo' );
     }
 
   }
@@ -152,7 +152,7 @@ class i18n {
     header( "Cache-Control: no-cache" );
     header( "Access-Control-Allow-Origin: *" );
 
-    echo ":" . str_repeat( " ", 2048 ) . PHP_EOL; // 2 kB padding for IE
+    echo ":" . str_repeat( " ", 2048 ) . \PHP_EOL; // 2 kB padding for IE
 
     $this->manual_update();
 
@@ -211,14 +211,14 @@ class i18n {
       $file = trailingslashit( $upload_dir[ 'path' ] ) . $locale . '.zip';
 
       // Save the zip file
-      if ( !$wp_filesystem->put_contents( $file, $response[ 'body' ], FS_CHMOD_FILE ) ) {
+      if ( !$wp_filesystem->put_contents( $file, $response[ 'body' ], \FS_CHMOD_FILE ) ) {
         /* translators: wordpress */
         $this->flush( __( 'Translation update failed.' ) );
         continue;
       }
 
       // Unzip the file to wp-content/languages/plugins directory
-      $dir = trailingslashit( WP_LANG_DIR ) . 'plugins/';
+      $dir = trailingslashit( \WP_LANG_DIR ) . 'plugins/';
       $unzip = unzip_file( $file, $dir );
       if ( true !== $unzip ) {
         /* translators: wordpress */
@@ -254,8 +254,8 @@ class i18n {
    * @param $data
    */
   private function flush( $data ) {
-    echo 'data:' . $data . PHP_EOL;
-    echo PHP_EOL;
+    echo 'data:' . $data . \PHP_EOL;
+    echo \PHP_EOL;
     ob_flush();
     flush();
   }

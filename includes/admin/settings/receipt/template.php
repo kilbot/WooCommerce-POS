@@ -9,7 +9,11 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_Admin_Settings_Receipt_Template extends WC_POS_Admin_Settings_Abstract {
+namespace WC_POS\Admin\Settings\Receipt;
+
+use WC_POS\Admin\Settings\Page;
+
+class Template extends Page {
 
   protected static $instance;
 

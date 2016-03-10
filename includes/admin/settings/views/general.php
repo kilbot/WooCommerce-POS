@@ -2,6 +2,10 @@
 /**
  * Template for the general settings
  */
+
+use WC_POS\API\Params;
+use WC_POS\Tax;
+
 ?>
 
 <h3><?php /* translators: woocommerce */ _e( 'General Options', 'woocommerce' ); ?></h3>
@@ -64,7 +68,7 @@
     </th>
     <td>
       <select name="shipping.method" id="shipping.method">
-        <?php foreach( WC_POS_API_Params::shipping_labels() as $slug => $label ): ?>
+        <?php foreach( Params::shipping_labels() as $slug => $label ): ?>
           <option value="<?php echo esc_attr($slug); ?>"><?php echo esc_html($label); ?></option>
         <?php endforeach; ?>
       </select>
@@ -78,7 +82,7 @@
     <td>
       <input type="checkbox" name="shipping.taxable" id="shipping.taxable" />
       <select name="shipping.tax_class" id="shipping.tax_class">
-        <?php foreach( WC_POS_Tax::tax_classes() as $slug => $label ): ?>
+        <?php foreach( Tax::tax_classes() as $slug => $label ): ?>
           <option value="<?php echo esc_attr($slug); ?>"><?php echo esc_html($label); ?></option>
         <?php endforeach; ?>
       </select>
@@ -119,7 +123,7 @@
     <td>
       <input type="checkbox" name="fee.taxable" id="fee.taxable" />
       <select name="fee.tax_class" id="fee.tax_class">
-        <?php foreach( WC_POS_Tax::tax_classes() as $slug => $label ): ?>
+        <?php foreach( Tax::tax_classes() as $slug => $label ): ?>
           <option value="<?php echo esc_attr($slug); ?>"><?php echo esc_html($label); ?></option>
         <?php endforeach; ?>
       </select>

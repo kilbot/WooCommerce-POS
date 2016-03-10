@@ -46,15 +46,15 @@ class Payload extends WC_API_Resource {
     $wc_api = WC()->api;
 
     $payload = array(
-      'i18n'      => $wc_api->{'WC_POS\API\i18n'}->get_translations( $wc_pos_admin ),
-      'params'    => $wc_api->{'WC_POS\API\Params'}->get_params( $wc_pos_admin ),
-      'templates' => $wc_api->{'WC_POS\API\Templates'}->get_templates( $wc_pos_admin ),
+      'i18n'      => $wc_api->{'\WC_POS\API\i18n'}->get_translations( $wc_pos_admin ),
+      'params'    => $wc_api->{'\WC_POS\API\Params'}->get_params( $wc_pos_admin ),
+      'templates' => $wc_api->{'\WC_POS\API\Templates'}->get_templates( $wc_pos_admin ),
     );
 
     if( $wc_pos_admin ){
-      $payload['params']['settings'] = $wc_api->{'WC_POS\API\Settings'}->get_settings( '', $wc_pos_admin );
+      $payload['params']['settings'] = $wc_api->{'\WC_POS\API\Settings'}->get_settings( '', $wc_pos_admin );
     } else {
-      $payload['params']['gateways'] = $wc_api->{'WC_POS\API\Gateways'}->get_gateways();
+      $payload['params']['gateways'] = $wc_api->{'\WC_POS\API\Gateways'}->get_gateways();
     }
 
     return $payload;

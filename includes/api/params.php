@@ -93,7 +93,7 @@ class Params extends WC_API_Resource {
   private function admin_params(){
     return array(
       'search_customers_nonce' => wp_create_nonce( 'search-customers' ),
-      'nonce'       => wp_create_nonce( WC_POS_PLUGIN_NAME ),
+      'nonce'       => wp_create_nonce( \WC_POS\PLUGIN_NAME ),
     );
   }
 

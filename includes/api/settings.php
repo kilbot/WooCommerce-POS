@@ -14,6 +14,7 @@ namespace WC_POS\API;
 use WC_API_Resource;
 use WC_API_Server;
 use WC_POS\Admin\Settings as Admin_Settings;
+use WC_POS\Admin\Settings\Gateways;
 use WC_POS\Admin\Status;
 
 class Settings extends WC_API_Resource {
@@ -106,7 +107,7 @@ class Settings extends WC_API_Resource {
     }
 
     if( $handler->flush_local_data($data) ){
-      WC_POS_Admin_Settings::bump_idb_version();
+      Admin_Settings::bump_idb_version();
     }
 
     return $handler->set( $data );
@@ -126,7 +127,7 @@ class Settings extends WC_API_Resource {
     }
 
     if( $handler->flush_local_data() ){
-      WC_POS_Admin_Settings::bump_idb_version();
+      Admin_Settings::bump_idb_version();
     }
 
     return $handler->delete();
@@ -149,7 +150,7 @@ class Settings extends WC_API_Resource {
 
   /**
    * @param $id
-   * @return WC_POS_Admin_Settings_Gateways|WP_Error
+   * @return Gateways|\WP_Error
    */
   private function get_settings_handler( $id ){
 
@@ -164,13 +165,13 @@ class Settings extends WC_API_Resource {
     // special case: gateway_
     $gateway_id = preg_replace( '/^gateway_/', '', strtolower( $id ), 1, $count );
     if($count) {
-      return new WC_POS_Admin_Settings_Gateways( $gateway_id );
+      return new Gateways( $gateway_id );
     }
 
     // special case: receipt_
     $receipts_section = preg_replace( '/^receipt_/', '', strtolower( $id ), 1, $count );
     if($count) {
-      $class = 'WC_POS_Admin_Settings_Receipt_' . ucfirst( $receipts_section );
+      $class = '\WC_POS\Admin\Settings\Receipt\\' . ucfirst( $receipts_section );
       return new $class();
     }
 

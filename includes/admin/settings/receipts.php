@@ -23,8 +23,8 @@ class Receipts extends Page {
     $this->label = __( 'Receipts', 'woocommerce-pos' );
 
     $this->section_handlers = array(
-      'WC_POS_Admin_Settings_Receipt_Options',
-      'WC_POS_Admin_Settings_Receipt_Template'
+      '\WC_POS\Admin\Settings\Receipt\Options',
+      '\WC_POS\Admin\Settings\Receipt\Template'
     );
   }
 

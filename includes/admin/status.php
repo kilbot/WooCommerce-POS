@@ -11,6 +11,8 @@
 
 namespace WC_POS\Admin;
 
+use WC_POS\Template;
+
 class Status extends Page {
 
   /* @var string JS var with page id, used for API requests */
@@ -20,8 +22,8 @@ class Status extends Page {
    * @var array settings handlers
    */
   static public $handlers = array(
-    'tools'     => 'WC_POS_Admin_Settings_Tools',
-    'status'    => 'WC_POS_Admin_Settings_Status'
+    'tools'     => '\WC_POS\Admin\Settings\Tools',
+    'status'    => '\WC_POS\Admin\Settings\Status'
   );
 
   /**
@@ -29,7 +31,7 @@ class Status extends Page {
    */
   public function admin_menu() {
     $this->screen_id = add_submenu_page(
-      WC_POS_PLUGIN_NAME,
+      \WC_POS\PLUGIN_NAME,
       /* translators: woocommerce */
       __( 'System Status', 'woocommerce' ),
       /* translators: woocommerce */
@@ -72,7 +74,7 @@ class Status extends Page {
     wp_deregister_script( 'backbone' );
 
     // register
-    $external_libs = WC_POS_Template::get_external_js_libraries();
+    $external_libs = Template::get_external_js_libraries();
     wp_register_script( 'lodash', $external_libs[ 'lodash' ], array( 'jquery' ), null, true );
     wp_register_script( 'backbone', $external_libs[ 'backbone' ], array( 'jquery', 'lodash' ), null, true );
     wp_register_script( 'backbone.radio', $external_libs[ 'radio' ], array( 'jquery', 'backbone', 'lodash' ), null, true );
@@ -85,23 +87,23 @@ class Status extends Page {
     // enqueue
     wp_enqueue_script( 'jquery-ui-sortable' );
 
-    $build = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'build' : 'min';
+    $build = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? 'build' : 'min';
 
     wp_enqueue_script(
-      WC_POS_PLUGIN_NAME . '-admin-system-status-app',
-      WC_POS\PLUGIN_URL . 'assets/js/admin-system-status.' . $build . '.js',
+      \WC_POS\PLUGIN_NAME . '-admin-system-status-app',
+      \WC_POS\PLUGIN_URL . 'assets/js/admin-system-status.' . $build . '.js',
       array( 'backbone', 'backbone.radio', 'marionette', 'handlebars', 'accounting', 'moment', 'select2' ),
-      WC_POS_VERSION,
+      \WC_POS\VERSION,
       true
     );
 
     $scripts = apply_filters( 'woocommerce_pos_admin_enqueue_scripts', array() );
     if ( isset( $scripts[ 'locale' ] ) ) {
       wp_enqueue_script(
-        WC_POS_PLUGIN_NAME . '-js-locale',
+        \WC_POS\PLUGIN_NAME . '-js-locale',
         $scripts[ 'locale' ],
-        array( WC_POS_PLUGIN_NAME . '-admin-system-status-app' ),
-        WC_POS_VERSION,
+        array( \WC_POS\PLUGIN_NAME . '-admin-system-status-app' ),
+        \WC_POS\VERSION,
         true
       );
     }

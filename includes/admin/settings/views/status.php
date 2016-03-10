@@ -2,6 +2,9 @@
 /**
  * Template for the admin tools
  */
+
+use WC_POS\Status;
+
 ?>
 
 <h3><?php /* translators: woocommerce */ _e( 'System Status', 'woocommerce' ); ?></h3>
@@ -9,7 +12,7 @@
 <table class="widefat striped">
   <tbody>
     <?php
-      $status = new WC_POS_Status();
+      $status = new Status();
       foreach( $status->output() as $test ):
       $args = wp_parse_args( $test, array(
         'pass' => false,

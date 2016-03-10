@@ -46,24 +46,24 @@ class API {
     // common classes
     array_push(
       $classes,
-      'WC_POS\API\Products',
-      'WC_POS\API\Orders',
-      'WC_POS\API\Customers',
-      'WC_POS\API\Coupons',
-      'WC_POS\API\Payload',
-      'WC_POS\API\Params',
-      'WC_POS\API\i18n',
-      'WC_POS\API\Templates'
+      '\WC_POS\API\Products',
+      '\WC_POS\API\Orders',
+      '\WC_POS\API\Customers',
+      '\WC_POS\API\Coupons',
+      '\WC_POS\API\Payload',
+      '\WC_POS\API\Params',
+      '\WC_POS\API\i18n',
+      '\WC_POS\API\Templates'
     );
 
     // frontend only
     if( current_user_can('access_woocommerce_pos') ){
-      array_push( $classes, 'WC_POS\API\Gateways', 'WC_POS\API\Support' );
+      array_push( $classes, '\WC_POS\API\Gateways', '\WC_POS\API\Support' );
     }
 
     // admin only
     if( current_user_can('manage_woocommerce_pos') ){
-      array_push( $classes, 'WC_POS\API\Settings' );
+      array_push( $classes, '\WC_POS\API\Settings' );
     }
 
     return $classes;

@@ -174,7 +174,7 @@ class Visibility {
   public function save_post( $post_id, $post ) {
 
     // If this is an autosave, our form has not been submitted, so we don't want to do anything.
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+    if ( defined( '\DOING_AUTOSAVE' ) && \DOING_AUTOSAVE ) {
       return;
     }
 
@@ -230,16 +230,16 @@ class Visibility {
       return;
 
     if(defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG){
-      $script = WC_POS\PLUGIN_URL . 'assets/js/src/products.js';
+      $script = \WC_POS\PLUGIN_URL . 'assets/js/src/products.js';
     } else {
-      $script = WC_POS\PLUGIN_URL . 'assets/js/products.min.js';
+      $script = \WC_POS\PLUGIN_URL . 'assets/js/products.min.js';
     }
 
     wp_enqueue_script(
-      WC_POS_PLUGIN_NAME . '-admin-edit',
+      \WC_POS\PLUGIN_NAME . '-admin-edit',
       $script,
       false,
-      WC_POS_VERSION,
+      \WC_POS\VERSION,
       true
     );
   }

@@ -14,8 +14,8 @@ namespace WC_POS\Admin;
 class Plugins {
 
   public function __construct() {
-    add_filter( 'plugin_action_links_'. WC_POS_PLUGIN_FILE, array ( $this, 'plugin_action_links' ) );
-    add_action( 'in_plugin_update_message-' . WC_POS_PLUGIN_FILE, array ( $this, 'plugin_update_message' ), 10, 2 );
+    add_filter( 'plugin_action_links_'. \WC_POS\PLUGIN_FILE, array ( $this, 'plugin_action_links' ) );
+    add_action( 'in_plugin_update_message-' . \WC_POS\PLUGIN_FILE, array ( $this, 'plugin_update_message' ), 10, 2 );
   }
 
   /**
