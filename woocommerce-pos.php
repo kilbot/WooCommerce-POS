@@ -20,11 +20,6 @@
 
 namespace WC_POS;
 
-// If this file is called directly, abort.
-if ( ! defined( '\WPINC' ) ) {
-  die;
-}
-
 /**
  * Define plugin constants.
  */
@@ -52,8 +47,6 @@ function autoload( $cls ) {
   $file = PLUGIN_PATH . 'includes' . str_replace( '\\', DIRECTORY_SEPARATOR, strtolower( $cls ) ) . '.php';
   if(is_readable($file)){
     require_once( $file );
-  } else {
-    $break = '';
   }
 }
 
