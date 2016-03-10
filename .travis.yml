@@ -1,8 +1,8 @@
 language: php
 
 php:
-  - "5.4"
-  - "7.0"
+  - 5.4
+  - 7.0
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
@@ -29,11 +29,8 @@ install:
   # apache
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
-  - if [ $(phpenv version-name) = "7.0" ] ; then
-      sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf;
-    else
-      sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf;
-    fi
+  - if [ "`phpenv version-name`" != "7.0" ] ; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
+  - if [ "`phpenv version-name`" == "7.0" ] ; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf; fi
   - sudo a2enmod rewrite actions fastcgi alias
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
@@ -72,8 +69,4 @@ script:
   #    - ./node_modules/.bin/pioneer
 
 after_success:
-  - if [ $(phpenv version-name) = "7.0" ] ; then
-    phpunit -c phpunit.xml.dist
-    && php vendor/bin/coveralls -v
-    && grunt coverage;
-  fi
+  - if [ "`phpenv version-name`" == "7.0" ] ; then phpunit -c phpunit.xml.dist && php vendor/bin/coveralls -v && grunt coverage; fi
