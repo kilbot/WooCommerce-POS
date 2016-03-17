@@ -180,7 +180,7 @@ class Customers extends WC_API_Resource {
       $args['meta_compare']  = '>';
     }
 
-    $query = new WP_User_Query( $args );
+    $query = new \WP_User_Query( $args );
     return array_map( array( $this, 'format_id' ), $query->results );
   }
 

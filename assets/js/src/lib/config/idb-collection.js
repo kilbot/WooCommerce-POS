@@ -12,23 +12,9 @@ module.exports = app.prototype.IDBCollection = Collection.extend({
   name       : 'store',
   storePrefix: 'wc_pos_',
 
-  /**
-   *
-   */
   constructor: function () {
-    var opts = {
-      storeName    : this.name,
-      storePrefix  : this.storePrefix,
-      dbVersion    : this.dbVersion,
-      keyPath      : this.keyPath,
-      autoIncrement: this.autoIncrement,
-      indexes      : this.indexes,
-      pageSize     : this.pageSize
-    };
-
-    this.db = new IDBAdapter(opts);
+    this.db = new IDBAdapter({ collection: this });
     this.versionCheck();
-
     Collection.apply(this, arguments);
   },
 
@@ -39,9 +25,10 @@ module.exports = app.prototype.IDBCollection = Collection.extend({
     var self = this;
     return this.db.open()
       .then(function () {
-        self.reset();
-        self._isNew = true;
         return self.db.clear();
+      })
+      .then(function(){
+        Collection.prototype.clear.call(self);
       });
   },
 
@@ -56,6 +43,7 @@ module.exports = app.prototype.IDBCollection = Collection.extend({
       })
       .then(function (count) {
         self.trigger('count', count);
+        return count;
       });
   },
 
@@ -63,7 +51,7 @@ module.exports = app.prototype.IDBCollection = Collection.extend({
    *
    */
   putBatch: function (models, options) {
-    options = options || {};
+    options = _.clone(options) || {};
     var self = this;
     if (_.isEmpty(models)) {
       models = this.getChangedModels();
@@ -80,6 +68,30 @@ module.exports = app.prototype.IDBCollection = Collection.extend({
   /**
    *
    */
+  getBatch: function (keyArray, options) {
+    options = _.clone(options) || {};
+    var self = this;
+    return this.db.open()
+      .then(function () {
+        return self.db.getBatch(keyArray, options);
+      });
+  },
+
+  /**
+   *
+   */
+  findHighestIndex: function (keyPath, options) {
+    options = _.clone(options) || {};
+    var self = this;
+    return this.db.open()
+      .then(function () {
+        return self.db.findHighestIndex(keyPath, options);
+      });
+  },
+
+  /**
+   *
+   */
   getChangedModels: function () {
     return this.filter(function (model) {
       return model.isNew() || model.hasChanged();
@@ -89,24 +101,24 @@ module.exports = app.prototype.IDBCollection = Collection.extend({
   /**
    *
    */
-  removeBatch: function (models, options) {
-    options = options || {};
-    var self = this;
-    if (_.isEmpty(models)) {
-      return;
-    }
-    return this.db.open()
-      .then(function () {
-        return self.db.removeBatch(models);
-      })
-      .then(function () {
-        self.remove(models);
-        if (options.success) {
-          options.success(self, models, options);
-        }
-        return models;
-      });
-  },
+  //removeBatch: function (models, options) {
+  //  options = options || {};
+  //  var self = this;
+  //  if (_.isEmpty(models)) {
+  //    return;
+  //  }
+  //  return this.db.open()
+  //    .then(function () {
+  //      return self.db.removeBatch(models);
+  //    })
+  //    .then(function () {
+  //      self.remove(models);
+  //      if (options.success) {
+  //        options.success(self, models, options);
+  //      }
+  //      return models;
+  //    });
+  //},
 
   /**
    * Each website will have a unique idbVersion number

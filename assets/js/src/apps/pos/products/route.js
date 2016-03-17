@@ -11,11 +11,7 @@ module.exports = Route.extend({
 
   initialize: function (options) {
     this.container  = options.container;
-    this.filtered   = Radio.request('entities', 'get', {
-      type    : 'filtered',
-      name    : 'products',
-      perPage : 10
-    });
+    this.collection = Radio.request('entities', 'get', 'products');
     this.setTabLabel( polyglot.t('titles.products') );
   },
 
@@ -42,10 +38,7 @@ module.exports = Route.extend({
   },
 
   showActions: function() {
-    var view = new Actions({
-      collection: this.filtered
-    });
-
+    var view = new Actions({ collection: this.collection });
     this.layout.getRegion('actions').show(view);
   },
 
@@ -62,23 +55,19 @@ module.exports = Route.extend({
     });
 
     this.listenTo(view, 'childview:click', function(tab) {
-      this.filtered.query('tab', tab.model.id);
+      this.collection.filterBy('tab', tab.model.id);
     });
 
     this.layout.getRegion('tabs').show(view);
   },
 
   showProducts: function() {
-    var view = new List({
-      collection: this.filtered
-    });
+    var view = new List({ collection: this.collection });
     this.layout.getRegion('list').show(view);
   },
 
   showPagination: function(){
-    var view = new Pagination({
-      collection: this.filtered
-    });
+    var view = new Pagination({ collection: this.collection });
     this.layout.getRegion('footer').show(view);
   }
 

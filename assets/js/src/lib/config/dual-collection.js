@@ -60,57 +60,56 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
     return IDBCollection.prototype.parse.call(this, resp, options);
   },
 
-  firstSync: function () {
-    var self = this;
-    return this.fetch()
-      .then(function(records){
-        if(_.isEmpty(records)){
-          return self.fetchRemote();
-        }
-      })
-      .then(function(){
-        self.fullSync();
-      });
-  },
-
-  fullSync: function () {
-    var self = this;
-    return this.fetchRemoteIds()
-      .then(function () {
-        return self.count();
-      });
-  },
-
   fetch: function (options) {
-    options = options || {};
-    if (options.remote) {
-      return this.fetchRemote(options);
-    }
-    return IDBCollection.prototype.fetch.call(this, options);
+    options = _.extend({parse: true}, options);
+    var self = this, _fetch = options.remote ? this.fetchRemote : this.fetchLocal;
+
+    return _fetch.apply(this, arguments)
+      .then(function (response) {
+        var method = options.reset ? 'reset' : 'set';
+        self[method](response, options);
+        if (options.success) {
+          options.success.call(options.context, self, response, options);
+        }
+        self.trigger('sync', self, response, options);
+        return response;
+      });
   },
 
-  fetchRemote: function (options) {
-    options = options || {};
+  /**
+   *
+   */
+  fetchLocal: function (options) {
     var self = this;
-    var opts = _.extend({}, options, {
-      remove : false,
-      remote : true,
-      success: undefined
-    });
+    options = options || {};
+
+    return IDBCollection.prototype.getBatch.call(this, null, options.data)
+      .then(function (response) {
+        if(_.size(response) > 0){
+          return self.fetchDelayed(response);
+        }
+        if(self.isNew()){
+          return self.firstSync();
+        }
+      });
+  },
+
+  /**
+   * Get remote data and merge with local data on id
+   * returns merged data
+   */
+  fetchRemote: function (options) {
+    var self = this, opts = _.clone(options) || {};
+    opts.remote = true;
+    opts.success = undefined;
 
     return this.sync('read', this, opts)
       .then(function (response) {
         response = self.parse(response, opts);
-        return self.putBatch(response, {
-          index: 'id'
-        });
+        return self.putBatch(response, { index: 'id' });
       })
-      .then(function (response) {
-        self.set(response, {remove: false});
-        if (options.success) {
-          options.success.call(options.context, self, response, options);
-        }
-        return response;
+      .then(function (keys) {
+        return self.getBatch(keys);
       });
   },
 
@@ -122,7 +121,7 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
       url   : url,
       remote: true,
       data  : {
-        fields: ['id', 'updated_at'],
+        fields: 'id',
         filter: {
           limit         : -1,
           updated_at_min: last_update
@@ -139,12 +138,11 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
           index: {
             keyPath: 'id',
             merge  : function (local, remote) {
-              var updated_at = _.has(local, 'updated_at') ? local.updated_at : undefined;
-              var data = _.merge({}, local, remote);
-              if (_.isUndefined(data.local_id) || updated_at !== data.updated_at) {
-                data._state = self.states.read;
+              if(!local || local.updated_at < remote.updated_at){
+                local = local || remote;
+                local._state = self.states.read;
               }
-              return data;
+              return local;
             }
           }
         });
@@ -156,10 +154,65 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
 
   fetchUpdatedIds: function (options) {
     var self = this;
-    return this.db.findHighestIndex('updated_at')
+    return this.findHighestIndex('updated_at')
       .then(function (last_update) {
         return self.fetchRemoteIds(last_update, options);
       });
+  },
+
+  firstSync: function(options){
+    var self = this, response;
+    return this.fetchRemote()
+      .then(function (resp) {
+        response = resp;
+        return self.fullSync(options);
+      })
+      .then(function () {
+        return response;
+      });
+  },
+
+  fullSync: function(options){
+    var self = this;
+    return this.fetchRemoteIds(options)
+      .then(function () {
+        return self.count();
+      });
+  },
+
+  fetchDelayed: function(response){
+    var delayed = this.getDelayed('read', response);
+    if(delayed){
+      var ids = _.map(delayed, 'id');
+      return this.fetchRemote({
+        data: {
+          filter: {
+            'in': ids.join(',')
+          }
+        }
+      })
+      .then(function(resp){
+        _.each(resp, function(attrs){
+          var key = _.findKey(response, {id: attrs.id});
+          if(key){
+            response[key] = attrs;
+          } else {
+            response.push(resp);
+          }
+        });
+        return response;
+      });
+    }
+    return response;
+  },
+
+  getDelayed: function(state, collection){
+    var delayed, _state = this.states[state];
+    collection = collection || this;
+    delayed = _.filter(collection, {_state: _state});
+    if(!_.isEmpty(delayed)){
+      return delayed;
+    }
   }
 
 });

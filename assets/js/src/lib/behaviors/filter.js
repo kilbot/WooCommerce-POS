@@ -7,20 +7,13 @@ var Radio = require('backbone.radio');
 var Filter = Behavior.extend({
 
   initialize: function(){
-
-    this.listenTo(this.view.options.collection.superset(), {
-      'start:fullSync': this.syncStart,
-      'end:fullSync': this.syncEnd
-    });
-
     this.hotkeys = Radio.request('entities', 'get', {
       type: 'option',
       name: 'hotkeys'
     }) || {};
 
     this.combokeys = new Combokeys(document.documentElement);
-    this.combokeys.bind(this.hotkeys.sync.key, _.bind( this.sync, this ));
-
+    this.combokeys.bind(this.hotkeys.sync.key, this.sync.bind(this));
   },
 
   ui: {
@@ -70,7 +63,7 @@ var Filter = Behavior.extend({
    */
   clear: function(e) {
     if(e) { e.preventDefault(); }
-    this.view.collection.removeFilter('search');
+    //this.view.collection.removeFilter('search');
     this.ui.searchField.val('');
     this.ui.clearBtn.hide();
   },
@@ -79,17 +72,17 @@ var Filter = Behavior.extend({
    *
    */
   onRender: function(){
-    if(this.view.collection.hasFilter('search')){
-      var queryStr = this.view.collection._filtered._query;
-      if(queryStr){
-        this.ui.searchField.val(queryStr).trigger('keyup');
-      }
-    }
+    //if(this.view.collection.hasFilter('search')){
+    //  var queryStr = this.view.collection._filtered._query;
+    //  if(queryStr){
+    //    this.ui.searchField.val(queryStr).trigger('keyup');
+    //  }
+    //}
   },
 
   sync: function(e){
     if(e) { e.preventDefault(); }
-    this.view.collection.superset().fullSync();
+    this.view.collection.fullSync();
   },
 
   syncStart: function(){

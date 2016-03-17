@@ -5,6 +5,10 @@ module.exports = app.prototype.Collection = bb.Collection.extend({
 
   constructor: function() {
     bb.Collection.apply(this, arguments);
+    this.registerSyncEvent();
+  },
+
+  registerSyncEvent: function(){
     this._isNew = true;
     this.once('sync', function() {
       this._isNew = false;
@@ -13,6 +17,11 @@ module.exports = app.prototype.Collection = bb.Collection.extend({
 
   isNew: function() {
     return this._isNew;
+  },
+
+  clear: function(){
+    this.reset();
+    this.registerSyncEvent();
   }
 
 });

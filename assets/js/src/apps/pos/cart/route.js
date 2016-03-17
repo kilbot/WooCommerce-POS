@@ -14,11 +14,10 @@ var CartRoute = Route.extend({
   initialize: function( options ) {
     options = options || {};
     this.container  = options.container;
-    this.filtered = options.filtered;
-    this.collection = options.filtered.superset();
+    this.collection = options.collection;
     this.setTabLabel( polyglot.t('titles.cart') );
 
-    this.listenTo( this.filtered, {
+    this.listenTo( this.collection, {
       destroy: function(){
         this.render();
       }
@@ -51,9 +50,9 @@ var CartRoute = Route.extend({
    * Fetch orders from idb if new
    */
   fetch: function() {
-    if (this.collection.isNew()) {
-      return this.collection.fetch();
-    }
+    //if (this.collection.isNew()) {
+    //  return this.collection.fetch();
+    //}
   },
 
   /**
@@ -78,7 +77,7 @@ var CartRoute = Route.extend({
     this.activeOrder = this.collection.get(id);
 
     if( ! this.activeOrder ){
-      this.activeOrder = this.filtered.first();
+      this.activeOrder = this.collection.first();
     }
 
     if( ! this.activeOrder.isEditable() ){

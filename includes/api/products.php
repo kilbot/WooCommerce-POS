@@ -384,7 +384,7 @@ class Products extends WC_API_Resource {
     $args = array(
       'post_type'     => array('product'),
       'post_status'   => array('publish'),
-      'posts_per_page'=>  -1,
+      'posts_per_page'=> -1,
       'fields'        => 'ids'
     );
 
@@ -396,10 +396,9 @@ class Products extends WC_API_Resource {
       );
     }
 
-    $query = new WP_Query( $args );
+    $query = new \WP_Query( $args );
     return array( 'products' => array_map( array( $this, 'format_id' ), $query->posts ) );
   }
-
 
   /**
  * @param $id

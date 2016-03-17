@@ -18,7 +18,7 @@ var Actions = View.extend({
      * this affects the filtered collection pagination
      * todo: refactor and fix this
      */
-    this.listenTo(products.superset(), 'match:barcode', function(model){
+    this.listenTo(products, 'match:barcode', function(model){
       products.once('paginated:change:page', function(){
         self.triggerMethod('clear');
         self.ui.searchField.blur();

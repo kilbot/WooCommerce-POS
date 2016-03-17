@@ -39,13 +39,6 @@ var ReceiptRoute = Route.extend({
     if(redirect && redirect !== ''){
       window.open(redirect, '_blank');
     }
-
-    // update products
-    var products = Radio.request('entities', 'get', {
-      type: 'collection',
-      name: 'products'
-    });
-    products.fetchUpdated();
   },
 
   render: function() {

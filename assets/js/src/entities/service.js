@@ -6,7 +6,6 @@ var Customers = require('./customers/collection');
 var Coupons = require('./coupons/collection');
 var Settings = require('./settings/collection');
 var Gateways = require('./gateways/collection');
-var FilteredCollection = require('backbone.obscura');
 var debug = require('debug')('entities');
 var App = require('lib/config/application');
 var _ = require('lodash');
@@ -36,7 +35,6 @@ var EntitiesService = Service.extend({
   getMethods: {
     collection  : 'getCollection',
     model       : 'getModel',
-    filtered    : 'getFiltered',
     option      : 'getOption',
     localStorage: 'getLocalStorage'
   },
@@ -47,11 +45,16 @@ var EntitiesService = Service.extend({
 
   get: function(options){
     options = options || {};
-    var method = this.getMethods[options.type];
+    var type = 'collection';
+    if(_.isString(options)){
+      options = { name: options };
+    } else {
+      type = options.type;
+    }
+    var method = this.getMethods[type];
     if( this[method] ){
       return this[method](options);
     }
-    debug('request needs a type, eg: "collection" or "option"');
   },
 
   set: function(options){
@@ -102,31 +105,10 @@ var EntitiesService = Service.extend({
   },
 
   /**
-   * return a filtered collection and attach to this
-   */
-  getFiltered: function(options){
-    var prop = '_' + options.name;
-    var filteredProp = '_filtered' + options.name;
-    if( this[filteredProp] ){ return this[filteredProp]; }
-    if( !this[prop] ){ this.attach(options); }
-
-    this[filteredProp] = new FilteredCollection(this[prop], options);
-    return this[filteredProp];
-  },
-
-  /**
    * return an option set during app.start(options)
    */
   getOption: function(options){
     return _.get( this.options, options.name );
-  },
-
-  setFilter: function(options){
-    options = options || {};
-    var filteredProp = '_filtered' + options.name;
-    if( this[filteredProp] ){
-      this[filteredProp].filterBy('search', options.filter);
-    }
   },
 
   serialize: function(value){

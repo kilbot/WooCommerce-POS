@@ -26,7 +26,7 @@ var View = ItemView.extend({
   },
 
   initialize: function(){
-    this.listenTo(this.collection.superset(), {
+    this.listenTo(this.collection, {
       'count': this.render
     });
   },
@@ -34,7 +34,7 @@ var View = ItemView.extend({
   templateHelpers: function(){
     return {
       showing : this.collection.length,
-      local   : _.max([this.collection.superset().db.length, this.collection.length])
+      local   : _.max([this.collection.db.length, this.collection.length])
     };
   }
 

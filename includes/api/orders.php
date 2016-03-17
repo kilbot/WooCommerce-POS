@@ -117,11 +117,6 @@ class Orders {
       $data['shipping_address'] = $this->get_customer_details($customer_id, 'shipping');
     }
 
-    // remove status
-    if( isset( $data['status'] ) && $data['status'] == 'CREATE_FAILED' ){
-      unset( $data['status'] );
-    }
-
     // store data
     $this->data = $data;
 
@@ -136,14 +131,7 @@ class Orders {
    * @return array
    */
   public function edit_order_data(array $data, $order_id){
-
-    // remove status
-    if( isset( $data['status'] ) && $data['status'] == 'UPDATE_FAILED' ){
-      unset( $data['status'] );
-    }
-
     $this->delete_order_items($order_id);
-
     return $this->create_order_data($data);
   }
 

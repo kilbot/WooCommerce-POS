@@ -169,48 +169,14 @@ var OrderModel = DualModel.extend({
   /**
    *
    */
-  /* jshint -W071 */
+  /* jshint -W071, -W074 */
   toJSON: function(options) {
+    options = options || {};
     var attrs = _.clone(this.attributes);
 
     // process cart collection
     if( this.isEditable() && this.cart ){
-      var taxes = [],
-          shipping_taxes = [];
-
-      attrs.line_items = [];
-      attrs.shipping_lines = [];
-      attrs.fee_lines = [];
-
-      /* jshint -W074 */
-      this.cart.each( function(model) {
-
-        switch( model.type ) {
-          case 'shipping':
-            attrs.shipping_lines.push( model.toJSON(options) );
-            if( model.taxes ){
-              shipping_taxes.push( model.taxes.toJSON() );
-            }
-            break;
-          case 'fee':
-            attrs.fee_lines.push( model.toJSON(options) );
-            break;
-          case 'product':
-            attrs.line_items.push( model.toJSON(options) );
-            break;
-        }
-
-        if( model.taxes ){
-          taxes.push( model.taxes.toJSON() );
-        }
-
-      });
-      /* jshint +W074 */
-
-      attrs.tax_lines = this.mergeItemizedTaxes( taxes );
-      attrs.shipping_tax = this.sumItemizedTaxes(
-        this.mergeItemizedTaxes( shipping_taxes )
-      );
+      attrs = this.prepareCartJSON(attrs, options);
     }
 
     // process gateways
@@ -218,9 +184,55 @@ var OrderModel = DualModel.extend({
       attrs.payment_details = this.gateways.getPaymentDetails();
     }
 
+    // prepare remote JSON
+    if( options.remote && this.name ) {
+      attrs = this.prepareRemoteJSON(attrs, options);
+    }
+
     return attrs;
   },
-  /* jshint +W071 */
+  /* jshint +W071, +W074 */
+
+  prepareCartJSON: function(attrs, options){
+    var taxes = [],
+        shipping_taxes = [];
+
+    attrs.line_items = [];
+    attrs.shipping_lines = [];
+    attrs.fee_lines = [];
+
+    /* jshint -W074 */
+    this.cart.each( function(model) {
+
+      switch( model.type ) {
+        case 'shipping':
+          attrs.shipping_lines.push( model.toJSON(options) );
+          if( model.taxes ){
+            shipping_taxes.push( model.taxes.toJSON(options) );
+          }
+          break;
+        case 'fee':
+          attrs.fee_lines.push( model.toJSON(options) );
+          break;
+        case 'product':
+          attrs.line_items.push( model.toJSON(options) );
+          break;
+      }
+
+      if( model.taxes ){
+        taxes.push( model.taxes.toJSON(options) );
+      }
+
+    });
+    /* jshint +W074 */
+
+    attrs.tax_lines = this.mergeItemizedTaxes( taxes );
+    attrs.shipping_tax = this.sumItemizedTaxes(
+      this.mergeItemizedTaxes( shipping_taxes )
+    );
+
+    return attrs;
+  },
 
   /**
    * @todo this could be part of model.save( attributes )?

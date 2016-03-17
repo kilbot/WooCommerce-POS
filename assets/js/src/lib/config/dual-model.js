@@ -76,11 +76,16 @@ module.exports = app.prototype.DualModel = IDBModel.extend({
     options = options || {};
     var json = IDBModel.prototype.toJSON.apply( this, arguments );
     if( options.remote && this.name ) {
-      var nested = {};
-      nested[this.name] = json;
-      return nested;
+      json = this.prepareRemoteJSON(json);
     }
     return json;
+  },
+
+  prepareRemoteJSON: function(json){
+    json._state = undefined;
+    var nested = {};
+    nested[this.name] = json;
+    return nested;
   },
 
   parse: function( resp, options ) {

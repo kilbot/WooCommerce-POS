@@ -1,6 +1,5 @@
 var Model = require('./abstract');
 var Variations = require('../../variations/collection');
-var FilteredCollection = require('backbone.obscura');
 var _ = require('lodash');
 
 module.exports = Model.extend({
@@ -23,11 +22,10 @@ module.exports = Model.extend({
    */
   attachVariations: function( parent ){
     var attributes = _.defaults( parent.variations );
-    var variations = new Variations(attributes, {
+    this.variations = new Variations(attributes, {
       title: parent.title,
       parent: this // a reference to the parent model
     });
-    this.variations = new FilteredCollection( variations );
   },
 
   /**
@@ -41,14 +39,14 @@ module.exports = Model.extend({
    * Wrapper for variation options
    */
   getVariationOptions: function(){
-    return this.variations.superset().getVariationOptions();
+    return this.variations.getVariationOptions();
   },
 
   /**
    * Wrapper for variations range
    */
   getRange: function( attribute ){
-    return this.variations.superset().range( attribute );
+    return this.variations.range( attribute );
   }
 
   /**

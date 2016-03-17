@@ -27,7 +27,7 @@ var POSRouter = Router.extend({
       'add:to:cart'   : this.addToCart
     }, this);
 
-    this.initOrders();
+    this.orders = Radio.request('entities', 'get', 'orders');
   },
 
   onBeforeEnter: function() {
@@ -37,29 +37,25 @@ var POSRouter = Router.extend({
   /**
    * init a filtered collection of open orders
    */
-  initOrders: function(){
-    if(this.openOrders){
-      return;
-    }
-
-    // attach orders
-    this.openOrders = Radio.request('entities', 'get', {
-      type: 'filtered',
-      name: 'orders',
-      perPage : 10 // max open carts
-    });
-
-    // show only open orders
-    this.openOrders.filterBy('openOrders', function(model) {
-      return model.isEditable();
-    });
-
-    // listen to order collection
-    //this.listenTo(this.openOrders, {
-    //  add     : this.addOrder,
-    //  destroy : this.removeOrder
-    //});
-  },
+  //initOrders: function(){
+  //  if(this.openOrders){
+  //    return;
+  //  }
+  //
+  //  // attach orders
+  //  this.orders = Radio.request('entities', 'get', 'orders');
+  //
+  //  // show only open orders
+  //  //this.openOrders.filterBy('openOrders', function(model) {
+  //  //  return model.isEditable();
+  //  //});
+  //
+  //  // listen to order collection
+  //  //this.listenTo(this.openOrders, {
+  //  //  add     : this.addOrder,
+  //  //  destroy : this.removeOrder
+  //  //});
+  //},
 
   onBeforeRoute: function(){
     this.setActiveTab();
@@ -99,7 +95,7 @@ var POSRouter = Router.extend({
   showCart: function() {
     return new CartRoute({
       container : this.layout.getRegion('right'),
-      filtered  : this.openOrders,
+      collection: this.orders,
       column    : this.columns[1]
     });
   },
@@ -107,7 +103,7 @@ var POSRouter = Router.extend({
   showCheckout: function() {
     return new CheckoutRoute({
       container : this.layout.getRegion('right'),
-      collection: this.openOrders.superset(),
+      collection: this.orders,
       column    : this.columns[1]
     });
   },
@@ -120,7 +116,7 @@ var POSRouter = Router.extend({
 
     return new ReceiptRoute({
       container : this.layout.getRegion('right'),
-      collection: this.openOrders.superset(),
+      collection: this.orders,
       autoPrint : autoPrint,
       column    : this.columns[1]
     });

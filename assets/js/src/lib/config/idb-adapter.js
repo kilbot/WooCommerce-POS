@@ -1,3 +1,4 @@
+/* jshint -W071, -W074 */
 var _ = require('lodash');
 var is_safari = window.navigator.userAgent.indexOf('Safari') !== -1 &&
   window.navigator.userAgent.indexOf('Chrome') === -1 &&
@@ -32,7 +33,10 @@ var defaults = {
 };
 
 function IDBAdapter( options ){
-  this.opts = _.defaults( options, defaults );
+  options = options || {};
+  this.parent = options.collection;
+  this.opts = _.defaults(_.pick(this.parent, _.keys(defaults)), defaults);
+  this.opts.storeName = this.parent.name || defaults.storeName;
   this.opts.dbName = this.opts.storePrefix + this.opts.storeName;
 }
 
@@ -59,7 +63,7 @@ IDBAdapter.prototype = {
               }
             })
             .then(function (key) {
-              if(key){
+              if(is_safari){
                 self.highestKey = key || 0;
               }
               resolve(self.db);
@@ -102,7 +106,7 @@ IDBAdapter.prototype = {
 
   count: function (options) {
     options = options || {};
-    var self = this, objectStore = this.getObjectStore(consts.READ_ONLY);
+    var self = this, objectStore = options.objectStore || this.getObjectStore(consts.READ_ONLY);
 
     return new Promise(function (resolve, reject) {
       var request = objectStore.count();
@@ -119,26 +123,10 @@ IDBAdapter.prototype = {
     });
   },
 
-  create: function(data, options){
-    var self = this;
-    return this.add(data, options)
-      .then(function(key){
-        return self.get(key, options);
-      });
-  },
-
-  update: function(data, options){
-    var self = this;
-    return this.put(data, options)
-      .then(function(key){
-        return self.get(key, options);
-      });
-  },
-
   put: function (data, options) {
     options = options || {};
+    var objectStore = options.objectStore || this.getObjectStore(consts.READ_WRITE);
     var self = this, keyPath = this.opts.keyPath;
-    var objectStore = this.getObjectStore(consts.READ_WRITE);
 
     // merge on index keyPath
     if (options.index) {
@@ -165,8 +153,8 @@ IDBAdapter.prototype = {
 
   add: function(data, options){
     options = options || {};
+    var objectStore = options.objectStore || this.getObjectStore(consts.READ_WRITE);
     var self = this, keyPath = this.opts.keyPath;
-    var objectStore = this.getObjectStore(consts.READ_WRITE);
 
     if(is_safari){
       data[keyPath] = ++this.highestKey;
@@ -188,7 +176,7 @@ IDBAdapter.prototype = {
 
   get: function (key, options) {
     options = options || {};
-    var self = this, objectStore = this.getObjectStore(consts.READ_ONLY);
+    var self = this, objectStore = options.objectStore || this.getObjectStore(consts.READ_ONLY);
 
     return new Promise(function (resolve, reject) {
       var request = objectStore.get(key);
@@ -206,7 +194,7 @@ IDBAdapter.prototype = {
 
   delete: function (key, options) {
     options = options || {};
-    var self = this, objectStore = this.getObjectStore(consts.READ_WRITE);
+    var self = this, objectStore = options.objectStore || this.getObjectStore(consts.READ_WRITE);
 
     return new Promise(function (resolve, reject) {
       var request = objectStore.delete(key);
@@ -229,24 +217,33 @@ IDBAdapter.prototype = {
 
   putBatch: function (dataArray, options) {
     options = options || {};
+    options.objectStore = options.objectStore || this.getObjectStore(consts.READ_WRITE);
     var batch = [];
 
     _.each(dataArray, function (data) {
-      batch.push(this.update(data, options));
+      batch.push(this.put(data, options));
     }.bind(this));
 
     return Promise.all(batch);
   },
 
+  /**
+   * 4/3/2016: Chrome can do a fast merge on one transaction, but other browsers can't
+   */
   merge: function (data, options) {
     options = options || {};
-    var self = this, keyPath = options.index,
-        fn = function(result, data){
-          return _.merge({}, result, data); // waiting for lodash 4
-        };
+    var self = this, keyPath = options.index;
+    var primaryKey = this.opts.keyPath;
+
+    var fn = function(local, remote, keyPath){
+      if(local){
+        remote[keyPath] = local[keyPath];
+      }
+      return remote;
+    };
 
     if(_.isObject(options.index)){
-      keyPath = _.get(options, ['index', 'keyPath'], this.opts.keyPath);
+      keyPath = _.get(options, ['index', 'keyPath'], primaryKey);
       if(_.isFunction(options.index.merge)){
         fn = options.index.merge;
       }
@@ -254,16 +251,16 @@ IDBAdapter.prototype = {
 
     return this.getByIndex(keyPath, data[keyPath], options)
       .then(function(result){
-        return self.put(fn(result, data));
+        return self.put(fn(result, data, primaryKey));
       });
   },
 
   getByIndex: function(keyPath, key, options){
     options = options || {};
-    var self = this;
-    var objectStore = this.getObjectStore(consts.READ_ONLY);
-    var openIndex = objectStore.index(keyPath);
-    var request = openIndex.get(key);
+    var objectStore = options.objectStore || this.getObjectStore(consts.READ_ONLY),
+        openIndex = objectStore.index(keyPath),
+        request = openIndex.get(key),
+        self = this;
 
     return new Promise(function (resolve, reject) {
       request.onsuccess = function (event) {
@@ -277,15 +274,24 @@ IDBAdapter.prototype = {
     });
   },
 
-  getAll: function (options) {
-    options = options || {};
-    var self = this;
-    var limit = _.get(options, ['data', 'filter', 'limit'], this.opts.pageSize);
-    var objectStore = this.getObjectStore(consts.READ_ONLY);
+  getBatch: function (keyArray, options) {
+    options = options || keyArray || {};
+    var self = this, objectStore = options.objectStore || this.getObjectStore(consts.READ_ONLY);
 
-    // getAll fallback
-    if (objectStore.getAll === undefined) {
-      return this._getAll(objectStore, limit, options);
+    if(_.isArray(keyArray)){
+      options.filter = _.merge({in: keyArray}, options.filter);
+    }
+
+    if (objectStore.getAll === undefined || this.hasGetParams(options)) {
+      if(!options.objectStore){
+        options.objectStore = objectStore;
+      }
+      return this.getAll(options);
+    }
+
+    var limit = _.get(options, ['filter', 'limit'], this.opts.pageSize);
+    if (limit === -1) {
+      limit = null; // firefox doesn't like -1 or Infinity
     }
 
     return new Promise(function (resolve, reject) {
@@ -302,21 +308,44 @@ IDBAdapter.prototype = {
     });
   },
 
-  _getAll: function (objectStore, limit, options) {
+  getAll: function (options) {
     options = options || {};
-    var self = this;
+    var objectStore = options.objectStore || this.getObjectStore(consts.READ_ONLY),
+        limit = _.get(options, ['filter', 'limit'], this.opts.pageSize),
+        offset = _.get(options, ['filter', 'offset'], 0),
+        include = _.get(options, ['filter', 'in']),
+        query = _.get(options, ['filter', 'q']),
+        keyPath = options.index || this.opts.keyPath,
+        page = options.page,
+        self = this;
+
+    if(_.isObject(keyPath)){
+      keyPath = keyPath.keyPath;
+    }
+
     if (limit === -1) {
       limit = Infinity;
     }
 
+    if(page){
+      offset = (page - 1) * limit;
+    }
+
     return new Promise(function (resolve, reject) {
-      var request = objectStore.openCursor();
-      var records = [];
+      var records = [], idx = 0;
+      var request = (keyPath === self.opts.keyPath) ?
+        objectStore.openCursor() : objectStore.index(keyPath).openCursor();
 
       request.onsuccess = function (event) {
         var cursor = event.target.result;
         if (cursor && records.length < limit) {
-          records.push(cursor.value);
+          if(
+            (!include || _.includes(include, cursor.value[keyPath])) &&
+            (!query || self._match(query, cursor.value, keyPath, options)) &&
+            ++idx > offset
+          ){
+            records.push(cursor.value);
+          }
           return cursor.continue();
         }
         resolve(records);
@@ -331,7 +360,7 @@ IDBAdapter.prototype = {
 
   clear: function (options) {
     options = options || {};
-    var self = this, objectStore = this.getObjectStore(consts.READ_WRITE);
+    var self = this, objectStore = options.objectStore || this.getObjectStore(consts.READ_WRITE);
 
     return new Promise(function (resolve, reject) {
       var request = objectStore.clear();
@@ -350,7 +379,7 @@ IDBAdapter.prototype = {
 
   findHighestIndex: function (keyPath, options) {
     options = options || {};
-    var self = this, objectStore = this.getObjectStore(consts.READ_ONLY);
+    var self = this, objectStore = options.objectStore || this.getObjectStore(consts.READ_ONLY);
 
     return new Promise(function (resolve, reject) {
       var request;
@@ -371,8 +400,35 @@ IDBAdapter.prototype = {
         self.opts.onerror(options);
       };
     });
+  },
+
+  /**
+   * data: {
+   *  filter: {
+   *    limit: -1,
+   *    offset: 10,
+   *    q: 'term'
+   *    ...
+   *  },
+   *  fields: ['id', '_state'],
+   *  page: 2
+   * }
+   */
+  hasGetParams: function(options){
+    options = options || {};
+    if(options.page || options.fields || _.size(options.filter) > 1 ||
+      (_.size(options.filter) === 1 && options.filter.limit === undefined)){
+      return true;
+    }
+    return false;
+  },
+
+  _match: function(query, json, keyPath, options){
+    var fields = _.get(options, ['filter', 'fields'], keyPath);
+    return this.parent.matchMaker(json, query, {fields: fields});
   }
 
 };
 
 module.exports = IDBAdapter;
+/* jshint +W071, +W074 */

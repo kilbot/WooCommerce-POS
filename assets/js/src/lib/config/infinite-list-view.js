@@ -1,8 +1,9 @@
 var Mn = require('backbone.marionette');
-var app = require('./application');
 var _ = require('lodash');
 
-module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
+module.exports = Mn.CompositeView.extend({
+
+  _page: 0,
 
   className: 'list-infinite',
 
@@ -10,56 +11,63 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
     return '<div></div><ul></ul><div><i class="icon-spinner"></i></div>';
   },
 
-
-  constructor: function(){
-    Mn.CompositeView.apply(this, arguments);
-    _.bindAll(this, 'onScroll', 'loadMore', 'getOverflow');
+  collectionEvents: {
+    'loading:start': 'startLoading',
+    'loading:end': 'endLoading',
+    reset: 'reset'
   },
 
-  onShow: function(){
+  onShow: function () {
     this.container = this.$el.parent()[0];
-    this.$el.parent().scroll( _.throttle( this.onScroll, 250 ) );
-    this.onScroll();
+    this.$el.parent().on('scroll', _.throttle(this.onScroll.bind(this), 1000/60));
+    this.appendNextPage();
   },
 
   onScroll: function(){
-    if(this.getOverflow() < 100){
-      this.loadMore();
+    if(!this.loading && this.collection.length < this.collection.db.length && this.triggerEvent()){
+      this.appendNextPage();
     }
   },
 
   /**
-   * returns overflow at bottom in px
+   * Is user scrolling down && overflow < 100
    * - added clientHeight check to prevent false trigger when div not drawn
-   * @returns {number}
+   * @returns {boolean}
    */
-  getOverflow: function(){
+  triggerEvent: function () {
     var sH = this.container.scrollHeight,
         cH = this.container.clientHeight,
         sT = this.container.scrollTop;
-    return sH - cH - sT;
+    var down = sT > (this._sT || 0);
+    this._sT = sT;
+
+    return down && (sH - cH - sT < 100);
   },
 
-  loadMore: function() {
-    if(this.loading){
-      return;
-    }
-    var self = this;
-    this.startLoading();
-    this.collection.superset().fetch({ remote: true })
-      .then(function(){
-        self.endLoading();
-      });
+  appendNextPage: function () {
+    var collection = this.collection, page = ++this._page;
+    collection.trigger('loading:start');
+
+    return collection.fetch({
+      remove: false,
+      data: { page: page }
+    })
+    .then(function () {
+      collection.trigger('loading:end');
+    });
   },
 
-  startLoading: function(){
+  startLoading: function () {
     this.loading = true;
     this.$el.addClass('loading');
   },
 
-  endLoading: function(){
+  endLoading: function () {
     this.loading = false;
     this.$el.removeClass('loading');
-  }
+  },
 
+  reset: function(){
+    this._page = 1;
+  }
 });
