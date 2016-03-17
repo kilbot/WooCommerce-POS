@@ -11,10 +11,13 @@ module.exports = Mn.CompositeView.extend({
     return '<div></div><ul></ul><div><i class="icon-spinner"></i></div>';
   },
 
-  collectionEvents: {
-    'loading:start': 'startLoading',
-    'loading:end': 'endLoading',
-    reset: 'reset'
+  constructor: function(){
+    Mn.CompositeView.apply(this, arguments);
+    this.listenTo(this.collection, {
+      'loading:start': this.startLoading,
+      'loading:end'  : this.endLoading,
+      reset          : this.reset
+    });
   },
 
   onShow: function () {

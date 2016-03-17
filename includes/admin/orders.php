@@ -15,6 +15,8 @@
 
 namespace WC_POS\Admin;
 
+use WC_POS\Admin\Settings\Checkout;
+
 class Orders {
 
   private $pos_order;
@@ -68,7 +70,7 @@ class Orders {
    */
   public function payment_gateways($gateways){
     // get checkout settings data
-    $settings = WC_POS\Admin\Settings\Checkout::get_instance();
+    $settings = Checkout::get_instance();
     $enabled_ids = $settings->get_enabled_gateway_ids();
 
     $loaded_gateways = array();
@@ -181,7 +183,7 @@ class Orders {
   public function enqueue_admin_styles() {
     $css = '
       .widefat .type-wc_pos_order .column-order_status {
-        background: url( '. WC_POS\PLUGIN_URL .'assets/logo.svg ) no-repeat 75% 9px;
+        background: url( '. \WC_POS\PLUGIN_URL .'assets/logo.svg ) no-repeat 75% 9px;
         background-size: 18px;
         fill: #94d31b;
       }

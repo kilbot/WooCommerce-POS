@@ -55,7 +55,7 @@ module.exports = Route.extend({
     });
 
     this.listenTo(view, 'childview:click', function(tab) {
-      this.collection.filterBy('tab', tab.model.id);
+      this.collection.setFilter('tab', tab.model.id);
     });
 
     this.layout.getRegion('tabs').show(view);

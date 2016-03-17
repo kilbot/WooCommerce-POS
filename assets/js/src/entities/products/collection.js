@@ -16,6 +16,9 @@ module.exports = DualCollection.extend({
     return new Subclass(attributes, options);
   },
 
-  name: 'products'
+  name: 'products',
+
+  // this is an array of fields used by FilterCollection.matchmaker()
+  fields: ['title'],
 
 });

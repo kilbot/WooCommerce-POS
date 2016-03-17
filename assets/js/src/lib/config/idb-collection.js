@@ -1,11 +1,11 @@
-var Collection = require('./collection');
+var FilteredCollection = require('./filtered-collection');
 var app = require('./application');
 var Radio = require('backbone.radio');
 var IDBModel = require('./idb-model');
 var IDBAdapter = require('./idb-adapter');
 var _ = require('lodash');
 
-module.exports = app.prototype.IDBCollection = Collection.extend({
+module.exports = app.prototype.IDBCollection = FilteredCollection.extend({
 
   model: IDBModel,
 
@@ -15,7 +15,7 @@ module.exports = app.prototype.IDBCollection = Collection.extend({
   constructor: function () {
     this.db = new IDBAdapter({ collection: this });
     this.versionCheck();
-    Collection.apply(this, arguments);
+    FilteredCollection.apply(this, arguments);
   },
 
   /**
@@ -28,7 +28,7 @@ module.exports = app.prototype.IDBCollection = Collection.extend({
         return self.db.clear();
       })
       .then(function(){
-        Collection.prototype.clear.call(self);
+        FilteredCollection.prototype.clear.call(self);
       });
   },
 

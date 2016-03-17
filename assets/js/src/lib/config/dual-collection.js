@@ -64,7 +64,7 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
     options = _.extend({parse: true}, options);
     var self = this, _fetch = options.remote ? this.fetchRemote : this.fetchLocal;
 
-    return _fetch.apply(this, arguments)
+    return _fetch.call(this, options)
       .then(function (response) {
         var method = options.reset ? 'reset' : 'set';
         self[method](response, options);
@@ -91,6 +91,7 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
         if(self.isNew()){
           return self.firstSync();
         }
+        return response;
       });
   },
 
