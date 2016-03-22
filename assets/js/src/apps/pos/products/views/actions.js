@@ -51,10 +51,6 @@ var Actions = View.extend({
     searchField : 'input[type=search]'
   },
 
-  onRender: function(){
-    this.barcodeModeOff();
-  },
-
   onDropdownSelect: function(e){
     if( $(e.currentTarget).data('action') === 'barcode' ){
       return this.barcodeModeOn();

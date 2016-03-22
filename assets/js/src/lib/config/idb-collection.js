@@ -25,10 +25,8 @@ module.exports = app.prototype.IDBCollection = FilteredCollection.extend({
     var self = this;
     return this.db.open()
       .then(function () {
+        self.reset();
         return self.db.clear();
-      })
-      .then(function(){
-        FilteredCollection.prototype.clear.call(self);
       });
   },
 
@@ -51,7 +49,6 @@ module.exports = app.prototype.IDBCollection = FilteredCollection.extend({
    *
    */
   putBatch: function (models, options) {
-    options = _.clone(options) || {};
     var self = this;
     if (_.isEmpty(models)) {
       models = this.getChangedModels();
@@ -69,7 +66,6 @@ module.exports = app.prototype.IDBCollection = FilteredCollection.extend({
    *
    */
   getBatch: function (keyArray, options) {
-    options = _.clone(options) || {};
     var self = this;
     return this.db.open()
       .then(function () {

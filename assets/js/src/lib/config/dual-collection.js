@@ -60,21 +60,37 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
     return IDBCollection.prototype.parse.call(this, resp, options);
   },
 
+  /* jshint -W071, -W074 */
   fetch: function (options) {
     options = _.extend({parse: true}, options);
-    var self = this, _fetch = options.remote ? this.fetchRemote : this.fetchLocal;
+    var self = this, success = options.success;
+    var _fetch = options.remote ? this.fetchRemote : this.fetchLocal;
+
+    if(success){
+      options.success = undefined;
+    }
 
     return _fetch.call(this, options)
       .then(function (response) {
         var method = options.reset ? 'reset' : 'set';
         self[method](response, options);
-        if (options.success) {
-          options.success.call(options.context, self, response, options);
+        if (success) {
+          success.call(options.context, self, response, options);
+        }
+        if(options.idb){
+          self.total = options.idb.total;
+          self.delayed = options.idb.delayed;
+          self._hasNextPage = self.length < self.total || self.delayed > 0;
+        }
+        if(options.xhr){
+          self.total = options.xhr.getResponseHeader('X-WC-Total');
+          self._hasNextPage = self.length < self.total;
         }
         self.trigger('sync', self, response, options);
         return response;
       });
   },
+  /* jshint +W071, +W074 */
 
   /**
    *
@@ -83,15 +99,15 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
     var self = this;
     options = options || {};
 
-    return IDBCollection.prototype.getBatch.call(this, null, options.data)
+    return IDBCollection.prototype.getBatch.call(this, options)
       .then(function (response) {
         if(_.size(response) > 0){
           return self.fetchDelayed(response);
         }
         if(self.isNew()){
-          return self.firstSync();
+          return self.firstSync(options);
         }
-        return response;
+        return self.fetchRemote(options);
       });
   },
 
@@ -100,13 +116,15 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
    * returns merged data
    */
   fetchRemote: function (options) {
-    var self = this, opts = _.clone(options) || {};
-    opts.remote = true;
-    opts.success = undefined;
+    // options = _.extend({remote: true}, options);
+    options = options || {};
+    options.remote = true;
+    var self = this;
 
-    return this.sync('read', this, opts)
+    this.trigger('request', this, null, options);
+    return this.sync('read', this, options)
       .then(function (response) {
-        response = self.parse(response, opts);
+        response = self.parse(response, options);
         return self.putBatch(response, { index: 'id' });
       })
       .then(function (keys) {
@@ -162,23 +180,16 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
   },
 
   firstSync: function(options){
-    var self = this, response;
-    return this.fetchRemote()
-      .then(function (resp) {
-        response = resp;
-        return self.fullSync(options);
-      })
-      .then(function () {
+    var self = this;
+    return this.fetchRemote(options)
+      .then(function (response) {
+        self.fullSync();
         return response;
       });
   },
 
   fullSync: function(options){
-    var self = this;
-    return this.fetchRemoteIds(options)
-      .then(function () {
-        return self.count();
-      });
+    return this.fetchRemoteIds(options);
   },
 
   fetchDelayed: function(response){
@@ -186,23 +197,23 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
     if(delayed){
       var ids = _.map(delayed, 'id');
       return this.fetchRemote({
-        data: {
-          filter: {
-            'in': ids.join(',')
+          data: {
+            filter: {
+              'in': ids.join(',')
+            }
           }
-        }
-      })
-      .then(function(resp){
-        _.each(resp, function(attrs){
-          var key = _.findKey(response, {id: attrs.id});
-          if(key){
-            response[key] = attrs;
-          } else {
-            response.push(resp);
-          }
+        })
+        .then(function(resp){
+          _.each(resp, function(attrs){
+            var key = _.findKey(response, {id: attrs.id});
+            if(key){
+              response[key] = attrs;
+            } else {
+              response.push(resp);
+            }
+          });
+          return response;
         });
-        return response;
-      });
     }
     return response;
   },

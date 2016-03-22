@@ -1,5 +1,7 @@
 /* jshint -W071, -W074 */
 var _ = require('lodash');
+var matchMaker = require('json-query');
+
 var is_safari = window.navigator.userAgent.indexOf('Safari') !== -1 &&
   window.navigator.userAgent.indexOf('Chrome') === -1 &&
   window.navigator.userAgent.indexOf('Android') === -1;
@@ -16,31 +18,32 @@ var consts = {
   'PREV_NO_DUPLICATE' : 'prevunique'
 };
 
-var defaults = {
-  storeName     : 'store',
-  storePrefix   : 'Prefix_',
-  dbVersion     : 1,
-  keyPath       : 'id',
-  autoIncrement : true,
-  indexes       : [],
-  pageSize      : 10,
-  onerror       : function(options) {
-    options = options || {};
-    var err = new Error(options._error.message);
-    err.code = event.target.errorCode;
-    options._error.callback(err);
-  }
-};
-
 function IDBAdapter( options ){
   options = options || {};
   this.parent = options.collection;
-  this.opts = _.defaults(_.pick(this.parent, _.keys(defaults)), defaults);
-  this.opts.storeName = this.parent.name || defaults.storeName;
+  this.opts = _.defaults(_.pick(this.parent, _.keys(this.default)), this.default);
+  this.opts.storeName = this.parent.name || this.default.storeName;
   this.opts.dbName = this.opts.storePrefix + this.opts.storeName;
 }
 
 IDBAdapter.prototype = {
+
+  default: {
+    storeName     : 'store',
+    storePrefix   : 'Prefix_',
+    dbVersion     : 1,
+    keyPath       : 'id',
+    autoIncrement : true,
+    indexes       : [],
+    pageSize      : 10,
+    matchMaker    : matchMaker,
+    onerror       : function(options) {
+      options = options || {};
+      var err = new Error(options._error.message);
+      err.code = event.target.errorCode;
+      options._error.callback(err);
+    }
+  },
 
   constructor: IDBAdapter,
 
@@ -275,49 +278,19 @@ IDBAdapter.prototype = {
   },
 
   getBatch: function (keyArray, options) {
-    options = options || keyArray || {};
-    var self = this, objectStore = options.objectStore || this.getObjectStore(consts.READ_ONLY);
-
-    if(_.isArray(keyArray)){
-      options.filter = _.merge({in: keyArray}, options.filter);
+    if(!options && !_.isArray(keyArray)){
+      options = keyArray;
     }
-
-    if (objectStore.getAll === undefined || this.hasGetParams(options)) {
-      if(!options.objectStore){
-        options.objectStore = objectStore;
-      }
-      return this.getAll(options);
-    }
-
-    var limit = _.get(options, ['filter', 'limit'], this.opts.pageSize);
-    if (limit === -1) {
-      limit = null; // firefox doesn't like -1 or Infinity
-    }
-
-    return new Promise(function (resolve, reject) {
-      var request = objectStore.getAll(null, limit);
-
-      request.onsuccess = function (event) {
-        resolve(event.target.result);
-      };
-
-      request.onerror = function (event) {
-        options._error = {event: event, message: 'getAll error', callback: reject};
-        self.opts.onerror(options);
-      };
-    });
-  },
-
-  getAll: function (options) {
     options = options || {};
+
     var objectStore = options.objectStore || this.getObjectStore(consts.READ_ONLY),
-        limit = _.get(options, ['filter', 'limit'], this.opts.pageSize),
-        offset = _.get(options, ['filter', 'offset'], 0),
-        include = _.get(options, ['filter', 'in']),
-        query = _.get(options, ['filter', 'q']),
+        include = _.isArray(keyArray) ? keyArray: _.get(options, ['data', 'filter', 'in']),
+        limit   = _.get(options, ['data', 'filter', 'limit'], this.opts.pageSize),
+        offset  = _.get(options, ['data', 'filter', 'offset'], 0),
+        query   = _.get(options, ['data', 'filter', 'q']),
         keyPath = options.index || this.opts.keyPath,
-        page = options.page,
-        self = this;
+        page    = _.get(options, ['data', 'page']),
+        self    = this;
 
     if(_.isObject(keyPath)){
       keyPath = keyPath.keyPath;
@@ -332,23 +305,27 @@ IDBAdapter.prototype = {
     }
 
     return new Promise(function (resolve, reject) {
-      var records = [], idx = 0;
+      var records = [], delayed = 0;
       var request = (keyPath === self.opts.keyPath) ?
         objectStore.openCursor() : objectStore.index(keyPath).openCursor();
 
       request.onsuccess = function (event) {
         var cursor = event.target.result;
-        if (cursor && records.length < limit) {
+        if (cursor) {
+          if(cursor.value._state === 'READ_FAILED'){
+            delayed++;
+          }
           if(
             (!include || _.includes(include, cursor.value[keyPath])) &&
-            (!query || self._match(query, cursor.value, keyPath, options)) &&
-            ++idx > offset
+            (!query || self._match(query, cursor.value, keyPath, options))
           ){
             records.push(cursor.value);
           }
           return cursor.continue();
         }
-        resolve(records);
+        _.set(options, 'idb.total', records.length);
+        _.set(options, 'idb.delayed', delayed);
+        resolve(_.slice(records, offset, offset + limit));
       };
 
       request.onerror = function (event) {
@@ -402,30 +379,9 @@ IDBAdapter.prototype = {
     });
   },
 
-  /**
-   * data: {
-   *  filter: {
-   *    limit: -1,
-   *    offset: 10,
-   *    q: 'term'
-   *    ...
-   *  },
-   *  fields: ['id', '_state'],
-   *  page: 2
-   * }
-   */
-  hasGetParams: function(options){
-    options = options || {};
-    if(options.page || options.fields || _.size(options.filter) > 1 ||
-      (_.size(options.filter) === 1 && options.filter.limit === undefined)){
-      return true;
-    }
-    return false;
-  },
-
   _match: function(query, json, keyPath, options){
-    var fields = _.get(options, ['filter', 'fields'], keyPath);
-    return this.parent.matchMaker(json, query, {fields: fields});
+    var fields = _.get(options, ['data', 'filter', 'fields'], keyPath);
+    return this.opts.matchMaker.call(this, json, query, {fields: fields});
   }
 
 };

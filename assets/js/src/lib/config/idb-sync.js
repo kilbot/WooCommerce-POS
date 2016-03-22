@@ -1,21 +1,17 @@
 var bb = require('backbone');
-var _ = require('lodash');
 
 /* jshint -W074 */
 module.exports = function(method, entity, options) {
-  options = options || {};
   var isModel = entity instanceof bb.Model;
 
   return entity.db.open()
     .then(function () {
-      var data;
       switch (method) {
         case 'read':
           if (isModel) {
             return entity.db.get(entity.id);
           }
-          data = _.clone(options.data);
-          return entity.db.getBatch(data);
+          return entity.db.getBatch(options);
         case 'create':
           return entity.db.add(entity.toJSON())
             .then(function (key) {
@@ -37,6 +33,7 @@ module.exports = function(method, entity, options) {
       if (options.success) {
         options.success(resp);
       }
+      return resp;
     })
     .catch(function (resp) {
       if (options.error) {

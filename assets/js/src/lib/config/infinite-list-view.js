@@ -3,8 +3,6 @@ var _ = require('lodash');
 
 module.exports = Mn.CompositeView.extend({
 
-  _page: 0,
-
   className: 'list-infinite',
 
   template: function(){
@@ -13,51 +11,44 @@ module.exports = Mn.CompositeView.extend({
 
   constructor: function(){
     Mn.CompositeView.apply(this, arguments);
+
+    this.on('show', function(){
+      this.container = this.$el.parent()[0];
+      this.$el.parent().on('scroll', _.throttle(this.onScroll.bind(this), 1000/60));
+    });
+
     this.listenTo(this.collection, {
-      'loading:start': this.startLoading,
-      'loading:end'  : this.endLoading,
-      reset          : this.reset
+      request : this.startLoading,
+      sync    : this.endLoading
     });
   },
 
-  onShow: function () {
-    this.container = this.$el.parent()[0];
-    this.$el.parent().on('scroll', _.throttle(this.onScroll.bind(this), 1000/60));
-    this.appendNextPage();
-  },
-
   onScroll: function(){
-    if(!this.loading && this.collection.length < this.collection.db.length && this.triggerEvent()){
+    if(!this.loading && this.hasNextPage() && this.triggerEvent()){
       this.appendNextPage();
     }
   },
 
-  /**
-   * Is user scrolling down && overflow < 100
-   * - added clientHeight check to prevent false trigger when div not drawn
-   * @returns {boolean}
-   */
   triggerEvent: function () {
     var sH = this.container.scrollHeight,
         cH = this.container.clientHeight,
         sT = this.container.scrollTop;
     var down = sT > (this._sT || 0);
     this._sT = sT;
-
-    return down && (sH - cH - sT < 100);
+    return down ? sH - cH - sT < 100 : sH - cH - sT === 0;
   },
 
   appendNextPage: function () {
-    var collection = this.collection, page = ++this._page;
-    collection.trigger('loading:start');
-
-    return collection.fetch({
+    return this.collection.fetch({
       remove: false,
-      data: { page: page }
-    })
-    .then(function () {
-      collection.trigger('loading:end');
+      data: {
+        filter: _.merge({offset: this.collection.length}, this.collection.getFilterOptions())
+      }
     });
+  },
+
+  hasNextPage: function () {
+    return this.collection._hasNextPage;
   },
 
   startLoading: function () {
@@ -68,9 +59,6 @@ module.exports = Mn.CompositeView.extend({
   endLoading: function () {
     this.loading = false;
     this.$el.removeClass('loading');
-  },
-
-  reset: function(){
-    this._page = 1;
+    this.onScroll();
   }
 });

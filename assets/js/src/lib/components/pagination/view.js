@@ -1,6 +1,5 @@
 var ItemView = require('lib/config/item-view');
 var App = require('lib/config/application');
-var _ = require('lodash');
 
 var View = ItemView.extend({
   template: 'pagination',
@@ -15,26 +14,26 @@ var View = ItemView.extend({
   //  'click @ui.next': 'onNext'
   //},
 
-  // todo: improve this
-  collectionEvents: {
-    'add remove paginated:change:page paginated:change:numPages reset':
-      _.debounce(function(){
-        if(!this.isDestroyed){
-          this.render();
-        }
-      }, 10)
-  },
+  // // todo: improve this
+  // collectionEvents: {
+  //   'add remove paginated:change:page paginated:change:numPages reset':
+  //     _.debounce(function(){
+  //       if(!this.isDestroyed){
+  //         this.render();
+  //       }
+  //     }, 10)
+  // },
 
   initialize: function(){
     this.listenTo(this.collection, {
-      'count': this.render
+      'sync': this.render
     });
   },
 
   templateHelpers: function(){
     return {
       showing : this.collection.length,
-      local   : _.max([this.collection.db.length, this.collection.length])
+      local   : this.collection.total || 0
     };
   }
 

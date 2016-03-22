@@ -92,7 +92,7 @@ module.exports = app.prototype.DualModel = IDBModel.extend({
     options = options || {};
     if( options.remote ){
       resp = resp && resp[this.name] ? resp[this.name] : resp;
-      //resp._state = undefined;
+      resp._state = undefined;
     }
     return IDBModel.prototype.parse.call( this, resp, options );
   }

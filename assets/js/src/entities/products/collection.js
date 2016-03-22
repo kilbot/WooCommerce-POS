@@ -19,6 +19,6 @@ module.exports = DualCollection.extend({
   name: 'products',
 
   // this is an array of fields used by FilterCollection.matchmaker()
-  fields: ['title'],
+  fields: ['title']
 
 });

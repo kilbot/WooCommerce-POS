@@ -22,6 +22,7 @@ module.exports = Route.extend({
     //} else {
     //  this.filtered.removeTransforms();
     //}
+    this.collection.fetch();
   },
 
   render: function() {
