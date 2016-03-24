@@ -26,7 +26,9 @@ module.exports = app.prototype.DualModel = IDBModel.extend({
 
   sync: function( method, model, options ){
     options = options || {};
-    this.setLocalState( method );
+    if( method !== 'read' ){
+      this.setLocalState( method );
+    }
     if( options.remote ){
       return this.remoteSync( method, model, options );
     }

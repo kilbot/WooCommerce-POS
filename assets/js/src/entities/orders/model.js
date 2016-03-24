@@ -23,16 +23,16 @@ var OrderModel = DualModel.extend({
    * add tax settings early for use by cart
    * - always be parsin'
    */
-  constructor: function( attributes, options ){
+  constructor: function (attributes, options) {
     // clone tax settings
-    this.tax = _.clone( this.getSettings( 'tax' ) );
-    DualModel.call( this, attributes, _.extend( { parse: true }, options ) );
+    this.tax = _.clone(this.getSettings('tax'));
+    DualModel.call(this, attributes, _.extend({parse: true}, options));
   },
 
   /**
    * convenience method to get settings
    */
-  getSettings: function(name){
+  getSettings: function (name) {
     return Radio.request('entities', 'get', {
         type: 'option',
         name: name
@@ -42,9 +42,9 @@ var OrderModel = DualModel.extend({
   /**
    *
    */
-  isEditable: function( state ){
+  isEditable: function (state) {
     state = state || this.get('_state');
-    return this.isDelayed( state );
+    return this.isDelayed(state);
   },
 
   /**
@@ -52,24 +52,24 @@ var OrderModel = DualModel.extend({
    * - options.deferSave allows third party gateways to defer payment processing
    */
   /* jshint -W074 */
-  save: function( attributes, options ){
+  save: function (attributes, options) {
     options = options || {};
     options.deferSave = options.deferSave || _.noop;
     var self = this;
 
     // Safari doesn't like empty keyPath, perhaps an autoincrement problem?
     // Set local_id as timestamp milliseconds
-    if( this.id === 'new' ){
+    if (this.id === 'new') {
       //this.set({ local_id: Date.now() });
       this.unset('local_id');
     }
 
-    if( this.cart ){
+    if (this.cart) {
       this.updateTotals();
     }
 
-    return $.when( options.deferSave )
-      .then( function(){
+    return $.when(options.deferSave)
+      .then(function () {
         debug('save order', self);
         return DualModel.prototype.save.call(self, attributes, options);
       });
@@ -81,19 +81,20 @@ var OrderModel = DualModel.extend({
    * Attach cart during parse
    * - allows order to change status, ie: become editable
    */
-  parse: function(resp) {
+  parse: function (resp) {
     resp = DualModel.prototype.parse.apply(this, arguments);
 
     // if new
-    if( resp.local_id === 'new' ){
+    if (resp.local_id === 'new') {
       resp._state = this.collection.states.create;
     }
 
     // if open order with no cart, ie: new from idb or changed state
-    if( this.isEditable( resp._state ) && ! this.cart ){
-      resp.taxes = this.attachTaxes( resp.taxes );
-      this.attachCart( resp );
-      this.attachGateways( resp );
+    if (this.isEditable(resp._state) && !this.cart) {
+      resp.taxes = this.attachTaxes(resp.taxes);
+      this.attachCart(resp);
+      this.attachGateways(resp);
+      this.attachCustomer(resp);
     }
 
     return resp;
@@ -102,38 +103,38 @@ var OrderModel = DualModel.extend({
   /**
    * Attach cart during parse, allows updates from server
    */
-  attachCart: function( attributes ){
-    this.cart = new Cart( null, { order: this } );
+  attachCart: function (attributes) {
+    this.cart = new Cart(null, {order: this});
 
     // add line_items, shipping_lines and fee_lines
-    this.cart.set( attributes.line_items,
-      { parse: true, remove: false }
+    this.cart.set(attributes.line_items,
+      {parse: true, remove: false}
     );
-    this.cart.set( attributes.shipping_lines,
-      { parse: true, remove: false, type: 'shipping' }
+    this.cart.set(attributes.shipping_lines,
+      {parse: true, remove: false, type: 'shipping'}
     );
-    this.cart.set( attributes.fee_lines,
-      { parse: true, remove: false, type: 'fee' }
+    this.cart.set(attributes.fee_lines,
+      {parse: true, remove: false, type: 'fee'}
     );
 
-    this.cart.on( 'change add remove', function(){
-      if( this.cart && this.cart.length === 0 ){
+    this.cart.on('change add remove', function () {
+      if (this.cart && this.cart.length === 0) {
         this.destroy();
       } else {
         this.save();
       }
-    }, this );
+    }, this);
   },
 
   /**
    * Attach gateways
    */
-  attachGateways: function( attributes ){
-    this.gateways = new Gateways( attributes.payment_details, { order: this } );
+  attachGateways: function (attributes) {
+    this.gateways = new Gateways(attributes.payment_details, {order: this});
 
-    this.gateways.on( 'change', function(){
+    this.gateways.on('change', function () {
       this.save();
-    }, this );
+    }, this);
   },
 
   /**
@@ -141,51 +142,51 @@ var OrderModel = DualModel.extend({
    * - parse tax_rates into bb Collections
    * - set enabled = true for each rate
    */
-  attachTaxes: function( enabled_taxes ){
-    var tax_rates = this.getSettings( 'tax_rates' );
+  attachTaxes: function (enabled_taxes) {
+    var tax_rates = this.getSettings('tax_rates');
     this.tax_rates = {};
 
     // parse tax_rates
-    _.each( tax_rates, function( tax_rate, tax_class ){
-      var taxes = new Taxes( tax_rate, { order: this } );
-      taxes.toggleTaxes( enabled_taxes );
-      this.tax_rates[ tax_class ] = taxes;
+    _.each(tax_rates, function (tax_rate, tax_class) {
+      var taxes = new Taxes(tax_rate, {order: this});
+      taxes.toggleTaxes(enabled_taxes);
+      this.tax_rates[tax_class] = taxes;
     }, this);
 
     // exit early if attribute exists
-    if( enabled_taxes ){
+    if (enabled_taxes) {
       return enabled_taxes;
     }
 
     // set enabled taxes
-    return _.reduce( tax_rates, function( obj, tax_rate ){
-      _.each( tax_rate, function( tax, rate_id ){
-        obj[ 'rate_' + rate_id ] = true;
-      } );
+    return _.reduce(tax_rates, function (obj, tax_rate) {
+      _.each(tax_rate, function (tax, rate_id) {
+        obj['rate_' + rate_id] = true;
+      });
       return obj;
-    }, { all: true } );
+    }, {all: true});
   },
 
   /**
    *
    */
   /* jshint -W071, -W074 */
-  toJSON: function(options) {
+  toJSON: function (options) {
     options = options || {};
     var attrs = _.clone(this.attributes);
 
     // process cart collection
-    if( this.isEditable() && this.cart ){
+    if (this.isEditable() && this.cart) {
       attrs = this.prepareCartJSON(attrs, options);
     }
 
     // process gateways
-    if( this.isEditable() && this.gateways ){
+    if (this.isEditable() && this.gateways) {
       attrs.payment_details = this.gateways.getPaymentDetails();
     }
 
     // prepare remote JSON
-    if( options.remote && this.name ) {
+    if (options.remote && this.name) {
       attrs = this.prepareRemoteJSON(attrs, options);
     }
 
@@ -193,8 +194,8 @@ var OrderModel = DualModel.extend({
   },
   /* jshint +W071, +W074 */
 
-  prepareCartJSON: function(attrs, options){
-    var taxes = [],
+  prepareCartJSON: function (attrs, options) {
+    var taxes          = [],
         shipping_taxes = [];
 
     attrs.line_items = [];
@@ -202,33 +203,33 @@ var OrderModel = DualModel.extend({
     attrs.fee_lines = [];
 
     /* jshint -W074 */
-    this.cart.each( function(model) {
+    this.cart.each(function (model) {
 
-      switch( model.type ) {
+      switch (model.type) {
         case 'shipping':
-          attrs.shipping_lines.push( model.toJSON(options) );
-          if( model.taxes ){
-            shipping_taxes.push( model.taxes.toJSON(options) );
+          attrs.shipping_lines.push(model.toJSON(options));
+          if (model.taxes) {
+            shipping_taxes.push(model.taxes.toJSON(options));
           }
           break;
         case 'fee':
-          attrs.fee_lines.push( model.toJSON(options) );
+          attrs.fee_lines.push(model.toJSON(options));
           break;
         case 'product':
-          attrs.line_items.push( model.toJSON(options) );
+          attrs.line_items.push(model.toJSON(options));
           break;
       }
 
-      if( model.taxes ){
-        taxes.push( model.taxes.toJSON(options) );
+      if (model.taxes) {
+        taxes.push(model.taxes.toJSON(options));
       }
 
     });
     /* jshint +W074 */
 
-    attrs.tax_lines = this.mergeItemizedTaxes( taxes );
+    attrs.tax_lines = this.mergeItemizedTaxes(taxes);
     attrs.shipping_tax = this.sumItemizedTaxes(
-      this.mergeItemizedTaxes( shipping_taxes )
+      this.mergeItemizedTaxes(shipping_taxes)
     );
 
     return attrs;
@@ -237,23 +238,23 @@ var OrderModel = DualModel.extend({
   /**
    * @todo this could be part of model.save( attributes )?
    */
-  updateTotals: function(){
-    var total         = this.cart.sum('total'),
-        subtotal      = this.cart.sum('subtotal'),
-        total_tax     = this.cart.sum('total_tax'),
-        subtotal_tax  = this.cart.sum('subtotal_tax'),
-        cart_discount = subtotal - total,
+  updateTotals: function () {
+    var total             = this.cart.sum('total'),
+        subtotal          = this.cart.sum('subtotal'),
+        total_tax         = this.cart.sum('total_tax'),
+        subtotal_tax      = this.cart.sum('subtotal_tax'),
+        cart_discount     = subtotal - total,
         cart_discount_tax = subtotal_tax - total_tax;
 
     total += total_tax;
 
     var totals = {
-      'total'             : Utils.round( total, 4 ),
-      'subtotal'          : Utils.round( subtotal, 4 ),
-      'total_tax'         : Utils.round( total_tax, 4 ),
-      'subtotal_tax'      : Utils.round( subtotal_tax, 4 ),
-      'cart_discount'     : Utils.round( cart_discount, 4 ),
-      'cart_discount_tax' : Utils.round( cart_discount_tax, 4 )
+      'total'            : Utils.round(total, 4),
+      'subtotal'         : Utils.round(subtotal, 4),
+      'total_tax'        : Utils.round(total_tax, 4),
+      'subtotal_tax'     : Utils.round(subtotal_tax, 4),
+      'cart_discount'    : Utils.round(cart_discount, 4),
+      'cart_discount_tax': Utils.round(cart_discount_tax, 4)
     };
 
     this.set(totals);
@@ -263,28 +264,28 @@ var OrderModel = DualModel.extend({
    * Takes an array of itemized taxes and merges them into one combined array
    * - model.taxes.toJSON() ensures a shallow clone
    */
-  mergeItemizedTaxes: function( taxes ){
-    return _.reduce( taxes, function( merged, line_taxes ){
-      _.each( line_taxes, function( tax ){
-        var orig = _.find( merged, { rate_id: tax.rate_id } );
-        if( orig ){
-          orig.total = _.sum([ orig.total, tax.total ]);
-          orig.subtotal = _.sum([ orig.subtotal, tax.subtotal ]);
-        } else {
-          merged.push( tax );
-        }
-      } );
-      return merged;
-    }) || [];
+  mergeItemizedTaxes: function (taxes) {
+    return _.reduce(taxes, function (merged, line_taxes) {
+        _.each(line_taxes, function (tax) {
+          var orig = _.find(merged, {rate_id: tax.rate_id});
+          if (orig) {
+            orig.total = _.sum([orig.total, tax.total]);
+            orig.subtotal = _.sum([orig.subtotal, tax.subtotal]);
+          } else {
+            merged.push(tax);
+          }
+        });
+        return merged;
+      }) || [];
   },
 
   /**
    *
    */
-  sumItemizedTaxes: function( taxes, attr ){
+  sumItemizedTaxes: function (taxes, attr) {
     attr = attr || 'total';
-    return _.chain( taxes )
-      .map( function( tax ) {
+    return _.chain(taxes)
+      .map(function (tax) {
         return tax[attr];
       })
       .sum()
@@ -294,8 +295,8 @@ var OrderModel = DualModel.extend({
   /**
    * Value displayed in cart
    */
-  getDisplayTotal: function(){
-    if( this.tax.tax_display_cart === 'incl' ) {
+  getDisplayTotal: function () {
+    if (this.tax.tax_display_cart === 'incl') {
       return this.sum(['total', 'total_tax']);
     } else {
       return this.get('total');
@@ -305,7 +306,7 @@ var OrderModel = DualModel.extend({
   /**
    * Convenience method to sum attributes
    */
-  sum: function(array){
+  sum: function (array) {
     var sum = 0;
     for (var i = 0; i < array.length; i++) {
       sum += this.get(array[i]);
@@ -316,8 +317,8 @@ var OrderModel = DualModel.extend({
   /**
    * Value displayed in cart
    */
-  getDisplaySubtotal: function(){
-    if( this.tax.tax_display_cart === 'incl' ) {
+  getDisplaySubtotal: function () {
+    if (this.tax.tax_display_cart === 'incl') {
       return this.sum(['subtotal', 'subtotal_tax']);
     } else {
       return this.get('subtotal');
@@ -327,8 +328,8 @@ var OrderModel = DualModel.extend({
   /**
    * Value displayed in cart
    */
-  getDisplayCartDiscount: function(){
-    if( this.tax.tax_display_cart === 'incl' ) {
+  getDisplayCartDiscount: function () {
+    if (this.tax.tax_display_cart === 'incl') {
       return this.sum(['cart_discount', 'cart_discount_tax']);
     } else {
       return this.get('cart_discount');
@@ -338,16 +339,16 @@ var OrderModel = DualModel.extend({
   /**
    * Email receipt via ajax
    */
-  emailReceipt: function(email){
-    return App.prototype.post( this.url() + 'email/' + email );
+  emailReceipt: function (email) {
+    return App.prototype.post(this.url() + 'email/' + email);
   },
 
   /**
    * Clean up attached cart
    */
-  destroy: function(){
-    if( this.cart ){
-      this.cart.reset( null, { silent: true } );
+  destroy: function () {
+    if (this.cart) {
+      this.cart.reset(null, {silent: true});
       this.cart.stopListening();
     }
     DualModel.prototype.destroy.apply(this, arguments);
@@ -356,30 +357,30 @@ var OrderModel = DualModel.extend({
   /**
    * Toggle taxes
    */
-  toggleTax: function( rate_id ){
-    if( rate_id ){
-      var val = ! this.get( 'taxes.rate_' + rate_id );
-      this.set( 'taxes.rate_' + rate_id, val );
+  toggleTax: function (rate_id) {
+    if (rate_id) {
+      var val = !this.get('taxes.rate_' + rate_id);
+      this.set('taxes.rate_' + rate_id, val);
     } else {
-      this.set( 'taxes.all', ! this.get( 'taxes.all' ) );
+      this.set('taxes.all', !this.get('taxes.all'));
     }
   },
 
   /**
    * Check if tax rate is enabled by rate_id
    */
-  taxRateEnabled: function( rate_id ){
-    if( ! this.get( 'taxes.all' ) ){
+  taxRateEnabled: function (rate_id) {
+    if (!this.get('taxes.all')) {
       return false;
     }
-    return this.get( 'taxes.rate_' + rate_id );
+    return this.get('taxes.rate_' + rate_id);
   },
 
   /**
    * Returns parsed tax rates for a given tax_rate
    */
-  getTaxRates: function( tax_class ){
-    if( this.tax_rates ){
+  getTaxRates: function (tax_class) {
+    if (this.tax_rates) {
       var taxes = this.tax_rates[tax_class];
       return taxes.toJSON();
     }
@@ -389,12 +390,40 @@ var OrderModel = DualModel.extend({
    * Helper function to construct the tab label
    * @todo: give users options on what to display, eg: customer name
    */
-  getLabel: function(){
+  getLabel: function () {
     var title = polyglot.t('titles.cart');
-    if( this.id !== 'new' ){
-      title += ' ' + Utils.formatMoney( this.get('total') );
+    if (this.id !== 'new') {
+      title += ' ' + Utils.formatMoney(this.get('total'));
     }
     return title;
+  },
+
+  attachCustomer: function (attributes) {
+    var customers = Radio.request('entities', 'get', 'customers');
+    if (attributes.customer_id || !customers) {
+      return;
+    }
+
+    var self = this;
+    var defaultCustomer = customers.getDefaultCustomer();
+    var model = customers.findWhere({id: defaultCustomer.id});
+    attributes.customer_id = defaultCustomer.id;
+    attributes.customer = model ? model.toJSON() : defaultCustomer;
+
+    if (!model) {
+      var isNew = customers.isNew();
+      model = customers.add(defaultCustomer);
+      model.fetch({index: 'id'})
+        .then(function (response) {
+          return response ? response : model.fetch({remote: true});
+        })
+        .then(function (response) {
+          self.set({customer: response});
+          if(isNew){
+            customers.fullSync();
+          }
+        });
+    }
   }
 
 });

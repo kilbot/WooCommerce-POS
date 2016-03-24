@@ -5,9 +5,15 @@ var Radio = require('backbone.radio');
 module.exports = DualCollection.extend({
   model: Model,
   name: 'customers',
-  indexes: [
-    {name: 'local_id', keyPath: 'local_id', unique: true},
-    {name: 'id', keyPath: 'id', unique: true}
+
+  // this is an array of fields used by FilterCollection.matchmaker()
+  fields: [
+    'email',
+    'username', // required
+    'first_name',
+    'last_name',
+    'billing_address.phone',
+    'billing_address.company'
   ],
 
   initialize: function(){
@@ -28,5 +34,4 @@ module.exports = DualCollection.extend({
   getDefaultCustomer: function(){
     return this._default;
   }
-
 });

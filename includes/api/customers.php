@@ -29,8 +29,8 @@ class Customers extends WC_API_Resource {
     parent::__construct( $server );
     add_filter( 'woocommerce_api_customer_response', array( $this, 'customer_response' ), 10, 4 );
 
-    if( $server->path === $this->base ){
-      add_action( 'pre_get_users', array( $this, 'pre_get_users' ) );
+    if( $server->path === $this->base || $server->path === $this->base . '/ids' ){
+      add_action( 'pre_get_users', array( $this, 'pre_get_users' ), 5 );
       add_action( 'pre_user_query', array( $this, 'pre_user_query' ) );
     }
   }
@@ -79,15 +79,15 @@ class Customers extends WC_API_Resource {
     $wp_user_query->query_vars[ 'role' ] = '';
 
     // WordPress 4.4 allows role__in and role__not_in
-    if( version_compare($wp_version, '4.4', '>=') ) {
+    if ( version_compare( $wp_version, '4.4', '>=' ) ) {
       $roles = wc_pos_get_option( 'customers', 'customer_roles' );
 
-      if( is_array( $roles ) && ! in_array( 'all', $roles ) ){
+      if ( is_array( $roles ) && !in_array( 'all', $roles ) ) {
         $wp_user_query->query_vars[ 'role__in' ] = $roles;
       }
 
       // special case: no customer roles
-      if( is_null( $roles ) ){
+      if ( is_null( $roles ) ) {
         // ?
       }
     }
@@ -104,6 +104,37 @@ class Customers extends WC_API_Resource {
         $wp_user_query->query_vars[ 'exclude' ] = explode( ',', $_GET[ 'filter' ][ 'not_in' ] );
       }
 
+      // wildcard by default
+      if ( isset( $_GET[ 'filter' ][ 'q' ] ) ) {
+        $query = $_GET[ 'filter' ][ 'q' ];
+        if(is_string($query)){
+          $wp_user_query->query_vars[ 'search' ] = '*' . trim( $_GET[ 'filter' ][ 'q' ], '*' ) . '*';
+        }
+        if(is_array($query)){
+          $wp_user_query->query_vars[ 'search' ] = '';
+          $wp_user_query->query_vars[ '_pos_query' ] = $query;
+        }
+      }
+
+      // search columns: 'ID', 'user_login', 'user_email', 'user_url', 'user_nicename'
+      if ( isset( $_GET[ 'filter' ][ 'fields' ] ) ) {
+        $fields = $_GET[ 'filter' ][ 'fields' ];
+        $fields = is_string($fields) ? explode(',', $fields) : $fields;
+        $search_columns = array();
+        $translate = array(
+          'id' => 'ID',
+          'email' => 'user_email',
+          'username' => 'user_login'
+        );
+        foreach( $fields as $field ) {
+          $search_columns[] = isset($translate[$field]) ? $translate[$field] : $field;
+        }
+        if(!in_array('user_login', $search_columns)){
+          $search_columns[] = 'user_login'; // required
+        }
+        $wp_user_query->query_vars[ 'search_columns' ] = $search_columns;
+      }
+
     }
 
   }
@@ -115,11 +146,20 @@ class Customers extends WC_API_Resource {
    */
   public function pre_user_query( $wp_user_query ) {
 
-    // customer search
-    $term = $wp_user_query->query_vars[ 'search' ];
+    if(!isset($wp_user_query->query_vars[ 'search' ]))
+      return;
+
+    $term = trim( $wp_user_query->query_vars[ 'search' ], '*' );
+
     if ( !empty( $term ) ) {
-      $this->customer_search( $term, $wp_user_query );
+      $this->simple_search( $term, $wp_user_query );
     }
+
+    if( isset($wp_user_query->query_vars[ '_pos_query' ]) ){
+      $queries = $wp_user_query->query_vars[ '_pos_query' ];
+      $this->complex_search( $queries, $wp_user_query );
+    }
+
   }
 
   /**
@@ -128,38 +168,67 @@ class Customers extends WC_API_Resource {
    * @param $term
    * @param $wp_user_query
    */
-  private function customer_search($term, $wp_user_query){
+  private function simple_search($term, $wp_user_query) {
     global $wpdb;
+    $meta_keys = array();
+    $ids = array();
+
+    foreach ( $wp_user_query->query_vars[ 'search_columns' ] as $field ) {
+      if ( $field == 'first_name' ) $meta_keys[] = "meta_key='$field'";
+      if ( $field == 'last_name' ) $meta_keys[] = "meta_key='$field'";
+      if ( substr( $field, 0, 16 ) == 'billing_address.' ) {
+        $field = str_replace( 'billing_address.', 'billing_', $field );
+        $meta_keys[] = "meta_key='$field'";
+      }
+      if ( substr( $field, 0, 17 ) == 'shipping_address.' ) {
+        $field = str_replace( 'shipping_address.', 'shipping_', $field );
+        $meta_keys[] = "meta_key='$field'";
+      }
+    }
 
     // search usermeta table
-    $usermeta_ids = $wpdb->get_col("
-      SELECT DISTINCT user_id
-      FROM $wpdb->usermeta
-      WHERE (meta_key='first_name' OR meta_key='last_name')
-      AND LOWER(meta_value)
-      LIKE '%".$term."%'
-    ");
+    if ( !empty( $meta_keys ) ) {
+      $ids = $wpdb->get_col( "
+        SELECT DISTINCT user_id
+        FROM $wpdb->usermeta
+        WHERE (" . implode( ' OR ', $meta_keys ) . ")
+        AND LOWER(meta_value)
+        LIKE '%" . $term . "%'
+      " );
+    }
 
-    // search users table
-    $users_ids = $wpdb->get_col("
-      SELECT DISTINCT ID
-      FROM $wpdb->users
-      WHERE LOWER(user_nicename)
-      LIKE '%".$term."%'
-      OR LOWER(user_login)
-      LIKE '%".$term."%'
-    ");
 
-    $ids = array_unique(array_merge($usermeta_ids,$users_ids));
-    $ids_str = implode(',', $ids);
-
-    if (!empty($ids_str)){
+    if ( !empty( $ids ) ) {
       $wp_user_query->query_where = str_replace(
-        "user_nicename LIKE '".$term."'",
-        "ID IN(".$ids_str.")",
+        "user_login LIKE '%$term%'",
+        "user_login LIKE '%$term%' OR ID IN(" . implode( ',', $ids ) . ")",
         $wp_user_query->query_where
       );
     }
+  }
+
+  /**
+   * @param array $queries
+   * @param $wp_user_query
+   */
+  private function complex_search(array $queries, $wp_user_query){
+    $ORs = array();
+
+    foreach($queries as $query){
+      $type = isset($query['type']) ? $query['type'] : '';
+      $term = isset($query['query']) ? $query['query'] : '';
+      if($type == 'prefix'){
+        $prefix = isset($query['prefix']) ? $query['prefix'] : '';
+        if($prefix == 'id'){
+          $ORs[] = 'ID = ' . $term;
+        }
+      }
+    };
+
+    if(!empty($ORs)){
+      $wp_user_query->query_where .= ' AND (' . implode(' OR ', $ORs) .') ';
+    }
+
   }
 
   /**
@@ -181,7 +250,7 @@ class Customers extends WC_API_Resource {
     }
 
     $query = new \WP_User_Query( $args );
-    return array_map( array( $this, 'format_id' ), $query->results );
+    return array( 'customers' => array_map( array( $this, 'format_id' ), $query->results ) );
   }
 
 
@@ -190,7 +259,7 @@ class Customers extends WC_API_Resource {
    * @return array
    */
   private function format_id( $id ) {
-    return array( 'id' => $id );
+    return array( 'id' => (int) $id );
   }
 
 

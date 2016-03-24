@@ -101,6 +101,9 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
 
     return IDBCollection.prototype.getBatch.call(this, options)
       .then(function (response) {
+        if(options.remote === false){
+          return response;
+        }
         if(_.size(response) > 0){
           return self.fetchDelayed(response);
         }

@@ -7,7 +7,11 @@ var parse = new Parser();
 var defaultFilterName = '__default';
 
 module.exports = app.prototype.FilteredCollection = Collection.extend({
-  _filters: {},
+
+  constructor: function(){
+    this._filters = {};
+    Collection.apply(this, arguments);
+  },
 
   setFilter: function (filterName, filter) {
     if (filter === undefined) {
@@ -59,7 +63,8 @@ module.exports = app.prototype.FilteredCollection = Collection.extend({
 
   getFilterOptions: function () {
     if (this.hasFilters()) {
-      return {q: this.getFilterQueries(), fields: this.fields};
+      var fields = _.isArray(this.fields) ? this.fields.join(',') : this.fields;
+      return {q: this.getFilterQueries(), fields: fields};
     }
   },
 

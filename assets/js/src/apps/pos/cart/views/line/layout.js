@@ -80,7 +80,7 @@ module.exports = LayoutView.extend({
     var el = this.$el, type = this.model.get( 'type' );
 
     // @todo: do a better scrollTo for multiple pulses
-    el.scrollIntoView();
+    // el.scrollIntoView();
 
     el.addClass('pulse-in')
       .animate({backgroundColor: 'transparent'}, 500, function() {

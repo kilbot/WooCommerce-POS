@@ -50,9 +50,13 @@ var CartRoute = Route.extend({
    * Fetch orders from idb if new
    */
   fetch: function() {
-    //if (this.collection.isNew()) {
-    //  return this.collection.fetch();
-    //}
+    return this.collection.fetch({
+      remote: false,
+      index: {
+        keyPath: '_state',
+        value: this.collection.states.create
+      }
+    });
   },
 
   /**

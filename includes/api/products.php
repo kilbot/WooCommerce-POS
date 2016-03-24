@@ -401,11 +401,11 @@ class Products extends WC_API_Resource {
   }
 
   /**
- * @param $id
- * @return array
- */
+   * @param $id
+   * @return array
+   */
   private function format_id( $id ){
-    return array( 'id' => $id );
+    return array( 'id' => (int) $id );
   }
 
 }

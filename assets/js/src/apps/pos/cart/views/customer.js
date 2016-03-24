@@ -12,20 +12,16 @@ var View = View.extend({
   className: 'list-row',
 
   initialize: function(){
-    this.customers = Radio.request('entities', 'get', {
-      type: 'filtered',
-      name: 'customers',
-      perPage : 10
-    });
+    this.customers = Radio.request('entities', 'get', 'customers');
 
     this.mergeOptions({
-      guest: this.customers.superset().getGuestCustomer()
+      guest: this.customers.getGuestCustomer()
     }, ['guest']);
 
     /**
      * @todo customer attr relation direct to customer model
      */
-    this.listenTo(this.customers.superset(), 'modal:save', this.onModalSave);
+    this.listenTo(this.customers, 'modal:save', this.onModalSave);
 
     _.bindAll( this, 'dropdownContent' );
   },
@@ -52,9 +48,7 @@ var View = View.extend({
   },
 
   _query: _.debounce( function(value){
-    this.customers
-      .query(value)
-      .firstPage();
+    this.customers.setFilter(value);
   }, 149),
 
   modelEvents: {

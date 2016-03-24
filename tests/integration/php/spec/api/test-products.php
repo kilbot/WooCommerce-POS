@@ -345,4 +345,6 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
 
   }
 
+  
+
 }

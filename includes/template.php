@@ -169,7 +169,6 @@ class Template {
     $build = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? 'build' : 'min';
 
     $js = self::get_external_js_libraries();
-    $js[ 'scrollIntoView' ] = PLUGIN_URL . 'assets/js/vendor/jquery.scrollIntoView.' . $build . '.js?ver=' . VERSION;
     $js[ 'app' ] = PLUGIN_URL . 'assets/js/app.' . $build . '.js?ver=' . VERSION;
     $scripts = apply_filters( 'woocommerce_pos_enqueue_footer_js', $js );
 

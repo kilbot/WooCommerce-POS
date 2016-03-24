@@ -38,17 +38,16 @@ var Customers = InfiniteListView.extend({
 
   initialize: function(options){
     options = options || {};
-    var filtered = this.collection;
-    var customers = this.collection.superset();
+    this.collection.fetch();
 
-    if( customers.isNew() ){
-      return customers.fetch()
-        .then(function(){
-          customers.fullSync();
-        });
-    } else {
-      filtered.query(options.filter);
-    }
+    // if( customers.isNew() ){
+    //   return customers.fetch()
+    //     .then(function(){
+    //       customers.fullSync();
+    //     });
+    // } else {
+    //   filtered.query(options.filter);
+    // }
   },
 
   childEvents: {
