@@ -72,9 +72,9 @@ class Products extends WC_API_Resource {
 //    'cross_sell_ids',
     'parent_id',
     'categories',
-//    'tags',
+    'tags',
 //    'images',
-    'featured_src',
+//    'featured_src', // replaced by thumbnail
     'attributes',
 //    'downloads',
 //    'download_limit',
@@ -107,6 +107,7 @@ class Products extends WC_API_Resource {
 
     if( $server->path === $this->base ){
       add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+      add_filter( 'posts_search', array( $this, 'posts_search'), 10, 2 );
     }
   }
 
@@ -313,6 +314,11 @@ class Products extends WC_API_Resource {
   private function parse_query_array( array $query, \WP_Query $wp_query){
     $type = isset($query['type']) ? $query['type'] : 'string';
 
+    if($type == 'string' && isset($query)){
+      $term = isset($query['query']) ? $query['query'] : '';
+      $this->string_query($term, $wp_query);
+    }
+
     if($type == 'prefix' && isset($query['prefix']) && isset($query['query'])){
       $prefix = isset($query['prefix']) ? $query['prefix'] : '';
       $term = isset($query['query']) ? $query['query'] : '';
@@ -322,11 +328,34 @@ class Products extends WC_API_Resource {
   }
 
   /**
+   * @param $term
+   * @param \WP_Query $wp_query
+   */
+  private function string_query( $term, \WP_Query $wp_query ){
+    global $wpdb;
+    $search_ids = $wpdb->get_col(
+      $wpdb->prepare("
+        SELECT ID
+        FROM $wpdb->posts
+        WHERE post_type = 'product'
+        AND post_status = 'publish'
+        AND post_title LIKE %s
+      ", '%' . $term . '%')
+    );
+    $post__in = $wp_query->get('post__in');
+    $include = empty($post__in) ? $search_ids : array_intersect($post__in, $search_ids);
+    if(empty($include)){
+      $include = array(0);
+    }
+    $wp_query->set( 'post__in', $include );
+  }
+
+  /**
    * @param $prefix
    * @param $term
    * @param \WP_Query $wp_query
    */
-  private function prefix_query( $prefix, $term, \WP_Query $wp_query){
+  private function prefix_query( $prefix, $term, \WP_Query $wp_query ){
     // store original meta_query
     $meta_query = $wp_query->get( 'meta_query' );
     $tax_query = $wp_query->get( 'tax_query' );
@@ -362,10 +391,14 @@ class Products extends WC_API_Resource {
     if($prefix == 'on_sale'){
       $sale_ids = array_filter( wc_get_product_ids_on_sale() );
       if($term == 'true'){
-        $include = isset($wp_query->query['post__in']) ? $wp_query->query['post__in'] : array();
-        $wp_query->set( 'post__in', array_merge($include, $sale_ids) );
+        $post__in = $wp_query->get('post__in');
+        $include = empty($post__in) ? $sale_ids : array_intersect($post__in, $sale_ids);
+        if(empty($include)){
+          $include = array(0);
+        }
+        $wp_query->set( 'post__in', $include );
       } else {
-        $exclude = isset($wp_query->query['post__not_in']) ? $wp_query->query['post__not_in'] : array();
+        $exclude = $wp_query->get('post__not_in');
         $wp_query->set( 'post__not_in', array_merge($exclude, $sale_ids) );
       }
     }
@@ -374,7 +407,16 @@ class Products extends WC_API_Resource {
     if($prefix == 'categories' || $prefix == 'cat'){
       $tax_query[] = array(
         'taxonomy' => 'product_cat',
-        'field'    => 'slug',
+        'field'    => 'name',
+        'terms'    => array( $term )
+      );
+    }
+
+    // tags and tag
+    if($prefix == 'tags' || $prefix == 'tag'){
+      $tax_query[] = array(
+        'taxonomy' => 'product_tag',
+        'field'    => 'name',
         'terms'    => array( $term )
       );
     }
@@ -382,6 +424,20 @@ class Products extends WC_API_Resource {
     $wp_query->set('meta_query', $meta_query);
     $wp_query->set('tax_query', $tax_query);
 
+  }
+
+  /**
+   * @param $search
+   * @param \WP_Query $wp_query
+   * @return string
+   */
+  public function posts_search( $search, \WP_Query $wp_query ){
+    global $wpdb;
+    if(!empty($search)){
+      $term = isset($wp_query->query['s']) ? $wp_query->query['s'] : '';
+      $search = " AND ($wpdb->posts.post_title LIKE '%$term%')";
+    }
+    return $search;
   }
 
   /**

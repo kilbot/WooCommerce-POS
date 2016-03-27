@@ -233,117 +233,6 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
   /**
    *
    */
-//  public function test_barcode_filter(){
-//    $sku = 'SKU-12345';
-//
-//    // update product sku
-//    update_post_meta(40, '_sku', $sku);
-//    update_post_meta(41, '_sku', 'foo');
-//    update_post_meta(42, '_sku', 'bar');
-//
-//    // search for barcode
-//    $response = $this->client->get('', [
-//      'query' => [
-//        'filter[barcode]' => $sku
-//      ]
-//    ]);
-//
-//    // should return one product
-//    $this->assertEquals(200, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('products', $data);
-//    $this->assertCount(1, $data['products']);
-//
-//    $product = $data['products'][0];
-//    $this->assertEquals(40, $product['id']);
-//    $this->assertEquals($sku, $product['barcode']);
-//
-//    // variations should be present
-//    $this->assertCount(2, $product['variations']);
-//
-//    // delete product sku
-//    delete_post_meta(40, '_sku');
-//    delete_post_meta(41, '_sku');
-//    delete_post_meta(42, '_sku');
-//
-//  }
-//
-//  /**
-//   *
-//   */
-//  public function test_partial_barcode_filter(){
-//    $sku = 'SKU-12345';
-//
-//    // update product sku
-//    update_post_meta(40, '_sku', $sku);
-//    update_post_meta(41, '_sku', 'foo');
-//    update_post_meta(42, '_sku', 'bar');
-//
-//    // search for barcode
-//    $response = $this->client->get('', [
-//      'query' => [
-//        'filter[barcode]' => '123'
-//      ]
-//    ]);
-//
-//    // should return one product
-//    $this->assertEquals(200, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('products', $data);
-//    $this->assertCount(1, $data['products']);
-//
-//    $product = $data['products'][0];
-//    $this->assertEquals(40, $product['id']);
-//    $this->assertEquals($sku, $product['barcode']);
-//
-//    // variations should be present
-//    $this->assertCount(2, $product['variations']);
-//
-//    // delete product sku
-//    delete_post_meta(40, '_sku');
-//    delete_post_meta(41, '_sku');
-//    delete_post_meta(42, '_sku');
-//
-//  }
-//
-//  /**
-//   *
-//   */
-//  public function test_variation_barcode_filter(){
-//    $sku = 'SKU-12345';
-//
-//    // update product sku
-//    update_post_meta(40, '_sku', 'foo');
-//    update_post_meta(41, '_sku', $sku);
-//
-//    // search for barcode
-//    $response = $this->client->get('', [
-//      'query' => [
-//        'filter[barcode]' => $sku
-//      ]
-//    ]);
-//
-//    // should return the parent product
-//    $this->assertEquals(200, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('products', $data);
-//    $this->assertCount(1, $data['products']);
-//
-//    $product = $data['products'][0];
-//    $this->assertEquals(40, $product['id']);
-//
-//    // variations should be present
-//    $this->assertCount(2, $product['variations']);
-//
-//    // update product sku
-//    delete_post_meta(40, '_sku');
-//    delete_post_meta(41, '_sku');
-//
-//  }
-
-  /**
-   *
-   */
   public function test_title_search(){
     $response = $this->client->get('', [
       'query' => array(
@@ -358,6 +247,19 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
 
     $this->assertEquals('Premium Quality', $data['products'][0]['title']);
     $this->assertEquals('Premium Quality', $data['products'][1]['title']);
+
+    $response = $this->client->get('', [
+      'query' => array(
+        'filter[q]' => 'libero',
+        'filter[fields]' => 'title'
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertCount(0, $data['products']);
+
   }
 
   /**
@@ -412,6 +314,9 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
 
   }
 
+  /**
+   *
+   */
   public function test_sku_search(){
     $sku = $this->generate_random_string();
     $product_id = $this->get_random_product_id();
@@ -441,6 +346,9 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
 
   }
 
+  /**
+   *
+   */
   public function test_barcode_search(){
     $barcode = $this->generate_random_string();
     $product_id = $this->get_random_product_id();
@@ -474,6 +382,9 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
 
   }
 
+  /**
+   *
+   */
   public function test_on_sale_search() {
 
     // on_sale = true
@@ -522,6 +433,9 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
 
   }
 
+  /**
+   *
+   */
   public function test_categories_search() {
     $response = $this->client->get('', [
       'query' => array(
@@ -551,11 +465,18 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals($music_category, $data);
   }
 
+  /**
+   *
+   */
   public function test_cat_search() {
+    // update to a two word category
+    $term = get_term_by('slug', 'posters', 'product_cat');
+    wp_update_term($term->term_id, 'product_cat', array('name' => 'Woo Posters'));
+
     $response = $this->client->get('', [
       'query' => array(
         'limit' => -1,
-        'filter[category]' => 't-shirts'
+        'filter[category]' => 'posters'
       )
     ]);
     $music_category = $response->json();
@@ -567,7 +488,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
           array(
             'type'    => 'prefix',
             'prefix'  => 'cat',
-            'query'   => 'T-Shirts'
+            'query'   => 'woo posters'
           )
         )
       )
@@ -578,6 +499,173 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     $this->assertArrayHasKey('products', $data);
 
     $this->assertEquals($music_category, $data);
+    wp_update_term($term->term_id, 'product_cat', array('name' => 'Posters'));
+
+  }
+
+  /**
+   *
+   */
+  public function test_tag_search() {
+    $tag = $this->generate_random_string();
+    $term = wp_insert_term($tag, 'product_tag');
+    $product_id = $this->get_random_product_id();
+    wp_set_object_terms( $product_id, $tag, 'product_tag' );
+
+
+    $response = $this->client->get('', [
+      'query' => array(
+        'limit' => -1,
+        'filter[tag]' => $tag
+      )
+    ]);
+    $tagged_product = $response->json();
+
+    $response = $this->client->get('', [
+      'query' => array(
+        'limit' => -1,
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'tag',
+            'query'   => $tag
+          )
+        )
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertEquals($tagged_product, $data);
+
+    wp_remove_object_terms( $product_id, $tag, 'product_tag' );
+    wp_delete_term( $term['term_id'], 'product_tag' );
+  }
+
+  /**
+   *
+   */
+  public function test_title_and_cat_search(){
+    $response = $this->client->get('', [
+      'query' => array(
+        'limit' => -1,
+        'filter[category]' => 'posters',
+        'filter[q]' => 'ninja'
+      )
+    ]);
+    $ninja_posters = $response->json();
+
+    $response = $this->client->get('', [
+      'query' => array(
+        'limit' => -1,
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'cat',
+            'query'   => 'posters'
+          ),
+          array(
+            'type'    => 'string',
+            'query'   => 'ninja'
+          )
+        )
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertEquals($ninja_posters, $data);
+
+  }
+
+  /**
+   *
+   */
+  public function test_title_and_title_search() {
+    $response = $this->client->get('', [
+      'query' => array(
+        'limit' => -1,
+        'filter[q]' => 'woo ninja'
+      )
+    ]);
+    $woo_ninja = $response->json();
+
+    $response = $this->client->get('', [
+      'query' => array(
+        'limit' => -1,
+        'filter[q]' => array(
+          array(
+            'type'    => 'string',
+            'query'   => 'woo'
+          ),
+          array(
+            'type'    => 'string',
+            'query'   => 'ninja'
+          )
+        )
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertEquals($woo_ninja, $data);
+  }
+
+  /**
+   *
+   */
+  public function test_prefix_and_title_search() {
+    $response = $this->client->get( '', [
+      'query' => array(
+        'limit' => -1,
+        'filter[q]' => array(
+          array(
+            'type' => 'string',
+            'query' => 'woo'
+          ),
+          array(
+            'type' => 'prefix',
+            'prefix' => 'on_sale',
+            'query' => 'true'
+          )
+        )
+      )
+    ] );
+
+    $this->assertEquals( 200, $response->getStatusCode() );
+    $data = $response->json();
+    $this->assertArrayHasKey( 'products', $data );
+    $this->assertCount(2, $data['products']);
+
+    $response = $this->client->get( '', [
+      'query' => array(
+        'limit' => -1,
+        'filter[q]' => array(
+          array(
+            'type' => 'string',
+            'query' => 'woo'
+          ),
+          array(
+            'type' => 'string',
+            'query' => 'ninja'
+          ),
+          array(
+            'type' => 'prefix',
+            'prefix' => 'on_sale',
+            'query' => 'false'
+          )
+        )
+      )
+    ] );
+
+    $this->assertEquals( 200, $response->getStatusCode() );
+    $data = $response->json();
+    $this->assertArrayHasKey( 'products', $data );
+    $this->assertCount(3, $data['products']);
+
   }
 
 }
