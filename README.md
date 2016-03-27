@@ -39,7 +39,7 @@ If this is your first time setting up a local development environment you may wa
 
 ### Installation
 
-The following installation instructions assume you have `git`, `nodejs` and `npm` installed. 
+The following installation instructions assume you have `git`, `nodejs` and `grunt cli` installed. 
 VVV comes bundled with these and a bunch of other goodies so it is the recommended development environment for WooCommerce POS.
 If you have VVV intalled you should use `vagarnt ssh` to enter the virtual machine and then continue with the instructions.
 

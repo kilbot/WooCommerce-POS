@@ -51,7 +51,7 @@ describe('entities/orders/model.js', function () {
 
   it('should not change order on export (adds local _state)', function(){
     var model = new OrderModel( dummy_order.order, { parse: true } );
-    expect( model.toJSON() ).to.eql( dummy_order.order );
+    expect( _.extend( {_state: undefined}, model.toJSON() ) ).to.eql( dummy_order.order );
   });
 
   it('should parse line_items, shipping_lines and fee_lines into a Cart collection (if isEditable)', function(){
@@ -369,12 +369,19 @@ describe('entities/orders/model.js', function () {
 
   it('should return an array of tax rates for a given tax_class', function(){
     var model = new OrderModel();
+
+    //no taxes
+    model.attachTaxes();
+    expect( model.getTaxRates('') ).to.be.undefined;
+
+    // GB taxes
     model.getSettings = function(name){
       if( name === 'tax_rates' ){
         return dummy_tax_GB;
       }
     };
     model.attachTaxes();
+
     expect( model.getTaxRates('') ).eqls([{
       rate_id: '1',
       rate: '20.0000',
@@ -385,6 +392,7 @@ describe('entities/orders/model.js', function () {
       total: 0,
       subtotal: 0
     }]);
+
     expect( model.getTaxRates('reduced-rate') ).eqls([{
       rate_id: '2',
       rate: '5.0000',

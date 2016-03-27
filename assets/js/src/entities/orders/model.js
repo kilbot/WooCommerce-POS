@@ -380,9 +380,8 @@ var OrderModel = DualModel.extend({
    * Returns parsed tax rates for a given tax_rate
    */
   getTaxRates: function (tax_class) {
-    if (this.tax_rates) {
-      var taxes = this.tax_rates[tax_class];
-      return taxes.toJSON();
+    if (this.tax_rates && this.tax_rates[tax_class]) {
+      return this.tax_rates[tax_class].toJSON();
     }
   },
 
@@ -406,22 +405,21 @@ var OrderModel = DualModel.extend({
 
     var self = this;
     var defaultCustomer = customers.getDefaultCustomer();
-    var model = customers.findWhere({id: defaultCustomer.id});
     attributes.customer_id = defaultCustomer.id;
+    attributes.customer = defaultCustomer;
+
+    if(attributes.customer_id === 0){
+      return;
+    }
+
+    var model = customers.findWhere({id: defaultCustomer.id});
     attributes.customer = model ? model.toJSON() : defaultCustomer;
 
     if (!model) {
-      var isNew = customers.isNew();
       model = customers.add(defaultCustomer);
       model.fetch({index: 'id'})
         .then(function (response) {
-          return response ? response : model.fetch({remote: true});
-        })
-        .then(function (response) {
           self.set({customer: response});
-          if(isNew){
-            customers.fullSync();
-          }
         });
     }
   }

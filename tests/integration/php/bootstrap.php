@@ -47,33 +47,34 @@ class Integration_Tests {
     $wpdb->query("TRUNCATE TABLE {$wpdb->prefix}woocommerce_tax_rates");
     $wpdb->query("TRUNCATE TABLE {$wpdb->prefix}woocommerce_tax_rate_locations");
 
-    $file = \WC_POS\PLUGIN_PATH . 'tests/data/sample_tax_rates.csv';
-    $delimiter = ',';
+    $taxes = array(
+      array('GB','*','*','*','20.0000','VAT',1,1,1,''),
+      array('GB','*','*','*','5.0000','VAT',1,1,1,'reduced-rate'),
+      array('GB','*','*','*','0.0000','VAT',1,1,1,'zero-rate'),
+      array('US','*','*','*','10.0000','US',1,1,1,''),
+      array('US','AL','12345; 123456','*','2.0000','US AL',2,1,1,'')
+    );
 
     $loop = 0;
-    if ( ( $handle = fopen( $file, "r" ) ) !== false ) {
-      $header = fgetcsv( $handle, 0, $delimiter );
-      if ( 10 === sizeof( $header ) ) {
-        while ( ( $row = fgetcsv( $handle, 0, $delimiter ) ) !== false ) {
-          list( $country, $state, $postcode, $city, $rate, $name, $priority, $compound, $shipping, $class ) = $row;
-          $tax_rate = array(
-            'tax_rate_country'  => $country,
-            'tax_rate_state'    => $state,
-            'tax_rate'          => $rate,
-            'tax_rate_name'     => $name,
-            'tax_rate_priority' => $priority,
-            'tax_rate_compound' => $compound ? 1 : 0,
-            'tax_rate_shipping' => $shipping ? 1 : 0,
-            'tax_rate_order'    => $loop ++,
-            'tax_rate_class'    => $class
-          );
-          $tax_rate_id = WC_Tax::_insert_tax_rate( $tax_rate );
-          WC_Tax::_update_tax_rate_postcodes( $tax_rate_id, wc_clean( $postcode ) );
-          WC_Tax::_update_tax_rate_cities( $tax_rate_id, wc_clean( $city ) );
-        }
-      }
-      fclose( $handle );
+
+    foreach ( $taxes as $tax ) {
+      list( $country, $state, $postcode, $city, $rate, $name, $priority, $compound, $shipping, $class ) = $tax;
+      $tax_rate = array(
+        'tax_rate_country'  => $country,
+        'tax_rate_state'    => $state,
+        'tax_rate'          => $rate,
+        'tax_rate_name'     => $name,
+        'tax_rate_priority' => $priority,
+        'tax_rate_compound' => $compound ? 1 : 0,
+        'tax_rate_shipping' => $shipping ? 1 : 0,
+        'tax_rate_order'    => $loop ++,
+        'tax_rate_class'    => $class
+      );
+      $tax_rate_id = WC_Tax::_insert_tax_rate( $tax_rate );
+      WC_Tax::_update_tax_rate_postcodes( $tax_rate_id, wc_clean( $postcode ) );
+      WC_Tax::_update_tax_rate_cities( $tax_rate_id, wc_clean( $city ) );
     }
+
   }
 
   /**
@@ -81,6 +82,10 @@ class Integration_Tests {
    */
   public function shutdown(){
     switch_theme('twentyfifteen', 'twentyfifteen');
+    update_option('active_plugins', array(
+      'woocommerce-pos/woocommerce-pos.php',
+      'woocommerce/woocommerce.php'
+    ));
   }
 
 }

@@ -27,23 +27,26 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
   }
 
   /**
-   * Helper functions
+   * @return mixed
    */
-  private function log_in_user(){
-    update_option('active_plugins', array(
-      'woocommerce-pos/woocommerce-pos.php',
-      'woocommerce-pos-test/index.php',
-      'woocommerce/woocommerce.php'
-    ));
-    update_option('woocommerce_pos_test_logged_in_user', 1);
+  private function get_random_product_id() {
+    $response = $this->client->get(get_woocommerce_api_url( 'products/ids' ));
+    $data = $response->json();
+    $key = array_rand( $data['products'] );
+    return $data['products'][$key]['id'];
   }
 
-  private function log_out_user(){
-    update_option('active_plugins', array(
-      'woocommerce-pos/woocommerce-pos.php',
-      'woocommerce/woocommerce.php'
-    ));
-    delete_option('woocommerce_pos_test_logged_in_user');
+  /**
+   * @param int $length
+   * @return string
+   */
+  private function generate_random_string($length=10) {
+    $string = '';
+    $characters = "ABCDEFHJKLMNPRTVWXYZabcdefghijklmnopqrstuvwxyz";
+    for ($p = 0; $p < $length; $p++) {
+      $string .= $characters[mt_rand(0, strlen($characters)-1)];
+    }
+    return $string;
   }
 
   /**
@@ -185,10 +188,12 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
 
     // delete POS visibility setting
     delete_post_meta($product['id'], '_pos_visibility');
+    update_option( $option_key, array('pos_only_products' => false) );
+
   }
 
   /**
-   * TODO: get_product in WC REST API does not trigger posts_where filter
+   *
    */
   public function test_online_only_products(){
 
@@ -197,154 +202,382 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     update_option( $option_key, array('pos_only_products' => true) );
 
     // get random product
-    $response = $this->client->get();
-    $data = $response->json();
-    $product = $data['products'][ array_rand( $data['products'] ) ];
+    $product_id = $this->get_random_product_id();
 
     // set to POS only
-    update_post_meta($product['id'], '_pos_visibility', 'online_only');
+    update_post_meta($product_id, '_pos_visibility', 'online_only');
 
     // get all product ids
-    $this->log_in_user();
-    $response = $this->client->get('', [
-      'query' => [
-        'filter[fields]' => 'id',
-        'filter[limit]'=> '-1'
-      ]
-    ]);
-    $this->log_out_user();
-    $this->assertNotContains( $product['id'], $response->json() );
-
-    // get single product via API
-//    $response = $this->client->get($product['id']);
-//    $data = $response->json();
-//    $this->assertEmpty($data['product']);
+    $response = $this->client->get(get_woocommerce_api_url( 'products/ids' ));
+    $data = $response->json();
+    $this->assertGreaterThan(10, count($data['products']));
+    $ids = wp_list_pluck( $data['products'], 'id' );
+    $this->assertNotContains( $product_id, $ids );
 
     // get product via website
     $client = new Client();
     $response = $client->get( get_home_url(), array(
       'query' => array(
-        'p' => $product['id']
+        'p' => $product_id
       ),
       'exceptions' => false
     ));
     $this->assertEquals(200, $response->getStatusCode());
 
     // delete POS visibility setting
-    delete_post_meta($product['id'], '_pos_visibility');
-  }
-
-  /**
-   *
-   */
-  public function test_barcode_filter(){
-    $sku = 'SKU-12345';
-
-    // update product sku
-    update_post_meta(40, '_sku', $sku);
-    update_post_meta(41, '_sku', 'foo');
-    update_post_meta(42, '_sku', 'bar');
-
-    // search for barcode
-    $response = $this->client->get('', [
-      'query' => [
-        'filter[barcode]' => $sku
-      ]
-    ]);
-
-    // should return one product
-    $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
-    $this->assertArrayHasKey('products', $data);
-    $this->assertCount(1, $data['products']);
-
-    $product = $data['products'][0];
-    $this->assertEquals(40, $product['id']);
-    $this->assertEquals($sku, $product['barcode']);
-
-    // variations should be present
-    $this->assertCount(2, $product['variations']);
-
-    // delete product sku
-    delete_post_meta(40, '_sku');
-    delete_post_meta(41, '_sku');
-    delete_post_meta(42, '_sku');
+    delete_post_meta($product_id, '_pos_visibility');
+    update_option( $option_key, array('pos_only_products' => false) );
 
   }
 
   /**
    *
    */
-  public function test_partial_barcode_filter(){
-    $sku = 'SKU-12345';
+//  public function test_barcode_filter(){
+//    $sku = 'SKU-12345';
+//
+//    // update product sku
+//    update_post_meta(40, '_sku', $sku);
+//    update_post_meta(41, '_sku', 'foo');
+//    update_post_meta(42, '_sku', 'bar');
+//
+//    // search for barcode
+//    $response = $this->client->get('', [
+//      'query' => [
+//        'filter[barcode]' => $sku
+//      ]
+//    ]);
+//
+//    // should return one product
+//    $this->assertEquals(200, $response->getStatusCode());
+//    $data = $response->json();
+//    $this->assertArrayHasKey('products', $data);
+//    $this->assertCount(1, $data['products']);
+//
+//    $product = $data['products'][0];
+//    $this->assertEquals(40, $product['id']);
+//    $this->assertEquals($sku, $product['barcode']);
+//
+//    // variations should be present
+//    $this->assertCount(2, $product['variations']);
+//
+//    // delete product sku
+//    delete_post_meta(40, '_sku');
+//    delete_post_meta(41, '_sku');
+//    delete_post_meta(42, '_sku');
+//
+//  }
+//
+//  /**
+//   *
+//   */
+//  public function test_partial_barcode_filter(){
+//    $sku = 'SKU-12345';
+//
+//    // update product sku
+//    update_post_meta(40, '_sku', $sku);
+//    update_post_meta(41, '_sku', 'foo');
+//    update_post_meta(42, '_sku', 'bar');
+//
+//    // search for barcode
+//    $response = $this->client->get('', [
+//      'query' => [
+//        'filter[barcode]' => '123'
+//      ]
+//    ]);
+//
+//    // should return one product
+//    $this->assertEquals(200, $response->getStatusCode());
+//    $data = $response->json();
+//    $this->assertArrayHasKey('products', $data);
+//    $this->assertCount(1, $data['products']);
+//
+//    $product = $data['products'][0];
+//    $this->assertEquals(40, $product['id']);
+//    $this->assertEquals($sku, $product['barcode']);
+//
+//    // variations should be present
+//    $this->assertCount(2, $product['variations']);
+//
+//    // delete product sku
+//    delete_post_meta(40, '_sku');
+//    delete_post_meta(41, '_sku');
+//    delete_post_meta(42, '_sku');
+//
+//  }
+//
+//  /**
+//   *
+//   */
+//  public function test_variation_barcode_filter(){
+//    $sku = 'SKU-12345';
+//
+//    // update product sku
+//    update_post_meta(40, '_sku', 'foo');
+//    update_post_meta(41, '_sku', $sku);
+//
+//    // search for barcode
+//    $response = $this->client->get('', [
+//      'query' => [
+//        'filter[barcode]' => $sku
+//      ]
+//    ]);
+//
+//    // should return the parent product
+//    $this->assertEquals(200, $response->getStatusCode());
+//    $data = $response->json();
+//    $this->assertArrayHasKey('products', $data);
+//    $this->assertCount(1, $data['products']);
+//
+//    $product = $data['products'][0];
+//    $this->assertEquals(40, $product['id']);
+//
+//    // variations should be present
+//    $this->assertCount(2, $product['variations']);
+//
+//    // update product sku
+//    delete_post_meta(40, '_sku');
+//    delete_post_meta(41, '_sku');
+//
+//  }
 
-    // update product sku
-    update_post_meta(40, '_sku', $sku);
-    update_post_meta(41, '_sku', 'foo');
-    update_post_meta(42, '_sku', 'bar');
-
-    // search for barcode
+  /**
+   *
+   */
+  public function test_title_search(){
     $response = $this->client->get('', [
-      'query' => [
-        'filter[barcode]' => '123'
-      ]
+      'query' => array(
+        'filter[q]' => 'prem'
+      )
     ]);
 
-    // should return one product
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('products', $data);
-    $this->assertCount(1, $data['products']);
+    $this->assertCount(2, $data['products']);
 
-    $product = $data['products'][0];
-    $this->assertEquals(40, $product['id']);
-    $this->assertEquals($sku, $product['barcode']);
-
-    // variations should be present
-    $this->assertCount(2, $product['variations']);
-
-    // delete product sku
-    delete_post_meta(40, '_sku');
-    delete_post_meta(41, '_sku');
-    delete_post_meta(42, '_sku');
-
+    $this->assertEquals('Premium Quality', $data['products'][0]['title']);
+    $this->assertEquals('Premium Quality', $data['products'][1]['title']);
   }
 
   /**
    *
    */
-  public function test_variation_barcode_filter(){
-    $sku = 'SKU-12345';
+  public function test_featured_search(){
+    
+    global $wpdb;
+    $wpdb->update($wpdb->postmeta, array('meta_value' => 'no'), array('meta_key' => '_featured'));
 
-    // update product sku
-    update_post_meta(40, '_sku', 'foo');
-    update_post_meta(41, '_sku', $sku);
-
-    // search for barcode
     $response = $this->client->get('', [
-      'query' => [
-        'filter[barcode]' => $sku
-      ]
+      'query' => array(
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'featured',
+            'query'   => 'true'
+          )
+        )
+      )
+    ]);
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertCount(0, $data['products']);
+
+    // add _featured
+    $product_id = $this->get_random_product_id();
+    update_post_meta($product_id, '_featured', 'yes');
+
+    $response = $this->client->get('', [
+      'query' => array(
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'featured',
+            'query'   => 'true'
+          )
+        )
+      )
     ]);
 
-    // should return the parent product
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(1, $data['products']);
 
-    $product = $data['products'][0];
-    $this->assertEquals(40, $product['id']);
+    $this->assertEquals($product_id, $data['products'][0]['id']);
 
-    // variations should be present
-    $this->assertCount(2, $product['variations']);
-
-    // update product sku
-    delete_post_meta(40, '_sku');
-    delete_post_meta(41, '_sku');
+    // remove _featured
+    update_post_meta($product_id, '_featured', 'no');
 
   }
 
-  
+  public function test_sku_search(){
+    $sku = $this->generate_random_string();
+    $product_id = $this->get_random_product_id();
+    update_post_meta($product_id, '_sku', $sku);
+
+    $response = $this->client->get('', [
+      'query' => array(
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'sku',
+            'query'   => substr($sku, 0, 6)
+          )
+        )
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertCount(1, $data['products']);
+    $this->assertEquals($product_id, $data['products'][0]['id']);
+    $this->assertEquals($sku, $data['products'][0]['sku']);
+    $this->assertEquals($sku, $data['products'][0]['barcode']);
+
+    delete_post_meta($product_id, '_sku');
+
+  }
+
+  public function test_barcode_search(){
+    $barcode = $this->generate_random_string();
+    $product_id = $this->get_random_product_id();
+    update_post_meta($product_id, '_sku', $barcode);
+
+// todo: why doesn't this work?
+//    add_filter('woocommerce_pos_barcode_meta_key', function(){
+//      return '_barcode';
+//    });
+
+    $response = $this->client->get('', [
+      'query' => array(
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'barcode',
+            'query'   => substr($barcode, 0, 6)
+          )
+        )
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertCount(1, $data['products']);
+    $this->assertEquals($product_id, $data['products'][0]['id']);
+    $this->assertEquals($barcode, $data['products'][0]['barcode']);
+
+    delete_post_meta($product_id, '_sku');
+
+  }
+
+  public function test_on_sale_search() {
+
+    // on_sale = true
+    $response = $this->client->get('', [
+      'query' => array(
+        'limit' => -1,
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'on_sale',
+            'query'   => 'true'
+          )
+        )
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertGreaterThan(1, count($data['products']));
+
+    $on_sale = wp_list_pluck( $data['products'], 'on_sale' );
+    $this->assertEquals([true], array_unique($on_sale));
+
+    // on_sale = false
+    $response = $this->client->get('', [
+      'query' => array(
+        'limit' => -1,
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'on_sale',
+            'query'   => 'false'
+          )
+        )
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertGreaterThan(1, count($data['products']));
+
+    $on_sale = wp_list_pluck( $data['products'], 'on_sale' );
+    $this->assertEquals([false], array_unique($on_sale));
+
+  }
+
+  public function test_categories_search() {
+    $response = $this->client->get('', [
+      'query' => array(
+        'limit' => -1,
+        'filter[category]' => 'music'
+      )
+    ]);
+    $music_category = $response->json();
+
+    $response = $this->client->get('', [
+      'query' => array(
+        'limit' => -1,
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'categories',
+            'query'   => 'Music'
+          )
+        )
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+
+    $this->assertEquals($music_category, $data);
+  }
+
+  public function test_cat_search() {
+    $response = $this->client->get('', [
+      'query' => array(
+        'limit' => -1,
+        'filter[category]' => 't-shirts'
+      )
+    ]);
+    $music_category = $response->json();
+
+    $response = $this->client->get('', [
+      'query' => array(
+        'limit' => -1,
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'cat',
+            'query'   => 'T-Shirts'
+          )
+        )
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+
+    $this->assertEquals($music_category, $data);
+  }
 
 }

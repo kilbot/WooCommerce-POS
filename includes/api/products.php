@@ -107,7 +107,6 @@ class Products extends WC_API_Resource {
 
     if( $server->path === $this->base ){
       add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
-      add_filter( 'posts_where', array( $this, 'posts_where' ), 10 , 2 );
     }
   }
 
@@ -292,86 +291,97 @@ class Products extends WC_API_Resource {
     return wc_placeholder_img_src();
   }
 
-
   /**
-   * @param $query
+   * @param \WP_Query $wp_query
    */
-  public function pre_get_posts($query){
-    // store original meta_query
-    $meta_query = $query->get( 'meta_query' );
+  public function pre_get_posts(\WP_Query $wp_query){
+    $query_array = isset($wp_query->query['s']) ? $wp_query->query['s'] : '';
 
-    if( isset( $_GET['filter'] ) ){
-
-      $filter = $_GET['filter'];
-
-      // featured
-      // todo: more general meta_key test using $query_args_whitelist
-      if( isset($filter['featured']) ) {
-        $meta_query[] = array(
-          'key'     => '_featured',
-          'value'   => $filter[ 'featured' ] ? 'yes' : 'no',
-          'compare' => '='
-        );
-      }
-
-      // on sale
-      // - no easy way to get on_sale items
-      // - wc_get_product_ids_on_sale uses cached data, includes variations
-      if( isset($filter['on_sale']) ){
-        $sale_ids = array_filter( wc_get_product_ids_on_sale() );
-        $exclude = isset($query->query['post__not_in']) ? $query->query['post__not_in'] : array();
-        $ids = array_diff($sale_ids, $exclude);
-        $query->set( 'post__not_in', array() );
-        $query->set( 'post__in', $ids );
-      }
-
+    if(!is_array($query_array)){
+      return;
     }
 
-    // update the meta_query
-    $query->set( 'meta_query', $meta_query );
+    foreach( $query_array as $query ){
+      $this->parse_query_array($query, $wp_query);
+    }
+  }
+
+  /**
+   * @param array $query
+   * @param \WP_Query $wp_query
+   */
+  private function parse_query_array( array $query, \WP_Query $wp_query){
+    $type = isset($query['type']) ? $query['type'] : 'string';
+
+    if($type == 'prefix' && isset($query['prefix']) && isset($query['query'])){
+      $prefix = isset($query['prefix']) ? $query['prefix'] : '';
+      $term = isset($query['query']) ? $query['query'] : '';
+      $this->prefix_query($prefix, $term, $wp_query);
+    }
 
   }
 
   /**
-   * @param $where
-   * @param $query
-   * @return mixed
+   * @param $prefix
+   * @param $term
+   * @param \WP_Query $wp_query
    */
-  public function posts_where( $where, $query ) {
-    global $wpdb;
+  private function prefix_query( $prefix, $term, \WP_Query $wp_query){
+    // store original meta_query
+    $meta_query = $wp_query->get( 'meta_query' );
+    $tax_query = $wp_query->get( 'tax_query' );
 
-    if( isset( $_GET['filter'] ) ){
-
-      $filter = $_GET['filter'];
-
-      if( isset($filter['barcode']) ){
-
-        // gets post ids and parent ids
-        $result = $wpdb->get_results(
-          $wpdb->prepare("
-            SELECT p.ID, p.post_parent
-            FROM $wpdb->posts AS p
-            JOIN $wpdb->postmeta AS pm
-            ON p.ID = pm.post_id
-            WHERE pm.meta_key = %s
-            AND pm.meta_value LIKE %s
-          ", $this->barcode_meta_key, '%'.$filter['barcode'].'%' ),
-          ARRAY_N
-        );
-
-        if($result){
-          $ids = call_user_func_array('array_merge', $result);
-          $where .= " AND ID IN (" . implode( ',', array_unique($ids) ) . ")";
-        } else {
-          // no matches
-          $where .= " AND 1=0";
-        }
-
-      }
-
+    // featured
+    if($prefix == 'featured'){
+      $meta_query[] = array(
+        'key'     => '_featured',
+        'value'   => $term == 'true' ? 'yes' : 'no',
+        'compare' => '='
+      );
     }
 
-    return $where;
+    // sku
+    if($prefix == 'sku'){
+      $meta_query[] = array(
+        'key'     => '_sku',
+        'value'   => $term,
+        'compare' => 'LIKE'
+      );
+    }
+
+    // barcode
+    if($prefix == 'barcode'){
+      $meta_query[] = array(
+        'key'     => $this->barcode_meta_key,
+        'value'   => $term,
+        'compare' => 'LIKE'
+      );
+    }
+
+    // on_sale
+    if($prefix == 'on_sale'){
+      $sale_ids = array_filter( wc_get_product_ids_on_sale() );
+      if($term == 'true'){
+        $include = isset($wp_query->query['post__in']) ? $wp_query->query['post__in'] : array();
+        $wp_query->set( 'post__in', array_merge($include, $sale_ids) );
+      } else {
+        $exclude = isset($wp_query->query['post__not_in']) ? $wp_query->query['post__not_in'] : array();
+        $wp_query->set( 'post__not_in', array_merge($exclude, $sale_ids) );
+      }
+    }
+
+    // categories and cat (abbr)
+    if($prefix == 'categories' || $prefix == 'cat'){
+      $tax_query[] = array(
+        'taxonomy' => 'product_cat',
+        'field'    => 'slug',
+        'terms'    => array( $term )
+      );
+    }
+
+    $wp_query->set('meta_query', $meta_query);
+    $wp_query->set('tax_query', $tax_query);
+
   }
 
   /**

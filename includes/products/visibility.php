@@ -27,9 +27,9 @@ class Visibility {
       'online_only' => __( 'Online Only', 'woocommerce-pos' )
     );
 
+    add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ), 10, 1 );
     add_filter( 'posts_where', array( $this, 'posts_where' ), 10 , 2 );
     add_filter( 'views_edit-product', array( $this, 'pos_visibility_filters' ), 10, 1 );
-    add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ), 10, 1 );
     add_action( 'bulk_edit_custom_box', array( $this, 'bulk_edit' ), 10, 2 );
     add_action( 'quick_edit_custom_box', array( $this, 'quick_edit'), 10, 2 );
     add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );

@@ -5,7 +5,9 @@
   "scripts": {
     "test": "grunt test",
     "dev": "grunt dev",
-    "deploy": "grunt deploy"
+    "deploy": "grunt deploy",
+    "clean-install": "bash tests/integration/php/bin/install.sh",
+    "test-php-integration": "phpunit -c tests/integration/php/phpunit.xml"
   },
   "repository": {
     "type": "git",

@@ -24,6 +24,24 @@ module.exports = app.prototype.DualModel = IDBModel.extend({
     return urlRoot;
   },
 
+  fetch: function(options){
+    var self = this, isNew = this.collection.isNew();
+    return this.sync('read', this, options)
+      .then(function(response){
+        if(!response) {
+          options.remote = true;
+          return self.sync('read', this, options);
+        }
+        return response;
+      })
+      .then(function(response){
+        if(isNew){
+          self.collection.fullSync();
+        }
+        return response;
+      });
+  },
+
   sync: function( method, model, options ){
     options = options || {};
     if( method !== 'read' ){
