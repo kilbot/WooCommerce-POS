@@ -1,13 +1,14 @@
 <?php
 
 /**
-* WP Admin Class
-*
-* @class    WC_POS_Admin
-* @package  WooCommerce POS
-* @author   Paul Kilmurray <paul@kilbot.com.au>
-* @link     http://www.woopos.com.au
-*/
+ * WP Admin Class
+ * conditionally loads classes for WP Admin
+ *
+ * @class    \WC_POS\Admin
+ * @package  WooCommerce POS
+ * @author   Paul Kilmurray <paul@kilbot.com.au>
+ * @link     http://www.woopos.com.au
+ */
 
 namespace WC_POS;
 
@@ -24,7 +25,8 @@ class Admin {
   /**
    * Load admin subclasses
    */
-  public function init() {
+  private function init() {
+    new Admin\Notices();
     new Admin\Menu();
     new Admin\Settings();
     new Admin\Status();

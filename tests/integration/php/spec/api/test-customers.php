@@ -2,41 +2,16 @@
 
 namespace WC_POS\Integration_Tests\API;
 
-use GuzzleHttp\Client;
-use PHPUnit_Framework_TestCase;
 use WC_POS\Admin\Settings;
+use WC_POS\Framework\TestCase;
 
-class CustomersTest extends PHPUnit_Framework_TestCase {
-
-  protected $client;
-
-  /**
-   *
-   */
-  public function setUp() {
-    $this->client = new Client([
-      'base_url' => get_woocommerce_api_url( 'customers/' ),
-      'defaults' => [
-        'exceptions' => false,
-        'headers' => [ 'X-WC-POS' => '1' ]
-      ]
-    ]);
-  }
-
-  private function generate_random_string($length=10) {
-    $string = '';
-    $characters = "ABCDEFHJKLMNPRTVWXYZabcdefghijklmnopqrstuvwxyz";
-    for ($p = 0; $p < $length; $p++) {
-      $string .= $characters[mt_rand(0, strlen($characters)-1)];
-    }
-    return $string;
-  }
+class CustomersTest extends TestCase {
 
   /**
    *
    */
   public function test_get_valid_response() {
-    $response = $this->client->get();
+    $response = $this->client->get('customers');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('customers', $data);
@@ -51,7 +26,7 @@ class CustomersTest extends PHPUnit_Framework_TestCase {
     $option_key = Settings::DB_PREFIX . 'customers';
     update_option( $option_key, array('customer_roles' => array('all')) );
 
-    $response = $this->client->get();
+    $response = $this->client->get('customers');
     $data = $response->json();
     $this->assertArrayHasKey('customers', $data);
 
@@ -60,7 +35,7 @@ class CustomersTest extends PHPUnit_Framework_TestCase {
 
     update_option( $option_key, array('customer_roles' => array('subscriber')) );
 
-    $response = $this->client->get();
+    $response = $this->client->get('customers');
     $data = $response->json();
 
     $this->assertEquals('subscriber', $data['customers'][0]['role']);
@@ -73,7 +48,7 @@ class CustomersTest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_customer_simple_username_search(){
-    $response = $this->client->get('', [
+    $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => 'wootea',
         'filter[fields]' => 'username'
@@ -97,7 +72,7 @@ class CustomersTest extends PHPUnit_Framework_TestCase {
       'user_email' => $email
     ));
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => substr($email, 0, 6),
         'filter[fields]' => 'email'
@@ -119,7 +94,7 @@ class CustomersTest extends PHPUnit_Framework_TestCase {
       'first_name' => $first_name
     ));
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => substr($first_name, 0, 6),
         'filter[fields]' => 'first_name'
@@ -141,7 +116,7 @@ class CustomersTest extends PHPUnit_Framework_TestCase {
       'last_name' => $last_name
     ));
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => substr($last_name, 0, 6),
         'filter[fields]' => 'last_name'
@@ -160,7 +135,7 @@ class CustomersTest extends PHPUnit_Framework_TestCase {
     $company = $this->generate_random_string();
     update_user_meta( 2, 'billing_company', $company );
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => substr($company, 0, 6),
         'filter[fields]' => 'billing_address.company'
@@ -179,7 +154,7 @@ class CustomersTest extends PHPUnit_Framework_TestCase {
     $phone = $this->generate_random_string();
     update_user_meta( 2, 'billing_phone', $phone );
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => substr($phone, 0, 6),
         'filter[fields]' => 'billing_address.phone'
@@ -195,7 +170,7 @@ class CustomersTest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_customer_complex_id_search(){
-    $response = $this->client->get('', [
+    $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => array(
           array(

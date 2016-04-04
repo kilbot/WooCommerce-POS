@@ -24,17 +24,6 @@ class Activator {
     register_activation_hook( PLUGIN_FILE, array( $this, 'activate' ) );
     add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
     add_action( 'plugins_loaded', array( $this, 'run' ) );
-    $this->init();
-  }
-
-  /**
-   * init subclasses
-   * - WC_POS_Admin_Notices required in cases where WooCommerce POS fails to run
-   */
-  private function init(){
-    if( is_admin() && (!defined('DOING_AJAX') || !DOING_AJAX) ){
-      new Admin\Notices();
-    }
   }
 
   /**
@@ -183,15 +172,14 @@ class Activator {
     if( class_exists( '\WooCommerce' ) && version_compare( WC()->version, self::WC_MIN_VERSION, '>=' ) )
       return true;
 
-    if( class_exists( 'Admin\Notices' ) ){
-      $message = sprintf(
-        __('<strong>WooCommerce POS</strong> requires <a href="%s">WooCommerce %s or higher</a>. Please <a href="%s">install and activate WooCommerce</a>', 'woocommerce-pos' ),
-        'http://wordpress.org/plugins/woocommerce/',
-        self::WC_MIN_VERSION,
-        admin_url('plugins.php')
-      ) . ' &raquo;';
-      Admin\Notices::add( $message );
-    }
+    $message = sprintf(
+      __('<strong>WooCommerce POS</strong> requires <a href="%s">WooCommerce %s or higher</a>. Please <a href="%s">install and activate WooCommerce</a>', 'woocommerce-pos' ),
+      'http://wordpress.org/plugins/woocommerce/',
+      self::WC_MIN_VERSION,
+      admin_url('plugins.php')
+    ) . ' &raquo;';
+    
+    Admin\Notices::add( $message );
   }
 
   /**
@@ -202,14 +190,13 @@ class Activator {
     if( version_compare( $php_version, self::PHP_MIN_VERSION, '>' ) )
       return true;
 
-    if( class_exists( 'Admin\Notices' ) ) {
-      $message = sprintf(
-        __('<strong>WooCommerce POS</strong> requires PHP %s or higher. Read more information about <a href="%s">how you can update</a>', 'woocommerce-pos' ),
-        self::PHP_MIN_VERSION,
-        'http://www.wpupdatephp.com/update/'
-      ) . ' &raquo;';
-      Admin\Notices::add( $message );
-    }
+    $message = sprintf(
+      __('<strong>WooCommerce POS</strong> requires PHP %s or higher. Read more information about <a href="%s">how you can update</a>', 'woocommerce-pos' ),
+      self::PHP_MIN_VERSION,
+      'http://www.wpupdatephp.com/update/'
+    ) . ' &raquo;';
+    
+    Admin\Notices::add( $message );
   }
 
   /**
@@ -221,6 +208,7 @@ class Activator {
     if( $fail ){
       $message = $fail['message'] . '. ';
       $message .= sprintf( '<a href="%s">%s</a>', $fail['buttons'][0]['href'], $fail['buttons'][0]['prompt'] ) . ' &raquo;';
+      
       Admin\Notices::add( $message );
     }
   }

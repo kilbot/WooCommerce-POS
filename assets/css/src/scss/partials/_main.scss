@@ -46,7 +46,7 @@ main {
         height: 100%;
 
         > section {
-          @include flex(1);
+          @include flex(1 0 380px);
           height: 100%;
 
         }

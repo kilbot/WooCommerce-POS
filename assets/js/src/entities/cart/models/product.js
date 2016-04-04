@@ -91,9 +91,9 @@ module.exports = Model.extend({
     if(attributes.type === 'variation'){
       attrs.meta = _.map(attributes.attributes, function(variant, idx){
         return {
-          key: ++idx,
+          key  : ++idx,
           label: variant.name,
-          value: variant.option
+          value: _.isArray(variant.option) ? variant.option.join(', ') : variant.option
         };
       });
     }

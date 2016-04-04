@@ -94,7 +94,8 @@ var View = View.extend({
     this.customersRegion.currentView.moveFocus(e.which);
   },
 
-  removeCustomer: function(){
+  removeCustomer: function(e){
+    e.preventDefault();
     this.saveCustomer( this.getOption('guest') );
   },
 

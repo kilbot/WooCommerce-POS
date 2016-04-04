@@ -73,13 +73,13 @@ module.exports = FormView.extend({
     '*[data-name="method_title"]' : {observe: 'method_title' },
     '*[data-name="title"]' : { observe: 'title' },
 
-    'dl.meta': {
+    'ul.meta': {
       observe: 'meta',
       updateMethod: 'html',
       onGet: function(val){
         var row = '';
         _.each(val, function(meta){
-          row += '<dt>' + meta.label + ':</dt><dd>' + meta.value + '</dd>';
+          row += '<li><strong>' + meta.label + ':</strong> ' + meta.value + '</li>';
         });
         return row;
       }

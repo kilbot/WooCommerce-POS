@@ -158,6 +158,17 @@ cart {
           display: inline-block;
         }
 
+        // meta
+        ul.meta {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          font-size: $font-size-sm;
+          strong {
+            font-weight: 600;
+          }
+        }
+
         // drawer btn
         a {
           position: absolute;

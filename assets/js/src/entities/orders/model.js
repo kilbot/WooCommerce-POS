@@ -13,12 +13,6 @@ var Utils = require('lib/utilities/utils');
 var OrderModel = DualModel.extend({
   name: 'order',
 
-  fields: [
-    'customer.first_name',
-    'customer.last_name',
-    'customer.email'
-  ],
-
   /**
    * add tax settings early for use by cart
    * - always be parsin'
@@ -81,6 +75,7 @@ var OrderModel = DualModel.extend({
    * Attach cart during parse
    * - allows order to change status, ie: become editable
    */
+  /* jshint -W071 */
   parse: function (resp) {
     resp = DualModel.prototype.parse.apply(this, arguments);
 
@@ -99,6 +94,7 @@ var OrderModel = DualModel.extend({
 
     return resp;
   },
+  /* jshint +W071 */
 
   /**
    * Attach cart during parse, allows updates from server
@@ -397,6 +393,7 @@ var OrderModel = DualModel.extend({
     return title;
   },
 
+  /* jshint -W071, -W074 */
   attachCustomer: function (attributes) {
     var customers = Radio.request('entities', 'get', 'customers');
     if (attributes.customer_id || !customers) {
@@ -423,6 +420,7 @@ var OrderModel = DualModel.extend({
         });
     }
   }
+  /* jshint +W071, +W074 */
 
 });
 

@@ -4,7 +4,7 @@
 </div>
 <div class="title">
   <strong data-name="name" contenteditable="true">{{name}}</strong>
-  <dl class="meta"></dl>
+  <ul class="meta"></ul>
   <a data-action="more" href="#"><i class="icon-chevron-circle-down icon-lg icon-tertiary"></i></a>
 </div>
 <div class="price"><input type="text" name="item_price" data-label="<?php /* translators: woocommerce */ _e( 'Price', 'woocommerce' ); ?>" data-numpad="discount" data-original="regular_price" data-percentage="off" class="form-control autogrow"></div>

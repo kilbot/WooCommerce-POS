@@ -52,6 +52,7 @@ var CartRoute = Route.extend({
   fetch: function() {
     return this.collection.fetch({
       remote: false,
+      fullSync: false,
       index: {
         keyPath: '_state',
         value: this.collection.states.create

@@ -246,6 +246,11 @@ modal {
       }
     }
 
+    .#{current-module()}-fullscreen {
+      max-width: inherit;
+      height: 100%;
+    }
+
     // keyframes
     @include keyframes($modal-fade-in-name) {
       0% { opacity: 0; }

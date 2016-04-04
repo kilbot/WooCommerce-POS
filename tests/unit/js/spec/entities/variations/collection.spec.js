@@ -1,16 +1,11 @@
 describe('entities/variations/collection.js', function () {
 
-  var Collection, variableProduct, variations;
   var dummy = require('../../../data/products.json');
-
-  before(function () {
-    Collection = proxyquire('entities/variations/collection',{
-      './model': Backbone.Model
-    });
-    variableProduct = _.findWhere(dummy.products, { id: 40 });
-  });
+  var Collection = require('entities/variations/collection');
+  var variations;
 
   beforeEach(function(){
+    var variableProduct = _.findWhere(dummy.products, { id: 40 });
     variations = new Collection( variableProduct.variations );
   });
 
@@ -33,8 +28,36 @@ describe('entities/variations/collection.js', function () {
   it('should return an array of the available variation options', function(){
     variations.getVariationOptions().should.eql([{
       name: 'Color',
-      options: [ "Black", "Blue" ]
+      options: [ 'Black', 'Blue' ]
     }]);
+  });
+
+  it('should handle WooCommerce \'Any ...\' option', function(){
+    var collection = new Collection([
+      {
+        attributes: [
+          { name: 'Size', option: 'Small' },
+          { name: 'Color', option: '' }
+        ]
+      }, {
+        attributes: [
+          { name: 'Size', option: 'Large' },
+          { name: 'Color', option: '' }
+        ]
+      }
+    ], {
+      parentAttrs: {
+        attributes: [
+          { name: 'Size', options: ['Small', 'Medium', 'Large'], variation: true},
+          { name: 'Color', options: ['Black', 'Blue'], variation: true }
+        ]
+      }
+    });
+
+    collection.getVariationOptions().should.eql([
+      { name: 'Size', options: [ 'Small', 'Large' ] },
+      { name: 'Color', options: [ 'Black', 'Blue' ] }
+    ]);
   });
 
 });

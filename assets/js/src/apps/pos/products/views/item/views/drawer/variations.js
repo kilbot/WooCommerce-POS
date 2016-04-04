@@ -1,44 +1,25 @@
 var ItemView = require('lib/config/item-view');
 var CollectionView = require('lib/config/collection-view');
 var Variation = require('./variation');
-var _ = require('lodash');
+var polyglot = require('lib/utilities/polyglot');
 
 var Empty = ItemView.extend({
-  tagName: 'li',
   className: 'empty',
-  template: 'pos.products.empty'
+  template: function(){
+    return polyglot.t('messages.no-products');
+  }
 });
 
 module.exports = CollectionView.extend({
   childView: Variation,
   emptyView: Empty,
-  childViewContainer: 'ul',
-
-  initialize: function(options){
-    options = options || {};
-
-    this.collection = this.model.getVariations();
-    this.collection.resetFilters();
-    this.filterVariations(options.filter);
+  className: 'variations',
+  attributes: {
+    style: 'display:none' // start drawer closed
   },
 
   onShow: function() {
-    this.$el.hide().slideDown(250);
-  },
-
-  filterVariations: function(filter){
-    if(filter){
-      filter = filter || {};
-      var matchMaker = function(model){
-        var attributes = model.get('attributes');
-        return _.any(attributes, function(attribute){
-          return attribute.name === filter.name &&
-            attribute.option === filter.option;
-        });
-
-      };
-      this.collection.filterBy('variation', matchMaker);
-    }
+    this.$el.slideDown(250);
   }
 
 });

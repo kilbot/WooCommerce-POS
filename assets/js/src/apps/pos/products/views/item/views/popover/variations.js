@@ -5,13 +5,14 @@ var hbs = require('handlebars');
 var _ = require('lodash');
 var $ = require('jquery');
 var polyglot = require('lib/utilities/polyglot');
+var Radio = require('backbone.radio');
 
 // rough calculation of variation option size
-var hasManyOptions = function(variation){
-  var opts = variation.options.length,
-    chars = variation.options.reduce(function(total, opt){
-      return total + opt.length;
-    }, 0);
+var hasManyOptions = function(options){
+  var opts = options.length,
+      chars = options.reduce(function(total, opt){
+        return total + opt.length;
+      }, 0);
   return (opts * 26) + (chars * 5) > 220;
 };
 
@@ -22,59 +23,56 @@ var Variations = ItemView.extend({
     classes: 'popover-theme-arrows popover-variations'
   },
 
-  initialize: function(){
-    this.collection = this.model.getVariations();
-    this.collection.resetFilters();
-  },
-
   templateHelpers: function(){
     var data = {};
-    data.variations = _.chain( this.model.getVariationOptions() )
-      .each(function(variation){
-        if(hasManyOptions(variation)){
-          variation.select = true;
-          variation.emptyOption = polyglot.t('messages.choose');
-        }
-      })
-      .value();
+    data.variations = _.each(this.collection.getVariationOptions(), function(variation){
+      if(hasManyOptions(variation.options)){
+        variation.select = true;
+        variation.emptyOption = polyglot.t('messages.choose');
+      }
+    });
     return data;
   },
 
   ui: {
-    add: '*[data-action="add"]',
-    btn: '.btn-group .btn',
+    add   : '*[data-action="add"]',
+    btn   : '.btn-group .btn',
     select: 'select'
-  },
-
-  triggers: {
-    'click @ui.add': 'add:to:cart'
   },
 
   events: {
     'click @ui.btn'     : 'onVariationSelect',
-    'change @ui.select' : 'onVariationSelect'
+    'change @ui.select' : 'onVariationSelect',
+    'click @ui.add'     : 'addToCart'
+  },
+
+  collectionEvents: {
+    'reset' : function(){
+      this.ui.add.prop('disabled', this.collection.length !== 1);
+    }
   },
 
   onVariationSelect: function(e){
-    var target = $(e.currentTarget);
+    e.preventDefault();
+    var target = $(e.target);
+    this.collection.setVariantFilter(target.data('name'), target.val());
+  },
 
-    // toggle
-    if( target.is('button') ){
-      target
-        .addClass('active')
-        .siblings('.btn')
-        .removeClass('active');
-    }
-
-    // filter
-    var name = target.data('name');
-    var option = target.val();
-    this.collection.filterBy(name, function(model){
-      return _.some(model.get('attributes'), function(obj){
-        return obj.name === name && obj.option === option;
-      });
+  addToCart: function(){
+    var self = this;
+    var product = this.collection.first().toJSON();
+    // special case: array of options
+    _.each(product.attributes, function(variant){
+      if(_.isArray(variant.option)){
+        var filter = self.collection.getFilters(variant.name);
+        if(filter){
+          var query = _.find(filter.query, {prefix: 'attributes.option'});
+          variant.option = query.query;
+        }
+      }
     });
-    this.ui.add.prop('disabled', this.collection.length !== 1);
+    Radio.request('router', 'add:to:cart', product);
+    Radio.request('popover', 'close');
   }
 
 });

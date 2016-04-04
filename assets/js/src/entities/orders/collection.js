@@ -7,6 +7,13 @@ module.exports = DualCollection.extend({
 
   name: 'orders',
 
-  _syncDelayed: false
+  _syncDelayed: false,
+
+  // search fields
+  fields: [
+    'billing_address.first_name',
+    'billing_address.last_name',
+    'billing_address.email'
+  ]
 
 });

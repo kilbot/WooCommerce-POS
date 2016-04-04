@@ -12,24 +12,26 @@
     "></i>
   {{/with}}
   {{#with product_variations}}
-  <dl class="variations">
+  <ul class="variations">
     {{#each this}}
-    <dt>{{name}}:</dt>
-    <dd>{{#list options ', '}}<a href="#" data-name="{{../name}}">{{this}}</a>{{/list}}</dd>
+    <li data-toggle="buttons">
+      <strong>{{name}}:</strong> {{#list options ', '}}<a href="#" data-name="{{../name}}">{{this}}</a>{{/list}}
+    </li>
     {{/each}}
-    <dt></dt><dd>
-      <a href="#" data-action="expand" class="expand-all"><?php /* translators: woocommerce */ _e( 'Expand', 'woocommerce' ); ?></a>
-      <a href="#" data-action="close" class="close-all"><?php /* translators: woocommerce */ _e( 'Close', 'woocommerce' ); ?></a>
-    </dd>
-  </dl>
+  </ul>
+  <small>
+    <a href="#" data-action="expand" class="expand-all"><?php /* translators: woocommerce */ _e( 'Expand', 'woocommerce' ); ?></a>
+    <a href="#" data-action="close" class="close-all"><?php /* translators: woocommerce */ _e( 'Close', 'woocommerce' ); ?></a>
+  </small>
   {{/with}}
   {{#is type 'variation'}}
-  <dl class="variant">
+  <ul class="variant">
     {{#each attributes}}
-    <dt>{{name}}:</dt>
-    <dd>{{option}}</dd>
+    <li>
+      <strong>{{name}}:</strong> {{#list option ', '}}{{this}}{{/list}}
+    </li>
     {{/each}}
-  </dl>
+  </ul>
   {{/is}}
   {{#if managing_stock}}
   <small><?php /* translators: woocommerce */ printf( __( '%s in stock', 'woocommerce' ), '{{number stock_quantity precision="auto"}}' ); ?></small>

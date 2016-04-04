@@ -1,7 +1,7 @@
 var App = require('lib/config/application');
 var LayoutView = require('lib/config/layout-view');
 var Product = require('./views/product');
-var Variations = require('./views/drawer/variations');
+var DrawerView = require('./views/drawer/variations');
 
 /**
  * @todo Abstract ListItemView
@@ -33,46 +33,31 @@ var Layout = LayoutView.extend({
 
     this.listenTo( view, {
       'open:drawer'     : this.openDrawer,
-      'close:drawer'    : this.closeDrawer,
-      'toggle:drawer'   : this.toggleDrawer
+      'close:drawer'    : this.closeDrawer
     });
 
     this.getRegion('item').show(view);
   },
 
   openDrawer: function(options){
-    options = options || {};
-    options.model = this.model;
-    options.className = 'variations';
-    var view = new Variations(options);
+    if(this.getRegion('drawer').currentView){
+      return;
+    }
+    var variations = this.model.getVariations();
+    if(!options.filter){
+      variations.resetFilters();
+    }
+    var view = new DrawerView({ collection: variations });
     this.getRegion('drawer').show(view);
     this.$el.addClass('drawer-open');
   },
 
   closeDrawer: function(){
     var drawer = this.getRegion('drawer');
-
-    drawer.$el.slideUp( 250, function(){
+    drawer.currentView.$el.slideUp( 250, function(){
       drawer.empty();
-      drawer.$el.show();
     });
-
     this.$el.removeClass('drawer-open');
-  },
-
-  toggleDrawer: function(options){
-    var drawer = this.getRegion('drawer'),
-        open = drawer.hasView();
-
-    if(open && options.filter){
-      return drawer.currentView.filterVariations(options.filter);
-    }
-
-    if(open){
-      this.closeDrawer();
-    } else {
-      this.openDrawer(options);
-    }
   }
 
 });

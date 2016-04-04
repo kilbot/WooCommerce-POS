@@ -98,19 +98,26 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
   fetchLocal: function (options) {
     var self = this;
     options = options || {};
+    if(options.fullSync !== false){
+      options.fullSync = this.isNew();
+    }
 
     return IDBCollection.prototype.getBatch.call(this, options)
       .then(function (response) {
         if(options.remote === false){
           return response;
         }
-        if(_.size(response) > 0){
+        var createDelayed = self.getDelayed('create', response);
+        if(_.size(response) > 0 && _.size(response) > createDelayed.length){
           return self.fetchDelayed(response);
         }
-        if(self.isNew()){
-          return self.firstSync(options);
-        }
         return self.fetchRemote(options);
+      })
+      .then(function(response){
+        if(options.fullSync){
+          self.fullSync();
+        }
+        return response;
       });
   },
 
@@ -182,22 +189,13 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
       });
   },
 
-  firstSync: function(options){
-    var self = this;
-    return this.fetchRemote(options)
-      .then(function (response) {
-        self.fullSync();
-        return response;
-      });
-  },
-
   fullSync: function(options){
     return this.fetchRemoteIds(options);
   },
 
   fetchDelayed: function(response){
     var delayed = this.getDelayed('read', response);
-    if(delayed){
+    if(!_.isEmpty(delayed)){
       var ids = _.map(delayed, 'id');
       return this.fetchRemote({
           data: {
@@ -222,12 +220,9 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
   },
 
   getDelayed: function(state, collection){
-    var delayed, _state = this.states[state];
+    var _state = this.states[state];
     collection = collection || this;
-    delayed = _.filter(collection, {_state: _state});
-    if(!_.isEmpty(delayed)){
-      return delayed;
-    }
+    return _.filter(collection, {_state: _state});
   }
 
 });

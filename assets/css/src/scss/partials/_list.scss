@@ -44,13 +44,13 @@ list {
 
     .#{current-module()} {
 
-      ul {
+      > div > ul, > ul {
         width: 100%;
         margin: 0;
         padding: 0;
         list-style: none;
 
-        li {
+        > li {
           border-bottom: 1px solid $list-border-color;
 
           &:last-of-type {
@@ -79,9 +79,15 @@ list {
     // Default zebra-stripe styles (alternating gray and transparent backgrounds)
 
     .#{current-module()}-striped {
-      li:nth-of-type(odd) {
-        background-color: $list-alternate-bg-color;
+
+      > div > ul, > ul {
+
+        > li:nth-of-type(odd) {
+          background-color: $list-alternate-bg-color;
+        }
+
       }
+
     }
 
 
@@ -106,7 +112,6 @@ list {
       > div {
         @include flex(1);
         padding: $list-header-padding-y $list-header-padding-x;
-
       }
 
     }
@@ -174,6 +179,10 @@ list {
 
       .#{namespace('c')}-input > input:not(:checked) ~ .#{namespace('c')}-indicator {
         background: #fff;
+      }
+
+      .empty {
+        padding: $list-item-padding-y $list-item-drawer-padding-x;
       }
 
     }
@@ -332,7 +341,6 @@ list {
       background: $list-actions-background;
 
       > div {
-        border-top: 2px solid $input-border-color;
         padding: $list-actions-padding-y $list-actions-padding-x;
         text-align: right;
 
@@ -354,8 +362,11 @@ list {
         border-top: 0;
       }
 
-    }
+      &:not(:first-of-type) {
+        border-top: 2px solid $input-border-color;
+      }
 
+    }
 
   }
 }

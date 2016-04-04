@@ -36,6 +36,9 @@ module.exports = LayoutView.extend({
   childEvents: {
     'action:close' : function(){
       Radio.request( 'modal', 'close', this.$el.data().vex.id );
+    },
+    'action:fullscreen' : function(){
+      this.$el.toggleClass(this.prefix + '-fullscreen');
     }
   },
 

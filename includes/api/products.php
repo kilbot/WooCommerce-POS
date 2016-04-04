@@ -360,6 +360,17 @@ class Products extends WC_API_Resource {
     $meta_query = $wp_query->get( 'meta_query' );
     $tax_query = $wp_query->get( 'tax_query' );
 
+    // id
+    if($prefix == 'id'){
+      $term = (int) $term;
+      $post__in = $wp_query->get('post__in');
+      $include = empty($post__in) ? array($term) : array_intersect($post__in, array($term));
+      if(empty($include)){
+        $include = array(0);
+      }
+      $wp_query->set( 'post__in', $include );
+    }
+
     // featured
     if($prefix == 'featured'){
       $meta_query[] = array(

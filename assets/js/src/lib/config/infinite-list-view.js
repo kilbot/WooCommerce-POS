@@ -1,7 +1,8 @@
 var Mn = require('backbone.marionette');
 var _ = require('lodash');
+var app = require('./application');
 
-module.exports = Mn.CompositeView.extend({
+module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
 
   className: 'list-infinite',
 
@@ -35,7 +36,7 @@ module.exports = Mn.CompositeView.extend({
         sT = this.container.scrollTop;
     var down = sT > (this._sT || 0);
     this._sT = sT;
-    return down ? sH - cH - sT < 100 : sH - cH - sT === 0;
+    return down ? sH - cH - sT < 100 : sH - cH - sT <= 0;
   },
 
   appendNextPage: function () {

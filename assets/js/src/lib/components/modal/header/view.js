@@ -21,12 +21,14 @@ module.exports = ItemView.extend({
   },
 
   ui: {
-    close: '[data-action="close"]',
-    title: 'h4'
+    close       : '[data-action="close"]',
+    fullscreen  : '[data-action="fullscreen"]',
+    title       : 'h4'
   },
 
   triggers: {
-    'click @ui.close': 'action:close'
+    'click @ui.close'     : 'action:close',
+    'click @ui.fullscreen': 'action:fullscreen'
   },
 
   // helper method to update title

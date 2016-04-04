@@ -11,7 +11,7 @@ products {
       }
       .drawer-open {
         .close-all {
-          display: block;
+          display: inline-block;
         }
         .expand-all {
           display: none;
@@ -68,10 +68,25 @@ products {
       }
 
       .title {
-        @include flex(1);
+        //min-width: 1px; /* layout hack, force ul to overflow */
 
         small {
           display: block;
+        }
+
+        ul.variations, ul.variant {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          font-size: $font-size-sm;
+          strong {
+            font-weight: 600;
+          }
+          a.active {
+            color: $text-color;
+            text-decoration: none;
+            cursor: default;
+          }
         }
       }
 

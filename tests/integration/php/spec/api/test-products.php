@@ -2,58 +2,17 @@
 
 namespace WC_POS\Integration_Tests\API;
 
-use GuzzleHttp\Client;
-use PHPUnit_Framework_TestCase;
 use WC_POS\Admin\Settings;
+use WC_POS\Framework\TestCase;
+use GuzzleHttp\Client;
 
-class ProductsTest extends PHPUnit_Framework_TestCase {
-
-  protected $client;
-
-  /**
-   *
-   */
-  public function setUp() {
-    $this->client = new Client([
-      'base_url' => get_woocommerce_api_url( 'products/' ),
-      'defaults' => [
-        'exceptions' => false,
-        'headers' => [ 'X-WC-POS' => '1' ]
-      ]
-      // 'cookies' => true
-      // Could not get cookies to work using GuzzleHTTP
-      // instead using theme functions.php for access
-    ]);
-  }
-
-  /**
-   * @return mixed
-   */
-  private function get_random_product_id() {
-    $response = $this->client->get(get_woocommerce_api_url( 'products/ids' ));
-    $data = $response->json();
-    $key = array_rand( $data['products'] );
-    return $data['products'][$key]['id'];
-  }
-
-  /**
-   * @param int $length
-   * @return string
-   */
-  private function generate_random_string($length=10) {
-    $string = '';
-    $characters = "ABCDEFHJKLMNPRTVWXYZabcdefghijklmnopqrstuvwxyz";
-    for ($p = 0; $p < $length; $p++) {
-      $string .= $characters[mt_rand(0, strlen($characters)-1)];
-    }
-    return $string;
-  }
+class ProductsTest extends TestCase {
 
   /**
    *
    */
   public function test_get_valid_response() {
-    $response = $this->client->get();
+    $response = $this->client->get('products');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('products', $data);
@@ -63,7 +22,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_get_simple_products() {
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => [
         'filter[type]' => 'simple',
         'filter[limit]'=> '1'
@@ -86,7 +45,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_get_single_simple_product() {
-    $response = $this->client->get('99');
+    $response = $this->client->get('products/99');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('product', $data);
@@ -107,7 +66,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     update_post_meta(99, '_stock', $random_qty);
 
     // update product and check response
-    $response = $this->client->get('99');
+    $response = $this->client->get('products/99');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('product', $data);
@@ -118,7 +77,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_get_single_variable_product() {
-    $response = $this->client->get('41');
+    $response = $this->client->get('products/41');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('product', $data);
@@ -140,7 +99,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     update_post_meta(41, '_stock', $random_qty);
 
     // also need to check the parent output
-    $response = $this->client->get('40');
+    $response = $this->client->get('products/40');
     $data = $response->json();
     $parent = $data['product'];
     $this->assertArrayHasKey('variations', $parent);
@@ -165,29 +124,27 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     update_option( $option_key, array('pos_only_products' => true) );
 
     // get random product
-    $response = $this->client->get();
-    $data = $response->json();
-    $product = $data['products'][ array_rand( $data['products'] ) ];
+    $product_id = $this->get_random_product_id();
 
     // set to POS only
-    update_post_meta($product['id'], '_pos_visibility', 'pos_only');
+    update_post_meta($product_id, '_pos_visibility', 'pos_only');
 
     // get product via API
-    $response = $this->client->get($product['id']);
+    $response = $this->client->get('products/' . $product_id);
     $this->assertEquals(200, $response->getStatusCode());
 
     // get product via website
     $client = new Client();
     $response = $client->get( get_home_url(), array(
       'query' => array(
-        'p' => $product['id']
+        'p' => $product_id
       ),
       'exceptions' => false
     ));
     $this->assertEquals(404, $response->getStatusCode());
 
     // delete POS visibility setting
-    delete_post_meta($product['id'], '_pos_visibility');
+    delete_post_meta($product_id, '_pos_visibility');
     update_option( $option_key, array('pos_only_products' => false) );
 
   }
@@ -208,7 +165,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     update_post_meta($product_id, '_pos_visibility', 'online_only');
 
     // get all product ids
-    $response = $this->client->get(get_woocommerce_api_url( 'products/ids' ));
+    $response = $this->client->get('products/ids');
     $data = $response->json();
     $this->assertGreaterThan(10, count($data['products']));
     $ids = wp_list_pluck( $data['products'], 'id' );
@@ -234,7 +191,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_title_search(){
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'filter[q]' => 'prem'
       )
@@ -248,7 +205,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('Premium Quality', $data['products'][0]['title']);
     $this->assertEquals('Premium Quality', $data['products'][1]['title']);
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'filter[q]' => 'libero',
         'filter[fields]' => 'title'
@@ -263,6 +220,31 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
   }
 
   /**
+   * 
+   */
+  public function test_id_search(){
+    $product_id = $this->get_random_product_id();
+
+    $response = $this->client->get('products', [
+      'query' => array(
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'id',
+            'query'   => $product_id
+          )
+        )
+      )
+    ]);
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertCount(1, $data['products']);
+    $this->assertEquals($product_id, $data['products'][0]['id']);
+
+  }
+
+  /**
    *
    */
   public function test_featured_search(){
@@ -270,7 +252,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     global $wpdb;
     $wpdb->update($wpdb->postmeta, array('meta_value' => 'no'), array('meta_key' => '_featured'));
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'filter[q]' => array(
           array(
@@ -290,7 +272,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     $product_id = $this->get_random_product_id();
     update_post_meta($product_id, '_featured', 'yes');
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'filter[q]' => array(
           array(
@@ -322,7 +304,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     $product_id = $this->get_random_product_id();
     update_post_meta($product_id, '_sku', $sku);
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'filter[q]' => array(
           array(
@@ -359,7 +341,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
 //      return '_barcode';
 //    });
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'filter[q]' => array(
           array(
@@ -388,7 +370,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
   public function test_on_sale_search() {
 
     // on_sale = true
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'limit' => -1,
         'filter[q]' => array(
@@ -410,7 +392,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals([true], array_unique($on_sale));
 
     // on_sale = false
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'limit' => -1,
         'filter[q]' => array(
@@ -437,7 +419,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_categories_search() {
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'limit' => -1,
         'filter[category]' => 'music'
@@ -445,7 +427,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     ]);
     $music_category = $response->json();
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'limit' => -1,
         'filter[q]' => array(
@@ -473,7 +455,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     $term = get_term_by('slug', 'posters', 'product_cat');
     wp_update_term($term->term_id, 'product_cat', array('name' => 'Woo Posters'));
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'limit' => -1,
         'filter[category]' => 'posters'
@@ -481,7 +463,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     ]);
     $music_category = $response->json();
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'limit' => -1,
         'filter[q]' => array(
@@ -513,7 +495,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     wp_set_object_terms( $product_id, $tag, 'product_tag' );
 
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'limit' => -1,
         'filter[tag]' => $tag
@@ -521,7 +503,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     ]);
     $tagged_product = $response->json();
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'limit' => -1,
         'filter[q]' => array(
@@ -547,7 +529,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_title_and_cat_search(){
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'limit' => -1,
         'filter[category]' => 'posters',
@@ -556,7 +538,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     ]);
     $ninja_posters = $response->json();
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'limit' => -1,
         'filter[q]' => array(
@@ -584,7 +566,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_title_and_title_search() {
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'limit' => -1,
         'filter[q]' => 'woo ninja'
@@ -592,7 +574,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     ]);
     $woo_ninja = $response->json();
 
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => array(
         'limit' => -1,
         'filter[q]' => array(
@@ -618,7 +600,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_prefix_and_title_search() {
-    $response = $this->client->get( '', [
+    $response = $this->client->get( 'products', [
       'query' => array(
         'limit' => -1,
         'filter[q]' => array(
@@ -640,7 +622,7 @@ class ProductsTest extends PHPUnit_Framework_TestCase {
     $this->assertArrayHasKey( 'products', $data );
     $this->assertCount(2, $data['products']);
 
-    $response = $this->client->get( '', [
+    $response = $this->client->get( 'products', [
       'query' => array(
         'limit' => -1,
         'filter[q]' => array(

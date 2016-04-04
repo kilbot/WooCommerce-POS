@@ -23,16 +23,10 @@ class Integration_Tests {
   public function includes(){
     require_once(__DIR__.'/../../../../../../wp-load.php');
     require_once 'vendor/autoload.php';
+    require_once 'framework/testcase.php';
   }
 
   public function setup(){
-    switch_theme('WooCommerce-POS-Test-Theme', 'WooCommerce-POS-Test-Theme');
-    update_option('active_plugins', array(
-      'woocommerce-pos/woocommerce-pos.php',
-      'woocommerce-pos-test/index.php',
-      'woocommerce/woocommerce.php'
-    ));
-
     $this->import_dummy_tax();
   }
 
@@ -81,11 +75,7 @@ class Integration_Tests {
    * runs after all tests are complete
    */
   public function shutdown(){
-    switch_theme('twentyfifteen', 'twentyfifteen');
-    update_option('active_plugins', array(
-      'woocommerce-pos/woocommerce-pos.php',
-      'woocommerce/woocommerce.php'
-    ));
+
   }
 
 }

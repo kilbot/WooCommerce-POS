@@ -2,23 +2,10 @@
 
 namespace WC_POS\Integration_Tests\API;
 
-use GuzzleHttp\Client;
-use PHPUnit_Framework_TestCase;
 use WC_POS\Admin\Settings;
+use WC_POS\Framework\TestCase;
 
-class OrdersTest extends PHPUnit_Framework_TestCase {
-
-  protected $client;
-
-  public function setUp() {
-    $this->client = new Client([
-      'base_url' => get_woocommerce_api_url( 'orders/' ),
-      'defaults' => [
-        'exceptions' => false,
-        'headers' => [ 'X-WC-POS' => '1' ]
-      ]
-    ]);
-  }
+class OrdersTest extends TestCase {
 
   /**
    * Helper functions
@@ -43,18 +30,6 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     return $product;
   }
 
-  private function get_product( int $id ){
-    $response = $this->client->get( get_woocommerce_api_url( 'products/'.$id ) );
-    $data = $response->json();
-    return $data['product'][0];
-  }
-
-  private function get_random_product() {
-    $response = $this->client->get( get_woocommerce_api_url( 'products/' ) );
-    $data = $response->json();
-    return $data['products'][ array_rand( $data['products'] ) ];
-  }
-
   private function update_tax_settings($args = array()){
     $args = wp_parse_args($args, array(
       'calc_taxes' => 'yes',
@@ -75,7 +50,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_get_valid_response() {
-    $response = $this->client->get();
+    $response = $this->client->get('orders');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('orders', $data);
@@ -85,7 +60,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_create_order(){
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array()
       )
@@ -103,12 +78,12 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
    */
   public function test_edit_order(){
     // get last order
-    $response = $this->client->get();
+    $response = $this->client->get('orders');
     $data = $response->json();
     $order_id = $data['orders'][0]['id'];
 
     // update note
-    $response = $this->client->put($order_id, array(
+    $response = $this->client->put('orders/' . $order_id, array(
       'json' => array(
         'order' => array(
           'note' => 'updated'
@@ -133,7 +108,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     $product = $this->filter_line_item($product);
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'line_items' => array(
@@ -201,7 +176,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     update_post_meta($product['product_id'], '_stock', 3);
 
     // create order with payment details
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'line_items' => array(
@@ -248,7 +223,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     update_post_meta($product['product_id'], '_stock', $random_stock);
 
     // create order with payment details
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'line_items' => array(
@@ -287,7 +262,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     $product['total'] = $price;
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'line_items' => array(
@@ -314,7 +289,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     $product['title'] = 'Foo';
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'line_items' => array(
@@ -347,7 +322,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     $product['total_tax'] = 2;
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'line_items' => array(
@@ -378,7 +353,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     $product['total_tax'] = 2;
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'line_items' => array(
@@ -410,7 +385,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     $product['tax_class'] = 'reduced-rate';
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'line_items' => array(
@@ -439,7 +414,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     );
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'fee_lines' => array(
@@ -473,7 +448,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     );
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'fee_lines' => array(
@@ -507,7 +482,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     );
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'fee_lines' => array(
@@ -537,7 +512,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     );
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'fee_lines' => array(
@@ -569,7 +544,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     );
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'fee_lines' => array(
@@ -610,7 +585,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     );
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'line_items' => array(
@@ -645,7 +620,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     );
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'shipping_lines' => array(
@@ -681,7 +656,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     );
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'shipping_lines' => array(
@@ -721,7 +696,7 @@ class OrdersTest extends PHPUnit_Framework_TestCase {
     );
 
     // create order
-    $response = $this->client->post('', array(
+    $response = $this->client->post('orders', array(
       'json' => array(
         'order' => array(
           'shipping_lines' => array(

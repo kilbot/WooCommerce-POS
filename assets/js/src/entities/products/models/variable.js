@@ -1,6 +1,5 @@
 var Model = require('./abstract');
 var Variations = require('../../variations/collection');
-var _ = require('lodash');
 
 module.exports = Model.extend({
 
@@ -20,11 +19,10 @@ module.exports = Model.extend({
   /**
    * attach Filtered Collection of variations
    */
-  attachVariations: function( parent ){
-    var attributes = _.defaults( parent.variations );
-    this.variations = new Variations(attributes, {
-      title: parent.title,
-      parent: this // a reference to the parent model
+  attachVariations: function( attributes ){
+    this.variations = new Variations(attributes.variations, {
+      parent: this, // a reference to the parent model
+      parentAttrs: attributes
     });
   },
 

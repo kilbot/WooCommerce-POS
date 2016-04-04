@@ -1,42 +1,41 @@
-var Collection = require('lib/config/collection');
+var FilterCollection = require('lib/config/filtered-collection');
 var Model = require('./model');
 var _ = require('lodash');
 
-module.exports = Collection.extend({
+module.exports = FilterCollection.extend({
 
   model: Model,
+
+  superset: true,
+
+  initialize: function(models, options){
+    options = options || {};
+    this.parent = options.parent;
+  },
 
   /**
    * Returns an array of options for the variation collection
    * - caches on first run
    */
   getVariationOptions: function(){
-    if( this._variationOptions ) {
-      return this._variationOptions;
+    if( !this._variationOptions ) {
+
+      this._variationOptions = _.chain( this.pluck('attributes') )
+        .reduce(function(result, attrs){
+          _.each(attrs, function(attr){
+            result[attr.name] = result[attr.name] || [];
+            result[attr.name] = result[attr.name].concat(attr.option);
+          });
+          return result;
+        }, {})
+        .map(function(options, name){
+          return {
+            'name': name,
+            'options': _.uniq( options )
+          };
+        })
+        .value();
     }
-
-    // pluck all options, eg:
-    // { Color: ['Black', 'Blue'], Size: ['Small', 'Large'] }
-    var result = this.pluck('attributes')
-      .reduce(function(result, attrs){
-        _.each(attrs, function(attr){
-          if(result[attr.name]){
-            return result[attr.name].push(attr.option);
-          }
-          result[attr.name] = [attr.option];
-        });
-        return result;
-      }, {});
-
-    // map options with consistent keys
-    // { name: 'Color', options: ['Black', 'Blue'] },
-    // { name: 'Size', options: ['Small', 'Large'] }
-    this._variationOptions = _.map(result, function(options, name){
-      return {
-        'name': name,
-        'options': _.uniq( options )
-      };
-    });
 
     return this._variationOptions;
   },
@@ -71,6 +70,15 @@ module.exports = Collection.extend({
       max = parseFloat( _(attrs).max() );
     }
     return _.uniq([min, max]);
+  },
+
+  setVariantFilter: function(name, option){
+    var query = [
+      {type: 'prefix', prefix: 'attributes.name', query: name },
+      {type: 'prefix', prefix: 'attributes.option', query: option },
+    ];
+
+    this.setFilter(name, query);
   }
 
 });

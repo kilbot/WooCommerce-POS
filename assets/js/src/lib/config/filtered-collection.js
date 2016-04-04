@@ -3,16 +3,23 @@ var app = require('./application');
 var _ = require('lodash');
 var Parser = require('query-parser');
 var parse = new Parser();
+var matchMaker = require('json-query');
 
 var defaultFilterName = '__default';
 
 module.exports = app.prototype.FilteredCollection = Collection.extend({
 
   constructor: function(){
-    this._filters = {};
     Collection.apply(this, arguments);
+    this._filters = {};
+    if(this.superset === true){
+      this.superset = this.toJSON();
+    }
   },
 
+  matchMaker: matchMaker,
+
+  /* jshint: -W071 -W074 */
   setFilter: function (filterName, filter) {
     if (filter === undefined) {
       filter = filterName;
@@ -27,8 +34,12 @@ module.exports = app.prototype.FilteredCollection = Collection.extend({
     };
     this.trigger('filtered:set');
 
+    if(this.superset){
+      return this.supersetFetch();
+    }
     return this.fetch({data: {filter: this.getFilterOptions()}});
   },
+  /* jshint: +W071 +W074 */
 
   removeFilter: function (filterName) {
     if (!filterName) {
@@ -37,12 +48,18 @@ module.exports = app.prototype.FilteredCollection = Collection.extend({
     delete this._filters[filterName];
     this.trigger('filtered:remove');
 
+    if(this.superset){
+      return this.supersetFetch();
+    }
     return this.fetch({data: {filter: this.getFilterOptions()}});
   },
 
   resetFilters: function () {
     this._filters = {};
     this.trigger('filtered:reset');
+    if(this.superset){
+      return this.reset(this.superset);
+    }
     return this.fetch();
   },
 
@@ -89,6 +106,14 @@ module.exports = app.prototype.FilteredCollection = Collection.extend({
     }
 
     return queries;
+  },
+
+  supersetFetch: function(){
+    var self = this;
+    var models = _.filter(this.superset, function(model){
+      return matchMaker(model, self.getFilterQueries(), {fields: self.fields});
+    });
+    return this.reset(models);
   }
 
 });

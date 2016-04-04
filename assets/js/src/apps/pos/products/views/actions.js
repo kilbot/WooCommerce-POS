@@ -11,7 +11,7 @@ var Actions = View.extend({
 
   initialize: function(){
     var products = this.collection;
-    var self = this;
+    // var self = this;
 
     /**
      * match:barcode is triggered before filter is complete
@@ -19,10 +19,10 @@ var Actions = View.extend({
      * todo: refactor and fix this
      */
     this.listenTo(products, 'match:barcode', function(model){
-      products.once('paginated:change:page', function(){
-        self.triggerMethod('clear');
-        self.ui.searchField.blur();
-      });
+      // products.once('paginated:change:page', function(){
+      //   self.triggerMethod('clear');
+      //   self.ui.searchField.blur();
+      // });
       Radio.request('router', 'add:to:cart', model);
     });
   },
@@ -49,6 +49,10 @@ var Actions = View.extend({
     searchBtn   : '*[data-action="search"]',
     barcodeBtn  : '*[data-action="barcode"]',
     searchField : 'input[type=search]'
+  },
+
+  onRender: function(){
+    this.ui.searchField.attr('placeholder', this.ui.searchBtn.text());
   },
 
   onDropdownSelect: function(e){

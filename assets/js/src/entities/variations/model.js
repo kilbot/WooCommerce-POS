@@ -1,4 +1,5 @@
 var Model = require('lib/config/deep-model');
+var _ = require('lodash');
 
 module.exports = Model.extend({
 
@@ -10,19 +11,36 @@ module.exports = Model.extend({
     stock_quantity: 'number'
   },
 
-  /**
-   * Attach parent product, add defaults
-   */
+  defaults: {
+    type: 'variation'
+  },
+
   constructor: function(attributes, options){
+    options = _.extend({parse: true}, options); // parse by default
+    Model.call(this, attributes, options);
+  },
+
+  parse: function(data, options){
     options = options || {};
-    this.parent = options.parent;
+    var parentAttrs = options.parentAttrs || {};
+    if( _.isEmpty(parentAttrs) && this.collection && this.collection.parent ){
+      parentAttrs = this.collection.parent.toJSON();
+    }
 
-    this.defaults = {
-      type  : 'variation',
-      title : options.title
-    };
+    // use parent title
+    data.title = parentAttrs.title;
 
-    Model.apply( this, arguments );
+    // special case, empty option
+    _(data.attributes).chain()
+      .filter({option: ''})
+      .each(function(empty){
+        empty.option = _(parentAttrs.attributes).chain()
+          .find({ name: empty.name, variation: true })
+          .get(['options']).value();
+      })
+      .value();
+
+    return data;
   }
 
 });
