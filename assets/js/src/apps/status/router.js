@@ -39,7 +39,7 @@ var StatusRouter = Router.extend({
     });
 
     // get active tab from url fragment
-    var activeId = bb.history.getHash().split('/')[0] || 'general';
+    var activeId = bb.history.getHash().split('/')[0] || 'tools';
 
     // pass id & label collection to tabs
     var view = Radio.request('tabs', 'view', {

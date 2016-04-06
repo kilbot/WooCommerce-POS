@@ -52,7 +52,7 @@ var Tabs = CompositeView.extend({
   /**
    * Pick options to pass to childview
    */
-  childViewOptions: function( model, idx ){
+  childViewOptions: function( model ){
     // pass default options
     var options = {
       activeClassName : 'active'
@@ -64,7 +64,7 @@ var Tabs = CompositeView.extend({
     }
 
     // init with active class
-    if( ! this.activeId && idx === 0 || this.activeId === model.id ){
+    if( this.activeId === model.id ){
       options.className = this.activeClassName;
     }
 

@@ -19,7 +19,7 @@ var CheckoutRoute = Route.extend({
 
   fetch: function(){
     if(this.collection.isNew()){
-      return this.collection.fetch();
+      return this.collection.fetchOpenOrders();
     }
   },
 
@@ -29,13 +29,13 @@ var CheckoutRoute = Route.extend({
   render: function( id ){
     this.activeOrder = this.collection.get(id);
 
+    // return to cart
     if( ! this.activeOrder ){
-      // return to cart
       return this.navigate('cart', { trigger: true });
     }
 
+    // go to receipts
     if( ! this.activeOrder.isEditable() ){
-      // go to receipts
       return this.navigate('receipt/' + this.activeOrder.id, { trigger: true });
     }
 
@@ -114,12 +114,17 @@ var CheckoutRoute = Route.extend({
    *
    */
   onProcessPayment: function(){
-
-    if( this.activeOrder.get('status') !== 'failed' ){
-      // order has been processed, go to receipt
-      return this.navigate('receipt/' + this.activeOrder.id, { trigger: true });
+    if( this.activeOrder.get('status') === 'failed' ){
+      return this.onFailedPayment();
     }
 
+    this.navigate('receipt/' + this.activeOrder.id, { trigger: true });
+  },
+
+  /**
+   *
+   */
+  onFailedPayment: function(){
     // silently save, will change status to UPDATE_FAILED
     this.activeOrder.save( {}, { silent: true } );
 

@@ -363,7 +363,9 @@ list {
       }
 
       &:not(:first-of-type) {
-        border-top: 2px solid $input-border-color;
+        > div {
+          border-top: 2px solid $input-border-color;
+        }
       }
 
     }

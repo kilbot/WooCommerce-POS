@@ -25,13 +25,33 @@ module.exports = app.prototype.DualModel = IDBModel.extend({
   },
 
   fetch: function(options){
-    var self = this, isNew = this.collection.isNew();
+    options = _.extend({parse: true}, options);
+    var self = this, success = options.success;
+    var _fetch = options.remote ? this.fetchRemote : this.fetchLocal;
+
+    if(success){
+      options.success = undefined;
+    }
+
+    return _fetch.call(this, options)
+      .then(function (response) {
+        self.set(response, options);
+        if (success) {
+          success.call(options.context, self, response, options);
+        }
+        self.trigger('sync', self, response, options);
+        return response;
+      });
+  },
+
+  fetchLocal: function(options){
+    var self = this, isNew = this.isNew();
     return this.sync('read', this, options)
       .then(function(response){
-        if(!response) {
-          options.remote = true;
-          return self.sync('read', this, options);
-        }
+        // if(!response) {
+        //   options.remote = true;
+        //   return self.sync('read', this, options);
+        // }
         return response;
       })
       .then(function(response){
@@ -40,6 +60,12 @@ module.exports = app.prototype.DualModel = IDBModel.extend({
         }
         return response;
       });
+  },
+
+  fetchRemote: function(options){
+    options = options || {};
+    options.remote = true;
+    return this.sync('read', this, options);
   },
 
   sync: function( method, model, options ){

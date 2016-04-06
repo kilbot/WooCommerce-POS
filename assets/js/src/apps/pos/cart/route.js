@@ -8,6 +8,7 @@ var Buttons = require('lib/components/buttons/view');
 //var debug = require('debug')('cart');
 var App = require('lib/config/application');
 var polyglot = require('lib/utilities/polyglot');
+var _ = require('lodash');
 
 var CartRoute = Route.extend({
 
@@ -19,6 +20,7 @@ var CartRoute = Route.extend({
 
     this.listenTo( this.collection, {
       destroy: function(){
+        this.setActiveOrder();
         this.render();
       }
     });
@@ -31,12 +33,12 @@ var CartRoute = Route.extend({
     if( this.activeOrder ){
 
       // if new, wait for save to complete, then:
-      // - update the url
+      // - add new order
       // - re-render
-      if( this.activeOrder.id === 'new' ) {
+      if( this.activeOrder.isNew() ) {
         this.listenToOnce(this.activeOrder, {
           'sync': function ( model ) {
-            this.navigate( 'cart/' + model.id );
+            this.collection.add({ _state: this.collection.states.create });
             this.render( model.id );
           }
         });
@@ -47,49 +49,55 @@ var CartRoute = Route.extend({
   },
 
   /**
-   * Fetch orders from idb if new
+   * Fetch open orders from idb
    */
   fetch: function() {
-    return this.collection.fetch({
-      remote: false,
-      fullSync: false,
-      index: {
-        keyPath: '_state',
-        value: this.collection.states.create
-      }
-    });
+    return this.collection.fetchOpenOrders();
   },
 
   /**
    *
    */
-  render: function(id) {
-    this.setActiveOrder( id );
-    this.updateTabLabel();
-    this.layout = new LayoutView();
-    this.listenTo( this.layout, 'show', this.onShow );
-    this.container.show( this.layout );
+  onFetch: function(id){
+    this.setActiveOrder(id);
+
+    if( ! this.activeOrder.isNew() && ! this.activeOrder.isEditable() ){
+      this.navigate('receipt/' + this.activeOrder.id, { trigger: true });
+    }
   },
 
   /**
    *
    */
   setActiveOrder: function(id){
-    if( ! this.collection.get('new') ){
-      this.collection.add({ local_id: 'new' });
-    }
+    var order = this.collection.get(id);
+    this.ensureNewOrder();
+    this.activeOrder = order ? order : this.collection.first();
+  },
 
-    this.activeOrder = this.collection.get(id);
+  /**
+   * Ensure new editable order exists
+   */
+  ensureNewOrder: function(){
+    var newOrder = _.some(this.collection.models, function(model){
+      return model.isNew();
+    });
 
-    if( ! this.activeOrder ){
-      this.activeOrder = this.collection.first();
-    }
-
-    if( ! this.activeOrder.isEditable() ){
-      this.navigate('receipt/' + this.activeOrder.id, { trigger: true });
+    if(!newOrder){
+      this.collection.add({ _state: this.collection.states.create });
     }
   },
 
+  /**
+   *
+   */
+  render: function() {
+    this.updateTabLabel();
+    this.layout = new LayoutView();
+    this.listenTo( this.layout, 'show', this.onShow );
+    this.container.show( this.layout );
+  },
+  
   /**
    *
    */

@@ -7,9 +7,9 @@ var constructURL = function(){
     type: 'option',
     name: 'nonce'
   });
-  return window.ajaxurl +
-    '?action=wc_pos_update_translations&security=' +
-    nonce;
+
+  return window.ajaxurl + (window.ajaxurl.indexOf('?') === -1 ? '?' : '&') +
+    'action=wc_pos_update_translations&security=' + nonce;
 };
 
 module.exports =  ItemView.extend({

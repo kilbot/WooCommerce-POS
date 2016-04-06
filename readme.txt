@@ -81,7 +81,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
-= 0.4.6 - 2016/03/** =
+= 0.4.6 - 2016/04/** =
 * Important: Pro users should update [WooCommerce POS Pro](http://woopos.com.au/pro) to version 0.4.6
 * New: Receipt print methods for thermal printers (experimental)
 * New: Receipt templates for epos-print and ESC/POS languages (experimental)
@@ -90,6 +90,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * New: Setting for which customer roles to display in the POS
 * New: Split products into multiple lines in the cart
 * New: Toggle order taxes
+* New: support for 'Any ...' variations
 * Fix: Checkout settings not showing for some users
 * Fix: issue with some product variation names, e.g.: 000, 00 and 0
 * Tweak: Add Reply-To header to support emails

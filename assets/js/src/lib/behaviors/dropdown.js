@@ -41,6 +41,7 @@ var Dropdown = Behavior.extend({
   },
 
   onClick: function(e){
+    e.preventDefault();
     var target = e.currentTarget;
 
     if(this._initialized.indexOf(target) !== -1) {

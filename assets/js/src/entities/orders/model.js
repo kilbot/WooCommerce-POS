@@ -79,11 +79,6 @@ var OrderModel = DualModel.extend({
   parse: function (resp) {
     resp = DualModel.prototype.parse.apply(this, arguments);
 
-    // if new
-    if (resp.local_id === 'new') {
-      resp._state = this.collection.states.create;
-    }
-
     // if open order with no cart, ie: new from idb or changed state
     if (this.isEditable(resp._state) && !this.cart) {
       resp.taxes = this.attachTaxes(resp.taxes);

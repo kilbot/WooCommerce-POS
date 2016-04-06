@@ -9,7 +9,6 @@ var TotalsView = require('./views/totals');
 var EmailView = require('./views/modals/email');
 var polyglot = require('lib/utilities/polyglot');
 var Buttons = require('lib/components/buttons/view');
-var $ = require('jquery');
 
 var ReceiptRoute = Route.extend({
 
@@ -25,23 +24,31 @@ var ReceiptRoute = Route.extend({
     }) || {};
   },
 
-  fetch: function() {
-    if(this.collection.isNew()){
-      return this.collection.fetch();
-    }
-  },
+  fetch: function(id) {
+    id = parseInt(id);
 
-  onFetch: function(id){
     this.order = this.collection.get(id);
 
-    // redirect, ie: offsite payment
-    var redirect = this.order.get('payment_details.redirect');
-    if(redirect && redirect !== ''){
-      window.open(redirect, '_blank');
+    if(!this.order){
+      var self = this;
+      var order = this.collection.add({ local_id: id });
+      return order.fetch({ remote: false })
+        .then(function(response){
+          if(response){
+            self.order = order;
+          } else {
+            order.destroy();
+          }
+        });
     }
   },
 
   render: function() {
+
+    if(!this.order){
+      return this.navigate('cart', { trigger: true });
+    }
+
     this.layout = new LayoutView({
       model: this.order
     });
@@ -60,25 +67,18 @@ var ReceiptRoute = Route.extend({
   },
 
   showStatus: function(){
-    var view = new StatusView({
-      model: this.order
-    });
+    var view = new StatusView({ model: this.order });
+    this.listenTo(view, 'open:modal', this.openExternalGateway);
     this.layout.getRegion('status').show(view);
   },
 
   showItems: function(){
-    var view = new ItemsView({
-      model: this.order
-    });
-
+    var view = new ItemsView({ model: this.order });
     this.layout.getRegion('list').show(view);
   },
 
   showTotals: function(){
-    var view = new TotalsView({
-      model: this.order
-    });
-
+    var view = new TotalsView({ model: this.order });
     this.layout.getRegion('totals').show(view);
   },
 
@@ -159,7 +159,7 @@ var ReceiptRoute = Route.extend({
       btn.trigger('state', ['error', message]);
     }
 
-    $.getJSON( ajaxurl, {
+    App.prototype.getJSON( ajaxurl, {
       action: 'wc_pos_email_receipt',
       order_id: order_id,
       email : email
