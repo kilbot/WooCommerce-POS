@@ -74,9 +74,8 @@ var StatusRoute = Route.extend({
     var collection = this[db],
         self = this;
 
-    collection.clear()
+    collection.destroy()
       .then(function(){
-        collection.resetNew();
         return self.render();
       });
   }

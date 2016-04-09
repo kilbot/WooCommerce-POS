@@ -36,7 +36,6 @@ IDBAdapter.prototype = {
     keyPath      : 'id',
     autoIncrement: true,
     indexes      : [],
-    pageSize     : 10,
     matchMaker   : matchMaker,
     onerror      : function (options) {
       options = options || {};
@@ -63,12 +62,12 @@ IDBAdapter.prototype = {
           self.count()
             .then(function () {
               if (is_safari) {
-                return self.findHighestIndex();
+                return self.getBatch(null, { data: { filter: { limit: 1, order: 'DESC' } } });
               }
             })
-            .then(function (key) {
-              if (is_safari) {
-                self.highestKey = key || 0;
+            .then(function (resp) {
+              if(is_safari){
+                self.highestKey = _.isEmpty(resp) ? 0 : resp[0][self.opts.keyPath];
               }
               resolve(self.db);
             });
@@ -98,6 +97,26 @@ IDBAdapter.prototype = {
     this.db.close();
     this.db = undefined;
     this._open = undefined;
+  },
+
+  read: function(key, options){
+    var get = key ? this.get : this.getBatch;
+    return get.call(this, key, options);
+  },
+
+  update: function(data, options){
+    var put = _.isArray(data) ? this.putBatch : this.put;
+    var get = _.isArray(data) ? this.getBatch : this.get;
+    var self = this;
+    return put.call(this, data, options)
+      .then(function (resp) {
+        return get.call(self, resp);
+      });
+  },
+
+  delete: function(key, options){
+    var remove = key ? this.remove : this.removeBatch;
+    return remove.call(this, key, options);
   },
 
   getTransaction: function (access) {
@@ -203,7 +222,7 @@ IDBAdapter.prototype = {
     });
   },
 
-  delete: function (key, options) {
+  remove: function (key, options) {
     options = options || {};
     var self = this, objectStore = options.objectStore || this.getObjectStore(consts.READ_WRITE);
 
@@ -267,20 +286,20 @@ IDBAdapter.prototype = {
   },
 
   getBatch: function (keyArray, options) {
-    if (!options && !_.isArray(keyArray)) {
-      options = keyArray;
-    }
     options = options || {};
 
     var objectStore = options.objectStore || this.getObjectStore(consts.READ_ONLY),
         include     = _.isArray(keyArray) ? keyArray : _.get(options, ['data', 'filter', 'in']),
-        limit       = _.get(options, ['data', 'filter', 'limit'], this.opts.pageSize),
-        offset      = _.get(options, ['data', 'filter', 'offset'], 0),
+        limit       = _.get(options, ['data', 'filter', 'limit'], -1),
+        start       = _.get(options, ['data', 'filter', 'offset'], 0),
+        order       = _.get(options, ['data', 'filter', 'order'], 'ASC'),
+        direction   = order === 'DESC' ? consts.PREV : consts.NEXT,
         query       = _.get(options, ['data', 'filter', 'q']),
         keyPath     = options.index || this.opts.keyPath,
         page        = _.get(options, ['data', 'page']),
         self        = this,
-        range       = null;
+        range       = null,
+        end;
 
     if (_.isObject(keyPath)) {
       if(keyPath.value){
@@ -289,18 +308,15 @@ IDBAdapter.prototype = {
       keyPath = keyPath.keyPath;
     }
 
-    if (limit === -1) {
-      limit = Infinity;
-    }
-
-    if (page) {
-      offset = (page - 1) * limit;
+    if (page && limit !== -1) {
+      start = (page - 1) * limit;
     }
 
     return new Promise(function (resolve, reject) {
       var records = [], delayed = 0;
       var request = (keyPath === self.opts.keyPath) ?
-        objectStore.openCursor() : objectStore.index(keyPath).openCursor(range);
+        objectStore.openCursor(range, direction) :
+        objectStore.index(keyPath).openCursor(range, direction);
 
       request.onsuccess = function (event) {
         var cursor = event.target.result;
@@ -318,7 +334,8 @@ IDBAdapter.prototype = {
         }
         _.set(options, 'idb.total', records.length);
         _.set(options, 'idb.delayed', delayed);
-        resolve(_.slice(records, offset, offset + limit));
+        end = limit !== -1 ? start + limit : records.length;
+        resolve(_.slice(records, start, end));
       };
 
       request.onerror = function (event) {
@@ -326,6 +343,10 @@ IDBAdapter.prototype = {
         self.opts.onerror(options);
       };
     });
+  },
+
+  removeBatch: function(keyArray, options) {
+    return this.clear(options);
   },
 
   clear: function (options) {
@@ -342,31 +363,6 @@ IDBAdapter.prototype = {
 
       request.onerror = function (event) {
         options._error = {event: event, message: 'clear error', callback: reject};
-        self.opts.onerror(options);
-      };
-    });
-  },
-
-  findHighestIndex: function (keyPath, options) {
-    options = options || {};
-    var self = this, objectStore = options.objectStore || this.getObjectStore(consts.READ_ONLY);
-
-    return new Promise(function (resolve, reject) {
-      var request;
-      if (keyPath) {
-        var openIndex = objectStore.index(keyPath);
-        request = openIndex.openCursor(null, consts.PREV);
-      } else {
-        request = objectStore.openCursor(null, consts.PREV);
-      }
-
-      request.onsuccess = function (event) {
-        var value = _.get(event, ['target', 'result', 'key']);
-        resolve(value);
-      };
-
-      request.onerror = function (event) {
-        options._error = {event: event, message: 'find highest key error', callback: reject};
         self.opts.onerror(options);
       };
     });

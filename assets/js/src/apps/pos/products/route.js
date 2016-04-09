@@ -16,13 +16,7 @@ module.exports = Route.extend({
   },
 
   fetch: function() {
-    //var collection = this.filtered.superset();
-    //if( collection.isNew() ){
-    //  return collection.firstSync();
-    //} else {
-    //  this.filtered.removeTransforms();
-    //}
-    this.collection.fetch();
+    this.collection.resetFilters();
   },
 
   render: function() {

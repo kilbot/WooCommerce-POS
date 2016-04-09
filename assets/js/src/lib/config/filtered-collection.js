@@ -60,6 +60,7 @@ module.exports = app.prototype.FilteredCollection = Collection.extend({
     if(this.superset){
       return this.reset(this.superset);
     }
+    this.reset();
     return this.fetch();
   },
 

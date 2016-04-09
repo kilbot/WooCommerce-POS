@@ -33,7 +33,7 @@ var View = ItemView.extend({
   templateHelpers: function(){
     return {
       showing : this.collection.length,
-      local   : this.collection.total || 0
+      local   : this.collection._total || 0
     };
   }
 

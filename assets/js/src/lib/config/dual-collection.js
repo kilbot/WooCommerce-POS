@@ -41,6 +41,7 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
     return wc_api + this.name;
   },
 
+
   toJSON: function (options) {
     options = options || {};
     var json = IDBCollection.prototype.toJSON.apply(this, arguments);
@@ -63,30 +64,24 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
   /* jshint -W071, -W074 */
   fetch: function (options) {
     options = _.extend({parse: true}, options);
-    var self = this, success = options.success;
+    var collection = this, success = options.success;
     var _fetch = options.remote ? this.fetchRemote : this.fetchLocal;
+    options.success = undefined;
 
-    if(success){
-      options.success = undefined;
+    if(this.pageSize){
+      var limit = _.get(options, ['data', 'filter', 'limit']);
+      if(!limit) { _.set(options, 'data.filter.limit', this.pageSize); }
     }
 
     return _fetch.call(this, options)
       .then(function (response) {
         var method = options.reset ? 'reset' : 'set';
-        self[method](response, options);
+        collection._parseFetchOptions(options);
+        collection[method](response, options);
         if (success) {
-          success.call(options.context, self, response, options);
+          success.call(options.context, collection, response, options);
         }
-        if(options.idb){
-          self.total = options.idb.total;
-          self.delayed = options.idb.delayed;
-          self._hasNextPage = self.length < self.total || self.delayed > 0;
-        }
-        if(options.xhr){
-          self.total = options.xhr.getResponseHeader('X-WC-Total');
-          self._hasNextPage = self.length < self.total;
-        }
-        self.trigger('sync', self, response, options);
+        collection.trigger('sync', collection, response, options);
         return response;
       });
   },
@@ -96,27 +91,18 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
    *
    */
   fetchLocal: function (options) {
-    var self = this;
-    options = options || {};
-    if(options.fullSync !== false){
-      options.fullSync = this.isNew();
-    }
-
-    return IDBCollection.prototype.getBatch.call(this, options)
+    var collection = this, isNew = this.isNew();
+    _.extend(options, {set: false});
+    return this.sync('read', this, options)
       .then(function (response) {
-        if(options.remote === false){
-          return response;
+        if(options.remote === false) { return response; }
+        if(_.size(response) === 0 && (isNew || collection._delayed !== 0)) {
+          return collection.fetchRemote(options);
         }
-        var createDelayed = self.getDelayed('create', response);
-        if(_.size(response) > 0 && _.size(response) > createDelayed.length){
-          return self.fetchDelayed(response);
-        }
-        return self.fetchRemote(options);
+        return collection.fetchReadDelayed(response);
       })
       .then(function(response){
-        if(options.fullSync){
-          self.fullSync();
-        }
+        if(isNew && options.fullSync !== false) { collection.fullSync(); }
         return response;
       });
   },
@@ -126,92 +112,85 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
    * returns merged data
    */
   fetchRemote: function (options) {
-    // options = _.extend({remote: true}, options);
-    options = options || {};
-    options.remote = true;
-    var self = this;
+    var collection = this;
+    _.extend(options, { remote: true, set: false });
 
-    this.trigger('request', this, null, options);
     return this.sync('read', this, options)
       .then(function (response) {
-        response = self.parse(response, options);
-        return self.putBatch(response, { index: 'id' });
-      })
-      .then(function (keys) {
-        return self.getBatch(keys);
+        response = collection.parse(response, options);
+        options.index = options.index || 'id';
+        _.extend(options, { remote: false });
+        return collection.save(response, options);
       });
   },
 
+  /**
+   *
+   */
   fetchRemoteIds: function (last_update, options) {
     options = options || {};
-    var self = this, url = _.result(this, 'url') + '/ids';
+    var collection = this, url = _.result(this, 'url') + '/ids';
 
-    var opts = _.defaults(options, {
+    _.extend(options, {
       url   : url,
-      remote: true,
       data  : {
         fields: 'id',
         filter: {
           limit         : -1,
           updated_at_min: last_update
         }
-      }
+      },
+      index: {
+        keyPath: 'id',
+        merge  : function (local, remote) {
+          if(!local || local.updated_at < remote.updated_at){
+            local = local || remote;
+            local._state = collection.states.read;
+          }
+          return local;
+        }
+      },
+      success: undefined
     });
 
-    opts.success = undefined;
-
-    return this.sync('read', this, opts)
-      .then(function (response) {
-        response = self.parse(response, opts);
-        return self.putBatch(response, {
-          index: {
-            keyPath: 'id',
-            merge  : function (local, remote) {
-              if(!local || local.updated_at < remote.updated_at){
-                local = local || remote;
-                local._state = self.states.read;
-              }
-              return local;
-            }
-          }
-        });
-      })
-      .then(function (response) {
-        return response;
-      });
+    return this.fetchRemote(options);
   },
 
+  /**
+   *
+   */
   fetchUpdatedIds: function (options) {
-    var self = this;
-    return this.findHighestIndex('updated_at')
-      .then(function (last_update) {
-        return self.fetchRemoteIds(last_update, options);
+    var collection = this;
+    return this.fetchLocal({
+        index    : 'updated_at',
+        data     : { filter: { limit: 1, order: 'DESC' } },
+        fullSync : false
+      })
+      .then(function (response) {
+        var last_update = _.get(response, [0, 'updated_at']);
+        return collection.fetchRemoteIds(last_update, options);
       });
   },
 
   fullSync: function(options){
-    return this.fetchRemoteIds(options);
+    options = options || {};
+    var collection = this;
+    return this.fetchRemoteIds(null, options)
+      .then(function(response){
+        collection._parseFetchOptions(options);
+        collection.trigger('sync', collection, response, options);
+      });
   },
 
-  fetchDelayed: function(response){
+  fetchReadDelayed: function(response){
     var delayed = this.getDelayed('read', response);
     if(!_.isEmpty(delayed)){
       var ids = _.map(delayed, 'id');
-      return this.fetchRemote({
-          data: {
-            filter: {
-              'in': ids.join(',')
-            }
-          }
-        })
+      return this.fetchRemote({ data: { filter: { 'in': ids.join(',') } } })
         .then(function(resp){
           _.each(resp, function(attrs){
             var key = _.findKey(response, {id: attrs.id});
-            if(key){
-              response[key] = attrs;
-            } else {
-              response.push(resp);
-            }
+            if(key){ response[key] = attrs; } else { response.push(resp); }
           });
           return response;
         });
@@ -223,6 +202,21 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
     var _state = this.states[state];
     collection = collection || this;
     return _.filter(collection, {_state: _state});
+  },
+
+  _parseFetchOptions: function(options){
+    options = options || {};
+    if(options.idb){
+      this._total = options.idb.total;
+      this._delayed = options.idb.delayed;
+    }
+    if(options.xhr){
+      this._total = parseInt( options.xhr.getResponseHeader('X-WC-Total') );
+    }
+  },
+
+  hasNextPage: function(){
+    return this.length < this._total;
   }
 
 });

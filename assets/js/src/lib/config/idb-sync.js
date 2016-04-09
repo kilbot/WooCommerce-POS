@@ -3,44 +3,35 @@ var bb = require('backbone');
 /* jshint -W074 */
 module.exports = function(method, entity, options) {
   options = options || {};
-  var isModel = entity instanceof bb.Model;
-  var key = isModel && options.index ? entity.get(options.index) : entity.id;
+  var isModel = entity instanceof bb.Model,
+      data = options.attrsArray,
+      db = entity.db,
+      key;
 
-  return entity.db.open()
+  if(isModel){
+    db = entity.collection.db;
+    key = options.index ? entity.get(options.index) : entity.id;
+    data = entity.toJSON();
+  }
+
+  return db.open()
     .then(function () {
       switch (method) {
-        case 'read':
-          if (isModel) {
-            return entity.db.get(key, options);
-          }
-          return entity.db.getBatch(options);
         case 'create':
-          return entity.db.add(entity.toJSON())
-            .then(function (key) {
-              return entity.db.get(key);
-            });
         case 'update':
-          return entity.db.put(entity.toJSON())
-            .then(function (key) {
-              return entity.db.get(key);
-            });
+          return db.update(data, options);
+        case 'read':
+          return db.read(key, options);
         case 'delete':
-          if (isModel) {
-            return entity.db.delete(key, options);
-          }
-          return;
+          return db.delete(key, options);
       }
     })
     .then(function (resp) {
-      if (options.success) {
-        options.success(resp);
-      }
+      if (options.success) { options.success(resp); }
       return resp;
     })
     .catch(function (resp) {
-      if (options.error) {
-        options.error(resp);
-      }
+      if (options.error) { options.error(resp); }
     });
 
 };

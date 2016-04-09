@@ -250,6 +250,7 @@ class Customers extends WC_API_Resource {
     }
 
     $query = new \WP_User_Query( $args );
+    $this->server->add_pagination_headers($query);
     return array( 'customers' => array_map( array( $this, 'format_id' ), $query->results ) );
   }
 

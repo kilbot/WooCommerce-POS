@@ -25,7 +25,7 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
   },
 
   onScroll: function(){
-    if(!this.loading && this.hasNextPage() && this.triggerEvent()){
+    if(!this.loading && this.collection.hasNextPage() && this.triggerEvent()){
       this.appendNextPage();
     }
   },
@@ -46,10 +46,6 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
         filter: _.merge({offset: this.collection.length}, this.collection.getFilterOptions())
       }
     });
-  },
-
-  hasNextPage: function () {
-    return this.collection._hasNextPage;
   },
 
   startLoading: function () {

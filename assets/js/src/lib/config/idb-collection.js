@@ -4,6 +4,7 @@ var Radio = require('backbone.radio');
 var IDBModel = require('./idb-model');
 var IDBAdapter = require('./idb-adapter');
 var _ = require('lodash');
+var bb = require('backbone');
 
 module.exports = app.prototype.IDBCollection = FilteredCollection.extend({
 
@@ -13,21 +14,63 @@ module.exports = app.prototype.IDBCollection = FilteredCollection.extend({
   storePrefix: 'wc_pos_',
 
   constructor: function () {
+    FilteredCollection.apply(this, arguments);
     this.db = new IDBAdapter({ collection: this });
     this.versionCheck();
-    FilteredCollection.apply(this, arguments);
   },
 
   /**
-   * Clears the IDB storage and resets the collection
+   *
    */
-  clear: function () {
-    var self = this;
-    return this.db.open()
-      .then(function () {
-        self.reset();
-        return self.db.clear();
-      });
+  /* jshint -W071, -W074 */
+  save: function(models, options){
+    options = options || {};
+    var collection = this,
+        wait = options.wait,
+        success = options.success,
+        setAttrs = options.set !== false;
+
+    if(models === null){
+      models = this.getChangedModels();
+    }
+
+    var attrsArray = _.map(models, function(model){
+      return model instanceof bb.Model ? model.toJSON() : model;
+    });
+
+    if(!wait && setAttrs){
+      this.set(attrsArray, options);
+    }
+
+    options.success = function(resp) {
+      var serverAttrs = options.parse ? collection.parse(resp, options) : resp;
+      if (serverAttrs && setAttrs) { collection.set(serverAttrs, options); }
+      if (success) { success.call(options.context, collection, resp, options); }
+      collection.trigger('sync', collection, resp, options);
+    };
+
+    return this.sync('update', this, _.extend(options, {attrsArray: attrsArray}));
+  },
+  /* jshint +W071, +W074 */
+
+  /**
+   *
+   */
+  destroy: function(options){
+    options = options || {};
+    var collection = this,
+        wait = options.wait,
+        success = options.success;
+
+    options.success = function(resp) {
+      if (wait) { collection.reset(); }
+      if (success) { success.call(options.context, collection, resp, options); }
+      collection.trigger('sync', collection, resp, options);
+      collection.resetNew();
+    };
+
+    if(!wait) { collection.reset(); }
+    return this.sync('delete', this, options);
   },
 
   /**
@@ -48,73 +91,11 @@ module.exports = app.prototype.IDBCollection = FilteredCollection.extend({
   /**
    *
    */
-  putBatch: function (models, options) {
-    var self = this;
-    if (_.isEmpty(models)) {
-      models = this.getChangedModels();
-    }
-    if (!models) {
-      return;
-    }
-    return this.db.open()
-      .then(function () {
-        return self.db.putBatch(models, options);
-      });
-  },
-
-  /**
-   *
-   */
-  getBatch: function (keyArray, options) {
-    var self = this;
-    return this.db.open()
-      .then(function () {
-        return self.db.getBatch(keyArray, options);
-      });
-  },
-
-  /**
-   *
-   */
-  findHighestIndex: function (keyPath, options) {
-    options = _.clone(options) || {};
-    var self = this;
-    return this.db.open()
-      .then(function () {
-        return self.db.findHighestIndex(keyPath, options);
-      });
-  },
-
-  /**
-   *
-   */
   getChangedModels: function () {
     return this.filter(function (model) {
       return model.isNew() || model.hasChanged();
     });
   },
-
-  /**
-   *
-   */
-  //removeBatch: function (models, options) {
-  //  options = options || {};
-  //  var self = this;
-  //  if (_.isEmpty(models)) {
-  //    return;
-  //  }
-  //  return this.db.open()
-  //    .then(function () {
-  //      return self.db.removeBatch(models);
-  //    })
-  //    .then(function () {
-  //      self.remove(models);
-  //      if (options.success) {
-  //        options.success(self, models, options);
-  //      }
-  //      return models;
-  //    });
-  //},
 
   /**
    * Each website will have a unique idbVersion number
@@ -135,7 +116,7 @@ module.exports = app.prototype.IDBCollection = FilteredCollection.extend({
       }), 10) || 0;
 
     if (newVersion !== oldVersion) {
-      this.clear().then(function () {
+      this.destroy().then(function () {
         Radio.request('entities', 'set', {
           type: 'localStorage',
           name: name + '_idbVersion',

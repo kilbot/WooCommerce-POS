@@ -474,6 +474,7 @@ class Products extends WC_API_Resource {
     }
 
     $query = new \WP_Query( $args );
+    $this->server->add_pagination_headers($query);
     return array( 'products' => array_map( array( $this, 'format_id' ), $query->posts ) );
   }
 
