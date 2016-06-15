@@ -4,19 +4,21 @@ var App = require('lib/config/application');
 var View = SettingsView.extend({
 
   ui: {
-    networkAddress: '#network_printer_address'
+    networkAddress: '#network_printer_address',
+    qzTrayOptions : '#qz_tray_options'
   },
 
   modelEvents: {
-    'change:print_method': 'maybeShowNetworkAddress'
+    'change:print_method': 'maybeShowMethodExtras'
   },
 
   onShow: function(){
-    this.maybeShowNetworkAddress( this, this.model.get('print_method') );
+    this.maybeShowMethodExtras( this, this.model.get('print_method') );
   },
 
-  maybeShowNetworkAddress: function( view, value ){
+  maybeShowMethodExtras: function( view, value ){
     this.ui.networkAddress.toggle( value === 'network' );
+    this.ui.qzTrayOptions.toggle( value === 'qz-tray' );
   }
 
 });

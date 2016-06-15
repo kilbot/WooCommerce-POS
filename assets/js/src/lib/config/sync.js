@@ -7,20 +7,22 @@ var ajaxSync = bb.sync;
 var idbSync = require('./idb-sync');
 var App = require('./application');
 var _ = require('lodash');
+var Radio = require('backbone.radio');
 
 bb.sync = function(method, entity, options) {
-
-  // wrap sync errors
-  App.prototype.wrapError(options);
-
-  var idb = _.get(entity, ['collection', 'db'], entity.db);
+  var promise, idb = _.get(entity, ['collection', 'db'], entity.db);
 
   if( !options.remote && idb ) {
-    return idbSync.apply(this, arguments);
+    promise = idbSync.apply(this, arguments);
+  } else {
+    App.prototype.ajaxSetup( options );
+    promise = ajaxSync.apply(this, arguments);
   }
 
-  // add headers, global data etc
-  App.prototype.ajaxSetup( options );
+  promise.catch(function(){
+    var args = Array.prototype.slice.call(arguments);
+    Radio.trigger('global', 'error', args);
+  });
 
-  return ajaxSync.apply(this, arguments);
+  return promise;
 };

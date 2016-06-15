@@ -71,12 +71,14 @@ class Settings extends Page {
     $wp_scripts->queue = array();
 
     // deregister scripts
+    wp_deregister_script( 'jquery' );
     wp_deregister_script( 'underscore' );
     wp_deregister_script( 'select2' );
     wp_deregister_script( 'backbone' );
 
     // register
     $external_libs = Template::get_external_js_libraries();
+    wp_register_script( 'jquery', $external_libs[ 'jquery' ], false, null, true );
     wp_register_script( 'lodash', $external_libs[ 'lodash' ], array( 'jquery' ), null, true );
     wp_register_script( 'backbone', $external_libs[ 'backbone' ], array( 'jquery', 'lodash' ), null, true );
     wp_register_script( 'backbone.radio', $external_libs[ 'radio' ], array( 'jquery', 'backbone', 'lodash' ), null, true );
@@ -87,9 +89,6 @@ class Settings extends Page {
     wp_register_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js', array( 'jquery' ), null, true );
     wp_register_script( 'ace', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js', false, null, true );
 
-    // enqueue
-    wp_enqueue_script( 'jquery-ui-sortable' );
-
     $build = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? 'build' : 'min';
 
     wp_enqueue_script(
@@ -97,14 +96,6 @@ class Settings extends Page {
       \WC_POS\PLUGIN_URL . 'assets/js/admin-settings.' . $build . '.js',
       array( 'backbone', 'backbone.radio', 'marionette', 'handlebars', 'accounting', 'moment', 'select2', 'ace' ),
       \WC_POS\VERSION,
-      true
-    );
-
-    wp_enqueue_script(
-      'eventsource-polyfill',
-      \WC_POS\PLUGIN_URL . 'assets/js/vendor/eventsource.min.js',
-      array(),
-      null,
       true
     );
 

@@ -34,12 +34,14 @@ class Templates extends WC_API_Resource {
 
     # GET /pos/templates
     $routes[ $this->base ] = array(
-      array( array( $this, 'get_templates' ), WC_API_Server::READABLE )
+      array( array( $this, 'get_templates' ), WC_API_Server::READABLE ),
+      array( array( $this, 'create_receipt_template' ), WC_API_Server::CREATABLE | WC_API_Server::ACCEPT_DATA )
     );
 
-    # GET /pos/templates
-    $routes[ $this->base . '/receipt' ] = array(
-      array( array( $this, 'get_receipt_template' ), WC_API_Server::READABLE )
+    # PUT, DELETE /pos/templates/<id>
+    $routes[ $this->base . '/(?P<id>\d+)' ] = array(
+      array( array( $this, 'update_receipt_template' ), WC_API_Server::EDITABLE | WC_API_Server::ACCEPT_DATA ),
+      array( array( $this, 'delete_receipt_template' ), WC_API_Server::DELETABLE ),
     );
 
     # GET /pos/templates/modal/<id>
@@ -64,10 +66,16 @@ class Templates extends WC_API_Resource {
    * @param null $wc_pos_admin
    * @return array
    */
-  public function get_templates( $wc_pos_admin = null ){
+  public function get_templates( $wc_pos_admin = null, $filter = array() ){
+
+    if(isset($filter['type']) && $filter['type'] == 'receipt'){
+      return $this->get_receipt_template();
+    }
+
     if( $wc_pos_admin ){
       return;
     }
+
     return apply_filters( 'woocommerce_pos_templates', $this->create_templates_array(), $this );
   }
 
@@ -174,9 +182,11 @@ class Templates extends WC_API_Resource {
 
   /**
    * Returns path of print receipt template
+   * @param $file
+   * @return
    */
-  public function locate_print_receipt_template() {
-    $receipt_path = $this->locate_template_file( \WC_POS\PLUGIN_PATH . 'includes/views/print/tmpl-receipt.php' );
+  public function locate_print_receipt_template($file) {
+    $receipt_path = $this->locate_template_file( \WC_POS\PLUGIN_PATH . 'includes/views/print/' . $file );
     return apply_filters( 'woocommerce_pos_print_receipt_path', $receipt_path );
   }
 
@@ -196,15 +206,108 @@ class Templates extends WC_API_Resource {
    *
    */
   public function get_receipt_template() {
-    $default_path = '';
-    $path = $this->locate_print_receipt_template();
+    $this->register_receipt_status();
+
+    $options = wc_pos_get_option('receipts', 'receipt_options');
+    $type = isset($options['template_language']) ? $options['template_language'] : 'html';
+    $method = isset($options['print_method']) ? $options['print_method'] : 'browser';
+    $network_address = isset($options['network_printer_address']) ? $options['network_printer_address'] : '';
+
+    $posts = get_posts( array(
+      'posts_per_page'  => 1,
+      'post_type'       => 'wc-print-template',
+      'post_status'     => $type
+    ));
+
+    if(!empty($posts)){
+      $template = $posts[0];
+      return array(
+        array(
+          'id'        => $template->ID,
+          'type'      => $type,
+          'method'    => $method,
+          'network_address' => $network_address,
+          'template'  => $template->post_content
+        )
+      );
+    }
+
+    $path = $this->locate_print_receipt_template('receipt-' . $type . '.php');
+
+    // backwards compat
+    if(!$path && $type == 'html'){
+      $path = $this->locate_print_receipt_template('tmpl-receipt.php');
+    }
 
     return array(
-      'path'         => $path,
-      'default_path' => $default_path,
-      'custom'       => $path != $default_path,
-      'template'     => $this->template_output( $path, false )
+      array(
+        'type'      => $type,
+        'method'    => $method,
+        'network_address' => $network_address,
+        'template'  => $this->template_output( $path, false )
+      )
     );
+  }
+
+  /**
+   *
+   */
+  public function create_receipt_template( array $data ) {
+    $this->update_receipt_template(null, $data);
+  }
+
+  /**
+   * 
+   */
+  public function update_receipt_template( $id, array $data ) {
+    $template = isset($data['template']) ? $data['template'] : '';
+    $post_status = wc_pos_get_option('receipts', array(
+      'section' => 'receipt_options',
+      'key'     => 'template_language'
+    ));
+
+    $args = array(
+      'ID'             => (int) $id,
+      'post_type'      => 'wc-print-template',
+      'post_status'    => $post_status,
+      'post_title'     => 'Receipt Template',
+      'post_content'   => $template,
+      'comment_status' => 'closed',
+      'ping_status'    => 'closed'
+    );
+
+    wp_insert_post($args);
+
+    return $this->get_receipt_template();
+  }
+
+  /**
+   * @param $id
+   * @return array
+   */
+  public function delete_receipt_template( $id ) {
+    $post = get_post($id);
+
+    if($post && $post->post_type == 'wc-print-template'){
+      wp_delete_post($id);
+    }
+
+    return $this->get_receipt_template();
+  }
+
+  /**
+   *
+   */
+  private function register_receipt_status(){
+    $receipt_types = array(
+      'html' => array(),
+      'epos-print' => array(),
+      'escp' => array()
+    );
+
+    foreach ( $receipt_types as $type => $values ) {
+      register_post_status( $type, $values );
+    }
   }
 
 }

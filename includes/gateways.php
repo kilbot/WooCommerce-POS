@@ -44,9 +44,10 @@ class Gateways {
    * @return array
    */
   public function payment_gateways( array $gateways ) {
-    // don't show POS gateways on WC settings page
     global $plugin_page;
-    if( $plugin_page == 'wc-settings' ){
+
+    // don't show POS gateways on WC settings page or online checkout
+    if( is_admin() && $plugin_page == 'wc-settings' || !is_admin() && !is_pos() ){
       return $gateways;
     }
 

@@ -29,6 +29,7 @@
         <option value="qz-tray">QZ Tray</option>
       </select>
       <input id="network_printer_address" name="network_printer_address" type="text" placeholder="e.g.: http://192.168.192.168/cgi-bin/epos/service.cgi">
+      <a id="qz_tray_options" class="button" href="https://demo.qz.io/" target="_blank">Open QZ Tray Demo</a>
       <p>
         <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/receipts/print-method' ); ?>
       </p>

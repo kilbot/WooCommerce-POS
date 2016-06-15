@@ -224,10 +224,17 @@ IDBAdapter.prototype = {
 
   remove: function (key, options) {
     options = options || {};
-    var self = this, objectStore = options.objectStore || this.getObjectStore(consts.READ_WRITE);
+    var objectStore = options.objectStore || this.getObjectStore(consts.READ_WRITE),
+        keyPath     = options.index || this.opts.keyPath,
+        self        = this;
+
+    if(_.isObject(key)){
+      key = key[keyPath];
+    }
 
     return new Promise(function (resolve, reject) {
-      var request = objectStore.delete(key);
+      var request = (keyPath === self.opts.keyPath) ?
+        objectStore.delete(key) : objectStore.index(keyPath).delete(key);
 
       request.onsuccess = function (event) {
         resolve(event.target.result); // undefined
@@ -238,6 +245,7 @@ IDBAdapter.prototype = {
         err.code = event.target.errorCode;
         reject(err);
       };
+
       request.onerror = function (event) {
         options._error = {event: event, message: 'delete error', callback: reject};
         self.opts.onerror(options);
@@ -290,6 +298,7 @@ IDBAdapter.prototype = {
 
     var objectStore = options.objectStore || this.getObjectStore(consts.READ_ONLY),
         include     = _.isArray(keyArray) ? keyArray : _.get(options, ['data', 'filter', 'in']),
+        exclude     = _.get(options, ['data', 'filter', 'not_in']),
         limit       = _.get(options, ['data', 'filter', 'limit'], -1),
         start       = _.get(options, ['data', 'filter', 'offset'], 0),
         order       = _.get(options, ['data', 'filter', 'order'], 'ASC'),
@@ -326,6 +335,7 @@ IDBAdapter.prototype = {
           }
           if (
             (!include || _.includes(include, cursor.value[keyPath])) &&
+            (!exclude || !_.includes(exclude, cursor.value[keyPath])) &&
             (!query || self._match(query, cursor.value, keyPath, options))
           ) {
             records.push(cursor.value);
@@ -345,8 +355,31 @@ IDBAdapter.prototype = {
     });
   },
 
-  removeBatch: function(keyArray, options) {
-    return this.clear(options);
+  removeBatch: function(dataArray, options) {
+    var batch = [];
+    options = options || {};
+    dataArray = dataArray || options.attrsArray;
+
+    if(_.isEmpty(dataArray) && !options.data){
+      return this.clear(options);
+    }
+
+    if(options.data){
+      var self = this;
+      return this.getBatch(null, options)
+        .then(function(response){
+          options.attrsArray = _.map(response, self.opts.keyPath);
+          if(!_.isEmpty(options.attrsArray)){
+            return self.removeBatch(options.attrsArray);
+          }
+        });
+    }
+
+    _.each(dataArray, function (data) {
+      batch.push(this.remove(data, options));
+    }.bind(this));
+
+    return Promise.all(batch);
   },
 
   clear: function (options) {

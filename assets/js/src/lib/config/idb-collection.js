@@ -51,27 +51,55 @@ module.exports = app.prototype.IDBCollection = FilteredCollection.extend({
 
     return this.sync('update', this, _.extend(options, {attrsArray: attrsArray}));
   },
-  /* jshint +W071, +W074 */
 
   /**
    *
    */
-  destroy: function(options){
-    options = options || {};
+  destroy: function(models, options){
+    if(!options && models && !_.isArray(models)){
+      options = models;
+      models = undefined;
+    } else {
+      options = options || {};
+    }
+
     var collection = this,
         wait = options.wait,
         success = options.success;
 
+    if(models){
+      options.attrsArray = _.map(models, function(model){
+        return model instanceof bb.Model ? model.toJSON() : model;
+      });
+    }
+
+    if(options.data){
+      wait = true;
+    }
+
     options.success = function(resp) {
-      if (wait) { collection.reset(); }
+      if(wait && !options.attrsArray) {
+        collection.resetNew();
+        collection.reset();
+      }
+      if(wait && options.attrsArray) {
+        collection.remove(options.attrsArray);
+      }
       if (success) { success.call(options.context, collection, resp, options); }
       collection.trigger('sync', collection, resp, options);
-      collection.resetNew();
     };
 
-    if(!wait) { collection.reset(); }
+    if(!wait && !options.attrsArray) {
+      collection.reset();
+    }
+
+    if(!wait && options.attrsArray) {
+      collection.remove(options.attrsArray);
+    }
+
     return this.sync('delete', this, options);
   },
+  /* jshint +W071, +W074 */
 
   /**
    *

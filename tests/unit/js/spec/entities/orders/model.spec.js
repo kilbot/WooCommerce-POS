@@ -49,9 +49,9 @@ describe('entities/orders/model.js', function () {
 
   });
 
-  it('should not change order on export (adds local _state)', function(){
+  it('should not change order on export', function(){
     var model = new OrderModel( dummy_order.order, { parse: true } );
-    expect( _.extend( {_state: undefined}, model.toJSON() ) ).to.eql( dummy_order.order );
+    expect( model.toJSON() ).to.eql( dummy_order.order );
   });
 
   it('should parse line_items, shipping_lines and fee_lines into a Cart collection (if isEditable)', function(){

@@ -3,7 +3,6 @@ var Radio = require('backbone.radio');
 var LayoutView = require('./layout-view');
 var Preview = require('./preview');
 var PreviewActions = require('./actions');
-var App = require('lib/config/application');
 var $ = require('jquery');
 var polyglot = require('lib/utilities/polyglot');
 
@@ -13,11 +12,6 @@ var ReceiptRoute = Route.extend({
     options = options || {};
     this.container = options.container;
     this.model = options.model;
-
-    this.collection = Radio.request('entities', 'get', {
-      name: 'orders',
-      type: 'collection'
-    });
   },
 
   fetch: function(){
@@ -25,33 +19,51 @@ var ReceiptRoute = Route.extend({
   },
 
   fetchOrder: function(){
-    return this.collection.fetch({
+    var self = this;
+    var orders = Radio.request('entities', 'get', {
+      name: 'orders',
+      type: 'collection',
+      init: true
+    });
+
+    return orders.fetch({
       remote: true,
       data: {
         filter: {
           limit: 1
         }
       }
+    })
+    .then(function(){
+      self.dummy_order = orders.first();
     });
   },
 
   fetchTemplate: function(){
     var self = this;
-    var wc_api = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'wc_api'
+    var templates = Radio.request('entities', 'get', {
+      name: 'templates',
+      type: 'collection',
+      init: true
     });
 
-    return App.prototype.getJSON( wc_api + 'pos/templates/receipt')
-      .done( function( data ) {
-        self.template = data;
-      });
+    return templates.fetch({
+      data: {
+        filter: {
+          limit: 1,
+          type: 'receipt'
+        }
+      }
+    })
+    .then(function(){
+      self.template_model = templates.first();
+    });
   },
 
   render: function() {
     this.layout = new LayoutView({
-      model: this.model,
-      template_data: this.template
+      model: this.template_model,
+      _template: this.model.template
     });
     this.listenTo( this.layout, 'show', this.showReceiptTemplate );
     this.container.show(this.layout);
@@ -65,8 +77,8 @@ var ReceiptRoute = Route.extend({
 
   showReceiptTemplatePreview: function(){
     var view = new Preview({
-      model: this.collection.at(0),
-      receipt_template: this.template.template
+      model: this.dummy_order,
+      template_model: this.template_model
     });
     this.layout.getRegion('preview').show(view);
   },
@@ -78,7 +90,7 @@ var ReceiptRoute = Route.extend({
   },
 
   print: function(){
-    this.layout.getRegion('preview').currentView.el.contentWindow.print();
+    this.layout.getRegion('preview').currentView.print();
   },
 
   showReceiptTemplateEditorActions: function(){
@@ -90,24 +102,31 @@ var ReceiptRoute = Route.extend({
     this.listenTo(view, {
       'action:save': function(btn){
         btn.trigger('state', [ 'loading', '' ]);
-        self.enter();
-        //options.model.save()
-        //  .done( function(){
-        //    btn.trigger('state', [ 'success', null ]);
-        //  })
-        //  .fail( function(){
-        //    btn.trigger('state', ['error', null ]);
-        //  });
+
+        Promise.resolve()
+          .then(function(){
+            return self.template_model.save({
+              template: self.layout.editor.getValue()
+            });
+          })
+          .then( function() {
+            btn.trigger('state', [ 'success', null ]);
+            self.enter();
+          })
+          .catch(function(){
+            btn.trigger('state', ['error', null ]);
+          });
       },
-      'action:delete': function(btn){
+      'action:restore': function(btn){
         btn.trigger('state', [ 'loading', '' ]);
-        //options.model.fetch({ data: { defaults: true } })
-        //  .done( function(){
-        //    btn.trigger('state', [ 'success', null ]);
-        //  })
-        //  .fail( function(){
-        //    btn.trigger('state', ['error', null ]);
-        //  });
+        self.template_model.destroy()
+          .then( function() {
+            btn.trigger('state', [ 'success', null ]);
+            self.enter();
+          })
+          .catch(function(){
+            btn.trigger('state', ['error', null ]);
+          });
       }
     });
 
@@ -115,31 +134,21 @@ var ReceiptRoute = Route.extend({
   },
 
   getEditorActions: function(){
-    if( this.template.custom ){
-      return [
-        {
-          action    : 'save',
-          className : 'button-primary',
-          icon      : 'append'
-        },{
-          //  type: 'message'
-          //},{
-          action    : 'delete',
-          label     : polyglot.t('buttons.delete-template'),
-          className : 'button-secondary alignright',
-          icon      : 'prepend'
-        }
-      ];
+    var btns = [{
+      action   : 'save',
+      className: 'button-primary',
+      icon     : 'append'
+    }];
+
+    if( this.template_model.id ){
+      btns.push({
+        action    : 'restore',
+        className : 'button-secondary alignright',
+        icon      : 'prepend'
+      });
     }
 
-    return [
-      {
-        action    : 'copy',
-        label     : polyglot.t('buttons.copy-file'),
-        className : 'button-primary',
-        icon      : 'append'
-      }
-    ];
+    return btns;
   }
 
 });

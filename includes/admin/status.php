@@ -63,18 +63,18 @@ class Status extends Page {
    * Settings scripts
    */
   public function enqueue_admin_scripts() {
-
-    //
     global $wp_scripts;
     $wp_scripts->queue = array();
 
     // deregister scripts
+    wp_deregister_script( 'jquery' );
     wp_deregister_script( 'underscore' );
     wp_deregister_script( 'select2' );
     wp_deregister_script( 'backbone' );
 
     // register
     $external_libs = Template::get_external_js_libraries();
+    wp_register_script( 'jquery', $external_libs[ 'jquery' ], false, null, true );
     wp_register_script( 'lodash', $external_libs[ 'lodash' ], array( 'jquery' ), null, true );
     wp_register_script( 'backbone', $external_libs[ 'backbone' ], array( 'jquery', 'lodash' ), null, true );
     wp_register_script( 'backbone.radio', $external_libs[ 'radio' ], array( 'jquery', 'backbone', 'lodash' ), null, true );
@@ -82,17 +82,22 @@ class Status extends Page {
     wp_register_script( 'handlebars', $external_libs[ 'handlebars' ], false, null, true );
     wp_register_script( 'moment', $external_libs[ 'moment' ], false, null, true );
     wp_register_script( 'accounting', $external_libs[ 'accounting' ], false, null, true );
-    wp_register_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js', array( 'jquery' ), null, true );
-
-    // enqueue
-    wp_enqueue_script( 'jquery-ui-sortable' );
+//    wp_register_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js', array( 'jquery' ), null, true );
 
     $build = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? 'build' : 'min';
 
     wp_enqueue_script(
+      'eventsource-polyfill',
+      \WC_POS\PLUGIN_URL . 'assets/js/vendor/eventsource.min.js',
+      array(),
+      null,
+      true
+    );
+
+    wp_enqueue_script(
       \WC_POS\PLUGIN_NAME . '-admin-system-status-app',
       \WC_POS\PLUGIN_URL . 'assets/js/admin-system-status.' . $build . '.js',
-      array( 'backbone', 'backbone.radio', 'marionette', 'handlebars', 'accounting', 'moment', 'select2' ),
+      array( 'backbone', 'backbone.radio', 'marionette', 'handlebars', 'accounting', 'moment' ),
       \WC_POS\VERSION,
       true
     );

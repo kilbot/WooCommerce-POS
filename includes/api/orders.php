@@ -596,7 +596,7 @@ class Orders {
     foreach( $order_data['shipping_lines'] as &$item ) {
       if(isset( $item['id'] )) {
         $taxes = wc_get_order_item_meta( $item['id'], 'taxes' );
-        $item['total_tax'] = wc_format_decimal( array_sum($taxes) );
+        $item['total_tax'] = is_array($taxes) ? wc_format_decimal( array_sum($taxes) ) : 0 ;
       }
     }
 

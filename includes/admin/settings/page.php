@@ -92,10 +92,10 @@ class Page {
 
   /**
    * Get options
-   * @param bool|false $key
+   * @param null $key
    * @return bool|mixed|void
    */
-  public function get($key = false){
+  public function get($key = null){
     $data = get_option( $this->option_name() );
     if(!$data){
       $data = apply_filters( 'woocommerce_pos_' . $this->id . '_settings_defaults', $this->get_defaults() );

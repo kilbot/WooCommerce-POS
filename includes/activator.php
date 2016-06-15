@@ -40,6 +40,9 @@ class Activator {
 
       // Run update script if required
       $this->version_check();
+      
+      // resolve plugin plugins
+      $this->plugin_check();
 
       new Setup();
     }
@@ -211,6 +214,20 @@ class Activator {
       
       Admin\Notices::add( $message );
     }
+  }
+
+  /**
+   * Plugin conflicts
+   *
+   * - NextGEN Gallery is a terrible plugin. It buffers all content on 'init' action, priority -1 and inserts junk code.
+   *
+   */
+  private function plugin_check(){
+
+    // disable NextGEN Gallery resource manager
+    if( !defined('NGG_DISABLE_RESOURCE_MANAGER') )
+      define( 'NGG_DISABLE_RESOURCE_MANAGER', true );
+
   }
 
 }

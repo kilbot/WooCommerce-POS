@@ -37,7 +37,13 @@ module.exports = app.prototype.FilteredCollection = Collection.extend({
     if(this.superset){
       return this.supersetFetch();
     }
-    return this.fetch({data: {filter: this.getFilterOptions()}});
+
+    if(this._filterOptions && this._filterOptions.xhr){
+      debugger;
+    }
+
+    this._filterOptions = {data: {filter: this.getFilterOptions()}};
+    return this.fetch(this._filterOptions);
   },
   /* jshint: +W071 +W074 */
 

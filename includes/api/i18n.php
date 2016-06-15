@@ -164,10 +164,6 @@ class i18n extends WC_API_Resource {
   private function admin_buttons(){
     return array(
       'restore'         => _x( 'Restore defaults', 'restore default settings', 'woocommerce-pos' ),
-      /* translators: woocommerce */
-      'delete-template' => __( 'Delete template file', 'woocommerce' ),
-      /* translators: woocommerce */
-      'copy-file'       => __( 'Copy file to theme', 'woocommerce' ),
     );
   }
 

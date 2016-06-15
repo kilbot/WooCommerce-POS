@@ -4,6 +4,7 @@ namespace WC_POS\Unit_Tests\API;
 
 use WP_UnitTestCase;
 use WC_POS\API\Templates;
+use WC_POS\Admin\Settings;
 
 class TemplateTest extends WP_UnitTestCase {
 
@@ -21,6 +22,22 @@ class TemplateTest extends WP_UnitTestCase {
     return $stub;
   }
 
+  /**
+   * @param int $length
+   * @return string
+   */
+  protected function generate_random_string($length=10) {
+    $string = '';
+    $characters = "ABCDEFHJKLMNPRTVWXYZabcdefghijklmnopqrstuvwxyz";
+    for ($p = 0; $p < $length; $p++) {
+      $string .= $characters[mt_rand(0, strlen($characters)-1)];
+    }
+    return $string;
+  }
+
+  /**
+   *
+   */
   public function test_locate_default_template_files(){
 
     // create test template
@@ -39,6 +56,9 @@ class TemplateTest extends WP_UnitTestCase {
     rmdir( $test_dir );
   }
 
+  /**
+   *
+   */
   public function test_locate_template_files(){
 
     // create test template
@@ -76,6 +96,90 @@ class TemplateTest extends WP_UnitTestCase {
     // delete custom template
     unlink( $custom_file2 );
     rmdir( $custom_dir );
+  }
+
+  /**
+   *
+   */
+  public function test_create_receipt_template() {
+    $content = $this->generate_random_string();
+
+    $this->template->create_receipt_template( array(
+      'template' => $content
+    ) );
+
+    $posts = get_posts( array(
+      'posts_per_page'  => 1,
+      'post_type'       => 'wc-print-template',
+      'post_status'     => 'html, epos-print, escp'
+    ));
+
+    $template = $posts[0];
+
+    $this->assertEquals($content, $template->post_content);
+    $this->assertEquals('html', $template->post_status);
+  }
+
+  /**
+   *
+   */
+  public function test_update_receipt_template() {
+    $content = $this->generate_random_string();
+
+    $posts = get_posts( array(
+      'posts_per_page'  => 1,
+      'post_type'       => 'wc-print-template',
+      'post_status'     => 'html, epos-print, escp'
+    ));
+
+    $template = $posts[0];
+    $post_id = $template->ID;
+
+    update_option( Settings::DB_PREFIX . 'receipt_options', array(
+      'template_language' => 'epos-print'
+    ) );
+
+    $this->template->update_receipt_template( $post_id, array(
+      'template' => $content
+    ) );
+
+    $posts = get_posts( array(
+      'posts_per_page'  => 1,
+      'post_type'       => 'wc-print-template',
+      'post_status'     => 'html, epos-print, escp'
+    ));
+
+    $template = $posts[0];
+
+    $this->assertEquals($content, $template->post_content);
+    $this->assertEquals('epos-print', $template->post_status);
+
+    delete_option( Settings::DB_PREFIX . 'receipt_options' );
+  }
+
+  /**
+   *
+   */
+  public function test_delete_receipt_template() {
+
+    $posts = get_posts( array(
+      'posts_per_page'  => 1,
+      'post_type'       => 'wc-print-template',
+      'post_status'     => 'html, epos-print, escp'
+    ));
+
+    $template = $posts[0];
+    $post_id = $template->ID;
+
+    $this->template->delete_receipt_template( $post_id );
+
+    $posts = get_posts( array(
+      'posts_per_page'  => -1,
+      'post_type'       => 'wc-print-template',
+      'post_status'     => 'html, epos-print, escp'
+    ));
+
+    $this->assertEmpty($posts);
   }
 
 }

@@ -6,6 +6,7 @@ var Customers = require('./customers/collection');
 var Coupons = require('./coupons/collection');
 var Settings = require('./settings/collection');
 var Gateways = require('./gateways/collection');
+var Templates = require('./templates/collection');
 var debug = require('debug')('entities');
 var App = require('lib/config/application');
 var _ = require('lodash');
@@ -29,7 +30,8 @@ var EntitiesService = Service.extend({
     customers : Customers,
     coupons   : Coupons,
     gateways  : Gateways,
-    settings  : Settings
+    settings  : Settings,
+    templates : Templates
   },
 
   getMethods: {

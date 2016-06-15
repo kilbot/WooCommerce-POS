@@ -19,6 +19,7 @@ module.exports = function(method, entity, options) {
       switch (method) {
         case 'create':
         case 'update':
+        case 'patch':
           return db.update(data, options);
         case 'read':
           return db.read(key, options);

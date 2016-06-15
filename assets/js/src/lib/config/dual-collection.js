@@ -172,13 +172,28 @@ module.exports = app.prototype.DualCollection = IDBCollection.extend({
       });
   },
 
+  // fullSync: function(options){
+  //   options = options || {};
+  //   var collection = this;
+  //   return this.fetchRemoteIds(null, options)
+  //     .then(function(response){
+  //       collection._parseFetchOptions(options);
+  //       collection.trigger('sync', collection, response, options);
+  //     });
+  // },
+
   fullSync: function(options){
-    options = options || {};
     var collection = this;
     return this.fetchRemoteIds(null, options)
       .then(function(response){
-        collection._parseFetchOptions(options);
-        collection.trigger('sync', collection, response, options);
+        return collection.destroy(null, {
+          index: 'id',
+          data: {
+            filter: {
+              not_in: _.map(response, 'id')
+            }
+          }
+        });
       });
   },
 

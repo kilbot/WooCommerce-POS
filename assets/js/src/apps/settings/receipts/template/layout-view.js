@@ -2,14 +2,17 @@ var LayoutView = require('lib/config/layout-view');
 var App = require('lib/config/application');
 var hbs = require('handlebars');
 
+var languageMap = {
+  'html'      : 'html',
+  'epos-print': 'xml',
+  'escp'      : 'javascript'
+};
+
 var View = LayoutView.extend({
 
-  initialize: function(){
-    this.template = hbs.compile( this.model.template );
-  },
-
-  templateHelpers: function(){
-    return this.options.template_data;
+  initialize: function(options){
+    options = options || {};
+    this.template = hbs.compile( options._template );
   },
 
   ui: {
@@ -26,13 +29,11 @@ var View = LayoutView.extend({
   },
 
   onShow: function(){
-    var editor = window.ace.edit( this.ui.editor[0] );
-    editor.$blockScrolling = Infinity;
-    editor.getSession().setMode('ace/mode/html');
-    editor.setValue( this.options.template_data.template, 1 );
-    if( ! this.options.template_data.custom ){
-      editor.setReadOnly(true);
-    }
+    this.editor = window.ace.edit( this.ui.editor[0] );
+    var mode = 'ace/mode/' + languageMap[this.model.get('type')];
+    this.editor.$blockScrolling = Infinity;
+    this.editor.getSession().setMode(mode);
+    this.editor.setValue( this.model.get('template'), 1 );
   }
 
 });
