@@ -89,7 +89,7 @@ class TestCase extends \PHPUnit_Framework_TestCase {
   protected function get_product( $id ){
     $response = $this->client->get( get_woocommerce_api_url( 'products/' . $id ) );
     $data = $response->json();
-    return $data['product'][0];
+    return $data['product'];
   }
 
   /**
