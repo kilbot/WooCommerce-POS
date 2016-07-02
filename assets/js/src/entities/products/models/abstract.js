@@ -20,8 +20,8 @@ module.exports = DualModel.extend({
    */
   getProductAttributes: function(){
     return _.chain(this.get('attributes'))
-      .where({variation: false})
-      .where({visible: true})
+      .filter({variation: false})
+      .filter({visible: true})
       .value();
   }
 

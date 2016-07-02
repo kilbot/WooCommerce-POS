@@ -167,7 +167,7 @@ module.exports = bb.Collection.extend({
       if( model ){
         model.set({ enabled: enabled });
       }
-    }, this);
+    }.bind(this));
   }
 
 });

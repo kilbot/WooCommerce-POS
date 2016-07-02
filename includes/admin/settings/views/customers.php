@@ -11,7 +11,7 @@
   <tr class="default_customer">
     <th scope="row">
       <label><?php _e( 'Default POS Customer', 'woocommerce-pos' ); ?></label>
-      <img title="<?php esc_attr_e( 'The default customer for POS orders, eg: Guest or create a new customer.', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="wc_pos-tooltip">
+      <img title="<?php esc_attr_e( 'The default customer for POS orders, eg: Guest, Walk-in Customer or cashier\'s account.', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="wc_pos-tooltip">
     </th>
     <td>
       <select name="default_customer" id="default_customer" class="select2" style="width:250px" data-select="customer"></select>&nbsp;

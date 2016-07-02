@@ -83,13 +83,13 @@ describe('entities/products/models/variable.js', function () {
   };
 
   it('should be in a valid state', function() {
-    var variableProduct = _.findWhere(dummy_products.products, { id: 40 });
+    var variableProduct = _.find(dummy_products.products, { id: 40 });
     var product = new Model( variableProduct );
     expect(product).to.be.ok;
   });
 
   it('should attach a collection of variations', function() {
-    var variableProduct = _.findWhere(dummy_products.products, { id: 40 });
+    var variableProduct = _.find(dummy_products.products, { id: 40 });
     var product = new Model( variableProduct, { parse: true } );
     expect(product.variations.length).equals( variableProduct.variations.length );
   });

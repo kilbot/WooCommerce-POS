@@ -1,17 +1,38 @@
 <?php
 /**
  * Update to 0.4.6
- * - new customer settings tab
+ * - fix reports bug
  *
- * @version   0.4
+ * @version   0.4.6
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
   exit;
 }
 
-// wc_pos_get_option( 'general', 'default_customer' );
-// => wc_pos_get_option( 'customers', 'default_customer' );
+// fix pos orders
+$args = array(
+  'post_type'     => array('shop_order'),
+  'post_status'   => array('any'),
+  'posts_per_page'=>  -1,
+  'fields'        => 'ids',
+  'meta_query' => array(
+    array(
+      'key'     => '_pos',
+      'value'   => 1,
+      'compare' => '=',
+    ),
+  )
+);
 
-// wc_pos_get_option( 'general', 'logged_in_user' )
-// => wc_pos_get_option( 'customers', 'logged_in_user' )
+$query = new WP_Query( $args );
+
+foreach( $query->posts as $order_id ){
+  // check _order_tax and _order_shipping_tax for reports
+  if( ! get_post_meta( $order_id, '_order_tax', true ) ){
+    update_post_meta( $order_id, '_order_tax', 0 );
+  }
+  if( ! get_post_meta( $order_id, '_order_shipping_tax', true ) ){
+    update_post_meta( $order_id, '_order_shipping_tax', 0 );
+  }
+}

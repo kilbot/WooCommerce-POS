@@ -142,7 +142,7 @@ var OrderModel = DualModel.extend({
       var taxes = new Taxes(tax_rate, {order: this});
       taxes.toggleTaxes(enabled_taxes);
       this.tax_rates[tax_class] = taxes;
-    }, this);
+    }.bind(this));
 
     // exit early if attribute exists
     if (enabled_taxes) {

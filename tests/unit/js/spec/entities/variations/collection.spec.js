@@ -5,7 +5,7 @@ describe('entities/variations/collection.js', function () {
   var variations;
 
   beforeEach(function(){
-    var variableProduct = _.findWhere(dummy.products, { id: 40 });
+    var variableProduct = _.find(dummy.products, { id: 40 });
     variations = new Collection( variableProduct.variations );
   });
 

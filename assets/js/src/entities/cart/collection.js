@@ -60,7 +60,7 @@ module.exports = bb.Collection.extend({
       }
 
       return parsedAttrs.push(attrs);
-    }, this);
+    }.bind(this));
 
     models = bb.Collection.prototype.add.call(this, parsedAttrs, options);
     if( ! options.split ){

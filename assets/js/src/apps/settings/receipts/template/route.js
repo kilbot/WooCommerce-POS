@@ -4,7 +4,7 @@ var LayoutView = require('./layout-view');
 var Preview = require('./preview');
 var PreviewActions = require('./actions');
 var $ = require('jquery');
-var polyglot = require('lib/utilities/polyglot');
+// var polyglot = require('lib/utilities/polyglot');
 
 var ReceiptRoute = Route.extend({
 

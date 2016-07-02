@@ -5,10 +5,13 @@ php:
   - 7.0
 
 env:
-  - WP_VERSION=latest WP_MULTISITE=0
-  #    - WP_VERSION=latest WP_MULTISITE=1
-  #    - WP_VERSION=3.8 WP_MULTISITE=0
-  #    - WP_VERSION=3.8 WP_MULTISITE=1
+  matrix:
+    - WP_VERSION=latest WP_MULTISITE=0
+    #    - WP_VERSION=latest WP_MULTISITE=1
+    #    - WP_VERSION=3.8 WP_MULTISITE=0
+    #    - WP_VERSION=3.8 WP_MULTISITE=1
+  global:
+    - secure: SccpWdqY0BXjqH9075hcdunMpjxdk+mo5dTtFNzmlbJf/y+VuQOF8zezYdPbJOvTtNjRTeMzn3F5on0fa+RlXkt+VjbNRBR1slGwPB71ncQDFIbPR/qht81Jkg/SXZMde0rVdhHdYfGfB7HPAbcD42OiAeNxsj8n2pkmzYXRxj0=
 
 addons:
   hosts:
@@ -71,3 +74,4 @@ script:
 after_success:
 #  - if [ "`phpenv version-name`" == "7.0" ] ; then phpunit -c phpunit.xml.dist && php vendor/bin/coveralls -v && grunt coverage; fi
   - if [ "`phpenv version-name`" == "7.0" ] ; then grunt coverage; fi
+  - if [ $TRAVIS_PHP_VERSION = '7.0' ] && [ $TRAVIS_BRANCH = 'master' ] && [ $TRAVIS_PULL_REQUEST = 'false' ]; then sh apigen/generate-api.sh; fi
