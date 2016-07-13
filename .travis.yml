@@ -19,8 +19,9 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install docker-engine --no-install-recommends -y -o Dpkg::Options::="--force-confmiss" -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew"
   - sudo rm /usr/local/bin/docker-compose
-  - sudo curl -L https://github.com/docker/compose/releases/download/1.8.0-rc2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-  - sudo chmod +x /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/1.8.0-rc2/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin/
   - docker-compose -v
   - docker -v
 
