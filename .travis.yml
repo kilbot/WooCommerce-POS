@@ -1,77 +1,21 @@
-language: php
+sudo: required
 
-php:
-  - 5.4
-  - 7.0
+language: node
+
+services:
+  - docker
 
 env:
   matrix:
-    - WP_VERSION=latest WP_MULTISITE=0
-    #    - WP_VERSION=latest WP_MULTISITE=1
-    #    - WP_VERSION=3.8 WP_MULTISITE=0
-    #    - WP_VERSION=3.8 WP_MULTISITE=1
-  global:
-    - secure: SccpWdqY0BXjqH9075hcdunMpjxdk+mo5dTtFNzmlbJf/y+VuQOF8zezYdPbJOvTtNjRTeMzn3F5on0fa+RlXkt+VjbNRBR1slGwPB71ncQDFIbPR/qht81Jkg/SXZMde0rVdhHdYfGfB7HPAbcD42OiAeNxsj8n2pkmzYXRxj0=
+    - PHP_VERSION=54 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=55 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=56 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=70 WP_VERSION=latest WP_MULTISITE=0
 
-addons:
-  hosts:
-    - woopos.dev
 
 before_install:
-  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install stable
-  - git submodule update --init --recursive
-
-install:
-  # install wordpress & woocommerce & test theme
-  - bash tests/unit/php/bin/install.sh woopos_tests root '' localhost $WP_VERSION
-  - mkdir /tmp/wordpress/wp-content/plugins/woocommerce-pos/
-  - mv * .[^.]* /tmp/wordpress/wp-content/plugins/woocommerce-pos/
-  - mv /tmp/wordpress/* ./
-  - git clone https://github.com/kilbot/WooCommerce-POS-Test-Theme.git wp-content/themes/WooCommerce-POS-Test-Theme
-  - git clone https://github.com/kilbot/WooCommerce-POS-Test-Plugin.git wp-content/plugins/woocommerce-pos-test
-  # apache
-  - sudo apt-get update
-  - sudo apt-get install apache2 libapache2-mod-fastcgi
-  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf;
-  - if [ "`phpenv version-name`" == "7.0" ] ; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf; fi
-  - sudo a2enmod rewrite actions fastcgi alias
-  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-  # configure apache virtual hosts
-  - sudo cp -f ./wp-content/plugins/woocommerce-pos/tests/integration/php/bin/travis-ci-apache /etc/apache2/sites-available/default
-  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
-  - sudo service apache2 restart
-
-before_script:
-  # wp-cli
-  - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-  - chmod +x wp-cli.phar
-  - sudo mv wp-cli.phar /usr/local/bin/wp
-  - wp --info
-  - wp core config --dbname=woopos_tests --dbuser=root
-  - wp core install --url=woopos.dev --title=WooCommercePOS --admin_user=admin --admin_password=password --admin_email=support@woopos.com.au
-  - wp rewrite structure '/%year%/%monthnum%/%postname%'
-  - wp plugin activate woocommerce-pos
-  - wp plugin activate woocommerce-pos-test
-  - wp plugin install woocommerce --activate
-  - wp plugin install wordpress-importer --activate
-  - wp import wp-content/plugins/woocommerce/dummy-data/dummy-data.xml --authors=create
-  - wp option update woocommerce_api_enabled yes
-  - cp wp-content/plugins/woocommerce-pos/tests/integration/php/bin/wp-cli.yml ./
-  - wp rewrite flush --hard
-  # grunt-cli
-  - cd wp-content/plugins/woocommerce-pos/
-  - npm install -g grunt-cli
-  - npm install
-  - composer install
+  - npm run build
 
 script:
-  - grunt test
-  - phpunit -c tests/unit/php/phpunit.xml
-  - phpunit -c tests/integration/php/phpunit.xml
-  #    - ./node_modules/.bin/pioneer
-
-after_success:
-#  - if [ "`phpenv version-name`" == "7.0" ] ; then phpunit -c phpunit.xml.dist && php vendor/bin/coveralls -v && grunt coverage; fi
-  - if [ "`phpenv version-name`" == "7.0" ] ; then grunt coverage; fi
-  - if [ $TRAVIS_PHP_VERSION = '7.0' ] && [ $TRAVIS_BRANCH = 'master' ] && [ $TRAVIS_PULL_REQUEST = 'false' ]; then sh apigen/generate-api.sh; fi
+  - npm run unittest:js
+  - npm run composer && npm run unittest:php$PHP_VERSION

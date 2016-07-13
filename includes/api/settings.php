@@ -14,7 +14,7 @@ namespace WC_POS\API;
 use WC_API_Resource;
 use WC_API_Server;
 use WC_POS\Admin\Settings as Admin_Settings;
-use WC_POS\Admin\Settings\Gateways;
+use WC_POS\Admin\Settings\Gateways as Admin_Settings_Gateways;
 use WC_POS\Admin\Status;
 
 class Settings extends WC_API_Resource {
@@ -165,7 +165,7 @@ class Settings extends WC_API_Resource {
     // special case: gateway_
     $gateway_id = preg_replace( '/^gateway_/', '', strtolower( $id ), 1, $count );
     if($count) {
-      return new Gateways( $gateway_id );
+      return new Admin_Settings_Gateways( $gateway_id );
     }
 
     // special case: receipt_

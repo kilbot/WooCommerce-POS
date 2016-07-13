@@ -15,7 +15,6 @@ assets/js/admin-settings.build.js
 assets/js/admin-settings.min.js
 assets/js/admin-system-status.build.js
 assets/js/admin-system-status.min.js
-
-
-
 composer.lock
+.data
+.html

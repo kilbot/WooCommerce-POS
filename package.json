@@ -3,13 +3,21 @@
   "description": "A simple front-end for taking WooCommerce orders at the Point of Sale.",
   "version": "0.5.0-beta",
   "scripts": {
-    "test": "grunt test",
-    "dev": "grunt dev",
-    "deploy": "grunt deploy",
-    "tests-install": "bash tests/unit/php/bin/install.sh",
-    "clean-install": "bash tests/integration/php/bin/install.sh",
-    "test-php-unit": "phpunit -c tests/unit/php/phpunit.xml",
-    "test-php-integration": "phpunit -c tests/integration/php/phpunit.xml"
+    "start": "docker-compose -f .docker/docker-compose.yml up -d",
+    "stop": "docker-compose -f .docker/docker-compose.yml kill",
+    "build": "npm run build-assets && npm run build-docker",
+    "dev": "npm run build && node_modules/.bin/grunt dev --force",
+    "deploy": "npm install && node_modules/.bin/grunt grunt deploy",
+    "unittest:js": "npm install && node_modules/.bin/grunt test",
+    "unittest:php54": "docker exec php54 phpunit -c latest/wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
+    "unittest:php55": "docker exec php55 phpunit -c latest/wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
+    "unittest:php56": "docker exec php56 phpunit -c latest/wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
+    "unittest:php70": "docker exec php70 phpunit -c latest/wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
+    "tests-db": "docker exec mysql57 mysql --password=$MYSQL_ROOT_PASSWORD -Bse \"CREATE DATABASE IF NOT EXISTS $MYSQL_TESTS_DATABASE;\"",
+    "build-assets": "npm install && node_modules/.bin/grunt build --force",
+    "build-docker": "docker-compose -f .docker/docker-compose.yml build && npm run start",
+    "teardown-docker": "npm run stop && docker rm $(docker ps -a -q) && rm -rf .data && rm -rf .html",
+    "composer": "docker exec php56 composer install -d latest/wp-content/plugins/woocommerce-pos/"
   },
   "repository": {
     "type": "git",
