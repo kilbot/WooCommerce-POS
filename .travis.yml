@@ -2,6 +2,9 @@ sudo: required
 
 language: node_js
 
+node_js:
+  - "node"
+
 services:
   - docker
 
@@ -13,8 +16,17 @@ env:
     - PHP_VERSION=70 WP_VERSION=latest WP_MULTISITE=0
 
 before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install docker-engine --no-install-recommends -y -o Dpkg::Options::="--force-confmiss" -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew"
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/1.8.0-rc2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+  - chmod +x /usr/local/bin/docker-compose
+  - docker-compose -v
+  - docker -v
+
+install:
   - npm run build
 
 script:
   - npm run unittest:js
-  - npm run composer && npm run unittest:php$PHP_VERSION
+  - npm run composer && npm run unittest:php${PHP_VERSION}
