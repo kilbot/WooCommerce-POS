@@ -8,8 +8,8 @@
 Development repository for WooCommerce POS - the Point of Sale plugin for [WooCommerce](http://woothemes.com/woocommerce/).
 
 * **Download:** [http://wordpress.org/plugins/woocommerce-pos](http://wordpress.org/plugins/woocommerce-pos)
-* **Demo:** [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos)
-* **Website:** [http://woopos.com.au](http://woopos.com.au)
+* **Demo:** [http://demo.wcpos.com/pos](http://demo.wcpos.com/pos)
+* **Website:** [http://wcpos.com](http://wcpos.com)
 
 <p align="center">
   <img src="http://wcpos.com/wp-content/uploads/2015/05/pos-sale-lg.gif" alt="Screenshot"/>
@@ -25,7 +25,7 @@ Browser testing by [BrowserStack](http://browserstack.com).
 
 ## Report a bug
 
-Please report all bugs [here](https://github.com/kilbot/WooCommerce-POS/issues) or contact support via [support@woopos.com.au](mailto:support@woopos.com.au)
+Please report all bugs [here](https://github.com/kilbot/WooCommerce-POS/issues) or contact support via [support@woopos.com.au](mailto:support@wcpos.com)
 
 ## Translations
 

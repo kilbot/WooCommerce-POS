@@ -28,7 +28,9 @@ before_install:
 install:
   - npm install && node_modules/.bin/grunt build --force
   - npm run start:${PHP_VERSION}
-  - until [ "`docker inspect -f {{.State.Running}} ${PHP_VERSION}`" == "true" ]; do sleep 2; done
+
+before_script:
+  - sleep 30
 
 script:
   - npm run unit-test:js

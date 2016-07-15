@@ -10,7 +10,7 @@
     "start:php56": "docker-compose -f .docker/docker-php56.yml build && docker-compose -f .docker/docker-php56.yml up -d",
     "start:php70": "docker-compose -f .docker/docker-php70.yml build && docker-compose -f .docker/docker-php70.yml up -d",
     "stop": "docker-compose -f .docker/docker.yml kill",
-    "dev": "npm run build && node_modules/.bin/grunt dev --force",
+    "dev": "npm install && npm run start && node_modules/.bin/grunt dev --force",
     "deploy": "npm install && node_modules/.bin/grunt grunt deploy",
     "unit-test:js": "npm install && node_modules/.bin/grunt test",
     "unit-test:php54": "docker exec php54 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
