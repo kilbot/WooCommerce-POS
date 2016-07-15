@@ -30,7 +30,7 @@ install:
   - npm run start:${PHP_VERSION}
 
 before_script:
-  - sleep 30
+  - sleep 60
 
 script:
   - npm run unit-test:js
