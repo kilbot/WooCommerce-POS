@@ -17,9 +17,7 @@
     "unit-test:php55": "docker exec php55 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
     "unit-test:php56": "docker exec php56 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
     "unit-test:php70": "docker exec php70 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
-    "tests-db": "docker exec mysql57 mysql --password=$MYSQL_ROOT_PASSWORD -Bse \"CREATE DATABASE IF NOT EXISTS $MYSQL_TESTS_DATABASE;\"",
     "teardown-docker": "npm run stop && docker rm $(docker ps -a -q) && rm -rf .data && rm -rf .html",
-    "composer": "docker exec php56 composer install -d latest/wp-content/plugins/woocommerce-pos/"
   },
   "repository": {
     "type": "git",

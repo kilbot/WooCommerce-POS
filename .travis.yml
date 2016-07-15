@@ -10,10 +10,10 @@ services:
 
 env:
   matrix:
-    - PHP_VERSION=54 WP_VERSION=latest WP_MULTISITE=0 WC_VERSION=latest
-    - PHP_VERSION=55 WP_VERSION=latest WP_MULTISITE=0 WC_VERSION=latest
-    - PHP_VERSION=56 WP_VERSION=latest WP_MULTISITE=0 WC_VERSION=latest
-    - PHP_VERSION=70 WP_VERSION=latest WP_MULTISITE=0 WC_VERSION=latest
+    - PHP_VERSION=php54 WP_VERSION=latest WP_MULTISITE=0 WC_VERSION=latest
+    - PHP_VERSION=php55 WP_VERSION=latest WP_MULTISITE=0 WC_VERSION=latest
+    - PHP_VERSION=php56 WP_VERSION=latest WP_MULTISITE=0 WC_VERSION=latest
+    - PHP_VERSION=php70 WP_VERSION=latest WP_MULTISITE=0 WC_VERSION=latest
 
 before_install:
   - sudo apt-get update -qq
@@ -26,8 +26,10 @@ before_install:
   - docker -v
 
 install:
-  - npm run build
+  - npm install && node_modules/.bin/grunt build
+  - npm run start:${PHP_VERSION}
+  - until [ "`docker inspect -f {{.State.Running}} ${PHP_VERSION}`" == "true" ]; do sleep 2; done
 
 script:
-  - npm run unittest:js
-  - npm run composer && npm run unittest:php${PHP_VERSION}
+  - npm run unit-test:js
+  - npm run unit-test:${PHP_VERSION}
