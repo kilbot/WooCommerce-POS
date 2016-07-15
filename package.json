@@ -17,7 +17,7 @@
     "unit-test:php55": "docker exec php55 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
     "unit-test:php56": "docker exec php56 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
     "unit-test:php70": "docker exec php70 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
-    "teardown-docker": "npm run stop && docker rm $(docker ps -a -q) && rm -rf .data && rm -rf .html",
+    "teardown-docker": "npm run stop && docker rm $(docker ps -a -q) && rm -rf .data && rm -rf .html"
   },
   "repository": {
     "type": "git",
