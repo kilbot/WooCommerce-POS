@@ -10,10 +10,14 @@ services:
 
 env:
   matrix:
-    - PHP_VERSION=php54 WP_VERSION=latest WP_MULTISITE=0 WC_VERSION=latest
-    - PHP_VERSION=php55 WP_VERSION=latest WP_MULTISITE=0 WC_VERSION=latest
-    - PHP_VERSION=php56 WP_VERSION=latest WP_MULTISITE=0 WC_VERSION=latest
-    - PHP_VERSION=php70 WP_VERSION=latest WP_MULTISITE=0 WC_VERSION=latest
+    - PHP_VERSION=php54 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php55 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php56 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php70 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php54 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php55 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php56 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php70 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
 
 before_install:
   - sudo apt-get update -qq
@@ -35,3 +39,4 @@ before_script:
 script:
   - npm run unit-test:js
   - npm run unit-test:${PHP_VERSION}
+  - npm run integration-test:${PHP_VERSION}

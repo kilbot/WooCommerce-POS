@@ -3,7 +3,7 @@
   "description": "A simple front-end for taking WooCommerce orders at the Point of Sale.",
   "version": "0.5.0-beta",
   "scripts": {
-    "build": "npm install && node_modules/.bin/grunt build --force && npm docker-compose -f .docker/docker.yml build",
+    "build": "npm install && node_modules/.bin/grunt build --force && docker-compose -f .docker/docker.yml build",
     "start": "docker-compose -f .docker/docker.yml up -d",
     "start:php54": "docker-compose -f .docker/docker-php54.yml up -d",
     "start:php55": "docker-compose -f .docker/docker-php55.yml up -d",
@@ -17,6 +17,10 @@
     "unit-test:php55": "docker exec php55 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
     "unit-test:php56": "docker exec php56 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
     "unit-test:php70": "docker exec php70 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
+    "integration-test:php54": "docker exec php54 phpunit -c wp-content/plugins/woocommerce-pos/tests/integration/php/phpunit.xml",
+    "integration-test:php55": "docker exec php55 phpunit -c wp-content/plugins/woocommerce-pos/tests/integration/php/phpunit.xml",
+    "integration-test:php56": "docker exec php56 phpunit -c wp-content/plugins/woocommerce-pos/tests/integration/php/phpunit.xml",
+    "integration-test:php70": "docker exec php70 phpunit -c wp-content/plugins/woocommerce-pos/tests/integration/php/phpunit.xml",
     "teardown-docker": "npm run stop && docker rm $(docker ps -a -q) && rm -rf .data && rm -rf .html"
   },
   "repository": {

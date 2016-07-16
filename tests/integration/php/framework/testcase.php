@@ -96,7 +96,7 @@ class TestCase extends \PHPUnit_Framework_TestCase {
    * @return mixed
    */
   protected function get_random_product_id() {
-    $response = $this->client->get(get_woocommerce_api_url( 'products/ids' ));
+    $response = $this->client->get( get_woocommerce_api_url( 'products/ids' ) );
     $data = $response->json();
     $key = array_rand( $data['products'] );
     return $data['products'][$key]['id'];
@@ -108,6 +108,13 @@ class TestCase extends \PHPUnit_Framework_TestCase {
   protected function get_random_product() {
     $product_id = $this->get_random_product_id();
     return $this->get_product($product_id);
+  }
+
+  /**
+   * @param $response
+   */
+  protected function print_response_body( $response ) {
+    echo $response->getBody();
   }
 
 }

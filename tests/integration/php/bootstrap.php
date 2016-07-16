@@ -18,8 +18,8 @@ class Integration_Tests {
    * include composer autoloader
    */
   public function includes(){
-    require_once(__DIR__.'/../../../../../../wp-load.php');
-    require_once 'vendor/autoload.php'; // required to load Guzzle
+    require_once( __DIR__.'/../../../../../../wp-load.php' );
+    require_once '/root/.composer/vendor/autoload.php'; // required to load Guzzle
     require_once 'framework/testcase.php';
   }
 

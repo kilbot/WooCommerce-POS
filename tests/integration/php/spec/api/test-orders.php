@@ -629,6 +629,7 @@ class OrdersTest extends TestCase {
         )
       )
     ));
+
     $this->assertEquals(201, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('order', $data);
