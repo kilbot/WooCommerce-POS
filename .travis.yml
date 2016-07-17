@@ -35,10 +35,10 @@ install:
 
 before_script:
   - sleep 60
-
-script:
   - docker exec ${PHP_VERSION} wp core version --allow-root
   - docker exec ${PHP_VERSION} wp plugin list --allow-root --status=active
+
+script:
   - npm run unit-test:js
   - npm run unit-test:${PHP_VERSION}
   - npm run integration-test:${PHP_VERSION}
