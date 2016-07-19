@@ -191,7 +191,7 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
     if ( $attribute['is_taxonomy'] ) {
       $terms = wp_get_post_terms( $product->parent->id, $attribute['name'] );
       if( !is_wp_error($terms) ) : foreach( $terms as $term ) :
-        if( $option == $term->slug ) $name = $term->name;
+        if( $option === $term->slug ) $name = $term->name;
       endforeach; endif;
 
     // piped attributes
@@ -300,6 +300,10 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
       }
 
     }
+
+    // order product alphabetically
+    $query->set('orderby', 'post_title');
+    $query->set('order', 'ASC');
 
     // update the meta_query
     $query->set( 'meta_query', $meta_query );

@@ -1,5 +1,5 @@
 <li class="list-row subtotal">
-  <div><?php /* translators: woocommerce */ _e( 'Cart Subtotal', 'woocommerce' ); ?>:</div>
+  <div><?php /* translators: woocommerce */ _e( 'Subtotal', 'woocommerce' ); ?>:</div>
   <div class="total">{{{money subtotal}}}</div>
   <div class="action"></div>
 </li>

@@ -369,11 +369,20 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    */
   public function create_order( $order_id ){
     // pos meta
-    global $current_user;
-    get_currentuserinfo();
+    $current_user = wp_get_current_user();
+
     update_post_meta( $order_id, '_pos', 1 );
     update_post_meta( $order_id, '_pos_user', $current_user->ID );
     update_post_meta( $order_id, '_pos_user_name', $current_user->user_firstname . ' ' . $current_user->user_lastname );
+
+    // check _order_tax and _order_shipping_tax for reports
+    if( ! get_post_meta( $order_id, '_order_tax', true ) ){
+      update_post_meta( $order_id, '_order_tax', 0 );
+    }
+
+    if( ! get_post_meta( $order_id, '_order_shipping_tax', true ) ){
+      update_post_meta( $order_id, '_order_shipping_tax', 0 );
+    }
 
     // payment
     do_action( 'woocommerce_pos_process_payment', $order_id, $this->data);
@@ -572,17 +581,21 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * @param array $cashier
    * @return array
    */
-  private function add_cashier_details( $order, array $cashier = array() ){
-    $cashier['id'] = get_post_meta( $order->id, '_pos_user', true);
-    $first_name = get_post_meta( $order->id, '_pos_user_first_name', true);
-    $last_name = get_post_meta( $order->id, '_pos_user_last_name', true);
-    if( !$first_name && !$last_name ) {
-      $user_info = get_userdata( $cashier['id'] );
+  private function add_cashier_details( $order ) {
+    if ( !$cashier_id = get_post_meta( $order->id, '_pos_user', true ) ) {
+      return;
+    }
+    $first_name = get_post_meta( $order->id, '_pos_user_first_name', true );
+    $last_name = get_post_meta( $order->id, '_pos_user_last_name', true );
+    if ( !$first_name && !$last_name && $user_info = get_userdata( $cashier_id ) ) {
       $first_name = $user_info->first_name;
       $last_name = $user_info->last_name;
     }
-    $cashier['first_name'] = $first_name;
-    $cashier['last_name'] = $last_name;
+    $cashier = array(
+      'id'         => $cashier_id,
+      'first_name' => $first_name,
+      'last_name'  => $last_name
+    );
     return apply_filters( 'woocommerce_pos_order_response_cashier', $cashier, $order );
   }
 

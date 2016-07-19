@@ -43,6 +43,9 @@ class WC_POS_Activator {
   public function run_woocommerce_pos(){
     // Check for min requirements to run
     if( $this->php_check() && $this->woocommerce_check() ){
+      // global helper functions
+      require_once WC_POS_PLUGIN_PATH . 'includes/wc-pos-functions.php';
+
       require_once WC_POS_PLUGIN_PATH . 'includes/class-wc-pos.php';
       new WC_POS();
 
@@ -53,6 +56,8 @@ class WC_POS_Activator {
 
       // Run update script if required
       $this->version_check();
+
+      $this->check_plugin_conflicts();
     }
   }
 
@@ -166,7 +171,8 @@ class WC_POS_Activator {
    */
   private function db_upgrade( $old, $current ) {
     $db_updates = array(
-      '0.4' => 'updates/update-0.4.php'
+      '0.4'   => 'updates/update-0.4.php',
+      '0.4.6' => 'updates/update-0.4.6.php',
     );
     foreach ( $db_updates as $version => $updater ) {
       if ( version_compare( $version, $old, '>' ) &&
@@ -223,6 +229,15 @@ class WC_POS_Activator {
       $message .= sprintf( '<a href="%s">%s</a>', $fail['buttons'][0]['href'], $fail['buttons'][0]['prompt'] ) . ' &raquo;';
       WC_POS_Admin_Notices::add( $message );
     }
+  }
+
+  /**
+   *
+   */
+  private function check_plugin_conflicts(){
+    // disable NextGEN Gallery
+    if( !defined('NGG_DISABLE_RESOURCE_MANAGER') )
+      define( 'NGG_DISABLE_RESOURCE_MANAGER', true );
   }
 
 }

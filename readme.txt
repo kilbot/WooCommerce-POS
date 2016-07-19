@@ -2,8 +2,8 @@
 Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
 Requires at least: 4.0 & WooCommerce 2.3.7
-Tested up to: 4.3
-Stable tag: 0.4.5
+Tested up to: 4.5
+Stable tag: 0.4.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,20 +14,20 @@ Finally, a Point of Sale plugin for WooCommerce! Sell online and in your physica
 WooCommerce POS is a simple interface for taking orders at the Point of Sale using your [WooCommerce](http://www.woothemes.com/woocommerce/) store. WooCommerce POS provides an alternative to Vend or Shopify POS - no need to sync inventory and no monthly subscription fees.
 
 = DEMO = 
-You can see a demo of the WooCommerce POS plugin in action by going to [http://demo.woopos.com.au/pos](http://demo.woopos.com.au/pos) with `login/pass` : `demo/demo`
+You can see a demo of the WooCommerce POS plugin in action by going to [http://demo.wcpos.com/pos](http://demo.wcpos.com/pos) with `login/pass` : `demo/demo`
 
 = MORE INFO = 
-* Website: http://woopos.com.au
-* Roadmap: http://woopos.com.au/roadmap
+* Website: http://wcpos.com
+* Roadmap: http://wcpos.com/roadmap
 * GitHub: https://github.com/kilbot/WooCommerce-POS
-* Translate: http://translate.woopos.com.au
-* Upgrade to Pro: http://woopos.com.au/pro
+* Translate: http://translate.wcpos.com
+* Upgrade to Pro: http://wcpos.com/pro
 
 = REQUIREMENTS =
 * WooCommerce >= 2.3.7
 * PHP 5.4+
-* [A modern browser](http://woopos.com.au/faq/browser-compatibility/)
-* [A good web host](http://woopos.com.au/wpe)
+* [A modern browser](http://wcpos.com/faq/browser-compatibility/)
+* [A good web host](http://wcpos.com/wpe)
 
 == Installation ==
 
@@ -38,9 +38,9 @@ You can see a demo of the WooCommerce POS plugin in action by going to [http://d
 4. Click Activate Plugin to activate it.
 
 = Pro installation = 
-If you have purchased a license for [WooCommerce POS Pro](http://woopos.com.au/pro) please follow the steps below to install and activate the plugin:
+If you have purchased a license for [WooCommerce POS Pro](http://wcpos.com/pro) please follow the steps below to install and activate the plugin:
 
-1. Go to: http://woopos.com.au/my-account/
+1. Go to: http://wcpos.com/my-account/
 2. Under My Downloads, click the download link and save the plugin to your desktop.
 3. Then go to your site, login and go to the Add New Plugin page, eg: http://<yourstore.com>/wp-admin/plugin-install.php?tab=upload
 4. Upload the plugin zip file from your desktop and activate.
@@ -58,14 +58,14 @@ To install a WordPress Plugin manually:
 == Frequently Asked Questions ==
 
 = Where can I find more information on WooCommerce POS? =
-There is more information on our website at [woopos.com.au](http://woopos.com.au).
+There is more information on our website at [wcpos.com](http://wcpos.com).
 Try:
-* [FAQ](http://woopos.com.au/faq)
-* [Documentation](http://woopos.com.au/docs)
-* [Blog](http://woopos.com.au/blog)
+* [FAQ](http://wcpos.com/faq)
+* [Documentation](http://wcpos.com/docs)
+* [Blog](http://wcpos.com/blog)
 
 = Where can I request a feature? =
-Visit the [Roadmap](http://woopos.com.au/roadmap) for information on what is coming in the next version of WooCommerce POS. If your feature isn't mentioned leave a request in the comments.
+Visit the [Roadmap](http://wcpos.com/roadmap) for information on what is coming in the next version of WooCommerce POS. If your feature isn't mentioned leave a request in the comments.
 
 = Where can I get support? =
 WooCommerce POS has a support page within the plugin (eg: http://*<yourstore>*/pos/#support). If you are experiencing an error or problem please visit this support page and send a message using the form provided. This form will attach important information we need to assist you.
@@ -79,10 +79,18 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
-= 0.4.5 - 2015/10/** =
+= 0.4.6 - 2016/06/15 =
+* WC 2.6 Compatibility Fix: Prevent POS gateways from appearing on online checkout
+* Fix: checkout settings not showing for some users due to Javascript conflicts
+* Fix: POS orders not showing in reports
+* Fix: bug causing issue with some variations, e.g.: 000, 00 and 0
+* Fix: character encoding in checkout
+* Fix: incorrect translation strings
+
+= 0.4.5 - 2015/10/28 =
 * Important: WooCommerce POS now requires PHP 5.4 or higher
 * Important: WooCommerce POS now requires WooCommerce 2.3.7 or higher
-* Important: Pro users should update [WooCommerce POS Pro](http://woopos.com.au/pro) to version 0.4.5
+* Important: Pro users should update [WooCommerce POS Pro](http://wcpos.com/pro) to version 0.4.5
 * Fix: Layout issues in Chrome 46+
 * Fix: POS permalink bug introduced in 0.4.2 - [22388f7](https://github.com/kilbot/WooCommerce-POS/commit/22388f7a6d91959b3b55fd07b6f973ba8eda01af)
 * Fix: POS Cash not recording amount tendered or change - [2ef2260](https://github.com/kilbot/WooCommerce-POS/commit/2ef226070eb4a2f966cd1d96c3fbd850b6baec34)
@@ -167,10 +175,14 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Upgrade Notice ==
 
+= 0.4.6 =
+* Urgent compatibility fix for WooCommerce 2.6
+* [Pro](http://wcpos.com/pro) users should update to version 0.4.6 by going to [https://wcpos.com/my-account](https://wcpos.com/my-account).
+
 = 0.4.5 =
 * WooCommerce POS now requires PHP 5.4 or higher.
 * WooCommerce POS now requires WooCommerce 2.3.7 or higher.
-* Pro users should update [WooCommerce POS Pro](http://woopos.com.au/pro) to version 0.4.5.
+* Pro users should update [WooCommerce POS Pro](http://wcpos.com/pro) to version 0.4.5.
 
 = 0.4.4 =
-* Pro users should update [WooCommerce POS Pro](http://woopos.com.au/pro) to version 0.4.4.
+* Pro users should update [WooCommerce POS Pro](http://wcpos.com/pro) to version 0.4.4.

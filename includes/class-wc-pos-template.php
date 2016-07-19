@@ -130,11 +130,12 @@ class WC_POS_Template {
 
     // disable W3 Total Cache minify
     if ( !defined( 'DONOTMINIFY' ) )
-      define( "DONOTMINIFY", "true" );
+      define( 'DONOTMINIFY', true );
 
     // disable WP Super Cache
     if ( !defined( 'DONOTCACHEPAGE' ) )
-      define( "DONOTCACHEPAGE", "true" );
+      define( 'DONOTCACHEPAGE', true );
+
   }
 
   /**
@@ -266,22 +267,27 @@ class WC_POS_Template {
    * @return string
    */
   private function removeDomNodes( $html, $xpathString ) {
-    $dom = new DOMDocument;
-
+    if( ! class_exists('DOMDocument') ){
+      return preg_replace('/<script.+?<\/script>/im', '', $html);
+    }
+    $dom = new DOMDocument();
+    // suppress warnings for malformed HTML
+    libxml_use_internal_errors(true);
     // Libxml constants not available on all servers (Libxml < 2.7.8)
     // $html->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-    $dom->loadHtml( '<div class="form-group">' . $html . '</div>' );
-    # remove <!DOCTYPE
+    $dom->loadHtml( '<?xml encoding="UTF-8">' . '<div class="form-group">' . $html . '</div>' );
+    $dom->preserveWhiteSpace = false;
+    // remove <!DOCTYPE
     $dom->removeChild( $dom->doctype );
-    # remove <html><body></body></html>
+    // remove <?xml encoding="UTF-8">
+    $dom->removeChild( $dom->firstChild );
+    // <html><body></body></html>
     $dom->replaceChild( $dom->firstChild->firstChild->firstChild, $dom->firstChild );
-
     // remove the required node
     $xpath = new DOMXPath( $dom );
     while ( $node = $xpath->query( $xpathString )->item( 0 ) ) {
       $node->parentNode->removeChild( $node );
     }
-
     return $dom->saveHTML();
   }
 
