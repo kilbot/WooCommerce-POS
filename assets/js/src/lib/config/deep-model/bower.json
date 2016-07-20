@@ -1,0 +1,24 @@
+{
+  "name": "backbone-deep-model",
+  "main": "index.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/kahwee/backbone-deep-model",
+  "authors": [
+    "KahWee Teng <t@kw.sg>"
+  ],
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "keywords": [
+    "backbone"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

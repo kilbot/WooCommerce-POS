@@ -1,0 +1,31 @@
+{
+  "name": "backbone-sorted-collection",
+  "description": "Create a sorted version of a backbone collection that stays in sync.",
+  "version": "0.3.7",
+  "homepage": "http://github.com/jmorrell/backbone-sorted-collection",
+  "keywords": [],
+  "main": "backbone-sorted-collection.js",
+  "license": "MIT",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/jmorrell/backbone-sorted-collection.git"
+  },
+  "ignore": [
+    "test",
+    ".jshintrc",
+    ".travis.yml",
+    "CHANGELOG.md",
+    "karma.conf.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "backbone": ">=1.0.0",
+    "underscore": ">=1.5.1"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "backbone": ">=1.0.0",
+    "underscore": ">=1.5.1"
+  }
+}
+

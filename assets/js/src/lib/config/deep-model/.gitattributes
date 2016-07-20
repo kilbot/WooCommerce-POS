@@ -1,0 +1,8 @@
+* text eol=lf
+
+*.png binary
+*.jpg binary
+*.min.js binary
+
+*.min.js merge=ours
+*.js.map merge=ours

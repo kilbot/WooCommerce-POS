@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Cities example</title>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+
+    <script type="text/template" id="table">
+      <table>
+        <thead>
+          <tr>
+            <th>City</th>
+            <th>Postal Code</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </script>
+
+    <script type="text/template" id="table-row">
+      <tr>
+        <td><%= city %></td>
+        <td><%= postalCode %></td>
+      </tr>
+    </script>
+
+    <script type="text/template" id="empty-table">
+      <p>Nothing matches the filters</p>
+    </script>
+
+    <div class="container">
+      <h1>Cities Map Example</h1>
+
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="table"></div>
+        </div>
+        <div class="col-sm-9">
+          <div id="map"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="js/underscore.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/backbone.js"></script>
+    <script src="js/backbone.marionette.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="../../backbone-filtered-collection.js"></script>
+    <script src="js/ca-cities.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>

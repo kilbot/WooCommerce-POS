@@ -1,0 +1,38 @@
+{
+  "env": {
+    "node": true,
+    "jquery": true,
+    "mocha": true,
+    "browser": true
+  },
+  "settings": {
+    "ecmascript": 6,
+    "jsx": true
+  },
+  "rules": {
+    "no-new-object": 1,
+    "no-reserved-keys": 1,
+    "no-array-constructor": 1,
+    "quotes": [1, "single"],
+    "max-len": [1, 100, 2],
+    "no-underscore-dangle": true,
+    "no-inner-declarations": [1, "both"],
+    "no-shadow-restricted-names": 1,
+    "one-var": 0,
+    "vars-on-top": 0,
+    "eqeqeq": 1,
+    "curly": [1, "multi-line"],
+    "no-mixed-spaces-and-tabs": 1,
+    "space-before-blocks": [1, "always"],
+    "space-infix-ops": 1,
+    "eol-last": 1,
+    "comma-style": [1, "last"],
+    "no-comma-dangle": 1,
+    "semi": [1, "always"],
+    "radix": 1,
+    "camelcase": 1,
+    "new-cap": 1,
+    "consistent-this": [1, "_this"],
+    "func-names": 0
+  }
+}

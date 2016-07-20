@@ -19,3 +19,5 @@ assets/js/vendor.bundle.js
 assets/js/products.min.js
 coverage
 assets/js/templates.js
+.data
+.html

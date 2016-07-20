@@ -1,0 +1,7 @@
+ +  fix bug: wrong parsing of queries like "john smith|barbara streisand"
+ +  added prefixed range arguments, e.g. "pref:15-20"
+ +  add screening of special symbols, e.g. \"
+ +  all special symbols should be configurable (ORs, ANDs, colons, etc)
+ +  add [] brackets for ORs
+
+ *  rewrite parser so that special symbols can be words, not symbols (like OR instead of |). Parser should operate on tokens, not characters.

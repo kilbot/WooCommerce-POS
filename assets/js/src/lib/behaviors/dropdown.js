@@ -6,7 +6,7 @@ var Drop = require('tether-drop');
 var App = require('lib/config/application');
 var namespace = App.prototype.namespace('dropdown');
 
-var _Drop = Drop.createContext({
+var Drop_ = Drop.createContext({
   classPrefix: namespace
 });
 
@@ -65,7 +65,7 @@ var Dropdown = Behavior.extend({
       target  : target,
       content : content
     });
-    this.drop = new _Drop(options);
+    this.drop = new Drop_(options);
 
     // drop events
     this.drop.on('open', this.onOpen);

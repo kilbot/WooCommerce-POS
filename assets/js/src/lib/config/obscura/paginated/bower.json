@@ -1,0 +1,27 @@
+{
+  "name": "backbone-paginated-collection",
+  "description": "Create a paginated version of a backbone collection that stays in sync.",
+  "version": "0.3.5",
+  "homepage": "http://github.com/jmorrell/backbone-paginated-collection",
+  "main": "backbone-paginated-collection.js",
+  "license": "MIT",
+  "ignore": [
+    "test",
+    ".jshintrc",
+    ".travis.yml",
+    "CHANGELOG.md",
+    "karma.conf.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "backbone": ">=1.0.0",
+    "underscore": ">=1.5.1"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "backbone": ">=1.0.0",
+    "underscore": ">=1.5.1",
+    "sinon-browser-only": "~1.12.1",
+    "sinon-chai": "~2.7.0"
+  }
+}

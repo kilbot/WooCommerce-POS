@@ -1,3 +1,51 @@
+= 0.4.6 - 2016/06/15 =
+* WC 2.6 Compatibility Fix: Prevent POS gateways from appearing on online checkout
+* Fix: checkout settings not showing for some users due to Javascript conflicts
+* Fix: POS orders not showing in reports
+* Fix: bug causing issue with some variations, e.g.: 000, 00 and 0
+* Fix: character encoding in checkout
+* Fix: incorrect translation strings
+
+= 0.4.5 - 2015/10/28 =
+* Important: WooCommerce POS now requires PHP 5.4 or higher
+* Important: WooCommerce POS now requires WooCommerce 2.3.7 or higher
+* Important: Pro users should update [WooCommerce POS Pro](http://wcpos.com/pro) to version 0.4.5
+* Fix: Layout issues in Chrome 46+
+* Fix: POS permalink bug introduced in 0.4.2 - [22388f7](https://github.com/kilbot/WooCommerce-POS/commit/22388f7a6d91959b3b55fd07b6f973ba8eda01af)
+* Fix: POS Cash not recording amount tendered or change - [2ef2260](https://github.com/kilbot/WooCommerce-POS/commit/2ef226070eb4a2f966cd1d96c3fbd850b6baec34)
+* Fix: POS Cash and Card gateways not showing for some users
+* Fix: Permalink slugs should not begin with slash
+* Fix: Product variation popover where variant contains a comma or special character
+* Fix: Firebox bug where POS would be unresponsive after printing receipt
+* Improve: POS template caching and performance
+* Improve: Plugin update notices - [08058a9](https://github.com/kilbot/WooCommerce-POS/commit/08058a99e89cf9c3612c7086534a576e99ae9435)
+* Improve: Customer search
+* New: (Pro) Edit customer details during checkout
+
+= 0.4.4 - 2015/08/26 =
+* Fix: cart totals going to zero with new fee or shipping line item - commit [35f547c](https://github.com/kilbot/WooCommerce-POS/commit/35f547cf40919736ff769702043489ff1698ec30)
+* Improve: scanning barcodes multiple times - commit [670173b](https://github.com/kilbot/WooCommerce-POS/commit/670173b4e890d74800420511803e48ef9f6a4ec7)
+
+= 0.4.3 - 2015/08/24 =
+* Fix: barcode scanning bug introduced in version 0.4.2 - commit [8a608c8](https://github.com/kilbot/WooCommerce-POS/commit/8a608c8124d77cd3499af55e08651752287261bc)
+
+= 0.4.2 - 2015/08/24 =
+* New: local storage will now clear on version change - commit [85ec411](https://github.com/kilbot/WooCommerce-POS/commit/85ec411a58600988b811272be6d151cb11161f4f)
+* New: option to automatically print receipt after checkout - commit [16fba05](https://github.com/kilbot/WooCommerce-POS/commit/16fba054593e118be6c567ce4d87f8d0b91acaa5)
+* New: add cashier to receipt data - commit [c4caa8d](https://github.com/kilbot/WooCommerce-POS/commit/c4caa8df78d9f255445f370854fbb3e466b46b4e)
+* New: add pos_cash info to receipt data - commit [e7e443b](https://github.com/kilbot/WooCommerce-POS/commit/e7e443ba07aff02f3927f2c08128e062b81fe5c1)
+* New: WooPOS icon to denote POS orders in WP Admin
+* Fix: variation display and select issues - commit [91c7ec1](https://github.com/kilbot/WooCommerce-POS/commit/91c7ec13e737f820d84feb7890d7b6d027a79792), [b3d6543](https://github.com/kilbot/WooCommerce-POS/commit/b3d6543b86140df62ff90f3a7b7e734d73ae59ab)
+* Fix: variation barcode search for products in queue - commit [3fda531](https://github.com/kilbot/WooCommerce-POS/commit/3fda5317ef580f6b6d70e24ba235d2b7e69c5ee4)
+* Fix: variation stock adjustment after sale - commit [26978fd](https://github.com/kilbot/WooCommerce-POS/commit/26978fd0e74cfb9cf28ef2bb4bc5222820a77d38)
+* Fix: populate order addresses from customer id - commit [b86bc56](https://github.com/kilbot/WooCommerce-POS/commit/b86bc5650a2bf41d7744bf07cda34407e8fa3dd5)
+* Fix: compatibility fix for WC 2.4 SSL authentication - commit [525671b](https://github.com/kilbot/WooCommerce-POS/commit/525671b7613b20864366aebf426f14d07b37bfa4)
+* Fix: modal CSS conflict in WP Admin - commit [837b918](https://github.com/kilbot/WooCommerce-POS/commit/837b918e5bae4de6c1cee1492d390ade1b2e7f45)
+* Fix: numpad discount bug introduced in 0.4.1
+* Fix: quick edit links not showing on WP Admin Products page - commit [07d3e98](https://github.com/kilbot/WooCommerce-POS/commit/07d3e984802b64c645f53899396bb393ea7cb7ef)
+* Fix: POS visibility options not showing on new product page - commit [ef20a5b](https://github.com/kilbot/WooCommerce-POS/commit/ef20a5bd4e9727855e9eac747f912502ae0c9cc9)
+* Tweak: WP Admin CSS - commit [c5a38c7](https://github.com/kilbot/WooCommerce-POS/commit/c5a38c7f889a7788e3eaa633c28620d2e80ac2ee)
+
 = 0.4.1 =
 * Note: WooCommerce POS now requires WooCommerce 2.3 or greater
 * New: added woocommerce_pos_email_receipt hook

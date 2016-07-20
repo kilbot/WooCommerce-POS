@@ -1,0 +1,45 @@
+{
+  "name": "backbone-filtered-collection",
+  "description": "Create a filtered version of a backbone collection that stays in sync.",
+  "version": "0.4.0",
+  "homepage": "http://github.com/jmorrell/backbone-filtered-collection",
+  "main": "index.js",
+  "license": "MIT",
+  "keywords": [
+    "backbone",
+    "plugin",
+    "filtering",
+    "filter",
+    "collection",
+    "client",
+    "browser"
+  ],
+  "author": {
+    "name": "Jeremy Morrell",
+    "email": "morrell.jeremy@gmail.com",
+    "url": "http://rathercurio.us"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmorrell/backbone-filtered-collection.git"
+  },
+  "scripts": {
+    "start": "npm run bower && npm run build && npm run test",
+    "test": "./node_modules/karma/bin/karma start --browsers Firefox --single-run",
+    "build": "node build.js",
+    "bower": "./node_modules/bower/bin/bower install"
+  },
+  "dependencies": {
+    "backbone": ">=1.0.0",
+    "underscore": ">=1.5.1",
+    "backbone-collection-proxy": "~0.2.0"
+  },
+  "devDependencies": {
+    "karma": "^0.12.23",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-mocha": "~0.1.0",
+    "mocha": "~1.12.0",
+    "cjs-umd": "git://github.com/nicolashery/cjs-umd#95f7f651ab1034c8caeda54e09f473da1fc49f11",
+    "bower": "~1.3.1"
+  }
+}

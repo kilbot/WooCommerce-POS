@@ -6,7 +6,7 @@ var Drop = require('tether-drop');
 var App = require('lib/config/application');
 var namespace = App.prototype.namespace('tooltip');
 
-var _Drop = Drop.createContext({
+var Drop_ = Drop.createContext({
   classPrefix: namespace
 });
 
@@ -46,7 +46,7 @@ var TooltipBehavior = Behavior.extend({
       target  : e.target,
       content : $(e.target).attr('title')
     });
-    var drop = new _Drop(options);
+    var drop = new Drop_(options);
     this._initialized.push(e.target);
 
     // remove the title attribute to prevent browser hover

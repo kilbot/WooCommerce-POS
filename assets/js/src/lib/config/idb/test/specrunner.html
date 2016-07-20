@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>backbone-idb tests</title>
+  <link rel="stylesheet" media="all" href="../node_modules/mocha/mocha.css">
+</head>
+<body>
+<div id="mocha"><p><a href="./specrunner.html">Index</a></p></div>
+<div id="messages"></div>
+<div id="fixtures"></div>
+
+<script src="../node_modules/mocha/mocha.js"></script>
+<script src="../node_modules/chai/chai.js"></script>
+<script src="../node_modules/sinon/lib/sinon.js"></script>
+<script src="../node_modules/jquery/dist/jquery.js"></script>
+<script src="../node_modules/underscore/underscore.js"></script>
+<script src="../node_modules/backbone/backbone.js"></script>
+<script src="../node_modules/idb-wrapper/idbstore.js"></script>
+<script src="../backbone-idb.js"></script>
+
+<script>
+  mocha.setup('bdd');
+  chai.should();
+</script>
+<script src="spec.js"></script>
+<script>mocha.run();</script>
+</body>
+</html>

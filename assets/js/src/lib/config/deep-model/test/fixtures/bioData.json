@@ -1,0 +1,10 @@
+{
+  "id": 123,
+  "user": {
+    "type": "Spy",
+    "name": {
+      "first": "Sterling",
+      "last": "Archer"
+    }
+  }
+}

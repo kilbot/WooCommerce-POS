@@ -32,7 +32,7 @@ module.exports = function(grunt) {
         '!locales.json',
         '!phpunit.xml',
         '!phpunit.xml.dist',
-        '!phpunit.int.xml',
+        '!phpunit.xml',
         '!pioneer.json',
         '!<%= app.css.src %>/**',
         '!<%= app.js.src %>/**',
@@ -436,8 +436,11 @@ module.exports = function(grunt) {
   // test
   grunt.registerTask('test', 'Run unit tests', ['symlink', 'simplemocha']);
 
+  // build
+  grunt.registerTask('build', 'Build projects', ['compass', 'cssmin', 'jshint', 'test', 'webpack:dev', 'uglify']);
+
   // dev
-  grunt.registerTask('dev', 'Development build', ['compass', 'cssmin', 'jshint', 'test', 'webpack:dev', 'uglify', 'watch']);
+  grunt.registerTask('dev', 'Development build', ['build', 'watch']);
 
   // deploy
   grunt.registerTask('deploy', 'Production build', ['test', 'makepot', 'webpack:deploy', 'js_locales', 'uglify', 'copy', 'compress', 'clean']);
