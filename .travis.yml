@@ -1,75 +1,44 @@
-language: php
+sudo: required
 
-php:
-  - 5.4
+language: node_js
 
-addons:
-  hosts:
-    - woopos.dev
+node_js:
+  - "node"
+
+services:
+  - docker
 
 env:
-  - WP_VERSION=latest WP_MULTISITE=0
-  #    - WP_VERSION=latest WP_MULTISITE=1
-  #    - WP_VERSION=3.8 WP_MULTISITE=0
-  #    - WP_VERSION=3.8 WP_MULTISITE=1
+  matrix:
+    - PHP_VERSION=php54 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php55 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php56 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php70 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php54 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php55 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php56 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php70 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
 
 before_install:
-  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install stable
-  - git submodule update --init --recursive
+  - sudo apt-get update -qq
+  - sudo apt-get install docker-engine --no-install-recommends -y -o Dpkg::Options::="--force-confmiss" -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew"
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/1.8.0-rc2/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin/
+  - docker-compose -v
+  - docker -v
 
 install:
-  # php libraries
-  - composer require satooshi/php-coveralls:~0.6.1@stable
-  - composer require guzzlehttp/guzzle:~5
-  - composer require 10up/wp_mock:dev-master
-  # install wordpress & woocommerce & test theme
-  - bash tests/unit/php/bin/install-travis-wp-tests.sh woopos_tests root '' localhost $WP_VERSION
-  - mkdir /tmp/wordpress/wp-content/plugins/woocommerce-pos/
-  - mv * .[^.]* /tmp/wordpress/wp-content/plugins/woocommerce-pos/
-  - mv /tmp/wordpress/* ./
-  - git clone https://github.com/kilbot/WooCommerce-POS-Test-Theme.git wp-content/themes/WooCommerce-POS-Test-Theme
-  - git clone https://github.com/kilbot/WooCommerce-POS-Test-Plugin.git wp-content/plugins/woocommerce-pos-test
-  # apache
-  - sudo apt-get update
-  - sudo apt-get install apache2 libapache2-mod-fastcgi
-  # enable php-fpm
-  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-  - sudo a2enmod rewrite actions fastcgi alias
-  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-  # configure apache virtual hosts
-  - sudo cp -f ./wp-content/plugins/woocommerce-pos/tests/integration/php/bin/travis-ci-apache /etc/apache2/sites-available/default
-  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
-  - sudo service apache2 restart
+  - npm install && node_modules/.bin/grunt build --force
+  - npm run start:${PHP_VERSION}
 
 before_script:
-  # wp-cli
-  - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-  - chmod +x wp-cli.phar
-  - sudo mv wp-cli.phar /usr/local/bin/wp
-  - wp --info
-  - wp core config --dbname=woopos_tests --dbuser=root
-  - wp core install --url=woopos.dev --title=WooCommercePOS --admin_user=admin --admin_password=password --admin_email=support@woopos.com.au
-  - wp rewrite structure '/%year%/%monthnum%/%postname%'
-  - wp plugin activate woocommerce-pos
-  - wp plugin activate woocommerce-pos-test
-  - wp plugin install woocommerce --activate
-  - wp plugin install wordpress-importer --activate
-  - wp import wp-content/plugins/woocommerce/dummy-data/dummy-data.xml --authors=create
-  - wp option update woocommerce_api_enabled yes
-  - cp wp-content/plugins/woocommerce-pos/tests/integration/php/bin/wp-cli.yml ./
-  - wp rewrite flush --hard
-  # grunt-cli
-  - cd wp-content/plugins/woocommerce-pos/
-  - npm install -g grunt-cli
-  - npm install
+  - sleep 60
+  - docker exec ${PHP_VERSION} wp core version --allow-root
+  - docker exec ${PHP_VERSION} wp plugin list --allow-root --status=active
 
 script:
-  - grunt test
-  - phpunit -c phpunit.xml.dist
-  - phpunit -c phpunit.xml
-  #    - ./node_modules/.bin/pioneer
-
-after_script:
-  - php vendor/bin/coveralls -v
-  - grunt coverage
+  - npm run unit-test:js
+  - npm run unit-test:${PHP_VERSION}
+  - npm run integration-test:${PHP_VERSION}
