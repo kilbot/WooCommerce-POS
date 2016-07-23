@@ -1,6 +1,6 @@
 <?php
 
-class ActivationTest extends TestCase {
+//class ActivationTest extends TestCase {
 
 // nginx 302 not set up?
 
@@ -34,4 +34,4 @@ class ActivationTest extends TestCase {
 //    ));
 //  }
 
-}
+//}

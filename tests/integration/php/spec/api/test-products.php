@@ -157,9 +157,8 @@ class ProductsAPITest extends TestCase {
     update_post_meta($product_id, '_pos_visibility', 'online_only');
 
     // get all product ids
-    $this->log_in_user();
-    $client = new GuzzleHttp\Client();
-    $response = $client->get( admin_url('admin-ajax.php'), array(
+    $this->login();
+    $response = $this->client->get( admin_url('admin-ajax.php'), array(
       'query' => array(
         'action' => 'wc_pos_get_all_ids',
         'type' => 'products',
@@ -168,7 +167,7 @@ class ProductsAPITest extends TestCase {
       'headers' => array( 'X-WC-POS' => '1' ),
       'exceptions' => false
     ));
-    $this->log_out_user();
+    $this->logout();
     $this->assertNotContains( $product_id, $response->json() );
 
     // get single product via API
