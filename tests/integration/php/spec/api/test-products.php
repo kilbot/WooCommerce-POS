@@ -1,50 +1,12 @@
 <?php
 
-class ProductsAPITest extends PHPUnit_Framework_TestCase {
-
-  protected $client;
-
-  /**
-   *
-   */
-  public function setUp() {
-    $this->client = new GuzzleHttp\Client([
-      'base_url' => get_woocommerce_api_url( 'products/' ),
-      'defaults' => [
-        'exceptions' => false,
-        'headers' => [ 'X-WC-POS' => '1' ]
-      ]
-      // 'cookies' => true
-      // Could not get cookies to work using GuzzleHTTP
-      // instead using theme functions.php for access
-    ]);
-  }
-
-  /**
-   * Helper functions
-   */
-  private function log_in_user(){
-    update_option('active_plugins', array(
-      'woocommerce-pos/woocommerce-pos.php',
-      'woocommerce-pos-test/index.php',
-      'woocommerce/woocommerce.php'
-    ));
-    update_option('woocommerce_pos_test_logged_in_user', 1);
-  }
-
-  private function log_out_user(){
-    update_option('active_plugins', array(
-      'woocommerce-pos/woocommerce-pos.php',
-      'woocommerce/woocommerce.php'
-    ));
-    delete_option('woocommerce_pos_test_logged_in_user');
-  }
+class ProductsAPITest extends TestCase {
 
   /**
    *
    */
   public function test_get_valid_response() {
-    $response = $this->client->get();
+    $response = $this->client->get('products');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('products', $data);
@@ -54,7 +16,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_get_simple_products() {
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => [
         'filter[type]' => 'simple',
         'filter[limit]'=> '1'
@@ -77,7 +39,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_get_single_simple_product() {
-    $response = $this->client->get('99');
+    $response = $this->client->get('products/99');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('product', $data);
@@ -98,7 +60,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     update_post_meta(99, '_stock', $random_qty);
 
     // update product and check response
-    $response = $this->client->get('99');
+    $response = $this->client->get('products/99');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('product', $data);
@@ -109,7 +71,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
    *
    */
   public function test_get_single_variable_product() {
-    $response = $this->client->get('41');
+    $response = $this->client->get('products/41');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('product', $data);
@@ -131,7 +93,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     update_post_meta(41, '_stock', $random_qty);
 
     // also need to check the parent output
-    $response = $this->client->get('40');
+    $response = $this->client->get('products/40');
     $data = $response->json();
     $parent = $data['product'];
     $this->assertArrayHasKey('variations', $parent);
@@ -156,29 +118,27 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     update_option( $option_key, array('pos_only_products' => true) );
 
     // get random product
-    $response = $this->client->get();
-    $data = $response->json();
-    $product = $data['products'][ array_rand( $data['products'] ) ];
+    $product_id = $this->get_random_product_id();
 
     // set to POS only
-    update_post_meta($product['id'], '_pos_visibility', 'pos_only');
+    update_post_meta($product_id, '_pos_visibility', 'pos_only');
 
     // get product via API
-    $response = $this->client->get($product['id']);
+    $response = $this->client->get('products/' . $product_id);
     $this->assertEquals(200, $response->getStatusCode());
 
     // get product via website
     $client = new GuzzleHttp\Client();
     $response = $client->get( get_home_url(), array(
       'query' => array(
-        'p' => $product['id']
+        'p' => $product_id
       ),
       'exceptions' => false
     ));
     $this->assertEquals(404, $response->getStatusCode());
 
     // delete POS visibility setting
-    delete_post_meta($product['id'], '_pos_visibility');
+    delete_post_meta($product_id, '_pos_visibility');
   }
 
   /**
@@ -191,12 +151,10 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     update_option( $option_key, array('pos_only_products' => true) );
 
     // get random product
-    $response = $this->client->get();
-    $data = $response->json();
-    $product = $data['products'][ array_rand( $data['products'] ) ];
+    $product_id = $this->get_random_product_id();
 
     // set to POS only
-    update_post_meta($product['id'], '_pos_visibility', 'online_only');
+    update_post_meta($product_id, '_pos_visibility', 'online_only');
 
     // get all product ids
     $this->log_in_user();
@@ -211,7 +169,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
       'exceptions' => false
     ));
     $this->log_out_user();
-    $this->assertNotContains( $product['id'], $response->json() );
+    $this->assertNotContains( $product_id, $response->json() );
 
     // get single product via API
 //    $response = $this->client->get($product['id']);
@@ -222,14 +180,14 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     $client = new GuzzleHttp\Client();
     $response = $client->get( get_home_url(), array(
       'query' => array(
-        'p' => $product['id']
+        'p' => $product_id
       ),
       'exceptions' => false
     ));
     $this->assertEquals(200, $response->getStatusCode());
 
     // delete POS visibility setting
-    delete_post_meta($product['id'], '_pos_visibility');
+    delete_post_meta($product_id, '_pos_visibility');
   }
 
   /**
@@ -244,7 +202,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     update_post_meta(42, '_sku', 'bar');
 
     // search for barcode
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => [
         'filter[barcode]' => $sku
       ]
@@ -282,7 +240,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     update_post_meta(42, '_sku', 'bar');
 
     // search for barcode
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => [
         'filter[barcode]' => '123'
       ]
@@ -319,7 +277,7 @@ class ProductsAPITest extends PHPUnit_Framework_TestCase {
     update_post_meta(41, '_sku', $sku);
 
     // search for barcode
-    $response = $this->client->get('', [
+    $response = $this->client->get('products', [
       'query' => [
         'filter[barcode]' => $sku
       ]

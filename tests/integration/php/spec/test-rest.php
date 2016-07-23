@@ -1,15 +1,8 @@
 <?php
 
-class RESTAPITest extends PHPUnit_Framework_TestCase {
+class RESTAPITest extends TestCase {
 
   protected $client;
-
-  public function setUp() {
-    $this->client = new GuzzleHttp\Client([
-      'base_url' => get_woocommerce_api_url( '' ),
-      'defaults' => ['exceptions' => false]
-    ]);
-  }
 
   public function test_get_valid_http_response() {
     $response = $this->client->get(get_site_url());

@@ -8,7 +8,6 @@ class Integration_Test_WC_POS {
     error_reporting( E_ALL );
 
     $this->includes();
-    register_shutdown_function( array( $this, 'shutdown' ) );
   }
 
   /**
@@ -17,23 +16,19 @@ class Integration_Test_WC_POS {
    */
   public function includes(){
     require_once(__DIR__.'/../../../../../../wp-load.php');
-    require_once '/root/.composer/vendor/autoload.php'; // required to load Guzzle
+    require_once('/root/.composer/vendor/autoload.php'); // required to load Guzzle
+    require_once('framework/testcase.php');
   }
 
   public function setup(){
-    switch_theme('WooCommerce-POS-Test-Theme', 'WooCommerce-POS-Test-Theme');
-    update_option('active_plugins', array(
-      'woocommerce-pos/woocommerce-pos.php',
-      'woocommerce-pos-test/index.php',
-      'woocommerce/woocommerce.php'
-    ));
+
   }
 
   /**
    * runs after all tests are complete
    */
   public function shutdown(){
-    switch_theme('twentyfifteen', 'twentyfifteen');
+
   }
 
 }
