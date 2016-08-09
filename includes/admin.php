@@ -26,7 +26,7 @@ class Admin {
    * Load admin subclasses
    */
   private function init() {
-    new Admin\Notices();
+//    new Admin\Notices(); // early init for sanity checks
     new Admin\Menu();
     new Admin\Settings();
     new Admin\Status();

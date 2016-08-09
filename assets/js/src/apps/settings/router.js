@@ -2,6 +2,7 @@ var App = require('lib/config/application');
 var Router = require('lib/config/router');
 var LayoutView = require('./layout-view');
 var General = require('./general/route');
+var Cart = require('./cart/route');
 var Customers = require('./customers/route');
 var Checkout = require('./checkout/route');
 var Receipts = require('./receipts/route');
@@ -30,6 +31,7 @@ var SettingsRouter = Router.extend({
   routes: {
     ''          : 'showGeneral',
     'general'   : 'showGeneral',
+    'cart'      : 'showCart',
     'customers' : 'showCustomers',
     'checkout'  : 'showCheckout',
     'receipts'  : 'showReceipts',
@@ -82,6 +84,15 @@ var SettingsRouter = Router.extend({
     var model = this.collection.get('general');
     this.showFooter({model: model});
     return new General({
+      container : this.layout.getRegion('settings'),
+      model: model
+    });
+  },
+
+  showCart: function(){
+    var model = this.collection.get('cart');
+    this.showFooter({model: model});
+    return new Cart({
       container : this.layout.getRegion('settings'),
       model: model
     });

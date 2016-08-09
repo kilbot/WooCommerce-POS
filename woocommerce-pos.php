@@ -53,6 +53,7 @@ function autoload( $cls ) {
 /**
  * Activate plugin
  */
+new Admin\Notices(); // init notices for sanity checks
 new Activator();
 
 /**

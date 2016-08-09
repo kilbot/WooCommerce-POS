@@ -23,6 +23,7 @@ class Settings extends Page {
    */
   static public $handlers = array(
     'general'   => '\WC_POS\Admin\Settings\General',
+    'cart'      => '\WC_POS\Admin\Settings\Cart',
     'customers' => '\WC_POS\Admin\Settings\Customers',
     'checkout'  => '\WC_POS\Admin\Settings\Checkout',
     'receipts'  => '\WC_POS\Admin\Settings\Receipts',
@@ -90,6 +91,9 @@ class Settings extends Page {
     wp_register_script( 'ace', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js', false, null, true );
 
     $build = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? 'build' : 'min';
+
+    // enqueue jquery UI sortable
+    wp_enqueue_script ('jquery-ui-sortable');
 
     wp_enqueue_script(
       \WC_POS\PLUGIN_NAME . '-admin-settings-app',

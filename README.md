@@ -35,16 +35,19 @@ If you would like to help translate WooCommerce POS into your language please ch
 
 WooCommerce POS is a WordPress plugin which requires [WordPress](http://wordpress.org) 3.8+ and [WooCommerce](wordpress.org/plugins/woocommerce) 2.2+.
 
-To develop the plugin locally you will first have to set up a local server with WordPress and WooCommerce installed.
-If this is your first time setting up a local development environment you may want to check out [Varying Vagrant Vagrants (VVV)](https://github.com/Varying-Vagrant-Vagrants/VVV) or [Chassis](https://github.com/Chassis/Chassis).
+This project includes configuration files for creating a consistent development environment for WooCommerce plugins. 
+
+### Requirements
+
+* [Docker](https://www.docker.com/products/docker) - download Docker for Mac, Windows or Linux 
+* [Node](https://nodejs.org/)
+
+Docker provides a virtual local server with WordPress and WooCommerce pre-installed. 
+Node provides a package manager which simplifies tasks such as building and deploying the project.
 
 ### Installation
 
-The following installation instructions assume you have `git`, `nodejs` and `grunt cli` installed. 
-VVV comes bundled with these and a bunch of other goodies so it is the recommended development environment for WooCommerce POS.
-If you have VVV intalled you should use `vagarnt ssh` to enter the virtual machine and then continue with the instructions.
-
-Navigate to your local `wp-content/plugins` directory and clone the project. 
+Navigate to your local projects directory and clone the project. 
 The recursive flag will init and update any submodules. 
 
 ```sh
@@ -54,21 +57,45 @@ git clone --recursive https://github.com/kilbot/WooCommerce-POS.git woocommerce-
 Then, navigate into the root directory of the project and install the dependencies.
 
 ```sh
-cd woocommerce-pos && npm install && composer install
+cd woocommerce-pos && npm run build
 ```
 
-### Building the project
+Now, get a coffee :coffee:
 
-Once you have installed the project you will have all the files necessary to build and customise the plugin. Build tasks are automated by [Grunt](http://gruntjs.com).
+The first build will take some time as it prepares the virtual server. 
+While waiting for the first build to complete, add the following domains to your `/etc/hosts` file.
 
 ```sh
-grunt dev
+# /etc/hosts
+127.0.0.1   php54.local
+127.0.0.1   php55.local
+127.0.0.1   php56.local
+127.0.0.1   php70.local
+```
+
+Once the build is complete you can start the virtual server using:
+
+```
+npm run start
+```
+
+Open your browser and navigate to `http://php56.local`, you should see a WordPress + WooCommerce + WooCommerce POS site running on PHP 5.6.x. 
+Login with `admin/password` to access the WordPress admin.
+
+### Developing and Deploying
+
+The `package.json` file contains some helpful commands for common tasks. 
+
+When developing you should use the following command, this will watch the asset files and rebuild if necessary.
+
+```sh
+npm run dev
 ```
 
 To create a minified version of the project ready to deploy, use:
 
 ```sh
-grunt deploy
+npm run deploy
 ```
 
 This will create a zip archive of the plugin which you can then install via your WordPress admin.
