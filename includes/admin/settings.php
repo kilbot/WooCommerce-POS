@@ -87,7 +87,7 @@ class Settings extends Page {
     wp_register_script( 'handlebars', $external_libs[ 'handlebars' ], false, null, true );
     wp_register_script( 'moment', $external_libs[ 'moment' ], false, null, true );
     wp_register_script( 'accounting', $external_libs[ 'accounting' ], false, null, true );
-    wp_register_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js', array( 'jquery' ), null, true );
+    wp_register_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js', array( 'jquery' ), null, true );
     wp_register_script( 'ace', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js', false, null, true );
 
     $build = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? 'build' : 'min';

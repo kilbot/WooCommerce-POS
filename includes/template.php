@@ -25,7 +25,7 @@ class Template {
   /** @var array external libraries */
   static public $external_libs = array(
     'min'   => array(
-      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js',
+      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js',
       'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js',
       'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js',
       'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.5/backbone.radio.min.js',
@@ -36,7 +36,7 @@ class Template {
       'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js',
     ),
     'debug' => array(
-      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.js',
+      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js',
       'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js',
       'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone.js',
       'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/1.0.5/backbone.radio.js',
@@ -78,6 +78,12 @@ class Template {
     // check is pos
     if ( !is_pos( 'template' ) )
       return;
+
+    // force ssl
+    if(!is_ssl() && wc_pos_get_option('general', 'force_ssl')){
+      wp_safe_redirect( wc_pos_url() );
+      exit;
+    }
 
     // check auth
     if ( !is_user_logged_in() ) {

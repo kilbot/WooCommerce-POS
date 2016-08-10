@@ -18,7 +18,8 @@
  */
 function wc_pos_url( $page = '' ) {
   $slug = WC_POS\Admin\Permalink::get_slug();
-  return home_url( $slug . '/' .$page );
+  $scheme = wc_pos_get_option('general', 'force_ssl') == true ? 'https' : null;
+  return home_url( $slug . '/' .$page, $scheme );
 }
 
 
