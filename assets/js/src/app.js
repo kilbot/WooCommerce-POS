@@ -55,6 +55,9 @@ app.on('before:start', function(options){
     })
   } );
 
+  // start services
+  this.printService.start();
+
 });
 
 /**

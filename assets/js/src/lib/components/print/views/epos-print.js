@@ -1,3 +1,19 @@
+var ReceiptView = require('lib/config/receipt-view');
+
+module.exports = ReceiptView.extend({
+
+  template: function(){},
+
+  onShow: function(){
+
+  },
+
+  print: function(){
+
+  }
+
+});
+
 /* jshint -W101 */
 //// Create a print document
 //function sendDocument() {

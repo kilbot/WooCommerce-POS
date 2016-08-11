@@ -1,120 +1,64 @@
 var Service = require('lib/config/service');
-var hbs = require('handlebars');
-var $ = require('jquery');
-var _ = require('lodash');
-var debug = require('debug')('print');
 var Radio = require('backbone.radio');
-var App = require('lib/config/application');
+var HTML = require('./views/html');
+var ESCP = require('./views/escp');
+var ePOS = require('./views/epos-print');
 
 module.exports = Service.extend({
   channelName: 'print',
 
-  initialize: function(){
-    _.bindAll(this, 'mediaQueryListener', 'beforePrint', 'afterPrint');
-    this.start();
-  },
-
-  onStart: function(){
+  initialize: function () {
     this.channel.reply({
-      'print' : this.print
+      'receipt': this.receipt
     }, this);
   },
 
-  onStop: function(){
-    this.channel.reset();
+  onStart: function(){
+    this.fetchReceiptTemplates();
   },
-
-  /* jshint -W071 */
-  print: function(options){
-    var template = this.template(options),
-        iframe = this.init();
-
-    this.deferred = $.Deferred();
-
-    // insert template
-    iframe.document.write(template);
-
-    // print once loaded
-    var loaded = function(){
-      iframe.focus(); // required for IE
-      iframe.print();
-    };
-
-    // get the first image, ie: logo
-    var logo = iframe.document.getElementsByTagName('img')[0];
-
-    if( logo ){
-      logo.onload = loaded;
-    } else {
-      loaded();
-    }
-
-    return this.deferred;
-  },
-  /* jshint +W071 */
 
   /**
-   * creates an iframe and stores reference
-   * returns a reference to the iframe window
+   * Call to API to get receipt template data\
+   * - todo: consistent handling of templates
    */
-  init: function(){
-    if(this.iframe){
-      this.iframe.remove();
-    }
+  fetchReceiptTemplates: function(){
+    var self = this;
+    var templates = Radio.request('entities', 'get', {
+      name: 'templates',
+      type: 'collection'
+    });
 
-    this.iframe = $('<iframe>')
-      .attr('name', 'iframe')
-      .css({visibility:'hidden',position:'-fixed',right:'0',bottom:'0'})
-      .appendTo('body');
-
-    // print events for Chrome 9+ & Safari 5.1+
-    if (frames['iframe'].matchMedia) {
-      var mediaQueryList = frames['iframe'].matchMedia('print');
-      mediaQueryList.addListener(this.mediaQueryListener);
-    }
-
-    return frames['iframe'];
+    templates.fetch({
+      data: {
+        filter: {
+          limit: 1,
+          type: 'receipt'
+        }
+      }
+    })
+    .then(function(){
+      self.template_model = templates.first();
+    });
   },
 
-  mediaQueryListener: function(mql){
-    if (mql.matches) {
-      this.beforePrint();
-    } else {
-      // delay fixes weird behavior
-      // mediaQueryList seems to trigger both events on init
-      _.delay(this.afterPrint);
-    }
-  },
-
-  beforePrint: function(){
-    debug('printing ...');
-  },
-
-  afterPrint: function(){
-    this.iframe.remove();
-    this.iframe = undefined;
-    debug('printing finished');
-    this.deferred.resolve();
-  },
-
-  /* jshint -W074 */
-  /* todo: refactor print service with view */
-  template: function(options){
+  receipt: function (options) {
     options = options || {};
+    var View;
 
-    if(!options.model){
-      return;
+    switch(this.template_model.get('type')) {
+      case 'epos-print':
+        View = ePOS;
+        break;
+      case 'escp':
+        View = ESCP;
+        break;
+      default:
+        View = HTML;
     }
 
-    var tax = Radio.request('entities', 'get', {
-        type: 'option',
-        name: 'tax'
-      }) || {};
-    var ReceiptView = App.prototype.ReceiptView.prototype;
-    var data = ReceiptView.prepare( options.model.toJSON(), tax );
-    var template = _.get(hbs.Templates, ['print', 'receipt'], '');
-    return hbs.compile( template )( data );
+    return new View({
+      model: options.order,
+      _template: this.template_model.get('template')
+    });
   }
-  /* jshint +W074 */
-
 });

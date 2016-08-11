@@ -108,10 +108,10 @@ var ReceiptRoute = Route.extend({
   },
 
   print: function(){
-    Radio.request('print', 'print', {
-      template: 'receipt',
-      model: this.order
+    var view = Radio.request('print', 'receipt', {
+      order: this.order
     });
+    view.print();
   },
 
   email: function(){
