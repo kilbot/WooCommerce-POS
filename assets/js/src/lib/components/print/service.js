@@ -1,8 +1,17 @@
 var Service = require('lib/config/service');
 var Radio = require('backbone.radio');
-var HTML = require('./views/html');
-var ESCP = require('./views/escp');
-var ePOS = require('./views/epos-print');
+
+var views = {
+  html: require('./views/html'),
+  escp: require('./views/escp'),
+  'epos-print': require('./views/epos-print')
+};
+
+var methods = {
+  browser: require('./methods/browser'),
+  network: require('./methods/network'),
+  'qz-tray': require('./methods/qz-tray')
+};
 
 module.exports = Service.extend({
   channelName: 'print',
@@ -14,51 +23,59 @@ module.exports = Service.extend({
   },
 
   onStart: function(){
-    this.fetchReceiptTemplates();
+    this.templates = Radio.request('entities', 'get', {
+      name: 'templates',
+      type: 'collection',
+      init: true
+    });
+    this.fetchTemplates();
   },
 
   /**
-   * Call to API to get receipt template data\
-   * - todo: consistent handling of templates
+   * todo: store templates like other data, fetch on app start
    */
-  fetchReceiptTemplates: function(){
-    var self = this;
-    var templates = Radio.request('entities', 'get', {
-      name: 'templates',
-      type: 'collection'
-    });
-
-    templates.fetch({
+  fetchTemplates: function(){
+    return this.templates.fetch({
       data: {
         filter: {
           limit: 1,
           type: 'receipt'
         }
       }
-    })
-    .then(function(){
-      self.template_model = templates.first();
     });
+  },
+
+  /**
+   * Call to API to get receipt template data
+   * - todo: consistent handling of templates
+   */
+  fetchReceiptTemplate: function(){
+    var self = this;
+
+    if(this.templates.isNew()){
+      return self.fetchTemplates()
+      .then(function(){
+        return self.templates.first();
+      });
+    }
+
+    return Promise.resolve( this.templates.first() );
   },
 
   receipt: function (options) {
     options = options || {};
-    var View;
 
-    switch(this.template_model.get('type')) {
-      case 'epos-print':
-        View = ePOS;
-        break;
-      case 'escp':
-        View = ESCP;
-        break;
-      default:
-        View = HTML;
-    }
+    return this.fetchReceiptTemplate()
+      .then(function(receipt){
+        var View = views[receipt.get('type')] || views['html'];
+        var view = new View({
+          model: options.order,
+          _template: receipt.get('template')
+        });
 
-    return new View({
-      model: options.order,
-      _template: this.template_model.get('template')
-    });
+        // decorate view with print method
+        var method = methods[receipt.get('method')] || methods['browser'];
+        return method(view);
+      });
   }
 });

@@ -1,8 +1,8 @@
-var bb = require('backbone');
+var Collection = require('lib/config/collection');
 var Model = require('./model');
 var Radio = require('backbone.radio');
 
-module.exports = bb.Collection.extend({
+module.exports = Collection.extend({
 
   model: Model,
 

@@ -108,10 +108,12 @@ var ReceiptRoute = Route.extend({
   },
 
   print: function(){
-    var view = Radio.request('print', 'receipt', {
+    Radio.request('print', 'receipt', {
       order: this.order
+    })
+    .then(function(view){
+      view.print();
     });
-    view.print();
   },
 
   email: function(){

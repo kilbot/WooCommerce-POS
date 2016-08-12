@@ -1,7 +1,6 @@
 var Route = require('lib/config/route');
 var Radio = require('backbone.radio');
 var LayoutView = require('./layout-view');
-var Preview = require('./preview');
 var PreviewActions = require('./actions');
 var $ = require('jquery');
 // var polyglot = require('lib/utilities/polyglot');
@@ -76,11 +75,14 @@ var ReceiptRoute = Route.extend({
   },
 
   showReceiptTemplatePreview: function(){
-    var view = new Preview({
-      model: this.dummy_order,
+    var self = this;
+    Radio.request('print', 'receipt', {
+      order: this.dummy_order,
       template_model: this.template_model
+    })
+    .then(function(view){
+      self.layout.getRegion('preview').show(view);
     });
-    this.layout.getRegion('preview').show(view);
   },
 
   showReceiptTemplatePreviewActions: function(){

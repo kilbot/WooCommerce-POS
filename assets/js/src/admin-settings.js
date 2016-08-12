@@ -11,6 +11,7 @@ var EntitiesService = require('entities/service');
 var ModalService = require('lib/components/modal/service');
 var TabsService = require('lib/components/tabs/service');
 var ButtonsService = require('lib/components/buttons/service');
+var PrintService = require('lib/components/print/service');
 
 /**
  * SubApps
@@ -28,7 +29,8 @@ require('lib/utilities/handlebars-helpers');
 var app = new Application({
   modalService    : new ModalService(),
   tabsService     : new TabsService(),
-  buttonsService  : new ButtonsService()
+  buttonsService  : new ButtonsService(),
+  printService    : new PrintService()
 });
 
 /**
@@ -43,6 +45,9 @@ app.on('before:start', function(options) {
       container     : this.layout.getRegion('main')
     })
   });
+
+  // start services
+  this.printService.start();
 
 });
 
