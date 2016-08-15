@@ -4,6 +4,7 @@ var debug = require('debug')('browserPrint');
 var Mn = require('backbone.marionette');
 
 module.exports = function(view){
+  var promise;
 
   /**
    * Note: iframe won't be 'real' until it's added to the page
@@ -26,9 +27,11 @@ module.exports = function(view){
    * clear region and remove hidden div after printing is complete
    */
   var afterPrint = function(){
-    view.region.empty();
-    view.region.stopListening();
-    view.region.el.remove();
+    if(view.region){
+      view.region.empty();
+      view.region.stopListening();
+      view.region.el.remove();
+    }
   };
 
   /**
@@ -41,6 +44,7 @@ module.exports = function(view){
       // delay fixes weird behavior
       _.delay(afterPrint);
       debug('printing finished');
+      promise.resolve();
     }
   };
 
@@ -50,6 +54,7 @@ module.exports = function(view){
   /* jshint -W071 */
   view.print = function(){
     var imgs, count, self = this;
+    promise = new $.Deferred();
 
     // make sure iframe is in the DOM
     if(!this.el.contentWindow){
@@ -67,7 +72,8 @@ module.exports = function(view){
 
     // no images, early exit
     if(count === 0){
-      return this.el.contentWindow.print();
+      this.el.contentWindow.print();
+      return promise;
     }
 
     debug('loading images');
@@ -78,11 +84,17 @@ module.exports = function(view){
       if( count === 0 ) {
         self.el.contentWindow.print();
       }
+      if(!self.el.contentWindow.matchMedia){
+        // printing done (as far as we know)
+        promise.resolve();
+      }
     }).each(function() {
       if(this.complete) {
-        $(this).load();
+        $(this).trigger('load');
       }
     });
+
+    return promise;
   };
   /* jshint +W071 */
 

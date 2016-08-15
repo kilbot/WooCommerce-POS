@@ -9,7 +9,6 @@ var ButtonsService = require('lib/components/buttons/service');
 var NumpadService = require('lib/components/numpad/service');
 var POSRouter = require('apps/pos/router');
 var SupportRouter = require('apps/support/router');
-var PrintRouter = require('apps/print/router');
 var _ = require('lodash');
 
 // sync config
@@ -48,9 +47,6 @@ app.on('before:start', function(options){
       container       : this.layout.getRegion('main')
     }),
     supportApp        : new SupportRouter({
-      container       : this.layout.getRegion('main')
-    }),
-    printApp          : new PrintRouter({
       container       : this.layout.getRegion('main')
     })
   } );

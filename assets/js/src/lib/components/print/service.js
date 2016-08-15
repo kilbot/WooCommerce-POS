@@ -18,6 +18,7 @@ module.exports = Service.extend({
 
   initialize: function () {
     this.channel.reply({
+      'view': this.view,
       'receipt': this.receipt
     }, this);
   },
@@ -25,8 +26,7 @@ module.exports = Service.extend({
   onStart: function(){
     this.templates = Radio.request('entities', 'get', {
       name: 'templates',
-      type: 'collection',
-      init: true
+      type: 'collection'
     });
     this.fetchTemplates();
   },
@@ -62,20 +62,35 @@ module.exports = Service.extend({
     return Promise.resolve( this.templates.first() );
   },
 
-  receipt: function (options) {
+  /**
+   * returns view, used for print previews
+   */
+  view: function(options){
     options = options || {};
 
     return this.fetchReceiptTemplate()
       .then(function(receipt){
         var View = views[receipt.get('type')] || views['html'];
         var view = new View({
-          model: options.order,
+          model: options.model,
           _template: receipt.get('template')
         });
 
         // decorate view with print method
         var method = methods[receipt.get('method')] || methods['browser'];
         return method(view);
+      });
+  },
+
+  /**
+   * creates view and triggers print
+   */
+  receipt: function (options) {
+    options = options || {};
+
+    return this.view(options)
+      .then(function(view){
+        return view.print();
       });
   }
 });

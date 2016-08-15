@@ -222,13 +222,11 @@ class Templates extends WC_API_Resource {
     if(!empty($posts)){
       $template = $posts[0];
       return array(
-        array(
-          'id'        => $template->ID,
-          'type'      => $type,
-          'method'    => $method,
-          'network_address' => $network_address,
-          'template'  => $template->post_content
-        )
+        'id'        => $template->ID,
+        'type'      => $type,
+        'method'    => $method,
+        'network_address' => $network_address,
+        'template'  => $template->post_content
       );
     }
 
@@ -240,12 +238,10 @@ class Templates extends WC_API_Resource {
     }
 
     return array(
-      array(
-        'type'      => $type,
-        'method'    => $method,
-        'network_address' => $network_address,
-        'template'  => $this->template_output( $path, false )
-      )
+      'type'      => $type,
+      'method'    => $method,
+      'network_address' => $network_address,
+      'template'  => $this->template_output( $path, false )
     );
   }
 
@@ -253,7 +249,7 @@ class Templates extends WC_API_Resource {
    *
    */
   public function create_receipt_template( array $data ) {
-    $this->update_receipt_template(null, $data);
+    return $this->update_receipt_template(null, $data);
   }
 
   /**

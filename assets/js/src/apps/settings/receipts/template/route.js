@@ -1,9 +1,7 @@
 var Route = require('lib/config/route');
 var Radio = require('backbone.radio');
 var LayoutView = require('./layout-view');
-var PreviewActions = require('./actions');
 var $ = require('jquery');
-// var polyglot = require('lib/utilities/polyglot');
 
 var ReceiptRoute = Route.extend({
 
@@ -21,8 +19,7 @@ var ReceiptRoute = Route.extend({
     var self = this;
     var orders = Radio.request('entities', 'get', {
       name: 'orders',
-      type: 'collection',
-      init: true
+      type: 'collection'
     });
 
     return orders.fetch({
@@ -39,29 +36,22 @@ var ReceiptRoute = Route.extend({
   },
 
   fetchTemplate: function(){
-    var self = this;
-    var templates = Radio.request('entities', 'get', {
+    this.templates = Radio.request('entities', 'get', {
       name: 'templates',
-      type: 'collection',
-      init: true
+      type: 'collection'
     });
 
-    return templates.fetch({
-      data: {
-        filter: {
-          limit: 1,
-          type: 'receipt'
-        }
-      }
-    })
-    .then(function(){
-      self.template_model = templates.first();
-    });
+    // print service may be fetching template
+    if(this.templates.isNew()){
+      var deferred = $.Deferred();
+      this.templates.once('sync', deferred.resolve);
+      return deferred;
+    }
   },
 
   render: function() {
     this.layout = new LayoutView({
-      model: this.template_model,
+      model: this.templates.first(),
       _template: this.model.template
     });
     this.listenTo( this.layout, 'show', this.showReceiptTemplate );
@@ -76,9 +66,8 @@ var ReceiptRoute = Route.extend({
 
   showReceiptTemplatePreview: function(){
     var self = this;
-    Radio.request('print', 'receipt', {
-      order: this.dummy_order,
-      template_model: this.template_model
+    Radio.request('print', 'view', {
+      model: this.dummy_order
     })
     .then(function(view){
       self.layout.getRegion('preview').show(view);
@@ -86,13 +75,23 @@ var ReceiptRoute = Route.extend({
   },
 
   showReceiptTemplatePreviewActions: function(){
-    var view = new PreviewActions();
-    this.listenTo( view, 'print', this.print );
+    var view = Radio.request('buttons', 'view', {
+      buttons: [{
+        action   : 'print',
+        className: 'button-primary',
+        icon     : 'append'
+      }]
+    });
+    this.listenTo( view, 'action:print', this.print );
     this.layout.getRegion('previewActions').show(view);
   },
 
-  print: function(){
-    this.layout.getRegion('preview').currentView.print();
+  print: function(btn){
+    btn.trigger('state', [ 'loading', '' ]);
+    this.layout.getRegion('preview').currentView.print()
+      .then(function(){
+        btn.trigger('state', [ 'success', null ]);
+      });
   },
 
   showReceiptTemplateEditorActions: function(){
@@ -104,12 +103,8 @@ var ReceiptRoute = Route.extend({
     this.listenTo(view, {
       'action:save': function(btn){
         btn.trigger('state', [ 'loading', '' ]);
-
-        Promise.resolve()
-          .then(function(){
-            return self.template_model.save({
-              template: self.layout.editor.getValue()
-            });
+        self.templates.first().save({
+            template: self.layout.editor.getValue()
           })
           .then( function() {
             btn.trigger('state', [ 'success', null ]);
@@ -121,8 +116,9 @@ var ReceiptRoute = Route.extend({
       },
       'action:restore': function(btn){
         btn.trigger('state', [ 'loading', '' ]);
-        self.template_model.destroy()
-          .then( function() {
+        self.templates.first().destroy()
+          .then( function(resp) {
+            self.templates.add(resp);
             btn.trigger('state', [ 'success', null ]);
             self.enter();
           })
@@ -142,7 +138,7 @@ var ReceiptRoute = Route.extend({
       icon     : 'append'
     }];
 
-    if( this.template_model.id ){
+    if( this.templates.first().id ){
       btns.push({
         action    : 'restore',
         className : 'button-secondary alignright',
