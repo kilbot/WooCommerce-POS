@@ -49,6 +49,9 @@ class Orders {
       // payment
       add_action( 'woocommerce_pos_process_payment', array( $this, 'process_payment' ), 10, 2 );
       add_action( 'woocommerce_payment_complete', array( $this, 'payment_complete' ), 10, 1 );
+
+      // dummy order
+      add_filter( 'woocommerce_api_serve_request', array( $this, 'serve_request' ), 10, 3 );
     }
 
   }
@@ -866,6 +869,34 @@ class Orders {
       array( 'status' => 400 )
     );
 
+  }
+
+  /**
+   *
+   */
+  public function serve_request($served, $result, $server){
+
+    // check if dummy order is required, eg: for print preview
+    $dummy = isset($server->params['GET']['dummy'])
+      && $server->params['GET']['dummy'] == 1
+      && isset($result['orders'])
+      && empty($result['orders']);
+
+    if($dummy){
+      if ( 'HEAD' === $server->method ) {
+        return;
+      }
+
+      // dummy data
+      $result = array(
+        'orders' => json_decode( file_get_contents( \WC_POS\PLUGIN_PATH . 'includes/dummy-data/legacy/v3/order.json' ) )
+      );
+
+      echo $server->handler->generate_response( $result );
+      $served = true;
+    }
+
+    return $served;
   }
 
 }

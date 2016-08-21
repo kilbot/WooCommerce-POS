@@ -110,17 +110,17 @@ class Orders {
 			WHERE ";
       $sql .= $key == 'no' ? " pm.post_id NOT IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_pos' ) "  : " pm.meta_key = '_pos' AND pm.meta_value = '1' ";
 //      if( version_compare( WC()->version, '2.2.0' ) >= 0 ) {
-        $sql .= "AND p.post_type = 'shop_order'";
+        $sql .= "AND p.post_type = 'shop_order' AND p.post_status = 'publish'";
 //      } else {
 //        $sql .= "AND p.post_type = 'shop_order' AND p.post_status = 'publish'";
 //      }
 
-      $count = $wpdb->get_var($sql);
-      $class 			= ( isset( $_GET['pos_order'] ) && $_GET['pos_order'] == $key ) ? 'current' : '';
-      $query_string 	= remove_query_arg(array( 'pos_order' ));
+      $count            = $wpdb->get_var($sql);
+      $class            = ( isset( $_GET['pos_order'] ) && $_GET['pos_order'] == $key ) ? 'current' : '';
+      $query_string     = remove_query_arg(array( 'pos_order' ));
       if( $class == '' ) $query_string = remove_query_arg(array( 'paged' ));
-      $query_string 	= add_query_arg( 'pos_order', urlencode($key), $query_string );
-      $views[$key] 	= '<a href="'. $query_string . '" class="' . esc_attr( $class ) . '">' . $label . ' <span class="count">(' . number_format_i18n( $count ) . ')</a>';
+      $query_string     = add_query_arg( 'pos_order', urlencode($key), $query_string );
+      $views[$key]      = '<a href="'. $query_string . '" class="' . esc_attr( $class ) . '">' . $label . ' <span class="count">(' . number_format_i18n( $count ) . ')</a>';
     }
 
     return $views;

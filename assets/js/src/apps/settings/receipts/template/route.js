@@ -25,6 +25,7 @@ var ReceiptRoute = Route.extend({
     return orders.fetch({
       remote: true,
       data: {
+        dummy: 1,
         filter: {
           limit: 1
         }
