@@ -151,3 +151,17 @@ function wc_pos_get_option( $id, $key = false ){
 function wc_pos_trim_html_string( $str ) {
   return preg_replace( '/^\s+|\n|\r|\s+$/m', '', $str );
 }
+
+/**
+ *
+ */
+function wc_pos_doc_url( $page ) {
+  return 'http://docs.wcpos.com/v/' . \WC_POS\VERSION . '/en/' . $page;
+}
+
+/**
+ *
+ */
+function wc_pos_faq_url( $page ) {
+  return 'http://faq.wcpos.com/v/' . \WC_POS\VERSION . '/en/' . $page;
+}

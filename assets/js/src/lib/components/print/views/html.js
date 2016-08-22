@@ -10,6 +10,11 @@ module.exports = ReceiptView.extend({
   onShow: function(){
     var template = hbs.compile( this.options._template );
     this.el.contentWindow.document.write(template( this.data ));
+  },
+
+  getData: function(){
+    return this.$el.contents().find('html').html();
+    // return this.$el.contents().contents().html();
   }
 
 });

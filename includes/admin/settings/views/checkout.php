@@ -57,7 +57,7 @@
 
 <p class="update-nag" style="font-size:13px;margin:0;">
   <?php _e( 'It is your responsibility to ensure the security of your customer\'s information. Transmitting credit card or other sensitive information should only be done using a secure connnection.', 'woocommerce-pos' ); ?>
-  <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/security' ); ?>
+  <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), wc_pos_doc_url('support/security.html') ); ?>
 </p>
 
 <table class="wc_pos-form-table">

@@ -18,7 +18,8 @@ module.exports = function(grunt) {
       },
       js: {
         src: 'assets/js/src',
-        build: 'assets/js'
+        build: 'assets/js',
+        vendor: 'assets/js/vendor'
       },
       tmp: '/tmp/woocommerce-pos',
 
@@ -145,11 +146,6 @@ module.exports = function(grunt) {
             { test: /\.hbs$/, loader: 'raw-loader' }
           ]
         },
-        //plugins: [
-        //  new webpack.DefinePlugin({
-        //    __VERSION__: JSON.stringify( idbVersion() )
-        //  })
-        //],
         resolve: {
           alias: {
             marionette: 'backbone.marionette',
@@ -200,7 +196,8 @@ module.exports = function(grunt) {
     uglify: {
       simple: {
         files: {
-          'assets/js/products.min.js': 'assets/js/src/products.js'
+          'assets/js/products.min.js': 'assets/js/src/products.js',
+          'assets/js/vendor/qz-tray.min.js': 'assets/js/vendor/qz-tray.build.js'
         }
       },
       app: {

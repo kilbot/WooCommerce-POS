@@ -92,6 +92,10 @@ var ReceiptRoute = Route.extend({
     this.layout.getRegion('preview').currentView.print()
       .then(function(){
         btn.trigger('state', [ 'success', null ]);
+      })
+      .catch(function(error){
+        Radio.request('modal', 'error', error);
+        btn.trigger('state', [ 'error', null ]);
       });
   },
 

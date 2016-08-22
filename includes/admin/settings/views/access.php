@@ -9,7 +9,7 @@
 <p class="update-nag" style=font-size:13px;margin:0;">
   <?php _e( 'By default, access to the POS is limited to Administrator and Shop Manager roles.', 'woocommerce-pos' ); ?>
   <?php _e( 'It is recommended that you <strong>do not change</strong> the default settings unless you are fully aware of the consequences.', 'woocommerce-pos' ); ?>
-  <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), 'http://woopos.com.au/docs/pos-access' ); ?>
+  <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), wc_pos_doc_url('settings/pos-access.html') ); ?>
 </p>
 
 <div class="wc_pos-access">
