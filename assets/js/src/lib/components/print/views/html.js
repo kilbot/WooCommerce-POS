@@ -13,8 +13,7 @@ module.exports = ReceiptView.extend({
   },
 
   getData: function(){
-    return this.$el.contents().find('html').html();
-    // return this.$el.contents().contents().html();
+    return this.$el.contents().contents().prop('outerHTML');
   }
 
 });

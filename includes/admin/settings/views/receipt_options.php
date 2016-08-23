@@ -24,12 +24,20 @@
     </th>
     <td>
       <select name="print_method" id="print_method">
-        <option value="browser">Browser</option>
-        <option value="network">Network</option>
-        <option value="qz-tray">QZ Tray</option>
+        <option value="browser"><?php _e( 'Browser', 'woocommerce-pos' ) ?></option>
+        <option value="network"><?php _e( 'Network', 'woocommerce-pos' ) ?></option>
+        <option value="qz-tray"><?php _e( 'QZ Tray', 'woocommerce-pos' ) ?></option>
+        <option value="file"><?php _e( 'Print to file', 'woocommerce-pos' ) ?></option>
       </select>
-      <input id="network_printer_address" name="network_printer_address" type="text" placeholder="e.g.: http://192.168.192.168/cgi-bin/epos/service.cgi">
-      <a id="qz_tray_options" class="button" href="https://demo.qz.io/" target="_blank">Open QZ Tray Demo</a>
+      <div id="network-options">
+        <label for="network_options"><?php _e('Network address', 'woocommerce-pos'); ?>:</label> <input id="network_options" name="network_options" type="text" placeholder="e.g.: http://192.168.192.168/cgi-bin/epos/service.cgi" style="width:250px">
+      </div>
+      <div id="qz-tray-options">
+        <a id="qz_tray_options" class="button" href="https://demo.qz.io/" target="_blank">Open QZ Tray Demo</a>
+      </div>
+      <div id="file-options">
+        <label for="file_options"><?php _e('Save to folder', 'woocommerce-pos') ?>:</label> <input id="file_options" name="file_options" type="text" placeholder="e.g.: /tmp" style="width:250px">
+      </div>
       <p>
         <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), wc_pos_doc_url('receipts/print-method.html') ); ?>
       </p>
@@ -42,9 +50,9 @@
     </th>
     <td>
       <select name="template_language" id="template_language">
-        <option value="html">HTML</option>
-        <option value="epos-print">ePOS Print</option>
-        <option value="escp">ESC/POS</option>
+        <option value="html"><?php _e( 'HTML', 'woocommerce-pos' ) ?></option>
+        <option value="epos-print"><?php _e( 'ePOS Print', 'woocommerce-pos' ) ?></option>
+        <option value="escp"><?php _e( 'ESC/POS', 'woocommerce-pos' ) ?></option>
       </select>
       <p>
         <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), wc_pos_doc_url('receipts/template-language.html') ); ?>

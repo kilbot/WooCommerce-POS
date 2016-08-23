@@ -4,8 +4,9 @@ var App = require('lib/config/application');
 var View = SettingsView.extend({
 
   ui: {
-    networkAddress: '#network_printer_address',
-    qzTrayOptions : '#qz_tray_options'
+    networkAddress: '#network-options',
+    qzTrayOptions : '#qz-tray-options',
+    fileOptions : '#file-options'
   },
 
   modelEvents: {
@@ -19,6 +20,7 @@ var View = SettingsView.extend({
   maybeShowMethodExtras: function( view, value ){
     this.ui.networkAddress.toggle( value === 'network' );
     this.ui.qzTrayOptions.toggle( value === 'qz-tray' );
+    this.ui.fileOptions.toggle( value === 'file' );
   }
 
 });

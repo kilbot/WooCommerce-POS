@@ -10,7 +10,8 @@ var views = {
 var methods = {
   browser: require('./methods/browser'),
   network: require('./methods/network'),
-  'qz-tray': require('./methods/qz-tray')
+  'qz-tray': require('./methods/qz-tray'),
+  'file': require('./methods/file')
 };
 
 module.exports = Service.extend({
