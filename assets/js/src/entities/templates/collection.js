@@ -12,6 +12,26 @@ module.exports = Collection.extend({
       name: 'wc_api'
     });
     return wc_api + 'pos/templates';
+  },
+
+  fetchReceiptTemplate: function(){
+    var self = this;
+
+    if(!this.isNew()){
+      return Promise.resolve( this.first() );
+    }
+
+    return this.fetch({
+      data: {
+        filter: {
+          limit: 1,
+          type: 'receipt'
+        }
+      }
+    })
+    .then(function(){
+      return self.first();
+    });
   }
 
 });

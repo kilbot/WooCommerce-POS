@@ -35,9 +35,6 @@
       <div id="qz-tray-options">
         <a id="qz_tray_options" class="button" href="https://demo.qz.io/" target="_blank">Open QZ Tray Demo</a>
       </div>
-      <div id="file-options">
-        <label for="file_options"><?php _e('Save to folder', 'woocommerce-pos') ?>:</label> <input id="file_options" name="file_options" type="text" placeholder="e.g.: /tmp" style="width:250px">
-      </div>
       <p>
         <?php printf( __( 'For more information please visit <a href="%1$s" target="_blank">%1$s</a>', 'woocommerce-pos' ), wc_pos_doc_url('receipts/print-method.html') ); ?>
       </p>

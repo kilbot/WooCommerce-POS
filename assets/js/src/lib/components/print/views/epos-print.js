@@ -1,15 +1,15 @@
 var ReceiptView = require('lib/config/receipt-view');
+var hbs = require('handlebars');
 
 module.exports = ReceiptView.extend({
 
-  template: function(){},
-
-  onShow: function(){
-
+  render: function(){
+    this.template = hbs.compile( this.options._template );
+    ReceiptView.prototype.render.apply(this, arguments);
   },
 
-  print: function(){
-
+  getData: function(){
+    return this.$el.html();
   }
 
 });

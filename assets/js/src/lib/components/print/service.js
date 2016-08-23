@@ -29,38 +29,8 @@ module.exports = Service.extend({
       name: 'templates',
       type: 'collection'
     });
-    this.fetchTemplates();
-  },
-
-  /**
-   * todo: store templates like other data, fetch on app start
-   */
-  fetchTemplates: function(){
-    return this.templates.fetch({
-      data: {
-        filter: {
-          limit: 1,
-          type: 'receipt'
-        }
-      }
-    });
-  },
-
-  /**
-   * Call to API to get receipt template data
-   * - todo: consistent handling of templates
-   */
-  fetchReceiptTemplate: function(){
-    var self = this;
-
-    if(this.templates.isNew()){
-      return self.fetchTemplates()
-      .then(function(){
-        return self.templates.first();
-      });
-    }
-
-    return Promise.resolve( this.templates.first() );
+    // preload template
+    this.templates.fetchReceiptTemplate();
   },
 
   /**
@@ -69,7 +39,7 @@ module.exports = Service.extend({
   view: function(options){
     options = options || {};
 
-    return this.fetchReceiptTemplate()
+    return this.templates.fetchReceiptTemplate()
       .then(function(receipt){
         var View = views[receipt.get('type')] || views['html'];
         var view = new View({
@@ -91,6 +61,7 @@ module.exports = Service.extend({
 
     return this.view(options)
       .then(function(view){
+        view.render();
         return view.print();
       });
   }

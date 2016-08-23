@@ -42,12 +42,10 @@ var ReceiptRoute = Route.extend({
       type: 'collection'
     });
 
-    // print service may be fetching template
-    if(this.templates.isNew()){
-      var deferred = $.Deferred();
-      this.templates.once('sync', deferred.resolve);
-      return deferred;
-    }
+    // clear collection and force fresh download
+    this.templates.reset();
+    this.templates.resetNew();
+    return this.templates.fetchReceiptTemplate();
   },
 
   render: function() {

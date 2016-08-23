@@ -22,6 +22,7 @@ receipt {
         @include flex(1);
         @include display-flex;
         @include flex-direction(column);
+        min-height: 600px;
 
         &:first-of-type {
           margin-right: 4px;

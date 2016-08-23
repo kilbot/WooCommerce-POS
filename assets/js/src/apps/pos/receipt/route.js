@@ -86,7 +86,8 @@ var ReceiptRoute = Route.extend({
     var view = new Buttons({
       buttons: [{
         action: 'print',
-        className: 'btn-primary pull-left'
+        className: 'btn-primary pull-left',
+        icon: 'append'
       }, {
         action: 'email',
         className: 'btn-primary pull-left'
@@ -107,12 +108,17 @@ var ReceiptRoute = Route.extend({
     this.layout.getRegion('actions').show(view);
   },
 
-  print: function(){
+  print: function(btn){
+    btn.trigger('state', [ 'loading', '' ]);
     Radio.request('print', 'receipt', {
-      order: this.order
+      model: this.order
     })
-    .then(function(view){
-      view.print();
+    .then(function(){
+      btn.trigger('state', [ 'success', null ]);
+    })
+    .catch(function(error){
+      Radio.request('modal', 'error', error);
+      btn.trigger('state', [ 'error', null ]);
     });
   },
 
