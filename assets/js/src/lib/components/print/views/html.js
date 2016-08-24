@@ -13,7 +13,11 @@ module.exports = ReceiptView.extend({
   },
 
   getData: function(){
-    return this.$el.contents().contents().prop('outerHTML');
+    if(!this._receipt){
+      var template = hbs.compile( this.options._template );
+      this._receipt = template( this.data );
+    }
+    return this._receipt;
   }
 
 });

@@ -5,7 +5,7 @@ var hbs = require('handlebars');
 var languageMap = {
   'html'      : 'html',
   'epos-print': 'xml',
-  'escp'      : 'javascript'
+  'escp'      : 'text'
 };
 
 var View = LayoutView.extend({

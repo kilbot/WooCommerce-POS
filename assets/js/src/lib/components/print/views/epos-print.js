@@ -3,13 +3,19 @@ var hbs = require('handlebars');
 
 module.exports = ReceiptView.extend({
 
-  render: function(){
-    this.template = hbs.compile( this.options._template );
-    ReceiptView.prototype.render.apply(this, arguments);
+  /**
+   * The template for display is different to the receipt data
+   */
+  template: function(){
+    return '<p style="margin:1em">No preview available</p>';
   },
 
   getData: function(){
-    return this.$el.html();
+    if(!this._receipt){
+      var template = hbs.compile( this.options._template );
+      this._receipt = template( this.data );
+    }
+    return this._receipt;
   }
 
 });
