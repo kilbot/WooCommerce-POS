@@ -3,9 +3,9 @@ var $ = require('jquery');
 module.exports = function(view){
 
   view.print = function(){
-    $.ajax({
+    return $.ajax({
       type       : 'post',
-      url        : this.network_address,
+      url        : this.getReceiptOptions(),
       // contentType: 'text/xml',
       data       : this.getData(),
       // dataType   : 'xml',

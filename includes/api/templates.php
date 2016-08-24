@@ -208,10 +208,10 @@ class Templates extends WC_API_Resource {
   public function get_receipt_template() {
     $this->register_receipt_status();
 
-    $options = wc_pos_get_option('receipts', 'receipt_options');
-    $type = isset($options['template_language']) ? $options['template_language'] : 'html';
-    $method = isset($options['print_method']) ? $options['print_method'] : 'browser';
-    $network_address = isset($options['network_printer_address']) ? $options['network_printer_address'] : '';
+    $settings = wc_pos_get_option('receipts', 'receipt_options');
+    $type     = isset($settings['template_language']) ? $settings['template_language'] : 'html';
+    $method   = isset($settings['print_method']) ? $settings['print_method'] : 'browser';
+    $options  = isset($settings[$method . '_options']) ? $settings[$method . '_options'] : '';
 
     $posts = get_posts( array(
       'posts_per_page'  => 1,
@@ -225,7 +225,7 @@ class Templates extends WC_API_Resource {
         'id'        => $template->ID,
         'type'      => $type,
         'method'    => $method,
-        'network_address' => $network_address,
+        'options'   => $options,
         'template'  => $template->post_content
       );
     }
@@ -240,7 +240,7 @@ class Templates extends WC_API_Resource {
     return array(
       'type'      => $type,
       'method'    => $method,
-      'network_address' => $network_address,
+      'options'   => $options,
       'template'  => $this->template_output( $path, false )
     );
   }

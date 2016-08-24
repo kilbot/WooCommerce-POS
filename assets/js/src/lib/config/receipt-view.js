@@ -9,19 +9,35 @@ var _ = require('lodash');
 /* jshint  -W101, -W071, -W074 */
 module.exports = App.prototype.ReceiptView = ItemView.extend({
 
-  viewOptions: ['data', '_template'],
+  viewOptions: ['data', 'receipt'],
 
-  initialize: function() {
+  initialize: function(options) {
     var tax = Radio.request('entities', 'get', {
         type: 'option',
         name: 'tax'
       }) || {};
     var data = this.prepare( this.model.toJSON(), tax );
-    this.mergeOptions({ data: data }, this.viewOptions);
+    this.mergeOptions(_.extend({ data: data }, options), this.viewOptions);
   },
 
   templateHelpers: function(){
     return this.data;
+  },
+
+  getReceiptTemplate: function(){
+    return this.receipt.get('template');
+  },
+
+  getReceiptType: function(){
+    return this.receipt.get('type');
+  },
+
+  getReceiptMethod: function(){
+    return this.receipt.get('method');
+  },
+
+  getReceiptOptions: function(){
+    return this.receipt.get('options');
   },
 
   prepare: function(data, settings){

@@ -175,6 +175,13 @@ class Template {
     $build = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? 'build' : 'min';
 
     $js = self::get_external_js_libraries();
+
+    // add qz-tray?
+    $receipt_options = wc_pos_get_option('receipts', 'receipt_options');
+    if(isset($receipt_options['print_method']) && $receipt_options['print_method'] == 'qz-tray'){
+      $js['qz-tray'] = PLUGIN_URL . '/assets/js/vendor/qz-tray.' . $build . '.js';
+    }
+
     $js[ 'app' ] = PLUGIN_URL . 'assets/js/app.' . $build . '.js?ver=' . VERSION;
     $scripts = apply_filters( 'woocommerce_pos_enqueue_footer_js', $js );
 

@@ -1434,7 +1434,6 @@ var qz = (function() {
 
 })();
 
-
 (function() {
     if (typeof define === 'function' && define.amd) {
         define(qz);

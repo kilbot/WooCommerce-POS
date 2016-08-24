@@ -8,13 +8,13 @@ module.exports = ReceiptView.extend({
   template: function(){},
 
   onShow: function(){
-    var template = hbs.compile( this.options._template );
+    var template = hbs.compile( this.getReceiptTemplate() );
     this.el.contentWindow.document.write(template( this.data ));
   },
 
   getData: function(){
     if(!this._receipt){
-      var template = hbs.compile( this.options._template );
+      var template = hbs.compile( this.getReceiptTemplate() );
       this._receipt = template( this.data );
     }
     return this._receipt;

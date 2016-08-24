@@ -44,7 +44,7 @@ module.exports = Service.extend({
         var View = views[receipt.get('type')] || views['html'];
         var view = new View({
           model: options.model,
-          _template: receipt.get('template')
+          receipt: receipt
         });
 
         // decorate view with print method

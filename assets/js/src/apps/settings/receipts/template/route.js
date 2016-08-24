@@ -66,7 +66,8 @@ var ReceiptRoute = Route.extend({
   showReceiptTemplatePreview: function(){
     var self = this;
     Radio.request('print', 'view', {
-      model: this.dummy_order
+      model: this.dummy_order,
+      receipt: this.templates.first()
     })
     .then(function(view){
       self.layout.getRegion('preview').show(view);
