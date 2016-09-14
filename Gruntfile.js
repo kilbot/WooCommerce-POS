@@ -409,6 +409,12 @@ module.exports = function(grunt) {
           configuration: 'phpunit.int.xml'
         }
       }
+    },
+
+    karma: {
+      integration: {
+        configFile: 'karma.conf.js'
+      }
     }
 
   });

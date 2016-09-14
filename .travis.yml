@@ -40,5 +40,6 @@ before_script:
 
 script:
   - npm run unit-test:js
+  - npm run integration-test:js
   - npm run unit-test:${PHP_VERSION}
   - npm run integration-test:${PHP_VERSION}
