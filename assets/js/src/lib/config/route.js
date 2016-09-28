@@ -28,17 +28,21 @@ module.exports = app.prototype.Route = Mn.Object.extend({
     this._triggerMethod('before:enter', args);
     this._triggerMethod('before:fetch', args);
 
-    _.defer(function () {
+    _.delay(function () {
       if (self.transitioning) {
+        if(!self.container){
+          self.loadingModal = Radio.request('modal', 'loading');
+          return;
+        }
         self.loading = new LoadingService({
           container: self.container
         });
       }
-    });
+    }, 100);
 
     return Promise.resolve()
       .then(function () {
-        return self.fetch.apply(self, args);
+        return self.fetch.call(self, args);
       })
       .then(function () {
         self._triggerMethod('fetch', args);
@@ -46,7 +50,10 @@ module.exports = app.prototype.Route = Mn.Object.extend({
       })
       .then(function () {
         self.transitioning = false;
-        return self.render.apply(self, args);
+        if(self.loadingModal){
+          Radio.request('modal', 'close', self.loadingModal.$el.data().vex.id);
+        }
+        return self.render.call(self, args);
       })
       .then(function () {
         self._triggerMethod('render', args);

@@ -22,22 +22,24 @@ require('lib/utilities/handlebars-helpers');
 /**
  * Create the app ...
  */
-var app = new Application({
-  modalService      : new ModalService(),
-  buttonsService    : new ButtonsService(),
-  popoverService    : new PopoverService(),
-  printService      : new PrintService(),
-  tabsService       : new TabsService(),
-  numpadService     : new NumpadService()
-});
+var app = new Application();
 
 /**
  *  ... add Services which require layout and params
  */
 app.on('before:start', function(options){
 
+  // attach options
+  this.options = options || {};
+
   // attach services to global App
   _.extend( this, {
+    modalService      : new ModalService(),
+    buttonsService    : new ButtonsService(),
+    popoverService    : new PopoverService(),
+    printService      : new PrintService(),
+    tabsService       : new TabsService(),
+    numpadService     : new NumpadService(),
     entitiesService   : new EntitiesService(options),
     headerService     : new HeaderService({
       headerContainer : this.layout.getRegion('header'),

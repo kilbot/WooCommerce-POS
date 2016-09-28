@@ -214,6 +214,8 @@ class i18n extends WC_API_Resource {
       'loading'     => __( 'Loading ...', 'woocommerce-pos' ),
       /* translators: woocommerce */
       'success'     => __( 'Your changes have been saved.', 'woocommerce' ),
+      /* translators: woocommerce */
+      'select.state'=> html_entity_decode( __( 'Select a state&hellip;', 'woocommerce' ) ),
     );
   }
 

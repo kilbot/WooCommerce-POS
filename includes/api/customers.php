@@ -243,7 +243,7 @@ class Customers extends WC_API_Resource {
       'orderby' => 'ID'
     );
 
-    if( isset( $filter['updated_at_min'] ) ){
+    if( isset( $filter['updated_at_min'] ) && !empty($filter['updated_at_min']) ){
       $args['meta_key']      = '_user_modified_gmt';
       $args['meta_value']    = $this->server->parse_datetime( $filter['updated_at_min'] );
       $args['meta_compare']  = '>';

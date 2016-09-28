@@ -7,6 +7,7 @@ var Radio = require('backbone.radio');
 var _ = require('lodash');
 var bb = require('backbone');
 var ErrorView = require('./error/view');
+var LoadingView = require('./loading/view');
 
 // change Vex default options
 _.extend( Modal.defaultOptions, {
@@ -35,7 +36,8 @@ module.exports = Service.extend({
     this.channel.reply({
       open    : this.open,
       close   : this.close,
-      error   : this.error
+      error   : this.error,
+      loading : this.loading
     }, this);
 
     /**
@@ -87,6 +89,14 @@ module.exports = Service.extend({
     return this.open({
       view: view,
       className: prefix + '-error'
+    });
+  },
+
+  loading: function(){
+    var view = new LoadingView();
+    return this.open({
+      view: view,
+      className: prefix + '-sm'
     });
   }
 

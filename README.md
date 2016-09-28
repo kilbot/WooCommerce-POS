@@ -21,7 +21,9 @@ Development repository for WooCommerce POS - the Point of Sale plugin for [WooCo
   <img src="http://wcpos.com/wp-content/uploads/2015/06/compatibility-chart.jpg" alt="Browser Compatibility"/>
 </p>
 
-Browser testing by [BrowserStack](http://browserstack.com).
+<p align="center">
+  [![Selenium Test Status](https://saucelabs.com/browser-matrix/wcpos.svg)](https://saucelabs.com/u/wcpos)
+</p>
 
 ## Report a bug
 
