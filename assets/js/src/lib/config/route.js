@@ -42,7 +42,7 @@ module.exports = app.prototype.Route = Mn.Object.extend({
 
     return Promise.resolve()
       .then(function () {
-        return self.fetch.call(self, args);
+        return self.fetch.apply(self, args);
       })
       .then(function () {
         self._triggerMethod('fetch', args);
@@ -53,7 +53,7 @@ module.exports = app.prototype.Route = Mn.Object.extend({
         if(self.loadingModal){
           Radio.request('modal', 'close', self.loadingModal.$el.data().vex.id);
         }
-        return self.render.call(self, args);
+        return self.render.apply(self, args);
       })
       .then(function () {
         self._triggerMethod('render', args);

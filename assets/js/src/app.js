@@ -7,6 +7,7 @@ var PrintService = require('lib/components/print/service');
 var TabsService = require('lib/components/tabs/service');
 var ButtonsService = require('lib/components/buttons/service');
 var NumpadService = require('lib/components/numpad/service');
+var KeypressService = require('lib/components/keypress/service');
 var POSRouter = require('apps/pos/router');
 var SupportRouter = require('apps/support/router');
 var _ = require('lodash');
@@ -40,6 +41,7 @@ app.on('before:start', function(options){
     printService      : new PrintService(),
     tabsService       : new TabsService(),
     numpadService     : new NumpadService(),
+    keypressService   : new KeypressService(),
     entitiesService   : new EntitiesService(options),
     headerService     : new HeaderService({
       headerContainer : this.layout.getRegion('header'),
