@@ -60,6 +60,13 @@ var Application = Mn.Application.extend({
     // start the app
     .then(function(){
       Mn.Application.prototype.start.call(self, params);
+    })
+
+    // modalService is not ready
+    .catch(function(){
+      var args = Array.prototype.slice.call(arguments);
+      var xhr = args[0];
+      alert(args[2] + '\n' + xhr.responseText);
     });
   },
 

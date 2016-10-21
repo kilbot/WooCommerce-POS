@@ -85,25 +85,29 @@ var CheckoutRoute = Route.extend({
         this.navigate('cart/' + this.activeOrder.id, { trigger: true });
       },
       'action:process-payment': function(btn){
+        var self = this;
+
         btn.trigger('state', 'loading');
 
-        // options object
-        // - may be extended by gateway
-        var self = this, options = { remote: true };
-
-        // alert third party plugins that gateway has init
-        if( this.activeOrder.gateways ){
-          var gateway = this.activeOrder.gateways.getActiveGateway();
-          var trigger = 'order:payment:' + gateway.id;
-          Radio.trigger('checkout', trigger, this.activeOrder, options );
-        }
-
-        // now save
-        this.activeOrder.save({}, options)
-          .done( self.onProcessPayment.bind(this) )
-          .always( function(){
+        Promise.resolve()
+          .then(function(){
+            // allow third party to process first
+            var gateway = self.activeOrder.gateways.getActiveGateway();
+            return gateway.onProcess(self.activeOrder);
+          })
+          .then(function(){
+            // now save
+            return self.activeOrder.save({}, { remote: true });
+          })
+          .then(function(){
+            self.onProcessPayment();
+            btn.trigger('state', 'reset');
+          })
+          .catch( function(error){
+            Radio.trigger('global', 'error', error);
             btn.trigger('state', 'reset');
           });
+
       }
     });
 

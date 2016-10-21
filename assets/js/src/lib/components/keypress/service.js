@@ -2,6 +2,7 @@ var Service = require('lib/config/service');
 var debug = require('debug')('keyPressService');
 var $ = require('jquery');
 var _ = require('lodash');
+var barcodeParser = require('./barcode');
 var timer, buffer = [];
 
 var defaults = {
@@ -20,6 +21,14 @@ module.exports = Service.extend({
     // unbind then bind to prevent keypress registering twice
     // $(document).on('keypress.wcpos', listener);
     $(document).unbind('keypress').bind('keypress.wcpos', this.listener.bind(this));
+  },
+
+  parsers: [ barcodeParser ],
+
+  addParsers: function(parsers){
+    parsers = _.isArray(parsers) ? parsers : [parsers];
+    this.parsers = parsers.concat(this.parsers);
+    return this.parsers;
   },
 
   getBuffer: function(){
@@ -47,7 +56,6 @@ module.exports = Service.extend({
     if(buffer.length >= defaults.minLength){
       clearTimeout(timer);
       timer = setTimeout(function(){
-        debug('Scan detected', buffer);
         self.channel.trigger('scan', buffer);
         self.processScan(buffer);
         self.clearBuffer();
@@ -56,8 +64,28 @@ module.exports = Service.extend({
   },
 
   processScan: function(keys) {
-    this.channel.trigger('scan:barcode', keys.join(''));
+    debug('scan detected', keys);
+    var data = keys.join('');
+    this.channel.trigger('scan', data);
+
+    var result = this.parseData(data);
+    if(!result){
+      debug('no scan parser found', data);
+    }
+  },
+
+  parseData: function(data){
+
+    for (var i = 0; i < this.parsers.length; i++) {
+      var parser = this.parsers[i];
+      var parsedData = parser.call(this, data);
+      if(parsedData){
+        return parsedData;
+      }
+    }
+
+    // All parsers failed
+    return null;
   }
-
-
+  
 });

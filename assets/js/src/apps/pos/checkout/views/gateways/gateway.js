@@ -17,5 +17,4 @@ module.exports = ItemView.extend({
       icons: this.model.getIcons()
     };
   }
-
 });

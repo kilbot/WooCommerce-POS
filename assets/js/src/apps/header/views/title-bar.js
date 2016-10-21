@@ -11,12 +11,12 @@ var View = ItemView.extend({
       type: 'option',
       name: 'store'
     });
-    this.storeName = store.name;
+    this.mergeOptions(store, ['name']);
   },
 
   templateHelpers: function(){
     return {
-      name: this.storeName
+      name: this.name
     };
   },
 

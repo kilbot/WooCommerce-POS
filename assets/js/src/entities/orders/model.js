@@ -6,7 +6,7 @@ var debug = require('debug')('order');
 var Radio = require('backbone.radio');
 var App = require('lib/config/application');
 var Taxes = require('../tax/collection');
-var $ = require('jquery');
+// var $ = require('jquery');
 var polyglot = require('lib/utilities/polyglot');
 var Utils = require('lib/utilities/utils');
 
@@ -43,13 +43,10 @@ var OrderModel = DualModel.extend({
 
   /**
    * Order saves on any change to cart, debounce total calcs and db saves
-   * - options.deferSave allows third party gateways to defer payment processing
    */
   /* jshint -W074 */
   save: function (attributes, options) {
     options = options || {};
-    options.deferSave = options.deferSave || _.noop;
-    var self = this;
 
     // Safari doesn't like empty keyPath, perhaps an autoincrement problem?
     // Set local_id as timestamp milliseconds
@@ -62,12 +59,8 @@ var OrderModel = DualModel.extend({
       this.updateTotals();
     }
 
-    return $.when(options.deferSave)
-      .then(function () {
-        debug('save order', self);
-        return DualModel.prototype.save.call(self, attributes, options);
-      });
-
+    debug('save order', this);
+    return DualModel.prototype.save.call(this, attributes, options);
   },
   /* jshint +W074 */
 

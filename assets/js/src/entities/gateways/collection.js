@@ -3,6 +3,14 @@ var Model = require('./model');
 var Radio = require('backbone.radio');
 
 /**
+ * Integration registry
+ */
+var integrations = {
+  'pos_cash': require('./integrations/pos_cash'),
+  'pos_card': require('./integrations/pos_card')
+};
+
+/**
  * @todo: abstract a tabbed collection
  */
 module.exports = Collection.extend({
@@ -44,6 +52,16 @@ module.exports = Collection.extend({
     var activeGateway = this.getActiveGateway();
     if( activeGateway ){
       return activeGateway.toJSON();
+    }
+  },
+
+  addIntegration: function(id, obj){
+    integrations[id] = obj;
+  },
+
+  getIntegration: function(id){
+    if(integrations[id]){
+      return integrations[id];
     }
   }
 

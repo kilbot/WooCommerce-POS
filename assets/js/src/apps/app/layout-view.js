@@ -51,6 +51,9 @@ module.exports = LayoutView.extend({
     var combokeys = new Combokeys(document.documentElement);
     _.each( this.keyEvents, function(callback, id) {
       var trigger = hotkeys[id];
+      if(!trigger){
+        return;
+      }
       if ( !_.isFunction(callback) ) {
         callback = this[callback];
       }

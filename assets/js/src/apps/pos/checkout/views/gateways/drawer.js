@@ -24,12 +24,6 @@ var View = FormView.extend({
     FormView.apply( this, arguments );
   },
 
-  //initialize: function() {
-  //  this.template = hbs.compile( this.model.getPaymentFields() );
-  //  this.order_total = this.model.collection.order.get('total');
-  //  this.updateStatusMessage();
-  //},
-
   /**
    * Make some order attributes available to gateway templates
    */
@@ -44,21 +38,9 @@ var View = FormView.extend({
       behaviorClass: Numpad
     }
   },
-  //
-  //modelEvents: {
-  //  'change:message': 'updateStatusMessage'
-  //},
 
   onRender: function(){
     var self = this;
-
-    //if(this.model.id === 'pos_cash'){
-    //  return this.posCashRender();
-    //}
-    //
-    //if(this.model.id === 'pos_card'){
-    //  return this.posCardRender();
-    //}
 
     /**
      * bind form elements
@@ -86,64 +68,27 @@ var View = FormView.extend({
     });
   },
 
-  //posCashRender: function(){
-  //  this.addBinding(null, {
-  //    '#pos-cash-tendered': {
-  //      observe: 'pos-cash-tendered',
-  //      onGet: function(value){
-  //        this.calcChange(value);
-  //        return Utils.formatNumber(value);
-  //      },
-  //      onSet: function(value){
-  //        var val = Utils.unformat(value);
-  //        this.calcChange(val);
-  //        return val;
-  //      },
-  //      initialize: function($el, model){
-  //        if(!model.get('pos-cash-tendered')){
-  //          model.set({ 'pos-cash-tendered': this.order_total });
-  //        }
-  //      }
-  //    }
-  //  });
-  //},
-  //
-  //posCardRender: function(){
-  //  this.addBinding(null, {
-  //    '#pos-cashback': {
-  //      observe: 'pos-cashback',
-  //      onGet: Utils.formatNumber,
-  //      onSet: Utils.unformat
-  //    }
-  //  });
-  //},
-
   onShow: function() {
     this.$el.slideDown(250);
 
-    //if(window.Modernizr.touch){
-    //  this.$('#pos-cash-tendered').attr('readonly', true);
-    //  this.$('#pos-cashback').attr('readonly', true);
-    //}
+    /**
+     * Allow integrations to setup
+     */
+    this.model.onShow(this);
   },
 
   remove: function() {
     this.$el.slideUp( 250, function() {
       FormView.prototype.remove.call(this);
     }.bind(this));
-  }
+  },
 
-  //calcChange: function(tendered){
-  //  var change = tendered - this.order_total;
-  //  var msg = polyglot.t('titles.change') + ': ' + Utils.formatMoney(change);
-  //  this.model.set({ message: msg, 'pos-cash-change': change });
-  //},
-  //
-  //updateStatusMessage: function() {
-  //  this.model.collection.order.set({
-  //    'payment_details.message': this.model.get('message')
-  //  });
-  //}
+  /**
+   * Allow integrations to teardown
+   */
+  onDestroy: function(){
+    this.model.onDestroy(this);
+  }
 
 });
 

@@ -46,14 +46,15 @@ module.exports = {
     }
 
     var options = ajaxSetup({
-      url: url,
-      type: method || 'get',
-      dataType: type,
-      data: data,
-      success: callback
+      url       : url,
+      type      : method || 'get',
+      dataType  : type,
+      data      : data,
+      success   : callback,
+      error     : onError
     });
 
-    return $.ajax( options ).catch( onError );
+    return $.ajax( options );
   },
   /* jshint +W072 */
 

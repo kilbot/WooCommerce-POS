@@ -33,6 +33,36 @@ module.exports = Model.extend({
 
   getIcons: function(){
     return this.icons;
+  },
+
+  /**
+   *
+   */
+  onShow: function(view){
+    var integration = this.collection.getIntegration(this.id);
+    if(integration && typeof integration.onShow === 'function'){
+      return integration.onShow.call(this, view);
+    }
+  },
+
+  /**
+   *
+   */
+  onDestroy: function(view){
+    var integration = this.collection.getIntegration(this.id);
+    if(integration && typeof integration.onDestroy === 'function'){
+      return integration.onDestroy.call(this, view);
+    }
+  },
+
+  /**
+   *
+   */
+  onProcess: function(order){
+    var integration = this.collection.getIntegration(this.id);
+    if(integration && typeof integration.onProcess === 'function'){
+      return integration.onProcess.call(this, order);
+    }
   }
 
 });
