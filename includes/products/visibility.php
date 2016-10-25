@@ -36,6 +36,9 @@ class Visibility {
     add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
     add_action( 'manage_product_posts_custom_column' , array( $this, 'custom_product_column' ), 10, 2 );
     add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ), 99 );
+    add_action( 'woocommerce_product_after_variable_attributes', array( $this, 'after_variable_attributes' ), 10, 3 );
+    add_action( 'woocommerce_save_product_variation', array( $this, 'save_product_variation' ) );
+    add_filter( 'woocommerce_get_children', array( $this, 'get_children') );
 
   }
 
@@ -49,12 +52,10 @@ class Visibility {
    */
   public function posts_where( $where, $query ) {
     global $wpdb;
+    $post_types = is_array( $query->get('post_type') ) ? $query->get('post_type') : array( $query->get('post_type') );
 
     // only alter product queries
-    if( is_array( $query->get('post_type') ) && !in_array( 'product', $query->get('post_type') ) )
-      return $where;
-
-    if( !is_array( $query->get('post_type') ) && $query->get('post_type') !== 'product' )
+    if( !in_array( 'product', $post_types ) )
       return $where;
 
     // don't alter product queries in the admin
@@ -266,8 +267,59 @@ class Visibility {
     }
 
     $selected = get_post_meta( $post->ID , '_pos_visibility' , true );
-    if( !$selected ){ $selected = ''; }
+    if(!$selected){
+      $selected = '';
+    }
     include 'views/post-metabox-visibility-select.php';
+  }
+
+  /**
+   * @param $loop
+   * @param $variation_data
+   * @param $variation
+   */
+  public function after_variable_attributes($loop, $variation_data, $variation){
+    $selected = get_post_meta( $variation->ID , '_pos_visibility' , true );
+    if(!$selected){
+      $selected = '';
+    }
+    include 'views/variation-metabox-visibility-select.php';
+  }
+
+  /**
+   * @param $variation_id
+   */
+  public function save_product_variation($variation_id){
+    if(isset($_POST['variable_pos_visibility'][$variation_id])){
+      update_post_meta( $variation_id, '_pos_visibility', $_POST['variable_pos_visibility'][$variation_id] );
+    }
+  }
+
+  /**
+   * @param $variation
+   * @return mixed
+   */
+  public function get_children($variation){
+
+    // don't alter product queries in the admin
+    if( is_admin() && !is_pos() )
+      return $variation;
+
+    // hide setting
+    if( is_pos() ) {
+      $hide = 'online_only';
+    } else {
+      $hide = 'pos_only';
+    }
+
+    // hide variation
+    foreach( $variation as $key => $id ){
+      if( $hide == get_post_meta( $id, '_pos_visibility', true ) ){
+        unset( $variation[$key] );
+      }
+    }
+
+    return $variation;
   }
 
 }

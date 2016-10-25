@@ -63,10 +63,13 @@ var Application = Mn.Application.extend({
     })
 
     // modalService is not ready
+    // @todo - make modalService available before app start
     .catch(function(){
-      var args = Array.prototype.slice.call(arguments);
-      var xhr = args[0];
-      alert(args[2] + '\n' + xhr.responseText);
+      if(window.alert){
+        var args = Array.prototype.slice.call(arguments);
+        var xhr = args[0];
+        window.alert(args[2] + '\n' + xhr.responseText);
+      }
     });
   },
 

@@ -6,7 +6,6 @@ var StatusView = require('./views/status');
 var GatewaysView = require('./views/gateways');
 var polyglot = require('lib/utilities/polyglot');
 var Radio = require('backbone.radio');
-require('./integrations');
 
 var CheckoutRoute = Route.extend({
 
