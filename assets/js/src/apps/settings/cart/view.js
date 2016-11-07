@@ -10,6 +10,12 @@ var View = SettingsView.extend({
     }
   },
 
+  select2: {
+    'discount_quick_keys': {
+      maximumSelectionLength: 4
+    }
+  },
+
   modelEvents: {
     'change:shipping.taxable': function(model, toggle){
       this.ui.shippingTaxClass.prop('disabled', !toggle);

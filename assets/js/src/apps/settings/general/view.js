@@ -8,12 +8,6 @@ var View = SettingsView.extend({
     Tooltip: {
       behaviorClass: Tooltip
     }
-  },
-
-  select2: {
-    'discount_quick_keys': {
-      maximumSelectionLength: 4
-    }
   }
 
 });

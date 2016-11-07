@@ -15,11 +15,6 @@ class General extends Page {
 
   protected static $instance;
 
-  public $flush_local_data = array(
-    'pos_only_products',
-    'decimal_qty'
-  );
-
   /**
    * Each settings tab requires an id and label
    */
@@ -28,15 +23,7 @@ class General extends Page {
     /* translators: woocommerce */
     $this->label = __( 'General', 'woocommerce' );
 
-    $this->defaults = array(
-      'discount_quick_keys' => array('5', '10', '20', '25'),
-      'shipping' => array(
-        'taxable' => true
-      ),
-      'fee' => array(
-        'taxable' => true
-      )
-    );
+//    $this->defaults = array();
   }
 
 }

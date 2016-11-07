@@ -23,6 +23,7 @@ class Settings extends Page {
    */
   static public $handlers = array(
     'general'   => '\WC_POS\Admin\Settings\General',
+    'products'  => '\WC_POS\Admin\Settings\Products',
     'cart'      => '\WC_POS\Admin\Settings\Cart',
     'customers' => '\WC_POS\Admin\Settings\Customers',
     'checkout'  => '\WC_POS\Admin\Settings\Checkout',

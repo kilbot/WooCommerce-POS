@@ -19,6 +19,7 @@ class Cart extends Page {
     $this->label = /* translators: woocommerce */ __( 'Cart', 'woocommerce' );
 
     $this->defaults = array(
+      'discount_quick_keys' => array('5', '10', '20', '25'),
       'shipping' => array(
         'taxable' => true
       ),

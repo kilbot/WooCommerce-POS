@@ -1,0 +1,16 @@
+settings {
+  @at-root {
+
+    ##{current-module()}-products {
+
+      #wc_pos-product-tabs table {
+        tbody {
+          td {
+            cursor: move;
+          }
+        }
+      }
+
+    }
+  }
+}

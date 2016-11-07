@@ -29,12 +29,12 @@ class Products {
   private function init() {
 
     // pos only products
-    if( wc_pos_get_option( 'general', 'pos_only_products' ) ) {
+    if( wc_pos_get_option( 'products', 'pos_only_products' ) ) {
       new Products\Visibility();
     }
 
     // decimal quantities
-    if( wc_pos_get_option( 'general', 'decimal_qty' ) ){
+    if( wc_pos_get_option( 'products', 'decimal_qty' ) ){
       remove_filter('woocommerce_stock_amount', 'intval');
       add_filter( 'woocommerce_stock_amount', 'floatval' );
     }

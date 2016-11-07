@@ -62,12 +62,8 @@ class Visibility {
     if( is_admin() && !is_pos() )
       return $where;
 
-    // hide products
-    if( is_pos() ) {
-      $hide = 'online_only';
-    } else {
-      $hide = 'pos_only';
-    }
+    // hide setting
+    $hide = is_pos() ? 'online_only' : 'pos_only';
 
     $where .= " AND ID NOT IN (SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_pos_visibility' AND meta_value = '$hide')";
 
@@ -306,11 +302,7 @@ class Visibility {
       return $variation;
 
     // hide setting
-    if( is_pos() ) {
-      $hide = 'online_only';
-    } else {
-      $hide = 'pos_only';
-    }
+    $hide = is_pos() ? 'online_only' : 'pos_only';
 
     // hide variation
     foreach( $variation as $key => $id ){

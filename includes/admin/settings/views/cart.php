@@ -8,7 +8,27 @@ use WC_POS\Tax;
 
 ?>
 
-<h3 xmlns="http://www.w3.org/1999/html"><?php /* translators: woocommerce */ _e( 'Shipping Options', 'woocommerce' ); ?></h3>
+<h3><?php _e( 'Cart Options', 'woocommerce-pos' ); ?></h3>
+
+<table class="wc_pos-form-table">
+
+  <tr>
+    <th scope="row">
+      <label for="discount_quick_keys"><?php _e( 'Discount Quick Keys', 'woocommerce-pos' ) ?></label>
+      <img title="<?php esc_attr_e( 'Configure discount keys for quick numpad entry', 'woocommerce-pos' ) ?>" src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" data-toggle="wc_pos-tooltip">
+    </th>
+    <td>
+      <select name="discount_quick_keys" id="discount_quick_keys" class="select2" style="width:250px" multiple>
+        <?php for($i=1; $i<=100; $i++): ?>
+          <option value="<?php echo $i;?>"><?php echo $i;?>%</option>
+        <?php endfor; ?>
+      </select>
+    </td>
+  </tr>
+
+</table>
+
+<h3><?php _e( 'Shipping Default', 'woocommerce-pos' ); ?></h3>
 
 <table class="widefat wc_pos-form-table-horizontal">
   <thead>
@@ -57,7 +77,7 @@ use WC_POS\Tax;
   </tbody>
 </table>
 
-<h3><?php _e( 'Fee Options', 'woocommerce-pos' ); ?></h3>
+<h3><?php _e( 'Fee Default', 'woocommerce-pos' ); ?></h3>
 
 <table class="widefat wc_pos-form-table-horizontal">
   <thead>
