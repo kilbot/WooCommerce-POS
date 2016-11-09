@@ -49,11 +49,18 @@ module.exports = Route.extend({
       })
     });
 
+    // order
+    view.collection.comparator = 'order';
+    view.collection.sort();
+
     this.listenTo(view, 'childview:click', function(tab) {
-      this.collection.setFilter('tab', tab.model.id);
+      this.collection.setFilter('tab', tab.model.get('filter') || '');
     });
 
     this.layout.getRegion('tabs').show(view);
+
+    // set initial
+    view.children.first().trigger('click');
   },
 
   showProducts: function() {

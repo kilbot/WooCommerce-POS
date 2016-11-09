@@ -8,7 +8,7 @@ var Sortable = Behavior.extend({
   initialize: function(options){
 
     this.options = _.defaults(options, {
-      items:'tr',
+      items:'tbody tr',
       cursor:'move',
       axis:'y',
       handle: 'td',

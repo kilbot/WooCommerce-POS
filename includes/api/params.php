@@ -79,7 +79,7 @@ class Params extends WC_API_Resource {
       'hotkeys'       => wc_pos_get_option( 'hotkeys', 'hotkeys' ),
       'menu'          => $this->menu(),
       'shipping'      => $this->shipping(),
-      'tabs'          => $this->product_tabs(),
+      'tabs'          => wc_pos_get_option( 'products', 'tabs' ),
       'tax'           => $this->tax(),
       'tax_classes'   => Tax::tax_classes(),
       'tax_rates'     => Tax::tax_rates(),
@@ -94,30 +94,6 @@ class Params extends WC_API_Resource {
     return array(
       'search_customers_nonce' => wp_create_nonce( 'search-customers' ),
       'nonce'       => wp_create_nonce( \WC_POS\PLUGIN_NAME ),
-    );
-  }
-
-  /**
-   * Default quick tabs for products
-   *
-   * @return array
-   */
-  private function product_tabs() {
-    return array(
-      'all' => array(
-        /* translators: woocommerce */
-        'label' => __( 'All', 'woocommerce'),
-        'active' => true
-      ),
-      'featured' => array(
-        /* translators: woocommerce */
-        'label' => __( 'Featured', 'woocommerce'),
-        'id' => 'featured:true'
-      ),
-      'onsale' => array(
-        'label' => _x( 'On Sale', 'Product tab: \'On Sale\' products', 'woocommerce-pos'),
-        'id' => 'on_sale:true'
-      ),
     );
   }
 
