@@ -107,8 +107,10 @@ class Orders {
     $has_fee = isset($data['fee_lines']) && !empty($data['fee_lines']);
     $has_shipping = isset($data['shipping_lines']) && !empty($data['shipping_lines']);
 
-    if( $has_shipping )
+    if( $has_shipping ) {
+      add_filter( 'pre_option_woocommerce_shipping_tax_class', array( $this, 'woocommerce_shipping_tax_class' ) );
       add_action( 'woocommerce_order_add_shipping', array( $this, 'order_add_shipping'), 10, 3 );
+    }
 
     if( $has_fee || $has_shipping )
       add_filter( 'update_post_metadata', array( $this, 'update_post_metadata'), 10, 5 );
@@ -260,6 +262,14 @@ class Orders {
    */
   public function woocommerce_tax_based_on(){
     return 'base';
+  }
+
+  /**
+   * Short circuit get_option('woocommerce_shipping_tax_class') as standard
+   * @return string
+   */
+  public function woocommerce_shipping_tax_class(){
+    return 'standard';
   }
 
   /**
@@ -591,7 +601,7 @@ class Orders {
 
     // allow decimal quantity
     // fixed in WC 2.4+
-    if( version_compare( WC()->version, '2.4', '<' ) && wc_pos_get_option( 'general', 'decimal_qty' ) ){
+    if( version_compare( WC()->version, '2.4', '<' ) && wc_pos_get_option( 'products', 'decimal_qty' ) ){
       $order_data['line_items'] = $this->filter_qty($order_data['line_items']);
     }
 

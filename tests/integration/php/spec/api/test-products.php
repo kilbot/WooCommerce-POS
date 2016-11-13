@@ -58,7 +58,7 @@ class ProductsTest extends TestCase {
     $random_qty = rand(0, 999) / 100;
 
     // set the decimal_qty option
-    $option_key = Settings::DB_PREFIX . 'general';
+    $option_key = Settings::DB_PREFIX . 'products';
     update_option( $option_key, array('decimal_qty' => true) );
 
     // change the stock to decimal
@@ -91,7 +91,7 @@ class ProductsTest extends TestCase {
     $random_qty = rand(0, 999) / 100;
 
     // set the decimal_qty option
-    $option_key = Settings::DB_PREFIX . 'general';
+    $option_key = Settings::DB_PREFIX . 'products';
     update_option( $option_key, array('decimal_qty' => true) );
 
     // change the stock to decimal

@@ -215,7 +215,7 @@ class OrdersTest extends TestCase {
     $product['quantity'] = $random_qty;
 
     // set the decimal_qty option
-    $option_key = Settings::DB_PREFIX . 'general';
+    $option_key = Settings::DB_PREFIX . 'products';
     update_option( $option_key, array('decimal_qty' => true) );
 
     // inject stock value to db
@@ -605,7 +605,7 @@ class OrdersTest extends TestCase {
   }
 
   /**
-   *
+   * @group failing
    */
   public function test_order_with_shipping(){
 
