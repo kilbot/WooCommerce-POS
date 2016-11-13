@@ -1,13 +1,25 @@
 var CompositeView = require('lib/config/composite-view');
-var ItemView = require('./item');
+var ItemView = require('lib/config/item-view');
+var TabRow = require('./item');
 var Sortable = require('lib/behaviors/sortable');
 var $ = require('jquery');
+var polyglot = require('lib/utilities/polyglot');
+
+var Empty = ItemView.extend({
+  tagName: 'tr',
+  className: 'empty',
+  template: function(){
+    return '<td colspan="4">' + polyglot.t('messages.no-product-tabs') + '</td>';
+  }
+});
 
 module.exports = CompositeView.extend({
 
-  childView: ItemView,
+  childView: TabRow,
 
   childViewContainer: 'tbody',
+
+  emptyView: Empty,
 
   childViewOptions: function(){
     if(!this.childTemplate){

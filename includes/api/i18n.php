@@ -223,7 +223,9 @@ class i18n extends WC_API_Resource {
    * @return array
    */
   private function admin_messages(){
-    return array();
+    return array(
+      'no-product-tabs' => __( 'No product tabs', 'woocommerce-pos' )
+    );
   }
 
   /**

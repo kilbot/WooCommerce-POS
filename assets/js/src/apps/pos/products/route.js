@@ -43,6 +43,11 @@ module.exports = Route.extend({
       name: 'tabs'
     });
 
+    // allow no tabs
+    if( _.isEmpty(tabSettings) ){
+      return;
+    }
+
     var view = Radio.request('tabs', 'view', {
       collection: _.map( tabSettings, function( obj ){
         return obj;

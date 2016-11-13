@@ -19,7 +19,9 @@ var View = SettingsView.extend({
     // nest tabs attribute => collection
     this._tabs = new bb.Collection(this.model.get('tabs'));
     this._tabs.comparator = 'order';
-    this._tabs.sort();
+    if(this._tabs.length > 0){
+      this._tabs.sort();
+    }
 
     this.listenTo(this._tabs, 'change remove', function(){
       self.model.set({ tabs: [] }, { silent: true }); // clear first, deep model
