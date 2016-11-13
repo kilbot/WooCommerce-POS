@@ -605,7 +605,7 @@ class OrdersTest extends TestCase {
   }
 
   /**
-   * @group failing
+   *
    */
   public function test_order_with_shipping(){
 

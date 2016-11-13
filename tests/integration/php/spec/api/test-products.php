@@ -120,7 +120,7 @@ class ProductsTest extends TestCase {
   public function test_pos_only_products(){
 
     // activate POS Only products
-    $option_key = Settings::DB_PREFIX . 'general';
+    $option_key = Settings::DB_PREFIX . 'products';
     update_option( $option_key, array('pos_only_products' => true) );
 
     // get random product
@@ -155,7 +155,7 @@ class ProductsTest extends TestCase {
   public function test_online_only_products(){
 
     // activate POS Only products
-    $option_key = Settings::DB_PREFIX . 'general';
+    $option_key = Settings::DB_PREFIX . 'products';
     update_option( $option_key, array('pos_only_products' => true) );
 
     // get random product
