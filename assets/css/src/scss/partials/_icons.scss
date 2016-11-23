@@ -93,15 +93,15 @@ $icons: (
   "bars"                 : "f0c9",
   "check"                : "f00c",
   "chevron-left"         : "f053",
-  "products"             : "e603",
+  "products"             : "e006",
   "success"              : "f00c",
   "chevron-down"         : "f078",
   "chevron-right"        : "f054",
   "chevron-up"           : "f077",
-  "chevron-circle-down"  : "e900",
-  "chevron-circle-left"  : "e902",
+  "chevron-circle-down"  : "e901",
+  "chevron-circle-left"  : "e903",
   "chevron-circle-right" : "f138",
-  "chevron-circle-up"    : "e901",
+  "chevron-circle-up"    : "e902",
   "cog"                  : "f013",
   "coupons"              : "e607",
   "customers"            : "e606",
@@ -120,6 +120,7 @@ $icons: (
   "qrcode"               : "e604",
   "receipt"              : "e602",
   "refresh"              : "f01e",
+  "reports"              : "e01f",
   "remove"               : "f057",
   "search"               : "f002",
   "support"              : "e605",
@@ -227,7 +228,7 @@ icon {
       .#{current-module()}-#{nth($icon, 1)} {
         &:before {
           content: unquote($withslash);
-          color: "#{nth($icon, 3)}";
+          color: #{nth($icon, 3)};
         }
       }
 
