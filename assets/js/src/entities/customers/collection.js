@@ -1,10 +1,11 @@
-var DualCollection = require('lib/config/dual-collection');
+var Collection = require('lib/config/collection');
 var Model = require('./model');
 var Radio = require('backbone.radio');
 
-module.exports = DualCollection.extend({
+module.exports = Collection.extend({
   model: Model,
   name: 'customers',
+  extends: ['dual', 'filtered'],
 
   // this is an array of fields used by FilterCollection.matchmaker()
   fields: [

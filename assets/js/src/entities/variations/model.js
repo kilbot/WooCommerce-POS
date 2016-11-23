@@ -1,7 +1,9 @@
-var Model = require('lib/config/deep-model');
+var Model = require('lib/config/model');
 var _ = require('lodash');
 
 module.exports = Model.extend({
+
+  extends: ['deep', 'filtered'],
 
   // data types
   schema: {

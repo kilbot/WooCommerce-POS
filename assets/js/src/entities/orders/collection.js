@@ -1,11 +1,11 @@
-var DualCollection = require('lib/config/dual-collection');
+var Collection = require('lib/config/collection');
 var Model = require('./model');
 
-module.exports = DualCollection.extend({
+module.exports = Collection.extend({
 
   model: Model,
-
   name: 'orders',
+  extends: ['dual', 'filtered'],
 
   _syncDelayed: false,
 

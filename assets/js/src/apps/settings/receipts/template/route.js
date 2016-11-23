@@ -44,7 +44,7 @@ var ReceiptRoute = Route.extend({
 
     // clear collection and force fresh download
     this.templates.reset();
-    this.templates.resetNew();
+    this.templates.isNew(true);
     return this.templates.fetchReceiptTemplate();
   },
 

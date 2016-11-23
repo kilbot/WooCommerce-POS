@@ -1,10 +1,11 @@
-var FilterCollection = require('lib/config/filtered-collection');
+var Collection = require('lib/config/collection');
 var Model = require('./model');
 var _ = require('lodash');
 
-module.exports = FilterCollection.extend({
+module.exports = Collection.extend({
 
   model: Model,
+  extends: ['filtered'],
 
   superset: true,
 

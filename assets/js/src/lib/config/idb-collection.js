@@ -79,7 +79,7 @@ module.exports = app.prototype.IDBCollection = FilteredCollection.extend({
 
     options.success = function(resp) {
       if(wait && !options.attrsArray) {
-        collection.resetNew();
+        collection.isNew(true);
         collection.reset();
       }
       if(wait && options.attrsArray) {

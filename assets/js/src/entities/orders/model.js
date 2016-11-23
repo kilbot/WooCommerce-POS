@@ -1,4 +1,4 @@
-var DualModel = require('lib/config/dual-model');
+var Model = require('lib/config/model');
 var Cart = require('../cart/collection');
 var Gateways = require('../gateways/collection');
 var _ = require('lodash');
@@ -10,8 +10,9 @@ var Taxes = require('../tax/collection');
 var polyglot = require('lib/utilities/polyglot');
 var Utils = require('lib/utilities/utils');
 
-var OrderModel = DualModel.extend({
+var OrderModel = Model.extend({
   name: 'order',
+  extends: ['dual', 'filtered'],
 
   /**
    * add tax settings early for use by cart
@@ -20,7 +21,7 @@ var OrderModel = DualModel.extend({
   constructor: function (attributes, options) {
     // clone tax settings
     this.tax = _.clone(this.getSettings('tax'));
-    DualModel.call(this, attributes, _.extend({parse: true}, options));
+    Model.call(this, attributes, _.extend({parse: true}, options));
   },
 
   /**
@@ -60,7 +61,7 @@ var OrderModel = DualModel.extend({
     }
 
     debug('save order', this);
-    return DualModel.prototype.save.call(this, attributes, options);
+    return Model.prototype.save.call(this, attributes, options);
   },
   /* jshint +W074 */
 
@@ -70,7 +71,7 @@ var OrderModel = DualModel.extend({
    */
   /* jshint -W071 */
   parse: function (resp) {
-    resp = DualModel.prototype.parse.apply(this, arguments);
+    resp = Model.prototype.parse.apply(this, arguments);
 
     // if open order with no cart, ie: new from idb or changed state
     if (this.isEditable(resp._state) && !this.cart) {
@@ -335,7 +336,7 @@ var OrderModel = DualModel.extend({
       this.cart.reset(null, {silent: true});
       this.cart.stopListening();
     }
-    DualModel.prototype.destroy.apply(this, arguments);
+    Model.prototype.destroy.apply(this, arguments);
   },
 
   /**

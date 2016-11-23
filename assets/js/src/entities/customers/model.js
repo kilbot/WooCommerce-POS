@@ -1,8 +1,9 @@
-var DualModel = require('lib/config/dual-model');
+var Model = require('lib/config/model');
 var App = require('lib/config/application');
 
-var CustomersModel = DualModel.extend({
-  name: 'customer'
+var CustomersModel = Model.extend({
+  name: 'customer',
+  extends: ['dual', 'filtered']
 });
 
 module.exports = CustomersModel;
