@@ -41,10 +41,10 @@ describe('entities/orders/model.js', function () {
 
     // parse is not an option on set, only on init .. also automatically on fetch and save
     //this.model.set( dummy_order, { parse: true } );
-    var model = new OrderModel( dummy_order, { parse: true, remote: true } );
+    var model = new OrderModel( dummy_order );
     expect(model.attributes).to.have.property('id');
 
-    var model = new OrderModel( dummy_order.order, { parse: true } );
+    var model = new OrderModel( dummy_order.order );
     expect(model.attributes).to.have.property('id');
 
   });

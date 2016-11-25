@@ -2,6 +2,7 @@ var app = require('./application');
 var bb = require('backbone');
 var _ = require('lodash');
 var extend = require('./extend');
+var sync = require('./sync');
 
 /**
  * app.Collection can inherit from these subclasses
@@ -43,7 +44,9 @@ var Model = bb.Model.extend({
     });
 
     return resp;
-  }
+  },
+
+  sync: sync
 
 });
 

@@ -1,7 +1,9 @@
 var app = require('./application');
 var bb = require('backbone');
 var _ = require('lodash');
+var Radio = require('backbone.radio');
 var extend = require('./extend');
+var sync = require('./sync');
 
 /**
  * app.Collection can inherit from these subclasses
@@ -20,6 +22,11 @@ var Collection = bb.Collection.extend({
   constructor: function () {
     bb.Collection.apply(this, arguments);
     this.isNew(true);
+
+    this.wc_api = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'wc_api'
+    });
   },
 
   /**
@@ -35,7 +42,12 @@ var Collection = bb.Collection.extend({
       });
     }
     return this._isNew;
-  }
+  },
+
+  /**
+   *
+   */
+  sync: sync
 
 });
 

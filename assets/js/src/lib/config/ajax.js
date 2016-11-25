@@ -14,11 +14,6 @@ var setHeaders = function(xhr){
   }
 };
 
-var onError = function(){
-  var args = Array.prototype.slice.call(arguments);
-  Radio.trigger('global', 'error', args);
-};
-
 // remove comments, eg: WP Super Cache
 //var dataFilter = function(data, type){
 //  if( type === 'json' ){
@@ -27,7 +22,19 @@ var onError = function(){
 //  return data;
 //};
 
-var ajaxSetup = function( options ){
+var wrapOptions = function( options ){
+  options = options || {};
+  var error = options.error;
+
+  // show error modal on error
+  options.error = function(){
+    if( error ) {
+      error.apply(options.context, arguments);
+    }
+    var args = Array.prototype.slice.call(arguments);
+    Radio.trigger('global', 'error', args);
+  };
+
   return _.extend( options, {
     beforeSend: setHeaders
     //dataFilter: dataFilter,
@@ -45,13 +52,12 @@ module.exports = {
       data = undefined;
     }
 
-    var options = ajaxSetup({
+    var options = wrapOptions({
       url       : url,
       type      : method || 'get',
       dataType  : type,
       data      : data,
-      success   : callback,
-      error     : onError
+      success   : callback
     });
 
     return $.ajax( options );
@@ -66,8 +72,7 @@ module.exports = {
     return this.ajax( url, data, callback, 'json', 'post' );
   },
 
-  // attach for use by bb.sync config
-  ajaxSetup: ajaxSetup,
-  onError: onError
+  // attach for use by sync config
+  wrapAjaxOptions: wrapOptions
 
 };
