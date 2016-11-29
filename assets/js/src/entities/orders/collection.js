@@ -9,17 +9,31 @@ module.exports = Collection.extend({
 
   _syncDelayed: false,
 
-  // search fields
-  fields: [
-    'billing_address.first_name',
-    'billing_address.last_name',
-    'billing_address.email'
-  ],
+  initialState: {
+    filter: {
+      order: 'DESC',
+      orderby: 'order_number',
+      limit: 10,
+      qFields: [
+        'order_number',
+        'billing_address.first_name',
+        'billing_address.last_name',
+        'billing_address.email'
+      ]
+    }
+  },
   
   fetchOpenOrders: function(){
     return this.fetch({
       remote: false,
       fullSync: false,
+      data: {
+        filter: {
+          order: 'ASC',
+          orderby: 'local_id',
+          limit: -1
+        }
+      },
       index: {
         keyPath: '_state',
         value: this.states.create

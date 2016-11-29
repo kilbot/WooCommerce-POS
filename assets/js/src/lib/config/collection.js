@@ -7,10 +7,11 @@ var sync = require('./sync');
 
 /**
  * app.Collection can inherit from these subclasses
+ * - note: order is important
  */
 var subClasses = {
-  dual      : require('backbone-dual-storage/src/collection'),
   idb       : require('backbone-indexeddb/src/collection'),
+  dual      : require('backbone-dual-storage/src/collection'),
   filtered  : require('backbone-filtered/src/collection')
 };
 
@@ -19,6 +20,9 @@ var subClasses = {
  */
 var Collection = bb.Collection.extend({
 
+  /**
+   *
+   */
   constructor: function () {
     bb.Collection.apply(this, arguments);
     this.isNew(true);

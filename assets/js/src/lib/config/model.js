@@ -6,10 +6,11 @@ var sync = require('./sync');
 
 /**
  * app.Collection can inherit from these subclasses
+ * - note: order is important
  */
 var subClasses = {
-  dual      : require('backbone-dual-storage/src/model'),
   idb       : require('backbone-indexeddb/src/model'),
+  dual      : require('backbone-dual-storage/src/model'),
   filtered  : require('backbone-filtered/src/model')
 };
 

@@ -32,14 +32,14 @@ module.exports = Collection.extend({
 
   extends: ['dual', 'filtered'],
 
-  defaultFilterOptions: {
-    fields : ['title'],
-    order  : 'ASC',
-    orderby: 'title'
+  initialState: {
+    filter: {
+      order: 'ASC',
+      orderby: 'title',
+      limit: 10,
+      qFields: ['title']
+    }
   },
-
-  // this is an array of fields used by FilterCollection.matchmaker()
-  fields: ['title'],
 
   /**
    * Special cases for product model filter
