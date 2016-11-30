@@ -25,9 +25,9 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
   },
 
   onScroll: function(){
-    // if(!this.loading && this.collection.hasNextPage() && this.triggerEvent()){
-    //   this.appendNextPage();
-    // }
+    if(!this.loading && this.collection.hasMore() && this.triggerEvent()){
+      this.appendNextPage();
+    }
   },
 
   triggerEvent: function () {
@@ -40,12 +40,9 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
   },
 
   appendNextPage: function () {
-    // return this.collection.fetch({
-    //   remove: false,
-    //   data: {
-    //     filter: _.merge({offset: this.collection.length}, this.collection.getFilterOptions())
-    //   }
-    // });
+    this.collection
+      .setFilter({ not_in: this.collection.map('id') })
+      .fetch({ index: 'id', remove: false });
   },
 
   startLoading: function () {

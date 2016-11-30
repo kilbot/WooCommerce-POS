@@ -72,7 +72,7 @@ var CartRoute = Route.extend({
   setActiveOrder: function(id){
     var order = this.collection.get(id);
     this.ensureNewOrder();
-    this.activeOrder = order ? order : this.collection.first();
+    this.activeOrder = order ? order : this.collection.last();
   },
 
   /**
