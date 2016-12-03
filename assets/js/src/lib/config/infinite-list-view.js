@@ -15,7 +15,7 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
 
     this.on('show', function(){
       this.container = this.$el.parent()[0];
-      this.$el.parent().on('scroll', _.throttle(this.onScroll.bind(this), 1000/60));
+      this.$el.parent().on('scroll', _.debounce(this.onScroll.bind(this), 1000/60));
     });
 
     this.listenTo(this.collection, {
@@ -41,7 +41,7 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
 
   appendNextPage: function () {
     this.collection
-      .setFilter({ not_in: this.collection.map('id') })
+      .setFilter({ not_in: this.collection.map('id').join(',') })
       .fetch({ index: 'id', remove: false });
   },
 
@@ -50,9 +50,20 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
     this.$el.addClass('loading');
   },
 
-  endLoading: function () {
+  /**
+   * - don't recheck on server errors
+   */
+  endLoading: function (collection, response, options) {
+    var xhrError, xhr = _.get(options, 'xhr');
+    if(xhr){
+      xhr.fail(function(){
+        xhrError = true;
+      });
+    }
     this.loading = false;
     this.$el.removeClass('loading');
-    this.onScroll();
+    if(!xhrError){
+      this.onScroll();
+    }
   }
 });

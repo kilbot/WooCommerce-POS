@@ -55,8 +55,9 @@ var Filter = Behavior.extend({
    *
    */
   _query: _.debounce( function(value){
-    this.view.collection.setQuery('search', value);
-    this.view.collection.fetch();
+    this.view.collection
+      .setQuery('search', value)
+      .fetch();
   }, 149),
 
   /**
@@ -64,7 +65,9 @@ var Filter = Behavior.extend({
    */
   clear: function(e) {
     if(e) { e.preventDefault(); }
-    this.view.collection.removeQuery('search');
+    this.view.collection
+      .removeQuery('search')
+      .fetch();
     this.ui.searchField.val('');
     this.ui.clearBtn.hide();
   },

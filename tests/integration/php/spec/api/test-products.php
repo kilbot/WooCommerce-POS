@@ -145,7 +145,7 @@ class ProductsTest extends TestCase {
 
     // delete POS visibility setting
     delete_post_meta($product_id, '_pos_visibility');
-    update_option( $option_key, array('pos_only_products' => false) );
+    delete_option( $option_key );
 
   }
 
@@ -183,7 +183,7 @@ class ProductsTest extends TestCase {
 
     // delete POS visibility setting
     delete_post_meta($product_id, '_pos_visibility');
-    update_option( $option_key, array('pos_only_products' => false) );
+    delete_option( $option_key );
 
   }
 
@@ -336,7 +336,7 @@ class ProductsTest extends TestCase {
     $product_id = $this->get_random_product_id();
     update_post_meta($product_id, '_sku', $barcode);
 
-// todo: why doesn't this work?
+// todo: why doesn't this work? different lifecycle?
 //    add_filter('woocommerce_pos_barcode_meta_key', function(){
 //      return '_barcode';
 //    });
@@ -368,16 +368,37 @@ class ProductsTest extends TestCase {
    *
    */
   public function test_on_sale_search() {
+    $on_sale_products = array();
+    $on_sale_products_and_variations = wc_get_product_ids_on_sale();
+
+    // scrub variations
+    foreach($on_sale_products_and_variations as $id){
+      $product = wc_get_product( $id );
+      if( !$product->is_type('variation') ){
+        $on_sale_products[] = $id;
+      }
+    }
+
+    // not_in 2 products
+    $not_in_keys = array_rand($on_sale_products, 2);
+    $not_in = array();
+    foreach($not_in_keys as $key){
+      $not_in[] = $on_sale_products[$key];
+      unset($on_sale_products[$key]);
+    }
 
     // on_sale = true
     $response = $this->client->get('products', [
       'query' => array(
-        'limit' => -1,
-        'filter[q]' => array(
-          array(
-            'type'    => 'prefix',
-            'prefix'  => 'on_sale',
-            'query'   => 'true'
+        'filter' => array(
+          'limit' => -1,
+          'not_in' => implode(',', $not_in),
+          'q' => array(
+            array(
+              'type'    => 'prefix',
+              'prefix'  => 'on_sale',
+              'query'   => 'true'
+            )
           )
         )
       )
@@ -386,20 +407,34 @@ class ProductsTest extends TestCase {
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('products', $data);
-    $this->assertGreaterThan(1, count($data['products']));
+    $on_sale_response = array_keys( wp_list_pluck( $data['products'], 'on_sale', 'id' ) );
+    $this->assertEquals( count($on_sale_products), count($on_sale_response) );
 
-    $on_sale = wp_list_pluck( $data['products'], 'on_sale' );
-    $this->assertEquals([true], array_unique($on_sale));
+    $diff = array_diff( $on_sale_products, $on_sale_response );
+    $this->assertEmpty( $diff, json_encode($diff) );
+
+    // get all product ids
+    $response = $this->client->get('products', [
+      'query' => array(
+        'filter[limit]' => -1
+      )
+    ]);
+    $data = $response->json();
+    $all_products = wp_list_pluck( $data['products'], 'id' );
+
+    $not_on_sale_products = array_diff( $all_products, wc_get_product_ids_on_sale() );
 
     // on_sale = false
     $response = $this->client->get('products', [
       'query' => array(
-        'limit' => -1,
-        'filter[q]' => array(
-          array(
-            'type'    => 'prefix',
-            'prefix'  => 'on_sale',
-            'query'   => 'false'
+        'filter' => array(
+          'limit' => -1,
+          'q' => array(
+            array(
+              'type'    => 'prefix',
+              'prefix'  => 'on_sale',
+              'query'   => 'false'
+            )
           )
         )
       )
@@ -408,10 +443,11 @@ class ProductsTest extends TestCase {
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('products', $data);
-    $this->assertGreaterThan(1, count($data['products']));
+    $not_on_sale_response = wp_list_pluck( $data['products'], 'id' );
+    $this->assertEquals( count($not_on_sale_products), count($not_on_sale_response) );
 
-    $on_sale = wp_list_pluck( $data['products'], 'on_sale' );
-    $this->assertEquals([false], array_unique($on_sale));
+    $diff = array_diff( $not_on_sale_products, $not_on_sale_response );
+    $this->assertEmpty( $diff, json_encode($diff) );
 
   }
 
@@ -421,20 +457,24 @@ class ProductsTest extends TestCase {
   public function test_categories_search() {
     $response = $this->client->get('products', [
       'query' => array(
-        'limit' => -1,
-        'filter[category]' => 'music'
+        'filter' => array(
+          'limit' => -1,
+          'category' => 'music'
+        )
       )
     ]);
     $music_category = $response->json();
 
     $response = $this->client->get('products', [
       'query' => array(
-        'limit' => -1,
-        'filter[q]' => array(
-          array(
-            'type'    => 'prefix',
-            'prefix'  => 'categories',
-            'query'   => 'Music'
+        'filter' => array(
+          'limit' => -1,
+          'q' => array(
+            array(
+              'type'    => 'prefix',
+              'prefix'  => 'categories',
+              'query'   => 'Music'
+            )
           )
         )
       )
@@ -457,20 +497,24 @@ class ProductsTest extends TestCase {
 
     $response = $this->client->get('products', [
       'query' => array(
-        'limit' => -1,
-        'filter[category]' => 'posters'
+        'filter' => array(
+          'limit' => -1,
+          'category' => 'posters'
+        )
       )
     ]);
     $music_category = $response->json();
 
     $response = $this->client->get('products', [
       'query' => array(
-        'limit' => -1,
-        'filter[q]' => array(
-          array(
-            'type'    => 'prefix',
-            'prefix'  => 'cat',
-            'query'   => 'woo posters'
+        'filter' => array(
+          'limit' => -1,
+          'q' => array(
+            array(
+              'type'    => 'prefix',
+              'prefix'  => 'cat',
+              'query'   => 'woo posters'
+            )
           )
         )
       )
@@ -497,20 +541,24 @@ class ProductsTest extends TestCase {
 
     $response = $this->client->get('products', [
       'query' => array(
-        'limit' => -1,
-        'filter[tag]' => $tag
+        'filter' => array(
+          'limit' => -1,
+          'tag' => $tag
+        )
       )
     ]);
     $tagged_product = $response->json();
 
     $response = $this->client->get('products', [
       'query' => array(
-        'limit' => -1,
-        'filter[q]' => array(
-          array(
-            'type'    => 'prefix',
-            'prefix'  => 'tag',
-            'query'   => $tag
+        'filter' => array(
+          'limit' => -1,
+          'q' => array(
+            array(
+              'type'    => 'prefix',
+              'prefix'  => 'tag',
+              'query'   => $tag
+            )
           )
         )
       )
@@ -531,25 +579,29 @@ class ProductsTest extends TestCase {
   public function test_title_and_cat_search(){
     $response = $this->client->get('products', [
       'query' => array(
-        'limit' => -1,
-        'filter[category]' => 'posters',
-        'filter[q]' => 'ninja'
+        'filter' => array(
+          'limit' => -1,
+          'category' => 'posters',
+          'q' => 'ninja'
+        )
       )
     ]);
     $ninja_posters = $response->json();
 
     $response = $this->client->get('products', [
       'query' => array(
-        'limit' => -1,
-        'filter[q]' => array(
-          array(
-            'type'    => 'prefix',
-            'prefix'  => 'cat',
-            'query'   => 'posters'
-          ),
-          array(
-            'type'    => 'string',
-            'query'   => 'ninja'
+        'filter' => array(
+          'limit' => -1,
+          'q' => array(
+            array(
+              'type'    => 'prefix',
+              'prefix'  => 'cat',
+              'query'   => 'posters'
+            ),
+            array(
+              'type'    => 'string',
+              'query'   => 'ninja'
+            )
           )
         )
       )
@@ -568,23 +620,27 @@ class ProductsTest extends TestCase {
   public function test_title_and_title_search() {
     $response = $this->client->get('products', [
       'query' => array(
-        'limit' => -1,
-        'filter[q]' => 'woo ninja'
+        'filter' => array(
+          'limit' => -1,
+          'q' => 'woo ninja'
+        )
       )
     ]);
     $woo_ninja = $response->json();
 
     $response = $this->client->get('products', [
       'query' => array(
-        'limit' => -1,
-        'filter[q]' => array(
-          array(
-            'type'    => 'string',
-            'query'   => 'woo'
-          ),
-          array(
-            'type'    => 'string',
-            'query'   => 'ninja'
+        'filter' => array(
+          'limit' => -1,
+          'q' => array(
+            array(
+              'type'    => 'string',
+              'query'   => 'woo'
+            ),
+            array(
+              'type'    => 'string',
+              'query'   => 'ninja'
+            )
           )
         )
       )
@@ -602,16 +658,18 @@ class ProductsTest extends TestCase {
   public function test_prefix_and_title_search() {
     $response = $this->client->get( 'products', [
       'query' => array(
-        'limit' => -1,
-        'filter[q]' => array(
-          array(
-            'type' => 'string',
-            'query' => 'woo'
-          ),
-          array(
-            'type' => 'prefix',
-            'prefix' => 'on_sale',
-            'query' => 'true'
+        'filter' => array(
+          'limit' => -1,
+          'q' => array(
+            array(
+              'type' => 'string',
+              'query' => 'woo'
+            ),
+            array(
+              'type' => 'prefix',
+              'prefix' => 'on_sale',
+              'query' => 'true'
+            )
           )
         )
       )
@@ -624,20 +682,22 @@ class ProductsTest extends TestCase {
 
     $response = $this->client->get( 'products', [
       'query' => array(
-        'limit' => -1,
-        'filter[q]' => array(
-          array(
-            'type' => 'string',
-            'query' => 'woo'
-          ),
-          array(
-            'type' => 'string',
-            'query' => 'ninja'
-          ),
-          array(
-            'type' => 'prefix',
-            'prefix' => 'on_sale',
-            'query' => 'false'
+        'filter' => array(
+          'limit' => -1,
+          'q' => array(
+            array(
+              'type' => 'string',
+              'query' => 'woo'
+            ),
+            array(
+              'type' => 'string',
+              'query' => 'ninja'
+            ),
+            array(
+              'type' => 'prefix',
+              'prefix' => 'on_sale',
+              'query' => 'false'
+            )
           )
         )
       )

@@ -22,6 +22,8 @@ var Tabs = CompositeView.extend({
 
   tabsTagName: 'ul',
 
+  idAttribute: 'id',
+
   initialize: function(options){
     options = options || {};
 
@@ -31,7 +33,8 @@ var Tabs = CompositeView.extend({
       'tabsClassName',   // childViewContainer tagName
       'activeId',        // current active model id
       'activeClassName', // className for active tab
-      'label'            // label string or function
+      'label',           // label string or function
+      'idAttribute'
     ]);
 
     //
@@ -64,7 +67,7 @@ var Tabs = CompositeView.extend({
     }
 
     // init with active class
-    if( this.activeId === model.id ){
+    if( this.activeId === model.get(this.idAttribute) ){
       options.className = this.activeClassName;
     }
 

@@ -41,7 +41,7 @@ class Products extends WC_API_Resource {
     'price',
     'regular_price',
     'sale_price',
-    'price_html',
+//    'price_html',
     'taxable',
     'tax_status',
     'tax_class',
@@ -401,16 +401,21 @@ class Products extends WC_API_Resource {
     // on_sale
     if($prefix == 'on_sale'){
       $sale_ids = array_filter( wc_get_product_ids_on_sale() );
+      $in       = $wp_query->get('post__in');
+      $not_in   = $wp_query->get('post__not_in');
+
       if($term == 'true'){
-        $post__in = $wp_query->get('post__in');
-        $include = empty($post__in) ? $sale_ids : array_intersect($post__in, $sale_ids);
-        if(empty($include)){
-          $include = array(0);
+        $post__in = array_diff($sale_ids, $not_in);
+        if(!empty($in)){
+          $post__in = array_intersect($in, $post__in);
         }
-        $wp_query->set( 'post__in', $include );
+        if(empty($post__in)){
+          $post__in = array(0); // no posts
+        }
+        $wp_query->set( 'post__in', $post__in );
       } else {
-        $exclude = $wp_query->get('post__not_in');
-        $wp_query->set( 'post__not_in', array_merge($exclude, $sale_ids) );
+        $post__not_in = array_unique( array_merge($sale_ids, $not_in) );
+        $wp_query->set( 'post__not_in', $post__not_in );
       }
     }
 

@@ -21,25 +21,15 @@ module.exports = Route.extend({
       type: 'option',
       name: 'tabs'
     });
-
-    // set first tab as active
-    _.chain(this.tabs)
-      .first()
-      .set({ active: true });
   },
 
   /**
    * Set first tab filter
    */
   fetch: function() {
-    var filter = _.chain(this.tabs)
-      .first()
-      .get('filter')
-      .value();
-
     this.collection
       .resetFilters()
-      .setQuery(filter)
+      .setQuery( _.get(this.tabs, [0, 'filter']) )
       .fetch();
   },
 
@@ -68,7 +58,9 @@ module.exports = Route.extend({
     }
 
     var view = Radio.request('tabs', 'view', {
-      collection: this.tabs
+      collection  : this.tabs,
+      idAttribute : 'filter',
+      activeId    : _.get(this.tabs, [0, 'filter'])
     });
 
     // order
