@@ -626,12 +626,18 @@ class ProductsTest extends TestCase {
         )
       )
     ]);
-    $woo_ninja = $response->json();
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $target_ids = wp_list_pluck( $data['products'], 'id' );
+    $rand_key = array_rand($target_ids, 1);
+    $not_in = $target_ids[$rand_key];
+    unset($target_ids[$rand_key]);
 
     $response = $this->client->get('products', [
       'query' => array(
         'filter' => array(
           'limit' => -1,
+          'not_in' => $not_in,
           'q' => array(
             array(
               'type'    => 'string',
@@ -649,11 +655,12 @@ class ProductsTest extends TestCase {
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $this->assertArrayHasKey('products', $data);
-    $this->assertEquals($woo_ninja, $data);
+    $result_ids = wp_list_pluck( $data['products'], 'id' );
+    $this->assertEquals(array_values($target_ids), $result_ids);
   }
 
   /**
-   *
+   * @group debug
    */
   public function test_prefix_and_title_search() {
     $response = $this->client->get( 'products', [

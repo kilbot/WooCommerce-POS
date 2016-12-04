@@ -19,8 +19,8 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
     });
 
     this.listenTo(this.collection, {
-      request : this.startLoading,
-      sync    : this.endLoading
+      'request:dual' : this.startLoading,
+      'sync:dual'    : this.endLoading
     });
   },
 
@@ -40,14 +40,26 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
   },
 
   appendNextPage: function () {
-    this.collection
-      .setFilter({ not_in: this.collection.map('id').join(',') })
+    var collection = this.collection;
+    collection
+      .setFilter({ not_in: collection.map('id').join(',') })
       .fetch({ index: 'id', remove: false });
+      // .then(function(){
+      //   // remove not_in filter
+      //   collection.setFilter({ not_in: undefined })
+      // });
   },
 
+  /**
+   * - addClass if still loading after 100ms
+   */
   startLoading: function () {
     this.loading = true;
-    this.$el.addClass('loading');
+    _.delay(function(){
+      if(this.loading){
+        this.$el.addClass('loading');
+      }
+    }.bind(this), 100);
   },
 
   /**

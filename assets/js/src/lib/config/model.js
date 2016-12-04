@@ -9,6 +9,7 @@ var sync = require('./sync');
  * - note: order is important
  */
 var subClasses = {
+  deep      : require('./deep-model'),
   idb       : require('backbone-indexeddb/src/model'),
   dual      : require('backbone-dual-storage/src/model'),
   filtered  : require('backbone-filtered/src/model')

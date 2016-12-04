@@ -347,7 +347,9 @@ class Products extends WC_API_Resource {
     if(empty($include)){
       $include = array(0);
     }
-    $wp_query->set( 'post__in', $include );
+    // query can't have post__in & post__not_in
+    $post__not_in = $wp_query->get( 'post__not_in' );
+    $wp_query->set( 'post__in', array_diff( $include, $post__not_in ) );
   }
 
   /**

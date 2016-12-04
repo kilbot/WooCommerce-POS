@@ -26,7 +26,7 @@ var View = ItemView.extend({
 
   initialize: function(){
     this.listenTo(this.collection, {
-      'sync': this.render
+      'pagination:totals': this.render
     });
   },
 

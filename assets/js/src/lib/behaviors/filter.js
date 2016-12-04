@@ -86,7 +86,14 @@ var Filter = Behavior.extend({
 
   sync: function(e){
     if(e) { e.preventDefault(); }
-    this.view.collection.fullSync();
+    var icon = this.ui.sync.children('i');
+    icon.addClass('icon-spin');
+
+    this.view.collection
+      .fullSync()
+      .then(function(){
+        icon.removeClass('icon-spin');
+      });
   },
 
   syncStart: function(){
