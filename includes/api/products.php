@@ -469,7 +469,9 @@ class Products extends WC_API_Resource {
       'post_type'     => array('product'),
       'post_status'   => array('publish'),
       'posts_per_page'=> -1,
-      'fields'        => 'ids'
+      'fields'        => 'ids',
+      'order'         => isset($filter['order']) ? $filter['order'] : 'ASC',
+      'orderby'       => isset($filter['orderby']) ? $filter['orderby'] : 'title'
     );
 
     if( isset( $filter['updated_at_min'] ) ){

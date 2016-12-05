@@ -3,7 +3,7 @@ var _ = require('lodash');
 
 module.exports = Model.extend({
 
-  extends: ['filtered', 'deep'],
+  extends: ['filtered'],
 
   // data types
   schema: {

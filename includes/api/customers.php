@@ -239,8 +239,10 @@ class Customers extends WC_API_Resource {
    */
   public function get_all_ids( $filter = array() ){
     $args = array(
-      'fields' => 'ID',
-      'orderby' => 'ID'
+      'fields'  => 'ID',
+      'order'   => isset($filter['order']) ? $filter['order'] : 'ASC',
+      'orderby' => isset($filter['orderby']) ? $filter['orderby'] : 'meta_key',
+      'meta_key'=> isset($filter['meta_key']) ? $filter['meta_key'] : 'last_name'
     );
 
     if( isset( $filter['updated_at_min'] ) && !empty($filter['updated_at_min']) ){

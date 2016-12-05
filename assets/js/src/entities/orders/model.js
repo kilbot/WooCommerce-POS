@@ -10,9 +10,15 @@ var Taxes = require('../tax/collection');
 var polyglot = require('lib/utilities/polyglot');
 var Utils = require('lib/utilities/utils');
 
-var OrderModel = Model.extend({
+/**
+ * Have to make the Parent first to get access to the subclass prototype
+ */
+var Parent = Model.extend({
+  extends: ['deep', 'dual']
+});
+
+var OrderModel = Parent.extend({
   name: 'order',
-  extends: ['dual', 'filtered'],
 
   /**
    * add tax settings early for use by cart
@@ -61,7 +67,7 @@ var OrderModel = Model.extend({
     }
 
     debug('save order', this);
-    return Model.prototype.save.call(this, attributes, options);
+    return Parent.prototype.save.call(this, attributes, options);
   },
   /* jshint +W074 */
 
@@ -71,7 +77,7 @@ var OrderModel = Model.extend({
    */
   /* jshint -W071 */
   parse: function (resp) {
-    resp = Model.prototype.parse.apply(this, arguments);
+    resp = Parent.prototype.parse.apply(this, arguments);
 
     // if open order with no cart, ie: new from idb or changed state
     if (this.isEditable(resp._state) && !this.cart) {
@@ -336,7 +342,7 @@ var OrderModel = Model.extend({
       this.cart.reset(null, {silent: true});
       this.cart.stopListening();
     }
-    Model.prototype.destroy.apply(this, arguments);
+    Parent.prototype.destroy.apply(this, arguments);
   },
 
   /**

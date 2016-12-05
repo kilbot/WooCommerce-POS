@@ -49,7 +49,6 @@ var Model = bb.Model.extend({
   },
 
   sync: sync
-
 });
 
 /**
@@ -60,9 +59,8 @@ var Model = bb.Model.extend({
 Model.extend = extend;
 Model._extend = function(key, parent){
   var subClass = _.get(subClasses, key);
-  if(subClass && !_.includes(parent.prototype._extended, key)){
+  if(subClass){
     parent = subClass(parent);
-    parent.prototype._extended = _.union(parent.prototype._extended, [key]);
   }
   return parent;
 };
