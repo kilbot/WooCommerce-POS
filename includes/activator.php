@@ -118,26 +118,65 @@ class Activator {
    * Fired when the plugin is activated.
    */
   public function single_activate() {
-    // add pos capabilities
-    $this->add_pos_capability();
+
+    // create POS specific roles
+    $this->create_pos_roles();
+
+    // add pos capabilities to non POS roles
+    $this->add_pos_capability([
+      'administrator' => ['manage_woocommerce_pos', 'access_woocommerce_pos'],
+      'shop_manager' => ['manage_woocommerce_pos', 'access_woocommerce_pos'],
+    ]);
 
     // set the auto redirection on next page load
     //set_transient( 'woocommere_pos_welcome', 1, 30 );
   }
 
   /**
+   * add POS specific roles
+   */
+  private function create_pos_roles() {
+
+    remove_role('pos_cashier');
+
+    // Cashier role
+    $cashier_capabilities = [
+      'read' => true,
+      'read_private_products' => true, 
+      'read_private_shop_orders' => true, 
+      'publish_shop_orders' => true, 
+      'list_users' => true, 
+      'read_private_shop_coupons' => true, 
+    ];
+
+    add_role(
+      'cashier',
+      __( 'Cashier', 'woocommerce-pos' ),
+      $cashier_capabilities
+    );
+
+    $this->add_pos_capability([
+      'cashier' => ['access_woocommerce_pos'],
+    ]);
+
+  }
+
+  /**
    * add default pos capabilities to administrator and
    * shop_manager roles
+   * @param $roles - an array of arrays representing the roles and their POS capabilities
    */
-  private function add_pos_capability(){
-    $roles = array('administrator', 'shop_manager');
-    $caps = array('manage_woocommerce_pos', 'access_woocommerce_pos');
-    foreach($roles as $slug) :
+  private function add_pos_capability($roles) {
+
+    foreach($roles as $slug => $caps) {
       $role = get_role($slug);
-      if($role) : foreach($caps as $cap) :
-        $role->add_cap($cap);
-      endforeach; endif;
-    endforeach;
+      if($role) {
+        foreach($caps as $cap) {
+          $role->add_cap($cap);
+        }
+      }
+    }
+
   }
 
   /**
