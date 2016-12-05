@@ -137,8 +137,6 @@ class Activator {
    */
   private function create_pos_roles() {
 
-    remove_role('pos_cashier');
-
     // Cashier role
     $cashier_capabilities = [
       'read' => true,
