@@ -12,11 +12,25 @@ module.exports = Route.extend({
   initialize: function (options) {
     this.container  = options.container;
     this.collection = Radio.request('entities', 'get', 'products');
+
+    // product / cart tabs
     this.setTabLabel( polyglot.t('titles.products') );
+
+    // product tabs
+    this.tabs = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'tabs'
+    });
   },
 
+  /**
+   * Set first tab filter
+   */
   fetch: function() {
-    this.collection.resetFilters();
+    this.collection
+      .resetFilters()
+      .setQuery( _.get(this.tabs, [0, 'filter']) )
+      .fetch();
   },
 
   render: function() {
@@ -38,20 +52,15 @@ module.exports = Route.extend({
   },
 
   showTabs: function() {
-    var tabSettings = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'tabs'
-    });
-
     // allow no tabs
-    if( _.isEmpty(tabSettings) ){
+    if( _.isEmpty(this.tabs) ){
       return;
     }
 
     var view = Radio.request('tabs', 'view', {
-      collection: _.map( tabSettings, function( obj ){
-        return obj;
-      })
+      collection  : this.tabs,
+      idAttribute : 'filter',
+      activeId    : _.get(this.tabs, [0, 'filter'])
     });
 
     // order
@@ -59,13 +68,12 @@ module.exports = Route.extend({
     view.collection.sort();
 
     this.listenTo(view, 'childview:click', function(tab) {
-      this.collection.setFilter('tab', tab.model.get('filter') || '');
+      this.collection
+        .setQuery('tab', tab.model.get('filter') || '')
+        .fetch();
     });
 
     this.layout.getRegion('tabs').show(view);
-
-    // set initial
-    view.children.first().trigger('click');
   },
 
   showProducts: function() {

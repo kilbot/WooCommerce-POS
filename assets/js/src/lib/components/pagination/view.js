@@ -26,14 +26,14 @@ var View = ItemView.extend({
 
   initialize: function(){
     this.listenTo(this.collection, {
-      'sync': this.render
+      'pagination:totals': this.render
     });
   },
 
   templateHelpers: function(){
     return {
       showing : this.collection.length,
-      local   : this.collection._total || 0
+      local   : this.collection.getTotalRecords()
     };
   }
 

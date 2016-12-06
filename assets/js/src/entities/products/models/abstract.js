@@ -1,9 +1,10 @@
-var DualModel = require('lib/config/dual-model');
+var Model = require('lib/config/model');
 var _ = require('lodash');
 
-module.exports = DualModel.extend({
+module.exports = Model.extend({
 
   name: 'product',
+  extends: ['dual', 'filtered'],
 
   // data types
   schema: {

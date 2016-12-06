@@ -55,7 +55,9 @@ var Filter = Behavior.extend({
    *
    */
   _query: _.debounce( function(value){
-    this.view.collection.setFilter('search', value);
+    this.view.collection
+      .setQuery('search', value)
+      .fetch();
   }, 149),
 
   /**
@@ -63,7 +65,9 @@ var Filter = Behavior.extend({
    */
   clear: function(e) {
     if(e) { e.preventDefault(); }
-    this.view.collection.removeFilter('search');
+    this.view.collection
+      .removeQuery('search')
+      .fetch();
     this.ui.searchField.val('');
     this.ui.clearBtn.hide();
   },
@@ -82,7 +86,14 @@ var Filter = Behavior.extend({
 
   sync: function(e){
     if(e) { e.preventDefault(); }
-    this.view.collection.fullSync();
+    var icon = this.ui.sync.children('i');
+    icon.addClass('icon-spin');
+
+    this.view.collection
+      .fullSync()
+      .then(function(){
+        icon.removeClass('icon-spin');
+      });
   },
 
   syncStart: function(){

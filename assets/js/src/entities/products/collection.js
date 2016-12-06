@@ -1,4 +1,4 @@
-var DualCollection = require('lib/config/dual-collection');
+var Collection = require('lib/config/collection');
 var _ = require('lodash');
 
 var subclasses = {
@@ -17,7 +17,7 @@ var replaceCat = function(query){
   });
 };
 
-module.exports = DualCollection.extend({
+module.exports = Collection.extend({
 
   /**
    * Init model based on product type
@@ -30,14 +30,16 @@ module.exports = DualCollection.extend({
 
   name: 'products',
 
-  defaultFilterOptions: {
-    fields : ['title'],
-    order  : 'ASC',
-    orderby: 'title'
-  },
+  extends: ['dual', 'filtered'],
 
-  // this is an array of fields used by FilterCollection.matchmaker()
-  fields: ['title'],
+  initialState: {
+    filter: {
+      order: 'ASC',
+      orderby: 'title',
+      limit: 10,
+      qFields: ['title']
+    }
+  },
 
   /**
    * Special cases for product model filter

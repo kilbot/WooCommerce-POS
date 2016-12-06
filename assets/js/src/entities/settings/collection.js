@@ -7,11 +7,7 @@ module.exports = Collection.extend({
   model: Model,
 
   url: function(){
-    var wc_api = Radio.request('entities', 'get', {
-      type: 'option',
-      name: 'wc_api'
-    });
-    return wc_api + 'pos/settings';
+    return this.wc_api + 'pos/settings';
   },
 
   constructor: function(models, options) {

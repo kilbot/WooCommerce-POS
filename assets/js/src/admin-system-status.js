@@ -1,9 +1,6 @@
 var Application = require('apps/admin/application');
 var _ = require('lodash');
 
-// sync config
-require('lib/config/sync');
-
 /**
  * Services
  */

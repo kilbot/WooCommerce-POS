@@ -1,4 +1,4 @@
-var DualModel = require('lib/config/dual-model');
+var Model = require('lib/config/model');
 var Cart = require('../cart/collection');
 var Gateways = require('../gateways/collection');
 var _ = require('lodash');
@@ -10,7 +10,14 @@ var Taxes = require('../tax/collection');
 var polyglot = require('lib/utilities/polyglot');
 var Utils = require('lib/utilities/utils');
 
-var OrderModel = DualModel.extend({
+/**
+ * Have to make the Parent first to get access to the subclass prototype
+ */
+var Parent = Model.extend({
+  extends: ['deep', 'dual']
+});
+
+var OrderModel = Parent.extend({
   name: 'order',
 
   /**
@@ -20,7 +27,7 @@ var OrderModel = DualModel.extend({
   constructor: function (attributes, options) {
     // clone tax settings
     this.tax = _.clone(this.getSettings('tax'));
-    DualModel.call(this, attributes, _.extend({parse: true}, options));
+    Model.call(this, attributes, _.extend({parse: true}, options));
   },
 
   /**
@@ -34,15 +41,25 @@ var OrderModel = DualModel.extend({
   },
 
   /**
-   *
+   * @param state - allows checking of JSON data before instantiation
    */
   isEditable: function (state) {
     state = state || this.get('_state');
-    return this.isDelayed(state);
+    return _.chain(this.collection.states)
+      .pick(['create', 'update', 'patch'])
+      .includes(state)
+      .value();
   },
 
   /**
-   * Order saves on any change to cart, debounce total calcs and db saves
+   *
+   */
+  makeEditable: function() {
+    this.save({ _state: this.collection.states['update'] });
+  },
+
+  /**
+   * Order saves on any change to cart - calcs totals and saves to idb
    */
   /* jshint -W074 */
   save: function (attributes, options) {
@@ -60,7 +77,7 @@ var OrderModel = DualModel.extend({
     }
 
     debug('save order', this);
-    return DualModel.prototype.save.call(this, attributes, options);
+    return Parent.prototype.save.call(this, attributes, options);
   },
   /* jshint +W074 */
 
@@ -70,7 +87,7 @@ var OrderModel = DualModel.extend({
    */
   /* jshint -W071 */
   parse: function (resp) {
-    resp = DualModel.prototype.parse.apply(this, arguments);
+    resp = Parent.prototype.parse.apply(this, arguments);
 
     // if open order with no cart, ie: new from idb or changed state
     if (this.isEditable(resp._state) && !this.cart) {
@@ -335,7 +352,7 @@ var OrderModel = DualModel.extend({
       this.cart.reset(null, {silent: true});
       this.cart.stopListening();
     }
-    DualModel.prototype.destroy.apply(this, arguments);
+    Parent.prototype.destroy.apply(this, arguments);
   },
 
   /**
@@ -375,7 +392,10 @@ var OrderModel = DualModel.extend({
    */
   getLabel: function () {
     var title = polyglot.t('titles.cart');
-    if (this.id !== 'new') {
+    if( this.hasRemoteId() ) {
+      title = polyglot.t('titles.order') + ' #' + this.get('order_number');
+    }
+    else if (this.id !== 'new') {
       title += ' ' + Utils.formatMoney(this.get('total'));
     }
     return title;

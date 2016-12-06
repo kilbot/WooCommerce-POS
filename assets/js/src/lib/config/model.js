@@ -1,7 +1,23 @@
-var bb = require('backbone');
 var app = require('./application');
+var bb = require('backbone');
 var _ = require('lodash');
+var extend = require('./extend');
+var sync = require('./sync');
 
+/**
+ * app.Collection can inherit from these subclasses
+ * - note: order is important
+ */
+var subClasses = {
+  deep      : require('./deep-model'),
+  idb       : require('backbone-indexeddb/src/model'),
+  dual      : require('backbone-dual-storage/src/model'),
+  filtered  : require('backbone-filtered/src/model')
+};
+
+/**
+ * Schema options
+ */
 var fns = {
   'float'  : parseFloat,
   'integer': parseInt,
@@ -12,7 +28,7 @@ var fns = {
   }
 };
 
-module.exports = app.prototype.Model = bb.Model.extend({
+var Model = bb.Model.extend({
 
   constructor: function(attributes, options){
     // model schema
@@ -30,6 +46,23 @@ module.exports = app.prototype.Model = bb.Model.extend({
     });
 
     return resp;
-  }
+  },
 
+  sync: sync
 });
+
+/**
+ * Custom class methods
+ * - extend overwrites default extend
+ * - _extend is a helper
+ */
+Model.extend = extend;
+Model._extend = function(key, parent){
+  var subClass = _.get(subClasses, key);
+  if(subClass){
+    parent = subClass(parent);
+  }
+  return parent;
+};
+
+module.exports = app.prototype.Model = Model;

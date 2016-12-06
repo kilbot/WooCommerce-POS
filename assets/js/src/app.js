@@ -12,9 +12,6 @@ var POSRouter = require('apps/pos/router');
 var SupportRouter = require('apps/support/router');
 var _ = require('lodash');
 
-// sync config
-require('lib/config/sync');
-
 /**
  * bootstrap Handlebars Helpers
  */

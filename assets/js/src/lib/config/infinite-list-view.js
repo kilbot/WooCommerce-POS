@@ -15,17 +15,17 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
 
     this.on('show', function(){
       this.container = this.$el.parent()[0];
-      this.$el.parent().on('scroll', _.throttle(this.onScroll.bind(this), 1000/60));
+      this.$el.parent().on('scroll', _.debounce(this.onScroll.bind(this), 1000/60, {leading:true}));
     });
 
     this.listenTo(this.collection, {
-      request : this.startLoading,
-      sync    : this.endLoading
+      'request:remote' : this.startLoading,
+      'sync'           : this.endLoading
     });
   },
 
   onScroll: function(){
-    if(!this.loading && this.collection.hasNextPage() && this.triggerEvent()){
+    if(!this.loading && this.collection.hasMore() && this.triggerEvent()){
       this.appendNextPage();
     }
   },
@@ -40,22 +40,38 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
   },
 
   appendNextPage: function () {
-    return this.collection.fetch({
-      remove: false,
-      data: {
-        filter: _.merge({offset: this.collection.length}, this.collection.getFilterOptions())
-      }
-    });
+    var collection = this.collection;
+    collection
+      .setFilter({ not_in: collection.map('id').join(',') })
+      .fetch({ index: 'id', remove: false })
+      .then(function(){
+        // remove not_in filter
+        collection.setFilter({ not_in: undefined });
+      });
   },
 
+  /**
+   *
+   */
   startLoading: function () {
     this.loading = true;
     this.$el.addClass('loading');
   },
 
-  endLoading: function () {
+  /**
+   * - don't recheck on server errors
+   */
+  endLoading: function (collection, response, options) {
+    var xhrError, xhr = _.get(options, 'xhr');
+    if(xhr){
+      xhr.fail(function(){
+        xhrError = true;
+      });
+    }
     this.loading = false;
     this.$el.removeClass('loading');
-    this.onScroll();
+    if(!xhrError){
+      this.onScroll();
+    }
   }
 });

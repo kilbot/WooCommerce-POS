@@ -51,8 +51,23 @@ var CartRoute = Route.extend({
   /**
    * Fetch open orders from idb
    */
-  fetch: function() {
-    return this.collection.fetchOpenOrders();
+  fetch: function(id) {
+    var collection = this.collection;
+    return collection.fetchOpenOrders()
+      .then(function(){
+        var value =  parseInt(id, 10);
+        if(!_.isNaN(value) && !collection.get(id)){
+          return collection.fetch({
+            remote: false,
+            fullSync: false,
+            remove: false,
+            index: {
+              keyPath: 'local_id',
+              value: value
+            }
+          });
+        }
+      });
   },
 
   /**
@@ -61,7 +76,7 @@ var CartRoute = Route.extend({
   onFetch: function(id){
     this.setActiveOrder(id);
 
-    if( ! this.activeOrder.isNew() && ! this.activeOrder.isEditable() ){
+    if( ! this.activeOrder.isEditable() ){
       this.navigate('receipt/' + this.activeOrder.id, { trigger: true });
     }
   },
@@ -72,7 +87,7 @@ var CartRoute = Route.extend({
   setActiveOrder: function(id){
     var order = this.collection.get(id);
     this.ensureNewOrder();
-    this.activeOrder = order ? order : this.collection.first();
+    this.activeOrder = order ? order : this.collection.last();
   },
 
   /**
@@ -165,18 +180,28 @@ var CartRoute = Route.extend({
    * - order discount removed in WC 2.3
    */
   showActions: function() {
-    var view = new Buttons({
-      buttons: [
-        {action: 'void',      className: 'btn-danger pull-left'},
-        {action: 'fee',       className: 'btn-primary'},
-        {action: 'shipping',  className: 'btn-primary'},
-        //{action: 'discount',  className: 'btn-primary'},
-        {action: 'note',      className: 'btn-primary'},
-        {action: 'checkout',  className: 'btn-success'}
-      ]
-    });
+    var buttons = [
+      {action: 'fee',       className: 'btn-primary'},
+      {action: 'shipping',  className: 'btn-primary'},
+      //{action: 'discount',  className: 'btn-primary'},
+      {action: 'note',      className: 'btn-primary'},
+      {action: 'checkout',  className: 'btn-success'}
+    ];
+
+    if(this.activeOrder.hasRemoteId()){
+      buttons.unshift({action: 'close', className: 'btn-danger pull-left'});
+    } else {
+      buttons.unshift({action: 'void', className: 'btn-danger pull-left'});
+    }
+
+    var view = new Buttons({ buttons: buttons });
 
     this.listenTo(view, {
+      'action:close': function(){
+        this.collection.remove(this.activeOrder);
+        this.setActiveOrder();
+        this.render();
+      },
       'action:void': function(){
         var order = this.activeOrder;
         view.triggerMethod('disableButtons');

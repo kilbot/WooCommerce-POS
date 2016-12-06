@@ -1,9 +1,17 @@
-describe('lib/config/dual-collection.js', function () {
+describe('Dual Collections', function () {
 
-  var DualCollection = require('lib/config/dual-collection');
+  var Collection = require('lib/config/collection');
+  var Model = require('lib/config/model');
+
+  var DualCollection = Collection.extend({
+    extends: ['dual'],
+    model: Model.extend({
+      extends: ['dual']
+    })
+  });
 
   beforeEach(function(){
-    this.collection = new DualCollection({}, { disableLocalStorage: true });
+    this.collection = new DualCollection({});
   });
 
   it('should be in a valid state', function(){

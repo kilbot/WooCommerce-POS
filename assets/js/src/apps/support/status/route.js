@@ -76,6 +76,7 @@ var StatusRoute = Route.extend({
 
     collection.destroy()
       .then(function(){
+        collection.isNew(true);
         return self.render();
       });
   }

@@ -1,8 +1,10 @@
-var DeepModel = require('lib/config/deep-model');
+var Model = require('lib/config/model');
 var _ = require('lodash');
 
 /* jshint -W071, -W074  */
-module.exports = DeepModel.extend({
+module.exports = Model.extend({
+
+  extends: ['deep'],
 
   parse: function(resp) {
     // init
