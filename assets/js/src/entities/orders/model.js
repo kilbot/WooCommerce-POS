@@ -41,15 +41,25 @@ var OrderModel = Parent.extend({
   },
 
   /**
-   *
+   * @param state - allows checking of JSON data before instantiation
    */
   isEditable: function (state) {
     state = state || this.get('_state');
-    return this.isDelayed(state);
+    return _.chain(this.collection.states)
+      .pick(['create', 'update', 'patch'])
+      .includes(state)
+      .value();
   },
 
   /**
-   * Order saves on any change to cart, debounce total calcs and db saves
+   *
+   */
+  makeEditable: function() {
+    this.save({ _state: this.collection.states['update'] });
+  },
+
+  /**
+   * Order saves on any change to cart - calcs totals and saves to idb
    */
   /* jshint -W074 */
   save: function (attributes, options) {
@@ -382,7 +392,10 @@ var OrderModel = Parent.extend({
    */
   getLabel: function () {
     var title = polyglot.t('titles.cart');
-    if (this.id !== 'new') {
+    if( this.hasRemoteId() ) {
+      title = polyglot.t('titles.order') + ' #' + this.get('order_number');
+    }
+    else if (this.id !== 'new') {
       title += ' ' + Utils.formatMoney(this.get('total'));
     }
     return title;

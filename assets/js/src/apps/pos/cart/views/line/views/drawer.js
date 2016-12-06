@@ -42,10 +42,6 @@ var View = FormView.extend({
     'click @ui.removeMeta'  : 'removeMeta'
   },
 
-  modelEvents: {
-    'change:meta' : 'render'
-  },
-
   bindings: {
     'input[name="regular_price"]' : {
       observe: 'regular_price',
@@ -121,6 +117,7 @@ var View = FormView.extend({
     meta = meta.slice();
     meta.push({ label: '', value: '' });
     this.model.set({ meta: meta });
+    this.render();
   },
 
   removeMeta: function(e) {
@@ -133,6 +130,7 @@ var View = FormView.extend({
     meta = meta.slice();
     _.pullAt( meta, index );
     this.model.set({ meta: meta });
+    this.render();
   }
 
 });

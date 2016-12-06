@@ -15,12 +15,12 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
 
     this.on('show', function(){
       this.container = this.$el.parent()[0];
-      this.$el.parent().on('scroll', _.debounce(this.onScroll.bind(this), 1000/60));
+      this.$el.parent().on('scroll', _.debounce(this.onScroll.bind(this), 1000/60, {leading:true}));
     });
 
     this.listenTo(this.collection, {
       'request:remote' : this.startLoading,
-      'sync:remote'    : this.endLoading
+      'sync'           : this.endLoading
     });
   },
 

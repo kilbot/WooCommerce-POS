@@ -34,7 +34,8 @@ var Tabs = CompositeView.extend({
       'activeId',        // current active model id
       'activeClassName', // className for active tab
       'label',           // label string or function
-      'idAttribute'
+      'idAttribute',     // which attribute to check is active
+      'viewComparator'   // allow custom display order
     ]);
 
     //
