@@ -26,6 +26,8 @@ class Access extends Page {
     $this->id    = 'access';
     $this->label = __( 'POS Access', 'woocommerce-pos' );
 
+    $this->help_page_url = 'https://raw.githubusercontent.com/kilbot/WooCommerce-POS-Manual/0.5.0-beta/en/settings/pos-access.md';
+
     // capabilities
     $this->caps = apply_filters('woocommerce_pos_capabilities', array(
       'pos' => array(

@@ -47,8 +47,127 @@ class Settings extends Page {
       array( $this, 'display_settings_page' )
     );
 
+    // setup help panel on screen load
+    // add_action( 'load-' . $this->screen_id, array( $this, 'add_help_panel' ) );
+
     parent::admin_menu();
   }
+
+  /**
+   * will be called as a 'load-my-screen' action callback
+   * @see WC_POS\Admin\Page::admin_menu
+   *
+   */
+  public function conditional_init() {
+
+    // help panel setup
+    $this->add_help_panel();
+
+    // not to be omitted because
+    // parent (Page) will loadd all necessary scripts
+    // for the screen
+    parent::conditional_init();
+
+  }
+
+  /**
+   * Sets up the help panel tabs
+   * for each sections of the POS Settings
+   *
+   *
+   *
+   */
+  function add_help_panel() {
+
+    $screen = get_current_screen();
+
+    if(!$screen) {
+      return;
+    }
+
+    // use Settings sections handlers as source for the help panel
+    foreach($this->handlers() as $id => $class) {
+
+      $handler = $class::get_instance();
+
+      $screen->add_help_tab( array(
+        'id'       => 'wcpos-settings-' . $id,
+        'title'    => __( $handler->label, 'woocommerce-pos' ),
+        'content'  => $this->display_help_page($handler),
+      ));
+
+    }
+
+  }
+
+  /**
+   * Render the help content for the Settings sections
+   * Will fetch content from a remote source for easy updating
+   *
+   * content url is set (for now) as a Section class parameter
+   * @todo decide where the content url should be stored
+   * @todo decide where the content could be stored and in what form (.md, .html ...)
+   *
+   */
+  public function display_help_page($handler) {
+
+
+    $before_help_content = '<p>';
+    $after_help_content = '</p>';
+
+    $default_content = sprintf(
+      "%s%s%s",
+      $before_help_content,
+      'Help page for ' . __( $handler->label, 'woocommerce-pos' ),
+      $after_help_content
+    );
+
+    if(!isset($handler->help_page_url)) {
+      return $default_content;
+    }
+
+    $transient_id = 'wcpos-settings-' . $handler->id;
+
+    if(WP_DEBUG) {
+      delete_transient( $transient_id );
+    }
+
+    // Check for transient, if none, grab remote HTML file
+    if ( false === ( $help_page = get_transient( $transient_id ) ) ) {
+
+      // Get remote file
+      $response = wp_remote_get( $handler->help_page_url );
+
+      // Check for error
+      if ( is_wp_error( $response ) ) {
+        return $default_content;
+      }
+
+      // Parse remote file
+      $help_page = wp_remote_retrieve_body( $response );
+
+      // Check for error
+      if ( is_wp_error( $help_page ) ) {
+        return $default_content;
+      }
+
+      // markdown?
+      if(preg_match('/\.md$/', $handler->help_page_url)) {
+        require_once(__DIR__ . '/../../vendor/Parsedown.php');
+        $mdprsr = new \Parsedown();
+        $help_page = $mdprsr->text($help_page);
+      }
+
+      // Store parsed file in transient, expire after 24 hours
+      set_transient( $transient_id, $help_page, 24 * \HOUR_IN_SECONDS );
+
+
+    }
+
+    return $help_page;
+
+  }
+
 
   /**
    * Output the settings pages
@@ -70,7 +189,15 @@ class Settings extends Page {
    */
   public function enqueue_admin_scripts() {
     global $wp_scripts;
-    $wp_scripts->queue = array();
+
+    // remove all queued scripts from queue
+    // to avoid unwanted conflicts with js loaded by other plugins
+    // keep WP common.js to operate help panel
+    foreach($wp_scripts->queue as $k => $script_handle) {
+      if($script_handle !== 'common') {
+        unset($wp_scripts->queue[$k]);
+      }
+    }
 
     // deregister scripts
     wp_deregister_script( 'jquery' );
