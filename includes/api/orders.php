@@ -18,6 +18,7 @@ use WC_Order;
 use WC_POS\Admin\Settings\Checkout;
 use WC_POS\Gateways\Cash;
 use WP_Error;
+use WC_API_Exception;
 
 class Orders {
 
@@ -52,6 +53,9 @@ class Orders {
 
       // dummy order
       add_filter( 'woocommerce_api_serve_request', array( $this, 'serve_request' ), 10, 3 );
+
+      // email orders
+      add_filter( 'woocommerce_api_create_order_note_data', array( $this, 'create_order_note_data' ), 10, 2 );
     }
 
   }
@@ -59,6 +63,8 @@ class Orders {
 
   /**
    * Register routes for POS Orders
+   * - temporary unRESTful POST for emailing receipts
+   * - @todo refactor as part of order log (comments)
    *
    * @param array $routes
    * @return array
@@ -136,7 +142,7 @@ class Orders {
    * @return array
    */
   public function edit_order_data(array $data, $order_id){
-    $this->delete_order_items($order_id);
+//    $this->delete_order_items($order_id);
     return $this->create_order_data($data);
   }
 
@@ -850,35 +856,42 @@ class Orders {
 
   /**
    * Send email receipt
-   *
+   * @param $data
    * @param $order_id
-   * @param $email
-   * @return array
+   * @return mixed
+   * @throws WC_API_Exception
    */
-  static public function email_receipt( $order_id, $email ) {
-    $order = wc_get_order( absint( $order_id ) );
-
-    if ( is_object( $order ) ) {
-      if ( $email != '' ) {
-        $order->billing_email = $email;
-      }
-      WC()->mailer()->customer_invoice( $order );
-
-      // hook for third party plugins
-      do_action( 'woocommerce_pos_email_receipt', $email, $order_id, $order );
-
-      return array(
-        'result'  => 'success',
-        'message' => __( 'Email sent', 'woocommerce-pos' )
-      );
+  static public function create_order_note_data( $data, $order_id ) {
+    if( ! isset( $data['email'] )){
+      return $data;
     }
 
-    return new WP_Error(
-      'woocommerce_pos_settings_error',
-      __( 'There was an error sending the email', 'woocommerce-pos' ),
-      array( 'status' => 400 )
-    );
+    $order = wc_get_order( $order_id );
+    if( ! empty($data['email']) ){
+      $order->billing_email = $data['email'];
+    }
 
+    if ( !is_email($order->billing_email) ) {
+      throw new WC_API_Exception( 'woocommerce_pos_email_error', __( 'A valid email address is required', 'woocommerce-pos' ), 400 );
+    }
+
+    // WC Mailer returns nothing, use PHPMailer exceptions instead
+    try {
+      WC()->mailer()->customer_invoice( $order );
+    } catch (phpmailerException $e) {
+      throw new WC_API_Exception( 'woocommerce_pos_email_error', __( 'There was an error sending the email', 'woocommerce-pos' ), 400 );
+    }
+
+    // save email to order billing_email
+    if( isset( $data['save'] ) && $data['save'] ){
+      update_post_meta( $order_id, '_billing_email', $order->billing_email );
+    }
+
+    // hook for third party plugins
+    do_action( 'woocommerce_pos_email_receipt', $order->billing_email, $order_id, $order );
+
+    $data['note'] = sprintf( __( 'Customer receipt manually sent from POS to %s', 'woocommerce-pos' ), $order->billing_email);
+    return $data;
   }
 
   /**

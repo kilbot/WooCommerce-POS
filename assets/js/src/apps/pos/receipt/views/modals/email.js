@@ -1,15 +1,35 @@
 var ItemView = require('lib/config/item-view');
 var App = require('lib/config/application');
-var hbs = require('handlebars');
 var polyglot = require('lib/utilities/polyglot');
-var Tmpl = require('./email.hbs');
+var bb = require('backbone');
 
 var View = ItemView.extend({
 
-  template: hbs.compile(Tmpl),
+  template: 'modals.email-receipt',
+
+  modal: {
+    header: {
+      title: polyglot.t('titles.email-receipt')
+    },
+    footer: {
+      buttons: [
+        {
+          type: 'message'
+        }, {
+          action: 'send',
+          icon: 'prepend'
+        }, {
+          action: 'send-close',
+          className: 'btn-success',
+          icon: 'prepend'
+        }
+      ]
+    }
+  },
 
   initialize: function(options){
-    this.mergeOptions(options, ['email']);
+    this.model = new bb.Model({ email: _.get(options, 'email') });
+
     this.modal = {
       header: {
         title: polyglot.t('titles.email-receipt')
@@ -20,6 +40,9 @@ var View = ItemView.extend({
             type: 'message'
           }, {
             action: 'send',
+            icon: 'prepend'
+          }, {
+            action: 'send-close',
             className: 'btn-success',
             icon: 'prepend'
           }
@@ -28,18 +51,16 @@ var View = ItemView.extend({
     };
   },
 
-  ui: {
-    email: 'input'
-  },
+  onRender: function() {
+    var self = this;
 
-  templateHelpers: function(){
-    return {
-      email: this.email
-    };
-  },
-
-  getEmail: function(){
-    return this.ui.email.val() || this.email;
+    // bind ordinary elements
+    this.$('input, select, textarea').each(function () {
+      var name = $(this).attr('name');
+      if (name) {
+        self.addBinding(null, '*[name="' + name + '"]', name);
+      }
+    });
   }
 
 });

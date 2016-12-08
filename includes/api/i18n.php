@@ -198,7 +198,7 @@ class i18n extends WC_API_Resource {
       'shipping'        => __( 'Shipping', 'woocommerce' ),
       'void'            => __( 'Void', 'woocommerce-pos' ),
       'split'           => __( 'Split', 'woocommerce-pos' ),
-      'combine'         => __( 'Combine', 'woocommerce-pos' ),
+      'send-close'      => _x( 'Send & Close', 'eg: Send email and close dialog window', 'woocommerce-pos' ),
     );
   }
 

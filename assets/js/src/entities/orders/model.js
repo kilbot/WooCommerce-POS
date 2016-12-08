@@ -339,9 +339,12 @@ var OrderModel = Parent.extend({
 
   /**
    * Email receipt via ajax
+   * @param model - { email: example@example.com }
    */
-  emailReceipt: function (email) {
-    return App.prototype.post(this.url() + 'email/' + email);
+  emailReceipt: function (model) {
+    return App.prototype.post(this.url() + 'notes', {
+      order_note: model.toJSON()
+    });
   },
 
   /**

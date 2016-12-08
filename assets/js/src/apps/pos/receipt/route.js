@@ -130,50 +130,35 @@ var ReceiptRoute = Route.extend({
       email: this.order.get('customer.email')
     });
 
-    Radio.request('modal', 'open', view)
-      .then(function(args){
-        var buttons = args.view.getButtons();
-        self.listenTo(buttons, 'action:send', function(btn, view){
-          var email = args.view.getRegion('content').currentView.getEmail();
-          self.send(btn, view, email);
-        });
-      });
+    var modal = Radio.request('modal', 'open', view);
 
+    var btnView = modal.getRegion('footerRegion').currentView;
+
+    this.listenTo(btnView, {
+      'action:send': function(btn){
+        var model = modal.getRegion('bodyRegion').currentView.model;
+        self.send(btn, model);
+      },
+      'action:send-close': function(btn){
+        var model = modal.getRegion('bodyRegion').currentView.model;
+        self.send(btn, model)
+          .then(function(){
+            Radio.request('modal', 'close', modal.$el.data().vex.id);
+          });
+      }
+    });
   },
 
-  // todo: refactor
-  send: function(btn, view, email){
-    var order_id = this.order.get('id'),
-        ajaxurl = Radio.request('entities', 'get', {
-          type: 'option',
-          name: 'ajaxurl'
-        });
-
+  send: function(btn, model){
     btn.trigger('state', [ 'loading', '' ]);
 
-    function onSuccess(resp){
-      if(resp.result === 'success'){
-        btn.trigger('state', [ 'success', resp.message ]);
-      } else {
-        btn.trigger('state', [ 'error', resp.message ]);
-      }
-    }
-
-    function onError(jqxhr){
-      var message = null;
-      if(jqxhr.responseJSON && jqxhr.responseJSON.errors){
-        message = jqxhr.responseJSON.errors[0].message;
-      }
-      btn.trigger('state', ['error', message]);
-    }
-
-    App.prototype.getJSON( ajaxurl, {
-      action: 'wc_pos_email_receipt',
-      order_id: order_id,
-      email : email
-    })
-    .done(onSuccess)
-    .fail(onError);
+    return this.order.emailReceipt( model )
+      .then(function(){
+        btn.trigger('state', [ 'success', '' ]);
+      })
+      .catch(function(error){
+        btn.trigger('state', ['error', error]);
+      });
   }
 
 });

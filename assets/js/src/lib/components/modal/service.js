@@ -52,6 +52,7 @@ module.exports = Service.extend({
 
   /**
    * Open modal
+   * - @todo: service should return Modal object with getLayout, getHeader, getBody methods
    */
   /* jshint -W074 */
   open: function(options){

@@ -10,8 +10,7 @@ module.exports = Collection.extend({
   initialState: {
     filter: {
       order: 'ASC',
-      orderby: 'meta_value',
-      meta_key: 'last_name',
+      orderby: 'last_name',
       limit: 10,
       qFields: [
         'email',

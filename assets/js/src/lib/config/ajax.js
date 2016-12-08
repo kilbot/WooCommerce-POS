@@ -53,12 +53,23 @@ module.exports = {
     }
 
     var options = wrapOptions({
-      url       : url,
-      type      : method || 'get',
-      dataType  : type,
-      data      : data,
-      success   : callback
+      url         : url,
+      type        : method || 'get',
+      dataType    : type,
+      data        : data,
+
+      success     : callback
     });
+
+    // send data as request payload
+    // @todo: check for options override
+    if(method === 'post'){
+      _.extend(options, {
+        contentType : 'application/json',
+        processData : false,
+        data        : JSON.stringify(data)
+      });
+    }
 
     return $.ajax( options );
   },
