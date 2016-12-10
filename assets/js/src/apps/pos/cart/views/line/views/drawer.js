@@ -116,8 +116,9 @@ var View = FormView.extend({
     }
     meta = meta.slice();
     meta.push({ label: '', value: '' });
-    this.model.set({ meta: meta });
-    this.render();
+
+    this.model.set({ meta: meta })
+      .render();
   },
 
   removeMeta: function(e) {
@@ -129,8 +130,9 @@ var View = FormView.extend({
     }
     meta = meta.slice();
     _.pullAt( meta, index );
-    this.model.set({ meta: meta });
-    this.render();
+
+    this.model.set({ meta: meta })
+      .render();
   }
 
 });

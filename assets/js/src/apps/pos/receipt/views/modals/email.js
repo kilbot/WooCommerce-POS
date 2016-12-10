@@ -1,6 +1,8 @@
 var ItemView = require('lib/config/item-view');
 var App = require('lib/config/application');
 var polyglot = require('lib/utilities/polyglot');
+var $ = require('jquery');
+var _ = require('lodash');
 var bb = require('backbone');
 
 var View = ItemView.extend({

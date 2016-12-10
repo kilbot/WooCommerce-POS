@@ -54,29 +54,10 @@ class Orders {
       // dummy order
       add_filter( 'woocommerce_api_serve_request', array( $this, 'serve_request' ), 10, 3 );
 
-      // email orders
+      // email receipts
       add_filter( 'woocommerce_api_create_order_note_data', array( $this, 'create_order_note_data' ), 10, 2 );
     }
 
-  }
-
-
-  /**
-   * Register routes for POS Orders
-   * - temporary unRESTful POST for emailing receipts
-   * - @todo refactor as part of order log (comments)
-   *
-   * @param array $routes
-   * @return array
-   */
-  public function register_routes( $routes ) {
-
-    # POST /orders/<order_id>/email/<email>
-    $routes[ $this->base . '/(?P<order_id>\d+)/email/(?P<email>.+)' ] = array(
-      array( array( $this, 'email_receipt' ), WC_API_Server::CREATABLE | WC_API_Server::ACCEPT_DATA )
-    );
-
-    return $routes;
   }
 
 

@@ -44,7 +44,7 @@ var wrapOptions = function( options ){
 
 module.exports = {
 
-  /* jshint -W072 */
+  /* jshint -W072, -W074 */
   ajax: function( url, data, callback, type, method ){
     if( _.isFunction(data) ){
       type = type || callback;
@@ -73,7 +73,7 @@ module.exports = {
 
     return $.ajax( options );
   },
-  /* jshint +W072 */
+  /* jshint +W072, +W074 */
 
   getJSON: function( url, data, callback ){
     return this.ajax( url, data, callback, 'json' );
