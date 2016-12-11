@@ -28,6 +28,14 @@ module.exports = Collection.extend({
     return new Subclass(attributes, options);
   },
 
+  /**
+   * Overwrites Collection.modelId which expects this.model as an object, not a function
+   */
+  modelId: function(attrs) {
+    // return attrs[this.model.prototype.idAttribute || 'id'];
+    return attrs['local_id'];
+  },
+
   name: 'products',
 
   extends: ['dual', 'filtered'],

@@ -121,6 +121,9 @@ var CheckoutRoute = Route.extend({
       return this.onFailedPayment();
     }
 
+    var products = Radio.request('entities', 'get', 'products');
+    products.fetchUpdated();
+
     this.navigate('receipt/' + this.activeOrder.id, { trigger: true });
   },
 
