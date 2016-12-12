@@ -110,7 +110,8 @@ var EntitiesService = Service.extend({
    * return an option set during app.start(options)
    */
   getOption: function(options){
-    return _.get( this.options, options.name );
+    var name = _.isString(options) ? options : _.get( options, 'name' );
+    return _.get( this.options, name );
   },
 
   serialize: function(value){
@@ -129,7 +130,7 @@ var EntitiesService = Service.extend({
     var data;
 
     try {
-      data = storage.getItem('wc_pos_' + options.name);
+      data = storage.getItem(this.getOption('localDBPrefix') + options.name);
     } catch (error) {
       return Radio.channel('global', 'error', error);
     }
@@ -153,7 +154,7 @@ var EntitiesService = Service.extend({
     }
 
     try {
-      storage.setItem('wc_pos_' + options.name, this.serialize(data));
+      storage.setItem(this.getOption('localDBPrefix') + options.name, this.serialize(data));
     } catch (error) {
       return Radio.channel('global', 'error', error);
     }
@@ -168,7 +169,7 @@ var EntitiesService = Service.extend({
       delete data[options.key];
 
       try {
-        storage.setItem('wc_pos_' + options.name, JSON.stringify(data));
+        storage.setItem(this.getOption('localDBPrefix') + options.name, JSON.stringify(data));
       } catch (error) {
         return Radio.channel('global', 'error', error);
       }
@@ -176,7 +177,7 @@ var EntitiesService = Service.extend({
     } else {
 
       try {
-        storage.removeItem('wc_pos_' + options.name);
+        storage.removeItem(this.getOption('localDBPrefix') + options.name);
       } catch (error) {
         return Radio.channel('global', 'error', error);
       }

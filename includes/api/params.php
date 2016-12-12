@@ -58,11 +58,12 @@ class Params extends WC_API_Resource {
    */
   private function common_params(){
     return array(
-      'accounting'  => $this->accounting(),
-      'customers'   => $this->customers(),
-      'debug'       => defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG,
-      'emulateHTTP' => get_option( 'woocommerce_pos_emulateHTTP' ) === '1',
-      'idbVersion'  => Settings::get_idb_version(),
+      'accounting'    => $this->accounting(),
+      'customers'     => $this->customers(),
+      'debug'         => defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG,
+      'emulateHTTP'   => get_option( 'woocommerce_pos_emulateHTTP' ) === '1',
+      'idbVersion'    => Settings::get_idb_version(),
+      'localDBPrefix' => $this->local_db_prefix(),
       'store'         => array( 'name' => get_bloginfo( 'name' ) )
     );
   }
@@ -281,6 +282,18 @@ class Params extends WC_API_Resource {
       )
     ));
 
+  }
+
+  /**
+   *
+   */
+  private function local_db_prefix(){
+    $pieces = array('wcpos');
+    $pieces[] = get_current_blog_id(); // site id
+    $pieces[] = get_current_user_id(); // user id
+    $string = implode('_', $pieces) . '_';
+
+    return apply_filters( 'woocommerce_pos_local_db_prefix', $string, $pieces );
   }
 
 }

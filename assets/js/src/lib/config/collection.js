@@ -31,6 +31,11 @@ var Collection = bb.Collection.extend({
       type: 'option',
       name: 'wc_api'
     });
+
+    this.localDBPrefix = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'localDBPrefix'
+    });
   },
 
   /**
