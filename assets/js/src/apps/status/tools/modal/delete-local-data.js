@@ -4,15 +4,27 @@
  */
 
 var ItemView = require('lib/config/item-view');
+var Radio = require('backbone.radio');
+var _ = require('lodash');
 
 module.exports =  ItemView.extend({
 
-  dbs: [
+  names: [
+    'products',
+    'orders',
+    'customers',
+    'coupons',
+    'states'
+  ],
+
+  // depreciated
+  olddbs: [
     'wc_pos_products',
     'wc_pos_cart',
     'wc_pos_orders',
     'wc_pos_customers',
-    'wc_pos_coupons'
+    'wc_pos_coupons',
+    'wc_pos_states'
   ],
 
   template: function(){
@@ -44,6 +56,15 @@ module.exports =  ItemView.extend({
       this.printToScreen('Browser does not support IndexedDB deleteDatabase!');
       return;
     }
+
+    var localDBPrefix = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'localDBPrefix'
+    });
+
+    this.dbs = _.map(this.names, function(name){
+      return localDBPrefix + name;
+    }).concat(this.olddbs);
 
     this.deleteDatabases();
   },
