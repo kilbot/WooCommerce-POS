@@ -660,7 +660,7 @@ class ProductsTest extends TestCase {
   }
 
   /**
-   * @group debug
+   *
    */
   public function test_prefix_and_title_search() {
     $response = $this->client->get( 'products', [
@@ -715,6 +715,48 @@ class ProductsTest extends TestCase {
     $this->assertArrayHasKey( 'products', $data );
     $this->assertCount(3, $data['products']);
 
+  }
+
+  /**
+   *
+   */
+  public function test_title_and_title_and_all_not_in_search() {
+    $response = $this->client->get('products', [
+      'query' => array(
+        'filter' => array(
+          'limit' => -1,
+          'q' => 'ship you'
+        )
+      )
+    ]);
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $target_ids = wp_list_pluck( $data['products'], 'id' );
+
+    $response = $this->client->get('products', [
+      'query' => array(
+        'filter' => array(
+          'limit' => 10,
+          'not_in' => implode(',', $target_ids),
+          'q' => array(
+            array(
+              'type'    => 'string',
+              'query'   => 'ship'
+            ),
+            array(
+              'type'    => 'string',
+              'query'   => 'you'
+            )
+          )
+        )
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $result_ids = wp_list_pluck( $data['products'], 'id' );
+    $this->assertEquals(array(), $result_ids); //
   }
 
 }

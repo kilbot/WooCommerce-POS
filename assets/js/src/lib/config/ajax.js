@@ -27,7 +27,10 @@ var wrapOptions = function( options ){
   var error = options.error;
 
   // show error modal on error
-  options.error = function(){
+  options.error = function(jqXHR, textStatus, errorThrown){
+    if( textStatus === 'abort' ) {
+      return;
+    }
     if( error ) {
       error.apply(options.context, arguments);
     }

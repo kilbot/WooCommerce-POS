@@ -344,12 +344,16 @@ class Products extends WC_API_Resource {
     );
     $post__in = $wp_query->get('post__in');
     $include = empty($post__in) ? $search_ids : array_intersect($post__in, $search_ids);
+
+    // query can't have post__in & post__not_in
+    $post__not_in = $wp_query->get( 'post__not_in' );
+    $include = array_diff( $include, $post__not_in );
+
     if(empty($include)){
       $include = array(0);
     }
-    // query can't have post__in & post__not_in
-    $post__not_in = $wp_query->get( 'post__not_in' );
-    $wp_query->set( 'post__in', array_diff( $include, $post__not_in ) );
+
+    $wp_query->set( 'post__in', $include );
   }
 
   /**
