@@ -247,6 +247,31 @@ class ProductsTest extends TestCase {
   /**
    *
    */
+  public function test_id_not_in_search(){
+    $product_id = $this->get_random_product_id();
+
+    $response = $this->client->get('products', [
+      'query' => array(
+        'filter[not_in]' => $product_id,
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'id',
+            'query'   => $product_id
+          )
+        )
+      )
+    ]);
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertCount(0, $data['products']);
+
+  }
+
+  /**
+   *
+   */
   public function test_featured_search(){
     
     global $wpdb;

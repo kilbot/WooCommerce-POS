@@ -370,7 +370,11 @@ class Products extends WC_API_Resource {
     if($prefix == 'id'){
       $term = (int) $term;
       $post__in = $wp_query->get('post__in');
+      $post__not_in = $wp_query->get('post__not_in');
+
       $include = empty($post__in) ? array($term) : array_intersect($post__in, array($term));
+      $include = array_diff($include, $post__not_in);
+
       if(empty($include)){
         $include = array(0);
       }
