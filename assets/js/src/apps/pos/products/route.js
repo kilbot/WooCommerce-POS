@@ -27,6 +27,12 @@ module.exports = Route.extend({
    * Set first tab filter
    */
   fetch: function() {
+
+    // hack to prevent delayed fetches
+    if(_.has(collection.currentFetchOptions, 'xhr')){
+      collection.currentFetchOptions.xhr.abort();
+    }
+
     this.collection
       .resetFilters()
       .setQuery( _.get(this.tabs, [0, 'filter']) )

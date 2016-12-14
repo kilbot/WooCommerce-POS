@@ -12,10 +12,13 @@ module.exports = Collection.extend({
   initialState: {
     filter: {
       order: 'DESC',
-      orderby: 'order_number',
+      orderby: 'id',
       limit: 10,
+      // do not have qFields contain 'id', it will cause problems, use 'id:' instead
       qFields: [
-        'order_number',
+        'customer.first_name',
+        'customer.last_name',
+        'customer.email',
         'billing_address.first_name',
         'billing_address.last_name',
         'billing_address.email'

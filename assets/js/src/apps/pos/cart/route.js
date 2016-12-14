@@ -53,9 +53,16 @@ var CartRoute = Route.extend({
    */
   fetch: function(id) {
     var collection = this.collection;
+    collection.reset();
+
+    // hack to prevent delayed fetches
+    if(_.has(collection.currentFetchOptions, 'xhr')){
+      collection.currentFetchOptions.xhr.abort();
+    }
+
     return collection.fetchOpenOrders()
       .then(function(){
-        var value =  parseInt(id, 10);
+        var value = _.parseInt(id);
         if(!_.isNaN(value) && !collection.get(id)){
           return collection.fetch({
             remote: false,

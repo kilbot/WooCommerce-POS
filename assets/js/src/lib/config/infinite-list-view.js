@@ -19,8 +19,8 @@ module.exports = app.prototype.InfiniteListView = Mn.CompositeView.extend({
     });
 
     this.listenTo(this.collection, {
-      'request:remote' : this.startLoading,
-      'sync'           : this.endLoading
+      'request' : this.startLoading,
+      'sync'    : this.endLoading
     });
   },
 
