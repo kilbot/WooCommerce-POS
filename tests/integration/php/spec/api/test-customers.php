@@ -48,135 +48,183 @@ class CustomersTest extends TestCase {
    *
    */
   public function test_customer_simple_username_search(){
+    $username = $this->generate_random_string();
+
+    // create customer
+    $customer_id = wp_insert_user( array(
+      'user_pass' => 'password',
+      'user_login' => $username,
+//      'user_email' => 'woo@' . $username . '.com',
+//      'first_name' => $first_name,
+//      'last_name' => $last_name
+    ) );
+
     $response = $this->client->get('customers', [
       'query' => [
-        'filter[q]' => 'wootea',
-        'filter[fields]' => 'username'
+        'filter[q]' => substr($username, 6),
+        'filter[qFields]' => 'username'
       ]
     ]);
     $data = $response->json();
 
     $this->assertCount(1, $data['customers']);
-    $this->assertEquals('wooteam', $data['customers'][0]['username']);
+    $this->assertEquals($customer_id, $data['customers'][0]['id']);
   }
 
   /**
    *
    */
   public function test_customer_simple_email_search(){
-    $email = 'woo@' . $this->generate_random_string() . '.com';
+    $username = $this->generate_random_string();
+    $email = $this->generate_random_string();
 
-    add_filter('send_email_change_email', '__return_false');
-    wp_update_user( array(
-      'ID' => 2,
-      'user_email' => $email
-    ));
+    // create customer
+    $customer_id = wp_insert_user( array(
+      'user_pass' => 'password',
+      'user_login' => $username,
+      'user_email' => 'woo@' . $email . '.com',
+//      'first_name' => $first_name,
+//      'last_name' => $last_name
+    ) );
 
     $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => substr($email, 0, 6),
-        'filter[fields]' => 'email'
+        'filter[qFields]' => 'email'
       ]
     ]);
     $data = $response->json();
 
     $this->assertCount(1, $data['customers']);
-    $this->assertEquals($email, $data['customers'][0]['email']);
+    $this->assertEquals($customer_id, $data['customers'][0]['id']);
   }
 
   /**
    *
    */
   public function test_customer_simple_first_name_search(){
+    $username = $this->generate_random_string();
     $first_name = $this->generate_random_string();
-    wp_update_user( array(
-      'ID' => 2,
-      'first_name' => $first_name
-    ));
+
+    // create customer
+    $customer_id = wp_insert_user( array(
+      'user_pass' => 'password',
+      'user_login' => $username,
+      'first_name' => $first_name,
+//      'last_name' => $last_name
+    ) );
 
     $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => substr($first_name, 0, 6),
-        'filter[fields]' => 'first_name'
+        'filter[qFields]' => 'first_name'
       ]
     ]);
     $data = $response->json();
 
     $this->assertCount(1, $data['customers']);
-    $this->assertEquals($first_name, $data['customers'][0]['first_name']);
+    $this->assertEquals($customer_id, $data['customers'][0]['id']);
   }
 
   /**
    *
    */
   public function test_customer_simple_last_name_search(){
+    $username = $this->generate_random_string();
     $last_name = $this->generate_random_string();
-    wp_update_user( array(
-      'ID' => 2,
+
+    // create customer
+    $customer_id = wp_insert_user( array(
+      'user_pass' => 'password',
+      'user_login' => $username,
       'last_name' => $last_name
-    ));
+    ) );
 
     $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => substr($last_name, 0, 6),
-        'filter[fields]' => 'last_name'
+        'filter[qFields]' => 'last_name'
       ]
     ]);
     $data = $response->json();
 
     $this->assertCount(1, $data['customers']);
-    $this->assertEquals($last_name, $data['customers'][0]['last_name']);
+    $this->assertEquals($customer_id, $data['customers'][0]['id']);
   }
 
   /**
    *
    */
   public function test_customer_simple_company_search(){
+    $username = $this->generate_random_string();
     $company = $this->generate_random_string();
-    update_user_meta( 2, 'billing_company', $company );
+
+    // create customer
+    $customer_id = wp_insert_user( array(
+      'user_pass' => 'password',
+      'user_login' => $username
+    ) );
+
+    update_user_meta( $customer_id, 'billing_company', $company );
 
     $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => substr($company, 0, 6),
-        'filter[fields]' => 'billing_address.company'
+        'filter[qFields]' => 'billing_address.company'
       ]
     ]);
     $data = $response->json();
 
     $this->assertCount(1, $data['customers']);
-    $this->assertEquals($company, $data['customers'][0]['billing_address']['company']);
+    $this->assertEquals($customer_id, $data['customers'][0]['id']);
   }
 
   /**
    *
    */
   public function test_customer_simple_phone_search(){
+    $username = $this->generate_random_string();
     $phone = $this->generate_random_string();
-    update_user_meta( 2, 'billing_phone', $phone );
+
+    // create customer
+    $customer_id = wp_insert_user( array(
+      'user_pass' => 'password',
+      'user_login' => $username
+    ) );
+
+    update_user_meta( $customer_id, 'billing_phone', $phone );
 
     $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => substr($phone, 0, 6),
-        'filter[fields]' => 'billing_address.phone'
+        'filter[qFields]' => 'billing_address.phone'
       ]
     ]);
     $data = $response->json();
 
     $this->assertCount(1, $data['customers']);
-    $this->assertEquals($phone, $data['customers'][0]['billing_address']['phone']);
+    $this->assertEquals($customer_id, $data['customers'][0]['id']);
   }
 
   /**
    *
    */
   public function test_customer_complex_id_search(){
+    $username = $this->generate_random_string();
+
+    // create customer
+    $customer_id = wp_insert_user( array(
+      'user_pass' => 'password',
+      'user_login' => $username
+    ) );
+
     $response = $this->client->get('customers', [
       'query' => [
         'filter[q]' => array(
           array(
             'type'    => 'prefix',
             'prefix'  => 'id',
-            'query'   => '2'
+            'query'   => $customer_id
           )
         )
       ]
@@ -184,7 +232,7 @@ class CustomersTest extends TestCase {
     $data = $response->json();
 
     $this->assertCount(1, $data['customers']);
-    $this->assertEquals(2, $data['customers'][0]['id']);
+    $this->assertEquals($customer_id, $data['customers'][0]['id']);
   }
 
 }

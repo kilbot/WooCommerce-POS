@@ -847,7 +847,10 @@ class Orders {
       return $data;
     }
 
+    $note = '';
     $order = wc_get_order( $order_id );
+    $original_email = $order->billing_email;
+
     if( ! empty($data['email']) ){
       $order->billing_email = $data['email'];
     }
@@ -866,12 +869,27 @@ class Orders {
     // save email to order billing_email
     if( isset( $data['save'] ) && $data['save'] ){
       update_post_meta( $order_id, '_billing_email', $order->billing_email );
+
+      // bump modified date
+      $post_modified     = current_time( 'mysql' );
+      $post_modified_gmt = current_time( 'mysql', 1 );
+      wp_update_post( array(
+        'ID'                => $order_id,
+        'post_modified'     => $post_modified,
+        'post_modified_gmt' => $post_modified_gmt
+      ));
+
+      if($original_email != '' && $original_email != $order->billing_email) {
+        $note .= sprintf( __( 'Billing email changed from %s to %s.', 'woocommerce-pos' ), $original_email, $order->billing_email);
+        $note .= ' ';
+      }
     }
 
     // hook for third party plugins
     do_action( 'woocommerce_pos_email_receipt', $order->billing_email, $order_id, $order );
 
-    $data['note'] = sprintf( __( 'Customer receipt manually sent from POS to %s', 'woocommerce-pos' ), $order->billing_email);
+    $note .= sprintf( __( 'Customer receipt manually sent from POS to %s.', 'woocommerce-pos' ), $order->billing_email);
+    $data['note'] = $note;
     return $data;
   }
 

@@ -29,8 +29,8 @@ module.exports = Route.extend({
   fetch: function() {
 
     // hack to prevent delayed fetches
-    if(_.has(collection.currentFetchOptions, 'xhr')){
-      collection.currentFetchOptions.xhr.abort();
+    if(_.has(this.collection.currentFetchOptions, 'xhr')){
+      this.collection.currentFetchOptions.xhr.abort();
     }
 
     this.collection
