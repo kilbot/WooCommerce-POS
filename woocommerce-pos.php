@@ -6,7 +6,7 @@
  * Description:       A simple front-end for taking WooCommerce orders at the Point of Sale. Requires <a href="http://wordpress.org/plugins/woocommerce/">WooCommerce</a>.
  * Version:           0.5.0-beta
  * Author:            kilbot
- * Author URI:        http://woopos.com.au
+ * Author URI:        http://wcpos.com
  * Text Domain:       woocommerce-pos
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt

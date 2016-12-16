@@ -12,7 +12,8 @@ var Customer = ItemView.extend({
     'click': 'customer:selected'
   },
   addFocus: function(){
-    this.$el.addClass('focus').scrollIntoView();
+    this.$el.addClass('focus');
+    this.el.scrollIntoView();
   },
   removeFocus: function(){
     this.$el.removeClass('focus');
@@ -38,7 +39,9 @@ var Customers = InfiniteListView.extend({
 
   initialize: function(options){
     options = options || {};
-    this.collection.fetch();
+    this.collection
+      .setQuery('search', options.input)
+      .fetch();
 
     // if( customers.isNew() ){
     //   return customers.fetch()

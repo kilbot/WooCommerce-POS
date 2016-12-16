@@ -48,7 +48,9 @@ var View = View.extend({
   },
 
   _query: _.debounce( function(value){
-    this.customers.setFilter(value);
+    this.customers
+      .setQuery('search', value)
+      .fetch();
   }, 149),
 
   modelEvents: {
@@ -76,7 +78,7 @@ var View = View.extend({
   onDropdownOpen: function(){
     var view = new Customers({
       collection: this.customers,
-      filter: this.$('input').val()
+      input: this.$('input').val()
     });
 
     this.listenTo(view, 'childview:customer:selected', function(view){

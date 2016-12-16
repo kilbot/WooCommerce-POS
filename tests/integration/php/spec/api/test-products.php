@@ -275,6 +275,15 @@ class ProductsTest extends TestCase {
   public function test_featured_search(){
     
     global $wpdb;
+
+    // store downloadable ids
+    $featured = $wpdb->get_col("
+      SELECT post_id 
+      FROM $wpdb->postmeta 
+      WHERE meta_key = '_featured' 
+      AND meta_value = 'yes'
+    ");
+
     $wpdb->update($wpdb->postmeta, array('meta_value' => 'no'), array('meta_key' => '_featured'));
 
     $response = $this->client->get('products', [
@@ -319,6 +328,76 @@ class ProductsTest extends TestCase {
     // remove _featured
     update_post_meta($product_id, '_featured', 'no');
 
+    // restore downloadable
+    foreach($featured as $id){
+      $wpdb->update($wpdb->postmeta, array('meta_value' => 'yes'), array('post_id' => $id,'meta_key' => '_featured'));
+    }
+  }
+
+  /**
+   *
+   */
+  public function test_downloadable_search(){
+
+    global $wpdb;
+
+    // store downloadable ids
+    $downloadable = $wpdb->get_col("
+      SELECT post_id 
+      FROM $wpdb->postmeta 
+      WHERE meta_key = '_downloadable' 
+      AND meta_value = 'yes'
+    ");
+
+    // set all to 'no'
+    $wpdb->update($wpdb->postmeta, array('meta_value' => 'no'), array('meta_key' => '_downloadable'));
+
+    $response = $this->client->get('products', [
+      'query' => array(
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'downloadable',
+            'query'   => 'true'
+          )
+        )
+      )
+    ]);
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertCount(0, $data['products']);
+
+    // add _downloadable
+    $product_id = $this->get_random_product_id();
+    update_post_meta($product_id, '_downloadable', 'yes');
+
+    $response = $this->client->get('products', [
+      'query' => array(
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'downloadable',
+            'query'   => 'true'
+          )
+        )
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertCount(1, $data['products']);
+
+    $this->assertEquals($product_id, $data['products'][0]['id']);
+
+    // remove _downloadable
+    update_post_meta($product_id, '_downloadable', 'no');
+
+    // restore downloadable
+    foreach($downloadable as $id){
+      $wpdb->update($wpdb->postmeta, array('meta_value' => 'yes'), array('post_id' => $id,'meta_key' => '_downloadable'));
+    }
   }
 
   /**

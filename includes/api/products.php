@@ -382,9 +382,9 @@ class Products extends WC_API_Resource {
     }
 
     // featured
-    if($prefix == 'featured'){
+    if(in_array($prefix, array('featured', 'downloadable'))){
       $meta_query[] = array(
-        'key'     => '_featured',
+        'key'     => '_' . $prefix,
         'value'   => $term == 'true' ? 'yes' : 'no',
         'compare' => '='
       );

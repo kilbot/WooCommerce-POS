@@ -73,15 +73,12 @@ var Filter = Behavior.extend({
   },
 
   /**
-   *
+   * why doesn't this work?!
    */
   onRender: function(){
-    //if(this.view.collection.hasFilter('search')){
-    //  var queryStr = this.view.collection._filtered._query;
-    //  if(queryStr){
-    //    this.ui.searchField.val(queryStr).trigger('keyup');
-    //  }
-    //}
+    // if(this.view.collection.hasQuery('search')){
+    //  // set ui.searchField
+    // }
   },
 
   sync: function(e){
