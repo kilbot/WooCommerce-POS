@@ -116,7 +116,8 @@ class Customers extends WC_API_Resource {
     $this->set_customer_include_exclude($WP_User_Query);
 
     // early exit
-    if(empty($search = $WP_User_Query->query_vars[ 'search' ]))
+    $search = $WP_User_Query->get('search');
+    if(empty($search))
       return;
 
     // modify search
