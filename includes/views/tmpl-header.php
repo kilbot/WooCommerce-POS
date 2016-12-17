@@ -13,7 +13,7 @@
   </a>
   <div class="dropdown-list">
     <ul>
-      <li><a href="<?php echo wp_logout_url( home_url() ); ?>"><?php /* translators: wordpress */ _e( 'Log Out' ); ?></a></li>
+      <li><a href="<?php echo wp_logout_url( wc_pos_url() ); ?>"><?php /* translators: wordpress */ _e( 'Log Out' ); ?></a></li>
     </ul>
   </div>
 </div>
