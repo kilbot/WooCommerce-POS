@@ -29,6 +29,9 @@ module.exports = bb.Model.extend({
     // update on change item_price
     this.on( 'change:item_price', this.updateTotals );
 
+    // listen to tax toggle on order
+    this.listenTo( this.collection.order, 'change:pos_taxes', this.updateTotals );
+
     // calc on init
     this.updateTotals();
   },
@@ -41,9 +44,6 @@ module.exports = bb.Model.extend({
       prices_include_tax: this.tax.prices_include_tax,
       line_item: this
     });
-
-    // listen to tax toggle on order
-    this.listenTo( this.taxes, 'change:enabled', this.updateTotals );
 
     // on change in line item tax options
     this.on( 'change:taxable change:tax_class', function(){

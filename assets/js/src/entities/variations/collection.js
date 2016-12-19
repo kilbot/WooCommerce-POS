@@ -79,7 +79,7 @@ module.exports = Collection.extend({
       {type: 'prefix', prefix: 'attributes.option', query: option },
     ];
 
-    this.setFilter(name, query);
+    this.setQuery(name, query);
   }
 
 });

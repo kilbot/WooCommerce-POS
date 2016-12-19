@@ -91,7 +91,7 @@ var OrderModel = Parent.extend({
 
     // if open order with no cart, ie: new from idb or changed state
     if (this.isEditable(resp._state) && !this.cart) {
-      resp.taxes = this.attachTaxes(resp.taxes);
+      this.attachTaxes();
       this.attachCart(resp);
       this.attachGateways(resp);
       this.attachCustomer(resp);
@@ -143,29 +143,15 @@ var OrderModel = Parent.extend({
    * - parse tax_rates into bb Collections
    * - set enabled = true for each rate
    */
-  attachTaxes: function (enabled_taxes) {
+  attachTaxes: function () {
     var tax_rates = this.getSettings('tax_rates');
     this.tax_rates = {};
 
     // parse tax_rates
     _.each(tax_rates, function (tax_rate, tax_class) {
       var taxes = new Taxes(tax_rate, {order: this});
-      taxes.toggleTaxes(enabled_taxes);
       this.tax_rates[tax_class] = taxes;
     }.bind(this));
-
-    // exit early if attribute exists
-    if (enabled_taxes) {
-      return enabled_taxes;
-    }
-
-    // set enabled taxes
-    return _.reduce(tax_rates, function (obj, tax_rate) {
-      _.each(tax_rate, function (tax, rate_id) {
-        obj['rate_' + rate_id] = true;
-      });
-      return obj;
-    }, {all: true});
   },
 
   /**
@@ -362,22 +348,25 @@ var OrderModel = Parent.extend({
    * Toggle taxes
    */
   toggleTax: function (rate_id) {
-    if (rate_id) {
-      var val = !this.get('taxes.rate_' + rate_id);
-      this.set('taxes.rate_' + rate_id, val);
-    } else {
-      this.set('taxes.all', !this.get('taxes.all'));
+    var key = rate_id ? 'rate_' + rate_id : 'all';
+    var val = this.get('pos_taxes.' + key);
+    if(_.isUndefined(val)){
+      val = true; // all taxes start as enabled
     }
+    this.set('pos_taxes.' + key, !val);
   },
 
   /**
    * Check if tax rate is enabled by rate_id
    */
   taxRateEnabled: function (rate_id) {
-    if (!this.get('taxes.all')) {
-      return false;
+    var itemized = _.get(this, ['tax', 'tax_total_display']) === 'itemized';
+    var key = rate_id && itemized ? 'rate_' + rate_id : 'all';
+    var val = this.get('pos_taxes.' + key);
+    if(_.isUndefined(val)){
+      val = true; // all taxes start as enabled
     }
-    return this.get('taxes.rate_' + rate_id);
+    return val;
   },
 
   /**

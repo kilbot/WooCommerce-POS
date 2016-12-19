@@ -350,21 +350,21 @@ describe('entities/orders/model.js', function () {
 
   });
 
-  it('should parse tax rates', function(){
-    var model = new OrderModel();
-    model.getSettings = function(name){
-      if( name === 'tax_rates' ){
-        return dummy_tax_GB;
-      }
-    };
-    expect( model.attachTaxes() ).eqls({
-      all: true,
-      rate_1: true,
-      rate_2: true,
-      rate_3: true
-    });
-
-  });
+  // it('should parse tax rates', function(){
+  //   var model = new OrderModel();
+  //   model.getSettings = function(name){
+  //     if( name === 'tax_rates' ){
+  //       return dummy_tax_GB;
+  //     }
+  //   };
+  //   expect( model.attachTaxes() ).eqls({
+  //     all: true,
+  //     rate_1: true,
+  //     rate_2: true,
+  //     rate_3: true
+  //   });
+  //
+  // });
 
   it('should return an array of tax rates for a given tax_class', function(){
     var model = new OrderModel();
@@ -463,5 +463,34 @@ describe('entities/orders/model.js', function () {
   //  }, 150);
   //
   //});
+
+  it('should toggle tax', function(){
+    var model = new OrderModel();
+    expect(model.get('pos_taxes')).is.undefined;
+
+    model.toggleTax();
+    expect(model.get('pos_taxes')).eqls({ all: false });
+
+    model.toggleTax();
+    expect(model.get('pos_taxes')).eqls({ all: true });
+  });
+
+  it('should check if tax rate is enabled or disabled', function(){
+    var model = new OrderModel();
+    expect(model.taxRateEnabled()).to.be.true; // all tax rates start enabled
+    expect(model.taxRateEnabled(3)).to.be.true; // any tax rates start enabled
+
+    model.toggleTax();
+    expect(model.taxRateEnabled()).to.be.false;
+    expect(model.taxRateEnabled(3)).to.be.false;
+
+    // set as itemized
+    var model = new OrderModel();
+    model.tax.tax_total_display = 'itemized';
+    expect(model.taxRateEnabled(1)).to.be.true;
+
+    model.toggleTax(1);
+    expect(model.taxRateEnabled(1)).to.be.false;
+  });
 
 });

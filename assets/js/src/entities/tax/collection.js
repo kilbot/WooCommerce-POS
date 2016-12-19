@@ -25,15 +25,10 @@ module.exports = bb.Collection.extend({
   },
 
   /**
-   * Listen to the order model for tax toggle
+   *
    */
   initialize: function( models, options ){
-    var order = options.order || _.get(this.line_item, ['collection', 'order']);
-
-    // listen for order tax toggle
-    this.listenTo( order, 'change:taxes', function(){
-      this.toggleTaxes( order.get('taxes') );
-    });
+    this.order = options.order || _.get(this.line_item, ['collection', 'order']);
   },
 
   /**
@@ -138,8 +133,9 @@ module.exports = bb.Collection.extend({
    * convenience method to sum taxes
    */
   sum: function(attribute){
+    var collection = this;
     return this.reduce( function( sum, model ){
-      if( model.get('enabled') ){
+      if( collection.order.taxRateEnabled(model.id) ){
         return sum + parseFloat( model.get(attribute) );
       }
       return sum;
@@ -152,22 +148,6 @@ module.exports = bb.Collection.extend({
   reset: function( models, options ){
     options = _.extend({}, options, { parse: true });
     bb.Collection.prototype.reset.call( this, models, options );
-  },
-
-  /**
-   *
-   */
-  toggleTaxes: function( enabled_taxes ){
-    enabled_taxes = enabled_taxes || {};
-    if( enabled_taxes.all === false ){
-      return this.invoke('set', { enabled: false });
-    }
-    _.each( enabled_taxes, function( enabled, id ){
-      var model = this.get( id.replace('rate_', '') );
-      if( model ){
-        model.set({ enabled: enabled });
-      }
-    }.bind(this));
   }
 
 });

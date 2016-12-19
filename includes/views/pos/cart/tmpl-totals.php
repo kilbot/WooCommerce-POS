@@ -29,16 +29,16 @@
 {{/compare}}
 {{/each}}
 {{else}}
-<li class="list-row tax {{#unless taxes.all}}disabled{{/unless}}">
+<li class="list-row tax {{#unless taxes_enabled}}disabled{{/unless}}">
   <div>
     {{#if incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
     <?php echo esc_html( WC()->countries->tax_or_vat() ); ?>:
   </div>
   <div class="total">{{{money total_tax}}}</div>
   <div class="action">
-    <a href="#" data-action="toggle-tax">
-      <i class="icon-{{#if taxes.all}}remove{{else}}add{{/if}} icon-lg icon-tertiary"></i>
-    </a>
+    <!-- <a href="#" data-action="toggle-tax">
+      <i class="icon-{{#if taxes_enabled}}remove{{else}}add{{/if}} icon-lg icon-tertiary"></i>
+    </a> -->
   </div>
 </li>
 {{/if}}

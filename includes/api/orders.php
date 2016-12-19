@@ -398,15 +398,24 @@ class Orders {
 
   /**
    * Create order complete
+   * @todo combine all pos meta for REST transfer
+   *
    * @param $order_id
    */
   public function create_order( $order_id ){
     // pos meta
     $current_user = wp_get_current_user();
 
+    // pos meta
     update_post_meta( $order_id, '_pos', 1 );
     update_post_meta( $order_id, '_pos_user', $current_user->ID );
     update_post_meta( $order_id, '_pos_user_name', $current_user->user_firstname . ' ' . $current_user->user_lastname );
+
+    // pos tax meta
+    $pos_taxes = isset( $this->data['pos_taxes'] ) ? $this->data['pos_taxes'] : '';
+    if(!empty($pos_taxes)){
+      update_post_meta( $order_id, '_pos_taxes', $pos_taxes );
+    }
 
     // check _order_tax and _order_shipping_tax for reports
     if( ! get_post_meta( $order_id, '_order_tax', true ) ){
@@ -426,6 +435,13 @@ class Orders {
    * @param $order_id
    */
   public function edit_order( $order_id ){
+
+    // pos tax meta
+    $pos_taxes = isset( $this->data['pos_taxes'] ) ? $this->data['pos_taxes'] : '';
+    if(!empty($pos_taxes)){
+      update_post_meta( $order_id, '_pos_taxes', $pos_taxes );
+    }
+
     // payment
     do_action( 'woocommerce_pos_process_payment', $order_id, $this->data);
   }
@@ -611,6 +627,12 @@ class Orders {
 
     // add cart discount tax
     $order_data['cart_discount_tax'] = get_post_meta($order->id, '_cart_discount_tax', true);
+
+    // add pos tax meta
+    $pos_taxes = get_post_meta($order->id, '_pos_taxes', true);
+    if($pos_taxes){
+      $order_data['pos_taxes'] = $pos_taxes;
+    }
 
     return $order_data;
   }

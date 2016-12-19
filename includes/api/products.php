@@ -75,7 +75,7 @@ class Products extends WC_API_Resource {
     'tags',
 //    'images',
 //    'featured_src', // replaced by thumbnail
-//    'attributes', // warning! https://github.com/jashkenas/backbone/issues/4103
+    'attributes',
 //    'downloads',
 //    'download_limit',
 //    'download_expiry',

@@ -56,7 +56,19 @@ var Collection = bb.Collection.extend({
   /**
    *
    */
-  sync: sync
+  sync: sync,
+
+  /**
+   * https://github.com/jashkenas/backbone/issues/4103
+   */
+  /* jshint -W074, -W116 */
+  get: function(obj) {
+    if (obj == null) return void 0;
+    return this._byId[obj] ||
+      this._byId[this.modelId(this._isModel(obj) ? obj.attributes : obj)] ||
+      obj.cid && this._byId[obj.cid];
+  }
+  /* jshint +W074, +W116 */
 
 });
 
