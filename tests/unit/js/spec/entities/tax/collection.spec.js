@@ -39,22 +39,22 @@ describe('entities/tax/collection.js', function () {
     expect(collection.pluck('rate_id')).to.eql(['2']);
   });
 
-  it('toggle taxes enabled true/false', function(){
-    var collection = new Collection( dummy_tax_US[''] );
-    expect(collection.pluck('enabled')).to.eql([true, true]);
-
-    collection.toggleTaxes({ all: false });
-    expect(collection.pluck('enabled')).to.eql([false, false]);
-
-    collection.toggleTaxes({
-      all: true,
-      rate_1: true,
-      rate_2: true,
-      rate_3: true,
-      rate_4: true,
-      rate_5: false
-    });
-    expect(collection.pluck('enabled')).to.eql([true, false]);
-  });
+  // it('toggle taxes enabled true/false', function(){
+  //   var collection = new Collection( dummy_tax_US[''] );
+  //   expect(collection.pluck('enabled')).to.eql([true, true]);
+  //
+  //   collection.toggleTaxes({ all: false });
+  //   expect(collection.pluck('enabled')).to.eql([false, false]);
+  //
+  //   collection.toggleTaxes({
+  //     all: true,
+  //     rate_1: true,
+  //     rate_2: true,
+  //     rate_3: true,
+  //     rate_4: true,
+  //     rate_5: false
+  //   });
+  //   expect(collection.pluck('enabled')).to.eql([true, false]);
+  // });
 
 });

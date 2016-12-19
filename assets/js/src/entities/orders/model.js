@@ -95,6 +95,7 @@ var OrderModel = Parent.extend({
       this.attachCart(resp);
       this.attachGateways(resp);
       this.attachCustomer(resp);
+      this.attachCoupons(resp);
     }
 
     return resp;
@@ -132,10 +133,30 @@ var OrderModel = Parent.extend({
    */
   attachGateways: function (attributes) {
     this.gateways = new Gateways(attributes.payment_details, {order: this});
+    if(this.gateways){
+      this.listenTo(this.gateways, 'change', function(){
+        this.save();
+      });
+    }
 
-    this.gateways.on('change', function () {
-      this.save();
-    }, this);
+  },
+
+  /**
+   * Attach coupon collection
+   */
+  attachCoupons: function(resp) {
+    this.coupons = Radio.request('entities', 'get', {
+      type: 'collection',
+      name: 'coupons',
+      init: true
+    });
+
+    if(this.coupons){
+      this.coupons.add( _.get(resp, 'coupon_lines') );
+      this.listenTo(this.coupons, 'add remove', function(){
+        this.save();
+      });
+    }
   },
 
   /**
@@ -165,6 +186,11 @@ var OrderModel = Parent.extend({
     // process cart collection
     if (this.isEditable() && this.cart) {
       attrs = this.prepareCartJSON(attrs, options);
+    }
+
+    // process coupons
+    if (this.isEditable() && this.coupons) {
+      attrs.coupon_lines = this.coupons.toJSON();
     }
 
     // process gateways

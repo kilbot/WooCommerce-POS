@@ -387,7 +387,7 @@ describe('entities/orders/model.js', function () {
       title: 'VAT',
       shipping: true,
       compound: true,
-      enabled: true,
+      // enabled: true,
       total: 0,
       subtotal: 0
     }]);
@@ -398,7 +398,7 @@ describe('entities/orders/model.js', function () {
       title: 'VAT',
       shipping: true,
       compound: true,
-      enabled: true,
+      // enabled: true,
       total: 0,
       subtotal: 0
     }]);

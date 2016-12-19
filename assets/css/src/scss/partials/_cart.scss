@@ -264,6 +264,12 @@ cart {
         font-size: 1.4em;
       }
 
+      .coupons {
+        input {
+          font-weight: normal;
+        }
+      }
+
       .disabled {
         text-decoration: line-through;
         color: $secondary-text-color;

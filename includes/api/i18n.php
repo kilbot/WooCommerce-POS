@@ -242,6 +242,8 @@ class i18n extends WC_API_Resource {
       'no-gateway'  => __( 'No payment gateways enabled.', 'woocommerce-pos' ),
       /* translators: woocommerce */
       'no-customer' => __( 'Customer not found', 'woocommerce' ),
+      /* translators: woocommerce */
+      'no-coupons' => __( 'No Coupons found', 'woocommerce' ),
       'private-browsing' => sprintf( __( 'WooCommerce POS will not work in <a href="%s">Private Mode</a>, please disable Private Browsing.', 'woocommerce-pos' ), 'https://wikipedia.org/wiki/Privacy_mode' ),
     );
   }

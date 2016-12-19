@@ -190,7 +190,7 @@ var CartRoute = Route.extend({
     var buttons = [
       {action: 'fee',       className: 'btn-primary'},
       {action: 'shipping',  className: 'btn-primary'},
-      //{action: 'discount',  className: 'btn-primary'},
+      // {action: 'coupon',    className: 'btn-primary'},
       {action: 'note',      className: 'btn-primary'},
       {action: 'checkout',  className: 'btn-success'}
     ];
@@ -219,9 +219,12 @@ var CartRoute = Route.extend({
       'action:note': function(){
         this.layout.getRegion('note').currentView.showNoteField();
       },
-      //'action:discount': function(){
-      //  this.layout.getRegion('totals').currentView.showDiscountRow();
-      //},
+      // 'action:coupon': function(){
+      //   var newCoupon = this.activeOrder.coupons.where({ id: '' });
+      //   if(newCoupon.length === 0){
+      //     this.activeOrder.coupons.add({ id: '' });
+      //   }
+      // },
       'action:fee': function(){
         this.activeOrder.cart.add( {}, { type: 'fee' } );
       },

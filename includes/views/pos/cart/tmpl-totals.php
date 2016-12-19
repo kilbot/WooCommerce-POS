@@ -10,6 +10,23 @@
   <div class="action"></div>
 </li>
 {{/if}}
+{{#each coupon_lines}}
+<li class="list-row coupons">
+  <div>
+    {{#if id}}
+      {{code}}:
+    {{else}}
+      <input data-toggle="dropdown" type="text" class="form-control" placeholder="<?php /* translators: woocommerce */ _e( 'Search coupons', 'woocommerce' ); ?>">
+    {{/if}}
+  </div>
+  <div class="total">{{{money total negative=true}}}</div>
+  <div class="action">
+    <a href="#" data-action="remove-coupon" data-coupon_id="{{id}}">
+      <i class="icon-remove icon-lg icon-tertiary"></i>
+    </a>
+  </div>
+</li>
+{{/each}}
 {{#compare total_tax '!==' 0}}
 {{#if itemized}}
 {{#each tax_lines}}

@@ -30,7 +30,9 @@ module.exports = bb.Model.extend({
     this.on( 'change:item_price', this.updateTotals );
 
     // listen to tax toggle on order
-    this.listenTo( this.collection.order, 'change:pos_taxes', this.updateTotals );
+    if(_.get(this, ['collection', 'order'])){
+      this.listenTo( this.collection.order, 'change:pos_taxes', this.updateTotals );
+    }
 
     // calc on init
     this.updateTotals();

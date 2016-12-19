@@ -741,39 +741,39 @@ class OrdersTest extends TestCase {
   }
 
   /**
-   * @group debug
+   *
    */
-  public function test_order_calculation_with_pos_taxes_disabled(){
-
-    // enable taxes
-    $this->update_tax_settings();
-
-    // get a random product
-    $product = $this->get_random_product();
-    $product = $this->filter_line_item($product);
-
-    $product['taxable'] = true;
-    $product['total'] = 10;
-    $product['total_tax'] = 0;
-
-    // create order
-    $response = $this->client->post('orders', array(
-      'json' => array(
-        'order' => array(
-          'line_items' => array(
-            $product
-          ),
-          'pos_taxes' => array(
-            'all' => false
-          )
-        )
-      )
-    ));
-    $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
-    $this->assertArrayHasKey('order', $data);
-    $this->assertEquals(0, $data['order']['total_tax']);
-
-  }
+//  public function test_order_calculation_with_pos_taxes_disabled(){
+//
+//    // enable taxes
+//    $this->update_tax_settings();
+//
+//    // get a random product
+//    $product = $this->get_random_product();
+//    $product = $this->filter_line_item($product);
+//
+//    $product['taxable'] = true;
+//    $product['total'] = 10;
+//    $product['total_tax'] = 0;
+//
+//    // create order
+//    $response = $this->client->post('orders', array(
+//      'json' => array(
+//        'order' => array(
+//          'line_items' => array(
+//            $product
+//          ),
+//          'pos_taxes' => array(
+//            'all' => false
+//          )
+//        )
+//      )
+//    ));
+//    $this->assertEquals(201, $response->getStatusCode());
+//    $data = $response->json();
+//    $this->assertArrayHasKey('order', $data);
+//    $this->assertEquals(0, $data['order']['total_tax']);
+//
+//  }
 
 }
