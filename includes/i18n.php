@@ -9,7 +9,7 @@
  * @class     WC_POS_i18n
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
- * @link      http://www.woopos.com.au
+ * @link      http://www.wcpos.com
  */
 
 namespace WC_POS;
@@ -173,7 +173,7 @@ class i18n {
 
     if ( empty( $update->translations ) ) {
       /* note: no translation exists */
-      $this->flush( 'No translations found for ' . $locale . '. <a href="mailto:support@woopos.com.au">Contact us</a> if you would like to help translate WooCommerce POS into your language.' );
+      $this->flush( 'No translations found for ' . $locale . '. <a href="mailto:support@wcpos.com">Contact us</a> if you would like to help translate WooCommerce POS into your language.' );
       $this->flush( 'complete' );
 
       return;

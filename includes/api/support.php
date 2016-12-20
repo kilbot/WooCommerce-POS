@@ -6,7 +6,7 @@
  * @class    WC_POS_API_Support
  * @package  WooCommerce POS
  * @author   Paul Kilmurray <paul@kilbot.com.au>
- * @link     http://www.woopos.com.au
+ * @link     http://www.wcpos.com
  */
 
 namespace WC_POS\API;
@@ -18,7 +18,7 @@ class Support extends WC_API_Resource {
 
   protected $base = '/pos/support';
 
-  public $support_email = 'support@woopos.com.au';
+  public $support_email = 'support@wcpos.com';
 
 
   /**

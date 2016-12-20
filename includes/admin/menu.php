@@ -6,7 +6,7 @@
  * @class    WC_POS_Admin_Menu
  * @package  WooCommerce POS
  * @author   Paul Kilmurray <paul@kilbot.com.au>
- * @link     http://www.woopos.com.au
+ * @link     http://www.wcpos.com
  */
 
 namespace WC_POS\Admin;
@@ -88,7 +88,7 @@ class Menu {
     // Check for transient, if none, grab remote HTML file
     if ( false === ( $upgrade = get_transient( 'remote_pro_page' ) ) ) {
       // Get remote HTML file
-      $response = wp_remote_get( 'http://woopos.com.au/pro/?wp-admin=woocommerce-pos' );
+      $response = wp_remote_get( 'http://wcpos.com/pro/?wp-admin=woocommerce-pos' );
       // Check for error
       if ( is_wp_error( $response ) ) {
         return;
