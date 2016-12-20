@@ -8,6 +8,7 @@ var bb = require('backbone');
 var accounting = require('accounting');
 var ajax = require('./ajax');
 var templateCache = require('./template-cache');
+var moment = require('moment');
 
 /**
  *
@@ -55,6 +56,7 @@ var Application = Mn.Application.extend({
       initDebug( params.debug );
       templateCache( data );
       polyglot.extend(data.i18n);
+      moment.locale(data.language);
     })
 
     // start the app

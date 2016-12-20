@@ -32,8 +32,6 @@ class i18n {
     $this->load_plugin_textdomain();
     add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'update_check' ) );
     add_filter( 'upgrader_pre_download', array( $this, 'upgrader_pre_download' ), 10, 3 );
-    add_filter( 'woocommerce_pos_enqueue_scripts', array( $this, 'js_locale' ) );
-    add_filter( 'woocommerce_pos_admin_enqueue_scripts', array( $this, 'js_locale' ) );
 
     // ajax
     add_action( 'wp_ajax_wc_pos_update_translations', array( $this, 'update_translations' ) );
@@ -261,27 +259,6 @@ class i18n {
   }
 
   /**
-   * Load translations for js plugins
-   *
-   * @param $scripts
-   * @return string
-   */
-  public function js_locale( array $scripts ) {
-    $locale = apply_filters( 'plugin_locale', get_locale(), PLUGIN_NAME );
-    $dir = PLUGIN_PATH . 'languages/js/';
-    $url = PLUGIN_URL . 'languages/js/';
-    list( $country ) = explode( '_', $locale );
-
-    if ( is_readable( $dir . $locale . '.js' ) ) {
-      $scripts[ 'locale' ] = $url . $locale . '.js';
-    } elseif ( is_readable( $dir . $country . '.js' ) ) {
-      $scripts[ 'locale' ] = $url . $country . '.js';
-    }
-
-    return $scripts;
-  }
-
-  /**
    * Return currency denomination for a given country code
    *
    * @param string $code
@@ -296,4 +273,53 @@ class i18n {
     return isset( $denominations->$code ) ? $denominations->$code : $denominations;
   }
 
+  /**
+   * @param string $library
+   * @param string $version
+   * @return string|void
+   */
+  static public function get_external_library_locale_js( $library = '', $version ='' ){
+    $cdnjs_url = $locale_js = '';
+
+    switch($library){
+      case 'select2':
+        $cdnjs_url = 'https://cdnjs.cloudflare.com/ajax/libs/select2/'. $version .'/js/i18n/';
+        $locales = json_decode( file_get_contents( PLUGIN_PATH . 'languages/select2-locales.json' ) );
+        break;
+      case 'moment':
+        $cdnjs_url = 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/'. $version .'/locale/';
+        $locales = json_decode( file_get_contents( PLUGIN_PATH . 'languages/moment-locales.json' ) );
+        break;
+    }
+
+    if(empty($cdnjs_url)){
+      return;
+    }
+
+    $user_locale = self::get_user_locale();
+
+    // locale look up, eg: es_ES
+    if(isset($locales->$user_locale)){
+      $locale_js = $locales->$user_locale;
+    }
+
+    // also check prefix, eg: es
+    if(empty($select2_locale_js)) {
+      $user_locale = strstr($user_locale, '_', true);
+      if(isset($locales->$user_locale)){
+        $locale_js = $locales->$user_locale;
+      }
+    }
+
+    return $cdnjs_url . $locale_js;
+  }
+
+  /**
+   * Backwards compatible get_user_locale, introduced in WP 4.7
+   *
+   * @return string
+   */
+  static public function get_user_locale(){
+    return function_exists('get_user_locale') ? get_user_locale() : get_locale();
+  }
 }

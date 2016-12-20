@@ -105,16 +105,33 @@ class Settings extends Page {
       true
     );
 
-    $scripts = apply_filters( 'woocommerce_pos_admin_enqueue_scripts', array() );
-    if ( isset( $scripts[ 'locale' ] ) ) {
+    // localise moment
+    if(isset($external_libs['moment-locale'])){
       wp_enqueue_script(
-        \WC_POS\PLUGIN_NAME . '-js-locale',
-        $scripts[ 'locale' ],
+        'moment-locale',
+        $external_libs['moment-locale'],
         array( \WC_POS\PLUGIN_NAME . '-admin-settings-app' ),
         \WC_POS\VERSION,
         true
       );
     }
+
+    // localise select2
+    $select2_locale_js = \WC_POS\i18n::get_external_library_locale_js('select2', '4.0.3');
+
+    if(!empty($select2_locale_js)){
+      wp_enqueue_script(
+        'select2-locale',
+        $select2_locale_js,
+        array( \WC_POS\PLUGIN_NAME . '-admin-settings-app' ),
+        \WC_POS\VERSION,
+        true
+      );
+      // select2 requires matching locale <-> filename
+      $select2_locale = strstr(basename($select2_locale_js), '.', true);
+      wp_add_inline_script('select2', "$.fn.select2.defaults.set('language', '" . $select2_locale . "');");
+    }
+
   }
 
 }

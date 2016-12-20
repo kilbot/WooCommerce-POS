@@ -429,30 +429,13 @@ module.exports = function(grunt) {
   grunt.registerTask('dev', 'Development build', ['build', 'watch']);
 
   // deploy
-  grunt.registerTask('deploy', 'Production build', ['test', 'makepot', 'webpack:deploy', 'js_locales', 'uglify', 'copy', 'compress', 'clean']);
+  grunt.registerTask('deploy', 'Production build', ['test', 'makepot', 'webpack:deploy', 'uglify', 'copy', 'compress', 'clean']);
 
   // coverage
   grunt.registerTask('coverage', ['mocha_istanbul']);
 
   // default = test
   grunt.registerTask('default', ['test']);
-
-  // special task for building js i18n files
-  grunt.registerTask('js_locales', 'Combine locales.json files', function() {
-    var locales = grunt.file.readJSON('languages/locales.json');
-    var _ = grunt.util._;
-    var files = {};
-
-    _(locales).each(function(locale, key){
-      if( !_.isEmpty(locale) ) {
-        var target = 'languages/js/' + key + '.js';
-        files[target] = locale;
-      }
-    });
-
-    grunt.config('uglify.js_locales', { 'files': files } );
-    grunt.task.run('uglify:js_locales');
-  });
 
   grunt.event.on('coverage', function(lcov, done){
     require('coveralls').handleInput(lcov, function(err){

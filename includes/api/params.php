@@ -64,7 +64,8 @@ class Params extends WC_API_Resource {
       'emulateHTTP'   => get_option( 'woocommerce_pos_emulateHTTP' ) === '1',
       'idbVersion'    => Settings::get_idb_version(),
       'localDBPrefix' => $this->local_db_prefix(),
-      'store'         => array( 'name' => html_entity_decode( get_bloginfo( 'name' ) ) )
+      'store'         => array( 'name' => html_entity_decode( get_bloginfo( 'name' ) ) ),
+      'language'      => get_locale()
     );
   }
 

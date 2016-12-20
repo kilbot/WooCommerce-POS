@@ -80,9 +80,7 @@ class Status extends Page {
     wp_register_script( 'backbone.radio', $external_libs[ 'radio' ], array( 'jquery', 'backbone', 'lodash' ), null, true );
     wp_register_script( 'marionette', $external_libs[ 'marionette' ], array( 'jquery', 'backbone', 'lodash' ), null, true );
     wp_register_script( 'handlebars', $external_libs[ 'handlebars' ], false, null, true );
-    wp_register_script( 'moment', $external_libs[ 'moment' ], false, null, true );
     wp_register_script( 'accounting', $external_libs[ 'accounting' ], false, null, true );
-//    wp_register_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js', array( 'jquery' ), null, true );
 
     $build = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? 'build' : 'min';
 
@@ -101,17 +99,6 @@ class Status extends Page {
       \WC_POS\VERSION,
       true
     );
-
-    $scripts = apply_filters( 'woocommerce_pos_admin_enqueue_scripts', array() );
-    if ( isset( $scripts[ 'locale' ] ) ) {
-      wp_enqueue_script(
-        \WC_POS\PLUGIN_NAME . '-js-locale',
-        $scripts[ 'locale' ],
-        array( \WC_POS\PLUGIN_NAME . '-admin-system-status-app' ),
-        \WC_POS\VERSION,
-        true
-      );
-    }
   }
 
 }

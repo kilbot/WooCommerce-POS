@@ -31,7 +31,7 @@ class Template {
       'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/2.0.0/backbone.radio.min.js',
       'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.7/backbone.marionette.min.js',
       'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js',
-      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js',
+      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js',
       'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
       'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js',
     ),
@@ -42,7 +42,7 @@ class Template {
       'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/2.0.0/backbone.radio.js',
       'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.7/backbone.marionette.js',
       'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js',
-      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.js',
+      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js',
       'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.js',
       'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.js',
     )
@@ -140,7 +140,16 @@ class Template {
    * @return array
    */
   static public function get_external_js_libraries() {
-    return defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? self::$external_libs[ 'debug' ] : self::$external_libs[ 'min' ];
+    $libs = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? self::$external_libs[ 'debug' ] : self::$external_libs[ 'min' ];
+
+    // add moment js locale if available
+    $moment_locale_js = i18n::get_external_library_locale_js('moment', '2.17.1');
+
+    if(!empty($moment_locale_js)){
+      $libs['moment-locale'] = $moment_locale_js;
+    }
+
+    return apply_filters('woocommerce_pos_external_js_libraries', $libs);
   }
 
   /**
