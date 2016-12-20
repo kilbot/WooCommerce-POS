@@ -40,7 +40,7 @@ var View = ItemView.extend({
   },
 
   update: function(str){
-    var title = str ? str : this.storeName;
+    var title = str ? $('#menu li.' + str).text() : this.name;
     this.$('h1').text(title);
   },
 

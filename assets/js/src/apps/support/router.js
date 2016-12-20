@@ -20,14 +20,8 @@ module.exports = Router.extend({
 
   onBeforeEnter: function() {
     this.container.show(this.layout);
-    this.updateTitle();
+    Radio.request('header', 'update:title', 'support');
     this.showForm();
-  },
-
-  updateTitle: function(){
-    // TODO: put menu into params
-    var title = $('#menu li.support').text();
-    Radio.request('header', 'update:title', title);
   },
 
   showForm: function(){
