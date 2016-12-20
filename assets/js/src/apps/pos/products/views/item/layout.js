@@ -45,7 +45,9 @@ var Layout = LayoutView.extend({
     }
     var variations = this.model.getVariations();
     if(!options.filter){
-      variations.resetFilters();
+      variations
+        .resetFilters()
+        .fetch();
     }
     var view = new DrawerView({ collection: variations });
     this.getRegion('drawer').show(view);

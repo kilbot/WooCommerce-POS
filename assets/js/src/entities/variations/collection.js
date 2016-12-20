@@ -1,17 +1,17 @@
 var Collection = require('lib/config/collection');
 var Model = require('./model');
 var _ = require('lodash');
+var matchMaker = require('json-query');
 
 module.exports = Collection.extend({
 
   model: Model,
   extends: ['filtered'],
 
-  superset: true,
-
   initialize: function(models, options){
     options = options || {};
     this.parent = options.parent;
+    this.superset = _.clone(models, true);
   },
 
   /**
@@ -79,7 +79,19 @@ module.exports = Collection.extend({
       {type: 'prefix', prefix: 'attributes.option', query: option },
     ];
 
-    this.setQuery(name, query);
+    this.setQuery(name, query).fetch();
+  },
+
+  fetch: function(){
+    var self = this;
+    var filter = self.getFilter() || {};
+    if(_.isEmpty(filter)){
+      return this.reset(this.superset);
+    }
+    var models = _.filter(this.superset, function(model){
+      return matchMaker(model, filter.q, filter.qFields);
+    });
+    return this.reset(models);
   }
 
 });
