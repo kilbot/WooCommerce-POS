@@ -67,11 +67,11 @@ class Access extends Page {
         'name' => $role['name'],
         'capabilities' => array(
           'pos' => array_intersect_key(
-            $role['capabilities'],
+            array_merge(array_fill_keys($this->caps['pos'], false), $role['capabilities']),
             array_flip($this->caps['pos'])
           ),
           'woo' => array_intersect_key(
-            $role['capabilities'],
+            array_merge(array_fill_keys($this->caps['woo'], false), $role['capabilities']),
             array_flip($this->caps['woo'])
           )
         )
