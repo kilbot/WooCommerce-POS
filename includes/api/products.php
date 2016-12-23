@@ -256,10 +256,11 @@ class Products extends WC_API_Resource {
    * @return array
    */
   private function filter_response_data( array $data, $product ){
-    $barcode = get_post_meta( $product->id, $this->barcode_meta_key, true );
+    $id = isset( $data['id'] ) ? $data['id'] : '';
+    $barcode = get_post_meta( $id, $this->barcode_meta_key, true );
 
-    $data['featured_src'] = $this->get_thumbnail( $product->id );
-    $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $barcode, $product->id );
+    $data['featured_src'] = $this->get_thumbnail( $id );
+    $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $barcode, $id );
 
     // allow decimal stock quantities, fixed in WC 2.4
     if( version_compare( WC()->version, '2.4', '<' ) ){
@@ -400,12 +401,46 @@ class Products extends WC_API_Resource {
     }
 
     // barcode
+    // @todo refactor idb storage and product display to accommodate product_variation
     if($prefix == 'barcode'){
-      $meta_query[] = array(
-        'key'     => $this->barcode_meta_key,
-        'value'   => $term,
-        'compare' => 'LIKE'
+      global $wpdb;
+
+      $ids = $wpdb->get_col(
+        $wpdb->prepare("
+          SELECT DISTINCT p.ID
+          FROM $wpdb->posts as p 
+          LEFT JOIN $wpdb->postmeta as pm
+          ON p.ID = pm.post_id
+          WHERE p.post_type = 'product'
+          AND p.post_status = 'publish'
+          AND pm.meta_key = '$this->barcode_meta_key'
+          AND pm.meta_value LIKE %s
+        ", '%' . $term . '%')
       );
+
+      // special case, we need to search variations also
+      $parent_ids = $wpdb->get_col(
+        $wpdb->prepare("
+          SELECT DISTINCT p.post_parent
+          FROM $wpdb->posts as p 
+          LEFT JOIN $wpdb->postmeta as pm
+          ON p.ID = pm.post_id
+          WHERE p.post_type = 'product_variation'
+          AND p.post_status = 'publish'
+          AND pm.meta_key = '$this->barcode_meta_key'
+          AND pm.meta_value LIKE %s
+        ", '%' . $term . '%')
+      );
+
+      $in       = $wp_query->get('post__in');
+      $not_in   = $wp_query->get('post__not_in');
+      $in       = array_unique( array_merge($in, $ids, $parent_ids) );
+      $in       = array_diff($in, $not_in);
+
+      if(empty($in)){
+        $in = array(0);
+      }
+      $wp_query->set( 'post__in', $in );
     }
 
     // on_sale

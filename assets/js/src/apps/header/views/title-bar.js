@@ -2,6 +2,7 @@ var ItemView = require('lib/config/item-view');
 var App = require('lib/config/application');
 var Dropdown = require('lib/behaviors/dropdown');
 var Radio = require('backbone.radio');
+var $ = require('jquery');
 
 var View = ItemView.extend({
   template: 'header',

@@ -863,4 +863,50 @@ class ProductsTest extends TestCase {
     $this->assertEquals(array(), $result_ids); //
   }
 
+  /**
+   *
+   */
+  public function test_variation_barcode_search(){
+    $barcode = $this->generate_random_string();
+
+    // get random variation
+    $response = $this->client->get('products', array(
+      'query' => array(
+        'filter' => array(
+          'type' => 'variable'
+        )
+      )
+    ));
+    $data = $response->json();
+    $key = array_rand( $data['products'] );
+    $product = $data['products'][$key];
+    $product_id = $product['id'];
+    $key = array_rand( $product['variations'] );
+    $variation_id = $product['variations'][$key]['id'];
+
+    // insert barcode
+    update_post_meta($variation_id, '_sku', $barcode);
+
+    $response = $this->client->get('products', [
+      'query' => array(
+        'filter[q]' => array(
+          array(
+            'type'    => 'prefix',
+            'prefix'  => 'barcode',
+            'query'   => substr($barcode, 0, 6)
+          )
+        )
+      )
+    ]);
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('products', $data);
+    $this->assertCount(1, $data['products']);
+    $this->assertEquals($product_id, $data['products'][0]['id']);
+
+    delete_post_meta($variation_id, '_sku');
+
+  }
+
 }

@@ -51,25 +51,41 @@ module.exports = Collection.extend({
 
   /**
    * Special cases for product model filter
+   * @todo: refactor matchMaker 'this' should be collection, not IDBAdapter
+   * @todo: make FilteredCollection.matchMaker default
    */
   matchMaker: function(json, query, options){
-    var matchMaker = this.default.matchMaker;
+    var barcode, matchMaker = this.default.matchMaker;
     if(_.isArray(query)){
       replaceCat(query);
+      barcode = _.chain(query).findWhere({ prefix: 'barcode'}).get('query').value();
     }
 
-    // parent match
+    // parent match, not variable
     var parentMatch = matchMaker.call(this, json, query, options);
     if(parentMatch){
+      if(barcode && _.get(json, 'barcode') === barcode && _.get(json, 'type') !== 'variable'){
+        Radio.request('router', 'add:to:cart', json);
+      }
       return true;
     }
 
-    // any variation match
-    if(!_.isEmpty(json.variations)){
-      var variationMatch = _.some(json.variations, function(variation){
-        return matchMaker(variation, query, options);
-      });
-      if(variationMatch){
+    /**
+     * variable match
+     * - only searching variation barcode
+     * - @todo write readme for product vs product_variation search
+     */
+    if(_.get(json, 'type') === 'variable' && barcode){
+      var variations = _.reduce(_.get(json, 'variations'), function(result, variation){
+        if(matchMaker(variation, query, options)){
+          result.push(variation);
+        }
+        return result;
+      }, []);
+      if(variations.length > 0){
+        if(variations.length === 1 && _.get(variations, [0, 'barcode']) === barcode){
+          Radio.request('router', 'add:to:cart', _.get(variations, 0));
+        }
         return true;
       }
     }

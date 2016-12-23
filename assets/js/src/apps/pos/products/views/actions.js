@@ -10,20 +10,12 @@ var Actions = View.extend({
   template: 'pos.products.filter',
 
   initialize: function(){
-    var products = this.collection;
-    // var self = this;
-
-    /**
-     * match:barcode is triggered before filter is complete
-     * this affects the filtered collection pagination
-     * todo: refactor and fix this
-     */
-    this.listenTo(products, 'match:barcode', function(model){
-      // products.once('paginated:change:page', function(){
-      //   self.triggerMethod('clear');
-      //   self.ui.searchField.blur();
-      // });
-      Radio.request('router', 'add:to:cart', model);
+    // listen to keyPress events
+    this.listenTo(Radio.channel('keypress'), 'scan:barcode', function(data){
+      // remove prefix and suffix characters
+      this.barcodeModeOn();
+      this.ui.searchField.val(data);
+      this.ui.searchField.trigger('keyup').blur();
     });
   },
 
@@ -72,6 +64,17 @@ var Actions = View.extend({
   barcodeModeOn: function(e){
     if(e) { e.preventDefault(); }
     this._mode = 'barcode';
+
+    /**
+     * reset filters
+     */
+    this.collection
+      .resetFilters()
+      .fetch();
+
+    this.trigger('mode:barcode', true);
+
+    // change ui
     this.ui.modeIcon
       .removeClass('icon-search')
       .addClass('icon-barcode');
@@ -84,6 +87,16 @@ var Actions = View.extend({
   barcodeModeOff: function(e){
     if(e) { e.preventDefault(); }
     this._mode = undefined;
+
+    /**
+     * reset filters
+     */
+    this.collection
+      .resetFilters()
+      .fetch();
+
+    this.trigger('mode:barcode', false);
+
     this.ui.modeIcon
       .removeClass('icon-barcode')
       .addClass('icon-search');

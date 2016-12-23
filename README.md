@@ -27,7 +27,7 @@ Development repository for WooCommerce POS - the Point of Sale plugin for [WooCo
 
 ## Report a bug
 
-Please report all bugs [here](https://github.com/kilbot/WooCommerce-POS/issues) or contact support via [support@woopos.com.au](mailto:support@wcpos.com)
+Please report all bugs [here](https://github.com/kilbot/WooCommerce-POS/issues) or contact support via [support@wcpos.com](mailto:support@wcpos.com)
 
 ## Translations
 

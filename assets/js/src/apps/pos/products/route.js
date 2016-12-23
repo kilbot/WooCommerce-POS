@@ -54,6 +54,15 @@ module.exports = Route.extend({
 
   showActions: function() {
     var view = new Actions({ collection: this.collection });
+
+    this.listenTo(view, 'mode:barcode', function(barcodeMode){
+      if(barcodeMode){
+        this.layout.getRegion('tabs').empty();
+      } else {
+        this.showTabs();
+      }
+    });
+
     this.layout.getRegion('actions').show(view);
   },
 
