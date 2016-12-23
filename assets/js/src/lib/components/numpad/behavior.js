@@ -54,7 +54,13 @@ var NumpadBehavior = Behavior.extend({
     _.defaults( options, {
       target : target,
       view   : numpad,
-      classes: 'popover-theme-arrows popover-numpad'
+      classes: 'popover-theme-arrows popover-numpad',
+      tetherOptions: {
+        constraints: [{
+          to: 'window',
+          pin: true
+        }]
+      }
     });
 
     Radio.request('popover', 'open', options);

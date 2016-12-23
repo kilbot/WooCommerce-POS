@@ -145,7 +145,7 @@ class Template {
     // add moment js locale if available
     $moment_locale_js = i18n::get_external_library_locale_js('moment', '2.17.1');
 
-    if(!empty($moment_locale_js)){
+    if($moment_locale_js){
       $libs['moment-locale'] = $moment_locale_js;
     }
 

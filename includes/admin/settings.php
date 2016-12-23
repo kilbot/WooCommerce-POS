@@ -119,7 +119,7 @@ class Settings extends Page {
     // localise select2
     $select2_locale_js = \WC_POS\i18n::get_external_library_locale_js('select2', '4.0.3');
 
-    if(!empty($select2_locale_js)){
+    if($select2_locale_js){
       wp_enqueue_script(
         'select2-locale',
         $select2_locale_js,

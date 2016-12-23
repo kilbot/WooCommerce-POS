@@ -31,7 +31,7 @@
 {{#if itemized}}
 {{#each tax_lines}}
 {{#compare total '!==' 0}}
-<li class="list-row tax {{#unless enabled}}disabled{{/unless}}">
+<li class="list-row tax">
   <div>
     {{#if ../../incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
     {{title}}:
@@ -46,7 +46,7 @@
 {{/compare}}
 {{/each}}
 {{else}}
-<li class="list-row tax {{#unless taxes_enabled}}disabled{{/unless}}">
+<li class="list-row tax">
   <div>
     {{#if incl_tax}}<small>(<?php _ex( 'incl.', 'abbreviation for includes (tax)', 'woocommerce-pos' ); ?>)</small>{{/if}}
     <?php echo esc_html( WC()->countries->tax_or_vat() ); ?>:

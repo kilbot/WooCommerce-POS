@@ -6,7 +6,7 @@
 
 <h3><?php /* translators: woocommerce */ _e( 'Product Options', 'woocommerce' ); ?></h3>
 
-<table class="wc_pos-form-table">
+<table class="wc_pos-form-table" id="wc_pos-product-options">
 
   <tr>
     <th scope="row">

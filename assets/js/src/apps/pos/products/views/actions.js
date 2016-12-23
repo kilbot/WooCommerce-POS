@@ -12,7 +12,7 @@ var Actions = View.extend({
   initialize: function(){
     // listen to keyPress events
     this.listenTo(Radio.channel('keypress'), 'scan:barcode', function(data){
-      // remove prefix and suffix characters
+      // remove prefix and suffix characters?
       this.barcodeModeOn();
       this.ui.searchField.val(data);
       this.ui.searchField.trigger('keyup').blur();

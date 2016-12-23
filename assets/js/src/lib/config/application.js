@@ -22,7 +22,7 @@ var initDebug = function( debug ){
   console.info(
     'Debugging is ' +
     ( debug ? 'on' : 'off' )  +
-    ', visit http://woopos.com.au/docs/debugging'
+    ', visit http://wcpos.com/docs/debugging'
   );
   /* jshint +W117 */
 };

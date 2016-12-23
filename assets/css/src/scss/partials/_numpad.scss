@@ -110,7 +110,7 @@ numpad {
         margin: $numpad-key-spacing;
 
         &.two-rows {
-          $two-rows-height: ($numpad-key-height*2 + $numpad-key-spacing*2);
+          $two-rows-height: ($numpad-key-height*2.5 + $numpad-key-spacing*2);
           @include flex-basis($two-rows-height);
         }
       }

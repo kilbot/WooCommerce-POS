@@ -10,19 +10,28 @@ popover-numpad {
       }
 
       .#{namespace('popover')}-body {
-        width: 260px;
+        width: 210px;
+        @include media-breakpoint-up(sm) {
+          width: 260px;
+        }
       }
 
       // discount
       .#{namespace('numpad')}-discount {
         .#{namespace('numpad')}-body {
-          width: 322px;
+          width: 272px;
+          @include media-breakpoint-up(sm) {
+            width: 322px;
+          }
         }
       }
 
       .#{namespace('numpad')}-cash {
         .#{namespace('numpad')}-body {
-          width: 382px;
+          width: 332px;
+          @include media-breakpoint-up(sm) {
+            width: 382px;
+          }
         }
       }
 

@@ -311,7 +311,9 @@ class i18n {
       }
     }
 
-    return $cdnjs_url . $locale_js;
+    if($locale_js){
+      return $cdnjs_url . $locale_js;
+    }
   }
 
   /**

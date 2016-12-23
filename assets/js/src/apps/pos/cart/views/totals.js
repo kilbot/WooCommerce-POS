@@ -57,9 +57,6 @@ module.exports = ItemView.extend({
       this.model.get('tax_lines'), 'total'
     );
 
-    // toggle taxes
-    data.taxes_enabled = this.model.taxRateEnabled();
-
     return data;
   },
 
