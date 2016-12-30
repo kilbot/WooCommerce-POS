@@ -1,5 +1,6 @@
 var Collection = require('lib/config/collection');
 var _ = require('lodash');
+var Radio = require('backbone.radio');
 
 var subclasses = {
   simple   : require('./models/simple'),
@@ -84,7 +85,9 @@ module.exports = Collection.extend({
       }, []);
       if(variations.length > 0){
         if(variations.length === 1 && _.get(variations, [0, 'barcode']) === barcode){
-          Radio.request('router', 'add:to:cart', _.get(variations, 0));
+          var variation = _.get(variations, 0);
+          variation.title = _.get(json, 'title');
+          Radio.request('router', 'add:to:cart', variation);
         }
         return true;
       }

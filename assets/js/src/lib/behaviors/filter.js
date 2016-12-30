@@ -1,19 +1,20 @@
 var Behavior = require('lib/config/behavior');
 var _ = require('lodash');
 var App = require('lib/config/application');
-var Combokeys = require('combokeys');
 var Radio = require('backbone.radio');
 
 var Filter = Behavior.extend({
 
+  /**
+   * @todo - Filter behavior with Hotkey behavior won't work because of view.keyEvents lookup
+   */
   initialize: function(){
-    this.hotkeys = Radio.request('entities', 'get', {
+    var hotkeys = Radio.request('entities', 'get', {
       type: 'option',
       name: 'hotkeys'
     }) || {};
-
-    this.combokeys = new Combokeys(document.documentElement);
-    this.combokeys.bind(this.hotkeys.sync.key, this.sync.bind(this));
+    this.syncHotkey = _.get(hotkeys, ['sync', 'key']);
+    Radio.request('keypress', 'register', this.syncHotkey, this.sync.bind(this));
   },
 
   ui: {
@@ -101,12 +102,12 @@ var Filter = Behavior.extend({
     this.ui.sync.children('i').removeClass('icon-spin');
   },
 
-  onDestroy: function(){
-    this.combokeys.unbind(this.hotkeys.sync.key);
-  },
-
   onClear: function(){
     this.clear();
+  },
+
+  onDestroy: function(){
+    Radio.request('keypress', 'unregister', this.syncHotkey);
   }
 
 });

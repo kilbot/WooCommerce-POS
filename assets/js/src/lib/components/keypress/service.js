@@ -1,4 +1,5 @@
 var Service = require('lib/config/service');
+var Combokeys = require('combokeys');
 var debug = require('debug')('keyPressService');
 var $ = require('jquery');
 var _ = require('lodash');
@@ -6,9 +7,9 @@ var barcodeParser = require('./barcode');
 var timer, buffer = [];
 
 var defaults = {
-  scanTestDelay  : 200,
-  avgTimePerChar : 40,
-  minLength      : 6
+  scanDebounce    : 100,
+  keypressTimeout : 40,
+  bufferLength    : 12 // note 2 events per key
 };
 
 module.exports = Service.extend({
@@ -18,13 +19,33 @@ module.exports = Service.extend({
   initialize: function(options){
     _.defaults(defaults, options);
 
-    // unbind then bind to prevent keypress registering twice
-    // $(document).on('keypress.wcpos', listener);
-    $(document).unbind('keypress').bind('keypress.wcpos', this.listener.bind(this));
+    /**
+     * listen to all keypresses
+     */
+    $(document).on('keypress', this.onKeyEvent.bind(this));
+    $(document).on('keydown', this.onKeyEvent.bind(this));
+    $(document).on('keyup', this.onKeyEvent.bind(this));
+
+    /**
+     * allow hotkey behaviour to register and unregister combo keys
+     */
+    this.channel.reply({
+      register    : this.registerHotkey,
+      unregister  : this.unregisterHotkey
+    }, this);
+
+    /**
+     * init Combokey instance to manage hotkeys, needs a dummy element
+     */
+    var el = document.createElement('DIV');
+    this.combokeys = new Combokeys(el);
   },
 
   parsers: [ barcodeParser ],
 
+  /**
+   * barcodeParser is last
+   */
   addParsers: function(parsers){
     parsers = _.isArray(parsers) ? parsers : [parsers];
     this.parsers = parsers.concat(this.parsers);
@@ -39,31 +60,49 @@ module.exports = Service.extend({
     buffer = [];
   },
 
-  listener: function(e){
-    var self = this;
-    buffer.push(String.fromCharCode(e.which));
+  /**
+   * onKeyEvent either dump to combokeys or process scan
+   */
+  onKeyEvent: function(e){
+    buffer.push(e);
 
     // first keypress
     if(buffer.length === 1){
-      timer = setTimeout(function(){
-        if(buffer.length < defaults.minLength){
-          self.clearBuffer();
-        }
-      }, defaults.avgTimePerChar * defaults.minLength);
+      timer = setTimeout(this.dumpBuffer.bind(this), defaults.keypressTimeout);
     }
 
     // scan detected
-    if(buffer.length >= defaults.minLength){
+    if(buffer.length >= defaults.bufferLength){
       clearTimeout(timer);
-      timer = setTimeout(function(){
-        self.channel.trigger('scan', buffer);
-        self.processScan(buffer);
-        self.clearBuffer();
-      }, defaults.scanTestDelay);
+      this.processScan();
     }
   },
 
-  processScan: function(keys) {
+  /**
+   * dump buffer to combokeys
+   */
+  dumpBuffer: function(){
+    var combokeys = this.combokeys;
+    var events = buffer.slice();
+    this.clearBuffer();
+    _.each(events, function(e){
+      combokeys.eventHandler(e);
+    });
+  },
+
+  /**
+   * extract keypress chars and run through parsers
+   */
+  processScan: _.debounce(function(){
+    var keys = _.reduce(buffer, function(keys, e){
+      if(e.type === 'keypress'){
+        keys.push(String.fromCharCode(e.which));
+      }
+      return keys;
+    }, []);
+
+    this.clearBuffer();
+
     debug('scan detected', keys);
     var data = keys.join('');
     this.channel.trigger('scan', data);
@@ -72,8 +111,11 @@ module.exports = Service.extend({
     if(!result){
       debug('no scan parser found', data);
     }
-  },
+  }, defaults.scanDebounce),
 
+  /**
+   * parsers will look for patterns
+   */
   parseData: function(data){
 
     for (var i = 0; i < this.parsers.length; i++) {
@@ -86,6 +128,20 @@ module.exports = Service.extend({
 
     // All parsers failed
     return null;
+  },
+
+  /**
+   *
+   */
+  registerHotkey: function(hotkey, callback){
+    this.combokeys.bind(hotkey, callback);
+  },
+
+  /**
+   *
+   */
+  unregisterHotkey: function(hotkey){
+    this.combokeys.unbind(hotkey);
   }
-  
+
 });

@@ -3,6 +3,8 @@ var App = require('lib/config/application');
 var Dropdown = require('lib/behaviors/dropdown');
 var Radio = require('backbone.radio');
 var $ = require('jquery');
+var HelpModal = require('./help');
+var HotKeys = require('lib/behaviors/hotkeys');
 
 var View = ItemView.extend({
   template: 'header',
@@ -29,6 +31,10 @@ var View = ItemView.extend({
     'click @ui.menu': 'openMenu'
   },
 
+  keyEvents: {
+    'help': 'showHelpModal'
+  },
+
   behaviors: {
     Dropdown: {
       behaviorClass: Dropdown,
@@ -37,6 +43,9 @@ var View = ItemView.extend({
       //  attachment: 'top right',
       //  targetAttachment: 'bottom right'
       //}
+    },
+    HotKeys: {
+      behaviorClass: HotKeys
     }
   },
 
@@ -48,6 +57,11 @@ var View = ItemView.extend({
   openMenu: function(e){
     e.preventDefault();
     Radio.request('header', 'open:menu');
+  },
+
+  showHelpModal: function() {
+    var view = new HelpModal();
+    Radio.request('modal', 'open', view);
   }
 
 });

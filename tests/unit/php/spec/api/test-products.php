@@ -39,7 +39,7 @@ class ProductsTest extends WP_UnitTestCase {
   }
 
   /**
-   * 
+   *
    */
   function test_product_response(){
     $response = $this->products_api->product_response(array('id' => $this->product->id), $this->product, null, null);
