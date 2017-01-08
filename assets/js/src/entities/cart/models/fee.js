@@ -21,6 +21,13 @@ module.exports = Model.extend({
     };
   },
 
+  initialize: function(attributes, options){
+    if(attributes && !attributes.price){
+      this.set('price', _.get(attributes, 'total')); // convert order fee_line to price
+    }
+    Model.prototype.initialize.call( this, attributes, options );
+  },
+
   /**
    * Return total and total_tax for subtotal and subtotal_tax, respectively
    * - a little confusing, but makes cart.sum('subtotal') easier

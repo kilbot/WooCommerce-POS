@@ -16,14 +16,14 @@ module.exports = bb.Model.extend({
     // copy tax info from order collection
     this.tax = _.get( this, ['collection', 'order', 'tax'], {} );
 
+    // make sure there is an item_price (before attach taxes)
+    if( this.get('item_price') === undefined ){
+      this.set({ item_price: parseFloat( this.get('price') || 0 ) });
+    }
+
     // attach tax_rates collection
     if( this.tax.calc_taxes === 'yes' ){
       this.attachTaxes();
-    }
-
-    // make sure there is an item_price
-    if( this.get('item_price') === undefined ){
-      this.set({ item_price: parseFloat( this.get('price') || 0 ) });
     }
 
     // update on change item_price
@@ -114,11 +114,12 @@ module.exports = bb.Model.extend({
 
   /**
    * Wrapper for order.getTaxRates(), checks if line item is taxable
+   * - note: tax_class from WC REST API can be null, should be ''
    */
   getTaxRates: function(){
     var tax_rates = null;
     if( this.get('taxable') ){
-      tax_rates = this.collection.order.getTaxRates( this.get('tax_class') );
+      tax_rates = this.collection.order.getTaxRates( this.get('tax_class') || '' );
     }
     return tax_rates;
   },

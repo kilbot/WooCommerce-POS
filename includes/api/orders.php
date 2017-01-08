@@ -203,6 +203,10 @@ class Orders {
         $this->add_product_meta( $item_id, $data['meta'] );
       }
 
+      // add regular_price and taxable
+      wc_add_order_item_meta($item_id, '_regular_price', $data['regular_price']);
+      wc_add_order_item_meta($item_id, '_taxable', $data['taxable']);
+
     }
 
   }
@@ -609,10 +613,25 @@ class Orders {
     }
 
     // add subtotal_tax
+    // add line_item regular_price and taxable
     $subtotal_tax = 0;
-    foreach( $order_data['line_items'] as $item ) {
+    foreach( $order_data['line_items'] as &$item ) {
       if(isset( $item['subtotal_tax'] )) {
         $subtotal_tax += wc_format_decimal( $item['subtotal_tax'] );
+      }
+
+      $item['regular_price'] = wc_get_order_item_meta($item['id'], '_regular_price');
+      if( ! $item['regular_price'] ){
+        // get regular price from subtotal
+        $item['regular_price'] = wc_format_decimal( $item['subtotal'] / $item['quantity'] );
+      }
+
+      $taxable = wc_get_order_item_meta($item['id'], '_taxable');
+      if( $taxable ) {
+        $item['taxable'] = $taxable == '1';
+      } else {
+        // take a guess
+        $item['taxable'] = floatval( $item['total_tax'] ) > 0;
       }
     }
     $order_data['subtotal_tax'] = wc_format_decimal( $subtotal_tax );

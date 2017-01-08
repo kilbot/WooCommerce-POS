@@ -27,6 +27,13 @@ var OrderModel = Parent.extend({
   constructor: function (attributes, options) {
     // clone tax settings
     this.tax = _.clone(this.getSettings('tax'));
+
+    // bug fix: total_discount = cart_discount
+    // @todo: remove this hack
+    if(attributes){
+      attributes.cart_discount = attributes.total_discount;
+    }
+
     Model.call(this, attributes, _.extend({parse: true}, options));
   },
 
@@ -45,7 +52,8 @@ var OrderModel = Parent.extend({
    */
   isEditable: function (state) {
     state = state || this.get('_state');
-    return _.chain(this.collection.states)
+    return _.chain(this.collection)
+      .get('states')
       .pick(['create', 'update', 'patch'])
       .includes(state)
       .value();
@@ -95,7 +103,7 @@ var OrderModel = Parent.extend({
       this.attachCart(resp);
       this.attachGateways(resp);
       this.attachCustomer(resp);
-      this.attachCoupons(resp);
+      // this.attachCoupons(resp);
     }
 
     return resp;
@@ -144,7 +152,7 @@ var OrderModel = Parent.extend({
   /**
    * Attach coupon collection
    */
-  attachCoupons: function(resp) {
+  attachCoupons: function(attributes) {
     this.coupons = Radio.request('entities', 'get', {
       type: 'collection',
       name: 'coupons',
@@ -152,7 +160,7 @@ var OrderModel = Parent.extend({
     });
 
     if(this.coupons){
-      this.coupons.add( _.get(resp, 'coupon_lines') );
+      this.coupons.add( _.get(attributes, 'coupon_lines') );
       this.listenTo(this.coupons, 'add remove', function(){
         this.save();
       });

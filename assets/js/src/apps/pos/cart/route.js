@@ -94,7 +94,7 @@ var CartRoute = Route.extend({
   setActiveOrder: function(id){
     var order = this.collection.get(id);
     this.ensureNewOrder();
-    this.activeOrder = order ? order : this.collection.last();
+    this.activeOrder = order ? order : this.collection.first();
   },
 
   /**
@@ -205,6 +205,7 @@ var CartRoute = Route.extend({
 
     this.listenTo(view, {
       'action:close': function(){
+        this.activeOrder.save({ _state: undefined });
         this.collection.remove(this.activeOrder);
         this.setActiveOrder();
         this.render();
