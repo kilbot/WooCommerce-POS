@@ -196,7 +196,9 @@ class Activator {
   private function db_upgrade( $old, $current ) {
     $db_updates = array(
       '0.4'   => 'updates/update-0.4.php',
-      '0.4.6' => 'updates/update-0.4.6.php'
+      '0.4.6' => 'updates/update-0.4.6.php',
+      '0.5.0-beta' => 'updates/update-0.5.php',
+      '0.5.0' => 'updates/update-0.5.php'
     );
     foreach ( $db_updates as $version => $updater ) {
       if ( version_compare( $version, $old, '>' ) &&
