@@ -16,12 +16,13 @@
  *
  * @return string|void
  */
-function wc_pos_url( $page = '' ) {
-  $slug = WC_POS\Admin\Permalink::get_slug();
-  $scheme = wc_pos_get_option('general', 'force_ssl') == true ? 'https' : null;
-  return home_url( $slug . '/' .$page, $scheme );
+if( ! function_exists('wc_pos_url') ){
+  function wc_pos_url( $page = '' ) {
+    $slug = WC_POS\Admin\Permalink::get_slug();
+    $scheme = wc_pos_get_option('general', 'force_ssl') == true ? 'https' : null;
+    return home_url( $slug . '/' .$page, $scheme );
+  }
 }
-
 
 /**
  * Test for POS requests to the server
@@ -30,46 +31,50 @@ function wc_pos_url( $page = '' ) {
  *
  * @return bool
  */
-function is_pos( $type = false ) {
+if( ! function_exists('is_pos') ) {
+  function is_pos($type = false) {
 
-  // test for template requests, ie: matched rewrite rule
-  // also matches $_GET & $_POST for pos=1
-  if( $type == 'template' || !$type ){
-    global $wp;
-    if( isset( $wp->query_vars['pos'] ) && $wp->query_vars['pos'] == 1 ){
-      return true;
+    // test for template requests, ie: matched rewrite rule
+    // also matches $_GET & $_POST for pos=1
+    if ($type == 'template' || !$type) {
+      global $wp;
+      if (isset($wp->query_vars['pos']) && $wp->query_vars['pos'] == 1) {
+        return true;
+      }
     }
+
+    // test for WC REST API requests, ie: matched request header
+    if ($type == 'ajax' || !$type) {
+      // check server global first
+      if (isset($_SERVER['HTTP_X_WC_POS']) && $_SERVER['HTTP_X_WC_POS'] == 1) {
+        return true;
+      }
+      // backup check getallheaders() - can cause problems
+      if (function_exists('getallheaders') && is_array(getallheaders()) && array_key_exists('X-WC-POS', getallheaders())) {
+        return true;
+      }
+    }
+
+    return false;
   }
-
-  // test for WC REST API requests, ie: matched request header
-  if( $type == 'ajax' || !$type ) {
-    // check server global first
-    if( isset( $_SERVER['HTTP_X_WC_POS'] ) && $_SERVER['HTTP_X_WC_POS'] == 1 ){
-      return true;
-    }
-    // backup check getallheaders() - can cause problems
-    if ( function_exists( 'getallheaders' ) && is_array( getallheaders() ) && array_key_exists( 'X-WC-POS', getallheaders() ) ) {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 /**
  *
  */
-function is_pos_admin() {
-  if ( function_exists( 'getallheaders' )
-    && $headers = getallheaders()
-    && isset( $headers['X-WC-POS-ADMIN'] )
-  ) {
-    return $headers['X-WC-POS-ADMIN'];
-  } elseif ( isset( $_SERVER[ 'HTTP_X_WC_POS_ADMIN' ] ) ) {
-    return $_SERVER[ 'HTTP_X_WC_POS_ADMIN' ];
-  }
+if( ! function_exists('is_pos_admin') ) {
+  function is_pos_admin() {
+    if (function_exists('getallheaders')
+      && $headers = getallheaders()
+        && isset($headers['X-WC-POS-ADMIN'])
+    ) {
+      return $headers['X-WC-POS-ADMIN'];
+    } elseif (isset($_SERVER['HTTP_X_WC_POS_ADMIN'])) {
+      return $_SERVER['HTTP_X_WC_POS_ADMIN'];
+    }
 
-  return false;
+    return false;
+  }
 }
 
     /**
@@ -81,14 +86,16 @@ function is_pos_admin() {
  * @param string $autoload
  * @return bool
  */
-function wc_pos_update_option( $name, $value, $autoload = 'no' ) {
-  $success = add_option( $name, $value, '', $autoload );
+if( ! function_exists('wc_pos_update_option') ) {
+  function wc_pos_update_option($name, $value, $autoload = 'no') {
+    $success = add_option($name, $value, '', $autoload);
 
-  if ( ! $success ) {
-    $success = update_option( $name, $value );
+    if (!$success) {
+      $success = update_option($name, $value);
+    }
+
+    return $success;
   }
-
-  return $success;
 }
 
 /**
@@ -103,9 +110,11 @@ function wc_pos_update_option( $name, $value, $autoload = 'no' ) {
  * @param $data
  * @return mixed
  */
-function wc_pos_json_encode($data){
-  $args = array( $data, JSON_FORCE_OBJECT );
-  return call_user_func_array( 'json_encode', $args );
+if( ! function_exists('wc_pos_json_encode') ) {
+  function wc_pos_json_encode($data) {
+    $args = array($data, JSON_FORCE_OBJECT);
+    return call_user_func_array('json_encode', $args);
+  }
 }
 
 /**
@@ -114,17 +123,19 @@ function wc_pos_json_encode($data){
  * @param string $path
  * @return mixed|void
  */
-function wc_pos_locate_template($path = ''){
-  $template = locate_template(array(
-    'woocommerce-pos/' . $path
-  ));
+if( ! function_exists('wc_pos_locate_template') ) {
+  function wc_pos_locate_template($path = '') {
+    $template = locate_template(array(
+      'woocommerce-pos/' . $path
+    ));
 
-  if( !$template ){
-    $template = WC_POS_PLUGIN_PATH. 'includes/views/' . $path;
-  }
+    if (!$template) {
+      $template = WC_POS_PLUGIN_PATH . 'includes/views/' . $path;
+    }
 
-  if ( file_exists( $template ) ) {
-    return apply_filters('woocommerce_pos_locate_template', $template, $path);
+    if (file_exists($template)) {
+      return apply_filters('woocommerce_pos_locate_template', $template, $path);
+    }
   }
 }
 
@@ -133,13 +144,15 @@ function wc_pos_locate_template($path = ''){
  * @param $key
  * @return bool
  */
-function wc_pos_get_option( $id, $key = false ){
-  $handlers = (array) WC_POS\Admin\Settings::handlers();
-  if( ! array_key_exists( $id, $handlers ) )
-    return false;
+if( ! function_exists('wc_pos_get_option') ) {
+  function wc_pos_get_option($id, $key = false) {
+    $handlers = (array)WC_POS\Admin\Settings::handlers();
+    if (!array_key_exists($id, $handlers))
+      return false;
 
-  $settings = $handlers[$id]::get_instance();
-  return $settings->get( $key );
+    $settings = $handlers[$id]::get_instance();
+    return $settings->get($key);
+  }
 }
 
 /**
@@ -148,20 +161,26 @@ function wc_pos_get_option( $id, $key = false ){
  * @param $str
  * @return mixed
  */
-function wc_pos_trim_html_string( $str ) {
-  return preg_replace( '/^\s+|\n|\r|\s+$/m', '', $str );
+if( ! function_exists('wc_pos_trim_html_string') ) {
+  function wc_pos_trim_html_string($str) {
+    return preg_replace('/^\s+|\n|\r|\s+$/m', '', $str);
+  }
 }
 
 /**
  *
  */
-function wc_pos_doc_url( $page ) {
-  return 'http://docs.wcpos.com/v/' . \WC_POS\VERSION . '/en/' . $page;
+if( ! function_exists('wc_pos_doc_url') ) {
+  function wc_pos_doc_url($page) {
+    return 'http://docs.wcpos.com/v/' . \WC_POS\VERSION . '/en/' . $page;
+  }
 }
 
 /**
  *
  */
-function wc_pos_faq_url( $page ) {
-  return 'http://faq.wcpos.com/v/' . \WC_POS\VERSION . '/en/' . $page;
+if( ! function_exists('wc_pos_faq_url') ) {
+  function wc_pos_faq_url($page) {
+    return 'http://faq.wcpos.com/v/' . \WC_POS\VERSION . '/en/' . $page;
+  }
 }

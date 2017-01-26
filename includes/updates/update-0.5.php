@@ -8,35 +8,52 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Product Settings
+ * Old General Settings
  */
-$pos_only_products = wc_pos_get_option('general', 'pos_only_products');
-$decimal_qty = wc_pos_get_option('general', 'decimal_qty');
-
-$product_settings = get_option('woocommerce_pos_settings_products', array());
-update_option('woocommerce_pos_settings_products', array_merge($product_settings, array(
-  'pos_only_products' => $pos_only_products,
-  'decimal_qty' => $decimal_qty
-)));
+$general_settings = get_option('woocommerce_pos_settings_general', array());
 
 /**
- * Cart Settings
+ * New Product Settings
  */
-$discount_quick_keys = wc_pos_get_option('general', 'discount_quick_keys');
+$product_settings = array();
+if( isset($general_settings['pos_only_products']) )
+  $product_settings['pos_only_products'] = $general_settings['pos_only_products'];
+if( isset($general_settings['decimal_qty']) )
+  $product_settings['decimal_qty'] = $general_settings['decimal_qty'];
 
-$cart_settings = get_option('woocommerce_pos_settings_cart', array());
-update_option('woocommerce_pos_settings_cart', array_merge($cart_settings, array(
-  'discount_quick_keys' => $discount_quick_keys
-)));
+update_option('woocommerce_pos_settings_products',
+  array_merge(
+    get_option('woocommerce_pos_settings_products', array()),
+    $product_settings
+  )
+);
 
 /**
- * Customer Settings
+ * New Cart Settings
  */
-$default_customer = wc_pos_get_option('general', 'default_customer');
-$logged_in_user = wc_pos_get_option('general', 'logged_in_user');
+$cart_settings = array();
+if( isset($general_settings['discount_quick_keys']) )
+  $cart_settings['discount_quick_keys'] = $general_settings['discount_quick_keys'];
 
-$customer_settings = get_option('woocommerce_pos_settings_customers', array());
-update_option('woocommerce_pos_settings_customers', array_merge($customer_settings, array(
-  'default_customer' => $default_customer,
-  'logged_in_user' => $logged_in_user
-)));
+update_option('woocommerce_pos_settings_cart',
+  array_merge(
+    get_option('woocommerce_pos_settings_cart', array()),
+    $cart_settings
+  )
+);
+
+/**
+ * New Customer Settings
+ */
+$customer_settings = array();
+if( isset($general_settings['default_customer']) )
+  $customer_settings['default_customer'] = $general_settings['default_customer'];
+if( isset($general_settings['logged_in_user']) )
+  $customer_settings['logged_in_user'] = $general_settings['logged_in_user'];
+
+update_option('woocommerce_pos_settings_customers',
+  array_merge(
+    get_option('woocommerce_pos_settings_customers', array()),
+    $customer_settings
+  )
+);

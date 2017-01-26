@@ -82,7 +82,7 @@ class Settings extends Page {
 
     // register
     $external_libs = Template::get_external_js_libraries();
-    wp_register_script( 'jquery', $external_libs[ 'jquery' ], false, null, true );
+    wp_register_script( 'jquery', $external_libs[ 'jquery' ], false, null, false );
     wp_register_script( 'lodash', $external_libs[ 'lodash' ], array( 'jquery' ), null, true );
     wp_register_script( 'backbone', $external_libs[ 'backbone' ], array( 'jquery', 'lodash' ), null, true );
     wp_register_script( 'backbone.radio', $external_libs[ 'radio' ], array( 'jquery', 'backbone', 'lodash' ), null, true );
@@ -94,9 +94,6 @@ class Settings extends Page {
     wp_register_script( 'ace', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js', false, null, true );
     wp_register_script( 'qz-tray', \WC_POS\PLUGIN_URL . '/assets/js/vendor/qz-tray.' . $build . '.js', false, null, true );
 
-    // enqueue jquery UI sortable
-    wp_enqueue_script ('jquery-ui-sortable');
-
     wp_enqueue_script(
       \WC_POS\PLUGIN_NAME . '-admin-settings-app',
       \WC_POS\PLUGIN_URL . 'assets/js/admin-settings.' . $build . '.js',
@@ -104,6 +101,9 @@ class Settings extends Page {
       \WC_POS\VERSION,
       true
     );
+
+    // enqueue jquery UI sortable
+    wp_enqueue_script( 'jquery-ui-sortable' );
 
     // localise moment
     if(isset($external_libs['moment-locale'])){
