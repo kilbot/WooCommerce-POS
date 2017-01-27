@@ -265,6 +265,9 @@ class Visibility {
     $selected = get_post_meta( $post->ID , '_pos_visibility' , true );
     if(!$selected){
       $selected = '';
+      if(get_current_screen()->action == 'add'){
+        $selected = apply_filters('woocommerce_pos_default_product_visibility','', $post);
+      }
     }
     include 'views/post-metabox-visibility-select.php';
   }
