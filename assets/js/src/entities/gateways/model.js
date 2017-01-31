@@ -63,6 +63,19 @@ module.exports = Model.extend({
     if(integration && typeof integration.onProcess === 'function'){
       return integration.onProcess.call(this, order);
     }
+  },
+
+  /**
+   *
+   */
+  onCardScan: function(data){
+    var integration = this.collection.getIntegration(this.id);
+    if(integration && typeof integration.onCardScan === 'function'){
+      return integration.onCardScan.call(this, data);
+    } else {
+      // hack to allow view to pick up default cc form
+      this.trigger('card:scan', data);
+    }
   }
 
 });
