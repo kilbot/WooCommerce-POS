@@ -231,7 +231,8 @@ class Params extends WC_API_Resource {
     $shipping_methods = WC()->shipping() ? WC()->shipping->load_shipping_methods() : array();
 
     foreach( $shipping_methods as $method ){
-      $labels[$method->id] = $method->get_method_title();
+      // backwards compat: $method->get_method_title introduced in WC 2.6.0
+      $labels[$method->id] = method_exists($method, 'get_title') ? $method->get_title() : $method->get_method_title();
     }
 
     /* translators: woocommerce */

@@ -13,6 +13,10 @@ var View = FormView.extend({
     style: 'display:none' // start drawer closed
   },
 
+  modelEvents: {
+    'card:scan': 'onCardScan'
+  },
+
   /**
    * Trigger event for gateway integrations
    */
@@ -88,6 +92,23 @@ var View = FormView.extend({
    */
   onDestroy: function(){
     this.model.onDestroy(this);
+  },
+
+  /**
+   * insert card data to deafult WC cc form
+   */
+  onCardScan: function(data){
+    data = data || {};
+    var number = this.$('.wc-credit-card-form-card-number');
+    var expiry = this.$('.wc-credit-card-form-card-expiry');
+
+    if(number){
+      number.val(data.account);
+    }
+
+    if(expiry){
+      expiry.val(data.expMonth + '/' + data.expYear);
+    }
   }
 
 });
