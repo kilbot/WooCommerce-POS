@@ -53,7 +53,8 @@ class Gateways {
 
     return array_merge($gateways, array(
       'WC_POS\Gateways\Cash',
-      'WC_POS\Gateways\Card'
+      'WC_POS\Gateways\Card',
+      'WC_POS\Gateways\Check'
     ));
   }
 
@@ -64,7 +65,7 @@ class Gateways {
    */
   public function load_gateways( $gateways ) {
     foreach( $gateways as $gateway ){
-      $gateway->pos = in_array( $gateway->id, array( 'pos_cash', 'pos_card', 'paypal' ) );
+      $gateway->pos = in_array( $gateway->id, array( 'pos_cash', 'pos_card', 'pos_check', 'paypal' ) );
     }
     return $gateways;
   }
