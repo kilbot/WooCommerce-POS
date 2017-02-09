@@ -444,6 +444,17 @@ msgstr ""
 msgid "Amount Tendered"
 msgstr ""
 
+#: includes/gateways/class-wc-pos-check.php:28
+msgid "Check"
+msgstr ""
+
+#: includes/gateways/class-wc-pos-check.php:60
+#: includes/gateways/class-wc-pos-check.php:63
+#: includes/gateways/class-wc-pos-check.php:92
+#: includes/gateways/class-wc-pos-check.php:126
+msgid "Cashback"
+msgstr ""
+
 #: includes/products/class-wc-pos-visibility.php:23
 msgid "POS & Online"
 msgstr ""
