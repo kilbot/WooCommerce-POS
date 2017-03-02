@@ -221,12 +221,19 @@ class Templates extends WC_API_Resource {
 
     if(!empty($posts)){
       $template = $posts[0];
+
+      // parse PHP translations
+      ob_start();
+      eval('?>'.$template->post_content);
+      $content = ob_get_contents();
+      ob_end_clean();
+
       return array(
         'id'        => $template->ID,
         'type'      => $type,
         'method'    => $method,
         'options'   => $options,
-        'template'  => $template->post_content
+        'template'  => $content
       );
     }
 

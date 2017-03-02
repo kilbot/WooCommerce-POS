@@ -3,7 +3,7 @@ var App = require('lib/config/application');
 var hbs = require('handlebars');
 
 var languageMap = {
-  'html'      : 'html',
+  'html'      : 'php',
   'epos-print': 'xml',
   'escp'      : 'text'
 };
