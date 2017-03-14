@@ -76,7 +76,11 @@ module.exports = Service.extend({
   },
   /* jshint -W074 */
 
-  close: function( id ){
+  close: function( id, modal ){
+    modal = modal || {};
+    if(modal.layout){
+      modal.layout.getRegion('bodyRegion').empty();
+    }
     Modal.close( id );
   },
 

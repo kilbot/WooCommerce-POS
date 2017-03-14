@@ -109,6 +109,10 @@ var ReceiptRoute = Route.extend({
   },
 
   print: function(btn){
+    if(!btn){
+      btn = this.layout.getRegion('actions').currentView.$('[data-action=print]');
+    }
+
     btn.trigger('state', [ 'loading', '' ]);
     Radio.request('print', 'receipt', {
       model: this.order

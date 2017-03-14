@@ -74,7 +74,7 @@ class Params extends WC_API_Resource {
    */
   private function frontend_params(){
     return array(
-      'auto_print'    => wc_pos_get_option( 'checkout', 'auto_print_receipt' ),
+      'auto_print'    => wc_pos_get_option('receipts', array('section' => 'receipt_options', 'key' => 'auto_print_receipt')),
       'denominations' => i18n::currency_denominations(),
       'discount_keys' => wc_pos_get_option( 'cart', 'discount_quick_keys' ),
       'fee'           => wc_pos_get_option( 'cart', 'fee' ),

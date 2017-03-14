@@ -241,7 +241,7 @@ class Templates extends WC_API_Resource {
 
     // backwards compat
     if(!$path && $type == 'html'){
-      $path = $this->locate_print_receipt_template('tmpl-receipt.php');
+      $path = $this->locate_print_receipt_template('receipt-html.php');
     }
 
     return array(
