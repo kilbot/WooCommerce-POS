@@ -14,7 +14,7 @@
     </th>
     <td>
       <input type="checkbox" name="pos_only_products" id="pos_only_products" />
-      <?php printf( __( 'Enable <a href="%s">POS Only products</a>', 'woocommerce-pos' ), wc_pos_doc_url('products/pos-only-products.html') )?>.
+      <?php printf( __( 'Enable <a href="%s">POS Only products</a>', 'woocommerce-pos' ), wc_pos_doc_url('how-to/configure/products/pos-only-products.html') )?>.
     </td>
   </tr>
 
