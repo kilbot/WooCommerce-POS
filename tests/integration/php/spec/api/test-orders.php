@@ -286,7 +286,7 @@ class OrdersTest extends TestCase {
     $product = $this->get_random_product();
     $product = $this->filter_line_item($product);
 
-    $product['title'] = 'Foo';
+    $product['name'] = 'Foo';
 
     // create order
     $response = $this->client->post('orders', array(
@@ -302,7 +302,6 @@ class OrdersTest extends TestCase {
     $data = $response->json();
     $this->assertArrayHasKey('order', $data);
 
-    // note: product goes in as 'title', comes out as 'name'
     $this->assertEquals('Foo', $data['order']['line_items'][0]['name']);
   }
 

@@ -69,6 +69,11 @@ class Orders {
    */
   public function create_order_data(array $data){
 
+    // WC 3.0 compatibility
+    if( version_compare( WC()->version, '3', '>=' ) ){
+      add_action( 'woocommerce_before_order_item_object_save', array( $this, 'before_order_item_object_save' ), 10, 2 );
+    }
+
     // add filters & actions for create order
     add_filter( 'woocommerce_product_tax_class', array( $this, 'product_tax_class' ), 10, 2 );
     add_filter( 'woocommerce_get_product_from_item', array( $this, 'get_product_from_item' ), 10, 3 );
@@ -960,6 +965,60 @@ class Orders {
     }
 
     return $served;
+  }
+
+
+  /****************************
+   * WC 3.0 Compatibility Fixes
+   ***************************/
+
+  /**
+   * @param $item
+   * @param $data_store
+   */
+  public function before_order_item_object_save( $item, $data_store ) {
+    $type = $item->get_type();
+
+    if( 'line_item' == $type ) {
+      $id = $item->get_id();
+      $product_id = $item->get_product_id();
+
+      if($product_id && $pos_item = $this->get_product_line_item_data( $product_id, $id )) {
+
+        // update title
+        if ( isset( $pos_item['name'] ) ) {
+          $item->set_name( $pos_item['name'] );
+        }
+
+      }
+
+    }
+
+  }
+
+  /**
+   * @param $product_id
+   * @param $id
+   * @return bool|void
+   */
+  public function get_product_line_item_data( $product_id, $id ) {
+    if(!isset($this->data['line_items']))
+      return;
+
+    foreach($this->data['line_items'] as $item){
+      // order item id exists, ie: editing
+      if( $id ) {
+        return isset($item['id']) && $item['id'] == $id ? $item : false ;
+      }
+
+      // get by product id, no id
+      elseif( isset($item['product_id']) && $item['product_id'] == $product_id ) {
+        if( !isset($item['id']) || !$item['id'] ) {
+          return $item;
+        }
+      }
+    }
+
   }
 
 }

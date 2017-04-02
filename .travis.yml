@@ -37,7 +37,7 @@ before_script:
   - docker exec woocommerce-pos-app-${PHP_VERSION} wp plugin list --allow-root --status=active
 
   ## turn off WP_DEBUG to prevent depreciation notices
-  - sed -i "" "s/'WP_DEBUG', true/'WP_DEBUG', false/g" .html/wp-config.php
+  - docker exec woocommerce-pos-app-${PHP_VERSION} sed -i "s/'WP_DEBUG', true/'WP_DEBUG', false/g" wp-config.php
 
 script:
   - npm run unit-test:js
