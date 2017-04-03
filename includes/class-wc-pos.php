@@ -22,7 +22,8 @@ class WC_POS {
     }
 
     add_action( 'init', array( $this, 'init' ) );
-    add_action( 'woocommerce_api_loaded', array( $this, 'load_woocommerce_api_patches') );
+    add_action( 'rest_api_init', array( $this, 'load_woocommerce_api_patches') );
+
     do_action( 'woocommerce_pos_loaded' );
 
   }
@@ -83,7 +84,12 @@ class WC_POS {
    *
    */
   public function load_woocommerce_api_patches(){
-    new WC_POS_API();
+    if( version_compare( WC()->version, '3', '<' ) ){
+      new WC_POS_API();
+    } else {
+      new WC_POS_APIv2();
+    }
+
   }
 
 }
