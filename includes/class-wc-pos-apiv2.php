@@ -19,15 +19,7 @@ class WC_POS_APIv2 {
     if( ! is_pos() )
       return;
 
-    // remove wc api authentication
-    // - relies on ->api and ->authentication being publicly accessible
-//    if( isset( WC()->api ) && isset( WC()->api->authentication ) ){
-//      remove_filter( 'woocommerce_api_check_authentication', array( WC()->api->authentication, 'authenticate' ), 0 );
-//    }
-
 //    add_filter( 'determine_current_user', array( $this, 'wc_api_authentication' ), 20, 0 );
-    add_filter( 'woocommerce_api_dispatch_args', array( $this, 'dispatch_args'), 10, 2 );
-    add_filter( 'woocommerce_api_query_args', array( $this, 'woocommerce_api_query_args' ), 10, 2 );
 
     add_filter( 'rest_dispatch_request', array( $this, 'rest_dispatch_request' ), 10, 4 );
     add_filter( 'rest_request_before_callbacks', array( $this, 'rest_request_before_callbacks' ), 10, 3 );
@@ -53,46 +45,6 @@ class WC_POS_APIv2 {
 
 
   /**
-   * @param $args
-   * @param $callback
-   * @return mixed
-   */
-  public function dispatch_args($args, $callback){
-    $wc_api_handler = get_class($callback[0]);
-
-    $has_data = in_array( $args['_method'], array(2, 4, 8) ) && isset( $args['data'] ) && is_array( $args['data'] );
-    if( $has_data ){
-      // remove status
-      if( array_key_exists('status', $args['data']) ){
-        unset($args['data']['status']);
-      }
-    }
-
-    switch($wc_api_handler){
-      case 'WC_API_Products':
-        new WC_POS_API_Products();
-        break;
-      case 'WC_API_Orders':
-        if( $has_data && !isset( $args['data']['order'] ) ){
-          $data = $args['data'];
-          unset( $args['data'] );
-          $args['data']['order'] = $data;
-        }
-        new WC_POS_API_Orders();
-        break;
-      case 'WC_API_Customers':
-        new WC_POS_API_Customers();
-        break;
-      case 'WC_API_Coupons':
-        new WC_POS_API_Coupons();
-        break;
-    }
-
-    return $args;
-  }
-
-
-  /**
    * @param $response
    * @param $handler
    * @param $request
@@ -111,29 +63,6 @@ class WC_POS_APIv2 {
     }
 
     return $response;
-  }
-
-  /**
-   * - this filter was introduced in WC 2.3
-   * @param $args
-   * @param $request_args
-   * @return mixed
-   */
-  public function woocommerce_api_query_args($args, $request_args){
-
-    // required for compatibility WC < 2.3.5
-    if ( ! empty( $request_args['in'] ) ) {
-      $args['post__in'] = explode(',', $request_args['in']);
-      unset( $request_args['in'] );
-    }
-
-    // required for compatibility WC < 2.4
-    if ( ! empty( $request_args['not_in'] ) ) {
-      $args['post__not_in'] = explode(',', $request_args['not_in']);
-      unset( $request_args['not_in'] );
-    }
-
-    return $args;
   }
 
 
@@ -166,6 +95,7 @@ class WC_POS_APIv2 {
     return $halt;
   }
 
+
   /**
    * Get all the ids for a given post_type
    * @return json
@@ -173,7 +103,7 @@ class WC_POS_APIv2 {
   static public function get_all_ids() {
     $entity = isset($_REQUEST['type']) ? $_REQUEST['type'] : false;
     $updated_at_min = isset($_REQUEST['updated_at_min']) ? $_REQUEST['updated_at_min'] : false;
-    $class_name = 'WC_POS_API_' . ucfirst( $entity );
+    $class_name = 'WC_POS_APIv2_' . ucfirst( $entity );
     $handler = new $class_name();
 
     if(method_exists($handler, 'get_ids')){

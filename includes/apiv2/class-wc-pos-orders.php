@@ -16,6 +16,8 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
   private $data = array();
   private $flag = false;
 
+  private $current_order;
+
   /**
    * Constructor
    */
@@ -24,6 +26,8 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     add_filter( 'rest_dispatch_request', array( $this, 'rest_dispatch_request' ), 10, 4 );
     add_filter( 'woocommerce_rest_pre_insert_shop_order_object', array( $this, 'pre_insert_shop_order_object' ), 10, 3 );
     add_filter( 'woocommerce_rest_prepare_shop_order_object', array( $this, 'prepare_shop_order_object' ), 10, 3 );
+    add_filter( 'woocommerce_order_item_product', array( $this, 'order_item_product' ), 10, 2 );
+    add_action( 'woocommerce_rest_set_order_item', array( $this, 'rest_set_order_item' ), 10, 2 );
 
     // order data
     add_filter( 'woocommerce_api_create_order_data', array( $this, 'create_order_data') );
@@ -73,7 +77,8 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
       $order->set_customer_note($request['note']);
     }
 
-
+    // store order reference
+    $this->current_order = $order;
 
     return $order;
   }
@@ -102,6 +107,38 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
     $response->set_data($data);
     return $response;
+  }
+
+
+  /**
+   * ‌
+   * @param $product
+   * @param WC_Order_Item_Product $WC_Order_Item_Product
+   */
+  public function order_item_product( $product, WC_Order_Item_Product $WC_Order_Item_Product ) {
+
+    if($this->current_order){
+      $items = $this->current_order->get_items();
+      foreach($items as $item) {
+        if($item === $WC_Order_Item_Product && $item->_wcpos_tax_status) {
+          $product->set_tax_status($item->_wcpos_tax_status);
+        }
+      }
+    }
+
+    return $product;
+
+  }
+
+
+  /**
+   * @param $item
+   * @param $posted
+   */
+  public function rest_set_order_item( $item, $posted ) {
+    if( isset( $posted['taxable'] ) ){
+      $item->_wcpos_tax_status = $posted['taxable'] ? 'taxable' : 'none';
+    }
   }
 
 
