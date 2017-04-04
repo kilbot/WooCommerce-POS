@@ -27,6 +27,7 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     add_filter( 'woocommerce_rest_pre_insert_shop_order_object', array( $this, 'pre_insert_shop_order_object' ), 10, 3 );
     add_filter( 'woocommerce_rest_prepare_shop_order_object', array( $this, 'prepare_shop_order_object' ), 10, 3 );
     add_filter( 'woocommerce_order_item_product', array( $this, 'order_item_product' ), 10, 2 );
+    add_filter( 'woocommerce_order_get_items', array( $this, 'order_get_items' ), 10, 2 );
     add_action( 'woocommerce_rest_set_order_item', array( $this, 'rest_set_order_item' ), 10, 2 );
 
     // order data
@@ -111,7 +112,21 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
 
   /**
-   * ‌
+   * @param $items
+   * @param WC_Order $order
+   * - note: WC_Order_Item_Product doesn't have set_tax_status method :(
+   */
+  public function order_get_items($items, WC_Order $order) {
+    if($items): foreach($items as $item):
+      if(get_class($item) == 'WC_Order_Item_Fee' && property_exists($item, '_wcpos_tax_status'))
+        $item->set_tax_status($item->_wcpos_tax_status);
+    endforeach; endif;
+
+    return $items;
+  }
+
+  /**
+   * ‌Special hack for WC_Order_Item_Product
    * @param $product
    * @param WC_Order_Item_Product $WC_Order_Item_Product
    */
