@@ -27,6 +27,7 @@ class WC_POS_Params {
     $this->customers       = $this->customers();
     $this->debug           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
     $this->nonce           = wp_create_nonce( WC_POS_PLUGIN_NAME );
+    $this->rest_nonce      = wp_create_nonce( 'wp_rest' );
     $this->wc_api          = get_wcpos_api_url('');
     $this->emulateHTTP     = get_option( 'woocommerce_pos_emulateHTTP' ) === '1';
     $this->idbVersion      = WC_POS_Settings::get_idb_version();

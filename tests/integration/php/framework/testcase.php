@@ -14,7 +14,7 @@ class TestCase extends PHPUnit_Framework_TestCase {
   public function setUp() {
     parent::setUp();
 
-    $this->login();
+    $rest_nonce = $this->login();
 
     $this->client = new GuzzleHttp\Client([
       'base_url' => get_wcpos_api_url( '' ),
@@ -22,7 +22,8 @@ class TestCase extends PHPUnit_Framework_TestCase {
         'exceptions' => false,
         'cookies' => true,
         'headers' => [
-          'X-WC-POS' => '1'
+          'X-WC-POS' => '1',
+          'X-WP-Nonce' => $rest_nonce // this doesn't work?
         ]
       ]
     ]);
@@ -47,6 +48,8 @@ class TestCase extends PHPUnit_Framework_TestCase {
         'pwd' => 'password',
       ]
     ]);
+
+    return wp_create_nonce( 'wp_rest' ) ;
 
   }
 
