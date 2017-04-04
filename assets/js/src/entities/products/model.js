@@ -7,7 +7,7 @@ module.exports = DualModel.extend({
   name: 'product',
 
   // this is an array of fields used by FilterCollection.matchmaker()
-  fields: ['title'],
+  fields: ['name'],
 
   // data types
   schema: {

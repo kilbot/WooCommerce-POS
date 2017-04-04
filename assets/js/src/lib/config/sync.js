@@ -46,5 +46,9 @@ bb.sync = function(method, entity, options) {
   options.beforeSend = function(xhr){
     xhr.setRequestHeader('X-WC-POS', 1);
   };
+  // hack to remove status
+  if(method === 'create' || method === 'update'){
+    entity.unset('status', { silent: true });
+  }
   return bb.ajaxSync.apply(this, [method, entity, options]);
 };

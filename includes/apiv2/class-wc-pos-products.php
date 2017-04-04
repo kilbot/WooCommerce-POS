@@ -259,12 +259,6 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
       $data['stock_quantity'] = $product->get_stock_quantity();
     }
 
-    // copy name to title
-    // - backwards compatibility for JS UI
-    if( isset($data['name']) ){
-      $data['title'] = $data['name'];
-    }
-
     // filter by whitelist
     // - note, this uses the same method as WC REST API fields parameter
     // - this doesn't speed up queries as it should

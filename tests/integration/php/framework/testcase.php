@@ -85,7 +85,7 @@ class TestCase extends PHPUnit_Framework_TestCase {
   protected function get_product( $id ){
     $response = $this->client->get( 'products/' . $id );
     $data = $response->json();
-    return $data['product'];
+    return $data;
   }
 
   /**
@@ -101,8 +101,8 @@ class TestCase extends PHPUnit_Framework_TestCase {
       )
     );
     $data = $response->json();
-    $key = array_rand( $data['products'] );
-    return $data['products'][$key]['id'];
+    $key = array_rand( $data );
+    return $data[$key]['id'];
   }
 
   /**

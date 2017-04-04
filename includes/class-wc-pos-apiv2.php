@@ -105,6 +105,9 @@ class WC_POS_APIv2 {
       case 'WC_REST_Products_Controller':
         new WC_POS_APIv2_Products();
         break;
+      case 'WC_REST_Orders_Controller':
+        new WC_POS_APIv2_Orders();
+        break;
     }
 
     return $response;

@@ -56,6 +56,10 @@ module.exports = App.prototype.ReceiptView = ItemView.extend({
     if( data.itemized ){
       _.each( data.tax_lines, function(line) {
         line.has_tax = 0 !== parseFloat(line.total);
+        // WC 3 compat
+        if(line.label) {
+          line.title = line.label;
+        }
       });
     }
 

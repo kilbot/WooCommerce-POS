@@ -10,7 +10,7 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_API_Orders extends WC_POS_API_Abstract {
+class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
   /** @var array Contains the raw order data */
   private $data = array();
@@ -20,6 +20,10 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    * Constructor
    */
   public function __construct() {
+
+    add_filter( 'rest_dispatch_request', array( $this, 'rest_dispatch_request' ), 10, 4 );
+    add_filter( 'woocommerce_rest_pre_insert_shop_order_object', array( $this, 'pre_insert_shop_order_object' ), 10, 3 );
+    add_filter( 'woocommerce_rest_prepare_shop_order_object', array( $this, 'prepare_shop_order_object' ), 10, 3 );
 
     // order data
     add_filter( 'woocommerce_api_create_order_data', array( $this, 'create_order_data') );
@@ -37,6 +41,68 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     // order emails
     add_filter( 'woocommerce_email', array( $this, 'woocommerce_email' ), 99 );
   }
+
+
+  /**
+   * @param $halt
+   * @param $request
+   * @param $route
+   * @param $handler
+   * @return
+   */
+  public function rest_dispatch_request( $halt, $request, $route, $handler ) {
+    return $halt;
+  }
+
+  /**
+   * @param $order
+   * @param $request
+   * @param $creating
+   */
+  public function pre_insert_shop_order_object( $order, $request, $creating ) {
+
+    // add POS order meta
+    $current_user = wp_get_current_user();
+
+    $order->update_meta_data( '_pos', 1 );
+    $order->update_meta_data( '_pos_user', $current_user->ID );
+    $order->update_meta_data( '_pos_user_name', $current_user->user_firstname . ' ' . $current_user->user_lastname );
+
+    // WC 3 compatibility
+    if( isset($request['note']) ) {
+      $order->set_customer_note($request['note']);
+    }
+
+
+
+    return $order;
+  }
+
+
+  /**
+   * @param $response
+   * @param $object
+   * @param $request
+   * @return
+   */
+  public function prepare_shop_order_object( $response, $object, $request ) {
+    $data = $response->get_data();
+
+    // WC 3 compatibility
+    if($data['customer_note']) {
+      $data['note'] = $data['customer_note'];
+    }
+
+    if($data['discount_total']) {
+      $data['total_discount'] = $data['discount_total'];
+    }
+
+
+
+    $response->set_data($data);
+    return $response;
+  }
+
 
   /**
    * Create order data

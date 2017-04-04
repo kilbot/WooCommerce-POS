@@ -232,6 +232,12 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
       $data['stock_quantity'] = $product->get_stock_quantity();
     }
 
+    // Backwards compatibility legacy api
+    if( isset($data['title']) ){
+      $data['name'] = $data['title'];
+      unset($data['title']);
+    }
+
     // filter by whitelist
     // - note, this uses the same method as WC REST API fields parameter
     // - this doesn't speed up queries as it should
