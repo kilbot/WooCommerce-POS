@@ -147,7 +147,7 @@ var CartRoute = Route.extend({
       'action:fee': function(){
         this.order.cart.addToCart({
           type  : 'fee',
-          title : polyglot.t('titles.fee')
+          name  : polyglot.t('titles.fee')
         });
       },
       'action:shipping': function(){

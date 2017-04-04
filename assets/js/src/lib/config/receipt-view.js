@@ -80,6 +80,13 @@ module.exports = App.prototype.ReceiptView = ItemView.extend({
       });
     }
 
+    // WC 3 compat
+    _.each( data.fee_lines, function(item) {
+      if(item.name) {
+        item.title = item.name;
+      }
+    });
+
     data.has_tax = data.total_tax && 0 !== parseFloat(data.total_tax);
     data.has_discount = data.cart_discount && 0 !== parseFloat(data.cart_discount);
     data.has_order_discount = data.order_discount && 0 !== parseFloat(data.order_discount);

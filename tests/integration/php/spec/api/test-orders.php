@@ -326,9 +326,8 @@ class OrdersAPITest extends TestCase {
     ));
     $this->assertEquals(201, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('order', $data);
-    $this->assertEquals(0.5, $data['order']['total_tax']);
-    $this->assertEquals('reduced-rate', $data['order']['line_items'][0]['tax_class']);
+    $this->assertEquals(0.5, $data['total_tax']);
+    $this->assertEquals('reduced-rate', $data['line_items'][0]['tax_class']);
   }
 
   /**
@@ -339,7 +338,7 @@ class OrdersAPITest extends TestCase {
     // construct fee
     // - fee title is required
     $fee = array(
-      'title' => 'Foo',
+      'name' => 'Foo',
       'total' => 10
     );
 
@@ -353,9 +352,8 @@ class OrdersAPITest extends TestCase {
     ));
     $this->assertEquals(201, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('order', $data);
-    $this->assertEquals(10, $data['order']['total']);
-    $this->assertEquals('Foo', $data['order']['fee_lines'][0]['title']);
+    $this->assertEquals(10, $data['total']);
+    $this->assertEquals('Foo', $data['fee_lines'][0]['name']);
   }
 
   /**

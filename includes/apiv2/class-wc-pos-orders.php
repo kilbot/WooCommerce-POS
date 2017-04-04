@@ -88,7 +88,10 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
   public function prepare_shop_order_object( $response, $object, $request ) {
     $data = $response->get_data();
 
-    // WC 3 compatibility
+    /**
+     * Legacy API Compatibiility
+     * duplicate props for receipt templates
+     */
     if($data['customer_note']) {
       $data['note'] = $data['customer_note'];
     }
@@ -96,8 +99,6 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     if($data['discount_total']) {
       $data['total_discount'] = $data['discount_total'];
     }
-
-
 
     $response->set_data($data);
     return $response;
