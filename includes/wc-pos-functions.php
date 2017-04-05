@@ -26,6 +26,9 @@ function wc_pos_url( $page = '' ) {
  *
  */
 function get_wcpos_api_url( $path = '' ){
+  if( version_compare( WC()->version, '3', '<' ) ){
+    return get_woocommerce_api_url($path);
+  }
   return get_home_url( null, 'wp-json/wc/v2/' . $path, is_ssl() ? 'https' : 'http' );
 }
 

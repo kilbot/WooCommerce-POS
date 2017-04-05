@@ -200,14 +200,19 @@ class WC_POS_Params {
    * @return array
    */
   static public function shipping_labels() {
+    $labels = array();
 
-    /* translators: woocommerce */
-    $labels = array( '' => __( 'N/A', 'woocommerce' ) );
+    // WC < 3 can have empty method_id
+    if( version_compare( WC()->version, '3', '<' ) ) {
+      /* translators: woocommerce */
+      $labels[''] = __('N/A', 'woocommerce');
+    }
 
     $shipping_methods = WC()->shipping() ? WC()->shipping->load_shipping_methods() : array();
 
     foreach( $shipping_methods as $method ){
-      $labels[$method->id] = $method->get_title();
+      // backwards compat: $method->get_method_title introduced in WC 2.6.0
+      $labels[$method->id] = method_exists($method, 'get_method_title') ? $method->get_method_title() : $method->get_title();
     }
 
     /* translators: woocommerce */

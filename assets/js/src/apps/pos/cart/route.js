@@ -10,6 +10,7 @@ var _ = require('lodash');
 var App = require('lib/config/application');
 var Utils = require('lib/utilities/utils');
 var polyglot = require('lib/utilities/polyglot');
+var Radio = require('backbone.radio');
 
 var CartRoute = Route.extend({
 
@@ -151,10 +152,15 @@ var CartRoute = Route.extend({
         });
       },
       'action:shipping': function(){
+        var shipping = Radio.request('entities', 'get', {
+          type: 'option',
+          name: 'shipping'
+        });
+        var method_ids = _.keys(shipping);
         this.order.cart.addToCart({
           type        : 'shipping',
           method_title: polyglot.t('titles.shipping'),
-          method_id   : '' // todo: settings
+          method_id   : _.first(method_ids) || ''
         });
       },
       'action:checkout': function(){
