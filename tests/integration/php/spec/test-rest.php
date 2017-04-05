@@ -10,7 +10,7 @@ class RESTAPITest extends TestCase {
   }
 
   /**
-   * @group debug
+   *
    */
   public function test_get_valid_api_response() {
     $response = $this->client->get();

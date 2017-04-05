@@ -42,10 +42,11 @@ class OrdersAPITest extends TestCase {
   }
 
   /**
-   *
+   * 
    */
   public function test_get_valid_response() {
     $response = $this->client->get('orders');
+    $this->print_response_body($response);
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $data = isset($data['order']) ? $data['order'] : $data;
@@ -495,6 +496,11 @@ class OrdersAPITest extends TestCase {
       'total'     => -10,
       'taxable'   => true,
       'tax_class' => '',
+      'tax' => array(
+        '1' => array(
+          'total' => -2
+        )
+      )
     );
 
     // create order
@@ -514,6 +520,7 @@ class OrdersAPITest extends TestCase {
 
   /**
    * https://github.com/kilbot/WooCommerce-POS/issues/85
+   *
    */
   public function test_order_with_product_and_negative_fee(){
     // enable taxes
@@ -527,6 +534,11 @@ class OrdersAPITest extends TestCase {
     $product['total'] = 10;
     $product['total_tax'] = 2;
     $product['tax_class'] = '';
+    $product['tax'] = array(
+      '1' => array(
+        'total' => 2
+      )
+    );
 
     // construct fee
     // - fee title is required
