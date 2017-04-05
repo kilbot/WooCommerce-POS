@@ -26,8 +26,6 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     add_filter( 'rest_dispatch_request', array( $this, 'rest_dispatch_request' ), 10, 4 );
     add_filter( 'woocommerce_rest_pre_insert_shop_order_object', array( $this, 'pre_insert_shop_order_object' ), 10, 3 );
     add_filter( 'woocommerce_rest_prepare_shop_order_object', array( $this, 'prepare_shop_order_object' ), 10, 3 );
-    add_filter( 'woocommerce_order_item_product', array( $this, 'order_item_product' ), 10, 2 );
-    add_filter( 'woocommerce_order_get_items', array( $this, 'order_get_items' ), 10, 2 );
     add_action( 'woocommerce_rest_set_order_item', array( $this, 'rest_set_order_item' ), 10, 2 );
 
     // order data
@@ -47,17 +45,6 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     add_filter( 'woocommerce_email', array( $this, 'woocommerce_email' ), 99 );
   }
 
-
-  /**
-   * @param $halt
-   * @param $request
-   * @param $route
-   * @param $handler
-   * @return
-   */
-  public function rest_dispatch_request( $halt, $request, $route, $handler ) {
-    return $halt;
-  }
 
   /**
    * @param $order
@@ -107,43 +94,12 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
       $data['total_discount'] = $data['discount_total'];
     }
 
-    $response->set_data($data);
-    return $response;
-  }
-
-
-  /**
-   * @param $items
-   * @param WC_Order $order
-   * - note: WC_Order_Item_Product doesn't have set_tax_status method :(
-   */
-  public function order_get_items($items, WC_Order $order) {
-    if($items): foreach($items as $item):
-      if(get_class($item) == 'WC_Order_Item_Fee' && property_exists($item, '_wcpos_tax_status'))
-        $item->set_tax_status($item->_wcpos_tax_status);
-    endforeach; endif;
-
-    return $items;
-  }
-
-  /**
-   * ‌Special hack for WC_Order_Item_Product
-   * @param $product
-   * @param WC_Order_Item_Product $WC_Order_Item_Product
-   */
-  public function order_item_product( $product, WC_Order_Item_Product $WC_Order_Item_Product ) {
-
-    if($this->current_order){
-      $items = $this->current_order->get_items();
-      foreach($items as $item) {
-        if($item === $WC_Order_Item_Product && $item->_wcpos_tax_status) {
-          $product->set_tax_status($item->_wcpos_tax_status);
-        }
-      }
+    if($data['shipping_total']) {
+      $data['total_shipping'] = $data['shipping_total'];
     }
 
-    return $product;
-
+    $response->set_data($data);
+    return $response;
   }
 
 
@@ -152,27 +108,30 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
    * @param $posted
    */
   public function rest_set_order_item( $item, $posted ) {
-    $tax_status = $posted['taxable'] ? 'taxable' : 'none';
+    $tax_status = isset($posted['taxable']) && $posted['taxable'] ? 'taxable' : 'none';
 
-    // Set Shipping taxes
-    if( $tax_status == 'taxable' && get_class( $item ) == 'WC_Order_Item_Shipping' ) {
+    if( $tax_status == 'taxable' ) {
       $total = array();
-      if($posted['tax']): foreach($posted['tax'] as $rate_id => $tax):
+      $subtotal = array();
+
+      if(isset($posted['tax']) && is_array($posted['tax'])): foreach($posted['tax'] as $rate_id => $tax):
         if(is_array($tax)) {
           $total[$rate_id] = isset($tax['total']) ? $tax['total'] : 0;
+          $subtotal[$rate_id] = isset($tax['subtotal']) ? $tax['subtotal'] : 0;
         }
       endforeach; endif;
-      $item->set_taxes( array( 'total' => $total ) );
 
-    // Products and Fees, for use later
-    } else {
-      $item->_wcpos_tax_status = $tax_status;
+      if( get_class($item) == 'WC_Order_Item_Product' ) {
+        $item->set_taxes( array( 'total' => $total, 'subtotal' => $subtotal ) );
+      } else {
+        $item->set_taxes( array( 'total' => $total ) );
+      }
     }
   }
 
 
   /**
-   * Nasty hack for Shipping taxes
+   * Disable tax calculations - trust the POS
    */
   public function wc_tax_enabled() {
     if(!$this->flag) {

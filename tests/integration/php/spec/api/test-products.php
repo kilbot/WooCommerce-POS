@@ -9,7 +9,8 @@ class ProductsAPITest extends TestCase {
     $response = $this->client->get('products');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('products', $data);
+    $data = isset($data['products']) ? $data['products'] : $data;
+    $this->assertCount(10, $data);
   }
 
   /**
@@ -24,15 +25,14 @@ class ProductsAPITest extends TestCase {
     ]);
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('products', $data);
-    $this->assertCount(1, $data['products']);
+    $data = isset($data['products']) ? $data['products'] : $data;
+    $this->assertCount(1, $data);
 
     // simple product should have:
     // - featured_src
     // - barcode
-    $product = $data['products'][0];
-    $this->assertArrayHasKey('featured_src', $product);
-    $this->assertArrayHasKey('barcode', $product);
+    $this->assertArrayHasKey('featured_src', $data[0]);
+    $this->assertArrayHasKey('barcode', $data[0]);
   }
 
   /**
@@ -42,7 +42,8 @@ class ProductsAPITest extends TestCase {
     $response = $this->client->get('products/99');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('product', $data);
+    $data = isset($data['product']) ? $data['product'] : $data;
+    $this->assertEquals('99', $data['id']);
   }
 
   /**
@@ -63,8 +64,8 @@ class ProductsAPITest extends TestCase {
     $response = $this->client->get('products/99');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('product', $data);
-    $this->assertEquals( $random_qty, $data['product']['stock_quantity'] );
+    $data = isset($data['product']) ? $data['product'] : $data;
+    $this->assertEquals( $random_qty, $data['stock_quantity'] );
   }
 
   /**
@@ -74,8 +75,8 @@ class ProductsAPITest extends TestCase {
     $response = $this->client->get('products/41');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('product', $data);
-    $this->assertEquals( 'variation', $data['product']['type'] );
+    $data = isset($data['product']) ? $data['product'] : $data;
+    $this->assertEquals( 'variation', $data['type'] );
   }
 
   /**
@@ -95,10 +96,10 @@ class ProductsAPITest extends TestCase {
     // also need to check the parent output
     $response = $this->client->get('products/40');
     $data = $response->json();
-    $parent = $data['product'];
-    $this->assertArrayHasKey('variations', $parent);
+    $data = isset($data['product']) ? $data['product'] : $data;
+    $this->assertArrayHasKey('variations', $data);
     $product = '';
-    foreach( $parent['variations'] as $variation ){
+    foreach( $data['variations'] as $variation ){
       if( $variation['id'] == 41 ){
         $product = $variation;
         break;
@@ -143,6 +144,8 @@ class ProductsAPITest extends TestCase {
 
   /**
    * TODO: get_product in WC REST API does not trigger posts_where filter
+   *
+   *
    */
   public function test_online_only_products(){
 
@@ -210,10 +213,10 @@ class ProductsAPITest extends TestCase {
     // should return one product
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('products', $data);
-    $this->assertCount(1, $data['products']);
+    $data = isset($data['products']) ? $data['products'] : $data;
+    $this->assertCount(1, $data);
 
-    $product = $data['products'][0];
+    $product = $data[0];
     $this->assertEquals(40, $product['id']);
     $this->assertEquals($sku, $product['barcode']);
 
@@ -248,10 +251,10 @@ class ProductsAPITest extends TestCase {
     // should return one product
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('products', $data);
-    $this->assertCount(1, $data['products']);
+    $data = isset($data['products']) ? $data['products'] : $data;
+    $this->assertCount(1, $data);
 
-    $product = $data['products'][0];
+    $product = $data[0];
     $this->assertEquals(40, $product['id']);
     $this->assertEquals($sku, $product['barcode']);
 
@@ -285,10 +288,10 @@ class ProductsAPITest extends TestCase {
     // should return the parent product
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('products', $data);
-    $this->assertCount(1, $data['products']);
+    $data = isset($data['products']) ? $data['products'] : $data;
+    $this->assertCount(1, $data);
 
-    $product = $data['products'][0];
+    $product = $data[0];
     $this->assertEquals(40, $product['id']);
 
     // variations should be present

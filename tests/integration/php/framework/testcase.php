@@ -14,7 +14,8 @@ class TestCase extends PHPUnit_Framework_TestCase {
   public function setUp() {
     parent::setUp();
 
-    $rest_nonce = $this->login();
+    $this->login();
+    $rest_nonce = wp_create_nonce( 'wp_rest' );
 
     $this->client = new GuzzleHttp\Client([
       'base_url' => get_wcpos_api_url( '' ),
@@ -48,8 +49,6 @@ class TestCase extends PHPUnit_Framework_TestCase {
         'pwd' => 'password',
       ]
     ]);
-
-    return wp_create_nonce( 'wp_rest' ) ;
 
   }
 
@@ -88,6 +87,7 @@ class TestCase extends PHPUnit_Framework_TestCase {
   protected function get_product( $id ){
     $response = $this->client->get( 'products/' . $id );
     $data = $response->json();
+    $data = isset($data['product']) ? $data['product'] : $data;
     return $data;
   }
 
@@ -104,6 +104,7 @@ class TestCase extends PHPUnit_Framework_TestCase {
       )
     );
     $data = $response->json();
+    $data = isset($data['products']) ? $data['products'] : $data;
     $key = array_rand( $data );
     return $data[$key]['id'];
   }
