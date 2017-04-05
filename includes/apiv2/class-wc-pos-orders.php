@@ -80,6 +80,7 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
     // store order reference
     $this->current_order = $order;
+    add_filter( 'wc_tax_enabled', array( $this, 'wc_tax_enabled' ) );
 
     return $order;
   }
@@ -151,9 +152,34 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
    * @param $posted
    */
   public function rest_set_order_item( $item, $posted ) {
-    if( isset( $posted['taxable'] ) ){
-      $item->_wcpos_tax_status = $posted['taxable'] ? 'taxable' : 'none';
+    $tax_status = $posted['taxable'] ? 'taxable' : 'none';
+
+    // Set Shipping taxes
+    if( $tax_status == 'taxable' && get_class( $item ) == 'WC_Order_Item_Shipping' ) {
+      $total = array();
+      if($posted['tax']): foreach($posted['tax'] as $rate_id => $tax):
+        if(is_array($tax)) {
+          $total[$rate_id] = isset($tax['total']) ? $tax['total'] : 0;
+        }
+      endforeach; endif;
+      $item->set_taxes( array( 'total' => $total ) );
+
+    // Products and Fees, for use later
+    } else {
+      $item->_wcpos_tax_status = $tax_status;
     }
+  }
+
+
+  /**
+   * Nasty hack for Shipping taxes
+   */
+  public function wc_tax_enabled() {
+    if(!$this->flag) {
+      $this->flag = true;
+      $this->current_order->update_taxes();
+    }
+    return false;
   }
 
 
