@@ -22,9 +22,9 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
     'name',
     'slug',
     'permalink',
-    'date_created',
+    'date_created', 'created_at',
     'date_created_gmt',
-    'date_modified',
+    'date_modified', 'updated_at',
     'date_modified_gmt',
     'type',
     'status',
@@ -53,7 +53,7 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
 //    'button_text',
     'tax_status',
     'tax_class',
-    'managing_stock',
+    'manage_stock', 'managing_stock',
     'stock_quantity',
     'in_stock',
     'backorders',
@@ -259,6 +259,15 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
       $data['stock_quantity'] = $product->get_stock_quantity();
     }
 
+    // backwards compatibility
+    if( isset($data['date_modified']) ) {
+      $data['updated_at'] = $data['date_modified'];
+    }
+
+    if( isset($data['manage_stock']) ) {
+      $data['managing_stock'] = $data['manage_stock'];
+    }
+
     // filter by whitelist
     // - note, this uses the same method as WC REST API fields parameter
     // - this doesn't speed up queries as it should
@@ -383,10 +392,10 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
 
   /**
    * Returns array of all product ids
-   * @param $updated_at_min
+   * @param $date_modified
    * @return array
    */
-  public function get_ids($updated_at_min){
+  public function get_ids($date_modified){
     $args = array(
       'post_type'     => array('product'),
       'post_status'   => array('publish'),
@@ -394,10 +403,10 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
       'fields'        => 'ids'
     );
 
-    if($updated_at_min){
+    if($date_modified){
       $args['date_query'][] = array(
         'column'    => 'post_modified_gmt',
-        'after'     => $updated_at_min,
+        'after'     => $date_modified,
         'inclusive' => false
       );
     }

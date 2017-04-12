@@ -17,8 +17,10 @@ class WC_POS_Products {
    */
   public function __construct() {
     $this->init();
+
     add_action( 'woocommerce_product_set_stock', array( $this, 'product_set_stock') );
     add_action( 'woocommerce_variation_set_stock', array( $this, 'product_set_stock') );
+
   }
 
   /**
@@ -47,8 +49,15 @@ class WC_POS_Products {
   public function product_set_stock( $product ){
     $post_modified     = current_time( 'mysql' );
     $post_modified_gmt = current_time( 'mysql', 1 );
+
+    if( version_compare( WC()->version, '3', '<' ) ) {
+      $id = $product->id;
+    } else {
+      $id = $product->get_id();
+    }
+
     wp_update_post( array(
-      'ID'                => $product->id,
+      'ID'                => $id,
       'post_modified'     => $post_modified,
       'post_modified_gmt' => $post_modified_gmt
     ));

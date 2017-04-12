@@ -17,7 +17,7 @@ class WC_POS_API_Coupons extends WC_POS_API_Abstract {
    * @param $updated_at_min
    * @return array
    */
-  public function get_ids($updated_at_min){
+  public function get_ids($date_modified){
     $args = array(
       'post_type'     => array('shop_coupon'),
       'post_status'   => array('publish'),
@@ -25,10 +25,10 @@ class WC_POS_API_Coupons extends WC_POS_API_Abstract {
       'fields'        => 'ids'
     );
 
-    if($updated_at_min){
+    if($date_modified){
       $args['date_query'][] = array(
         'column'    => 'post_modified_gmt',
-        'after'     => $updated_at_min,
+        'after'     => $date_modified,
         'inclusive' => false
       );
     }

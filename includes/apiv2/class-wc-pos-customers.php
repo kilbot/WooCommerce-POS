@@ -99,17 +99,17 @@ class WC_POS_API_Customers extends WC_POS_API_Abstract {
 
   /**
    * Returns array of all user ids
-   * @param $updated_at_min
+   * @param $date_modified
    * @return array
    */
-  public function get_ids($updated_at_min){
+  public function get_ids($date_modified){
     $args = array(
       'fields' => 'ID'
     );
 
-    if($updated_at_min){
+    if($date_modified){
       $args['meta_key']      = '_user_modified_gmt';
-      $args['meta_value']    = $this->parse_datetime( $updated_at_min );
+      $args['meta_value']    = $this->parse_datetime( $date_modified );
       $args['meta_compare']  = '>';
     }
 

@@ -46,7 +46,6 @@ class OrdersAPITest extends TestCase {
    */
   public function test_get_valid_response() {
     $response = $this->client->get('orders');
-    $this->print_response_body($response);
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
     $data = isset($data['order']) ? $data['order'] : $data;

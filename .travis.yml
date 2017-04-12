@@ -9,13 +9,19 @@ services:
   - docker
 
 env:
-  global:
-    - WC_VERSION=https://github.com/woocommerce/woocommerce/releases/download/3.0.0-rc.2/woocommerce.zip
   matrix:
-    - PHP_VERSION=php54 WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php55 WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php56 WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php70 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php54 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php55 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php56 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php70 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php54 WC_VERSION=2.6.14 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php55 WC_VERSION=2.6.14 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php56 WC_VERSION=2.6.14 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php70 WC_VERSION=2.6.14 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php54 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php55 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php56 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php70 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
 
 before_install:
   - sudo apt-get update -qq
@@ -30,14 +36,18 @@ before_install:
 install:
   - npm install && node_modules/.bin/grunt build --force
   - npm run start:${PHP_VERSION}
+  - git clone https://github.com/kilbot/WooCommerce-POS-Test-Theme.git wp-content/themes/testtheme
+#  - git clone https://github.com/kilbot/WooCommerce-POS-Test-Plugin.git wp-content/plugins/woocommerce-pos-test
 
 before_script:
   - sleep 60
   - docker exec woocommerce-pos-app-${PHP_VERSION} wp core version --allow-root
   - docker exec woocommerce-pos-app-${PHP_VERSION} wp plugin list --allow-root --status=active
+  - docker exec woocommerce-pos-app-${PHP_VERSION} wp plugin list --allow-root --status=active
 
+  - docker exec woocommerce-pos-app-${PHP_VERSION} wp theme activate testtheme --allow-root
   ## turn off WP_DEBUG to prevent depreciation notices
-  - docker exec woocommerce-pos-app-${PHP_VERSION} sed -i "s/'WP_DEBUG', true/'WP_DEBUG', false/g" wp-config.php
+#  - docker exec woocommerce-pos-app-${PHP_VERSION} sed -i "s/'WP_DEBUG', true/'WP_DEBUG', false/g" wp-config.php
 
 script:
   - npm run unit-test:js
