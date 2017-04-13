@@ -22,14 +22,144 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     add_action( 'woocommerce_rest_set_order_item', array( $this, 'rest_set_order_item' ), 10, 2 );
     add_action( 'woocommerce_pre_payment_complete', array( $this, 'pre_payment_complete' ) );
 
-    // payment
-//    add_action( 'woocommerce_pos_process_payment', array( $this, 'process_payment' ), 10, 2 );
-//    add_action( 'woocommerce_payment_complete', array( $this, 'payment_complete' ), 10, 1 );
-
     // order emails
     add_filter( 'woocommerce_email', array( $this, 'woocommerce_email' ), 99 );
+
+    $this->register_additional_fields();
   }
 
+
+  /**
+   * Additional fields for POS
+   */
+  public function register_additional_fields() {
+
+    // add cashier field
+    register_rest_field( 'shop_order',
+      'cashier',
+      array(
+        'get_callback'    => array( $this , 'get_cashier' ),
+        'update_callback' => array( $this , 'update_cashier' ),
+        'schema'          => null,
+      )
+    );
+
+    // add payment_details field
+    register_rest_field( 'shop_order',
+      'payment_details',
+      array(
+        'get_callback'    => array( $this , 'get_payment_details' ),
+        'update_callback' => array( $this , 'update_payment_details' ),
+        'schema'          => null,
+      )
+    );
+
+  }
+
+
+  /**
+   * Retrieve cashier info for the API response
+   *
+   * @param $response
+   * @param $order
+   * @return mixed|void
+   */
+  public function get_cashier( $response, $order ) {
+    $id = $response['id'];
+
+    if ( !$cashier_id = get_post_meta( $id, '_pos_user', true ) ) {
+      return;
+    }
+
+    $first_name = get_post_meta( $id, '_pos_user_first_name', true );
+    $last_name = get_post_meta( $id, '_pos_user_last_name', true );
+    if ( !$first_name && !$last_name && $user_info = get_userdata( $cashier_id ) ) {
+      $first_name = $user_info->first_name;
+      $last_name = $user_info->last_name;
+    }
+
+    $cashier = array(
+      'id'         => $cashier_id,
+      'first_name' => $first_name,
+      'last_name'  => $last_name
+    );
+
+    return apply_filters( 'woocommerce_pos_order_response_cashier', $cashier, $response, $order );
+  }
+
+
+  /**
+   * Store cashier data
+   *
+   * @param $cashier From the POS request body
+   * @param $order
+   */
+  public function update_cashier( $cashier, $order ) {
+    $id = $order->get_id();
+    $current_user = wp_get_current_user();
+    update_post_meta( $id, '_pos', 1 );
+    update_post_meta( $id, '_pos_user', $current_user->ID );
+    update_post_meta( $id, '_pos_user_name', $current_user->user_firstname . ' ' . $current_user->user_lastname );
+  }
+
+
+  /**
+   * Retrieve payment info for the API response
+   *
+   * @param $response
+   * @param $order
+   * @return mixed|void
+   */
+  public function get_payment_details( $response, $order ) {
+    $id = $response['id'];
+
+    $payment['result']   = get_post_meta( $id, '_pos_payment_result', true );
+    $payment['message']  = get_post_meta( $id, '_pos_payment_message', true );
+    $payment['redirect'] = get_post_meta( $id, '_pos_payment_redirect', true );
+
+    if( isset( $payment['method_id'] ) && $payment['method_id'] == 'pos_cash' ){
+      $payment = WC_POS_Gateways_Cash::payment_details( $payment, $order );
+    }
+
+    return apply_filters( 'woocommerce_pos_order_response_payment_details', $payment, $response, $order );
+  }
+
+
+  /**
+   * Process payment and store result
+   *
+   * @param $payment_details From the POS request body
+   * @param $order
+   */
+  public function update_payment_details( $payment_details, $order ) {
+
+    // payment method
+    $payment_method = $order->get_payment_method();
+
+    // some gateways check if a user is signed in, so let's switch to customer
+    $logged_in_user = get_current_user_id();
+    $customer_id = $order->get_customer_id();
+    wp_set_current_user( $customer_id );
+
+    // load the gateways & process payment
+    add_filter('option_woocommerce_'. $payment_method .'_settings', array($this, 'force_enable_gateway'));
+    $settings = WC_POS_Admin_Settings_Checkout::get_instance();
+    $gateways = $settings->load_enabled_gateways();
+    $response = $gateways[ $payment_method ]->process_payment( $order->get_id() );
+
+    if(isset($response['result']) && $response['result'] == 'success'){
+      $this->payment_success($payment_method, $order->get_id(), $response);
+    } else {
+      $this->payment_failure($payment_method, $order->get_id(), $response);
+    }
+
+    // switch back to logged in user
+    wp_set_current_user( $logged_in_user );
+
+    // clear any payment gateway messages
+    wc_clear_notices();
+
+  }
 
   /**
    * @param $order
@@ -51,7 +181,8 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
       $order->set_payment_method_title( isset($payment_details['method_title']) ? $payment_details['method_title'] : '' );
     }
 
-    $request['set_paid'] = true;
+    // additional fields are required as part of request
+    $request['cashier'] = '';
 
     // store order reference
     add_filter( 'wc_tax_enabled', '__return_false' );
@@ -93,17 +224,6 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
       $data['updated_at'] = $data['date_modified'];
     }
 
-    // add cashier & payment_details
-    $data['cashier'] = $this->add_cashier_details( $order );
-    $data['payment_details'] = $this->add_payment_details( $order );
-
-    // add postmeta now that we have the id
-    $id = $order->get_id();
-    $current_user = wp_get_current_user();
-    update_post_meta( $id, '_pos', 1 );
-    update_post_meta( $id, '_pos_user', $current_user->ID );
-    update_post_meta( $id, '_pos_user_name', $current_user->user_firstname . ' ' . $current_user->user_lastname );
-
     $response->set_data($data);
     return $response;
   }
@@ -144,29 +264,6 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     $order = wc_get_order( $order_id );
     $order->update_taxes();
     $order->calculate_totals();
-
-//    // some gateways check if a user is signed in, so let's switch to customer
-//    $logged_in_user = get_current_user_id();
-//    $customer_id = $order->get_customer_id();
-//    wp_set_current_user( $customer_id );
-//
-//    // load the gateways & process payment
-//    add_filter('option_woocommerce_'. $payment_method .'_settings', array($this, 'force_enable_gateway'));
-//    $settings = WC_POS_Admin_Settings_Checkout::get_instance();
-//    $gateways = $settings->load_enabled_gateways();
-//    $response = $gateways[ $payment_method ]->process_payment( $order->get_id() );
-//
-//    if(isset($response['result']) && $response['result'] == 'success'){
-//      $this->payment_success($payment_method, $order->get_id(), $response);
-//    } else {
-//      $this->payment_failure($payment_method, $order->get_id(), $response);
-//    }
-//
-//    // switch back to logged in user
-//    wp_set_current_user( $logged_in_user );
-//
-//    // clear any payment gateway messages
-//    wc_clear_notices();
   }
 
 
@@ -197,9 +294,9 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     ob_end_clean();
 
     // redirect
-    if( isset($response['redirect']) ){
-      $response['messages'] = $this->payment_redirect($gateway_id, $order_id, $response);
-    }
+//    if( isset($response['redirect']) ){
+//      $response['messages'] = $this->payment_redirect($gateway_id, $order_id, $response);
+//    }
 
     update_post_meta( $order_id, '_pos_payment_result', 'success' );
     update_post_meta( $order_id, '_pos_payment_message', $response['messages'] );
@@ -265,50 +362,6 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
 
   /**
-   * @param $order
-   * @param array $cashier
-   * @return array
-   */
-  private function add_cashier_details( $order ) {
-    $id = $order->get_id();
-
-    if ( !$cashier_id = get_post_meta( $id, '_pos_user', true ) ) {
-      return;
-    }
-    $first_name = get_post_meta( $id, '_pos_user_first_name', true );
-    $last_name = get_post_meta( $id, '_pos_user_last_name', true );
-    if ( !$first_name && !$last_name && $user_info = get_userdata( $cashier_id ) ) {
-      $first_name = $user_info->first_name;
-      $last_name = $user_info->last_name;
-    }
-    $cashier = array(
-      'id'         => $cashier_id,
-      'first_name' => $first_name,
-      'last_name'  => $last_name
-    );
-    return apply_filters( 'woocommerce_pos_order_response_cashier', $cashier, $order );
-  }
-
-
-  /**
-   * @param $order
-   * @param array $payment
-   * @return array
-   */
-  private function add_payment_details( $order, array $payment = array() ){
-    $id = $order->get_id();
-
-    $payment['result']   = get_post_meta( $id, '_pos_payment_result', true );
-    $payment['message']  = get_post_meta( $id, '_pos_payment_message', true );
-    $payment['redirect'] = get_post_meta( $id, '_pos_payment_redirect', true );
-    if( isset( $payment['method_id'] ) && $payment['method_id'] == 'pos_cash' ){
-      $payment = WC_POS_Gateways_Cash::payment_details( $payment, $order );
-    }
-    return apply_filters( 'woocommerce_pos_order_response_payment_details', $payment, $order );
-  }
-
-
-  /**
    * Adds support for custom address fields
    * @param $address
    * @param $order
@@ -357,19 +410,6 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
       $data[$key] = $value;
     endif; endforeach;
     return $data;
-  }
-
-
-  /**
-   * @param $line_items
-   * @return mixed
-   */
-  private function filter_qty($line_items){
-    foreach( $line_items as &$item ){
-      $qty = wc_get_order_item_meta( $item['id'], '_qty' );
-      $item['quantity'] = wc_stock_amount( $qty );
-    }
-    return $line_items;
   }
 
 

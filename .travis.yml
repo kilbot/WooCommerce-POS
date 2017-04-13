@@ -36,8 +36,6 @@ before_install:
 install:
   - npm install && node_modules/.bin/grunt build --force
   - npm run start:${PHP_VERSION}
-  - git clone https://github.com/kilbot/WooCommerce-POS-Test-Theme.git wp-content/themes/testtheme
-#  - git clone https://github.com/kilbot/WooCommerce-POS-Test-Plugin.git wp-content/plugins/woocommerce-pos-test
 
 before_script:
   - sleep 60
@@ -45,7 +43,9 @@ before_script:
   - docker exec woocommerce-pos-app-${PHP_VERSION} wp plugin list --allow-root --status=active
   - docker exec woocommerce-pos-app-${PHP_VERSION} wp plugin list --allow-root --status=active
 
-  - docker exec woocommerce-pos-app-${PHP_VERSION} wp theme activate testtheme --allow-root
+  ## download test theme and activate
+  - docker exec woocommerce-pos-app-${PHP_VERSION} wp theme install https://github.com/kilbot/WooCommerce-POS-Test-Theme/archive/master.zip --allow-root --activate
+
   ## turn off WP_DEBUG to prevent depreciation notices
 #  - docker exec woocommerce-pos-app-${PHP_VERSION} sed -i "s/'WP_DEBUG', true/'WP_DEBUG', false/g" wp-config.php
 

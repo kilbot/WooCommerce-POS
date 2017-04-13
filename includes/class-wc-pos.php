@@ -22,7 +22,7 @@ class WC_POS {
     }
 
     add_action( 'init', array( $this, 'init' ) );
-    add_action( 'rest_api_init', array( $this, 'load_woocommerce_api_patches') );
+    add_action( 'rest_api_init', array( $this, 'load_woocommerce_api_patches'), 99 );
 
     do_action( 'woocommerce_pos_loaded' );
 
