@@ -98,10 +98,13 @@ class WC_POS_Gateways_Cash extends WC_Payment_Gateway {
   }
 
   static public function payment_details( $payment_details, $order ) {
+    $id = is_integer($order) ? $order : $order->id;
+
     $payment_details['method_pos_cash'] = array(
-      'tendered'  => get_post_meta( $order->id, '_pos_cash_amount_tendered', true ),
-      'change'    => get_post_meta( $order->id, '_pos_cash_change', true )
+      'tendered'  => get_post_meta( $id, '_pos_cash_amount_tendered', true ),
+      'change'    => get_post_meta( $id, '_pos_cash_change', true )
     );
+
     return $payment_details;
   }
 

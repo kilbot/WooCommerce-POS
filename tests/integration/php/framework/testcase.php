@@ -95,6 +95,14 @@ class TestCase extends PHPUnit_Framework_TestCase {
    * @return mixed
    */
   protected function get_random_product_id() {
+    $random_product = $this->get_random_product();
+    return $random_product['id'];
+  }
+
+  /**
+   * @return mixed
+   */
+  protected function get_random_product() {
     $response = $this->client->get( 'products',
       array(
         'query' => array(
@@ -106,15 +114,7 @@ class TestCase extends PHPUnit_Framework_TestCase {
     $data = $response->json();
     $data = isset($data['products']) ? $data['products'] : $data;
     $key = array_rand( $data );
-    return $data[$key]['id'];
-  }
-
-  /**
-   * @return mixed
-   */
-  protected function get_random_product() {
-    $product_id = $this->get_random_product_id();
-    return $this->get_product($product_id);
+    return $data[$key];
   }
 
   /**

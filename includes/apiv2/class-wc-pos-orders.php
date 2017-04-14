@@ -60,7 +60,7 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
    * @param $order
    * @return mixed|void
    */
-  public function get_cashier( $response, $order ) {
+  public function get_cashier( $response ) {
     $id = $response['id'];
 
     if ( !$cashier_id = get_post_meta( $id, '_pos_user', true ) ) {
@@ -80,7 +80,7 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
       'last_name'  => $last_name
     );
 
-    return apply_filters( 'woocommerce_pos_order_response_cashier', $cashier, $response, $order );
+    return apply_filters( 'woocommerce_pos_order_response_cashier', $cashier, $response );
   }
 
 
@@ -106,18 +106,26 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
    * @param $order
    * @return mixed|void
    */
-  public function get_payment_details( $response, $order ) {
+  public function get_payment_details( $response ) {
     $id = $response['id'];
+    $payment = array();
 
     $payment['result']   = get_post_meta( $id, '_pos_payment_result', true );
     $payment['message']  = get_post_meta( $id, '_pos_payment_message', true );
     $payment['redirect'] = get_post_meta( $id, '_pos_payment_redirect', true );
 
-    if( isset( $payment['method_id'] ) && $payment['method_id'] == 'pos_cash' ){
-      $payment = WC_POS_Gateways_Cash::payment_details( $payment, $order );
+    $payment['method_id'] = isset( $response['payment_method'] ) ? $response['payment_method']  : '';
+    $payment['method_title'] = isset( $response['payment_method_title'] ) ? $response['payment_method_title'] : '';
+
+    if($response['date_completed'] && $response['date_paid']) {
+      $payment['paid'] = true;
     }
 
-    return apply_filters( 'woocommerce_pos_order_response_payment_details', $payment, $response, $order );
+    if( isset( $payment['method_id'] ) && $payment['method_id'] == 'pos_cash' ){
+      $payment = WC_POS_Gateways_Cash::payment_details( $payment, $id );
+    }
+
+    return apply_filters( 'woocommerce_pos_order_response_payment_details', $payment, $response );
   }
 
 
@@ -144,11 +152,18 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     $response = $gateways[ $payment_method ]->process_payment( $order->get_id() );
 
     if(isset($response['result']) && $response['result'] == 'success'){
-      $this->payment_success($payment_method, $order->get_id(), $response);
-      $message = __('POS Transaction completed.', 'woocommerce-pos');
-      $order->update_status( wc_pos_get_option( 'checkout', 'order_status' ), $message );
+
+      $this->payment_success($payment_method, $order, $response);
+      
+      if( ! isset($response['redirect']) || ! $response['redirect'] ) {
+        $order->set_date_paid( current_time( 'timestamp' ) );
+        $order->set_date_completed( current_time( 'timestamp' ) );
+        $message = __('POS Transaction completed.', 'woocommerce-pos');
+        $order->update_status( wc_pos_get_option( 'checkout', 'order_status' ), $message );
+      }
+
     } else {
-      $this->payment_failure($payment_method, $order->get_id(), $response);
+      $this->payment_failure($payment_method, $order, $response);
     }
 
     // switch back to logged in user
@@ -271,33 +286,33 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
   /**
    * @param $gateway_id
-   * @param $order_id
+   * @param $order
    * @param $response
    */
-  private function payment_success($gateway_id, $order_id, $response){
+  private function payment_success($gateway_id, $order, $response){
 
     // capture any instructions
     ob_start();
-    do_action( 'woocommerce_thankyou_' . $gateway_id, $order_id );
+    do_action( 'woocommerce_thankyou_' . $gateway_id, $order->get_id() );
     $response['messages'] = ob_get_contents();
     ob_end_clean();
 
     // redirect
-//    if( isset($response['redirect']) ){
-//      $response['messages'] = $this->payment_redirect($gateway_id, $order_id, $response);
-//    }
+    if( isset($response['redirect']) ){
+      $response['messages'] = $this->payment_redirect($gateway_id, $order, $response);
+    }
 
-    update_post_meta( $order_id, '_pos_payment_result', 'success' );
-    update_post_meta( $order_id, '_pos_payment_message', $response['messages'] );
+    update_post_meta( $order->get_id(), '_pos_payment_result', 'success' );
+    update_post_meta( $order->get_id(), '_pos_payment_message', $response['messages'] );
   }
 
 
   /**
    * @param $gateway_id
-   * @param $order_id
+   * @param $order
    * @param $response
    */
-  private function payment_failure($gateway_id, $order_id, $response){
+  private function payment_failure($gateway_id, $order, $response){
     $message = isset($response['messages']) ? $response['messages'] : wc_get_notices( 'error' );
 
     // if messages empty give generic response
@@ -305,21 +320,21 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
       $message = __( 'There was an error processing the payment', 'woocommerce-pos');
     }
 
-    update_post_meta( $order_id, '_pos_payment_result', 'failure' );
-    update_post_meta( $order_id, '_pos_payment_message', $message );
+    update_post_meta( $order->get_id(), '_pos_payment_result', 'failure' );
+    update_post_meta( $order->get_id(), '_pos_payment_message', $message );
   }
 
   /**
    * @param $gateway_id
-   * @param $order_id
+   * @param $order
    * @param $response
    * @return string
    */
-  private function payment_redirect($gateway_id, $order_id, $response){
+  private function payment_redirect($gateway_id, $order, $response){
     $message = $response['messages'];
 
     // compare url fragments
-    $success_url = wc_get_endpoint_url( 'order-received', $order_id, get_permalink( wc_get_page_id( 'checkout' ) ) );
+    $success_url = wc_get_endpoint_url( 'order-received', $order->get_id(), get_permalink( wc_get_page_id( 'checkout' ) ) );
     $success = wp_parse_args( parse_url( $success_url ), array( 'host' => '', 'path' => '' ));
     $redirect = wp_parse_args( parse_url( $response['redirect'] ), array( 'host' => '', 'path' => '' ));
 
@@ -327,27 +342,12 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     $reload = !$offsite && $success['path'] !== $redirect['path'] && $response['messages'] == '';
 
     if($offsite || $reload){
-      update_post_meta( $order_id, '_pos_payment_redirect', $response['redirect'] );
+      update_post_meta( $order->get_id(), '_pos_payment_redirect', $response['redirect'] );
       $message = __('You are now being redirected offsite to complete the payment. ', 'woocommerce-pos');
       $message .= sprintf( __('<a href="%s">Click here</a> if you are not redirected automatically. ', 'woocommerce-pos'), $response['redirect'] );
     }
 
     return $message;
-  }
-
-
-  /**
-   * @param $order_id
-   */
-  public function payment_complete( $order_id ) {
-
-    // update order status
-    $order = new WC_Order( $order_id );
-    if( $order->status == 'processing' ) {
-      $message = __('POS Transaction completed.', 'woocommerce-pos');
-      $order->update_status( wc_pos_get_option( 'checkout', 'order_status' ), $message );
-    }
-
   }
 
 
