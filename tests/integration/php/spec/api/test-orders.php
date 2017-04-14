@@ -197,6 +197,8 @@ class OrdersAPITest extends TestCase {
 
   /**
    * Test changing regular_price and price
+   *
+   *
    */
   public function test_line_item_discount(){
     // two random floats
@@ -219,6 +221,7 @@ class OrdersAPITest extends TestCase {
         )
       )
     ));
+
     $this->assertEquals(201, $response->getStatusCode());
     $data = $response->json();
     $data = isset($data['order']) ? $data['order'] : $data;
@@ -520,6 +523,7 @@ class OrdersAPITest extends TestCase {
   /**
    * https://github.com/kilbot/WooCommerce-POS/issues/85
    *
+   *
    */
   public function test_order_with_product_and_negative_fee(){
     // enable taxes
@@ -558,6 +562,7 @@ class OrdersAPITest extends TestCase {
         )
       )
     ));
+    
     $this->assertEquals(201, $response->getStatusCode());
     $data = $response->json();
     $data = isset($data['order']) ? $data['order'] : $data;

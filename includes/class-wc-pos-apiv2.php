@@ -19,8 +19,6 @@ class WC_POS_APIv2 {
     if( ! is_pos() )
       return;
 
-//    add_filter( 'determine_current_user', array( $this, 'wc_api_authentication' ), 20, 0 );
-
     add_filter( 'rest_dispatch_request', array( $this, 'rest_dispatch_request' ), 10, 4 );
     add_filter( 'rest_request_before_callbacks', array( $this, 'rest_request_before_callbacks' ), 10, 3 );
   }

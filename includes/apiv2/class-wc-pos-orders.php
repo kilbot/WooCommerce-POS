@@ -16,16 +16,12 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
    * Constructor
    */
   public function __construct() {
-
     add_filter( 'woocommerce_rest_pre_insert_shop_order_object', array( $this, 'pre_insert_shop_order_object' ), 10, 3 );
     add_filter( 'woocommerce_rest_prepare_shop_order_object', array( $this, 'prepare_shop_order_object' ), 10, 3 );
     add_action( 'woocommerce_rest_set_order_item', array( $this, 'rest_set_order_item' ), 10, 2 );
-    add_action( 'woocommerce_pre_payment_complete', array( $this, 'pre_payment_complete' ) );
-
-    // order emails
-    add_filter( 'woocommerce_email', array( $this, 'woocommerce_email' ), 99 );
 
     $this->register_additional_fields();
+    $this->unregister_emails();
   }
 
 
@@ -149,6 +145,8 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
     if(isset($response['result']) && $response['result'] == 'success'){
       $this->payment_success($payment_method, $order->get_id(), $response);
+      $message = __('POS Transaction completed.', 'woocommerce-pos');
+      $order->update_status( wc_pos_get_option( 'checkout', 'order_status' ), $message );
     } else {
       $this->payment_failure($payment_method, $order->get_id(), $response);
     }
@@ -184,8 +182,10 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     // additional fields are required as part of request
     $request['cashier'] = '';
 
-    // store order reference
+    // calculate taxes (trust the POS)
     add_filter( 'wc_tax_enabled', '__return_false' );
+    $order->update_taxes();
+    $order->calculate_totals();
 
     return $order;
   }
@@ -257,17 +257,6 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
 
   /**
-   * Process payments
-   * @param integer $order_id
-   */
-  public function pre_payment_complete( $order_id ) {
-    $order = wc_get_order( $order_id );
-    $order->update_taxes();
-    $order->calculate_totals();
-  }
-
-
-  /**
    * Some gateways will check if enabled
    * @param $data
    * @return mixed
@@ -301,6 +290,7 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     update_post_meta( $order_id, '_pos_payment_result', 'success' );
     update_post_meta( $order_id, '_pos_payment_message', $response['messages'] );
   }
+
 
   /**
    * @param $gateway_id
@@ -441,10 +431,14 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
 
   /**
-   * WC email notifications
-   * @param WC_Emails $wc_emails
+   * Allow users to unregister WC emails
    */
-  public function woocommerce_email(WC_Emails $wc_emails) {
+  public function unregister_emails(  ) {
+    $wc_emails = WC()->mailer();
+
+    if( get_class($wc_emails) !== 'WC_Emails' ) {
+      return;
+    }
 
     if( ! wc_pos_get_option( 'checkout', 'customer_emails' ) ){
       $this->remove_customer_emails($wc_emails);
@@ -455,10 +449,15 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     }
   }
 
+
   /**
+   * Unhook customer emails
+   *
    * @param WC_Emails $wc_emails
+   * @internal param $emails
    */
-  private function remove_customer_emails(WC_Emails $wc_emails){
+  public function remove_customer_emails( WC_Emails $wc_emails ){
+
     remove_action(
       'woocommerce_order_status_pending_to_processing_notification',
       array(
@@ -480,15 +479,20 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
         'trigger'
       )
     );
+
   }
 
   /**
+   * Unhook admin emails
+   *
    * @param WC_Emails $wc_emails
+   * @return array
    */
-  private function remove_admin_emails(WC_Emails $wc_emails){
+  private function remove_admin_emails( WC_Emails $wc_emails ){
     // send 'woocommerce_low_stock_notification'
     // send 'woocommerce_no_stock_notification'
     // send 'woocommerce_product_on_backorder_notification'
+
     remove_action(
       'woocommerce_order_status_pending_to_processing_notification',
       array(

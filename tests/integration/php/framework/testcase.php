@@ -124,4 +124,12 @@ class TestCase extends PHPUnit_Framework_TestCase {
     echo $response->getBody();
   }
 
+  /**
+   * @param $response
+   * @param int $bytes
+   */
+  protected function print_stream( $response, $bytes = 1024 ) {
+    echo $response->getBody()->read($bytes);
+  }
+
 }
