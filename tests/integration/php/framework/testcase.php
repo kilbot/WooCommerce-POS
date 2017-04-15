@@ -106,8 +106,7 @@ class TestCase extends PHPUnit_Framework_TestCase {
     $response = $this->client->get( 'products',
       array(
         'query' => array(
-          'fields' => 'id',
-          'filter[limit]'=> '100'
+          'filter[limit]'=> '-1'
         )
       )
     );

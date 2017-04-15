@@ -57,7 +57,6 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
    * Retrieve cashier info for the API response
    *
    * @param $response
-   * @param $order
    * @return mixed|void
    */
   public function get_cashier( $response ) {
@@ -103,7 +102,6 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
    * Retrieve payment info for the API response
    *
    * @param $response
-   * @param $order
    * @return mixed|void
    */
   public function get_payment_details( $response ) {
@@ -154,7 +152,7 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     if(isset($response['result']) && $response['result'] == 'success'){
 
       $this->payment_success($payment_method, $order, $response);
-      
+
       if( ! isset($response['redirect']) || ! $response['redirect'] ) {
         $order->set_date_paid( current_time( 'timestamp' ) );
         $order->set_date_completed( current_time( 'timestamp' ) );
@@ -192,6 +190,14 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
       $payment_details = $request['payment_details'];
       $order->set_payment_method( isset($payment_details['method_id']) ? $payment_details['method_id'] : '' );
       $order->set_payment_method_title( isset($payment_details['method_title']) ? $payment_details['method_title'] : '' );
+    }
+
+    if( isset($request['customer']) && isset($request['customer']['billing_address']) ) {
+      $order->set_address( $request['customer']['billing_address'], 'billing' );
+    }
+
+    if( isset($request['customer']) && isset($request['customer']['shipping_address']) ) {
+      $order->set_address( $request['customer']['shipping_address'], 'shipping' );
     }
 
     // additional fields are required as part of request
@@ -237,6 +243,15 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
     if($data['date_modified']) {
       $data['updated_at'] = $data['date_modified'];
+    }
+
+    // customer
+    if( $data['billing'] ) {
+      $data['billing_address'] = $data['billing'];
+    }
+
+    if( $data['shipping'] ) {
+      $data['shipping_address'] = $data['shipping'];
     }
 
     $response->set_data($data);

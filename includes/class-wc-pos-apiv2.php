@@ -58,6 +58,8 @@ class WC_POS_APIv2 {
       case 'WC_REST_Orders_Controller':
         new WC_POS_APIv2_Orders();
         break;
+      case 'WC_REST_Customers_Controller':
+        new WC_POS_APIv2_Customers();
     }
 
     return $response;

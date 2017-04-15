@@ -10,7 +10,7 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_API_Customers extends WC_POS_API_Abstract {
+class WC_POS_APIv2_Customers extends WC_POS_API_Abstract {
 
   /**
    * Constructor
@@ -18,7 +18,7 @@ class WC_POS_API_Customers extends WC_POS_API_Abstract {
   public function __construct() {
     add_action( 'pre_get_users', array( $this, 'pre_get_users' ) );
     add_action( 'pre_user_query', array( $this, 'pre_user_query' ) );
-    add_filter( 'woocommerce_api_customer_response', array( $this, 'customer_response' ), 10, 4 );
+    add_filter( 'woocommerce_rest_prepare_customer', array( $this, 'customer_response' ), 10, 3 );
   }
 
   /**
@@ -119,18 +119,31 @@ class WC_POS_API_Customers extends WC_POS_API_Abstract {
 
 
   /**
-   * - add `updated_at` to customer data
    *
-   * @param $customer_data
-   * @param $customer
-   * @param $fields
-   * @param $server
-   * @return mixed
+   *
+   * @param WP_REST_Response $response   The response object.
+   * @param WP_User          $user_data  User object used to create response.
+   * @param WP_REST_Request  $request    Request object.
+   * @return array
    */
-  public function customer_response($customer_data, $customer, $fields, $server){
-    $timestamp = get_user_meta($customer->ID, '_user_modified_gmt', true);
-    $customer_data['updated_at'] = $server->format_datetime( $timestamp );
-    return $customer_data;
+  public function customer_response( $response, $user_data, $request  ){
+    $data = $response->get_data();
+
+    // backwards compat
+    if( isset($data['date_modified']) ) {
+      $data['updated_at'] = $data['date_modified'];
+    }
+
+    if( isset($data['billing']) ) {
+      $data['billing_address'] = $data['billing'];
+    }
+
+    if( isset($data['shipping']) ) {
+      $data['shipping_address'] = $data['shipping'];
+    }
+
+    $response->set_data($data);
+    return $response;
   }
 
 
