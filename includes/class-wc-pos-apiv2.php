@@ -60,6 +60,10 @@ class WC_POS_APIv2 {
         break;
       case 'WC_REST_Customers_Controller':
         new WC_POS_APIv2_Customers();
+        break;
+      case 'WC_REST_Coupons_Controller':
+        new WC_POS_APIv2_Coupons();
+        break;
     }
 
     return $response;

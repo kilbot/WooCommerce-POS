@@ -79,6 +79,9 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.4.6 - 2017/04/15 =
+* WC 3 Compatibility fixes
+
 = 0.4.6 - 2016/06/15 =
 * WC 2.6 Compatibility Fix: Prevent POS gateways from appearing on online checkout
 * Fix: checkout settings not showing for some users due to Javascript conflicts
