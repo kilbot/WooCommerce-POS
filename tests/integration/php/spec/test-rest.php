@@ -9,11 +9,14 @@ class RESTAPITest extends TestCase {
     $this->assertEquals(200, $response->getStatusCode());
   }
 
+  /**
+   *
+   */
   public function test_get_valid_api_response() {
     $response = $this->client->get();
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('store', $data);
+    $this->assertArrayHasKey('namespace', $data);
   }
 
 }

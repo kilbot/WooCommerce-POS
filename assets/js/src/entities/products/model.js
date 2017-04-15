@@ -7,7 +7,7 @@ module.exports = DualModel.extend({
   name: 'product',
 
   // this is an array of fields used by FilterCollection.matchmaker()
-  fields: ['title'],
+  fields: ['name'],
 
   // data types
   schema: {
@@ -169,7 +169,10 @@ module.exports = DualModel.extend({
   getVariations: function(){
     if( this.get('type') !== 'variable' ){ return false; }
     if( ! this._variations ){
-      var variations = new Variations(this.get('variations'), { parent: this });
+      var variations = new Variations(this.get('variations'), {
+        parent: this,
+        parentAttrs: this.attributes
+      });
       this._variations = new FilteredCollection(variations);
     }
     return this._variations;

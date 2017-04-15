@@ -45,6 +45,15 @@ bb.sync = function(method, entity, options) {
   // server
   options.beforeSend = function(xhr){
     xhr.setRequestHeader('X-WC-POS', 1);
+    var rest_nonce = Radio.request('entities', 'get', {
+      type: 'option',
+      name: 'rest_nonce'
+    });
+    xhr.setRequestHeader('X-WP-Nonce', rest_nonce);
   };
+  // hack to remove status
+  if(method === 'create' || method === 'update'){
+    entity.unset('status', { silent: true });
+  }
   return bb.ajaxSync.apply(this, [method, entity, options]);
 };

@@ -50,7 +50,7 @@ module.exports = FormView.extend({
   },
 
   modelEvents: {
-    'change:title'        : 'save',
+    'change:name'        : 'save',
     'change:method_title' : 'save'
   },
 
@@ -63,7 +63,7 @@ module.exports = FormView.extend({
       onSet: Utils.unformat
     },
     '*[data-name="title"]' : {
-      observe: 'title',
+      observe: 'name',
       events: ['blur']
     },
     'dl.meta': {
@@ -105,7 +105,6 @@ module.exports = FormView.extend({
   },
 
   save: function(){
-    console.log(arguments);
     this.model.save();
   },
 

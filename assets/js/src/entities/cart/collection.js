@@ -17,7 +17,7 @@ module.exports = IndexedDBCollection.extend({
    */
   productAttributes: [
     'order',
-    'title',
+    'name',
     'local_id',
     'product_id',
     'type',

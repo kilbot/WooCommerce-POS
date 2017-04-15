@@ -573,6 +573,9 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     // add cart discount tax
     $order_data['cart_discount_tax'] = get_post_meta($order->id, '_cart_discount_tax', true);
 
+    // Backwards compatibility for WC legacy API
+    $order_data['discount_total'] = $order_data['total_discount'];
+
     return $order_data;
   }
 

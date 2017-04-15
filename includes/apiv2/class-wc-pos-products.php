@@ -10,49 +10,62 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_API_Products extends WC_POS_API_Abstract {
+class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
 
   /**
    * Product fields used by the POS
    * @var array
    */
   private $whitelist = array(
-    'title',
     'id',
-    'created_at',
-    'updated_at',
+    'title', // backward compat
+    'name',
+    'slug',
+    'permalink',
+    'date_created', 'created_at',
+    'date_created_gmt',
+    'date_modified', 'updated_at',
+    'date_modified_gmt',
     'type',
     'status',
-    'downloadable',
-    'virtual',
-//    'permalink',
+    'featured',
+//    'catalog_visibility',
+//    'description',
+//    'short_description',
     'sku',
     'price',
     'regular_price',
     'sale_price',
-    'price_html',
-    'taxable',
+    'date_on_sale_from',
+    'date_on_sale_from_gmt',
+    'date_on_sale_to',
+    'date_on_sale_to_gmt',
+//    'price_html',
+    'on_sale',
+    'purchaseable',
+    'total_sales',
+    'virtual',
+    'downloadable',
+//    'downloads',
+//    'download_limit',
+//    'download_expiry',
+//    'external_url',
+//    'button_text',
     'tax_status',
     'tax_class',
-    'managing_stock',
+    'manage_stock', 'managing_stock',
     'stock_quantity',
     'in_stock',
+    'backorders',
     'backorders_allowed',
     'backordered',
     'sold_individually',
-    'purchaseable',
-    'featured',
-    'visible',
-//    'catalog_visibility',
-    'on_sale',
 //    'weight',
 //    'dimensions',
     'shipping_required',
     'shipping_taxable',
     'shipping_class',
     'shipping_class_id',
-//    'description',
-//    'short_description',
 //    'reviews_allowed',
 //    'average_rating',
 //    'rating_count',
@@ -60,19 +73,16 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
 //    'upsell_ids',
 //    'cross_sell_ids',
     'parent_id',
-    'categories',
-//    'tags',
-//    'images',
-    'featured_src',
-    'attributes',
-//    'downloads',
-//    'download_limit',
-//    'download_expiry',
-//    'download_type',
     'purchase_note',
-    'total_sales',
+    'categories',
+    'tags',
+//    'images',
+    'attributes',
+    'default_attributes',
     'variations',
-//    'parent',
+    'grouped_products',
+    'menu_order',
+    'meta_data',
 
     /**
      * Fields add by POS
@@ -87,7 +97,8 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    *
    */
   public function __construct() {
-    add_filter( 'woocommerce_api_product_response', array( $this, 'product_response' ), 10, 4 );
+    add_filter( 'woocommerce_rest_prepare_product_object', array( $this, 'product_response' ), 10, 3 );
+    add_filter( 'woocommerce_rest_prepare_product_variation_object', array( $this, 'product_response' ), 10, 3 );
     add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
     add_filter( 'posts_where', array( $this, 'posts_where' ), 10 , 2 );
   }
@@ -98,28 +109,44 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    * - add barcode field
    * - unset unnecessary data
    *
-   * @param  array $data
+   * @param $response
    * @param $product
    *
    * @return array modified data array $product_data
    */
-  public function product_response( $data, $product, $fields, $server ) {
+  public function product_response( $response, $product, $request ) {
+    $data = $response->get_data();
     $type = isset( $data['type'] ) ? $data['type'] : '';
 
-    // variable products
     if( $type == 'variable' ) :
       // nested variations
       foreach( $data['variations'] as &$variation ) :
-        $_product = wc_get_product( $variation['id'] );
-        $variation = $this->filter_response_data( $variation, $_product );
-        $variation['attributes'] = $this->patch_variation_attributes( $_product );
+        $response = WC()->api->WC_REST_Product_Variations_Controller->get_item(
+          array(
+            'id' => $variation,
+            'product_id' => $variation
+          )
+        );
+        $variation = $response->get_data();
       endforeach;
     endif;
 
-    // variation
-    if( $type == 'variation' ) :
-      $data['attributes'] = $this->patch_variation_attributes( $product );
-    endif;
+
+//
+//    // variable products
+//    if( $type == 'variable' ) :
+//      // nested variations
+//      foreach( $data['variations'] as &$variation ) :
+//        $_product = wc_get_product( $variation['id'] );
+//        $variation = $this->filter_response_data( $variation, $_product );
+//        $variation['attributes'] = $this->patch_variation_attributes( $_product );
+//      endforeach;
+//    endif;
+//
+//    // variation
+//    if( $type == 'variation' ) :
+//      $data['attributes'] = $this->patch_variation_attributes( $product );
+//    endif;
 
     return $this->filter_response_data( $data, $product );
   }
@@ -232,10 +259,13 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
       $data['stock_quantity'] = $product->get_stock_quantity();
     }
 
-    // Backwards compatibility legacy api
-    if( isset($data['title']) ){
-      $data['name'] = $data['title'];
-      unset($data['title']);
+    // backwards compatibility
+    if( isset($data['date_modified']) ) {
+      $data['updated_at'] = $data['date_modified'];
+    }
+
+    if( isset($data['manage_stock']) ) {
+      $data['managing_stock'] = $data['manage_stock'];
     }
 
     // filter by whitelist
@@ -362,10 +392,10 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
 
   /**
    * Returns array of all product ids
-   * @param $updated_at_min
+   * @param $date_modified
    * @return array
    */
-  public function get_ids($updated_at_min){
+  public function get_ids($date_modified){
     $args = array(
       'post_type'     => array('product'),
       'post_status'   => array('publish'),
@@ -373,10 +403,10 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
       'fields'        => 'ids'
     );
 
-    if($updated_at_min){
+    if($date_modified){
       $args['date_query'][] = array(
         'column'    => 'post_modified_gmt',
-        'after'     => $updated_at_min,
+        'after'     => $date_modified,
         'inclusive' => false
       );
     }
