@@ -41,7 +41,6 @@ before_script:
   - sleep 60
   - docker exec woocommerce-pos-app-${PHP_VERSION} wp core version --allow-root
   - docker exec woocommerce-pos-app-${PHP_VERSION} wp plugin list --allow-root --status=active
-  - docker exec woocommerce-pos-app-${PHP_VERSION} wp plugin list --allow-root --status=active
 
   ## download test theme and activate
   - docker exec woocommerce-pos-app-${PHP_VERSION} wp theme install https://github.com/kilbot/WooCommerce-POS-Test-Theme/archive/master.zip --allow-root --activate
