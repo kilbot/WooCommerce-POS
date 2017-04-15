@@ -22,7 +22,8 @@ class WC_POS {
     }
 
     add_action( 'init', array( $this, 'init' ) );
-    add_action( 'rest_api_init', array( $this, 'load_woocommerce_api_patches'), 99 );
+    add_action( 'woocommerce_api_loaded', array( $this, 'load_woocommerce_api_patches') );
+    add_action( 'rest_api_init', array( $this, 'load_woocommerce_apiv2_patches') );
 
     // emails filter called very early :(
     add_filter( 'woocommerce_defer_transactional_emails', array( $this, 'defer_transactional_emails' ) );
@@ -87,13 +88,16 @@ class WC_POS {
    *
    */
   public function load_woocommerce_api_patches(){
-    if( version_compare( WC()->version, '3', '<' ) ){
-      new WC_POS_API();
-    } else {
-      new WC_POS_APIv2();
-    }
-
+    new WC_POS_API();
   }
+
+  /**
+   *
+   */
+  public function load_woocommerce_apiv2_patches(){
+    new WC_POS_APIv2();
+  }
+
 
   /**
    * Don't defer emails for POS orders
