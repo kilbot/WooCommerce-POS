@@ -15,7 +15,9 @@ module.exports = bb.Model.extend({
     options = options || {};
     this.numpad = options.numpad;
 
-    this.set({ value: options.value.toString() });
+    if(options.value){
+      this.set({ value: options.value.toString() });
+    }
 
     if(options.precision){
       this.precision = options.precision;

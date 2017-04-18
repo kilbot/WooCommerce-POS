@@ -128,7 +128,12 @@ module.exports = Service.extend({
       options.message = options.thrownError.message;
     } else {
       options.status = options.jqXHR.statusText;
-      if( options.jqXHR.responseJSON && options.jqXHR.responseJSON.errors[0] ){
+      if(options.jqXHR.responseJSON && options.jqXHR.responseJSON.message) {
+        options.message = options.jqXHR.responseJSON.message;
+      }
+      else if( options.jqXHR.responseJSON &&
+        options.jqXHR.responseJSON.errors &&
+        options.jqXHR.responseJSON.errors[0] ){
         options.message = options.jqXHR.responseJSON.errors[0].message;
       }
     }

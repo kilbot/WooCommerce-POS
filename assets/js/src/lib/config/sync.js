@@ -54,6 +54,28 @@ bb.sync = function(method, entity, options) {
   // hack to remove status
   if(method === 'create' || method === 'update'){
     entity.unset('status', { silent: true });
+    var regular_price = entity.get('regular_price');
+    var sale_price = entity.get('sale_price');
+
+    if(regular_price !== undefined) {
+      entity.set({ 'regular_price': regular_price + '' }, {silent: true});
+    }
+    if(sale_price !== undefined) {
+      entity.set({ 'sale_price': sale_price + '' }, {silent: true});
+    }
   }
+  // hack for updating products
+  if(method === 'patch' && options.attrs) {
+    if(options.attrs.status) {
+      options.attrs.status = undefined;
+    }
+    if(options.attrs.regular_price){
+      options.attrs.regular_price+='';
+    }
+    if(options.attrs.sale_price){
+      options.attrs.sale_price+='';
+    }
+  }
+
   return bb.ajaxSync.apply(this, [method, entity, options]);
 };
