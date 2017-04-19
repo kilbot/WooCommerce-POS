@@ -16,7 +16,12 @@ class RESTAPITest extends TestCase {
     $response = $this->client->get();
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('namespace', $data);
+
+    if( version_compare( WC()->version, '3', '<' ) ){
+      $this->assertArrayHasKey('store', $data);
+    } else {
+      $this->assertArrayHasKey('namespace', $data);
+    }
   }
 
 }

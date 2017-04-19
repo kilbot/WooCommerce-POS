@@ -82,16 +82,28 @@ class WC_POS_APIv2 {
     if( isset($request['filter']) ) {
       $filter = $request['filter'];
 
+      if( isset($filter['q'])  ) {
+        $request->set_param('search', $filter['q']);
+      }
+
       if( isset($filter['limit']) ) {
-        $request['per_page'] = $filter['limit'];
+        $request->set_param('per_page', $filter['limit']);
       }
 
       if( isset($filter['in']) ) {
-        $request['include'] = explode( ',', $filter['in'] );
+        $request->set_param('include', explode( ',', $filter['in'] ));
       }
 
       if( isset($filter['not_in']) ) {
-        $request['include'] = explode( ',', $filter['not_in'] );
+        $request->set_param('exclude', explode( ',', $filter['not_in'] ));
+      }
+
+      if( isset($filter['featured']) ) {
+        $request->set_param('featured', $filter['featured']);
+      }
+
+      if( isset($filter['on_sale']) ) {
+        $request->set_param('on_sale', $filter['on_sale']);
       }
 
     }

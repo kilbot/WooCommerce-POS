@@ -297,53 +297,9 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
    * @param $query
    */
   public function pre_get_posts($query){
-
-    // store original meta_query
-    $meta_query = $query->get( 'meta_query' );
-
-    if( isset( $_GET['filter'] ) ){
-
-      $filter = $_GET['filter'];
-
-      // barcode moved to posts_where for variation search
-//      if( isset($filter['barcode']) ){
-//        $meta_query[] = array(
-//          'key' 		=> $this->barcode_meta_key,
-//          'value' 	=> $filter['barcode'],
-//          'compare'	=> 'LIKE'
-//        );
-//      }
-
-      // featured
-      // todo: more general meta_key test using $query_args_whitelist
-      if( isset($filter['featured']) ){
-        $meta_query[] = array(
-          'key' 		=> '_featured',
-          'value' 	=> $filter['featured'] ? 'yes' : 'no',
-          'compare'	=> '='
-        );
-      }
-
-      // on sale
-      // - no easy way to get on_sale items
-      // - wc_get_product_ids_on_sale uses cached data, includes variations
-      if( isset($filter['on_sale']) ){
-        $sale_ids = array_filter( wc_get_product_ids_on_sale() );
-        $exclude = isset($query->query['post__not_in']) ? $query->query['post__not_in'] : array();
-        $ids = array_diff($sale_ids, $exclude);
-        $query->set( 'post__not_in', array() );
-        $query->set( 'post__in', $ids );
-      }
-
-    }
-
     // order product alphabetically
     $query->set('orderby', 'post_title');
     $query->set('order', 'ASC');
-
-    // update the meta_query
-    $query->set( 'meta_query', $meta_query );
-
   }
 
   /**
