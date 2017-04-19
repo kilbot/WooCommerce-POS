@@ -115,9 +115,7 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     $payment['method_id'] = isset( $response['payment_method'] ) ? $response['payment_method']  : '';
     $payment['method_title'] = isset( $response['payment_method_title'] ) ? $response['payment_method_title'] : '';
 
-    if($response['date_completed'] && $response['date_paid']) {
-      $payment['paid'] = true;
-    }
+    $payment['paid'] = $response['date_completed'] && $response['date_paid'];
 
     if( isset( $payment['method_id'] ) && $payment['method_id'] == 'pos_cash' ){
       $payment = WC_POS_Gateways_Cash::payment_details( $payment, $id );
@@ -147,13 +145,16 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     add_filter('option_woocommerce_'. $payment_method .'_settings', array($this, 'force_enable_gateway'));
     $settings = WC_POS_Admin_Settings_Checkout::get_instance();
     $gateways = $settings->load_enabled_gateways();
+
+    // process payment
+    do_action( 'woocommerce_pos_process_payment', $payment_details, $order);
     $response = $gateways[ $payment_method ]->process_payment( $order->get_id() );
 
     if(isset($response['result']) && $response['result'] == 'success'){
 
       $this->payment_success($payment_method, $order, $response);
 
-      if( ! isset($response['redirect']) || ! $response['redirect'] ) {
+      if( ! get_post_meta( $order->get_id(), '_pos_payment_redirect' ) ) {
         $order->set_date_paid( current_time( 'timestamp' ) );
         $order->set_date_completed( current_time( 'timestamp' ) );
         $message = __('POS Transaction completed.', 'woocommerce-pos');
@@ -161,7 +162,10 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
       }
 
     } else {
+
       $this->payment_failure($payment_method, $order, $response);
+      $order->update_status( 'wc-failed', __( 'There was an error processing the payment', 'woocommerce-pos') );
+
     }
 
     // switch back to logged in user
@@ -332,11 +336,11 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
     // if messages empty give generic response
     if(empty($message)){
-      $message = __( 'There was an error processing the payment', 'woocommerce-pos');
+      $response['messages'] = __( 'There was an error processing the payment', 'woocommerce-pos');
     }
 
     update_post_meta( $order->get_id(), '_pos_payment_result', 'failure' );
-    update_post_meta( $order->get_id(), '_pos_payment_message', $message );
+    update_post_meta( $order->get_id(), '_pos_payment_message', $response['messages'] );
   }
 
   /**
@@ -353,10 +357,9 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     $success = wp_parse_args( parse_url( $success_url ), array( 'host' => '', 'path' => '' ));
     $redirect = wp_parse_args( parse_url( $response['redirect'] ), array( 'host' => '', 'path' => '' ));
 
-    $offsite = $success['host'] !== $redirect['host'];
-    $reload = !$offsite && $success['path'] !== $redirect['path'] && $response['messages'] == '';
+    $offsite = $success['path'] !== $redirect['path'] && $response['messages'] == '';
 
-    if($offsite || $reload){
+    if($offsite){
       update_post_meta( $order->get_id(), '_pos_payment_redirect', $response['redirect'] );
       $message = __('You are now being redirected offsite to complete the payment. ', 'woocommerce-pos');
       $message .= sprintf( __('<a href="%s">Click here</a> if you are not redirected automatically. ', 'woocommerce-pos'), $response['redirect'] );

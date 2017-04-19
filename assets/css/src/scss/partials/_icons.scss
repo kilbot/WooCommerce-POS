@@ -199,7 +199,7 @@ icon {
       .#{current-module()}-#{nth($icon, 1)} {
         &:before {
           content: unquote($withslash);
-          color: "#{nth($icon, 3)}";
+          color: #{nth($icon, 3)};
         }
       }
 

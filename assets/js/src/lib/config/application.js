@@ -62,6 +62,9 @@ module.exports = Mn.Application.extend({
         action: options.action || 'wc_pos_payload',
         security: options.nonce
       }, function( payload ){
+        if(payload === 0) {
+          window.location.replace('/wp-login.php?pos=1');
+        }
         self._initOptions( payload );
         Mn.Application.prototype.start.call(self, payload);
       }

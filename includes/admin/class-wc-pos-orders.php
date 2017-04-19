@@ -43,7 +43,8 @@ class WC_POS_Admin_Orders {
    * @param $order
    */
   public function order_details($order){
-    $this->pos_order = get_post_meta( $order->id, '_pos', true );
+    $id = method_exists($order, 'get_id') ? $order->get_id() : $order->id;
+    $this->pos_order = get_post_meta( $id, '_pos', true );
     include 'views/order-details.php';
   }
 
