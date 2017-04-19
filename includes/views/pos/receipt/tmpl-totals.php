@@ -16,7 +16,7 @@
 {{/each}}
 {{#each fee_lines}}
 <li class="list-row">
-  <div>{{title}}:</div>
+  <div>{{name}}:</div>
   <div class="total">{{{money total}}}</div>
 </li>
 {{/each}}

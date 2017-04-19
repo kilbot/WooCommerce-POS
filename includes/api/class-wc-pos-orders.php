@@ -74,11 +74,22 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     $has_fee = isset($this->data['fee_lines']) && !empty($this->data['fee_lines']);
     $has_shipping = isset($this->data['shipping_lines']) && !empty($this->data['shipping_lines']);
 
-    if( $has_shipping )
+    if( $has_shipping ) {
+      add_filter( 'pre_option_woocommerce_shipping_tax_class', array( $this, 'woocommerce_shipping_tax_class' ) );
       add_action( 'woocommerce_order_add_shipping', array( $this, 'order_add_shipping'), 10, 3 );
+    }
 
     if( $has_fee || $has_shipping )
       add_filter( 'update_post_metadata', array( $this, 'update_post_metadata'), 10, 5 );
+
+    // POS UI uses Fee 'name' for WC 3 compat
+    if( $has_fee ) {
+      foreach($this->data['fee_lines'] as &$fee) {
+        if( !isset($fee['title']) && isset( $fee['name'] ) ) {
+          $fee['title'] = $fee['name'];
+        }
+      }
+    }
 
     // populate customer data
     $customer_id = isset( $data['customer_id'] ) ? $data['customer_id'] : 0 ;
@@ -165,10 +176,10 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
       $data = $this->get_line_item($id);
 
       // update title
-      if( isset( $data['title'] ) ){
+      if( isset( $data['name'] ) ){
         wc_update_order_item( $item_id,
           array(
-            'order_item_name' => sanitize_text_field( $data['title'] )
+            'order_item_name' => sanitize_text_field( $data['name'] )
           )
         );
       }
@@ -224,6 +235,14 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
    */
   public function woocommerce_tax_based_on(){
     return 'base';
+  }
+
+  /**
+   * Short circuit get_option('woocommerce_shipping_tax_class') as standard
+   * @return string
+   */
+  public function woocommerce_shipping_tax_class(){
+    return 'standard';
   }
 
   /**
@@ -567,6 +586,13 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
       if(isset( $item['id'] )) {
         $taxes = wc_get_order_item_meta( $item['id'], 'taxes' );
         $item['total_tax'] = wc_format_decimal( array_sum($taxes) );
+      }
+    }
+
+    // compatibility for templates
+    foreach( $order_data['fee_lines'] as &$item ) {
+      if( !isset($item['name']) && isset($item['title'] ) ) {
+        $item['name'] = $item['title'];
       }
     }
 

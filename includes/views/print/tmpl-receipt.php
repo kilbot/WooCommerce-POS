@@ -202,7 +202,7 @@
     {{/each}}
     {{#each fee_lines}}
       <tr class="fee">
-        <th colspan="2">{{title}}:</th>
+        <th colspan="2">{{name}}:</th>
         <td colspan="1">{{{money total}}}</td>
       </tr>
     {{/each}}

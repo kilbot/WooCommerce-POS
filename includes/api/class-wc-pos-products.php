@@ -18,6 +18,7 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
    */
   private $whitelist = array(
     'title',
+    'name',
     'id',
     'created_at',
     'updated_at',
@@ -232,7 +233,7 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
       $data['stock_quantity'] = $product->get_stock_quantity();
     }
 
-    // Backwards compatibility legacy api
+    // Transition to name property
     if( isset($data['title']) ){
       $data['name'] = $data['title'];
       unset($data['title']);
