@@ -94,6 +94,9 @@ Utils.unformat = function( num ) {
  *
  */
 Utils.formatNumber = function( num, precision ) {
+  if( typeof num === 'string' ) {
+    num = parseFloat(num);
+  }
   if( precision === 'auto' ) {
     precision = Utils.decimalPlaces(num);
   }
