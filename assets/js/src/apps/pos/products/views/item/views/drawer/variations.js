@@ -33,7 +33,7 @@ module.exports = CollectionView.extend({
         var attributes = model.getVariationAttributes();
         return _.any(attributes, function(attribute){
           return attribute.name === filter.name &&
-            ( attribute.option === undefined && _.includes(attribute.options, filter.option) ) || attribute.option === filter.option;
+            ( attribute.option === undefined && _.includes(attribute.options, filter.option) ) || attribute.option === filter.option || attribute.option === '';
         });
       };
       this.collection.filterBy('variation', matchMaker);

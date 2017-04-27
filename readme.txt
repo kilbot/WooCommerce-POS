@@ -3,7 +3,7 @@ Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
 Requires at least: 4.0 & WooCommerce 2.3.7
 Tested up to: 4.5
-Stable tag: 0.4.6
+Stable tag: 0.4.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,7 +79,10 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
-= 0.4.6 - 2017/04/15 =
+= 0.4.8 - 2017/04/27 =
+* Fix: 'Any ...' variations
+
+= 0.4.7 - 2017/04/15 =
 * WC 3 Compatibility fixes
 
 = 0.4.6 - 2016/06/15 =

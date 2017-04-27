@@ -74,7 +74,7 @@ var Variations = ItemView.extend({
         if(obj.name !== name) {
           return false;
         }
-        return obj.option === undefined && _.includes(obj.options, option) || obj.option === option;
+        return obj.option === undefined && _.includes(obj.options, option) || obj.option === option || obj.option === '';
       });
     });
     this.ui.add.prop('disabled', this.collection.length !== 1);
