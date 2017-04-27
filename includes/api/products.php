@@ -290,7 +290,7 @@ class Products extends WC_API_Resource {
     if( is_array($image) )
       return $image[0];
 
-    return wc_placeholder_img_src();
+    return apply_filters( 'woocommerce_pos_placeholder_img_src', wc_placeholder_img_src(), $id );
   }
 
   /**
