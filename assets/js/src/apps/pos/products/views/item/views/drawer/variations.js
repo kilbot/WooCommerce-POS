@@ -30,12 +30,11 @@ module.exports = CollectionView.extend({
     if(filter){
       filter = filter || {};
       var matchMaker = function(model){
-        var attributes = model.get('attributes');
+        var attributes = model.getVariationAttributes();
         return _.any(attributes, function(attribute){
           return attribute.name === filter.name &&
-            attribute.option === filter.option;
+            ( attribute.option === undefined && _.includes(attribute.options, filter.option) ) || attribute.option === filter.option;
         });
-
       };
       this.collection.filterBy('variation', matchMaker);
     }

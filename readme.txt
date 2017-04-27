@@ -178,14 +178,5 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Upgrade Notice ==
 
-= 0.4.6 =
-* Urgent compatibility fix for WooCommerce 2.6
-* [Pro](http://wcpos.com/pro) users should update to version 0.4.6 by going to [https://wcpos.com/my-account](https://wcpos.com/my-account).
-
-= 0.4.5 =
-* WooCommerce POS now requires PHP 5.4 or higher.
-* WooCommerce POS now requires WooCommerce 2.3.7 or higher.
-* Pro users should update [WooCommerce POS Pro](http://wcpos.com/pro) to version 0.4.5.
-
-= 0.4.4 =
-* Pro users should update [WooCommerce POS Pro](http://wcpos.com/pro) to version 0.4.4.
+= 0.4.7 =
+* Urgent compatibility fix for WooCommerce 3. No need to update if you are not using WooCommerce 3.

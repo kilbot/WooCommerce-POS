@@ -28,7 +28,8 @@ var Item = ItemView.extend({
   templateHelpers: function(){
     return {
       variation: true,
-      title: this.options.model.parent.get('title')
+      title: this.options.model.parent.get('title'),
+      attributes: this.model.getVariationAttributes()
     };
   }
 

@@ -29,7 +29,7 @@ var Variations = ItemView.extend({
 
   templateHelpers: function(){
     var data = {};
-    data.variations = _.chain( this.model.getVariationOptions() )
+    data.variations = _.chain( this.model.productVariations() )
       .each(function(variation){
         if(hasManyOptions(variation)){
           variation.select = true;
@@ -70,8 +70,11 @@ var Variations = ItemView.extend({
     var name = target.data('name');
     var option = target.val();
     this.collection.filterBy(name, function(model){
-      return _.some(model.get('attributes'), function(obj){
-        return obj.name === name && obj.option === option;
+      return _.some(model.getVariationAttributes(), function(obj){
+        if(obj.name !== name) {
+          return false;
+        }
+        return obj.option === undefined && _.includes(obj.options, option) || obj.option === option;
       });
     });
     this.ui.add.prop('disabled', this.collection.length !== 1);

@@ -13,14 +13,21 @@ var Item = ItemView.extend({
 
   ui: {
     add      : 'a[data-action="add"]',
-    vpopover : 'a[data-action="variations"]',
-    vdrawer  : '.title dl.variations dd a'
+    popover  : 'a[data-action="variations"]',
+    filter   : '.title ul.variations li a',
+    open     : 'a[data-action="expand"]',
+    close    : 'a[data-action="close"]'
   },
 
   events: {
-    'click @ui.add' : 'addToCart',
-    'click @ui.vpopover' : 'variationsPopover',
-    'click @ui.vdrawer'  : 'variationsDrawer'
+    'click @ui.add'     : 'addToCart',
+    'click @ui.popover' : 'variationsPopover',
+    'click @ui.filter'  : 'variationsDrawer'
+  },
+
+  triggers: {
+    'click @ui.open'  : 'open:drawer',
+    'click @ui.close' : 'close:drawer toggle:reset'
   },
 
   modelEvents: {
@@ -82,7 +89,7 @@ var Item = ItemView.extend({
       price: variations.superset().range('price'),
       sale_price: variations.superset().range('sale_price'),
       regular_price: variations.superset().range('regular_price'),
-      product_variations: this.model.getVariationOptions()
+      product_variations: this.model.productVariations()
     } : {} ;
     data.product_attributes = this.model.productAttributes();
     return data;

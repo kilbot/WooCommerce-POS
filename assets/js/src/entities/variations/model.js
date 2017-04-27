@@ -32,11 +32,6 @@ module.exports = Model.extend({
     return wc_api + 'products/' + this.id;
   },
 
-  constructor: function(attributes, options){
-    options = _.extend({parse: true}, options); // parse by default
-    Model.call(this, attributes, options);
-  },
-
   initialize: function(attributes, options){
     options = options || {};
     this.parent = options.parent;
@@ -53,25 +48,25 @@ module.exports = Model.extend({
       });
   },
 
-  parse: function(data, options){
-    data = Model.prototype.parse.call(this, data, options);
-// options = options || {};
-// var parentAttrs = options.parentAttrs || {};
-// if( _.isEmpty(parentAttrs) && this.collection && this.collection.parent ){
-//   parentAttrs = this.collection.parent.toJSON();
-// }
-//
-// // special case, empty option
-// _(data.attributes).chain()
-//   .filter({option: ''})
-//   .each(function(empty){
-//     empty.option = _(parentAttrs.attributes).chain()
-//       .find({ name: empty.name, variation: true })
-//       .get(['options']).value();
-//   })
-//   .value();
+  /**
+   *
+   */
+  getVariationAttributes: function(){
+    var result = [];
+    var attributes = this.get('attributes');
 
-    return data;
+    _.each(this.parent.productVariations(), function(attribute){
+      // pluck attribute on id and merge
+      var attr = _.findWhere(attributes, { id: attribute.id });
+      if( attr ) {
+        result.push( _.merge(attr, attribute) );
+      } else {
+        result.push( attribute );
+      }
+    });
+
+    // sort
+    return _.sortBy( result, 'position' );
   }
 
 });

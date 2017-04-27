@@ -46,13 +46,13 @@ list {
 
     .#{current-module()} {
 
-      ul {
+      > div > ul, > ul {
         width: 100%;
         margin: 0;
         padding: 0;
         list-style: none;
 
-        li {
+        > li {
           border-bottom: 1px solid $list-border-color;
 
           &:last-of-type {
@@ -81,9 +81,15 @@ list {
     // Default zebra-stripe styles (alternating gray and transparent backgrounds)
 
     .#{current-module()}-striped {
-      li:nth-of-type(odd) {
-        background-color: $list-alternate-bg-color;
+
+      > div > ul, > ul {
+
+        > li:nth-of-type(odd) {
+          background-color: $list-alternate-bg-color;
+        }
+
       }
+
     }
 
 
