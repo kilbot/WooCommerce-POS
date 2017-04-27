@@ -32,6 +32,11 @@ module.exports = Model.extend({
     return wc_api + 'products/' + this.id;
   },
 
+  constructor: function(attributes, options){
+    options = _.extend({parse: true}, options); // parse by default
+    Model.call(this, attributes, options);
+  },
+
   initialize: function(attributes, options){
     options = options || {};
     this.parent = options.parent;
