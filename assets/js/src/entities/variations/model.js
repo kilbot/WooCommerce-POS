@@ -62,8 +62,12 @@ module.exports = Model.extend({
 
     _.each(this.parent.productVariations(), function(attribute){
       // pluck attribute on id and merge
-      var attr = _.findWhere(attributes, { id: attribute.id }) ||
-        _.findWhere(attributes, { name: attribute.name }); // legacy api
+      var attr = _.findWhere(attributes, { id: attribute.id });
+
+      // piped attributes have id = 0 ffs
+      if(!attr || attr.id === 0){
+        attr = _.findWhere(attributes, { name: attribute.name });
+      }
 
       if( attr ) {
         result.push( _.merge(attr, attribute) );

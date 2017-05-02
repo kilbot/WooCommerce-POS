@@ -579,6 +579,59 @@ class OrdersAPITest extends TestCase {
   }
 
   /**
+   * @group debug
+   */
+  public function test_order_with_product_and_taxable_fee(){
+    $this->update_tax_settings();
+
+    // get a random product
+    $product = $this->get_random_product();
+    $product = $this->filter_line_item($product);
+
+    $product['taxable'] = true;
+    $product['total'] = 10;
+    $product['total_tax'] = 2;
+    $product['tax_class'] = '';
+    $product['tax'] = array(
+      '1' => array(
+        'total' => 2
+      )
+    );
+
+    // construct fee
+    // - fee title is required
+    $fee = array(
+      'name'     => 'Foo',
+      'total'     => 5,
+      'taxable'   => true,
+      'tax_class' => '',
+      'tax'       => array(
+        '1' => array(
+          'total' => 1
+        )
+      )
+    );
+
+    // create order
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'line_items' => array(
+          $product
+        ),
+        'fee_lines' => array(
+          $fee
+        )
+      )
+    ));
+
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $data = isset($data['order']) ? $data['order'] : $data;
+    $this->assertEquals(18, $data['total']);
+    $this->assertEquals(3, $data['total_tax']);
+  }
+
+  /**
    *
    */
   public function test_order_with_shipping(){
