@@ -51,7 +51,7 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
 //    'download_expiry',
 //    'external_url',
 //    'button_text',
-    'tax_status',
+    'tax_status', 'taxable',
     'tax_class',
     'manage_stock', 'managing_stock',
     'stock_quantity',
@@ -148,7 +148,10 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
 //      $data['attributes'] = $this->patch_variation_attributes( $product );
 //    endif;
 
-    return $this->filter_response_data( $data, $product );
+    $data = $this->filter_response_data( $data, $product );
+
+    $response->set_data($data);
+    return $response;
   }
 
   /**
@@ -266,6 +269,10 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
 
     if( isset($data['manage_stock']) ) {
       $data['managing_stock'] = $data['manage_stock'];
+    }
+
+    if( isset($data['tax_status']) ) {
+      $data['taxable'] = $data['tax_status'] == 'taxable';
     }
 
     // filter by whitelist
