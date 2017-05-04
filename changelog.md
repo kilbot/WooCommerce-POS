@@ -1,7 +1,8 @@
-= 0.4.9 =
+= 0.4.9 - 2017/05/04 =
 * Fix: Custom variation attributes
-* Fix (WC3 compatibility): non-taxable products
-* Fix (WC3 compatibility): taxable fees
+* Fix: (WC3 compatibility): non-taxable products
+* Fix: (WC3 compatibility): taxable fees
+* Fix: (WC3 compatibility): order created_at property
 
 = 0.4.8 - 2017/04/27 =
 * Fix: 'Any ...' variations

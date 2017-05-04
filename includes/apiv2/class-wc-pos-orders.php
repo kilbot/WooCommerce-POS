@@ -259,6 +259,10 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
       $data['shipping_address'] = $data['shipping'];
     }
 
+    if( $data['date_created'] ) {
+      $data['created_at'] = $data['date_created'];
+    }
+
     $response->set_data($data);
     return $response;
   }
