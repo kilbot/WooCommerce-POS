@@ -1,6 +1,7 @@
 = 0.4.9 =
 * Fix: Custom variation attributes
 * Fix (WC3 compatibility): non-taxable products
+* Fix (WC3 compatibility): taxable fees
 
 = 0.4.8 - 2017/04/27 =
 * Fix: 'Any ...' variations

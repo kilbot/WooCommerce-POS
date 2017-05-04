@@ -209,6 +209,7 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
     // calculate taxes (trust the POS)
     add_filter( 'wc_tax_enabled', '__return_false' );
+    $order->save();
     $order->update_taxes();
     $order->calculate_totals();
 
