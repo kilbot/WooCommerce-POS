@@ -465,10 +465,26 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
     if( ! wc_pos_get_option( 'checkout', 'customer_emails' ) ){
       $this->remove_customer_emails($wc_emails);
+    } else {
+      remove_action(
+        'woocommerce_order_status_pending_to_processing_notification',
+        array(
+          $wc_emails->emails['WC_Email_Customer_Processing_Order'],
+          'trigger'
+        )
+      );
     }
 
     if( ! wc_pos_get_option( 'checkout', 'admin_emails' ) ){
       $this->remove_admin_emails($wc_emails);
+    } else {
+      remove_action(
+        'woocommerce_order_status_pending_to_processing_notification',
+        array(
+          $wc_emails->emails['WC_Email_New_Order'],
+          'trigger'
+        )
+      );
     }
   }
 
