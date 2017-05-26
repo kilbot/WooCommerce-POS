@@ -91,6 +91,7 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
     add_filter( 'woocommerce_api_product_response', array( $this, 'product_response' ), 10, 4 );
     add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
     add_filter( 'posts_where', array( $this, 'posts_where' ), 10 , 2 );
+    add_filter( 'posts_search', array( $this, 'search_by_title' ), 99, 2 );
   }
 
   /**
@@ -360,6 +361,38 @@ class WC_POS_API_Products extends WC_POS_API_Abstract {
 
     return $where;
   }
+
+
+  /**
+   * Search SQL filter for matching against post title only.
+   *
+   * @link    http://wordpress.stackexchange.com/a/11826/1685
+   *
+   * @param   string   $search
+   * @param   WP_Query $wp_query
+   * @return array|string
+   */
+  function search_by_title( $search, $wp_query ) {
+    if ( ! empty( $search ) && ! empty( $wp_query->query_vars['search_terms'] ) ) {
+      global $wpdb;
+
+      $q = $wp_query->query_vars;
+      $n = ! empty( $q['exact'] ) ? '' : '%';
+
+      $search = array();
+
+      foreach ( ( array ) $q['search_terms'] as $term )
+        $search[] = $wpdb->prepare( "$wpdb->posts.post_title LIKE %s", $n . $wpdb->esc_like( $term ) . $n );
+
+      if ( ! is_user_logged_in() )
+        $search[] = "$wpdb->posts.post_password = ''";
+
+      $search = ' AND ' . implode( ' AND ', $search );
+    }
+
+    return $search;
+  }
+
 
   /**
    * Returns array of all product ids
