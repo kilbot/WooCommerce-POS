@@ -260,7 +260,7 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     }
 
     if( $data['date_created'] ) {
-      $data['created_at'] = $data['date_created'];
+      $data['completed_at'] = $data['date_created'];
     }
 
     $response->set_data($data);
