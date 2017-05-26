@@ -18,6 +18,7 @@ class WC_POS_Gateways {
     $this->init();
     add_action( 'woocommerce_payment_gateways', array( $this, 'payment_gateways' ) );
     add_action( 'woocommerce_pos_load_gateway', array( $this, 'load_gateway' ) );
+    add_filter( 'woocommerce_get_sections_checkout', array( $this, 'get_sections_checkout' ) );
   }
 
   /**
@@ -36,18 +37,18 @@ class WC_POS_Gateways {
    * @return array
    */
   public function payment_gateways( array $gateways ) {
-    global $plugin_page;
-
-    // don't show POS gateways on WC settings page or online checkout
-    if( is_admin() && $plugin_page == 'wc-settings' || !is_admin() && !is_pos() ){
+    // don't show POS gateways on online checkout
+    if( !is_admin() && !is_pos() ){
       return $gateways;
     }
 
+    // else add default POS gateways
     return array_merge($gateways, array(
       'WC_POS_Gateways_Cash',
       'WC_POS_Gateways_Card'
     ));
   }
+
 
   /**
    * Enable POS gateways
@@ -57,6 +58,25 @@ class WC_POS_Gateways {
   public function load_gateway( WC_Payment_Gateway $gateway ) {
     $gateway->pos = in_array( $gateway->id, array( 'pos_cash', 'pos_card', 'paypal' ) );
     return $gateway;
+  }
+
+
+  /**
+   * Remove pos gateways from woocommerce settings
+   *
+   * @param array $sections
+   * @return array
+   */
+  public function get_sections_checkout( array $sections ) {
+    if( isset($sections['pos_cash']) ) {
+      unset($sections['pos_cash']);
+    }
+
+    if( isset($sections['pos_card']) ) {
+      unset($sections['pos_card']);
+    }
+
+    return $sections;
   }
 
 }
