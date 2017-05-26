@@ -602,6 +602,11 @@ class WC_POS_API_Orders extends WC_POS_API_Abstract {
     // Backwards compatibility for WC legacy API
     $order_data['discount_total'] = $order_data['total_discount'];
 
+    // Convert completed_at UTC -> site time
+    if($order_data['completed_at']) {
+      $order_data['completed_at'] = rtrim( $server->format_datetime( $order->completed_date ), 'Z' );
+    }
+
     return $order_data;
   }
 
