@@ -1,5 +1,6 @@
 = 0.4.10 - 2017/05/26 =
 * Fix: Receipt date time zone
+* Fix: Emailing receipts
 
 = 0.4.9 - 2017/05/04 =
 * Fix: Custom variation attributes

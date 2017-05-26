@@ -97,7 +97,11 @@ class WC_POS_AJAX {
     $order    = wc_get_order( absint( $order_id ) );
     if( is_object( $order ) ) {
       if( $email != '' ){
-        $order->billing_email = $email;
+        if( method_exists($order, 'set_billing_email')) {
+          $order->set_billing_email($email);
+        } else {
+          $order->billing_email = $email;
+        }
       }
       WC()->mailer()->customer_invoice( $order );
       $response = array(
