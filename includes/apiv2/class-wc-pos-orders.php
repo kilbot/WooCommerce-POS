@@ -155,8 +155,8 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
       $this->payment_success($payment_method, $order, $response);
 
       if( ! get_post_meta( $order->get_id(), '_pos_payment_redirect' ) ) {
-        $order->set_date_paid( current_time( 'timestamp' ) );
-        $order->set_date_completed( current_time( 'timestamp' ) );
+        $order->set_date_paid( current_time( 'timestamp', true ) );
+        $order->set_date_completed( current_time( 'timestamp', true ) );
         $message = __('POS Transaction completed.', 'woocommerce-pos');
         $order->update_status( wc_pos_get_option( 'checkout', 'order_status' ), $message );
       }

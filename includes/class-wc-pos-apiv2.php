@@ -91,19 +91,21 @@ class WC_POS_APIv2 {
       }
 
       if( isset($filter['in']) ) {
-        $request->set_param('include', explode( ',', $filter['in'] ));
+        $request->set_param('include', array_map( 'intval', explode( ',', $filter['in'] )) );
       }
 
       if( isset($filter['not_in']) ) {
-        $request->set_param('exclude', explode( ',', $filter['not_in'] ));
+        $request->set_param('exclude', array_map( 'intval', explode( ',', $filter['not_in'] )) );
       }
 
       if( isset($filter['featured']) ) {
-        $request->set_param('featured', $filter['featured']);
+        $featured = $filter['featured'] === 'true';
+        $request->set_param('featured', $featured);
       }
 
       if( isset($filter['on_sale']) ) {
-        $request->set_param('on_sale', $filter['on_sale']);
+        $on_sale = $filter['on_sale'] === 'true';
+        $request->set_param('on_sale', $on_sale);
       }
 
     }
