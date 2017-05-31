@@ -103,9 +103,34 @@ class WC_POS_APIv2 {
         $request->set_param('featured', $featured);
       }
 
+      /**
+       * Special case for on_sale
+       * post__in trumps post__not_in
+       */
       if( isset($filter['on_sale']) ) {
-        $on_sale = $filter['on_sale'] === 'true';
-        $request->set_param('on_sale', $on_sale);
+
+        $sale_ids = array_filter( wc_get_product_ids_on_sale() );
+        $in       = $request->get_param('include');
+        $not_in   = $request->get_param('exclude');
+
+        if($filter['on_sale'] == 'true'){
+
+          $post__in = array_diff($sale_ids, $not_in);
+          if(!empty($in)){
+            $post__in = array_intersect($in, $post__in);
+          }
+          if(empty($post__in)){
+            $post__in = array(0); // no posts
+          }
+          $request->set_param('include', $post__in);
+
+        } elseif($filter['on_sale'] == 'false') {
+
+          $post__not_in = array_unique( array_merge($sale_ids, $not_in) );
+          $request->set_param('exclude', $post__not_in);
+
+        }
+
       }
 
     }

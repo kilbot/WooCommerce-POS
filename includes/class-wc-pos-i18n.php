@@ -129,6 +129,7 @@ class WC_POS_i18n {
   public function upgrader_pre_download( $reply, $package, $upgrader ) {
 
     if ( isset( $upgrader->skin->language_update )
+      && property_exists( $upgrader->skin->language_update, 'slug' )
       && $upgrader->skin->language_update->slug == 'woocommerce-pos'
     ) {
 
