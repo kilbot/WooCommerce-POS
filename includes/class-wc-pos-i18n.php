@@ -390,7 +390,7 @@ class WC_POS_i18n {
         'browser'     => __( 'Your browser is not supported!', 'woocommerce-pos' ),
         'legacy'      => __( 'Unable to use RESTful HTTP methods', 'woocommerce-pos' ),
         /* translators: woocommerce */
-        'no-products' => __( 'No Products found', 'woocommerce' ),
+        'no-products' => __( 'No products found', 'woocommerce' ),
         /* translators: woocommerce */
         'cart-empty'  => __( 'Your cart is currently empty.', 'woocommerce' ),
         'no-gateway'  => __( 'No payment gateways enabled.', 'woocommerce-pos' ),

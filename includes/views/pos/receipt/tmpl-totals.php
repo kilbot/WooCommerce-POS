@@ -1,10 +1,10 @@
 <li class="list-row subtotal">
-  <div><?php _e( 'Cart Subtotal', 'woocommerce-pos' ); ?>:</div>
+  <div><?php _e( 'Subtotal', 'woocommerce-pos' ); ?>:</div>
   <div class="total">{{{money subtotal}}}</div>
 </li>
 {{#if has_discount}}
 <li class="list-row cart-discount">
-  <div><?php /* translators: woocommerce */ _e( 'Discount', 'woocommerce' ); ?>:</div>
+  <div><?php _e( 'Discount', 'woocommerce-pos' ); ?>:</div>
   <div class="total">{{{money cart_discount negative=true}}}</div>
 </li>
 {{/if}}
@@ -46,13 +46,13 @@
 <!-- order_discount removed in WC 2.3, included for backwards compatibility -->
 {{#if has_order_discount}}
 <li class="list-row order-discount">
-  <div><?php /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</div>
+  <div><?php _e( 'Discount', 'woocommerce-pos' ); ?>:</div>
   <div class="total">{{{money order_discount negative=true}}}</div>
 </li>
 {{/if}}
 <!-- end order_discount -->
 <li class="list-row order-total">
-  <div><?php /* translators: woocommerce */ _e( 'Order Total', 'woocommerce' ); ?>:</div>
+  <div><?php /* translators: woocommerce */ _e( 'Order total', 'woocommerce' ); ?>:</div>
   <div class="total">{{{money total}}}</div>
 </li>
 {{#if note}}

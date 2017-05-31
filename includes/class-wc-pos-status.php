@@ -57,7 +57,7 @@ class WC_POS_Status {
     $php_version = phpversion();
 
     $result = array(
-      'title'   => /* translators: woocommerce */ __( 'PHP Version', 'woocommerce' ),
+      'title'   => __( 'PHP Version', 'woocommerce-pos' ),
       'pass'    => version_compare( $php_version, WC_POS_Activator::PHP_MIN_VERSION, '>' ),
       'message' => esc_html( $php_version )
     );

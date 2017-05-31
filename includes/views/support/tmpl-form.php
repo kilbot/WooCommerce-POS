@@ -17,7 +17,7 @@
   <div class="input" data-name="email" contenteditable><?php echo $current_user->user_email ?></div>
 </li>
 <li class="list-row">
-  <div class="label"><?php /* translators: wordpress */ _e( 'Message' ); ?>:</div>
+  <div class="label"><?php _e( 'Message', 'woocommerce-pos' ); ?>:</div>
   <div class="input" data-name="message" placeholder="<?php _e('Describe your problem here ...', 'woocommerce-pos') ?>" contenteditable></div>
 </li>
 <li class="list-row no-border">

@@ -5,7 +5,7 @@
 </li>
 {{#if has_discount}}
 <li class="list-row cart-discount">
-  <div><?php /* translators: woocommerce */ _e( 'Discount', 'woocommerce' ); ?>:</div>
+  <div><?php _e( 'Discount', 'woocommerce-pos' ); ?>:</div>
   <div class="total">{{{money cart_discount negative=true}}}</div>
   <div class="action"></div>
 </li>
@@ -36,7 +36,7 @@
 {{/if}}
 {{/compare}}
 <li class="list-row order-total">
-  <div><?php /* translators: woocommerce */ _e( 'Order Total', 'woocommerce' ); ?>:</div>
+  <div><?php /* translators: woocommerce */ _e( 'Order total', 'woocommerce' ); ?>:</div>
   <div class="total">{{{money total}}}</div>
   <div class="action"></div>
 </li>

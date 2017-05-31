@@ -83,6 +83,7 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 * Fix: (WC3 compatibility): correct sale completed date
 * Fix: (WC3 compatibility): featured and on_sale filter
 * Fix: date localisation
+* Improve translations
 
 = 0.4.10 - 2017/05/26 =
 * Fix: Receipt date time zone
