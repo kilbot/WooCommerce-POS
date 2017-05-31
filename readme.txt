@@ -3,7 +3,7 @@ Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
 Requires at least: 4.0 & WooCommerce 2.3.7
 Tested up to: 4.7
-Stable tag: 0.4.10
+Stable tag: 0.4.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,10 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 1. WooCommerce POS main screen
 
 == Changelog ==
+
+= 0.4.11 - 2017/05/31 =
+* Fix: (WC3 compatibility): correct sale completed date
+* Fix: (WC3 compatibility): featured and on_sale filter
 
 = 0.4.10 - 2017/05/26 =
 * Fix: Receipt date time zone
