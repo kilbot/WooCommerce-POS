@@ -31,6 +31,7 @@ class WC_POS_i18n {
     add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'update_check' ) );
     add_filter( 'upgrader_pre_download', array( $this, 'upgrader_pre_download' ), 10, 3 );
     add_filter( 'woocommerce_pos_enqueue_scripts', array( $this, 'js_locale' ) );
+    add_filter( 'woocommerce_pos_enqueue_footer_js', array( $this, 'js_locale' ) );
     add_filter( 'woocommerce_pos_admin_enqueue_scripts', array( $this, 'js_locale' ) );
 
     // ajax
