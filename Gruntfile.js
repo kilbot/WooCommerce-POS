@@ -241,12 +241,16 @@ module.exports = function(grunt) {
         options: {
           potFilename: 'woocommerce-pos.pot',
           exclude: [
+            '.html',
             'styleguide',
             'includes/admin/.*',
             'includes/products/.*',
             'includes/class-wc-pos-activator.php',
             'includes/class-wc-pos-deactivator.php'
           ],
+          // include: [
+          //   './*'
+          // ],
           processPot: function( pot ) {
             var translation,
               excluded_meta = [
@@ -276,6 +280,7 @@ module.exports = function(grunt) {
         options: {
           potFilename: 'woocommerce-pos-admin.pot',
           exclude: [
+            '.html',
             'styleguide'
           ],
           include: [
