@@ -53,6 +53,7 @@ class WC_POS_APIv2 {
 
     switch($wc_api_handler) {
       case 'WC_REST_Products_Controller':
+        $break = '';
         new WC_POS_APIv2_Products();
         break;
       case 'WC_REST_Orders_Controller':

@@ -17,11 +17,11 @@ WooCommerce POS is a simple interface for taking orders at the Point of Sale usi
 You can see a demo of the WooCommerce POS plugin in action by going to [http://demo.wcpos.com/pos](http://demo.wcpos.com/pos) with `login/pass` : `demo/demo`
 
 = MORE INFO = 
-* Website: http://wcpos.com
-* Roadmap: http://wcpos.com/roadmap
-* GitHub: https://github.com/kilbot/WooCommerce-POS
-* Translate: http://translate.wcpos.com
-* Upgrade to Pro: http://wcpos.com/pro
+* Website: [http://wcpos.com](http://wcpos.com)
+* Roadmap: [http://wcpos.com/roadmap](http://wcpos.com/roadmap)
+* GitHub: [https://github.com/kilbot/WooCommerce-POS](https://github.com/kilbot/WooCommerce-POS)
+* Translate: [http://translate.wcpos.com](http://translate.wcpos.com)
+* Upgrade to Pro: [http://wcpos.com/pro](http://wcpos.com/pro)
 
 = REQUIREMENTS =
 * WooCommerce >= 2.3.7
@@ -78,6 +78,9 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 1. WooCommerce POS main screen
 
 == Changelog ==
+
+= 0.4.12 - 2017/06/05 =
+* Fix: (WC3 compatibility): Any retrieve Products with post_status = publish
 
 = 0.4.11 - 2017/05/31 =
 * Fix: (WC3 compatibility): correct sale completed date

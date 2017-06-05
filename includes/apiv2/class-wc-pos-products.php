@@ -308,6 +308,9 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
     // order product alphabetically
     $query->set('orderby', 'post_title');
     $query->set('order', 'ASC');
+
+    // default post_status is any!
+    $query->set( 'post_status', 'publish' );
   }
 
   /**

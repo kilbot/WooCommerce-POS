@@ -1,3 +1,6 @@
+= 0.4.12 - 2017/06/05 =
+* Fix: (WC3 compatibility): Any retrieve Products with post_status = publish
+
 = 0.4.11 - 2017/05/31 =
 * Fix: (WC3 compatibility): correct sale completed date
 * Fix: (WC3 compatibility): featured and on_sale filter
