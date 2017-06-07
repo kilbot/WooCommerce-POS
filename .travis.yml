@@ -9,8 +9,6 @@ services:
   - docker
 
 env:
-  global:
-    - WC_VERSION=https://github.com/woocommerce/woocommerce/releases/download/3.0.0-rc.2/woocommerce.zip
   matrix:
     - PHP_VERSION=php54 WP_VERSION=latest WP_MULTISITE=0
     - PHP_VERSION=php55 WP_VERSION=latest WP_MULTISITE=0
@@ -36,11 +34,13 @@ before_script:
   - docker exec woocommerce-pos-app-${PHP_VERSION} wp core version --allow-root
   - docker exec woocommerce-pos-app-${PHP_VERSION} wp plugin list --allow-root --status=active
 
+  ## download test theme and activate
+  - docker exec woocommerce-pos-app-${PHP_VERSION} wp theme install https://github.com/kilbot/WooCommerce-POS-Test-Theme/archive/master.zip --allow-root --activate
+
   ## turn off WP_DEBUG to prevent depreciation notices
-  - docker exec woocommerce-pos-app-${PHP_VERSION} sed -i "s/'WP_DEBUG', true/'WP_DEBUG', false/g" wp-config.php
+  #- docker exec woocommerce-pos-app-${PHP_VERSION} sed -i "s/'WP_DEBUG', true/'WP_DEBUG', false/g" wp-config.php
 
 script:
   - npm run unit-test:js
-  - if ["${PHP_VERSION}" == "php70"] && ["${WC_VERSION}" == "latest"]; then npm run integration-test:js ; fi
   - npm run unit-test:${PHP_VERSION}
   - npm run integration-test:${PHP_VERSION}
