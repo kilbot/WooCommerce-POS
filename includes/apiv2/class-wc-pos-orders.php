@@ -263,6 +263,11 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
       $data['completed_at'] = $data['date_created'];
     }
 
+    // hack: fix line_items.meta
+    if( is_array( $data['line_items'] ) ) : foreach( $data['line_items'] as &$line_item ) :
+      $line_item['meta'] = $line_item['meta_data'];
+    endforeach; endif;
+
     $response->set_data($data);
     return $response;
   }
@@ -292,6 +297,25 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
         $item->set_taxes( array( 'total' => $total ) );
       }
     }
+
+    // hack to fix meta_data
+    $meta_data = $item->get_meta_data();
+    if( isset($posted['meta_data']) && $meta_data && is_array($meta_data) ) {
+
+      // delete all meta
+      foreach($meta_data as $meta) {
+        $item->delete_meta_data($meta->key);
+      }
+
+      // re-add meta data
+      foreach($posted['meta_data'] as $meta) {
+        if ( isset( $meta['key'], $meta['value'] ) ) {
+          $item->update_meta_data( $meta['key'], $meta['value'], isset( $meta['id'] ) ? $meta['id'] : '' );
+        }
+      }
+
+    }
+
   }
 
 

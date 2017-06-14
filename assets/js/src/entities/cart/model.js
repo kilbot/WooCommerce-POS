@@ -263,6 +263,22 @@ module.exports = Model.extend({
       sum += this.get(array[i]);
     }
     return Utils.round(sum, 4);
+  },
+
+  // hack to copy meta to meta_data
+  toJSON: function(args){
+    var data = Model.prototype.toJSON.apply(this, args);
+    if(data.meta) {
+      var array = [];
+      _.each(data.meta, function(meta){
+         array.push({
+          key   : meta.label,
+          value : meta.value
+        });
+      });
+      data.meta_data = array;
+    }
+    return data;
   }
 
 });
