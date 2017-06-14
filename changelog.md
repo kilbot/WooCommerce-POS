@@ -1,5 +1,6 @@
 = 0.4.13 - 2017/06/14 = 
 * Fix: (WC3 compatibility): save product meta
+* Improvement: disable zoom on touch devices
 
 = 0.4.12 - 2017/06/05 =
 * Fix: (WC3 compatibility): Any retrieve Products with post_status = publish
