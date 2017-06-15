@@ -42,6 +42,11 @@ class WC_POS_Gateways {
       return $gateways;
     }
 
+    // prevent WorldPay from loading, it breaks the POS
+    if( ( $key = array_search('WC_Gateway_Worldpay_Form', $gateways) ) !== false ) {
+      unset( $gateways[$key] );
+    }
+
     // else add default POS gateways
     return array_merge($gateways, array(
       'WC_POS_Gateways_Cash',
