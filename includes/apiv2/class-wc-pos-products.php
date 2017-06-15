@@ -404,7 +404,7 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
 
     if($date_modified){
       $args['date_query'][] = array(
-        'column'    => 'post_modified_gmt',
+        'column'    => 'post_modified',
         'after'     => $date_modified,
         'inclusive' => false
       );

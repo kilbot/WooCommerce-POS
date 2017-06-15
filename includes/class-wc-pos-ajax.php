@@ -30,6 +30,10 @@ class WC_POS_AJAX {
       'toggle_legacy_server'  => 'WC_POS_Status',
     );
 
+    if( version_compare( WC()->version, '3', '>=' ) ) {
+      $ajax_events['get_all_ids'] = 'WC_POS_APIv2';
+    }
+
     foreach ( $ajax_events as $ajax_event => $class ) {
       // check_ajax_referer
       add_action( 'wp_ajax_wc_pos_' . $ajax_event, array( $this, 'check_ajax_referer' ), 1 );

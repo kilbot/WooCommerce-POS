@@ -42,7 +42,7 @@ var Model = DualModel.extend({
   initialize: function(attributes){
     attributes = attributes || {};
 
-    if(!attributes.customer){
+    if(!attributes.customer && !attributes.billing){
       var customers = this.getEntities('customers');
       var customer = customers['default'] || customers.guest || {};
       this.set({

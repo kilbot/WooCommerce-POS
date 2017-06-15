@@ -1,5 +1,6 @@
 = 0.4.13 - 2017/06/14 = 
 * Fix: (WC3 compatibility): save product meta
+* Fix: (WC3 compatibility): correctly sync stock numbers
 * Improvement: disable WorldPay gateway for POS
 * Improvement: disable zoom on touch devices
 
