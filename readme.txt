@@ -79,6 +79,12 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.4.13 - 2017/06/15 =
+* Fix: (WC3 compatibility): save product meta
+* Fix: (WC3 compatibility): correctly sync stock numbers
+* Improvement: disable WorldPay gateway for POS
+* Improvement: disable zoom on touch devices
+
 = 0.4.12 - 2017/06/05 =
 * Fix: (WC3 compatibility): Any retrieve Products with post_status = publish
 
@@ -200,6 +206,3 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 [View full changelog](https://github.com/kilbot/WooCommerce-POS/blob/master/changelog)
 
 == Upgrade Notice ==
-
-= 0.4.7 =
-* Urgent compatibility fix for WooCommerce 3. No need to update if you are not using WooCommerce 3.

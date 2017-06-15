@@ -29,6 +29,7 @@ class WC_POS_i18n {
     //    add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
     $this->load_plugin_textdomain();
     add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'update_check' ) );
+
     add_filter( 'upgrader_pre_download', array( $this, 'upgrader_pre_download' ), 10, 3 );
     add_filter( 'woocommerce_pos_enqueue_scripts', array( $this, 'js_locale' ) );
     add_filter( 'woocommerce_pos_enqueue_footer_js', array( $this, 'js_locale' ) );
@@ -73,7 +74,7 @@ class WC_POS_i18n {
     // pre_set_site_transient_update_plugins is called twice
     // we only want to act on the second run
     // also only continue for non English locales
-    if ( empty( $transient->checked ) || strpos( $locale, 'en_' ) === 0 ) {
+    if ( strpos( $locale, 'en_' ) === 0 ) {
       return $transient;
     }
 

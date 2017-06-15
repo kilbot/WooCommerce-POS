@@ -1,4 +1,4 @@
-= 0.4.13 - 2017/06/14 = 
+= 0.4.13 - 2017/06/15 = 
 * Fix: (WC3 compatibility): save product meta
 * Fix: (WC3 compatibility): correctly sync stock numbers
 * Improvement: disable WorldPay gateway for POS
