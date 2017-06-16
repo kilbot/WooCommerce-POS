@@ -47,16 +47,18 @@ class WC_POS_i18n {
     $locale = apply_filters( 'plugin_locale', get_locale(), 'woocommerce-pos' );
     $dir = trailingslashit( WP_LANG_DIR );
 
-    load_textdomain( 'woocommerce-pos', $dir . 'woocommerce-pos/woocommerce-pos-' . $locale . '.mo' );
-    load_textdomain( 'woocommerce-pos', $dir . 'plugins/woocommerce-pos-' . $locale . '.mo' );
+    //
+    if( is_pos() ) {
+      load_textdomain( 'woocommerce-pos', $dir . 'woocommerce-pos/woocommerce-pos-' . $locale . '.mo' );
+      load_textdomain( 'woocommerce-pos', $dir . 'plugins/woocommerce-pos-' . $locale . '.mo' );
+      load_textdomain( 'woocommerce', $dir . 'woocommerce/woocommerce-admin-' . $locale . '.mo' );
+      load_textdomain( 'woocommerce', $dir . 'plugins/woocommerce-admin-' . $locale . '.mo' );
+    }
 
     // admin translations
     if ( is_admin() ) {
       load_textdomain( 'woocommerce-pos', $dir . 'woocommerce-pos/woocommerce-pos-admin-' . $locale . '.mo' );
       load_textdomain( 'woocommerce-pos', $dir . 'plugins/woocommerce-pos-admin-' . $locale . '.mo' );
-    } else {
-      load_textdomain( 'woocommerce', $dir . 'woocommerce/woocommerce-admin-' . $locale . '.mo' );
-      load_textdomain( 'woocommerce', $dir . 'plugins/woocommerce-admin-' . $locale . '.mo' );
     }
 
   }
