@@ -43,7 +43,7 @@ class WC_POS_Gateways {
     }
 
     // prevent WorldPay from loading, it breaks the POS
-    if( ( $key = array_search('WC_Gateway_Worldpay_Form', $gateways) ) !== false ) {
+    if( is_pos() && ( $key = array_search('WC_Gateway_Worldpay_Form', $gateways) ) !== false ) {
       unset( $gateways[$key] );
     }
 
