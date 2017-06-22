@@ -14,7 +14,7 @@ namespace WC_POS;
 class Activator {
 
   // minimum requirements
-  const WC_MIN_VERSION = '2.3.7';
+  const WC_MIN_VERSION = '3';
   const PHP_MIN_VERSION = '5.4';
 
   /**

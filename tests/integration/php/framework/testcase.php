@@ -21,7 +21,7 @@ class TestCase extends \PHPUnit_Framework_TestCase {
     $this->login();
 
     $this->client = new Client([
-      'base_url' => get_woocommerce_api_url( '' ),
+      'base_url' => get_wcpos_api_url( '' ),
       'defaults' => [
         'exceptions' => false,
         'cookies' => true,
@@ -30,6 +30,7 @@ class TestCase extends \PHPUnit_Framework_TestCase {
         ]
       ]
     ]);
+
   }
 
   /**

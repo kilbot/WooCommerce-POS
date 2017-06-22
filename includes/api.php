@@ -13,136 +13,73 @@ namespace WC_POS;
 
 class API {
 
+  /* reference to payload class */
+  public $payload;
+
   /**
    *
    */
   public function __construct() {
 
-    // remove wc api authentication
-    // - relies on ->api and ->authentication being publicly accessible
-    if( isset( WC()->api ) && isset( WC()->api->authentication ) ){
-      remove_filter( 'woocommerce_api_check_authentication', array( WC()->api->authentication, 'authenticate' ), 0 );
-    }
+    // load POS API
+    $this->register_rest_routes();
 
-    // support for X-HTTP-Method-Override for WC < 2.4
-    if( version_compare( WC()->version, '2.4', '<' ) && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) ){
-      $_GET['_method'] = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
-    }
+    // duck punch WC API
+    add_filter( 'rest_dispatch_request', array( $this, 'rest_dispatch_request' ), 10, 4 );
+    add_filter( 'rest_request_before_callbacks', array( $this, 'rest_request_before_callbacks' ), 10, 3 );
 
-    add_filter( 'woocommerce_api_classes', array( $this, 'api_classes' ) );
-    add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 0 );
-    add_filter( 'woocommerce_api_dispatch_args', array( $this, 'dispatch_args'), 10, 2 );
-    add_filter( 'woocommerce_api_query_args', array( $this, 'woocommerce_api_query_args' ), 10, 2 );
   }
 
+
   /**
-   * Load API classes
-   *
-   * @param array $classes
-   * @return array
+   * payload endpoint will load all /pos endpoints
    */
-  public function api_classes( array $classes ){
-
-    // common classes
-    array_push(
-      $classes,
-      '\WC_POS\API\Products',
-      '\WC_POS\API\Orders',
-      '\WC_POS\API\Customers',
-      '\WC_POS\API\Coupons',
-      '\WC_POS\API\Payload',
-      '\WC_POS\API\Params',
-      '\WC_POS\API\i18n',
-      '\WC_POS\API\Templates'
-    );
-
-    // frontend only
-    if( current_user_can('access_woocommerce_pos') ){
-      array_push( $classes, '\WC_POS\API\Gateways', '\WC_POS\API\Support' );
-    }
-
-    // admin only
-    if( current_user_can('manage_woocommerce_pos') ){
-      array_push( $classes, '\WC_POS\API\Settings' );
-    }
-
-    return $classes;
+  public function register_rest_routes() {
+    $this->payload = new API\Payload();
+    $this->payload->register_routes();
   }
 
 
   /**
-   * Bypass authentication for WC REST API
-   * @todo use OAuth, how to handle manage no access?
-   *
-   * @return WP_User object
-   */
-  public function wc_api_authentication() {
-    global $current_user;
-    $user = $current_user;
-
-    if( user_can( $user->ID, 'access_woocommerce_pos' ) ) {
-      return $user;
-    }
-
-    return new \WP_Error(
-      'woocommerce_pos_authentication_error',
-      __( 'User not authorized to access WooCommerce POS', 'woocommerce-pos' ),
-      array( 'status' => 401 )
-    );
-  }
-
-  /**
-   * @todo this is a total hack, need to customise bb remote sync
-   *
-   * @param $args
-   * @param $callback
+   * @param $response
+   * @param $handler
+   * @param $request
    * @return mixed
    */
-  public function dispatch_args($args, $callback){
+  public function rest_request_before_callbacks( $response, $handler, $request ) {
+    $wc_api_handler = get_class($handler['callback'][0]);
 
-    // note: using headers rather than query params, easier to manage through the js app
-    $args['wc_pos_admin'] = is_pos_admin();
+//    switch($wc_api_handler) {
+//      case 'WC_REST_Products_Controller':
+//        $break = '';
+//        new WC_POS_APIv2_Products();
+//        break;
+//      case 'WC_REST_Orders_Controller':
+//        new WC_POS_APIv2_Orders();
+//        break;
+//      case 'WC_REST_Customers_Controller':
+//        new WC_POS_APIv2_Customers();
+//        break;
+//      case 'WC_REST_Coupons_Controller':
+//        new WC_POS_APIv2_Coupons();
+//        break;
+//    }
 
-    return $args;
+    return $response;
   }
 
+
   /**
-   * - this filter was introduced in WC 2.3
-   * @param $args
-   * @param $request_args
+   * @param null $halt
+   * @param $request
+   * @param $route
+   * @param $handler
    * @return mixed
    */
-  public function woocommerce_api_query_args($args, $request_args){
+  public function rest_dispatch_request( $halt, $request, $route, $handler ) {
 
-    // required for compatibility WC < 2.3.5
-    if ( ! empty( $request_args['in'] ) ) {
-      $args['post__in'] = explode(',', $request_args['in']);
-      unset( $request_args['in'] );
-    }
-
-    // required for compatibility WC < 2.4
-    if ( ! empty( $request_args['not_in'] ) ) {
-      $args['post__not_in'] = explode(',', $request_args['not_in']);
-      unset( $request_args['not_in'] );
-    }
-
-    // remove relevanssi
-    remove_filter('posts_request', 'relevanssi_prevent_default_request');
-    remove_filter('the_posts', 'relevanssi_query');
-
-    return $args;
+    return $halt;
   }
 
-  /**
-   * Raw payload
-   * @return array|mixed|string
-   */
-  static public function get_raw_data() {
-    global $HTTP_RAW_POST_DATA;
-    if ( !isset( $HTTP_RAW_POST_DATA ) ) {
-      $HTTP_RAW_POST_DATA = trim(file_get_contents('php://input'));
-    }
-    return json_decode( $HTTP_RAW_POST_DATA, true);
-  }
 
 }

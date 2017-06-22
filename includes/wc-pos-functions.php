@@ -25,6 +25,15 @@ if( ! function_exists('wc_pos_url') ){
 }
 
 /**
+ *
+ */
+if( ! function_exists('get_wcpos_api_url') ) {
+  function get_wcpos_api_url($path = '') {
+    return get_home_url(null, 'wp-json/wc/v2/' . $path, is_ssl() ? 'https' : 'http');
+  }
+}
+
+/**
  * Test for POS requests to the server
  *
  * @param $type

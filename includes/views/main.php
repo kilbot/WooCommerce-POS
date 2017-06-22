@@ -44,7 +44,7 @@
 
 <script>
   if(window.POS){
-    POS.start('<?php echo get_woocommerce_api_url(null); ?>');
+    POS.start('<?php echo get_wcpos_api_url('') ?>');
   } else {
     alert('<?php _e('POS assets failed to load', 'woocommerce-pos'); ?>');
   }

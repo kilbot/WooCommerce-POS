@@ -11,30 +11,43 @@
 
 namespace WC_POS\API;
 
-use WC_API_Resource;
-use WC_API_Server;
+use WC_REST_Controller;
+use WP_REST_Server;
 
-class Payload extends WC_API_Resource {
+class Payload extends WC_REST_Controller {
 
-  protected $base = '/pos';
+  /* Use same namespace as WooCommerce */
+  protected $namespace = 'wc/v2';
+
+  /* /pos endpoint */
+  protected $rest_base = 'pos';
+
 
   /**
    * Register routes for POS Params
    *
    * GET /pos
-   *
-   * @param array $routes
-   * @return array
    */
-  public function register_routes( array $routes ) {
+  public function register_routes() {
 
-    # GET /pos
-    $routes[ $this->base ] = array(
-      array( array( $this, 'get_payload' ), WC_API_Server::READABLE )
+    register_rest_route( $this->namespace, '/' . $this->rest_base, array(
+      array(
+        'methods'             => WP_REST_Server::READABLE,
+        'callback'            => array( $this, 'get_items' ),
+        'permission_callback' => array( $this, 'get_items_permissions_check' ),
+      )
+    ) );
+
+  }
+
+
+  /**
+   *
+   */
+  public function get_items() {
+    return array(
+      'params' => 'foo'
     );
-
-    return $routes;
-
   }
 
 
@@ -58,6 +71,28 @@ class Payload extends WC_API_Resource {
     }
 
     return $payload;
+  }
+
+
+  /**
+   * Permissions check
+   * note: current_user_can is not available here?
+   *
+   * @param \WP_REST_Request $request
+   * @return bool|\WP_Error
+   */
+  public function get_items_permissions_check ( $request ) {
+    global $current_user;
+    get_currentuserinfo();
+
+    if( ! user_can( $current_user->ID, 'access_woocommerce_pos' ) )
+      return new \WP_Error(
+        'woocommerce_pos_authentication_error',
+        __( 'User not authorized to access WooCommerce POS', 'woocommerce-pos' ),
+        array( 'status' => 401 )
+      );
+
+    return true;
   }
 
 }

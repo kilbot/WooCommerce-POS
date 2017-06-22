@@ -22,7 +22,11 @@ class Setup {
     require_once PLUGIN_PATH . 'includes/wc-pos-functions.php';
 
     add_action( 'init', array( $this, 'init' ) );
-    add_action( 'woocommerce_api_loaded', array( $this, 'load_woocommerce_pos_api') );
+    add_action( 'rest_api_init', array( $this, 'pos_api_init') );
+
+    // emails filter called very early :(
+    add_filter( 'woocommerce_defer_transactional_emails', array( $this, 'defer_transactional_emails' ) );
+
     do_action( 'woocommerce_pos_loaded' );
 
   }
@@ -61,7 +65,7 @@ class Setup {
   /**
    * Loads the POS API and patches to the WC REST API
    */
-  public function load_woocommerce_pos_api(){
+  public function pos_api_init(){
     if( is_pos() ){
       new API();
     }
@@ -77,6 +81,19 @@ class Setup {
       new Integrations\Bookings();
     }
 
+  }
+
+  /**
+   * Don't defer emails for POS orders
+   *
+   * @param $defer
+   * @return bool
+   */
+  public function defer_transactional_emails( $defer ) {
+    if( is_pos() ) {
+      return false;
+    }
+    return $defer;
   }
 
 }
