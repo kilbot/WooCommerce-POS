@@ -11,9 +11,6 @@
 
 namespace WC_POS\API;
 
-use WC_POS\API\i18n;
-use WC_POS\API\Params;
-use WC_POS\API\Templates;
 use WC_REST_Controller;
 use WP_REST_Server;
 
@@ -74,29 +71,6 @@ class Payload extends WC_REST_Controller {
 
     return $payload;
 
-  }
-
-
-  /**
-   * @param null $wc_pos_admin
-   * @return array
-   */
-  public function get_payload( $wc_pos_admin = null ) {
-    $wc_api = WC()->api;
-
-    $payload = array(
-      'i18n'      => $wc_api->{'\WC_POS\API\i18n'}->get_translations( $wc_pos_admin ),
-      'params'    => $wc_api->{'\WC_POS\API\Params'}->get_params( $wc_pos_admin ),
-      'templates' => $wc_api->{'\WC_POS\API\Templates'}->get_templates( $wc_pos_admin ),
-    );
-
-    if( $wc_pos_admin ){
-      $payload['params']['settings'] = $wc_api->{'\WC_POS\API\Settings'}->get_settings( '', $wc_pos_admin );
-    } else {
-      $payload['params']['gateways'] = $wc_api->{'\WC_POS\API\Gateways'}->get_gateways();
-    }
-
-    return $payload;
   }
 
 
