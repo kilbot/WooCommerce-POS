@@ -17,27 +17,22 @@ use WC_API_Resource;
 use WC_API_Server;
 use WC_Payment_Gateway;
 use WC_POS\Admin\Settings\Checkout;
+use WC_REST_Controller;
 
-class Gateways extends WC_API_Resource {
+class Gateways extends WC_REST_Controller {
 
-  protected $base = '/pos/gateways';
+  /* Use same namespace as WooCommerce */
+  protected $namespace = 'wc/v2';
+
+  /* /pos/gateways endpoint */
+  protected $rest_base = 'pos/gateways';
 
   /**
    * Register routes for POS Params
    *
    * GET /pos
-   *
-   * @param array $routes
-   * @return array
    */
-  public function register_routes( array $routes ) {
-
-    # GET /pos/params
-    $routes[ $this->base ] = array(
-      array( array( $this, 'get_gateways' ), WC_API_Server::READABLE )
-    );
-
-    return $routes;
+  public function register_routes() {
 
   }
 
@@ -45,7 +40,7 @@ class Gateways extends WC_API_Resource {
    * @param null $wc_pos_admin
    * @return array
    */
-  public function get_gateways( $wc_pos_admin = null ){
+  public function get_items( $wc_pos_admin = null ){
     if( $wc_pos_admin ){
       return;
     }

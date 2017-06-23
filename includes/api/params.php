@@ -11,32 +11,33 @@
 
 namespace WC_POS\API;
 
-use WC_API_Resource;
-use WC_API_Server;
+use WC_REST_Controller;
+use WP_REST_Server;
 use WC_POS\Admin\Settings;
-use WC_POS\i18n;
 use WC_POS\Tax;
 
-class Params extends WC_API_Resource {
+class Params extends WC_REST_Controller {
 
-  protected $base = '/pos/params';
+  /* Use same namespace as WooCommerce */
+  protected $namespace = 'wc/v2';
+
+  /* /pos/params endpoint */
+  protected $rest_base = 'pos/params';
 
   /**
    * Register routes for POS Params
    *
-   * GET /pos
-   *
-   * @param array $routes
-   * @return array
+   * GET /pos/params
    */
-  public function register_routes( array $routes ){
+  public function register_routes(){
 
-    # GET /pos/params
-    $routes[ $this->base ] = array(
-      array( array( $this, 'get_params' ), WC_API_Server::READABLE )
-    );
-
-    return $routes;
+//    register_rest_route( $this->namespace, '/' . $this->rest_base, array(
+//      array(
+//        'methods'             => WP_REST_Server::READABLE,
+//        'callback'            => array( $this, 'get_items' ),
+//        'permission_callback' => array( $this, 'get_items_permissions_check' ),
+//      )
+//    ) );
 
   }
 
@@ -44,7 +45,7 @@ class Params extends WC_API_Resource {
    * @param null $wc_pos_admin
    * @return array
    */
-  public function get_params( $wc_pos_admin = null ){
+  public function get_items( $wc_pos_admin = null ){
     if( $wc_pos_admin ){
       $params = apply_filters( 'woocommerce_pos_{$wc_pos_admin}_params', $this->common_params() + $this->admin_params(), $this );
     } else {
@@ -75,7 +76,7 @@ class Params extends WC_API_Resource {
   private function frontend_params(){
     return array(
       'auto_print'    => wc_pos_get_option('receipts', array('section' => 'receipt_options', 'key' => 'auto_print_receipt')),
-      'denominations' => i18n::currency_denominations(),
+      'denominations' => \WC_POS\i18n::currency_denominations(),
       'discount_keys' => wc_pos_get_option( 'cart', 'discount_quick_keys' ),
       'fee'           => wc_pos_get_option( 'cart', 'fee' ),
       'hotkeys'       => wc_pos_get_option( 'hotkeys', 'hotkeys' ),

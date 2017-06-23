@@ -11,6 +11,9 @@
 
 namespace WC_POS\API;
 
+use WC_POS\API\i18n;
+use WC_POS\API\Params;
+use WC_POS\API\Templates;
 use WC_REST_Controller;
 use WP_REST_Server;
 
@@ -21,6 +24,17 @@ class Payload extends WC_REST_Controller {
 
   /* /pos endpoint */
   protected $rest_base = 'pos';
+
+  /* reference to all API controllers */
+  private $controllers;
+
+
+  /**
+   *
+   */
+  public function __construct( array $controllers ) {
+    $this->controllers = $controllers;
+  }
 
 
   /**
@@ -44,10 +58,22 @@ class Payload extends WC_REST_Controller {
   /**
    *
    */
-  public function get_items() {
-    return array(
-      'params' => 'foo'
+  public function get_items( $wc_pos_admin ) {
+
+    $payload = array(
+      'i18n'      => $this->controllers['i18n']->get_items(),
+      'params'    => $this->controllers['params']->get_items(),
+      'templates' => $this->controllers['templates']->get_items(),
     );
+
+    if( $wc_pos_admin ){
+      $payload['params']['settings'] = $this->controllers['settings']->get_items( '', $wc_pos_admin );
+    } else {
+      $payload['params']['gateways'] = $this->controllers['gateways']->get_items();
+    }
+
+    return $payload;
+
   }
 
 

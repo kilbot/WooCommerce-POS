@@ -35,8 +35,22 @@ class API {
    * payload endpoint will load all /pos endpoints
    */
   public function register_rest_routes() {
-    $this->payload = new API\Payload();
-    $this->payload->register_routes();
+
+    $controllers = array(
+      'i18n'        => new API\i18n(),
+      'params'      => new API\Params(),
+      'templates'   => new API\Templates(),
+      'gateways'    => new API\Gateways(),
+      'settings'    => new API\Settings()
+    );
+
+    $payload = new API\Payload( $controllers );
+    $payload->register_routes();
+
+    foreach($controllers as $controller){
+      $controller->register_routes();
+    }
+
   }
 
 

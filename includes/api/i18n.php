@@ -11,36 +11,39 @@
 
 namespace WC_POS\API;
 
-use WC_API_Resource;
 use WC_API_Server;
+use WC_REST_Controller;
 
-class i18n extends WC_API_Resource {
+class i18n extends WC_REST_Controller {
 
-  protected $base = '/pos/i18n';
+  /* Use same namespace as WooCommerce */
+  protected $namespace = 'wc/v2';
+
+  /* /pos/i18n endpoint */
+  protected $rest_base = 'pos/i18n';
 
   /**
    * Register routes for POS Params
    *
-   * GET /pos
+   * GET /pos/i18n
    *
-   * @param array $routes
-   * @return array
    */
-  public function register_routes( array $routes ) {
+  public function register_routes() {
 
-    # GET /pos/i18n
-    $routes[ $this->base ] = array(
-      array( array( $this, 'get_translations' ), WC_API_Server::READABLE )
-    );
-
-    return $routes;
+//    register_rest_route( $this->namespace, '/' . $this->rest_base, array(
+//      array(
+//        'methods'             => WP_REST_Server::READABLE,
+//        'callback'            => array( $this, 'get_items' ),
+//        'permission_callback' => array( $this, 'get_items_permissions_check' ),
+//      )
+//    ) );
 
   }
 
   /**
    * @return array
    */
-  public function get_translations(){
+  public function get_items(){
 
     return apply_filters( 'woocommerce_pos_i18n', array(
       'titles'   => $this->titles(),

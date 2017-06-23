@@ -11,39 +11,48 @@
 
 namespace WC_POS\API;
 
-use WC_API_Resource;
-use WC_API_Server;
 use WC_POS\Admin\Settings as Admin_Settings;
 use WC_POS\Admin\Settings\Gateways as Admin_Settings_Gateways;
 use WC_POS\Admin\Status;
+use WC_REST_Controller;
+use WP_REST_Server;
 
-class Settings extends WC_API_Resource {
+class Settings extends WC_REST_Controller {
 
-  protected $base = '/pos/settings';
+  /* Use same namespace as WooCommerce */
+  protected $namespace = 'wc/v2';
+
+  /* /pos/settings endpoint */
+  protected $rest_base = 'pos/settings';
 
   /**
    * Register routes for POS Settings
    *
    * GET /pos
-   *
-   * @param array $routes
-   * @return array
-   */
-  public function register_routes( array $routes ) {
+   **/
+  public function register_routes() {
 
-    # GET /pos/settings
-    $routes[ $this->base ] = array(
-      array( array( $this, 'get_settings' ), WC_API_Server::READABLE )
-    );
+    register_rest_route( $this->namespace, '/' . $this->rest_base, array(
+      array(
+        'methods'             => WP_REST_Server::READABLE,
+        'callback'            => array( $this, 'get_items' ),
+        'permission_callback' => array( $this, 'get_items_permissions_check' ),
+      )
+    ) );
 
-    # GET|PUT|DELETE /pos/settings/<id>
-    $routes[ $this->base . '/(?P<id>\w+)' ] = array(
-      array( array( $this, 'get_settings' ),  WC_API_Server::READABLE ),
-      array( array( $this, 'edit_settings' ), WC_API_Server::EDITABLE | WC_API_Server::ACCEPT_DATA ),
-      array( array( $this, 'delete_settings' ), WC_API_Server::DELETABLE ),
-    );
-
-    return $routes;
+//    # GET /pos/settings
+//    $routes[ $this->base ] = array(
+//      array( array( $this, 'get_settings' ), WC_API_Server::READABLE )
+//    );
+//
+//    # GET|PUT|DELETE /pos/settings/<id>
+//    $routes[ $this->base . '/(?P<id>\w+)' ] = array(
+//      array( array( $this, 'get_settings' ),  WC_API_Server::READABLE ),
+//      array( array( $this, 'edit_settings' ), WC_API_Server::EDITABLE | WC_API_Server::ACCEPT_DATA ),
+//      array( array( $this, 'delete_settings' ), WC_API_Server::DELETABLE ),
+//    );
+//
+//    return $routes;
 
   }
 
@@ -55,7 +64,7 @@ class Settings extends WC_API_Resource {
    * @todo refactor, get_settings returns payload, edit_settings returns data
    * @todo move business logic to WC_POS_Admin_Settings?
    */
-  public function get_settings( $id = '', $wc_pos_admin = null, $defaults = false ){
+  public function get_items( $id = '', $wc_pos_admin = null, $defaults = false ){
 
     // @todo remove this special hack for 'restore default settings'
     if( $defaults ){
@@ -188,6 +197,14 @@ class Settings extends WC_API_Resource {
       array( 'status' => 400 )
     );
 
+  }
+
+  /**
+   * @param \WP_REST_Request $request
+   * @return bool
+   */
+  public function get_items_permissions_check ( $request ) {
+    return true;
   }
 
 }

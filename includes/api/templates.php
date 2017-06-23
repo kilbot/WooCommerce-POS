@@ -15,41 +15,51 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
-use WC_API_Resource;
-use WC_API_Server;
+use WC_REST_Controller;
+use WP_REST_Server;
 
-class Templates extends WC_API_Resource {
+class Templates extends WC_REST_Controller {
 
-  protected $base = '/pos/templates';
+  /* Use same namespace as WooCommerce */
+  protected $namespace = 'wc/v2';
+
+  /* /pos/templates endpoint */
+  protected $rest_base = 'pos/templates';
 
   /**
    * Register routes for POS Params
    *
    * GET /pos
    *
-   * @param array $routes
-   * @return array
    */
-  public function register_routes( array $routes ) {
+  public function register_routes() {
 
-    # GET /pos/templates
-    $routes[ $this->base ] = array(
-      array( array( $this, 'get_templates' ), WC_API_Server::READABLE ),
-      array( array( $this, 'create_receipt_template' ), WC_API_Server::CREATABLE | WC_API_Server::ACCEPT_DATA )
-    );
+    register_rest_route( $this->namespace, '/' . $this->rest_base, array(
+      array(
+        'methods'             => WP_REST_Server::READABLE,
+        'callback'            => array( $this, 'get_items' ),
+        'permission_callback' => array( $this, 'get_items_permissions_check' ),
+      )
+    ) );
 
-    # PUT, DELETE /pos/templates/<id>
-    $routes[ $this->base . '/(?P<id>\d+)' ] = array(
-      array( array( $this, 'update_receipt_template' ), WC_API_Server::EDITABLE | WC_API_Server::ACCEPT_DATA ),
-      array( array( $this, 'delete_receipt_template' ), WC_API_Server::DELETABLE ),
-    );
-
-    # GET /pos/templates/modal/<id>
-    $routes[ $this->base . '/modal/(?P<id>\w+)' ] = array(
-      array( array( $this, 'get_modal' ), WC_API_Server::READABLE )
-    );
-
-    return $routes;
+//    # GET /pos/templates
+//    $routes[ $this->base ] = array(
+//      array( array( $this, 'get_templates' ), WC_API_Server::READABLE ),
+//      array( array( $this, 'create_receipt_template' ), WC_API_Server::CREATABLE | WC_API_Server::ACCEPT_DATA )
+//    );
+//
+//    # PUT, DELETE /pos/templates/<id>
+//    $routes[ $this->base . '/(?P<id>\d+)' ] = array(
+//      array( array( $this, 'update_receipt_template' ), WC_API_Server::EDITABLE | WC_API_Server::ACCEPT_DATA ),
+//      array( array( $this, 'delete_receipt_template' ), WC_API_Server::DELETABLE ),
+//    );
+//
+//    # GET /pos/templates/modal/<id>
+//    $routes[ $this->base . '/modal/(?P<id>\w+)' ] = array(
+//      array( array( $this, 'get_modal' ), WC_API_Server::READABLE )
+//    );
+//
+//    return $routes;
 
   }
 
@@ -66,7 +76,7 @@ class Templates extends WC_API_Resource {
    * @param null $wc_pos_admin
    * @return array
    */
-  public function get_templates( $wc_pos_admin = null, $filter = array() ){
+  public function get_items( $wc_pos_admin = null, $filter = array() ){
 
     if(isset($filter['type']) && $filter['type'] == 'receipt'){
       return $this->get_receipt_template();
@@ -311,6 +321,15 @@ class Templates extends WC_API_Resource {
     foreach ( $receipt_types as $type => $values ) {
       register_post_status( $type, $values );
     }
+  }
+
+
+  /**
+   * @param \WP_REST_Request $request
+   * @return bool
+   */
+  public function get_items_permissions_check( $request ) {
+    return true;
   }
 
 }
