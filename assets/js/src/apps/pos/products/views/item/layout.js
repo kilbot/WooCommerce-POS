@@ -12,7 +12,11 @@ var Layout = LayoutView.extend({
   tagName: 'li',
 
   className: function () {
-    return this.model.get('type');
+    var className = this.model.get('type');
+    if(!this.model.get('in_stock')) {
+      className = className + ' out-of-stock';
+    }
+    return className;
   },
 
   template: function () {

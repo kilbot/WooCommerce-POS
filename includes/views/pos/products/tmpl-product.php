@@ -33,8 +33,8 @@
     {{/each}}
   </ul>
   {{/is}}
-  {{#if managing_stock}}
-  <small><?php /* translators: woocommerce */ printf( __( '%s in stock', 'woocommerce' ), '{{number stock_quantity precision="auto"}}' ); ?></small>
+  {{#if manage_stock}}
+  <small><?php printf( __( '%s in stock', 'woocommerce-pos' ), '{{number stock_quantity precision="auto"}}' ); ?></small>
   {{/if}}
 </div>
 <div class="price">

@@ -81,8 +81,8 @@ module.exports = Model.extend({
     }
 
     var attrs = _.extend( attributes, {
-      product_id    : attributes.id,
-      name          : attributes.title,
+      // product_id    : attributes.id,
+      // name          : attributes.title,
       item_price    : parseFloat( attributes.price || 0 ),
       regular_price : parseFloat( attributes.regular_price || 0 )
     } );
@@ -99,7 +99,8 @@ module.exports = Model.extend({
     }
 
     // return subset of attributes
-    return _.pick(attrs, productAttributes);
+    // return _.pick(attrs, productAttributes);
+    return attrs;
   },
   /* jshint +W074 */
 

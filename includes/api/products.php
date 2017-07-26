@@ -96,9 +96,17 @@ class Products {
   public function product_response( $response, $product, $request ) {
     $data = $response->get_data();
     $id = isset( $data['id'] ) ? $data['id'] : '';
+    $barcode = isset( $data['sku'] ) ? $data['sku'] : '';
 
-    // add thumbnail
+    // allow custom barcode field
+    $barcode_meta_key = apply_filters( 'woocommerce_pos_barcode_meta_key', '_sku' );
+    if( $barcode_meta_key !== '_sku' ){
+      $barcode = get_post_meta( $id, $barcode_meta_key, true );
+    }
+
+    // add extra data
     $data['featured_src'] = $this->get_thumbnail( $id );
+    $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $barcode, $id );
 
     $response->set_data($data);
     return $response;
