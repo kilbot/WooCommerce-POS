@@ -30,7 +30,7 @@ module.exports = Model.extend({
     }
 
     // use parent title
-    data.title = parentAttrs.title;
+    data.name = parentAttrs.name;
 
     // special case, empty option
     _(data.attributes).chain()

@@ -42,12 +42,10 @@ module.exports = Collection.extend({
   extends: ['dual', 'filtered'],
 
   initialState: {
-    filter: {
-      order: 'ASC',
-      orderby: 'title',
-      limit: 10,
-      qFields: ['title']
-    }
+    order: 'asc',
+    orderby: 'title',
+    per_page: 10,
+    qFields: ['title']
   },
 
   /**

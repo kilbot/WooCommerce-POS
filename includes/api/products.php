@@ -95,6 +95,33 @@ class Products {
    */
   public function product_response( $response, $product, $request ) {
     $data = $response->get_data();
+    $type = isset( $data['type'] ) ? $data['type'] : '';
+
+    // add variations
+    if( $type == 'variable' ) :
+      // nested variations
+      foreach( $data['variations'] as &$variation ) :
+        $response = WC()->api->WC_REST_Product_Variations_Controller->get_item(
+          array(
+            'id' => $variation,
+            'product_id' => $variation
+          )
+        );
+        $variation = $this->filter_response_data( $response->get_data() );
+      endforeach;
+    endif;
+
+    $data = $this->filter_response_data( $data );
+    $response->set_data($data);
+    return $response;
+  }
+
+
+  /**
+   * @param $data
+   * @return mixed
+   */
+  private function filter_response_data( $data ) {
     $id = isset( $data['id'] ) ? $data['id'] : '';
     $barcode = isset( $data['sku'] ) ? $data['sku'] : '';
 
@@ -108,8 +135,7 @@ class Products {
     $data['featured_src'] = $this->get_thumbnail( $id );
     $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $barcode, $id );
 
-    $response->set_data($data);
-    return $response;
+    return $data;
   }
 
 

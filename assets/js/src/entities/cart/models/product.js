@@ -13,7 +13,6 @@ var productAttributes = [
   'price',
   'item_price',
   'regular_price',
-  'taxable',
   'tax_status',
   'tax_class',
   'attributes',

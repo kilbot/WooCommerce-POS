@@ -48,7 +48,7 @@ module.exports = bb.Model.extend({
     });
 
     // on change in line item tax options
-    this.on( 'change:taxable change:tax_class', function(){
+    this.on( 'change:tax_status change:tax_class', function(){
       this.taxes.reset( this.getTaxRates() );
       this.updateTotals();
     }, this );
@@ -118,7 +118,7 @@ module.exports = bb.Model.extend({
    */
   getTaxRates: function(){
     var tax_rates = null;
-    if( this.get('taxable') ){
+    if( this.get('tax_status') === 'taxable' ){
       tax_rates = this.collection.order.getTaxRates( this.get('tax_class') || '' );
     }
     return tax_rates;

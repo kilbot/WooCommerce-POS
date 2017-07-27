@@ -20,9 +20,9 @@
   <div><?php /* translators: woocommerce */ _e( 'Taxable', 'woocommerce' ); ?>:</div>
   <div>
     <label class="c-input c-checkbox">
-      <input type="checkbox" name="taxable" id="taxable"><span class="c-indicator"></span>
+      <input type="checkbox" name="tax_status" id="tax_status"><span class="c-indicator"></span>
     </label>
-    <select class="c-select" name="tax_class" id="tax_class" {{#unless taxable}}disabled{{/unless}}></select>
+    <select class="c-select" name="tax_class" id="tax_class"></select>
   </div>
 </div>
 

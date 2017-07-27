@@ -15,7 +15,7 @@ module.exports = Model.extend({
     return {
       id            : null,
       title         : _.get( fee, 'name', polyglot.t('titles.fee') ),
-      taxable       : _.get( fee, 'taxable', true ),
+      tax_status    : _.get( fee, 'tax_status', 'taxable' ),
       tax_class     : _.get( fee, 'tax_class', '' ),
       price         : _.get( fee, 'price', 0 )
     };

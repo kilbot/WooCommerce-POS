@@ -48,7 +48,15 @@ var View = FormView.extend({
       onGet: Utils.formatNumber,
       onSet: Utils.unformat
     },
-    'input[name="taxable"]' : 'taxable',
+    'input[name="tax_status"]' : {
+      observe: 'tax_status',
+      onGet: function(val){
+        return val === 'taxable';
+      },
+      onSet: function(val){
+        return val ? 'taxable' : 'none';
+      }
+    },
     'select[name="tax_class"]' : {
       observe: 'tax_class',
       selectOptions: {
@@ -61,7 +69,7 @@ var View = FormView.extend({
       },
       attributes: [{
         name: 'disabled',
-        observe: 'taxable',
+        observe: 'tax_status',
         onGet: function(val) {
           return !val;
         }
