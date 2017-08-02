@@ -28,7 +28,7 @@
   <ul class="variant">
     {{#each attributes}}
     <li>
-      <strong>{{name}}:</strong> {{#list option ', '}}{{this}}{{/list}}
+      <strong>{{name}}:</strong> {{#if option}}{{option}}{{else}}{{#list options ', '}}{{this}}{{/list}}{{/if}}
     </li>
     {{/each}}
   </ul>

@@ -18,28 +18,28 @@ module.exports = Collection.extend({
    * Returns an array of options for the variation collection
    * - caches on first run
    */
-  getVariationOptions: function(){
-    if( !this._variationOptions ) {
-
-      this._variationOptions = _.chain( this.pluck('attributes') )
-        .reduce(function(result, attrs){
-          _.each(attrs, function(attr){
-            result[attr.name] = result[attr.name] || [];
-            result[attr.name] = result[attr.name].concat(attr.option);
-          });
-          return result;
-        }, {})
-        .map(function(options, name){
-          return {
-            'name': name,
-            'options': _.uniq( options )
-          };
-        })
-        .value();
-    }
-
-    return this._variationOptions;
-  },
+  // getVariationOptions: function(){
+  //   if( !this._variationOptions ) {
+  //
+  //     this._variationOptions = _.chain( this.pluck('attributes') )
+  //       .reduce(function(result, attrs){
+  //         _.each(attrs, function(attr){
+  //           result[attr.name] = result[attr.name] || [];
+  //           result[attr.name] = result[attr.name].concat(attr.option);
+  //         });
+  //         return result;
+  //       }, {})
+  //       .map(function(options, name){
+  //         return {
+  //           'name': name,
+  //           'options': _.uniq( options )
+  //         };
+  //       })
+  //       .value();
+  //   }
+  //
+  //   return this._variationOptions;
+  // },
 
   /**
    * same as _.compact, except allows 0

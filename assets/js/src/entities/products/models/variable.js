@@ -37,7 +37,8 @@ module.exports = Model.extend({
    * Wrapper for variation options
    */
   getVariationOptions: function(){
-    return this.variations.getVariationOptions();
+    return _.filter(this.get('attributes'), { variation: true });
+    // return this.variations.getVariationOptions();
   },
 
   /**

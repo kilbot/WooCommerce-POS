@@ -24,13 +24,16 @@ var Variations = ItemView.extend({
   },
 
   templateHelpers: function(){
-    var data = {};
-    data.variations = _.each(this.collection.getVariationOptions(), function(variation){
-      if(hasManyOptions(variation.options)){
-        variation.select = true;
-        variation.emptyOption = polyglot.t('messages.choose');
-      }
-    });
+    var data = {}, parent = _.get( this, ['collection', 'parent'] );
+    if(parent) {
+      data.variations = _.each(parent.getVariationOptions(), function(variation){
+        if(hasManyOptions(variation.options)){
+          variation.select = true;
+          variation.emptyOption = polyglot.t('messages.choose');
+        }
+      });
+    }
+
     return data;
   },
 

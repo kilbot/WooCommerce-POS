@@ -32,15 +32,12 @@ module.exports = Model.extend({
     // use parent title
     data.name = parentAttrs.name;
 
-    // special case, empty option
-    _(data.attributes).chain()
-      .filter({option: ''})
-      .each(function(empty){
-        empty.option = _(parentAttrs.attributes).chain()
-          .find({ name: empty.name, variation: true })
-          .get(['options']).value();
-      })
-      .value();
+    // merge parent variations and attributes to allow 'Any ...'
+    var attributes = this.collection.parent.getVariationOptions();
+    data.attributes = _.map(attributes, function(attribute){
+      var attr = _.find(data.attributes, { name: attribute.name } );
+      return attr ? attr : attribute;
+    });
 
     return data;
   }
