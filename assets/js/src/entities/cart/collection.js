@@ -52,7 +52,12 @@ module.exports = bb.Collection.extend({
       attrs = subclasses[type].prototype.parse.call( this, attrs );
 
       if( type === 'product' ){
-        var products = this.where({ product_id: attrs.product_id });
+        var products;
+        if( attrs.type === 'variation' ) {
+          products = this.where({ variation_id: attrs.variation_id });
+        } else {
+          products = this.where({ product_id: attrs.product_id });
+        }
         if( products.length === 1 && ! options.split ){
           products[0].quantity('increase').trigger('pulse');
           return;

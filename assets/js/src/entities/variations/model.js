@@ -31,6 +31,7 @@ module.exports = Model.extend({
 
     // use parent title
     data.name = parentAttrs.name;
+    data.parent_id = parentAttrs.id;
 
     // merge parent variations and attributes to allow 'Any ...'
     var attributes = this.collection.parent.getVariationOptions();

@@ -80,19 +80,21 @@ module.exports = Model.extend({
     }
 
     var attrs = _.extend( attributes, {
-      // product_id    : attributes.id,
-      // name          : attributes.title,
+      product_id    : attributes.id,
       item_price    : parseFloat( attributes.price || 0 ),
       regular_price : parseFloat( attributes.regular_price || 0 )
     } );
 
     // turn variation attributes into line item meta
+    // add variation_id
     if(attributes.type === 'variation'){
+      attrs.variation_id = attrs.product_id;
+      attrs.product_id = attrs.parent_id;
       attrs.meta = _.map(attributes.attributes, function(variant, idx){
         return {
           key  : ++idx,
           label: variant.name,
-          value: _.isArray(variant.option) ? variant.option.join(', ') : variant.option
+          value: _.isArray(variant.options) ? variant.options.join(', ') : variant.option
         };
       });
     }
