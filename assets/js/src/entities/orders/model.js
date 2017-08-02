@@ -28,12 +28,6 @@ var OrderModel = Parent.extend({
     // clone tax settings
     this.tax = _.clone(this.getSettings('tax'));
 
-    // bug fix: total_discount = cart_discount
-    // @todo: remove this hack
-    if(attributes){
-      attributes.cart_discount = attributes.total_discount;
-    }
-
     Model.call(this, attributes, _.extend({parse: true}, options));
   },
 
@@ -264,8 +258,8 @@ var OrderModel = Parent.extend({
         subtotal          = this.cart.sum('subtotal'),
         total_tax         = this.cart.sum('total_tax'),
         subtotal_tax      = this.cart.sum('subtotal_tax'),
-        cart_discount     = subtotal - total,
-        cart_discount_tax = subtotal_tax - total_tax;
+        discount_total    = subtotal - total,
+        discount_tax      = subtotal_tax - total_tax;
 
     total += total_tax;
 
@@ -274,8 +268,8 @@ var OrderModel = Parent.extend({
       'subtotal'         : Utils.round(subtotal, 4),
       'total_tax'        : Utils.round(total_tax, 4),
       'subtotal_tax'     : Utils.round(subtotal_tax, 4),
-      'cart_discount'    : Utils.round(cart_discount, 4),
-      'cart_discount_tax': Utils.round(cart_discount_tax, 4)
+      'discount_total'   : Utils.round(discount_total, 4),
+      'discount_tax'     : Utils.round(discount_tax, 4)
     };
 
     this.set(totals);
@@ -351,9 +345,9 @@ var OrderModel = Parent.extend({
    */
   getDisplayCartDiscount: function () {
     if (this.tax.tax_display_cart === 'incl') {
-      return this.sum(['cart_discount', 'cart_discount_tax']);
+      return this.sum(['discount_total', 'discount_tax']);
     } else {
-      return this.get('cart_discount');
+      return this.get('discount_total');
     }
   },
 

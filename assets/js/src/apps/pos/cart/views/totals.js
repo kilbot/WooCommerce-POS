@@ -44,12 +44,12 @@ module.exports = ItemView.extend({
     var data = {
       itemized: this.model.tax.tax_total_display === 'itemized',
       incl_tax: this.model.tax.tax_display_cart === 'incl',
-      has_discount: 0 !== this.model.get('cart_discount')
+      has_discount: 0 !== this.model.get('discount_total')
     };
 
     if( data.incl_tax ) {
       data.subtotal = this.model.getDisplaySubtotal();
-      data.cart_discount = this.model.getDisplayCartDiscount();
+      data.discount_total = this.model.getDisplayCartDiscount();
     }
 
     // sum for disabled taxes
