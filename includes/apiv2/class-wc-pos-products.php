@@ -82,7 +82,7 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
     'variations',
     'grouped_products',
     'menu_order',
-    'meta_data',
+//    'meta_data',
 
     /**
      * Fields add by POS
