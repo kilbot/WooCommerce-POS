@@ -44,7 +44,7 @@ describe('entities/cart/models/abstract.js', function () {
     var model = new Model();
     expect( model.taxes ).to.be.undefined;
 
-    var model = new Model( { taxable: true }, {
+    var model = new Model( { tax_status: 'taxable' }, {
       collection: {
         order : {
           tax: {
@@ -67,7 +67,7 @@ describe('entities/cart/models/abstract.js', function () {
 
   it('should reset tax rates on tax_class change', function(){
 
-    var model = new Model( { taxable: true, tax_class: '' }, {
+    var model = new Model( { tax_status: 'taxable', tax_class: '' }, {
       collection: {
         order : {
           tax: {
@@ -95,7 +95,7 @@ describe('entities/cart/models/abstract.js', function () {
 
   it('should reset tax rates on taxable change', function(){
 
-    var model = new Model( { taxable: false }, {
+    var model = new Model( { tax_status: 'none' }, {
       collection: {
         order : {
           tax: {
@@ -112,9 +112,9 @@ describe('entities/cart/models/abstract.js', function () {
     });
 
     expect( model.taxes ).to.have.length(0);
-    model.set( { taxable: true } );
+    model.set( { tax_status: 'taxable' } );
     expect( model.taxes ).to.have.length(2);
-    model.set( { taxable: false } );
+    model.set( { tax_status: 'none' } );
     expect( model.taxes ).to.have.length(0);
 
   });

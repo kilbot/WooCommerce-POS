@@ -1,1093 +1,4244 @@
-{
-  "products": [
-    {
-      "title": "Woo Single #2",
-      "id": 99,
-      "created_at": "2013-06-07T11:38:12Z",
-      "updated_at": "2013-06-07T11:38:12Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-single-2\/",
-      "sku": "",
-      "price": "2.00",
-      "regular_price": "3.00",
-      "sale_price": "2.00",
-      "price_html": "<del><span class=\"amount\">&pound;3.00<\/span><\/del> <ins><span class=\"amount\">&pound;2.00<\/span><\/ins>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": true,
-      "parent_id": 0,
-      "categories": [
-        "Music",
-        "Singles"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_6_angle-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
+[
+  {
+    "id": 99,
+    "name": "Woo Single #2",
+    "slug": "woo-single-2",
+    "permalink": "http://php56.local/product/woo-single-2",
+    "date_created": "2013-06-07T11:38:12",
+    "date_created_gmt": "2013-06-07T11:38:12",
+    "date_modified": "2017-04-02T12:07:40",
+    "date_modified_gmt": "2017-04-02T12:07:40",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "2",
+    "regular_price": "3",
+    "sale_price": "2",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>3.00</span></del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>2.00</span></ins>",
+    "on_sale": true,
+    "purchasable": true,
+    "total_sales": 9,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "none",
+    "tax_class": "",
+    "manage_stock": true,
+    "stock_quantity": 0,
+    "in_stock": false,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
     },
-    {
-      "title": "Woo Album #4",
-      "id": 96,
-      "created_at": "2013-06-07T11:37:23Z",
-      "updated_at": "2013-06-07T11:37:23Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": true,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-album-4\/",
-      "sku": "",
-      "price": "9.00",
-      "regular_price": "9.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;9.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Albums",
-        "Music"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_5_angle-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Woo Single #1",
-      "id": 93,
-      "created_at": "2013-06-07T11:36:34Z",
-      "updated_at": "2013-06-07T11:36:34Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": true,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-single-1\/",
-      "sku": "",
-      "price": "3.00",
-      "regular_price": "3.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;3.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Music",
-        "Singles"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_4_angle-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Woo Album #3",
-      "id": 90,
-      "created_at": "2013-06-07T11:35:18Z",
-      "updated_at": "2013-06-07T11:35:18Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": true,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-album-3\/",
-      "sku": "",
-      "price": "9.00",
-      "regular_price": "9.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;9.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Albums",
-        "Music"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_3_angle-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Woo Album #2",
-      "id": 87,
-      "created_at": "2013-06-07T11:34:14Z",
-      "updated_at": "2013-06-07T11:34:14Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": true,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-album-2\/",
-      "sku": "",
-      "price": "9.00",
-      "regular_price": "9.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;9.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Albums",
-        "Music"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_2_angle-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Woo Album #1",
-      "id": 83,
-      "created_at": "2013-06-07T11:33:05Z",
-      "updated_at": "2013-06-07T11:33:05Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": true,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-album-1\/",
-      "sku": "",
-      "price": "9.00",
-      "regular_price": "9.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;9.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Albums",
-        "Music"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/cd_1_angle-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Woo Logo",
-      "id": 79,
-      "created_at": "2013-06-07T11:29:44Z",
-      "updated_at": "2013-06-07T11:29:44Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-logo-3\/",
-      "sku": "",
-      "price": "15.00",
-      "regular_price": "15.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;15.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": ["Posters"],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/poster_5_up-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Woo Ninja",
-      "id": 76,
-      "created_at": "2013-06-07T11:28:45Z",
-      "updated_at": "2013-06-07T11:28:45Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-ninja-3\/",
-      "sku": "",
-      "price": "15.00",
-      "regular_price": "15.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;15.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": ["Posters"],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/poster_4_up-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Premium Quality",
-      "id": 73,
-      "created_at": "2013-06-07T11:27:38Z",
-      "updated_at": "2013-06-07T11:27:38Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/premium-quality-2\/",
-      "sku": "",
-      "price": "12.00",
-      "regular_price": "15.00",
-      "sale_price": "12.00",
-      "price_html": "<del><span class=\"amount\">&pound;15.00<\/span><\/del> <ins><span class=\"amount\">&pound;12.00<\/span><\/ins>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": true,
-      "parent_id": 0,
-      "categories": ["Posters"],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/poster_3_up-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Flying Ninja",
-      "id": 70,
-      "created_at": "2013-06-07T11:25:01Z",
-      "updated_at": "2013-06-07T11:25:01Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/flying-ninja\/",
-      "sku": "",
-      "price": "12.00",
-      "regular_price": "15.00",
-      "sale_price": "12.00",
-      "price_html": "<del><span class=\"amount\">&pound;15.00<\/span><\/del> <ins><span class=\"amount\">&pound;12.00<\/span><\/ins>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": true,
-      "parent_id": 0,
-      "categories": ["Posters"],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/poster_2_up-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Ship Your Idea",
-      "id": 67,
-      "created_at": "2013-06-07T11:22:50Z",
-      "updated_at": "2013-06-07T11:22:50Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea-3\/",
-      "sku": "",
-      "price": "15.00",
-      "regular_price": "15.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;15.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": ["Posters"],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/poster_1_up-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Woo Logo",
-      "id": 60,
-      "created_at": "2013-06-07T11:12:55Z",
-      "updated_at": "2013-06-07T11:12:55Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-logo-2\/",
-      "sku": "",
-      "price": "35.00",
-      "regular_price": "35.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;35.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Clothing",
-        "Hoodies"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_6_front-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Ninja Silhouette",
-      "id": 56,
-      "created_at": "2013-06-07T11:07:19Z",
-      "updated_at": "2013-06-07T11:07:19Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/ninja-silhouette-2\/",
-      "sku": "",
-      "price": "35.00",
-      "regular_price": "35.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;35.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Clothing",
-        "Hoodies"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_5_front-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Happy Ninja",
-      "id": 53,
-      "created_at": "2013-06-07T11:05:37Z",
-      "updated_at": "2013-06-07T11:05:37Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/happy-ninja-2\/",
-      "sku": "",
-      "price": "35.00",
-      "regular_price": "35.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;35.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Clothing",
-        "Hoodies"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_4_front-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Patient Ninja",
-      "id": 50,
-      "created_at": "2013-06-07T11:03:56Z",
-      "updated_at": "2013-06-07T11:03:56Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/patient-ninja\/",
-      "sku": "",
-      "price": "35.00",
-      "regular_price": "35.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;35.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Clothing",
-        "Hoodies"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_3_front-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Woo Ninja",
-      "id": 47,
-      "created_at": "2013-06-07T11:02:31Z",
-      "updated_at": "2013-06-07T11:02:31Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-ninja-2\/",
-      "sku": "",
-      "price": "35.00",
-      "regular_price": "35.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;35.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Clothing",
-        "Hoodies"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_2_front-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Ship Your Idea",
-      "id": 40,
-      "created_at": "2013-06-07T11:00:28Z",
-      "updated_at": "2013-06-07T11:00:28Z",
-      "type": "variable",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea-2\/",
-      "sku": "",
-      "price": "30.00",
-      "regular_price": "0.00",
-      "sale_price": null,
-      "price_html": "<del><span class=\"amount\">&pound;35.00<\/span><\/del> <ins><span class=\"amount\">&pound;30.00<\/span>&ndash;<span class=\"amount\">&pound;35.00<\/span><\/ins>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": true,
-      "parent_id": 0,
-      "categories": [
-        "Clothing",
-        "Hoodies"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_7_front-90x90.jpg",
-      "attributes": [
+    "shipping_required": true,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.50",
+    "rating_count": 2,
+    "related_ids": [
+      96,
+      90,
+      93,
+      87,
+      83
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 17,
+        "name": "Music",
+        "slug": "music"
+      },
+      {
+        "id": 19,
+        "name": "Singles",
+        "slug": "singles"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 100,
+        "date_created": "2013-06-07T11:37:51",
+        "date_created_gmt": "2013-06-07T11:37:51",
+        "date_modified": "2013-06-07T11:37:51",
+        "date_modified_gmt": "2013-06-07T11:37:51",
+        "src": "http://php56.local/wp-content/uploads/2013/06/cd_6_angle.jpg",
+        "name": "cd_6_angle",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 101,
+        "date_created": "2013-06-07T11:38:03",
+        "date_created_gmt": "2013-06-07T11:38:03",
+        "date_modified": "2013-06-07T11:38:03",
+        "date_modified_gmt": "2013-06-07T11:38:03",
+        "src": "http://php56.local/wp-content/uploads/2013/06/cd_6_flat.jpg",
+        "name": "cd_6_flat",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/cd_6_angle.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
         {
-          "name": "Color",
-          "position": "0",
-          "visible": false,
-          "variation": true,
-          "options": ["Black", "Blue"]
+          "href": "http://php56.local/wp-json/wc/v2/products/99"
         }
       ],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [
+      "collection": [
         {
-          "id": 41,
-          "created_at": "2013-06-07T11:00:28Z",
-          "updated_at": "2013-06-07T11:00:28Z",
-          "downloadable": false,
-          "virtual": false,
-          "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea-2\/?attribute_pa_color=black",
-          "sku": "",
-          "price": "35.00",
-          "regular_price": "35.00",
-          "sale_price": null,
-          "taxable": false,
-          "tax_status": "taxable",
-          "tax_class": "",
-          "managing_stock": false,
-          "stock_quantity": 0,
-          "in_stock": true,
-          "backordered": false,
-          "purchaseable": true,
-          "visible": true,
-          "on_sale": false,
-          "attributes": [
-            {
-              "name": "Color",
-              "option": "Black"
-            }
-          ],
-          "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_7_front-90x90.jpg",
-          "barcode": ""
-        },
-        {
-          "id": 42,
-          "created_at": "2013-06-07T11:00:28Z",
-          "updated_at": "2013-06-07T11:00:28Z",
-          "downloadable": false,
-          "virtual": false,
-          "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea-2\/?attribute_pa_color=blue",
-          "sku": "",
-          "price": "30.00",
-          "regular_price": "35.00",
-          "sale_price": "30.00",
-          "taxable": false,
-          "tax_status": "taxable",
-          "tax_class": "",
-          "managing_stock": false,
-          "stock_quantity": 0,
-          "in_stock": true,
-          "backordered": false,
-          "purchaseable": true,
-          "visible": true,
-          "on_sale": true,
-          "attributes": [
-            {
-              "name": "Color",
-              "option": "Blue"
-            }
-          ],
-          "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/hoodie_1_front-90x90.jpg",
-          "barcode": ""
+          "href": "http://php56.local/wp-json/wc/v2/products"
         }
-      ],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Happy Ninja",
-      "id": 37,
-      "created_at": "2013-06-07T10:53:15Z",
-      "updated_at": "2013-06-07T10:53:15Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/happy-ninja\/",
-      "sku": "",
-      "price": "18.00",
-      "regular_price": "18.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;18.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Clothing",
-        "T-shirts"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/T_7_front-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Woo Ninja",
-      "id": 34,
-      "created_at": "2013-06-07T10:52:06Z",
-      "updated_at": "2013-06-07T10:52:06Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-ninja\/",
-      "sku": "",
-      "price": "20.00",
-      "regular_price": "20.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;20.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Clothing",
-        "T-shirts"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/T_6_front-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Ninja Silhouette",
-      "id": 31,
-      "created_at": "2013-06-07T10:49:51Z",
-      "updated_at": "2013-06-07T10:49:51Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/ninja-silhouette\/",
-      "sku": "",
-      "price": "20.00",
-      "regular_price": "20.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;20.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Clothing",
-        "T-shirts"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/T_5_front-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Ship Your Idea",
-      "id": 22,
-      "created_at": "2013-06-07T10:46:01Z",
-      "updated_at": "2013-06-07T10:46:01Z",
-      "type": "variable",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea\/",
-      "sku": "",
-      "price": "20.00",
-      "regular_price": "0.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;20.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Clothing",
-        "T-shirts"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/T_4_front-90x90.jpg",
-      "attributes": [
-        {
-          "name": "Color",
-          "position": "0",
-          "visible": false,
-          "variation": true,
-          "options": [""]
-        }
-      ],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [
-        {
-          "id": 23,
-          "created_at": "2013-06-07T10:46:01Z",
-          "updated_at": "2013-06-07T10:46:01Z",
-          "downloadable": false,
-          "virtual": false,
-          "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea\/?attribute_pa_color=black",
-          "sku": "",
-          "price": "20.00",
-          "regular_price": "20.00",
-          "sale_price": null,
-          "taxable": false,
-          "tax_status": "taxable",
-          "tax_class": "",
-          "managing_stock": false,
-          "stock_quantity": 0,
-          "in_stock": true,
-          "backordered": false,
-          "purchaseable": true,
-          "visible": true,
-          "on_sale": false,
-          "attributes": [
-            {
-              "name": "Color",
-              "option": "black"
-            }
-          ],
-          "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/T_4_front1-90x90.jpg",
-          "barcode": ""
-        },
-        {
-          "id": 24,
-          "created_at": "2013-06-07T10:46:01Z",
-          "updated_at": "2013-06-07T10:46:01Z",
-          "downloadable": false,
-          "virtual": false,
-          "permalink": "http:\/\/demo.woopos.com.au\/product\/ship-your-idea\/?attribute_pa_color=green",
-          "sku": "",
-          "price": "20.00",
-          "regular_price": "20.00",
-          "sale_price": null,
-          "taxable": false,
-          "tax_status": "taxable",
-          "tax_class": "",
-          "managing_stock": false,
-          "stock_quantity": 0,
-          "in_stock": true,
-          "backordered": false,
-          "purchaseable": true,
-          "visible": true,
-          "on_sale": false,
-          "attributes": [
-            {
-              "name": "Color",
-              "option": "green"
-            }
-          ],
-          "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/T_3_front-90x90.jpg",
-          "barcode": ""
-        }
-      ],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Premium Quality",
-      "id": 19,
-      "created_at": "2013-06-07T10:41:52Z",
-      "updated_at": "2013-06-07T10:41:52Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/premium-quality\/",
-      "sku": "",
-      "price": "20.00",
-      "regular_price": "20.00",
-      "sale_price": null,
-      "price_html": "<span class=\"amount\">&pound;20.00<\/span>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": false,
-      "stock_quantity": 0,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": false,
-      "parent_id": 0,
-      "categories": [
-        "Clothing",
-        "T-shirts"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/T_2_front-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
-    },
-    {
-      "title": "Woo Logo",
-      "id": 15,
-      "created_at": "2013-06-07T10:35:51Z",
-      "updated_at": "2013-06-07T10:35:51Z",
-      "type": "simple",
-      "status": "publish",
-      "downloadable": false,
-      "virtual": false,
-      "permalink": "http:\/\/demo.woopos.com.au\/product\/woo-logo\/",
-      "sku": "",
-      "price": "18.00",
-      "regular_price": "20.00",
-      "sale_price": "18.00",
-      "price_html": "<del><span class=\"amount\">&pound;20.00<\/span><\/del> <ins><span class=\"amount\">&pound;18.00<\/span><\/ins>",
-      "taxable": false,
-      "tax_status": "taxable",
-      "tax_class": "",
-      "managing_stock": true,
-      "stock_quantity": 5,
-      "in_stock": true,
-      "backorders_allowed": false,
-      "backordered": false,
-      "sold_individually": false,
-      "purchaseable": true,
-      "featured": false,
-      "visible": true,
-      "catalog_visibility": "visible",
-      "on_sale": true,
-      "parent_id": 0,
-      "categories": [
-        "Clothing",
-        "T-shirts"
-      ],
-      "featured_src": "http:\/\/demo.woopos.com.au\/wp-content\/uploads\/2013\/06\/T_1_front-90x90.jpg",
-      "attributes": [],
-      "purchase_note": "",
-      "total_sales": 0,
-      "variations": [],
-      "parent": [],
-      "barcode": ""
+      ]
     }
-  ]
-}
+  },
+  {
+    "id": 96,
+    "name": "Woo Album #4",
+    "slug": "woo-album-4",
+    "permalink": "http://php56.local/product/woo-album-4",
+    "date_created": "2013-06-07T11:37:23",
+    "date_created_gmt": "2013-06-07T11:37:23",
+    "date_modified": "2017-07-26T07:24:28",
+    "date_modified_gmt": "2017-07-26T07:24:28",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "9",
+    "regular_price": "9",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>9.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": true,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": true,
+    "stock_quantity": 45,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "5.00",
+    "rating_count": 2,
+    "related_ids": [
+      87,
+      90,
+      93,
+      83,
+      99
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 21,
+        "name": "Albums",
+        "slug": "albums"
+      },
+      {
+        "id": 17,
+        "name": "Music",
+        "slug": "music"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 97,
+        "date_created": "2013-06-07T11:37:04",
+        "date_created_gmt": "2013-06-07T11:37:04",
+        "date_modified": "2013-06-07T11:37:04",
+        "date_modified_gmt": "2013-06-07T11:37:04",
+        "src": "http://php56.local/wp-content/uploads/2013/06/cd_5_angle.jpg",
+        "name": "cd_5_angle",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 98,
+        "date_created": "2013-06-07T11:37:17",
+        "date_created_gmt": "2013-06-07T11:37:17",
+        "date_modified": "2013-06-07T11:37:17",
+        "date_modified_gmt": "2013-06-07T11:37:17",
+        "src": "http://php56.local/wp-content/uploads/2013/06/cd_5_flat.jpg",
+        "name": "cd_5_flat",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/cd_5_angle.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/96"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 93,
+    "name": "Woo Single #1",
+    "slug": "woo-single-1",
+    "permalink": "http://php56.local/product/woo-single-1",
+    "date_created": "2013-06-07T11:36:34",
+    "date_created_gmt": "2013-06-07T11:36:34",
+    "date_modified": "2013-06-07T11:36:34",
+    "date_modified_gmt": "2013-06-07T11:36:34",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "3",
+    "regular_price": "3",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>3.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": true,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "related_ids": [
+      99,
+      87,
+      96,
+      90,
+      83
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 17,
+        "name": "Music",
+        "slug": "music"
+      },
+      {
+        "id": 19,
+        "name": "Singles",
+        "slug": "singles"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 95,
+        "date_created": "2013-06-07T11:36:22",
+        "date_created_gmt": "2013-06-07T11:36:22",
+        "date_modified": "2013-06-07T11:36:22",
+        "date_modified_gmt": "2013-06-07T11:36:22",
+        "src": "http://php56.local/wp-content/uploads/2013/06/cd_4_angle.jpg",
+        "name": "cd_4_angle",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 94,
+        "date_created": "2013-06-07T11:36:10",
+        "date_created_gmt": "2013-06-07T11:36:10",
+        "date_modified": "2013-06-07T11:36:10",
+        "date_modified_gmt": "2013-06-07T11:36:10",
+        "src": "http://php56.local/wp-content/uploads/2013/06/cd_4_flat.jpg",
+        "name": "cd_4_flat",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/cd_4_angle.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/93"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 90,
+    "name": "Woo Album #3",
+    "slug": "woo-album-3",
+    "permalink": "http://php56.local/product/woo-album-3",
+    "date_created": "2013-06-07T11:35:18",
+    "date_created_gmt": "2013-06-07T11:35:18",
+    "date_modified": "2013-06-07T11:35:18",
+    "date_modified_gmt": "2013-06-07T11:35:18",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "9",
+    "regular_price": "9",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>9.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": true,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "3.00",
+    "rating_count": 1,
+    "related_ids": [
+      87,
+      93,
+      96,
+      83,
+      99
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 21,
+        "name": "Albums",
+        "slug": "albums"
+      },
+      {
+        "id": 17,
+        "name": "Music",
+        "slug": "music"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 91,
+        "date_created": "2013-06-07T11:34:58",
+        "date_created_gmt": "2013-06-07T11:34:58",
+        "date_modified": "2013-06-07T11:34:58",
+        "date_modified_gmt": "2013-06-07T11:34:58",
+        "src": "http://php56.local/wp-content/uploads/2013/06/cd_3_angle.jpg",
+        "name": "cd_3_angle",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 92,
+        "date_created": "2013-06-07T11:35:10",
+        "date_created_gmt": "2013-06-07T11:35:10",
+        "date_modified": "2013-06-07T11:35:10",
+        "date_modified_gmt": "2013-06-07T11:35:10",
+        "src": "http://php56.local/wp-content/uploads/2013/06/cd_3_flat.jpg",
+        "name": "cd_3_flat",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/cd_3_angle.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/90"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 87,
+    "name": "Woo Album #2",
+    "slug": "woo-album-2",
+    "permalink": "http://php56.local/product/woo-album-2",
+    "date_created": "2013-06-07T11:34:14",
+    "date_created_gmt": "2013-06-07T11:34:14",
+    "date_modified": "2013-06-07T11:34:14",
+    "date_modified_gmt": "2013-06-07T11:34:14",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "9",
+    "regular_price": "9",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>9.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": true,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.00",
+    "rating_count": 1,
+    "related_ids": [
+      96,
+      83,
+      93,
+      90,
+      99
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 21,
+        "name": "Albums",
+        "slug": "albums"
+      },
+      {
+        "id": 17,
+        "name": "Music",
+        "slug": "music"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 88,
+        "date_created": "2013-06-07T11:33:53",
+        "date_created_gmt": "2013-06-07T11:33:53",
+        "date_modified": "2013-06-07T11:33:53",
+        "date_modified_gmt": "2013-06-07T11:33:53",
+        "src": "http://php56.local/wp-content/uploads/2013/06/cd_2_angle.jpg",
+        "name": "cd_2_angle",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 89,
+        "date_created": "2013-06-07T11:34:07",
+        "date_created_gmt": "2013-06-07T11:34:07",
+        "date_modified": "2013-06-07T11:34:07",
+        "date_modified_gmt": "2013-06-07T11:34:07",
+        "src": "http://php56.local/wp-content/uploads/2013/06/cd_2_flat.jpg",
+        "name": "cd_2_flat",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/cd_2_angle.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/87"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 83,
+    "name": "Woo Album #1",
+    "slug": "woo-album-1",
+    "permalink": "http://php56.local/product/woo-album-1",
+    "date_created": "2013-06-07T11:33:05",
+    "date_created_gmt": "2013-06-07T11:33:05",
+    "date_modified": "2013-06-07T11:33:05",
+    "date_modified_gmt": "2013-06-07T11:33:05",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "9",
+    "regular_price": "9",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>9.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": true,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "related_ids": [
+      99,
+      90,
+      87,
+      96,
+      93
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 21,
+        "name": "Albums",
+        "slug": "albums"
+      },
+      {
+        "id": 17,
+        "name": "Music",
+        "slug": "music"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 84,
+        "date_created": "2013-06-07T11:32:44",
+        "date_created_gmt": "2013-06-07T11:32:44",
+        "date_modified": "2013-06-07T11:32:44",
+        "date_modified_gmt": "2013-06-07T11:32:44",
+        "src": "http://php56.local/wp-content/uploads/2013/06/cd_1_angle.jpg",
+        "name": "cd_1_angle",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 85,
+        "date_created": "2013-06-07T11:32:57",
+        "date_created_gmt": "2013-06-07T11:32:57",
+        "date_modified": "2013-06-07T11:32:57",
+        "date_modified_gmt": "2013-06-07T11:32:57",
+        "src": "http://php56.local/wp-content/uploads/2013/06/cd_1_flat.jpg",
+        "name": "cd_1_flat",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/cd_1_angle.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/83"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 79,
+    "name": "Woo Logo",
+    "slug": "woo-logo-3",
+    "permalink": "http://php56.local/product/woo-logo-3",
+    "date_created": "2013-06-07T11:29:44",
+    "date_created_gmt": "2013-06-07T11:29:44",
+    "date_modified": "2013-06-07T11:29:44",
+    "date_modified_gmt": "2013-06-07T11:29:44",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "15",
+    "regular_price": "15",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>15.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "related_ids": [
+      73,
+      70,
+      67,
+      76
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [
+      15,
+      60
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 18,
+        "name": "Posters",
+        "slug": "posters"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 80,
+        "date_created": "2013-06-07T11:29:26",
+        "date_created_gmt": "2013-06-07T11:29:26",
+        "date_modified": "2013-06-07T11:29:26",
+        "date_modified_gmt": "2013-06-07T11:29:26",
+        "src": "http://php56.local/wp-content/uploads/2013/06/poster_5_up.jpg",
+        "name": "poster_5_up",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 81,
+        "date_created": "2013-06-07T11:29:37",
+        "date_created_gmt": "2013-06-07T11:29:37",
+        "date_modified": "2013-06-07T11:29:37",
+        "date_modified_gmt": "2013-06-07T11:29:37",
+        "src": "http://php56.local/wp-content/uploads/2013/06/Poster_5_flat.jpg",
+        "name": "Poster_5_flat",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/poster_5_up.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/79"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 76,
+    "name": "Woo Ninja",
+    "slug": "woo-ninja-3",
+    "permalink": "http://php56.local/product/woo-ninja-3",
+    "date_created": "2013-06-07T11:28:45",
+    "date_created_gmt": "2013-06-07T11:28:45",
+    "date_modified": "2013-06-07T11:28:45",
+    "date_modified_gmt": "2013-06-07T11:28:45",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "15",
+    "regular_price": "15",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>15.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.00",
+    "rating_count": 1,
+    "related_ids": [
+      67,
+      73,
+      79,
+      70
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [
+      34,
+      47
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 18,
+        "name": "Posters",
+        "slug": "posters"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 77,
+        "date_created": "2013-06-07T11:28:07",
+        "date_created_gmt": "2013-06-07T11:28:07",
+        "date_modified": "2013-06-07T11:28:07",
+        "date_modified_gmt": "2013-06-07T11:28:07",
+        "src": "http://php56.local/wp-content/uploads/2013/06/poster_4_up.jpg",
+        "name": "poster_4_up",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 78,
+        "date_created": "2013-06-07T11:28:20",
+        "date_created_gmt": "2013-06-07T11:28:20",
+        "date_modified": "2013-06-07T11:28:20",
+        "date_modified_gmt": "2013-06-07T11:28:20",
+        "src": "http://php56.local/wp-content/uploads/2013/06/Poster_4_flat.jpg",
+        "name": "Poster_4_flat",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/poster_4_up.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/76"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 73,
+    "name": "Premium Quality",
+    "slug": "premium-quality-2",
+    "permalink": "http://php56.local/product/premium-quality-2",
+    "date_created": "2013-06-07T11:27:38",
+    "date_created_gmt": "2013-06-07T11:27:38",
+    "date_modified": "2013-06-07T11:27:38",
+    "date_modified_gmt": "2013-06-07T11:27:38",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "12",
+    "regular_price": "15",
+    "sale_price": "12",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>15.00</span></del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>12.00</span></ins>",
+    "on_sale": true,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "2.00",
+    "rating_count": 2,
+    "related_ids": [
+      76,
+      67,
+      79,
+      70
+    ],
+    "upsell_ids": [
+      19
+    ],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 18,
+        "name": "Posters",
+        "slug": "posters"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 74,
+        "date_created": "2013-06-07T11:26:47",
+        "date_created_gmt": "2013-06-07T11:26:47",
+        "date_modified": "2013-06-07T11:26:47",
+        "date_modified_gmt": "2013-06-07T11:26:47",
+        "src": "http://php56.local/wp-content/uploads/2013/06/poster_3_up.jpg",
+        "name": "poster_3_up",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 75,
+        "date_created": "2013-06-07T11:27:31",
+        "date_created_gmt": "2013-06-07T11:27:31",
+        "date_modified": "2013-06-07T11:27:31",
+        "date_modified_gmt": "2013-06-07T11:27:31",
+        "src": "http://php56.local/wp-content/uploads/2013/06/Poster_3_flat.jpg",
+        "name": "Poster_3_flat",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/poster_3_up.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/73"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 70,
+    "name": "Flying Ninja",
+    "slug": "flying-ninja",
+    "permalink": "http://php56.local/product/flying-ninja",
+    "date_created": "2013-06-07T11:25:01",
+    "date_created_gmt": "2013-06-07T11:25:01",
+    "date_modified": "2017-07-28T07:29:09",
+    "date_modified_gmt": "2017-07-28T07:29:09",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "12",
+    "regular_price": "15",
+    "sale_price": "12",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>15.00</span></del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>12.00</span></ins>",
+    "on_sale": true,
+    "purchasable": true,
+    "total_sales": 6,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.00",
+    "rating_count": 4,
+    "related_ids": [
+      76,
+      67,
+      73,
+      79
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 18,
+        "name": "Posters",
+        "slug": "posters"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 71,
+        "date_created": "2013-06-07T11:24:19",
+        "date_created_gmt": "2013-06-07T11:24:19",
+        "date_modified": "2013-06-07T11:24:19",
+        "date_modified_gmt": "2013-06-07T11:24:19",
+        "src": "http://php56.local/wp-content/uploads/2013/06/poster_2_up.jpg",
+        "name": "poster_2_up",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 72,
+        "date_created": "2013-06-07T11:24:47",
+        "date_created_gmt": "2013-06-07T11:24:47",
+        "date_modified": "2013-06-07T11:24:47",
+        "date_modified_gmt": "2013-06-07T11:24:47",
+        "src": "http://php56.local/wp-content/uploads/2013/06/Poster_2_flat.jpg",
+        "name": "Poster_2_flat",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [
+      {
+        "id": 0,
+        "name": "Story",
+        "position": 0,
+        "visible": true,
+        "variation": false,
+        "options": [
+          "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas."
+        ]
+      }
+    ],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/poster_2_up.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/70"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 67,
+    "name": "Ship Your Idea",
+    "slug": "ship-your-idea-3",
+    "permalink": "http://php56.local/product/ship-your-idea-3",
+    "date_created": "2013-06-07T11:22:50",
+    "date_created_gmt": "2013-06-07T11:22:50",
+    "date_modified": "2013-06-07T11:22:50",
+    "date_modified_gmt": "2013-06-07T11:22:50",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "15",
+    "regular_price": "15",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>15.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "related_ids": [
+      76,
+      79,
+      73,
+      70
+    ],
+    "upsell_ids": [
+      22,
+      40
+    ],
+    "cross_sell_ids": [
+      22,
+      40
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 18,
+        "name": "Posters",
+        "slug": "posters"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 68,
+        "date_created": "2013-06-07T11:21:34",
+        "date_created_gmt": "2013-06-07T11:21:34",
+        "date_modified": "2013-06-07T11:21:34",
+        "date_modified_gmt": "2013-06-07T11:21:34",
+        "src": "http://php56.local/wp-content/uploads/2013/06/poster_1_up.jpg",
+        "name": "poster_1_up",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 69,
+        "date_created": "2013-06-07T11:22:05",
+        "date_created_gmt": "2013-06-07T11:22:05",
+        "date_modified": "2013-06-07T11:22:05",
+        "date_modified_gmt": "2013-06-07T11:22:05",
+        "src": "http://php56.local/wp-content/uploads/2013/06/Poster_1_flat.jpg",
+        "name": "Poster_1_flat",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/poster_1_up.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/67"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 60,
+    "name": "Woo Logo",
+    "slug": "woo-logo-2",
+    "permalink": "http://php56.local/product/woo-logo-2",
+    "date_created": "2013-06-07T11:12:55",
+    "date_created_gmt": "2013-06-07T11:12:55",
+    "date_modified": "2013-06-07T11:12:55",
+    "date_modified_gmt": "2013-06-07T11:12:55",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "35",
+    "regular_price": "35",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>35.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.00",
+    "rating_count": 2,
+    "related_ids": [
+      40,
+      31,
+      34,
+      37,
+      178
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [
+      15
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 16,
+        "name": "Hoodies",
+        "slug": "hoodies"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 61,
+        "date_created": "2013-06-07T11:12:02",
+        "date_created_gmt": "2013-06-07T11:12:02",
+        "date_modified": "2013-06-07T11:12:02",
+        "date_modified_gmt": "2013-06-07T11:12:02",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_6_front.jpg",
+        "name": "hoodie_6_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 62,
+        "date_created": "2013-06-07T11:12:16",
+        "date_created_gmt": "2013-06-07T11:12:16",
+        "date_modified": "2013-06-07T11:12:16",
+        "date_modified_gmt": "2013-06-07T11:12:16",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_6_back.jpg",
+        "name": "hoodie_6_back",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/hoodie_6_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/60"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 56,
+    "name": "Ninja Silhouette",
+    "slug": "ninja-silhouette-2",
+    "permalink": "http://php56.local/product/ninja-silhouette-2",
+    "date_created": "2013-06-07T11:07:19",
+    "date_created_gmt": "2013-06-07T11:07:19",
+    "date_modified": "2013-06-07T11:07:19",
+    "date_modified_gmt": "2013-06-07T11:07:19",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "35",
+    "regular_price": "35",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>35.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.00",
+    "rating_count": 5,
+    "related_ids": [
+      47,
+      50,
+      40,
+      53,
+      22
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [
+      31
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 16,
+        "name": "Hoodies",
+        "slug": "hoodies"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 57,
+        "date_created": "2013-06-07T11:06:32",
+        "date_created_gmt": "2013-06-07T11:06:32",
+        "date_modified": "2013-06-07T11:06:32",
+        "date_modified_gmt": "2013-06-07T11:06:32",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_5_front.jpg",
+        "name": "hoodie_5_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 58,
+        "date_created": "2013-06-07T11:07:10",
+        "date_created_gmt": "2013-06-07T11:07:10",
+        "date_modified": "2013-06-07T11:07:10",
+        "date_modified_gmt": "2013-06-07T11:07:10",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_5_back.jpg",
+        "name": "hoodie_5_back",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/hoodie_5_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/56"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 53,
+    "name": "Happy Ninja",
+    "slug": "happy-ninja-2",
+    "permalink": "http://php56.local/product/happy-ninja-2",
+    "date_created": "2013-06-07T11:05:37",
+    "date_created_gmt": "2013-06-07T11:05:37",
+    "date_modified": "2013-06-07T11:05:37",
+    "date_modified_gmt": "2013-06-07T11:05:37",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "35",
+    "regular_price": "35",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>35.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "3.00",
+    "rating_count": 2,
+    "related_ids": [
+      19,
+      31,
+      47,
+      178,
+      15
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [
+      37
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 16,
+        "name": "Hoodies",
+        "slug": "hoodies"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 54,
+        "date_created": "2013-06-07T11:05:03",
+        "date_created_gmt": "2013-06-07T11:05:03",
+        "date_modified": "2013-06-07T11:05:03",
+        "date_modified_gmt": "2013-06-07T11:05:03",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_4_front.jpg",
+        "name": "hoodie_4_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 55,
+        "date_created": "2013-06-07T11:05:13",
+        "date_created_gmt": "2013-06-07T11:05:13",
+        "date_modified": "2013-06-07T11:05:13",
+        "date_modified_gmt": "2013-06-07T11:05:13",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_4_back.jpg",
+        "name": "hoodie_4_back",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/hoodie_4_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/53"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 50,
+    "name": "Patient Ninja",
+    "slug": "patient-ninja",
+    "permalink": "http://php56.local/product/patient-ninja",
+    "date_created": "2013-06-07T11:03:56",
+    "date_created_gmt": "2013-06-07T11:03:56",
+    "date_modified": "2013-06-07T11:03:56",
+    "date_modified_gmt": "2013-06-07T11:03:56",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "35",
+    "regular_price": "35",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>35.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.67",
+    "rating_count": 3,
+    "related_ids": [
+      47,
+      22,
+      56,
+      15,
+      19
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [
+      53
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 16,
+        "name": "Hoodies",
+        "slug": "hoodies"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 51,
+        "date_created": "2013-06-07T11:03:16",
+        "date_created_gmt": "2013-06-07T11:03:16",
+        "date_modified": "2013-06-07T11:03:16",
+        "date_modified_gmt": "2013-06-07T11:03:16",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_3_front.jpg",
+        "name": "hoodie_3_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 52,
+        "date_created": "2013-06-07T11:03:50",
+        "date_created_gmt": "2013-06-07T11:03:50",
+        "date_modified": "2013-06-07T11:03:50",
+        "date_modified_gmt": "2013-06-07T11:03:50",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_3_back.jpg",
+        "name": "hoodie_3_back",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/hoodie_3_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/50"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 47,
+    "name": "Woo Ninja",
+    "slug": "woo-ninja-2",
+    "permalink": "http://php56.local/product/woo-ninja-2",
+    "date_created": "2013-06-07T11:02:31",
+    "date_created_gmt": "2013-06-07T11:02:31",
+    "date_modified": "2013-06-07T11:02:31",
+    "date_modified_gmt": "2013-06-07T11:02:31",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "35",
+    "regular_price": "35",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>35.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.50",
+    "rating_count": 2,
+    "related_ids": [
+      56,
+      60,
+      19,
+      37,
+      50
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [
+      34
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 16,
+        "name": "Hoodies",
+        "slug": "hoodies"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 48,
+        "date_created": "2013-06-07T11:01:23",
+        "date_created_gmt": "2013-06-07T11:01:23",
+        "date_modified": "2013-06-07T11:01:23",
+        "date_modified_gmt": "2013-06-07T11:01:23",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_2_front.jpg",
+        "name": "hoodie_2_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 49,
+        "date_created": "2013-06-07T11:02:26",
+        "date_created_gmt": "2013-06-07T11:02:26",
+        "date_modified": "2013-06-07T11:02:26",
+        "date_modified_gmt": "2013-06-07T11:02:26",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_2_back.jpg",
+        "name": "hoodie_2_back",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/hoodie_2_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/47"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 178,
+    "name": "Ship Your Idea",
+    "slug": "ship-your-idea-2-2",
+    "permalink": "http://php56.local/product/ship-your-idea-2-2",
+    "date_created": "2013-06-07T11:00:28",
+    "date_created_gmt": "2013-06-07T11:00:28",
+    "date_modified": "2013-06-07T11:00:28",
+    "date_modified_gmt": "2013-06-07T11:00:28",
+    "type": "variable",
+    "status": "publish",
+    "featured": true,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "30",
+    "regular_price": "30",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>30.00</span> &ndash; <span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>35.00</span>",
+    "on_sale": true,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.00",
+    "rating_count": 3,
+    "related_ids": [
+      22,
+      47,
+      34,
+      37,
+      31
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [
+      22
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 16,
+        "name": "Hoodies",
+        "slug": "hoodies"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 43,
+        "date_created": "2013-06-07T10:59:40",
+        "date_created_gmt": "2013-06-07T10:59:40",
+        "date_modified": "2013-06-07T10:59:40",
+        "date_modified_gmt": "2013-06-07T10:59:40",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_7_front.jpg",
+        "name": "hoodie_7_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 44,
+        "date_created": "2013-06-07T10:59:54",
+        "date_created_gmt": "2013-06-07T10:59:54",
+        "date_modified": "2013-06-07T10:59:54",
+        "date_modified_gmt": "2013-06-07T10:59:54",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_7_back.jpg",
+        "name": "hoodie_7_back",
+        "alt": "",
+        "position": 1
+      },
+      {
+        "id": 45,
+        "date_created": "2013-06-07T11:00:00",
+        "date_created_gmt": "2013-06-07T11:00:00",
+        "date_modified": "2013-06-07T11:00:00",
+        "date_modified_gmt": "2013-06-07T11:00:00",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_1_back.jpg",
+        "name": "hoodie_1_back",
+        "alt": "",
+        "position": 2
+      },
+      {
+        "id": 46,
+        "date_created": "2013-06-07T11:00:01",
+        "date_created_gmt": "2013-06-07T11:00:01",
+        "date_modified": "2013-06-07T11:00:01",
+        "date_modified_gmt": "2013-06-07T11:00:01",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_1_front.jpg",
+        "name": "hoodie_1_front",
+        "alt": "",
+        "position": 3
+      }
+    ],
+    "attributes": [
+      {
+        "id": 1,
+        "name": "Color",
+        "position": 0,
+        "visible": false,
+        "variation": true,
+        "options": [
+          "Black",
+          "Blue"
+        ]
+      }
+    ],
+    "default_attributes": [
+      {
+        "id": 1,
+        "name": "Color",
+        "option": "black"
+      }
+    ],
+    "variations": [
+      {
+        "id": 41,
+        "date_created": "2013-06-07T10:59:15",
+        "date_created_gmt": "2013-06-07T10:59:15",
+        "date_modified": "2013-06-07T10:59:15",
+        "date_modified_gmt": "2013-06-07T10:59:15",
+        "description": "",
+        "permalink": "http://php56.local/product/ship-your-idea-2-2?attribute_pa_color=black",
+        "sku": "",
+        "price": "35",
+        "regular_price": "35",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "visible": true,
+        "purchasable": true,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": false,
+        "stock_quantity": null,
+        "in_stock": true,
+        "backorders": "",
+        "backorders_allowed": false,
+        "backordered": false,
+        "weight": "",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": ""
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 43,
+          "date_created": "2013-06-07T10:59:40",
+          "date_created_gmt": "2013-06-07T10:59:40",
+          "date_modified": "2013-06-07T10:59:40",
+          "date_modified_gmt": "2013-06-07T10:59:40",
+          "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_7_front.jpg",
+          "name": "hoodie_7_front",
+          "alt": "",
+          "position": 0
+        },
+        "attributes": [
+          {
+            "id": 1,
+            "name": "Color",
+            "option": "Black"
+          }
+        ],
+        "menu_order": 0,
+        "meta_data": [],
+        "featured_src": "http://php56.local/wp-content/uploads/2013/06/hoodie_7_front.jpg",
+        "barcode": ""
+      },
+      {
+        "id": 42,
+        "date_created": "2013-06-07T10:59:15",
+        "date_created_gmt": "2013-06-07T10:59:15",
+        "date_modified": "2013-06-07T10:59:15",
+        "date_modified_gmt": "2013-06-07T10:59:15",
+        "description": "",
+        "permalink": "http://php56.local/product/ship-your-idea-2-2?attribute_pa_color=blue",
+        "sku": "",
+        "price": "30",
+        "regular_price": "35",
+        "sale_price": "30",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": true,
+        "visible": true,
+        "purchasable": true,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": false,
+        "stock_quantity": null,
+        "in_stock": true,
+        "backorders": "",
+        "backorders_allowed": false,
+        "backordered": false,
+        "weight": "",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": ""
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 46,
+          "date_created": "2013-06-07T11:00:01",
+          "date_created_gmt": "2013-06-07T11:00:01",
+          "date_modified": "2013-06-07T11:00:01",
+          "date_modified_gmt": "2013-06-07T11:00:01",
+          "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_1_front.jpg",
+          "name": "hoodie_1_front",
+          "alt": "",
+          "position": 0
+        },
+        "attributes": [
+          {
+            "id": 1,
+            "name": "Color",
+            "option": "Blue"
+          }
+        ],
+        "menu_order": 1,
+        "meta_data": [],
+        "featured_src": "http://php56.local/wp-content/uploads/2013/06/hoodie_1_front.jpg",
+        "barcode": ""
+      }
+    ],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [
+      {
+        "id": 5076,
+        "key": "_min_variation_price",
+        "value": "30"
+      },
+      {
+        "id": 5077,
+        "key": "_max_variation_price",
+        "value": "35"
+      },
+      {
+        "id": 5078,
+        "key": "_min_variation_regular_price",
+        "value": "35"
+      },
+      {
+        "id": 5079,
+        "key": "_max_variation_regular_price",
+        "value": "35"
+      },
+      {
+        "id": 5080,
+        "key": "_min_variation_sale_price",
+        "value": "30"
+      },
+      {
+        "id": 5081,
+        "key": "_max_variation_sale_price",
+        "value": "30"
+      },
+      {
+        "id": 5828,
+        "key": "_min_variation_price",
+        "value": "30"
+      },
+      {
+        "id": 5829,
+        "key": "_max_variation_price",
+        "value": "35"
+      },
+      {
+        "id": 5830,
+        "key": "_min_variation_regular_price",
+        "value": "35"
+      },
+      {
+        "id": 5831,
+        "key": "_max_variation_regular_price",
+        "value": "35"
+      },
+      {
+        "id": 5832,
+        "key": "_min_variation_sale_price",
+        "value": "30"
+      },
+      {
+        "id": 5833,
+        "key": "_max_variation_sale_price",
+        "value": "30"
+      }
+    ],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/hoodie_7_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/42/variations/42"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/42/variations"
+        }
+      ],
+      "up": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/42"
+        }
+      ]
+    }
+  },
+  {
+    "id": 40,
+    "name": "A Ship Your Idea",
+    "slug": "ship-your-idea-2",
+    "permalink": "http://php56.local/product/ship-your-idea-2",
+    "date_created": "2013-06-07T11:00:28",
+    "date_created_gmt": "2013-06-07T11:00:28",
+    "date_modified": "2017-08-02T08:37:22",
+    "date_modified_gmt": "2017-08-02T08:37:22",
+    "type": "variable",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "20",
+    "regular_price": "30",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>20.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": true,
+    "stock_quantity": 0,
+    "in_stock": false,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.00",
+    "rating_count": 3,
+    "related_ids": [
+      37,
+      50,
+      47,
+      178,
+      60
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [
+      22
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 16,
+        "name": "Hoodies",
+        "slug": "hoodies"
+      }
+    ],
+    "tags": [
+      {
+        "id": 22,
+        "name": "aeBFqoyaef",
+        "slug": "aebfqoyaef"
+      }
+    ],
+    "images": [
+      {
+        "id": 43,
+        "date_created": "2013-06-07T10:59:40",
+        "date_created_gmt": "2013-06-07T10:59:40",
+        "date_modified": "2013-06-07T10:59:40",
+        "date_modified_gmt": "2013-06-07T10:59:40",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_7_front.jpg",
+        "name": "hoodie_7_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 44,
+        "date_created": "2013-06-07T10:59:54",
+        "date_created_gmt": "2013-06-07T10:59:54",
+        "date_modified": "2013-06-07T10:59:54",
+        "date_modified_gmt": "2013-06-07T10:59:54",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_7_back.jpg",
+        "name": "hoodie_7_back",
+        "alt": "",
+        "position": 1
+      },
+      {
+        "id": 45,
+        "date_created": "2013-06-07T11:00:00",
+        "date_created_gmt": "2013-06-07T11:00:00",
+        "date_modified": "2013-06-07T11:00:00",
+        "date_modified_gmt": "2013-06-07T11:00:00",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_1_back.jpg",
+        "name": "hoodie_1_back",
+        "alt": "",
+        "position": 2
+      },
+      {
+        "id": 46,
+        "date_created": "2013-06-07T11:00:01",
+        "date_created_gmt": "2013-06-07T11:00:01",
+        "date_modified": "2013-06-07T11:00:01",
+        "date_modified_gmt": "2013-06-07T11:00:01",
+        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_1_front.jpg",
+        "name": "hoodie_1_front",
+        "alt": "",
+        "position": 3
+      }
+    ],
+    "attributes": [
+      {
+        "id": 0,
+        "name": "Test",
+        "position": 0,
+        "visible": true,
+        "variation": true,
+        "options": [
+          "0",
+          "3",
+          "6",
+          "9",
+          "12"
+        ]
+      },
+      {
+        "id": 1,
+        "name": "Color",
+        "position": 1,
+        "visible": true,
+        "variation": true,
+        "options": [
+          "Black",
+          "Blue"
+        ]
+      },
+      {
+        "id": 0,
+        "name": "Ingredients",
+        "position": 2,
+        "visible": true,
+        "variation": false,
+        "options": [
+          "Salt",
+          "Flour",
+          "Water"
+        ]
+      },
+      {
+        "id": 0,
+        "name": "ID",
+        "position": 3,
+        "visible": true,
+        "variation": true,
+        "options": [
+          "true",
+          "false"
+        ]
+      }
+    ],
+    "default_attributes": [],
+    "variations": [
+      {
+        "id": 174,
+        "date_created": "2017-06-30T07:20:29",
+        "date_created_gmt": "2017-06-30T07:20:29",
+        "date_modified": "2017-06-30T07:21:01",
+        "date_modified_gmt": "2017-06-30T07:21:01",
+        "description": "",
+        "permalink": "http://php56.local/product/ship-your-idea-2?attribute_pa_color=black&attribute_id=true",
+        "sku": "",
+        "price": "",
+        "regular_price": "",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "visible": true,
+        "purchasable": false,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": "parent",
+        "stock_quantity": 0,
+        "in_stock": false,
+        "backorders": "no",
+        "backorders_allowed": false,
+        "backordered": false,
+        "weight": "",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": ""
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 0,
+          "date_created": "2017-08-15T06:38:26",
+          "date_created_gmt": "2017-08-15T06:38:26",
+          "date_modified": "2017-08-15T06:38:26",
+          "date_modified_gmt": "2017-08-15T06:38:26",
+          "src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
+          "name": "Placeholder",
+          "alt": "Placeholder",
+          "position": 0
+        },
+        "attributes": [
+          {
+            "id": 1,
+            "name": "Color",
+            "option": "Black"
+          },
+          {
+            "id": 0,
+            "name": "ID",
+            "option": "true"
+          }
+        ],
+        "menu_order": 1,
+        "meta_data": [],
+        "featured_src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
+        "barcode": ""
+      },
+      {
+        "id": 175,
+        "date_created": "2017-06-30T07:20:42",
+        "date_created_gmt": "2017-06-30T07:20:42",
+        "date_modified": "2017-06-30T07:21:02",
+        "date_modified_gmt": "2017-06-30T07:21:02",
+        "description": "",
+        "permalink": "http://php56.local/product/ship-your-idea-2?attribute_test=3&attribute_pa_color=black&attribute_id=true",
+        "sku": "",
+        "price": "",
+        "regular_price": "",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "visible": true,
+        "purchasable": false,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": "parent",
+        "stock_quantity": 0,
+        "in_stock": false,
+        "backorders": "no",
+        "backorders_allowed": false,
+        "backordered": false,
+        "weight": "",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": ""
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 0,
+          "date_created": "2017-08-15T06:38:26",
+          "date_created_gmt": "2017-08-15T06:38:26",
+          "date_modified": "2017-08-15T06:38:26",
+          "date_modified_gmt": "2017-08-15T06:38:26",
+          "src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
+          "name": "Placeholder",
+          "alt": "Placeholder",
+          "position": 0
+        },
+        "attributes": [
+          {
+            "id": 0,
+            "name": "Test",
+            "option": "3"
+          },
+          {
+            "id": 1,
+            "name": "Color",
+            "option": "Black"
+          },
+          {
+            "id": 0,
+            "name": "ID",
+            "option": "true"
+          }
+        ],
+        "menu_order": 2,
+        "meta_data": [],
+        "featured_src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
+        "barcode": ""
+      },
+      {
+        "id": 176,
+        "date_created": "2017-06-30T07:20:45",
+        "date_created_gmt": "2017-06-30T07:20:45",
+        "date_modified": "2017-06-30T07:21:02",
+        "date_modified_gmt": "2017-06-30T07:21:02",
+        "description": "",
+        "permalink": "http://php56.local/product/ship-your-idea-2?attribute_test=6&attribute_pa_color=black&attribute_id=true",
+        "sku": "",
+        "price": "",
+        "regular_price": "",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "visible": true,
+        "purchasable": false,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": "parent",
+        "stock_quantity": 0,
+        "in_stock": false,
+        "backorders": "no",
+        "backorders_allowed": false,
+        "backordered": false,
+        "weight": "",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": ""
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 0,
+          "date_created": "2017-08-15T06:38:26",
+          "date_created_gmt": "2017-08-15T06:38:26",
+          "date_modified": "2017-08-15T06:38:26",
+          "date_modified_gmt": "2017-08-15T06:38:26",
+          "src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
+          "name": "Placeholder",
+          "alt": "Placeholder",
+          "position": 0
+        },
+        "attributes": [
+          {
+            "id": 0,
+            "name": "Test",
+            "option": "6"
+          },
+          {
+            "id": 1,
+            "name": "Color",
+            "option": "Black"
+          },
+          {
+            "id": 0,
+            "name": "ID",
+            "option": "true"
+          }
+        ],
+        "menu_order": 3,
+        "meta_data": [],
+        "featured_src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
+        "barcode": ""
+      },
+      {
+        "id": 177,
+        "date_created": "2017-06-30T07:20:48",
+        "date_created_gmt": "2017-06-30T07:20:48",
+        "date_modified": "2017-06-30T07:21:02",
+        "date_modified_gmt": "2017-06-30T07:21:02",
+        "description": "",
+        "permalink": "http://php56.local/product/ship-your-idea-2?attribute_test=9&attribute_pa_color=black&attribute_id=false",
+        "sku": "",
+        "price": "20",
+        "regular_price": "20",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "visible": true,
+        "purchasable": true,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": true,
+        "stock_quantity": 200,
+        "in_stock": true,
+        "backorders": "no",
+        "backorders_allowed": false,
+        "backordered": false,
+        "weight": "",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": ""
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 0,
+          "date_created": "2017-08-15T06:38:27",
+          "date_created_gmt": "2017-08-15T06:38:27",
+          "date_modified": "2017-08-15T06:38:27",
+          "date_modified_gmt": "2017-08-15T06:38:27",
+          "src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
+          "name": "Placeholder",
+          "alt": "Placeholder",
+          "position": 0
+        },
+        "attributes": [
+          {
+            "id": 0,
+            "name": "Test",
+            "option": "9"
+          },
+          {
+            "id": 1,
+            "name": "Color",
+            "option": "Black"
+          },
+          {
+            "id": 0,
+            "name": "ID",
+            "option": "false"
+          }
+        ],
+        "menu_order": 4,
+        "meta_data": [],
+        "featured_src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
+        "barcode": ""
+      }
+    ],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [
+      {
+        "id": 301,
+        "key": "_min_variation_price",
+        "value": "30"
+      },
+      {
+        "id": 302,
+        "key": "_max_variation_price",
+        "value": "35"
+      },
+      {
+        "id": 303,
+        "key": "_min_variation_regular_price",
+        "value": "35"
+      },
+      {
+        "id": 304,
+        "key": "_max_variation_regular_price",
+        "value": "35"
+      },
+      {
+        "id": 305,
+        "key": "_min_variation_sale_price",
+        "value": "30"
+      },
+      {
+        "id": 306,
+        "key": "_max_variation_sale_price",
+        "value": "30"
+      },
+      {
+        "id": 4207,
+        "key": "_min_variation_price",
+        "value": "30"
+      },
+      {
+        "id": 4208,
+        "key": "_max_variation_price",
+        "value": "35"
+      },
+      {
+        "id": 4209,
+        "key": "_min_variation_regular_price",
+        "value": "35"
+      },
+      {
+        "id": 4210,
+        "key": "_max_variation_regular_price",
+        "value": "35"
+      },
+      {
+        "id": 4211,
+        "key": "_min_variation_sale_price",
+        "value": "30"
+      },
+      {
+        "id": 4212,
+        "key": "_max_variation_sale_price",
+        "value": "30"
+      }
+    ],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/hoodie_7_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/177/variations/177"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/177/variations"
+        }
+      ],
+      "up": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/177"
+        }
+      ]
+    }
+  },
+  {
+    "id": 37,
+    "name": "Happy Ninja",
+    "slug": "happy-ninja",
+    "permalink": "http://php56.local/product/happy-ninja",
+    "date_created": "2013-06-07T10:53:15",
+    "date_created_gmt": "2013-06-07T10:53:15",
+    "date_modified": "2017-07-27T09:10:04",
+    "date_modified_gmt": "2017-07-27T09:10:04",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "18",
+    "regular_price": "18",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>18.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 1,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "none",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "5.00",
+    "rating_count": 2,
+    "related_ids": [
+      47,
+      22,
+      50,
+      53,
+      178
+    ],
+    "upsell_ids": [
+      53
+    ],
+    "cross_sell_ids": [
+      34,
+      31
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 20,
+        "name": "T-shirts",
+        "slug": "t-shirts"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 38,
+        "date_created": "2013-06-07T10:52:55",
+        "date_created_gmt": "2013-06-07T10:52:55",
+        "date_modified": "2013-06-07T10:52:55",
+        "date_modified_gmt": "2013-06-07T10:52:55",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_7_front.jpg",
+        "name": "T_7_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 39,
+        "date_created": "2013-06-07T10:53:29",
+        "date_created_gmt": "2013-06-07T10:53:29",
+        "date_modified": "2013-06-07T10:53:29",
+        "date_modified_gmt": "2013-06-07T10:53:29",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_7_back.jpg",
+        "name": "T_7_back",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_7_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/37"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 34,
+    "name": "Woo Ninja",
+    "slug": "woo-ninja",
+    "permalink": "http://php56.local/product/woo-ninja",
+    "date_created": "2013-06-07T10:52:06",
+    "date_created_gmt": "2013-06-07T10:52:06",
+    "date_modified": "2017-03-31T13:37:47",
+    "date_modified_gmt": "2017-03-31T13:37:47",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "20",
+    "regular_price": "20",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>20.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 5,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": true,
+    "stock_quantity": -3,
+    "in_stock": false,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "related_ids": [
+      50,
+      47,
+      53,
+      19,
+      37
+    ],
+    "upsell_ids": [
+      47
+    ],
+    "cross_sell_ids": [
+      37,
+      31
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 20,
+        "name": "T-shirts",
+        "slug": "t-shirts"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 35,
+        "date_created": "2013-06-07T10:51:51",
+        "date_created_gmt": "2013-06-07T10:51:51",
+        "date_modified": "2013-06-07T10:51:51",
+        "date_modified_gmt": "2013-06-07T10:51:51",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_6_front.jpg",
+        "name": "T_6_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 36,
+        "date_created": "2013-06-07T10:52:02",
+        "date_created_gmt": "2013-06-07T10:52:02",
+        "date_modified": "2013-06-07T10:52:02",
+        "date_modified_gmt": "2013-06-07T10:52:02",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_6_back.jpg",
+        "name": "T_6_back",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_6_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/34"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 31,
+    "name": "Ninja Silhouette",
+    "slug": "ninja-silhouette",
+    "permalink": "http://php56.local/product/ninja-silhouette",
+    "date_created": "2013-06-07T10:49:51",
+    "date_created_gmt": "2013-06-07T10:49:51",
+    "date_modified": "2013-06-07T10:49:51",
+    "date_modified_gmt": "2013-06-07T10:49:51",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "20",
+    "regular_price": "20",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>20.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "5.00",
+    "rating_count": 1,
+    "related_ids": [
+      40,
+      178,
+      15,
+      60,
+      53
+    ],
+    "upsell_ids": [
+      56
+    ],
+    "cross_sell_ids": [
+      34,
+      37
+    ],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 20,
+        "name": "T-shirts",
+        "slug": "t-shirts"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 32,
+        "date_created": "2013-06-07T10:49:13",
+        "date_created_gmt": "2013-06-07T10:49:13",
+        "date_modified": "2013-06-07T10:49:13",
+        "date_modified_gmt": "2013-06-07T10:49:13",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_5_front.jpg",
+        "name": "T_5_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 33,
+        "date_created": "2013-06-07T10:49:23",
+        "date_created_gmt": "2013-06-07T10:49:23",
+        "date_modified": "2013-06-07T10:49:23",
+        "date_modified_gmt": "2013-06-07T10:49:23",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_5_back.jpg",
+        "name": "T_5_back",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_5_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/31"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 22,
+    "name": "Ship Your Idea",
+    "slug": "ship-your-idea",
+    "permalink": "http://php56.local/product/ship-your-idea",
+    "date_created": "2013-06-07T10:46:01",
+    "date_created_gmt": "2013-06-07T10:46:01",
+    "date_modified": "2013-06-07T10:46:01",
+    "date_modified_gmt": "2013-06-07T10:46:01",
+    "type": "variable",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "20",
+    "regular_price": "20",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>20.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.33",
+    "rating_count": 3,
+    "related_ids": [
+      50,
+      40,
+      19,
+      15,
+      34
+    ],
+    "upsell_ids": [
+      40
+    ],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 20,
+        "name": "T-shirts",
+        "slug": "t-shirts"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 25,
+        "date_created": "2013-06-07T10:45:14",
+        "date_created_gmt": "2013-06-07T10:45:14",
+        "date_modified": "2013-06-07T10:45:14",
+        "date_modified_gmt": "2013-06-07T10:45:14",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_4_front.jpg",
+        "name": "T_4_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 26,
+        "date_created": "2013-06-07T10:45:26",
+        "date_created_gmt": "2013-06-07T10:45:26",
+        "date_modified": "2013-06-07T10:45:26",
+        "date_modified_gmt": "2013-06-07T10:45:26",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_3_back.jpg",
+        "name": "T_3_back",
+        "alt": "",
+        "position": 1
+      },
+      {
+        "id": 27,
+        "date_created": "2013-06-07T10:45:27",
+        "date_created_gmt": "2013-06-07T10:45:27",
+        "date_modified": "2013-06-07T10:45:27",
+        "date_modified_gmt": "2013-06-07T10:45:27",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_3_front.jpg",
+        "name": "T_3_front",
+        "alt": "",
+        "position": 2
+      },
+      {
+        "id": 28,
+        "date_created": "2013-06-07T10:45:29",
+        "date_created_gmt": "2013-06-07T10:45:29",
+        "date_modified": "2013-06-07T10:45:29",
+        "date_modified_gmt": "2013-06-07T10:45:29",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_4_back.jpg",
+        "name": "T_4_back",
+        "alt": "",
+        "position": 3
+      },
+      {
+        "id": 29,
+        "date_created": "2013-06-07T10:45:30",
+        "date_created_gmt": "2013-06-07T10:45:30",
+        "date_modified": "2013-06-07T10:45:30",
+        "date_modified_gmt": "2013-06-07T10:45:30",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_4_front1.jpg",
+        "name": "T_4_front",
+        "alt": "",
+        "position": 4
+      }
+    ],
+    "attributes": [
+      {
+        "id": 1,
+        "name": "Color",
+        "position": 0,
+        "visible": false,
+        "variation": true,
+        "options": [
+          "Black",
+          "Green"
+        ]
+      }
+    ],
+    "default_attributes": [],
+    "variations": [
+      {
+        "id": 23,
+        "date_created": "2013-06-07T10:44:57",
+        "date_created_gmt": "2013-06-07T10:44:57",
+        "date_modified": "2017-03-31T13:21:29",
+        "date_modified_gmt": "2017-03-31T13:21:29",
+        "description": "",
+        "permalink": "http://php56.local/product/ship-your-idea?attribute_pa_color=black",
+        "sku": "",
+        "price": "20",
+        "regular_price": "20",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "visible": true,
+        "purchasable": true,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": false,
+        "stock_quantity": null,
+        "in_stock": true,
+        "backorders": "",
+        "backorders_allowed": false,
+        "backordered": false,
+        "weight": "",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": ""
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 29,
+          "date_created": "2013-06-07T10:45:30",
+          "date_created_gmt": "2013-06-07T10:45:30",
+          "date_modified": "2013-06-07T10:45:30",
+          "date_modified_gmt": "2013-06-07T10:45:30",
+          "src": "http://php56.local/wp-content/uploads/2013/06/T_4_front1.jpg",
+          "name": "T_4_front",
+          "alt": "",
+          "position": 0
+        },
+        "attributes": [
+          {
+            "id": 1,
+            "name": "Color",
+            "option": "Black"
+          }
+        ],
+        "menu_order": 0,
+        "meta_data": [],
+        "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_4_front1.jpg",
+        "barcode": ""
+      },
+      {
+        "id": 169,
+        "date_created": "2013-06-07T10:44:57",
+        "date_created_gmt": "2013-06-07T10:44:57",
+        "date_modified": "2017-06-07T09:01:46",
+        "date_modified_gmt": "2017-06-07T09:01:46",
+        "description": "",
+        "permalink": "http://php56.local/product/ship-your-idea?attribute_pa_color=black",
+        "sku": "",
+        "price": "20",
+        "regular_price": "20",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "visible": true,
+        "purchasable": true,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": false,
+        "stock_quantity": null,
+        "in_stock": true,
+        "backorders": "",
+        "backorders_allowed": false,
+        "backordered": false,
+        "weight": "",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": ""
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 29,
+          "date_created": "2013-06-07T10:45:30",
+          "date_created_gmt": "2013-06-07T10:45:30",
+          "date_modified": "2013-06-07T10:45:30",
+          "date_modified_gmt": "2013-06-07T10:45:30",
+          "src": "http://php56.local/wp-content/uploads/2013/06/T_4_front1.jpg",
+          "name": "T_4_front",
+          "alt": "",
+          "position": 0
+        },
+        "attributes": [
+          {
+            "id": 1,
+            "name": "Color",
+            "option": "Black"
+          }
+        ],
+        "menu_order": 0,
+        "meta_data": [],
+        "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_4_front1.jpg",
+        "barcode": ""
+      },
+      {
+        "id": 179,
+        "date_created": "2013-06-07T10:44:57",
+        "date_created_gmt": "2013-06-07T10:44:57",
+        "date_modified": "2013-06-07T10:44:57",
+        "date_modified_gmt": "2013-06-07T10:44:57",
+        "description": "",
+        "permalink": "http://php56.local/product/ship-your-idea?attribute_pa_color=black",
+        "sku": "",
+        "price": "20",
+        "regular_price": "20",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "visible": true,
+        "purchasable": true,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": false,
+        "stock_quantity": null,
+        "in_stock": true,
+        "backorders": "",
+        "backorders_allowed": false,
+        "backordered": false,
+        "weight": "",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": ""
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 29,
+          "date_created": "2013-06-07T10:45:30",
+          "date_created_gmt": "2013-06-07T10:45:30",
+          "date_modified": "2013-06-07T10:45:30",
+          "date_modified_gmt": "2013-06-07T10:45:30",
+          "src": "http://php56.local/wp-content/uploads/2013/06/T_4_front1.jpg",
+          "name": "T_4_front",
+          "alt": "",
+          "position": 0
+        },
+        "attributes": [
+          {
+            "id": 1,
+            "name": "Color",
+            "option": "Black"
+          }
+        ],
+        "menu_order": 0,
+        "meta_data": [],
+        "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_4_front1.jpg",
+        "barcode": ""
+      },
+      {
+        "id": 24,
+        "date_created": "2013-06-07T10:44:58",
+        "date_created_gmt": "2013-06-07T10:44:58",
+        "date_modified": "2017-03-31T13:21:29",
+        "date_modified_gmt": "2017-03-31T13:21:29",
+        "description": "",
+        "permalink": "http://php56.local/product/ship-your-idea?attribute_pa_color=green",
+        "sku": "",
+        "price": "20",
+        "regular_price": "20",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "visible": true,
+        "purchasable": true,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": false,
+        "stock_quantity": null,
+        "in_stock": true,
+        "backorders": "",
+        "backorders_allowed": false,
+        "backordered": false,
+        "weight": "",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": ""
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 27,
+          "date_created": "2013-06-07T10:45:27",
+          "date_created_gmt": "2013-06-07T10:45:27",
+          "date_modified": "2013-06-07T10:45:27",
+          "date_modified_gmt": "2013-06-07T10:45:27",
+          "src": "http://php56.local/wp-content/uploads/2013/06/T_3_front.jpg",
+          "name": "T_3_front",
+          "alt": "",
+          "position": 0
+        },
+        "attributes": [
+          {
+            "id": 1,
+            "name": "Color",
+            "option": "Green"
+          }
+        ],
+        "menu_order": 1,
+        "meta_data": [],
+        "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_3_front.jpg",
+        "barcode": ""
+      },
+      {
+        "id": 170,
+        "date_created": "2013-06-07T10:44:58",
+        "date_created_gmt": "2013-06-07T10:44:58",
+        "date_modified": "2017-06-07T09:01:46",
+        "date_modified_gmt": "2017-06-07T09:01:46",
+        "description": "",
+        "permalink": "http://php56.local/product/ship-your-idea?attribute_pa_color=green",
+        "sku": "",
+        "price": "20",
+        "regular_price": "20",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "visible": true,
+        "purchasable": true,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": false,
+        "stock_quantity": null,
+        "in_stock": true,
+        "backorders": "",
+        "backorders_allowed": false,
+        "backordered": false,
+        "weight": "",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": ""
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 27,
+          "date_created": "2013-06-07T10:45:27",
+          "date_created_gmt": "2013-06-07T10:45:27",
+          "date_modified": "2013-06-07T10:45:27",
+          "date_modified_gmt": "2013-06-07T10:45:27",
+          "src": "http://php56.local/wp-content/uploads/2013/06/T_3_front.jpg",
+          "name": "T_3_front",
+          "alt": "",
+          "position": 0
+        },
+        "attributes": [
+          {
+            "id": 1,
+            "name": "Color",
+            "option": "Green"
+          }
+        ],
+        "menu_order": 1,
+        "meta_data": [],
+        "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_3_front.jpg",
+        "barcode": ""
+      },
+      {
+        "id": 180,
+        "date_created": "2013-06-07T10:44:58",
+        "date_created_gmt": "2013-06-07T10:44:58",
+        "date_modified": "2013-06-07T10:44:58",
+        "date_modified_gmt": "2013-06-07T10:44:58",
+        "description": "",
+        "permalink": "http://php56.local/product/ship-your-idea?attribute_pa_color=green",
+        "sku": "",
+        "price": "20",
+        "regular_price": "20",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "visible": true,
+        "purchasable": true,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": false,
+        "stock_quantity": null,
+        "in_stock": true,
+        "backorders": "",
+        "backorders_allowed": false,
+        "backordered": false,
+        "weight": "",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": ""
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 27,
+          "date_created": "2013-06-07T10:45:27",
+          "date_created_gmt": "2013-06-07T10:45:27",
+          "date_modified": "2013-06-07T10:45:27",
+          "date_modified_gmt": "2013-06-07T10:45:27",
+          "src": "http://php56.local/wp-content/uploads/2013/06/T_3_front.jpg",
+          "name": "T_3_front",
+          "alt": "",
+          "position": 0
+        },
+        "attributes": [
+          {
+            "id": 1,
+            "name": "Color",
+            "option": "Green"
+          }
+        ],
+        "menu_order": 1,
+        "meta_data": [],
+        "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_3_front.jpg",
+        "barcode": ""
+      }
+    ],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [
+      {
+        "id": 183,
+        "key": "_min_variation_price",
+        "value": "20"
+      },
+      {
+        "id": 184,
+        "key": "_max_variation_price",
+        "value": "20"
+      },
+      {
+        "id": 185,
+        "key": "_min_variation_regular_price",
+        "value": "20"
+      },
+      {
+        "id": 186,
+        "key": "_max_variation_regular_price",
+        "value": "20"
+      },
+      {
+        "id": 187,
+        "key": "_min_variation_sale_price",
+        "value": ""
+      },
+      {
+        "id": 188,
+        "key": "_max_variation_sale_price",
+        "value": ""
+      },
+      {
+        "id": 4089,
+        "key": "_min_variation_price",
+        "value": "20"
+      },
+      {
+        "id": 4090,
+        "key": "_max_variation_price",
+        "value": "20"
+      },
+      {
+        "id": 4091,
+        "key": "_min_variation_regular_price",
+        "value": "20"
+      },
+      {
+        "id": 4092,
+        "key": "_max_variation_regular_price",
+        "value": "20"
+      },
+      {
+        "id": 4093,
+        "key": "_min_variation_sale_price",
+        "value": ""
+      },
+      {
+        "id": 4094,
+        "key": "_max_variation_sale_price",
+        "value": ""
+      },
+      {
+        "id": 4958,
+        "key": "_min_variation_price",
+        "value": "20"
+      },
+      {
+        "id": 4959,
+        "key": "_max_variation_price",
+        "value": "20"
+      },
+      {
+        "id": 4960,
+        "key": "_min_variation_regular_price",
+        "value": "20"
+      },
+      {
+        "id": 4961,
+        "key": "_max_variation_regular_price",
+        "value": "20"
+      },
+      {
+        "id": 4962,
+        "key": "_min_variation_sale_price",
+        "value": ""
+      },
+      {
+        "id": 4963,
+        "key": "_max_variation_sale_price",
+        "value": ""
+      },
+      {
+        "id": 5710,
+        "key": "_min_variation_price",
+        "value": "20"
+      },
+      {
+        "id": 5711,
+        "key": "_max_variation_price",
+        "value": "20"
+      },
+      {
+        "id": 5712,
+        "key": "_min_variation_regular_price",
+        "value": "20"
+      },
+      {
+        "id": 5713,
+        "key": "_max_variation_regular_price",
+        "value": "20"
+      },
+      {
+        "id": 5714,
+        "key": "_min_variation_sale_price",
+        "value": ""
+      },
+      {
+        "id": 5715,
+        "key": "_max_variation_sale_price",
+        "value": ""
+      }
+    ],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_4_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/180/variations/180"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/180/variations"
+        }
+      ],
+      "up": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/180"
+        }
+      ]
+    }
+  },
+  {
+    "id": 19,
+    "name": "Premium Quality",
+    "slug": "premium-quality",
+    "permalink": "http://php56.local/product/premium-quality",
+    "date_created": "2013-06-07T10:41:52",
+    "date_created_gmt": "2013-06-07T10:41:52",
+    "date_modified": "2013-06-07T10:41:52",
+    "date_modified_gmt": "2013-06-07T10:41:52",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "20",
+    "regular_price": "20",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>20.00</span>",
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.50",
+    "rating_count": 2,
+    "related_ids": [
+      56,
+      15,
+      178,
+      60,
+      37
+    ],
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 20,
+        "name": "T-shirts",
+        "slug": "t-shirts"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 20,
+        "date_created": "2013-06-07T10:41:23",
+        "date_created_gmt": "2013-06-07T10:41:23",
+        "date_modified": "2013-06-07T10:41:23",
+        "date_modified_gmt": "2013-06-07T10:41:23",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_2_front.jpg",
+        "name": "T_2_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 21,
+        "date_created": "2013-06-07T10:41:34",
+        "date_created_gmt": "2013-06-07T10:41:34",
+        "date_modified": "2013-06-07T10:41:34",
+        "date_modified_gmt": "2013-06-07T10:41:34",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_2_back.jpg",
+        "name": "T_2_back",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_2_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/19"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "name": "Woo Logo",
+    "slug": "woo-logo",
+    "permalink": "http://php56.local/product/woo-logo",
+    "date_created": "2013-06-07T10:35:51",
+    "date_created_gmt": "2013-06-07T10:35:51",
+    "date_modified": "2013-06-07T10:35:51",
+    "date_modified_gmt": "2013-06-07T10:35:51",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "sku": "",
+    "price": "18",
+    "regular_price": "20",
+    "sale_price": "18",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>20.00</span></del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>18.00</span></ins>",
+    "on_sale": true,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": true,
+    "stock_quantity": 5,
+    "in_stock": true,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "4.00",
+    "rating_count": 1,
+    "related_ids": [
+      53,
+      56,
+      31,
+      40,
+      178
+    ],
+    "upsell_ids": [
+      60
+    ],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 15,
+        "name": "Clothing",
+        "slug": "clothing"
+      },
+      {
+        "id": 20,
+        "name": "T-shirts",
+        "slug": "t-shirts"
+      }
+    ],
+    "tags": [],
+    "images": [
+      {
+        "id": 16,
+        "date_created": "2013-06-07T10:35:28",
+        "date_created_gmt": "2013-06-07T10:35:28",
+        "date_modified": "2013-06-07T10:35:28",
+        "date_modified_gmt": "2013-06-07T10:35:28",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_1_front.jpg",
+        "name": "T_1_front",
+        "alt": "",
+        "position": 0
+      },
+      {
+        "id": 17,
+        "date_created": "2013-06-07T10:35:39",
+        "date_created_gmt": "2013-06-07T10:35:39",
+        "date_modified": "2013-06-07T10:35:39",
+        "date_modified_gmt": "2013-06-07T10:35:39",
+        "src": "http://php56.local/wp-content/uploads/2013/06/T_1_back.jpg",
+        "name": "T_1_back",
+        "alt": "",
+        "position": 1
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "meta_data": [],
+    "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_1_front.jpg",
+    "barcode": "",
+    "_links": {
+      "self": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products/15"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://php56.local/wp-json/wc/v2/products"
+        }
+      ]
+    }
+  }
+]

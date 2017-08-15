@@ -55,7 +55,8 @@ class Payload extends WC_REST_Controller {
   /**
    *
    */
-  public function get_items( $wc_pos_admin ) {
+  public function get_items( ) {
+    $wc_pos_admin = null;
 
     $payload = array(
       'i18n'      => $this->controllers['i18n']->get_items(),

@@ -1,0 +1,155 @@
+{
+  "order": {
+    "id": 645,
+    "order_number": 645,
+    "created_at": "2015-01-26T20:00:21Z",
+    "updated_at": "2015-01-26T20:00:21Z",
+    "completed_at": "2015-01-26T20:00:21Z",
+    "status": "processing",
+    "currency": "USD",
+    "total": "79.87",
+    "subtotal": "63.97",
+    "total_line_items_quantity": 3,
+    "total_tax": "5.90",
+    "total_shipping": "10.00",
+    "cart_tax": "5.40",
+    "shipping_tax": "0.50",
+    "total_discount": "0.00",
+    "shipping_methods": "Flat Rate",
+    "payment_details": {
+      "method_id": "bacs",
+      "method_title": "Direct Bank Transfer",
+      "paid": true
+    },
+    "billing_address": {
+      "first_name": "John",
+      "last_name": "Doe",
+      "company": "",
+      "address_1": "969 Market",
+      "address_2": "",
+      "city": "San Francisco",
+      "state": "CA",
+      "postcode": "94103",
+      "country": "US",
+      "email": "john.doe@example.com",
+      "phone": "(555) 555-5555"
+    },
+    "shipping_address": {
+      "first_name": "John",
+      "last_name": "Doe",
+      "company": "",
+      "address_1": "969 Market",
+      "address_2": "",
+      "city": "San Francisco",
+      "state": "CA",
+      "postcode": "94103",
+      "country": "US"
+    },
+    "note": "",
+    "customer_ip": "127.0.0.1",
+    "customer_user_agent": "WordPress/4.1; http://example.com",
+    "customer_id": 2,
+    "view_order_url": "https://example.com/my-account/view-order/645",
+    "line_items": [
+      {
+        "id": 504,
+        "subtotal": "43.98",
+        "subtotal_tax": "4.40",
+        "total": "43.98",
+        "total_tax": "4.40",
+        "price": "21.99",
+        "quantity": 2,
+        "tax_class": "reduced-rate",
+        "name": "Premium Quality",
+        "product_id": 546,
+        "sku": "",
+        "meta": []
+      },
+      {
+        "id": 505,
+        "subtotal": "19.99",
+        "subtotal_tax": "1.00",
+        "total": "19.99",
+        "total_tax": "1.00",
+        "price": "19.99",
+        "quantity": 1,
+        "tax_class": null,
+        "name": "Ship Your Idea",
+        "product_id": 613,
+        "sku": "",
+        "meta": [
+          {
+            "key": "pa_color",
+            "label": "Color",
+            "value": "Black"
+          }
+        ]
+      }
+    ],
+    "shipping_lines": [
+      {
+        "id": 506,
+        "method_id": "flat_rate",
+        "method_title": "Flat Rate",
+        "total": "10.00"
+      }
+    ],
+    "tax_lines": [
+      {
+        "id": 507,
+        "rate_id": "5",
+        "code": "US-CA-TAX-1",
+        "title": "Tax",
+        "total": "4.40",
+        "compound": false
+      },
+      {
+        "id": 508,
+        "rate_id": "4",
+        "code": "US-STANDARD-1",
+        "title": "Standard",
+        "total": "1.50",
+        "compound": false
+      }
+    ],
+    "fee_lines": [],
+    "coupon_lines": [],
+    "customer": {
+      "id": 2,
+      "created_at": "2014-11-19T18:34:19Z",
+      "email": "john.doe@example.com",
+      "first_name": "",
+      "last_name": "",
+      "username": "john.doe",
+      "last_order_id": "645",
+      "last_order_date": "2015-01-26T20:00:21Z",
+      "orders_count": 2,
+      "total_spent": "19.00",
+      "avatar_url": "https://secure.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=96",
+      "billing_address": {
+        "first_name": "John",
+        "last_name": "Doe",
+        "company": "",
+        "address_1": "969 Market",
+        "address_2": "",
+        "city": "San Francisco",
+        "state": "CA",
+        "postcode": "94103",
+        "country": "US",
+        "email": "john.doe@example.com",
+        "phone": "(555) 555-5555"
+      },
+      "shipping_address": {
+        "first_name": "John",
+        "last_name": "Doe",
+        "company": "",
+        "address_1": "969 Market",
+        "address_2": "",
+        "city": "San Francisco",
+        "state": "CA",
+        "postcode": "94103",
+        "country": "US"
+      }
+    }
+  }
+}

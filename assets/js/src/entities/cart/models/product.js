@@ -102,6 +102,8 @@ module.exports = Model.extend({
 
     // return subset of attributes
     // return _.pick(attrs, productAttributes);
+    // remove id until productAttributes confirmed
+    attrs.id = null;
     return attrs;
   },
   /* jshint +W074 */

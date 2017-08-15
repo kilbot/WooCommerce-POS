@@ -1,5 +1,6 @@
 var Model = require('./abstract');
 var Variations = require('../../variations/collection');
+var _ = require('lodash');
 
 module.exports = Model.extend({
 

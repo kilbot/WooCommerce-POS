@@ -1,0 +1,31 @@
+{
+  "coupons": [
+    {
+      "expiry_date": "2013-11-22T00:00:00Z",
+      "individual_use": false,
+      "exclude_product_category_ids": [],
+      "amount": "5.00",
+      "code": "test123",
+      "product_category_ids": [
+        22
+      ],
+      "updated_at": "2013-11-23T21:08:10Z",
+      "limit_usage_to_x_items": 0,
+      "product_ids": [
+        73
+      ],
+      "exclude_sale_items": false,
+      "type": "fixed_cart",
+      "apply_before_tax": false,
+      "minimum_amount": "0.00",
+      "id": 137,
+      "exclude_product_ids": [],
+      "usage_limit": null,
+      "usage_count": 0,
+      "created_at": "2013-11-18T15:38:53Z",
+      "usage_limit_per_user": null,
+      "enable_free_shipping": false,
+      "customer_emails": []
+    }
+  ]
+}

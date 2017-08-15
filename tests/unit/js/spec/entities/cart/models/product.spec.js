@@ -14,14 +14,14 @@ describe('entities/cart/models/product.js', function () {
     'zero-rate': {
       3: {rate: '0.0000', label: 'VAT', shipping: 'yes', compound: 'yes'}
     }
-  }
+  };
 
   var dummy_tax_US = {
     '': {
       4: {rate: '10.0000', label: 'VAT', shipping: 'yes', compound: 'no'},
       5: {rate: '2.0000', label: 'VAT', shipping: 'yes', compound: 'yes'}
     }
-  }
+  };
 
   it('should be in a valid state', function () {
     var model = new Model();
@@ -31,7 +31,7 @@ describe('entities/cart/models/product.js', function () {
 
   it('should parse simple product attributes into a cart line item', function(){
 
-    var product = _.find(dummy_products.products, function (product) {
+    var product = _.find(dummy_products, function (product) {
       return product.type === 'simple';
     });
 
@@ -39,17 +39,17 @@ describe('entities/cart/models/product.js', function () {
 
     expect(model.id).to.be.null;
     expect(model.get('title')).to.be.undefined;
-    expect(model.get('name')).to.equal(product.title);
+    expect(model.get('name')).to.equal(product.name);
 
   });
 
   it('should parse variations into a cart line item with meta', function(){
 
-    var product = _.find(dummy_products.products, function (product) {
+    var product = _.find(dummy_products, function (product) {
       return product.type === 'variable';
     });
 
-    var variation = product.variations[0];
+    var variation = _.first( product.variations );
     variation.type = 'variation';
 
     var model = new Model( variation );
@@ -65,7 +65,7 @@ describe('entities/cart/models/product.js', function () {
 
   it('should have a quantity convenience method ', function() {
 
-    var product = dummy_products.products[0];
+    var product = _.first( dummy_products );
     var model = new Model( product );
 
     expect(model.get('quantity')).equals(1);
@@ -77,7 +77,7 @@ describe('entities/cart/models/product.js', function () {
 
   it("should initiate with the correct values (no tax)", function() {
 
-    var product = dummy_products.products[0];
+    var product = _.first( dummy_products );
     var model = new Model( _.extend( {}, product, { taxable: false } ) );
     expect(model.get('item_price')).equal( parseFloat( product.price ) );
     expect(model.get('total')).equal( parseFloat( product.price ) );
@@ -86,7 +86,7 @@ describe('entities/cart/models/product.js', function () {
 
   it("should re-calculate on quantity change to any floating point number", function() {
 
-    var product = dummy_products.products[0];
+    var product = _.first( dummy_products );
     var model = new Model( product );
 
     var quantity = _.random(10, true);
@@ -104,7 +104,7 @@ describe('entities/cart/models/product.js', function () {
 
     it("should match the Woo unit test for inclusive tax", function() {
       var model = new Model({
-        taxable: true,
+        tax_status: 'taxable',
         price: 9.99
       }, {
         collection: {
@@ -130,7 +130,7 @@ describe('entities/cart/models/product.js', function () {
     it("should match the Woo unit test for exclusive tax", function() {
 
       var model = new Model({
-        taxable: true,
+        tax_status: 'taxable',
         price: 9.99
       }, {
         collection: {
@@ -156,7 +156,7 @@ describe('entities/cart/models/product.js', function () {
     it("should match the Woo unit test for compound exclusive tax", function() {
 
       var model = new Model({
-        taxable: true,
+        tax_status: 'taxable',
         price: 100
       }, {
         collection: {
@@ -190,7 +190,7 @@ describe('entities/cart/models/product.js', function () {
     it("should match the Woo unit test for compound inclusive tax", function() {
 
       var model = new Model({
-        taxable: true,
+        tax_status: 'taxable',
         price: 100
       }, {
         collection: {
@@ -226,7 +226,7 @@ describe('entities/cart/models/product.js', function () {
 
   describe('entities/cart/models/product using GB dummy tax', function () {
 
-    var product = dummy_products.products[0];
+    var product = dummy_products[0];
 
     it("should calculate the correct exclusive tax", function() {
 
@@ -248,7 +248,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true });
+      model.set({ tax_status: 'taxable' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
@@ -283,7 +283,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       var quantity = _.random(10, true);
-      model.set( { 'taxable': true, quantity: quantity } );
+      model.set( { tax_status: 'taxable', quantity: quantity } );
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal( Utils.round( 3 * quantity, 4 ) );
@@ -313,7 +313,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true });
+      model.set({ tax_status: 'taxable' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(2.5);
@@ -348,7 +348,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       var quantity = _.random(10, true);
-      model.set( { 'taxable': true, quantity: quantity } );
+      model.set( { tax_status: 'taxable', quantity: quantity } );
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal( Utils.round( 2.5 * quantity, 4 ) );
@@ -378,7 +378,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': 'reduced-rate' });
+      model.set({ tax_status: 'taxable', 'tax_class': 'reduced-rate' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
@@ -414,7 +414,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': 'reduced-rate' });
+      model.set({ tax_status: 'taxable', 'tax_class': 'reduced-rate' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(2.8571);
@@ -450,7 +450,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': 'zero-rate' });
+      model.set({ tax_status: 'taxable', 'tax_class': 'zero-rate' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
@@ -485,7 +485,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': 'zero-rate' });
+      model.set({ tax_status: 'taxable', 'tax_class': 'zero-rate' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
@@ -504,7 +504,7 @@ describe('entities/cart/models/product.js', function () {
 
   describe('cart/model using US dummy tax', function () {
 
-    var product = dummy_products.products[0];
+    var product = dummy_products[0];
 
     it("should calculate the correct compound exclusive tax", function() {
 
@@ -526,7 +526,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true });
+      model.set({ tax_status: 'taxable' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
@@ -563,7 +563,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       var quantity = _.random(10, true);
-      model.set( { 'taxable': true, quantity: quantity } );
+      model.set( { tax_status: 'taxable', quantity: quantity } );
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal( Utils.round( 3 * quantity, 4 ) );
@@ -593,7 +593,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true });
+      model.set({ tax_status: 'taxable' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(2.6738);
@@ -633,7 +633,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true });
+      model.set({ tax_status: 'taxable' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
@@ -673,7 +673,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true });
+      model.set({ tax_status: 'taxable' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(2.6786);
@@ -710,7 +710,7 @@ describe('entities/cart/models/product.js', function () {
       });
 
       // dummy product id 99, regular price $3, on sale for $2
-      model.set({ 'taxable': true, 'tax_class': 'reduced-rate' });
+      model.set({ tax_status: 'taxable', 'tax_class': 'reduced-rate' });
 
       expect(model.get('item_price')).equal(2);
       expect(model.get('subtotal')).equal(3);
