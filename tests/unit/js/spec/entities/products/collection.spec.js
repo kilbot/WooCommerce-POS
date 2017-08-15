@@ -14,11 +14,11 @@ describe('entities/products/collection.js', function () {
     var collection = new Collection({}, { disableLocalStorage: true });
 
     collection.set( dummy_products, { parse: true, remote: true } );
-    expect(collection.length).to.equal( dummy_products.products.length );
+    expect(collection.length).to.equal( dummy_products.length );
 
     // without node
-    collection.reset( dummy_products.products, { parse: true } );
-    expect(collection.length).to.equal( dummy_products.products.length );
+    collection.reset( dummy_products, { parse: true } );
+    expect(collection.length).to.equal( dummy_products.length );
 
   });
 

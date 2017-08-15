@@ -83,13 +83,13 @@ describe('entities/products/models/variable.js', function () {
   };
 
   it('should be in a valid state', function() {
-    var variableProduct = _.find(dummy_products.products, { id: 40 });
+    var variableProduct = _.find(dummy_products, { id: 40 });
     var product = new Model( variableProduct );
     expect(product).to.be.ok;
   });
 
   it('should attach a collection of variations', function() {
-    var variableProduct = _.find(dummy_products.products, { id: 40 });
+    var variableProduct = _.find(dummy_products, { id: 40 });
     var product = new Model( variableProduct, { parse: true } );
     expect(product.variations.length).equals( variableProduct.variations.length );
   });
@@ -98,10 +98,14 @@ describe('entities/products/models/variable.js', function () {
     var product = new Model( dummy_product, { parse: true } );
     expect( product.getVariationOptions() ).eqls([{
       name: 'Color',
-      options: ['Black', 'Blue']
+      options: ['Black', 'Blue'],
+      variation: true,
+      visible: true
     },{
       name: 'Size',
-      options: ['S', 'M'] // note: L variation not preset in dummy_product
+      options: ['S', 'M', 'L'],
+      variation: true,
+      visible: true
     }]);
   });
 

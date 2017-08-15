@@ -169,7 +169,7 @@ describe('entities/orders/model.js', function () {
   //
   //});
 
-  it('should have a convience method to combine itemized taxes', function(){
+  it('should have a convenience method to combine itemized taxes', function(){
 
     var model = new OrderModel();
 
@@ -243,7 +243,7 @@ describe('entities/orders/model.js', function () {
 
   });
 
-  it('should have a convience method to sum itemized taxes', function() {
+  it('should have a convenience method to sum itemized taxes', function() {
 
     var model = new OrderModel();
 
@@ -317,21 +317,21 @@ describe('entities/orders/model.js', function () {
       price: '21.99',
       regular_price: '21.99',
       tax_class: "reduced-rate",
-      taxable: true,
+      tax_status: 'taxable',
       title: 'Premium Quality'
     }, {
       id: 546,
       price: '21.99',
       regular_price: '21.99',
       tax_class: 'reduced-rate',
-      taxable: true,
+      tax_status: 'taxable',
       title: 'Premium Quality'
     }, {
       id: 613,
       price: '19.99',
       regular_price: '19.99',
       tax_class: '',
-      taxable: true,
+      tax_status: 'taxable',
       title: 'Ship Your Idea',
       attributes: [{
         name: 'Color',
