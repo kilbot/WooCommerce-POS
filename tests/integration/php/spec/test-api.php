@@ -16,23 +16,27 @@ class APITest extends TestCase {
 
   /**
    * Make sure rest is enabled and working
+   *
+   *
    */
   public function test_get_valid_api_response() {
     $response = $this->client->get();
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('store', $data);
+    $this->assertArrayHasKey('namespace', $data);
   }
 
   /**
    * Test authentication
    * todo: logout
+   *
+   *
    */
   public function test_get_api_authentication() {
     $response = $this->client->get('products');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('products', $data);
+    $this->assertCount(10, $data);
   }
 
 }

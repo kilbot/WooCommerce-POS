@@ -12,10 +12,16 @@ class ProductsTest extends TestCase {
    *
    */
   public function test_get_valid_response() {
-    $response = $this->client->get('products');
+    $count = 3;
+    $response = $this->client->get('products', [
+      'query' => [
+        'type' => 'simple',
+        'per_page'=> $count
+      ]
+    ]);
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('products', $data);
+    $this->assertCount($count, $data);
   }
 
   /**
@@ -24,19 +30,18 @@ class ProductsTest extends TestCase {
   public function test_get_simple_products() {
     $response = $this->client->get('products', [
       'query' => [
-        'filter[type]' => 'simple',
-        'filter[limit]'=> '1'
+        'type' => 'simple',
+        'per_page'=> '1'
       ]
     ]);
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('products', $data);
-    $this->assertCount(1, $data['products']);
+    $this->assertCount(1, $data);
 
     // simple product should have:
     // - featured_src
     // - barcode
-    $product = $data['products'][0];
+    $product = $data[0];
     $this->assertArrayHasKey('featured_src', $product);
     $this->assertArrayHasKey('barcode', $product);
   }
@@ -48,7 +53,7 @@ class ProductsTest extends TestCase {
     $response = $this->client->get('products/99');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('product', $data);
+    $this->assertEquals(99, $data['id']);
   }
 
   /**
@@ -69,19 +74,24 @@ class ProductsTest extends TestCase {
     $response = $this->client->get('products/99');
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('product', $data);
-    $this->assertEquals( $random_qty, $data['product']['stock_quantity'] );
+    $this->assertEquals( $random_qty, $data['stock_quantity'] );
   }
 
   /**
    *
    */
   public function test_get_single_variable_product() {
-    $response = $this->client->get('products/41');
+    $response = $this->client->get('products', [
+      'query' => [
+        'type' => 'variable',
+        'per_page'=> '1'
+      ]
+    ]);
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('product', $data);
-    $this->assertEquals( 'variation', $data['product']['type'] );
+    $this->assertCount(1, $data);
+    $this->assertEquals( 'variable', $data[0]['type'] );
+    $this->assertGreaterThan(0, count($data[0]['variations']));
   }
 
   /**
@@ -100,8 +110,7 @@ class ProductsTest extends TestCase {
 
     // also need to check the parent output
     $response = $this->client->get('products/40');
-    $data = $response->json();
-    $parent = $data['product'];
+    $parent = $response->json();
     $this->assertArrayHasKey('variations', $parent);
     $product = '';
     foreach( $parent['variations'] as $variation ){
@@ -165,10 +174,14 @@ class ProductsTest extends TestCase {
     update_post_meta($product_id, '_pos_visibility', 'online_only');
 
     // get all product ids
-    $response = $this->client->get('products/ids');
+    $response = $this->client->get('products', [
+      'query' => [
+        'fields' => 'id'
+      ]
+    ]);
     $data = $response->json();
-    $this->assertGreaterThan(10, count($data['products']));
-    $ids = wp_list_pluck( $data['products'], 'id' );
+    $this->assertGreaterThan(10, count($data));
+    $ids = wp_list_pluck( $data, 'id' );
     $this->assertNotContains( $product_id, $ids );
 
     // get product via website
@@ -188,34 +201,32 @@ class ProductsTest extends TestCase {
   }
 
   /**
-   *
+   * @group debug
    */
   public function test_title_search(){
     $response = $this->client->get('products', [
       'query' => array(
-        'filter[q]' => 'prem'
+        'search' => 'prem'
       )
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('products', $data);
-    $this->assertCount(2, $data['products']);
+    $this->assertCount(2, $data);
 
-    $this->assertEquals('Premium Quality', $data['products'][0]['title']);
-    $this->assertEquals('Premium Quality', $data['products'][1]['title']);
+    $this->assertEquals('Premium Quality', $data[0]['name']);
+    $this->assertEquals('Premium Quality', $data[1]['name']);
 
+    // test search title onlu
     $response = $this->client->get('products', [
       'query' => array(
-        'filter[q]' => 'libero',
-        'filter[fields]' => 'title'
+        'search' => 'libero'
       )
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
     $data = $response->json();
-    $this->assertArrayHasKey('products', $data);
-    $this->assertCount(0, $data['products']);
+    $this->assertCount(0, $data);
 
   }
 

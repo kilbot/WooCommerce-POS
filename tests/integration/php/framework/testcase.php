@@ -19,6 +19,7 @@ class TestCase extends \PHPUnit_Framework_TestCase {
     parent::setUp();
 
     $this->login();
+    $rest_nonce = wp_create_nonce( 'wp_rest' );
 
     $this->client = new Client([
       'base_url' => get_wcpos_api_url( '' ),
@@ -26,7 +27,8 @@ class TestCase extends \PHPUnit_Framework_TestCase {
         'exceptions' => false,
         'cookies' => true,
         'headers' => [
-          'X-WC-POS' => '1'
+          'X-WC-POS' => '1',
+          'X-WP-Nonce' => $rest_nonce // this doesn't work?
         ]
       ]
     ]);
@@ -82,40 +84,51 @@ class TestCase extends \PHPUnit_Framework_TestCase {
     }
     return $string;
   }
-
   /**
    * @param int $id
    * @return mixed
    */
   protected function get_product( $id ){
-    $response = $this->client->get( get_woocommerce_api_url( 'products/' . $id ) );
+    $response = $this->client->get( 'products/' . $id );
     $data = $response->json();
-    return $data['product'];
+    $data = isset($data['product']) ? $data['product'] : $data;
+    return $data;
   }
-
   /**
    * @return mixed
    */
   protected function get_random_product_id() {
-    $response = $this->client->get( get_woocommerce_api_url( 'products/ids' ) );
-    $data = $response->json();
-    $key = array_rand( $data['products'] );
-    return $data['products'][$key]['id'];
+    $random_product = $this->get_random_product();
+    return $random_product['id'];
   }
-
   /**
    * @return mixed
    */
   protected function get_random_product() {
-    $product_id = $this->get_random_product_id();
-    return $this->get_product($product_id);
+    $response = $this->client->get( 'products',
+      array(
+        'query' => array(
+          'per_page'=> '100'
+        )
+      )
+    );
+    $data = $response->json();
+    $data = isset($data['products']) ? $data['products'] : $data;
+    $key = array_rand( $data );
+    return $data[$key];
   }
-
   /**
    * @param $response
    */
   protected function print_response_body( $response ) {
     echo $response->getBody();
+  }
+  /**
+   * @param $response
+   * @param int $bytes
+   */
+  protected function print_stream( $response, $bytes = 1024 ) {
+    echo $response->getBody()->read($bytes);
   }
 
 }

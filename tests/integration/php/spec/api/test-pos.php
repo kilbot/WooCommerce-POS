@@ -10,7 +10,7 @@ class POSTest extends TestCase {
   /**
    * Make sure rest is enabled and working
    *
-   * @group debug
+   *
    */
   public function test_get_valid_api_response() {
     $response = $this->client->get('pos');
