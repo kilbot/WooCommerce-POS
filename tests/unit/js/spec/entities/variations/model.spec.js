@@ -19,7 +19,7 @@ describe('entities/variations/model.js', function () {
   it('should init with parent title (passed via options)', function(){
     var variable = _.find( dummy_products, { id: 40 } );
     var model = new Model( variable.variations[0], { parentAttrs: variable } );
-    model.get('title').should.equal(variable.title);
+    model.get('name').should.equal(variable.name);
   });
 
 });

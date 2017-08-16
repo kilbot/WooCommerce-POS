@@ -6,8 +6,8 @@
     "permalink": "http://php56.local/product/woo-single-2",
     "date_created": "2013-06-07T11:38:12",
     "date_created_gmt": "2013-06-07T11:38:12",
-    "date_modified": "2017-04-02T12:07:40",
-    "date_modified_gmt": "2017-04-02T12:07:40",
+    "date_modified": "2013-06-07T11:38:12",
+    "date_modified_gmt": "2013-06-07T11:38:12",
     "type": "simple",
     "status": "publish",
     "featured": false,
@@ -25,7 +25,7 @@
     "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>3.00</span></del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>2.00</span></ins>",
     "on_sale": true,
     "purchasable": true,
-    "total_sales": 9,
+    "total_sales": 0,
     "virtual": false,
     "downloadable": false,
     "downloads": [],
@@ -33,11 +33,11 @@
     "download_expiry": -1,
     "external_url": "",
     "button_text": "",
-    "tax_status": "none",
+    "tax_status": "taxable",
     "tax_class": "",
-    "manage_stock": true,
-    "stock_quantity": 0,
-    "in_stock": false,
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
     "backorders": "no",
     "backorders_allowed": false,
     "backordered": false,
@@ -49,18 +49,18 @@
       "height": ""
     },
     "shipping_required": true,
-    "shipping_taxable": false,
+    "shipping_taxable": true,
     "shipping_class": "",
     "shipping_class_id": 0,
     "reviews_allowed": true,
     "average_rating": "4.50",
     "rating_count": 2,
     "related_ids": [
-      96,
+      83,
       90,
+      96,
       93,
-      87,
-      83
+      87
     ],
     "upsell_ids": [],
     "cross_sell_ids": [],
@@ -131,8 +131,8 @@
     "permalink": "http://php56.local/product/woo-album-4",
     "date_created": "2013-06-07T11:37:23",
     "date_created_gmt": "2013-06-07T11:37:23",
-    "date_modified": "2017-07-26T07:24:28",
-    "date_modified_gmt": "2017-07-26T07:24:28",
+    "date_modified": "2013-06-07T11:37:23",
+    "date_modified_gmt": "2013-06-07T11:37:23",
     "type": "simple",
     "status": "publish",
     "featured": false,
@@ -160,8 +160,8 @@
     "button_text": "",
     "tax_status": "taxable",
     "tax_class": "",
-    "manage_stock": true,
-    "stock_quantity": 45,
+    "manage_stock": false,
+    "stock_quantity": null,
     "in_stock": true,
     "backorders": "no",
     "backorders_allowed": false,
@@ -181,10 +181,10 @@
     "average_rating": "5.00",
     "rating_count": 2,
     "related_ids": [
-      87,
-      90,
-      93,
       83,
+      93,
+      90,
+      87,
       99
     ],
     "upsell_ids": [],
@@ -309,8 +309,8 @@
       99,
       87,
       96,
-      90,
-      83
+      83,
+      90
     ],
     "upsell_ids": [],
     "cross_sell_ids": [],
@@ -431,11 +431,11 @@
     "average_rating": "3.00",
     "rating_count": 1,
     "related_ids": [
-      87,
-      93,
       96,
       83,
-      99
+      93,
+      99,
+      87
     ],
     "upsell_ids": [],
     "cross_sell_ids": [],
@@ -556,11 +556,11 @@
     "average_rating": "4.00",
     "rating_count": 1,
     "related_ids": [
-      96,
       83,
-      93,
+      99,
       90,
-      99
+      93,
+      96
     ],
     "upsell_ids": [],
     "cross_sell_ids": [],
@@ -681,10 +681,10 @@
     "average_rating": "0.00",
     "rating_count": 0,
     "related_ids": [
-      99,
       90,
-      87,
       96,
+      87,
+      99,
       93
     ],
     "upsell_ids": [],
@@ -806,10 +806,10 @@
     "average_rating": "0.00",
     "rating_count": 0,
     "related_ids": [
-      73,
       70,
+      76,
       67,
-      76
+      73
     ],
     "upsell_ids": [],
     "cross_sell_ids": [
@@ -928,10 +928,10 @@
     "average_rating": "4.00",
     "rating_count": 1,
     "related_ids": [
-      67,
-      73,
+      70,
       79,
-      70
+      67,
+      73
     ],
     "upsell_ids": [],
     "cross_sell_ids": [
@@ -1050,9 +1050,9 @@
     "average_rating": "2.00",
     "rating_count": 2,
     "related_ids": [
-      76,
-      67,
       79,
+      67,
+      76,
       70
     ],
     "upsell_ids": [
@@ -1121,8 +1121,8 @@
     "permalink": "http://php56.local/product/flying-ninja",
     "date_created": "2013-06-07T11:25:01",
     "date_created_gmt": "2013-06-07T11:25:01",
-    "date_modified": "2017-07-28T07:29:09",
-    "date_modified_gmt": "2017-07-28T07:29:09",
+    "date_modified": "2013-06-07T11:25:01",
+    "date_modified_gmt": "2013-06-07T11:25:01",
     "type": "simple",
     "status": "publish",
     "featured": false,
@@ -1140,7 +1140,7 @@
     "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>15.00</span></del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>12.00</span></ins>",
     "on_sale": true,
     "purchasable": true,
-    "total_sales": 6,
+    "total_sales": 0,
     "virtual": false,
     "downloadable": false,
     "downloads": [],
@@ -1171,10 +1171,10 @@
     "average_rating": "4.00",
     "rating_count": 4,
     "related_ids": [
-      76,
+      79,
       67,
       73,
-      79
+      76
     ],
     "upsell_ids": [],
     "cross_sell_ids": [],
@@ -1212,18 +1212,7 @@
         "position": 1
       }
     ],
-    "attributes": [
-      {
-        "id": 0,
-        "name": "Story",
-        "position": 0,
-        "visible": true,
-        "variation": false,
-        "options": [
-          "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas."
-        ]
-      }
-    ],
+    "attributes": [],
     "default_attributes": [],
     "variations": [],
     "grouped_products": [],
@@ -1302,9 +1291,9 @@
     "rating_count": 0,
     "related_ids": [
       76,
-      79,
       73,
-      70
+      70,
+      79
     ],
     "upsell_ids": [
       22,
@@ -1426,11 +1415,11 @@
     "average_rating": "4.00",
     "rating_count": 2,
     "related_ids": [
-      40,
-      31,
-      34,
+      50,
+      47,
       37,
-      178
+      15,
+      40
     ],
     "upsell_ids": [],
     "cross_sell_ids": [
@@ -1553,11 +1542,11 @@
     "average_rating": "4.00",
     "rating_count": 5,
     "related_ids": [
-      47,
-      50,
+      60,
+      31,
+      19,
       40,
-      53,
-      22
+      37
     ],
     "upsell_ids": [],
     "cross_sell_ids": [
@@ -1680,11 +1669,11 @@
     "average_rating": "3.00",
     "rating_count": 2,
     "related_ids": [
-      19,
-      31,
+      15,
       47,
-      178,
-      15
+      34,
+      40,
+      50
     ],
     "upsell_ids": [],
     "cross_sell_ids": [
@@ -1807,11 +1796,11 @@
     "average_rating": "4.67",
     "rating_count": 3,
     "related_ids": [
-      47,
-      22,
-      56,
       15,
-      19
+      40,
+      37,
+      53,
+      22
     ],
     "upsell_ids": [],
     "cross_sell_ids": [
@@ -1935,10 +1924,10 @@
     "rating_count": 2,
     "related_ids": [
       56,
-      60,
-      19,
-      37,
-      50
+      40,
+      31,
+      53,
+      22
     ],
     "upsell_ids": [],
     "cross_sell_ids": [
@@ -2005,17 +1994,17 @@
     }
   },
   {
-    "id": 178,
+    "id": 40,
     "name": "Ship Your Idea",
-    "slug": "ship-your-idea-2-2",
-    "permalink": "http://php56.local/product/ship-your-idea-2-2",
+    "slug": "ship-your-idea-2",
+    "permalink": "http://php56.local/product/ship-your-idea-2",
     "date_created": "2013-06-07T11:00:28",
     "date_created_gmt": "2013-06-07T11:00:28",
-    "date_modified": "2013-06-07T11:00:28",
-    "date_modified_gmt": "2013-06-07T11:00:28",
+    "date_modified": "2017-08-16T06:22:38",
+    "date_modified_gmt": "2017-08-16T06:22:38",
     "type": "variable",
     "status": "publish",
-    "featured": true,
+    "featured": false,
     "catalog_visibility": "visible",
     "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
     "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
@@ -2061,11 +2050,11 @@
     "average_rating": "4.00",
     "rating_count": 3,
     "related_ids": [
-      22,
-      47,
-      34,
       37,
-      31
+      19,
+      56,
+      60,
+      47
     ],
     "upsell_ids": [],
     "cross_sell_ids": [
@@ -2160,7 +2149,7 @@
         "date_modified": "2013-06-07T10:59:15",
         "date_modified_gmt": "2013-06-07T10:59:15",
         "description": "",
-        "permalink": "http://php56.local/product/ship-your-idea-2-2?attribute_pa_color=black",
+        "permalink": "http://php56.local/product/ship-your-idea-2?attribute_pa_color=black",
         "sku": "",
         "price": "35",
         "regular_price": "35",
@@ -2223,7 +2212,7 @@
         "date_modified": "2013-06-07T10:59:15",
         "date_modified_gmt": "2013-06-07T10:59:15",
         "description": "",
-        "permalink": "http://php56.local/product/ship-your-idea-2-2?attribute_pa_color=blue",
+        "permalink": "http://php56.local/product/ship-your-idea-2?attribute_pa_color=blue",
         "sku": "",
         "price": "30",
         "regular_price": "35",
@@ -2284,564 +2273,6 @@
     "menu_order": 0,
     "meta_data": [
       {
-        "id": 5076,
-        "key": "_min_variation_price",
-        "value": "30"
-      },
-      {
-        "id": 5077,
-        "key": "_max_variation_price",
-        "value": "35"
-      },
-      {
-        "id": 5078,
-        "key": "_min_variation_regular_price",
-        "value": "35"
-      },
-      {
-        "id": 5079,
-        "key": "_max_variation_regular_price",
-        "value": "35"
-      },
-      {
-        "id": 5080,
-        "key": "_min_variation_sale_price",
-        "value": "30"
-      },
-      {
-        "id": 5081,
-        "key": "_max_variation_sale_price",
-        "value": "30"
-      },
-      {
-        "id": 5828,
-        "key": "_min_variation_price",
-        "value": "30"
-      },
-      {
-        "id": 5829,
-        "key": "_max_variation_price",
-        "value": "35"
-      },
-      {
-        "id": 5830,
-        "key": "_min_variation_regular_price",
-        "value": "35"
-      },
-      {
-        "id": 5831,
-        "key": "_max_variation_regular_price",
-        "value": "35"
-      },
-      {
-        "id": 5832,
-        "key": "_min_variation_sale_price",
-        "value": "30"
-      },
-      {
-        "id": 5833,
-        "key": "_max_variation_sale_price",
-        "value": "30"
-      }
-    ],
-    "featured_src": "http://php56.local/wp-content/uploads/2013/06/hoodie_7_front.jpg",
-    "barcode": "",
-    "_links": {
-      "self": [
-        {
-          "href": "http://php56.local/wp-json/wc/v2/products/42/variations/42"
-        }
-      ],
-      "collection": [
-        {
-          "href": "http://php56.local/wp-json/wc/v2/products/42/variations"
-        }
-      ],
-      "up": [
-        {
-          "href": "http://php56.local/wp-json/wc/v2/products/42"
-        }
-      ]
-    }
-  },
-  {
-    "id": 40,
-    "name": "A Ship Your Idea",
-    "slug": "ship-your-idea-2",
-    "permalink": "http://php56.local/product/ship-your-idea-2",
-    "date_created": "2013-06-07T11:00:28",
-    "date_created_gmt": "2013-06-07T11:00:28",
-    "date_modified": "2017-08-02T08:37:22",
-    "date_modified_gmt": "2017-08-02T08:37:22",
-    "type": "variable",
-    "status": "publish",
-    "featured": false,
-    "catalog_visibility": "visible",
-    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
-    "short_description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
-    "sku": "",
-    "price": "20",
-    "regular_price": "30",
-    "sale_price": "",
-    "date_on_sale_from": null,
-    "date_on_sale_from_gmt": null,
-    "date_on_sale_to": null,
-    "date_on_sale_to_gmt": null,
-    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>20.00</span>",
-    "on_sale": false,
-    "purchasable": true,
-    "total_sales": 0,
-    "virtual": false,
-    "downloadable": false,
-    "downloads": [],
-    "download_limit": -1,
-    "download_expiry": -1,
-    "external_url": "",
-    "button_text": "",
-    "tax_status": "taxable",
-    "tax_class": "",
-    "manage_stock": true,
-    "stock_quantity": 0,
-    "in_stock": false,
-    "backorders": "no",
-    "backorders_allowed": false,
-    "backordered": false,
-    "sold_individually": false,
-    "weight": "",
-    "dimensions": {
-      "length": "",
-      "width": "",
-      "height": ""
-    },
-    "shipping_required": true,
-    "shipping_taxable": true,
-    "shipping_class": "",
-    "shipping_class_id": 0,
-    "reviews_allowed": true,
-    "average_rating": "4.00",
-    "rating_count": 3,
-    "related_ids": [
-      37,
-      50,
-      47,
-      178,
-      60
-    ],
-    "upsell_ids": [],
-    "cross_sell_ids": [
-      22
-    ],
-    "parent_id": 0,
-    "purchase_note": "",
-    "categories": [
-      {
-        "id": 15,
-        "name": "Clothing",
-        "slug": "clothing"
-      },
-      {
-        "id": 16,
-        "name": "Hoodies",
-        "slug": "hoodies"
-      }
-    ],
-    "tags": [
-      {
-        "id": 22,
-        "name": "aeBFqoyaef",
-        "slug": "aebfqoyaef"
-      }
-    ],
-    "images": [
-      {
-        "id": 43,
-        "date_created": "2013-06-07T10:59:40",
-        "date_created_gmt": "2013-06-07T10:59:40",
-        "date_modified": "2013-06-07T10:59:40",
-        "date_modified_gmt": "2013-06-07T10:59:40",
-        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_7_front.jpg",
-        "name": "hoodie_7_front",
-        "alt": "",
-        "position": 0
-      },
-      {
-        "id": 44,
-        "date_created": "2013-06-07T10:59:54",
-        "date_created_gmt": "2013-06-07T10:59:54",
-        "date_modified": "2013-06-07T10:59:54",
-        "date_modified_gmt": "2013-06-07T10:59:54",
-        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_7_back.jpg",
-        "name": "hoodie_7_back",
-        "alt": "",
-        "position": 1
-      },
-      {
-        "id": 45,
-        "date_created": "2013-06-07T11:00:00",
-        "date_created_gmt": "2013-06-07T11:00:00",
-        "date_modified": "2013-06-07T11:00:00",
-        "date_modified_gmt": "2013-06-07T11:00:00",
-        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_1_back.jpg",
-        "name": "hoodie_1_back",
-        "alt": "",
-        "position": 2
-      },
-      {
-        "id": 46,
-        "date_created": "2013-06-07T11:00:01",
-        "date_created_gmt": "2013-06-07T11:00:01",
-        "date_modified": "2013-06-07T11:00:01",
-        "date_modified_gmt": "2013-06-07T11:00:01",
-        "src": "http://php56.local/wp-content/uploads/2013/06/hoodie_1_front.jpg",
-        "name": "hoodie_1_front",
-        "alt": "",
-        "position": 3
-      }
-    ],
-    "attributes": [
-      {
-        "id": 0,
-        "name": "Test",
-        "position": 0,
-        "visible": true,
-        "variation": true,
-        "options": [
-          "0",
-          "3",
-          "6",
-          "9",
-          "12"
-        ]
-      },
-      {
-        "id": 1,
-        "name": "Color",
-        "position": 1,
-        "visible": true,
-        "variation": true,
-        "options": [
-          "Black",
-          "Blue"
-        ]
-      },
-      {
-        "id": 0,
-        "name": "Ingredients",
-        "position": 2,
-        "visible": true,
-        "variation": false,
-        "options": [
-          "Salt",
-          "Flour",
-          "Water"
-        ]
-      },
-      {
-        "id": 0,
-        "name": "ID",
-        "position": 3,
-        "visible": true,
-        "variation": true,
-        "options": [
-          "true",
-          "false"
-        ]
-      }
-    ],
-    "default_attributes": [],
-    "variations": [
-      {
-        "id": 174,
-        "date_created": "2017-06-30T07:20:29",
-        "date_created_gmt": "2017-06-30T07:20:29",
-        "date_modified": "2017-06-30T07:21:01",
-        "date_modified_gmt": "2017-06-30T07:21:01",
-        "description": "",
-        "permalink": "http://php56.local/product/ship-your-idea-2?attribute_pa_color=black&attribute_id=true",
-        "sku": "",
-        "price": "",
-        "regular_price": "",
-        "sale_price": "",
-        "date_on_sale_from": null,
-        "date_on_sale_from_gmt": null,
-        "date_on_sale_to": null,
-        "date_on_sale_to_gmt": null,
-        "on_sale": false,
-        "visible": true,
-        "purchasable": false,
-        "virtual": false,
-        "downloadable": false,
-        "downloads": [],
-        "download_limit": -1,
-        "download_expiry": -1,
-        "tax_status": "taxable",
-        "tax_class": "",
-        "manage_stock": "parent",
-        "stock_quantity": 0,
-        "in_stock": false,
-        "backorders": "no",
-        "backorders_allowed": false,
-        "backordered": false,
-        "weight": "",
-        "dimensions": {
-          "length": "",
-          "width": "",
-          "height": ""
-        },
-        "shipping_class": "",
-        "shipping_class_id": 0,
-        "image": {
-          "id": 0,
-          "date_created": "2017-08-15T06:38:26",
-          "date_created_gmt": "2017-08-15T06:38:26",
-          "date_modified": "2017-08-15T06:38:26",
-          "date_modified_gmt": "2017-08-15T06:38:26",
-          "src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
-          "name": "Placeholder",
-          "alt": "Placeholder",
-          "position": 0
-        },
-        "attributes": [
-          {
-            "id": 1,
-            "name": "Color",
-            "option": "Black"
-          },
-          {
-            "id": 0,
-            "name": "ID",
-            "option": "true"
-          }
-        ],
-        "menu_order": 1,
-        "meta_data": [],
-        "featured_src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
-        "barcode": ""
-      },
-      {
-        "id": 175,
-        "date_created": "2017-06-30T07:20:42",
-        "date_created_gmt": "2017-06-30T07:20:42",
-        "date_modified": "2017-06-30T07:21:02",
-        "date_modified_gmt": "2017-06-30T07:21:02",
-        "description": "",
-        "permalink": "http://php56.local/product/ship-your-idea-2?attribute_test=3&attribute_pa_color=black&attribute_id=true",
-        "sku": "",
-        "price": "",
-        "regular_price": "",
-        "sale_price": "",
-        "date_on_sale_from": null,
-        "date_on_sale_from_gmt": null,
-        "date_on_sale_to": null,
-        "date_on_sale_to_gmt": null,
-        "on_sale": false,
-        "visible": true,
-        "purchasable": false,
-        "virtual": false,
-        "downloadable": false,
-        "downloads": [],
-        "download_limit": -1,
-        "download_expiry": -1,
-        "tax_status": "taxable",
-        "tax_class": "",
-        "manage_stock": "parent",
-        "stock_quantity": 0,
-        "in_stock": false,
-        "backorders": "no",
-        "backorders_allowed": false,
-        "backordered": false,
-        "weight": "",
-        "dimensions": {
-          "length": "",
-          "width": "",
-          "height": ""
-        },
-        "shipping_class": "",
-        "shipping_class_id": 0,
-        "image": {
-          "id": 0,
-          "date_created": "2017-08-15T06:38:26",
-          "date_created_gmt": "2017-08-15T06:38:26",
-          "date_modified": "2017-08-15T06:38:26",
-          "date_modified_gmt": "2017-08-15T06:38:26",
-          "src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
-          "name": "Placeholder",
-          "alt": "Placeholder",
-          "position": 0
-        },
-        "attributes": [
-          {
-            "id": 0,
-            "name": "Test",
-            "option": "3"
-          },
-          {
-            "id": 1,
-            "name": "Color",
-            "option": "Black"
-          },
-          {
-            "id": 0,
-            "name": "ID",
-            "option": "true"
-          }
-        ],
-        "menu_order": 2,
-        "meta_data": [],
-        "featured_src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
-        "barcode": ""
-      },
-      {
-        "id": 176,
-        "date_created": "2017-06-30T07:20:45",
-        "date_created_gmt": "2017-06-30T07:20:45",
-        "date_modified": "2017-06-30T07:21:02",
-        "date_modified_gmt": "2017-06-30T07:21:02",
-        "description": "",
-        "permalink": "http://php56.local/product/ship-your-idea-2?attribute_test=6&attribute_pa_color=black&attribute_id=true",
-        "sku": "",
-        "price": "",
-        "regular_price": "",
-        "sale_price": "",
-        "date_on_sale_from": null,
-        "date_on_sale_from_gmt": null,
-        "date_on_sale_to": null,
-        "date_on_sale_to_gmt": null,
-        "on_sale": false,
-        "visible": true,
-        "purchasable": false,
-        "virtual": false,
-        "downloadable": false,
-        "downloads": [],
-        "download_limit": -1,
-        "download_expiry": -1,
-        "tax_status": "taxable",
-        "tax_class": "",
-        "manage_stock": "parent",
-        "stock_quantity": 0,
-        "in_stock": false,
-        "backorders": "no",
-        "backorders_allowed": false,
-        "backordered": false,
-        "weight": "",
-        "dimensions": {
-          "length": "",
-          "width": "",
-          "height": ""
-        },
-        "shipping_class": "",
-        "shipping_class_id": 0,
-        "image": {
-          "id": 0,
-          "date_created": "2017-08-15T06:38:26",
-          "date_created_gmt": "2017-08-15T06:38:26",
-          "date_modified": "2017-08-15T06:38:26",
-          "date_modified_gmt": "2017-08-15T06:38:26",
-          "src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
-          "name": "Placeholder",
-          "alt": "Placeholder",
-          "position": 0
-        },
-        "attributes": [
-          {
-            "id": 0,
-            "name": "Test",
-            "option": "6"
-          },
-          {
-            "id": 1,
-            "name": "Color",
-            "option": "Black"
-          },
-          {
-            "id": 0,
-            "name": "ID",
-            "option": "true"
-          }
-        ],
-        "menu_order": 3,
-        "meta_data": [],
-        "featured_src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
-        "barcode": ""
-      },
-      {
-        "id": 177,
-        "date_created": "2017-06-30T07:20:48",
-        "date_created_gmt": "2017-06-30T07:20:48",
-        "date_modified": "2017-06-30T07:21:02",
-        "date_modified_gmt": "2017-06-30T07:21:02",
-        "description": "",
-        "permalink": "http://php56.local/product/ship-your-idea-2?attribute_test=9&attribute_pa_color=black&attribute_id=false",
-        "sku": "",
-        "price": "20",
-        "regular_price": "20",
-        "sale_price": "",
-        "date_on_sale_from": null,
-        "date_on_sale_from_gmt": null,
-        "date_on_sale_to": null,
-        "date_on_sale_to_gmt": null,
-        "on_sale": false,
-        "visible": true,
-        "purchasable": true,
-        "virtual": false,
-        "downloadable": false,
-        "downloads": [],
-        "download_limit": -1,
-        "download_expiry": -1,
-        "tax_status": "taxable",
-        "tax_class": "",
-        "manage_stock": true,
-        "stock_quantity": 200,
-        "in_stock": true,
-        "backorders": "no",
-        "backorders_allowed": false,
-        "backordered": false,
-        "weight": "",
-        "dimensions": {
-          "length": "",
-          "width": "",
-          "height": ""
-        },
-        "shipping_class": "",
-        "shipping_class_id": 0,
-        "image": {
-          "id": 0,
-          "date_created": "2017-08-15T06:38:27",
-          "date_created_gmt": "2017-08-15T06:38:27",
-          "date_modified": "2017-08-15T06:38:27",
-          "date_modified_gmt": "2017-08-15T06:38:27",
-          "src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
-          "name": "Placeholder",
-          "alt": "Placeholder",
-          "position": 0
-        },
-        "attributes": [
-          {
-            "id": 0,
-            "name": "Test",
-            "option": "9"
-          },
-          {
-            "id": 1,
-            "name": "Color",
-            "option": "Black"
-          },
-          {
-            "id": 0,
-            "name": "ID",
-            "option": "false"
-          }
-        ],
-        "menu_order": 4,
-        "meta_data": [],
-        "featured_src": "http://php56.local/wp-content/plugins/woocommerce/assets/images/placeholder.png",
-        "barcode": ""
-      }
-    ],
-    "grouped_products": [],
-    "menu_order": 0,
-    "meta_data": [
-      {
         "id": 301,
         "key": "_min_variation_price",
         "value": "30"
@@ -2870,36 +2301,6 @@
         "id": 306,
         "key": "_max_variation_sale_price",
         "value": "30"
-      },
-      {
-        "id": 4207,
-        "key": "_min_variation_price",
-        "value": "30"
-      },
-      {
-        "id": 4208,
-        "key": "_max_variation_price",
-        "value": "35"
-      },
-      {
-        "id": 4209,
-        "key": "_min_variation_regular_price",
-        "value": "35"
-      },
-      {
-        "id": 4210,
-        "key": "_max_variation_regular_price",
-        "value": "35"
-      },
-      {
-        "id": 4211,
-        "key": "_min_variation_sale_price",
-        "value": "30"
-      },
-      {
-        "id": 4212,
-        "key": "_max_variation_sale_price",
-        "value": "30"
       }
     ],
     "featured_src": "http://php56.local/wp-content/uploads/2013/06/hoodie_7_front.jpg",
@@ -2907,17 +2308,17 @@
     "_links": {
       "self": [
         {
-          "href": "http://php56.local/wp-json/wc/v2/products/177/variations/177"
+          "href": "http://php56.local/wp-json/wc/v2/products/42/variations/42"
         }
       ],
       "collection": [
         {
-          "href": "http://php56.local/wp-json/wc/v2/products/177/variations"
+          "href": "http://php56.local/wp-json/wc/v2/products/42/variations"
         }
       ],
       "up": [
         {
-          "href": "http://php56.local/wp-json/wc/v2/products/177"
+          "href": "http://php56.local/wp-json/wc/v2/products/42"
         }
       ]
     }
@@ -2929,8 +2330,8 @@
     "permalink": "http://php56.local/product/happy-ninja",
     "date_created": "2013-06-07T10:53:15",
     "date_created_gmt": "2013-06-07T10:53:15",
-    "date_modified": "2017-07-27T09:10:04",
-    "date_modified_gmt": "2017-07-27T09:10:04",
+    "date_modified": "2013-06-07T10:53:15",
+    "date_modified_gmt": "2013-06-07T10:53:15",
     "type": "simple",
     "status": "publish",
     "featured": false,
@@ -2948,7 +2349,7 @@
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>18.00</span>",
     "on_sale": false,
     "purchasable": true,
-    "total_sales": 1,
+    "total_sales": 0,
     "virtual": false,
     "downloadable": false,
     "downloads": [],
@@ -2956,7 +2357,7 @@
     "download_expiry": -1,
     "external_url": "",
     "button_text": "",
-    "tax_status": "none",
+    "tax_status": "taxable",
     "tax_class": "",
     "manage_stock": false,
     "stock_quantity": null,
@@ -2972,18 +2373,18 @@
       "height": ""
     },
     "shipping_required": true,
-    "shipping_taxable": false,
+    "shipping_taxable": true,
     "shipping_class": "",
     "shipping_class_id": 0,
     "reviews_allowed": true,
     "average_rating": "5.00",
     "rating_count": 2,
     "related_ids": [
-      47,
       22,
-      50,
-      53,
-      178
+      56,
+      47,
+      60,
+      34
     ],
     "upsell_ids": [
       53
@@ -3059,8 +2460,8 @@
     "permalink": "http://php56.local/product/woo-ninja",
     "date_created": "2013-06-07T10:52:06",
     "date_created_gmt": "2013-06-07T10:52:06",
-    "date_modified": "2017-03-31T13:37:47",
-    "date_modified_gmt": "2017-03-31T13:37:47",
+    "date_modified": "2013-06-07T10:52:06",
+    "date_modified_gmt": "2013-06-07T10:52:06",
     "type": "simple",
     "status": "publish",
     "featured": false,
@@ -3078,7 +2479,7 @@
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>20.00</span>",
     "on_sale": false,
     "purchasable": true,
-    "total_sales": 5,
+    "total_sales": 0,
     "virtual": false,
     "downloadable": false,
     "downloads": [],
@@ -3088,9 +2489,9 @@
     "button_text": "",
     "tax_status": "taxable",
     "tax_class": "",
-    "manage_stock": true,
-    "stock_quantity": -3,
-    "in_stock": false,
+    "manage_stock": false,
+    "stock_quantity": null,
+    "in_stock": true,
     "backorders": "no",
     "backorders_allowed": false,
     "backordered": false,
@@ -3109,11 +2510,11 @@
     "average_rating": "0.00",
     "rating_count": 0,
     "related_ids": [
-      50,
+      31,
       47,
       53,
-      19,
-      37
+      22,
+      19
     ],
     "upsell_ids": [
       47
@@ -3239,11 +2640,11 @@
     "average_rating": "5.00",
     "rating_count": 1,
     "related_ids": [
-      40,
-      178,
-      15,
+      22,
+      34,
       60,
-      53
+      53,
+      40
     ],
     "upsell_ids": [
       56
@@ -3319,8 +2720,8 @@
     "permalink": "http://php56.local/product/ship-your-idea",
     "date_created": "2013-06-07T10:46:01",
     "date_created_gmt": "2013-06-07T10:46:01",
-    "date_modified": "2013-06-07T10:46:01",
-    "date_modified_gmt": "2013-06-07T10:46:01",
+    "date_modified": "2017-08-16T06:24:55",
+    "date_modified_gmt": "2017-08-16T06:24:55",
     "type": "variable",
     "status": "publish",
     "featured": false,
@@ -3369,11 +2770,11 @@
     "average_rating": "4.33",
     "rating_count": 3,
     "related_ids": [
+      31,
+      47,
+      53,
       50,
-      40,
-      19,
-      15,
-      34
+      40
     ],
     "upsell_ids": [
       40
@@ -3470,132 +2871,6 @@
         "id": 23,
         "date_created": "2013-06-07T10:44:57",
         "date_created_gmt": "2013-06-07T10:44:57",
-        "date_modified": "2017-03-31T13:21:29",
-        "date_modified_gmt": "2017-03-31T13:21:29",
-        "description": "",
-        "permalink": "http://php56.local/product/ship-your-idea?attribute_pa_color=black",
-        "sku": "",
-        "price": "20",
-        "regular_price": "20",
-        "sale_price": "",
-        "date_on_sale_from": null,
-        "date_on_sale_from_gmt": null,
-        "date_on_sale_to": null,
-        "date_on_sale_to_gmt": null,
-        "on_sale": false,
-        "visible": true,
-        "purchasable": true,
-        "virtual": false,
-        "downloadable": false,
-        "downloads": [],
-        "download_limit": -1,
-        "download_expiry": -1,
-        "tax_status": "taxable",
-        "tax_class": "",
-        "manage_stock": false,
-        "stock_quantity": null,
-        "in_stock": true,
-        "backorders": "",
-        "backorders_allowed": false,
-        "backordered": false,
-        "weight": "",
-        "dimensions": {
-          "length": "",
-          "width": "",
-          "height": ""
-        },
-        "shipping_class": "",
-        "shipping_class_id": 0,
-        "image": {
-          "id": 29,
-          "date_created": "2013-06-07T10:45:30",
-          "date_created_gmt": "2013-06-07T10:45:30",
-          "date_modified": "2013-06-07T10:45:30",
-          "date_modified_gmt": "2013-06-07T10:45:30",
-          "src": "http://php56.local/wp-content/uploads/2013/06/T_4_front1.jpg",
-          "name": "T_4_front",
-          "alt": "",
-          "position": 0
-        },
-        "attributes": [
-          {
-            "id": 1,
-            "name": "Color",
-            "option": "Black"
-          }
-        ],
-        "menu_order": 0,
-        "meta_data": [],
-        "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_4_front1.jpg",
-        "barcode": ""
-      },
-      {
-        "id": 169,
-        "date_created": "2013-06-07T10:44:57",
-        "date_created_gmt": "2013-06-07T10:44:57",
-        "date_modified": "2017-06-07T09:01:46",
-        "date_modified_gmt": "2017-06-07T09:01:46",
-        "description": "",
-        "permalink": "http://php56.local/product/ship-your-idea?attribute_pa_color=black",
-        "sku": "",
-        "price": "20",
-        "regular_price": "20",
-        "sale_price": "",
-        "date_on_sale_from": null,
-        "date_on_sale_from_gmt": null,
-        "date_on_sale_to": null,
-        "date_on_sale_to_gmt": null,
-        "on_sale": false,
-        "visible": true,
-        "purchasable": true,
-        "virtual": false,
-        "downloadable": false,
-        "downloads": [],
-        "download_limit": -1,
-        "download_expiry": -1,
-        "tax_status": "taxable",
-        "tax_class": "",
-        "manage_stock": false,
-        "stock_quantity": null,
-        "in_stock": true,
-        "backorders": "",
-        "backorders_allowed": false,
-        "backordered": false,
-        "weight": "",
-        "dimensions": {
-          "length": "",
-          "width": "",
-          "height": ""
-        },
-        "shipping_class": "",
-        "shipping_class_id": 0,
-        "image": {
-          "id": 29,
-          "date_created": "2013-06-07T10:45:30",
-          "date_created_gmt": "2013-06-07T10:45:30",
-          "date_modified": "2013-06-07T10:45:30",
-          "date_modified_gmt": "2013-06-07T10:45:30",
-          "src": "http://php56.local/wp-content/uploads/2013/06/T_4_front1.jpg",
-          "name": "T_4_front",
-          "alt": "",
-          "position": 0
-        },
-        "attributes": [
-          {
-            "id": 1,
-            "name": "Color",
-            "option": "Black"
-          }
-        ],
-        "menu_order": 0,
-        "meta_data": [],
-        "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_4_front1.jpg",
-        "barcode": ""
-      },
-      {
-        "id": 179,
-        "date_created": "2013-06-07T10:44:57",
-        "date_created_gmt": "2013-06-07T10:44:57",
         "date_modified": "2013-06-07T10:44:57",
         "date_modified_gmt": "2013-06-07T10:44:57",
         "description": "",
@@ -3657,132 +2932,6 @@
       },
       {
         "id": 24,
-        "date_created": "2013-06-07T10:44:58",
-        "date_created_gmt": "2013-06-07T10:44:58",
-        "date_modified": "2017-03-31T13:21:29",
-        "date_modified_gmt": "2017-03-31T13:21:29",
-        "description": "",
-        "permalink": "http://php56.local/product/ship-your-idea?attribute_pa_color=green",
-        "sku": "",
-        "price": "20",
-        "regular_price": "20",
-        "sale_price": "",
-        "date_on_sale_from": null,
-        "date_on_sale_from_gmt": null,
-        "date_on_sale_to": null,
-        "date_on_sale_to_gmt": null,
-        "on_sale": false,
-        "visible": true,
-        "purchasable": true,
-        "virtual": false,
-        "downloadable": false,
-        "downloads": [],
-        "download_limit": -1,
-        "download_expiry": -1,
-        "tax_status": "taxable",
-        "tax_class": "",
-        "manage_stock": false,
-        "stock_quantity": null,
-        "in_stock": true,
-        "backorders": "",
-        "backorders_allowed": false,
-        "backordered": false,
-        "weight": "",
-        "dimensions": {
-          "length": "",
-          "width": "",
-          "height": ""
-        },
-        "shipping_class": "",
-        "shipping_class_id": 0,
-        "image": {
-          "id": 27,
-          "date_created": "2013-06-07T10:45:27",
-          "date_created_gmt": "2013-06-07T10:45:27",
-          "date_modified": "2013-06-07T10:45:27",
-          "date_modified_gmt": "2013-06-07T10:45:27",
-          "src": "http://php56.local/wp-content/uploads/2013/06/T_3_front.jpg",
-          "name": "T_3_front",
-          "alt": "",
-          "position": 0
-        },
-        "attributes": [
-          {
-            "id": 1,
-            "name": "Color",
-            "option": "Green"
-          }
-        ],
-        "menu_order": 1,
-        "meta_data": [],
-        "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_3_front.jpg",
-        "barcode": ""
-      },
-      {
-        "id": 170,
-        "date_created": "2013-06-07T10:44:58",
-        "date_created_gmt": "2013-06-07T10:44:58",
-        "date_modified": "2017-06-07T09:01:46",
-        "date_modified_gmt": "2017-06-07T09:01:46",
-        "description": "",
-        "permalink": "http://php56.local/product/ship-your-idea?attribute_pa_color=green",
-        "sku": "",
-        "price": "20",
-        "regular_price": "20",
-        "sale_price": "",
-        "date_on_sale_from": null,
-        "date_on_sale_from_gmt": null,
-        "date_on_sale_to": null,
-        "date_on_sale_to_gmt": null,
-        "on_sale": false,
-        "visible": true,
-        "purchasable": true,
-        "virtual": false,
-        "downloadable": false,
-        "downloads": [],
-        "download_limit": -1,
-        "download_expiry": -1,
-        "tax_status": "taxable",
-        "tax_class": "",
-        "manage_stock": false,
-        "stock_quantity": null,
-        "in_stock": true,
-        "backorders": "",
-        "backorders_allowed": false,
-        "backordered": false,
-        "weight": "",
-        "dimensions": {
-          "length": "",
-          "width": "",
-          "height": ""
-        },
-        "shipping_class": "",
-        "shipping_class_id": 0,
-        "image": {
-          "id": 27,
-          "date_created": "2013-06-07T10:45:27",
-          "date_created_gmt": "2013-06-07T10:45:27",
-          "date_modified": "2013-06-07T10:45:27",
-          "date_modified_gmt": "2013-06-07T10:45:27",
-          "src": "http://php56.local/wp-content/uploads/2013/06/T_3_front.jpg",
-          "name": "T_3_front",
-          "alt": "",
-          "position": 0
-        },
-        "attributes": [
-          {
-            "id": 1,
-            "name": "Color",
-            "option": "Green"
-          }
-        ],
-        "menu_order": 1,
-        "meta_data": [],
-        "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_3_front.jpg",
-        "barcode": ""
-      },
-      {
-        "id": 180,
         "date_created": "2013-06-07T10:44:58",
         "date_created_gmt": "2013-06-07T10:44:58",
         "date_modified": "2013-06-07T10:44:58",
@@ -3877,96 +3026,6 @@
         "id": 188,
         "key": "_max_variation_sale_price",
         "value": ""
-      },
-      {
-        "id": 4089,
-        "key": "_min_variation_price",
-        "value": "20"
-      },
-      {
-        "id": 4090,
-        "key": "_max_variation_price",
-        "value": "20"
-      },
-      {
-        "id": 4091,
-        "key": "_min_variation_regular_price",
-        "value": "20"
-      },
-      {
-        "id": 4092,
-        "key": "_max_variation_regular_price",
-        "value": "20"
-      },
-      {
-        "id": 4093,
-        "key": "_min_variation_sale_price",
-        "value": ""
-      },
-      {
-        "id": 4094,
-        "key": "_max_variation_sale_price",
-        "value": ""
-      },
-      {
-        "id": 4958,
-        "key": "_min_variation_price",
-        "value": "20"
-      },
-      {
-        "id": 4959,
-        "key": "_max_variation_price",
-        "value": "20"
-      },
-      {
-        "id": 4960,
-        "key": "_min_variation_regular_price",
-        "value": "20"
-      },
-      {
-        "id": 4961,
-        "key": "_max_variation_regular_price",
-        "value": "20"
-      },
-      {
-        "id": 4962,
-        "key": "_min_variation_sale_price",
-        "value": ""
-      },
-      {
-        "id": 4963,
-        "key": "_max_variation_sale_price",
-        "value": ""
-      },
-      {
-        "id": 5710,
-        "key": "_min_variation_price",
-        "value": "20"
-      },
-      {
-        "id": 5711,
-        "key": "_max_variation_price",
-        "value": "20"
-      },
-      {
-        "id": 5712,
-        "key": "_min_variation_regular_price",
-        "value": "20"
-      },
-      {
-        "id": 5713,
-        "key": "_max_variation_regular_price",
-        "value": "20"
-      },
-      {
-        "id": 5714,
-        "key": "_min_variation_sale_price",
-        "value": ""
-      },
-      {
-        "id": 5715,
-        "key": "_max_variation_sale_price",
-        "value": ""
       }
     ],
     "featured_src": "http://php56.local/wp-content/uploads/2013/06/T_4_front.jpg",
@@ -3974,17 +3033,17 @@
     "_links": {
       "self": [
         {
-          "href": "http://php56.local/wp-json/wc/v2/products/180/variations/180"
+          "href": "http://php56.local/wp-json/wc/v2/products/24/variations/24"
         }
       ],
       "collection": [
         {
-          "href": "http://php56.local/wp-json/wc/v2/products/180/variations"
+          "href": "http://php56.local/wp-json/wc/v2/products/24/variations"
         }
       ],
       "up": [
         {
-          "href": "http://php56.local/wp-json/wc/v2/products/180"
+          "href": "http://php56.local/wp-json/wc/v2/products/24"
         }
       ]
     }
@@ -4046,11 +3105,11 @@
     "average_rating": "4.50",
     "rating_count": 2,
     "related_ids": [
-      56,
-      15,
-      178,
+      22,
+      37,
+      47,
       60,
-      37
+      40
     ],
     "upsell_ids": [],
     "cross_sell_ids": [],
@@ -4171,11 +3230,11 @@
     "average_rating": "4.00",
     "rating_count": 1,
     "related_ids": [
+      19,
+      34,
       53,
-      56,
-      31,
-      40,
-      178
+      47,
+      50
     ],
     "upsell_ids": [
       60

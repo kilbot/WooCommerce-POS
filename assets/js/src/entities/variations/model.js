@@ -34,7 +34,9 @@ module.exports = Model.extend({
     data.parent_id = parentAttrs.id;
 
     // merge parent variations and attributes to allow 'Any ...'
-    var attributes = this.collection.parent.getVariationOptions();
+    var parent = _.get( this, [ 'collection', 'parent' ]);
+    var attributes = parent ? this.collection.parent.getVariationOptions() : [];
+
     data.attributes = _.map(attributes, function(attribute){
       var attr = _.find(data.attributes, { name: attribute.name } );
       return attr ? attr : attribute;

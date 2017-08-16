@@ -53,9 +53,10 @@ class Payload extends WC_REST_Controller {
 
 
   /**
-   *
+   * @param WP_REST_Request $request
+   * @return \WP_Error|\WP_REST_Response
    */
-  public function get_items( ) {
+  public function get_items( $request ) {
     $wc_pos_admin = null;
 
     $payload = array(
@@ -72,6 +73,8 @@ class Payload extends WC_REST_Controller {
 
     return $payload;
 
+//    $data = $this->prepare_object_for_response( $payload, $request );
+//    return rest_ensure_response( $data );
   }
 
 

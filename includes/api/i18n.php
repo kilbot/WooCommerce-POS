@@ -12,9 +12,9 @@
 namespace WC_POS\API;
 
 use WC_API_Server;
-use WC_REST_Controller;
+//use WC_REST_Controller;
 
-class i18n extends WC_REST_Controller {
+class i18n {
 
   /* Use same namespace as WooCommerce */
   protected $namespace = 'wc/v2';
