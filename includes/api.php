@@ -67,9 +67,9 @@ class API {
       case 'WC_REST_Products_Controller':
         new \WC_POS\API\Products();
         break;
-//      case 'WC_REST_Orders_Controller':
-//        new \WC_POS\API\Orders();
-//        break;
+      case 'WC_REST_Orders_Controller':
+        new \WC_POS\API\Orders();
+        break;
 //      case 'WC_REST_Customers_Controller':
 //        new \WC_POS\API\Customers();
 //        break;

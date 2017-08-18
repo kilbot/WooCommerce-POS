@@ -72,7 +72,7 @@ class Cash extends WC_Payment_Gateway {
     $order = new WC_Order( $order_id );
 
     // update pos_cash data
-    $data = API::get_raw_data();
+    $data = \WP_REST_Server::get_raw_data();
     $tendered = isset( $data['payment_details']['pos-cash-tendered'] ) ? wc_format_decimal( $data['payment_details']['pos-cash-tendered'] ) : 0 ;
     $change = isset( $data['payment_details']['pos-cash-change'] ) ? wc_format_decimal( $data['payment_details']['pos-cash-change'] ) : 0 ;
     update_post_meta( $order_id, '_pos_cash_amount_tendered', $tendered );
@@ -105,8 +105,8 @@ class Cash extends WC_Payment_Gateway {
 
   static public function payment_details( $order ) {
     return array(
-      'tendered'  => get_post_meta( $order->id, '_pos_cash_amount_tendered', true ),
-      'change'    => get_post_meta( $order->id, '_pos_cash_change', true )
+      'tendered'  => get_post_meta( $order->get_id(), '_pos_cash_amount_tendered', true ),
+      'change'    => get_post_meta( $order->get_id(), '_pos_cash_change', true )
     );
   }
 

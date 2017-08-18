@@ -54,147 +54,151 @@ class OrdersTest extends TestCase {
     $this->assertEquals(200, $response->getStatusCode());
   }
 
-//  /**
-//   *
-//   */
-//  public function test_create_order(){
-//    $response = $this->client->post('orders', array(
-//      'json' => array(
-//        'order' => array()
-//      )
-//    ));
-//    // 201 = created
-//    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('order', $data);
-//    $order_id = $data['order']['id'];
-//    $this->assertEquals(1, get_post_meta( $order_id, '_pos', true ) );
-//  }
-//
-//  /**
-//   *
-//   */
-//  public function test_edit_order(){
-//    // get last order
-//    $response = $this->client->get('orders');
-//    $data = $response->json();
-//    $order_id = $data['orders'][0]['id'];
-//
-//    // update note
-//    $response = $this->client->put('orders/' . $order_id, array(
-//      'json' => array(
-//        'order' => array(
-//          'note' => 'updated'
-//        )
-//      )
-//    ));
-//
-//    $this->assertEquals(200, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('order', $data);
-//    $this->assertEquals('updated', $data['order']['note']);
-//  }
-//
-//  /**
-//   *
-//   */
-//  public function test_create_order_with_product(){
-//    // get a random product
-//    $product = $this->get_random_product();
-//
-//    // filter product
-//    $product = $this->filter_line_item($product);
-//
-//    // create order
-//    $response = $this->client->post('orders', array(
-//      'json' => array(
-//        'order' => array(
-//          'line_items' => array(
-//            $product
-//          )
-//        )
-//      )
-//    ));
-//    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('order', $data);
-//    $this->assertEquals(1, $data['order']['total_line_items_quantity']);
-//  }
-//
-//  /**
-//   *
-//   */
-////  public function test_edit_order_with_product(){
-////    // get a random product
-////    $product = $this->get_random_product();
-////
-////    // filter product
-////    $product = $this->filter_line_item($product);
-////
-////    // create order
-////    $response = $this->client->post('', array(
-////      'json' => array(
-////        'status' => 'CREATE_FAILED',
-////        'line_items' => array(
-////          $product
-////        )
-////      )
-////    ));
-////    $this->assertEquals(201, $response->getStatusCode());
-////
-////    // now edit order
-////    $response = $this->client->post('', array(
-////      'json' => array(
-////        'status' => 'CREATE_FAILED',
-////        'line_items' => array(
-////          $product
-////        )
-////      )
-////    ));
-////
-////    $this->assertEquals(201, $response->getStatusCode());
-////    $data = $response->json();
-////    $this->assertArrayHasKey('order', $data);
-////    $this->assertEquals(1, $data['order']['total_line_items_quantity']);
-////  }
-//
-//  /**
-//   * Test (int) stock adjustment
-//   * - note that payment must be complete to trigger the stock adjustment
-//   */
-//  public function test_integer_stock_adjustment(){
-//    // get a random product
-//    $product = $this->get_random_product();
-//
-//    // filter product
-//    $product = $this->filter_line_item($product);
-//
-//    // inject stock value to db
-//    update_post_meta($product['product_id'], '_manage_stock', 'yes');
-//    update_post_meta($product['product_id'], '_stock', 3);
-//
-//    // create order with payment details
-//    $response = $this->client->post('orders', array(
-//      'json' => array(
-//        'order' => array(
-//          'line_items' => array(
-//            $product
-//          ),
-//          'payment_details' => array(
-//            'method_id' => 'pos_cash',
-//            'method_title' => 'Test Cash Payment',
-//            'paid' => true
-//          )
-//        )
-//      )
-//    ));
-//
-//    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('order', $data);
-//    $this->assertEquals(1, $data['order']['total_line_items_quantity']);
-//    $this->assertEquals(2, get_post_meta($product['product_id'], '_stock', true) );
-//  }
+  /**
+   *
+   */
+  public function test_create_order(){
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'order' => array()
+      )
+    ));
+    // 201 = created
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('id', $data);
+    $order_id = $data['id'];
+    $this->assertEquals(1, get_post_meta( $order_id, '_pos', true ) );
+  }
+
+  /**
+   *
+   */
+  public function test_edit_order(){
+    // get last order
+    $response = $this->client->get('orders',
+      array(
+        'query' => array(
+          'per_page' => 1
+        )
+      )
+    );
+    $data = $response->json();
+    $order_id = $data[0]['id'];
+
+    // update note
+    $response = $this->client->put('orders/' . $order_id, array(
+      'json' => array(
+        'customer_note' => 'updated'
+      )
+    ));
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('customer_note', $data);
+    $this->assertEquals('updated', $data['customer_note']);
+  }
+
+  /**
+   *
+   */
+  public function test_create_order_with_product(){
+    // get a random product
+    $product = $this->get_random_product();
+
+    // filter product
+    $product = $this->filter_line_item($product);
+
+    // create order
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'line_items' => array(
+          $product
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('line_items', $data);
+    $this->assertEquals($product['product_id'], $data['line_items'][0]['product_id']);
+  }
+
+  /**
+   *
+   */
+  public function test_edit_order_with_product(){
+    // get a random product
+    $product = $this->get_random_product();
+
+    // filter product
+    $line_item = $this->filter_line_item($product);
+
+    // create order
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'line_items' => array(
+          $line_item
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('line_items', $data);
+    $this->assertEquals(1, count($data['line_items']));
+    $line_item['id'] = $data['line_items'][0]['id'];
+
+    // now edit order
+    $response = $this->client->post('orders/' . $data['id'], array(
+      'json' => array(
+        'line_items' => array(
+          $line_item
+        )
+      )
+    ));
+
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('line_items', $data);
+    $this->assertEquals(1, count($data['line_items']));
+    $this->assertEquals($product['id'], $data['line_items'][0]['product_id']);
+  }
+
+  /**
+   * Test (int) stock adjustment
+   * - note that payment must be complete to trigger the stock adjustment
+   *
+   *
+   */
+  public function test_integer_stock_adjustment(){
+    // get a random product
+    $product = $this->get_random_product();
+
+    // filter product
+    $line_item = $this->filter_line_item($product);
+
+    // inject stock value to db
+    update_post_meta($product['id'], '_manage_stock', 'yes');
+    update_post_meta($product['id'], '_stock', 3);
+
+    // create order with payment details
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'line_items' => array(
+          $line_item
+        ),
+        'payment_details' => array(
+          'method_id' => 'pos_cash',
+          'method_title' => 'Test Cash Payment'
+        )
+      )
+    ));
+
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('line_items', $data);
+    $this->assertEquals(1, count($data['line_items']));
+    $this->assertEquals(2, get_post_meta($product['id'], '_stock', true) );
+  }
 //
 //  /**
 //   * Test (float) stock adjustment

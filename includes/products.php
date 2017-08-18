@@ -50,7 +50,7 @@ class Products {
     $post_modified     = current_time( 'mysql' );
     $post_modified_gmt = current_time( 'mysql', 1 );
     wp_update_post( array(
-      'ID'                => $product->id,
+      'ID'                => $product->get_id(),
       'post_modified'     => $post_modified,
       'post_modified_gmt' => $post_modified_gmt
     ));

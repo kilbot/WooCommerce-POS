@@ -4,7 +4,7 @@
  * POS Product Class
  * duck punches the WC REST API
  *
- * @class    WC_POS_API_Products
+ * @class    \WC_POS\API\Products
  * @package  WooCommerce POS
  * @author   Paul Kilmurray <paul@kilbot.com.au>
  * @link     http://www.wcpos.com

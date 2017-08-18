@@ -201,9 +201,9 @@ var OrderModel = Parent.extend({
     }
 
     // prepare remote JSON
-    if (options.remote && this.name) {
-      attrs = this.prepareRemoteJSON(attrs, options);
-    }
+    // if (options.remote && this.name) {
+    //   attrs = this.prepareRemoteJSON(attrs, options);
+    // }
 
     return attrs;
   },
