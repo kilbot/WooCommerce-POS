@@ -199,272 +199,265 @@ class OrdersTest extends TestCase {
     $this->assertEquals(1, count($data['line_items']));
     $this->assertEquals(2, get_post_meta($product['id'], '_stock', true) );
   }
-//
-//  /**
-//   * Test (float) stock adjustment
-//   * - note that payment must be complete to trigger the stock adjustment
-//   */
-//  public function test_float_stock_adjustment(){
-//    // two random floats
-//    $random_stock = rand(0, 999) / 100;
-//    $random_qty = rand(0, 999) / 100;
-//
-//    // get a random product
-//    $product = $this->get_random_product();
-//
-//    // filter product and set quantity
-//    $product = $this->filter_line_item($product);
-//    $product['quantity'] = $random_qty;
-//
-//    // set the decimal_qty option
-//    $option_key = Settings::DB_PREFIX . 'products';
-//    update_option( $option_key, array('decimal_qty' => true) );
-//
-//    // inject stock value to db
-//    update_post_meta($product['product_id'], '_manage_stock', 'yes');
-//    update_post_meta($product['product_id'], '_stock', $random_stock);
-//
-//    // create order with payment details
-//    $response = $this->client->post('orders', array(
-//      'json' => array(
-//        'order' => array(
-//          'line_items' => array(
-//            $product
-//          ),
-//          'payment_details' => array(
-//            'method_id' => 'pos_cash',
-//            'method_title' => 'Test Cash Payment',
-//            'paid' => true
-//          )
-//        )
-//      )
-//    ));
-//
-//    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('order', $data);
-//    $this->assertEquals($random_qty, $data['order']['total_line_items_quantity']);
-//    $this->assertEquals($random_stock - $random_qty, get_post_meta($product['product_id'], '_stock', true) );
-//  }
-//
-//  /**
-//   * Test changing regular_price and price
-//   */
-//  public function test_line_item_discount(){
-//    // two random floats
-//    $regular_price = rand(0, 999) / 100;
-//    $price = rand(0, 999) / 100;
-//
-//    // get a random product
-//    $product = $this->get_random_product();
-//    $product = $this->filter_line_item($product);
-//
-//    // set subtotal and total
-//    $product['subtotal'] = $regular_price;
-//    $product['total'] = $price;
-//
-//    // create order
-//    $response = $this->client->post('orders', array(
-//      'json' => array(
-//        'order' => array(
-//          'line_items' => array(
-//            $product
-//          )
-//        )
-//      )
-//    ));
-//    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('order', $data);
-//    $this->assertEquals($regular_price - $price, $data['order']['total_discount']);
-//
-//  }
-//
-//  /**
-//   * Test changing product title
-//   */
-//  public function test_line_item_change_title(){
-//    // get a random product
-//    $product = $this->get_random_product();
-//    $product = $this->filter_line_item($product);
-//
-//    $product['name'] = 'Foo';
-//
-//    // create order
-//    $response = $this->client->post('orders', array(
-//      'json' => array(
-//        'order' => array(
-//          'line_items' => array(
-//            $product
-//          )
-//        ),
-//      )
-//    ));
-//    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('order', $data);
-//
-//    $this->assertEquals('Foo', $data['order']['line_items'][0]['name']);
-//  }
-//
-//  /**
-//   *
-//   */
-//  public function test_line_item_exclusive_tax(){
-//    // enable taxes
-//    $this->update_tax_settings();
-//
-//    // get a random product
-//    $product = $this->get_random_product();
-//    $product = $this->filter_line_item($product);
-//
-//    $product['taxable'] = true;
-//    $product['total'] = 10;
-//    $product['total_tax'] = 2;
-//
-//    // create order
-//    $response = $this->client->post('orders', array(
-//      'json' => array(
-//        'order' => array(
-//          'line_items' => array(
-//            $product
-//          )
-//        )
-//      )
-//    ));
-//    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('order', $data);
-//    $this->assertEquals(2, $data['order']['total_tax']);
-//  }
-//
-//  /**
-//   *
-//   */
-//  public function test_line_item_change_taxable(){
-//    // enable taxes
-//    $this->update_tax_settings();
-//
-//    // get a random product
-//    $product = $this->get_random_product();
-//    $product = $this->filter_line_item($product);
-//
-//    $product['taxable'] = false;
-//    $product['total'] = 10;
-//    $product['total_tax'] = 2;
-//
-//    // create order
-//    $response = $this->client->post('orders', array(
-//      'json' => array(
-//        'order' => array(
-//          'line_items' => array(
-//            $product
-//          )
-//        )
-//      )
-//    ));
-//    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('order', $data);
-//    $this->assertEquals(0, $data['order']['total_tax']);
-//  }
-//
-//  /**
-//   *
-//   */
-//  public function test_line_item_change_tax_rate(){
-//    // enable taxes
-//    $this->update_tax_settings();
-//
-//    // get a random product
-//    $product = $this->get_random_product();
-//    $product = $this->filter_line_item($product);
-//
-//    $product['taxable'] = true;
-//    $product['total'] = 10;
-//    $product['total_tax'] = 0.5;
-//    $product['tax_class'] = 'reduced-rate';
-//
-//    // create order
-//    $response = $this->client->post('orders', array(
-//      'json' => array(
-//        'order' => array(
-//          'line_items' => array(
-//            $product
-//          )
-//        )
-//      )
-//    ));
-//    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('order', $data);
-//    $this->assertEquals(0.5, $data['order']['total_tax']);
-//    $this->assertEquals('reduced-rate', $data['order']['line_items'][0]['tax_class']);
-//  }
-//
-//  /**
-//   *
-//   */
-//  public function test_order_with_fee(){
-//
-//    // construct fee
-//    // - fee title is required
-//    $fee = array(
-//      'title' => 'Foo',
-//      'total' => 10
-//    );
-//
-//    // create order
-//    $response = $this->client->post('orders', array(
-//      'json' => array(
-//        'order' => array(
-//          'fee_lines' => array(
-//            $fee
-//          )
-//        )
-//      )
-//    ));
-//    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('order', $data);
-//    $this->assertEquals(10, $data['order']['total']);
-//    $this->assertEquals('Foo', $data['order']['fee_lines'][0]['title']);
-//  }
-//
-//  /**
-//   *
-//   */
-//  public function test_order_with_taxable_fee(){
-//    // enable taxes
-//    $this->update_tax_settings();
-//
-//    // construct fee
-//    // - fee title is required
-//    // - tax_class is required if taxable
-//    $fee = array(
-//      'title'     => 'Foo',
-//      'total'     => 10,
-//      'taxable'   => true,
-//      'tax_class' => ''
-//    );
-//
-//    // create order
-//    $response = $this->client->post('orders', array(
-//      'json' => array(
-//        'order' => array(
-//          'fee_lines' => array(
-//            $fee
-//          )
-//        )
-//      )
-//    ));
-//    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
-//    $this->assertArrayHasKey('order', $data);
-//    $this->assertEquals(12, $data['order']['total']);
-//    $this->assertEquals(2, $data['order']['total_tax']);
-//  }
-//
+
+  /**
+   * Test (float) stock adjustment
+   * - note that payment must be complete to trigger the stock adjustment
+   *
+   *
+   */
+  public function test_float_stock_adjustment(){
+    // two random floats
+    $random_stock = rand(0, 999) / 100;
+    $random_qty = rand(0, 999) / 100;
+
+    // get a random product
+    $product = $this->get_random_product();
+
+    // filter product and set quantity
+    $line_item = $this->filter_line_item($product);
+    $line_item['quantity'] = $random_qty;
+
+    // set the decimal_qty option
+    $option_key = Settings::DB_PREFIX . 'products';
+    update_option( $option_key, array('decimal_qty' => true) );
+
+    // inject stock value to db
+    update_post_meta($product['id'], '_manage_stock', 'yes');
+    update_post_meta($product['id'], '_stock', $random_stock);
+
+    // create order with payment details
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'line_items' => array(
+          $line_item
+        ),
+        'payment_details' => array(
+          'method_id' => 'pos_cash',
+          'method_title' => 'Test Cash Payment'
+        )
+      )
+    ));
+
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('line_items', $data);
+    $this->assertEquals(1, count($data['line_items']));
+    $this->assertEquals($random_qty, $data['line_items'][0]['quantity']);
+    $this->assertEquals($random_stock - $random_qty, get_post_meta($product['id'], '_stock', true) );
+  }
+
+  /**
+   * Test changing regular_price and price
+   *
+   *
+   */
+  public function test_line_item_discount(){
+    // two random floats
+    $regular_price = rand(0, 999) / 100;
+    $price = rand(0, 999) / 100;
+
+    // get a random product
+    $product = $this->get_random_product();
+    $line_item = $this->filter_line_item($product);
+
+    // set subtotal and total
+    $line_item['subtotal'] = $regular_price;
+    $line_item['total'] = $price;
+
+    // create order
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'line_items' => array(
+          $line_item
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('discount_total', $data);
+    $this->assertEquals($regular_price - $price, $data['discount_total']);
+
+  }
+
+  /**
+   * Test changing product title
+   *
+   *
+   */
+  public function test_line_item_change_title(){
+    // get a random product
+    $product = $this->get_random_product();
+    $line_item = $this->filter_line_item($product);
+
+    $line_item['name'] = 'Foo';
+
+    // create order
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'line_items' => array(
+          $line_item
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertEquals(1, count($data['line_items']));
+    $this->assertEquals('Foo', $data['line_items'][0]['name']);
+  }
+
+  /**
+   *
+   */
+  public function test_line_item_exclusive_tax(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // get a random product
+    $product = $this->get_random_product();
+    $line_item = $this->filter_line_item($product);
+
+    $line_item['tax_status'] = 'taxable';
+    $line_item['total'] = 10;
+    $line_item['total_tax'] = 3;
+
+    // create order
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'line_items' => array(
+          $line_item
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('total_tax', $data);
+    $this->assertEquals(3, $data['total_tax']);
+  }
+
+  /**
+   *
+   */
+  public function test_line_item_change_taxable(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // get a random product
+    $product = $this->get_random_product();
+    $line_item = $this->filter_line_item($product);
+
+    $line_item['tax_status'] = 'none';
+    $line_item['total'] = 10;
+    $line_item['total_tax'] = 2;
+
+    // create order
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'line_items' => array(
+          $line_item
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('total_tax', $data);
+    $this->assertEquals(0, $data['total_tax']);
+  }
+
+  /**
+   *
+   */
+  public function test_line_item_change_tax_rate(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // get a random product
+    $product = $this->get_random_product();
+    $line_item = $this->filter_line_item($product);
+
+    $line_item['tax_status'] = 'taxable';
+    $line_item['total'] = 10;
+    $line_item['total_tax'] = 0.5;
+    $line_item['tax_class'] = 'reduced-rate';
+
+    // create order
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'line_items' => array(
+          $line_item
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('total_tax', $data);
+    $this->assertEquals(0.5, $data['total_tax']);
+    $this->assertEquals(1, count($data['line_items']));
+    $this->assertEquals('reduced-rate', $data['line_items'][0]['tax_class']);
+  }
+
+  /**
+   * @group debug
+   */
+  public function test_order_with_fee(){
+
+    // construct fee
+    // - fee title is required
+    $fee = array(
+      'name' => 'Foo',
+      'total' => 10,
+      'tax_status' => 'none'
+    );
+
+    // create order
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'fee_lines' => array(
+          $fee
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('total', $data);
+    $this->assertEquals(10, $data['total']);
+    $this->assertEquals(1, count( $data['fee_lines'] ));
+    $this->assertEquals('Foo', $data['fee_lines'][0]['name']);
+  }
+
+  /**
+   *
+   */
+  public function test_order_with_taxable_fee(){
+    // enable taxes
+    $this->update_tax_settings();
+
+    // construct fee
+    // - fee title is required
+    // - tax_class is required if taxable
+    $fee = array(
+      'title'     => 'Foo',
+      'total'     => 10,
+      'tax_status'   => 'taxable',
+      'tax_class' => ''
+    );
+
+    // create order
+    $response = $this->client->post('orders', array(
+      'json' => array(
+        'fee_lines' => array(
+          $fee
+        )
+      )
+    ));
+    $this->assertEquals(201, $response->getStatusCode());
+    $data = $response->json();
+    $this->assertArrayHasKey('total', $data);
+    $this->assertEquals(12, $data['total']);
+    $this->assertArrayHasKey('total_tax', $data);
+    $this->assertEquals(2, $data['total_tax']);
+  }
+
 //  /**
 //   *
 //   */
