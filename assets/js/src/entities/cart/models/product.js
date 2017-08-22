@@ -115,6 +115,15 @@ module.exports = Model.extend({
     var quantity = this.get('quantity');
     this.set('quantity', (type === 'increase' ? ++quantity : --quantity) );
     return this;
+  },
+
+  /**
+   *
+   */
+  toJSON: function( options ) {
+    var line_item = Model.prototype.toJSON.call(this, options );
+    line_item.taxes = this.taxes.toJSON();
+    return line_item;
   }
 
 });

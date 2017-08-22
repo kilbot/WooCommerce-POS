@@ -21,6 +21,7 @@ class Orders {
     $this->register_additional_fields();
 
     add_filter( 'woocommerce_rest_pre_insert_shop_order_object', array( $this, 'pre_insert_shop_order_object' ), 10, 3 );
+    add_action( 'woocommerce_rest_set_order_item', array( $this, 'rest_set_order_item' ), 10, 2 );
   }
 
 
@@ -181,6 +182,12 @@ class Orders {
       $order->set_payment_method_title( isset($payment_details['method_title']) ? $payment_details['method_title'] : '' );
     }
 
+    //
+    add_filter( 'wc_tax_enabled', '__return_false' );
+    $order->save();
+    $order->update_taxes();
+    $order->calculate_totals();
+
     return $order;
   }
 
@@ -261,6 +268,33 @@ class Orders {
     }
 
     return $message;
+  }
+
+
+  /**
+   * @param $item
+   * @param $posted
+   */
+  public function rest_set_order_item( $item, $posted ) {
+
+    if( isset($posted['tax_status']) && $posted['tax_status'] == 'taxable' ) {
+      $total = array();
+      $subtotal = array();
+
+      if(isset($posted['taxes']) && is_array($posted['taxes'])): foreach($posted['taxes'] as $tax):
+        if(is_array($tax) && isset($tax['rate_id'])) {
+          $total[$tax['rate_id']] = isset($tax['total']) ? $tax['total'] : 0;
+          $subtotal[$tax['rate_id']] = isset($tax['subtotal']) ? $tax['subtotal'] : 0;
+        }
+      endforeach; endif;
+
+      if( get_class($item) == 'WC_Order_Item_Product' ) {
+        $item->set_taxes( array( 'total' => $total, 'subtotal' => $subtotal ) );
+      } else {
+        $item->set_taxes( array( 'total' => $total ) );
+      }
+    }
+
   }
 
 

@@ -16,7 +16,7 @@
 {{/each}}
 {{#each fee_lines}}
 <li class="list-row">
-  <div>{{title}}:</div>
+  <div>{{name}}:</div>
   <div class="total">{{{money total}}}</div>
 </li>
 {{/each}}
@@ -43,14 +43,6 @@
 </li>
 {{/if}}
 {{/if}}
-<!-- order_discount removed in WC 2.3, included for backwards compatibility -->
-{{#if has_order_discount}}
-<li class="list-row order-discount">
-  <div><?php /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</div>
-  <div class="total">{{{money order_discount negative=true}}}</div>
-</li>
-{{/if}}
-<!-- end order_discount -->
 <li class="list-row order-total">
   <div><?php /* translators: woocommerce */ _e( 'Order Total', 'woocommerce' ); ?>:</div>
   <div class="total">{{{money total}}}</div>

@@ -202,7 +202,7 @@
     {{/each}}
     {{#each fee_lines}}
       <tr class="fee">
-        <th colspan="2">{{title}}:</th>
+        <th colspan="2">{{name}}:</th>
         <td colspan="1">{{{money total}}}</td>
       </tr>
     {{/each}}
@@ -229,14 +229,6 @@
         </tr>
       {{/if}}
     {{/if}}
-    <!-- order_discount removed in WC 2.3, included for backwards compatibility -->
-    {{#if has_order_discount}}
-    <tr class="order-discount">
-      <th colspan="2"><?php  /* translators: woocommerce */ _e( 'Order Discount', 'woocommerce' ); ?>:</th>
-      <td colspan="1">{{{money order_discount negative=true}}}</td>
-    </tr>
-    {{/if}}
-    <!-- end order_discount -->
     <tr class="order-total">
       <th colspan="2"><?php  /* translators: woocommerce */ _e( 'Order Total', 'woocommerce' ); ?>:</th>
       <td colspan="1">{{{money total}}}</td>

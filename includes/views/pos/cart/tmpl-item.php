@@ -15,7 +15,7 @@
   <strong data-name="method_title" contenteditable="true">{{method_title}}</strong>
   {{/if}}
   {{#if fee}}
-  <strong data-name="title" contenteditable="true">{{title}}</strong>
+  <strong data-name="name" contenteditable="true">{{title}}</strong>
   {{/if}}
   <a data-action="more" href="#"><i class="icon-chevron-circle-down icon-lg icon-tertiary"></i></a>
 </div>

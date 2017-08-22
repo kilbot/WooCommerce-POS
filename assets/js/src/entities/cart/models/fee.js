@@ -14,7 +14,7 @@ module.exports = Model.extend({
     });
     return {
       id            : null,
-      title         : _.get( fee, 'name', polyglot.t('titles.fee') ),
+      name          : _.get( fee, 'name', polyglot.t('titles.fee') ),
       tax_status    : _.get( fee, 'tax_status', 'taxable' ),
       tax_class     : _.get( fee, 'tax_class', '' ),
       price         : _.get( fee, 'price', 0 )
@@ -40,6 +40,15 @@ module.exports = Model.extend({
       attr = 'total_tax';
     }
     return Model.prototype.get.call(this, attr);
+  },
+
+  /**
+   *
+   */
+  toJSON: function( options ) {
+    var fee_line = Model.prototype.toJSON.call(this, options );
+    fee_line.taxes = this.taxes.toJSON();
+    return fee_line;
   }
 
 });
