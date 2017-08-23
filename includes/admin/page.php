@@ -80,7 +80,7 @@ class Page {
   public function print_footer_scripts() {
     echo '<script>
     if(window.POS){
-      POS.start(\'' . get_woocommerce_api_url(null) . '\');
+      POS.start({wc_api: \'' . get_wcpos_api_url() . '\', rest_nonce: \'' . wp_create_nonce( 'wp_rest' ) . '\'})
     } else {
       alert(\'' . __('POS assets failed to load', 'woocommerce-pos') . '\');
     }

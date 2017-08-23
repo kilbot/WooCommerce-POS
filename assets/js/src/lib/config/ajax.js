@@ -8,6 +8,11 @@ var _ = require('lodash');
 
 var setHeaders = function(xhr){
   xhr.setRequestHeader('X-WC-POS', 1);
+  var rest_nonce = Radio.request('entities', 'get', {
+    type: 'option',
+    name: 'rest_nonce'
+  }) || window.wc_pos_rest_nonce;
+  xhr.setRequestHeader('X-WP-Nonce', rest_nonce);
   if( window.wc_pos_admin ){
     // note: using headers rather than query params
     xhr.setRequestHeader('X-WC-POS-ADMIN', window.wc_pos_admin);

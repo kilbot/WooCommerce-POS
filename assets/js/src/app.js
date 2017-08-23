@@ -27,7 +27,6 @@ var app = new Application();
  *  ... add Services which require layout and params
  */
 app.on('before:start', function(options){
-
   // attach options
   this.options = options || {};
 

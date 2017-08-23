@@ -44,13 +44,16 @@ var Application = Mn.Application.extend({
     options = _.isString(options) ? { wc_api: options } : options || {};
     var params, self = this, wc_api = options.wc_api.replace(/\/?$/, '/');
 
+    // hack, make rest_nonce global for first fetch
+    window.wc_pos_rest_nonce = options.rest_nonce;
+
     // get payload
     this.getJSON( wc_api + 'pos/' )
 
     // set up data
     .then(function(data){
       data = data || {};
-      params = _.extend({ wc_api: wc_api }, data.params );
+      params = _.extend({ wc_api: wc_api, rest_nonce: options.rest_nonce }, data.params );
       accounting.settings = params.accounting;
       bb.emulateHTTP = params.emulateHTTP || false;
       initDebug( params.debug );

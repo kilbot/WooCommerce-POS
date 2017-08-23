@@ -47,7 +47,7 @@ class Orders {
    * @param $order
    */
   public function order_details($order){
-    $this->pos_order = get_post_meta( $order->id, '_pos', true );
+    $this->pos_order = get_post_meta( $order->get_id(), '_pos', true );
 
     if(!$this->pos_order && get_current_screen()->action == 'add'){
         $this->pos_order = apply_filters('woocommerce_pos_default_order_type_is_pos', false);
