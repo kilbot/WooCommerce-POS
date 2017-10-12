@@ -263,7 +263,7 @@ class OrdersAPITest extends TestCase {
   }
 
   /**
-   *
+   * 
    */
   public function test_line_item_exclusive_tax(){
     // enable taxes
@@ -579,7 +579,7 @@ class OrdersAPITest extends TestCase {
   }
 
   /**
-   * @group debug
+   *
    */
   public function test_order_with_product_and_taxable_fee(){
     $this->update_tax_settings();

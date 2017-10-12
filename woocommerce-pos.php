@@ -11,6 +11,8 @@
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
+ * WC requires at least: 2.3.7
+ * WC tested up to: 3.2
  *
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
