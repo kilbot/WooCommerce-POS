@@ -1,3 +1,6 @@
+= 0.4.14 - 2017/08/03 =
+* Urgent Fix: bug fix for browsers crashes affecting some users
+
 = 0.4.13 - 2017/06/15 = 
 * Fix: (WC3 compatibility): save product meta
 * Fix: (WC3 compatibility): correctly sync stock numbers
