@@ -263,7 +263,7 @@ class OrdersAPITest extends TestCase {
   }
 
   /**
-   * 
+   *
    */
   public function test_line_item_exclusive_tax(){
     // enable taxes

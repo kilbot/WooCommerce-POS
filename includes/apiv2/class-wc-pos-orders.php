@@ -20,6 +20,8 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
     add_filter( 'woocommerce_rest_prepare_shop_order_object', array( $this, 'prepare_shop_order_object' ), 10, 3 );
     add_action( 'woocommerce_rest_set_order_item', array( $this, 'rest_set_order_item' ), 10, 2 );
     add_action ( 'woocommerce_order_item_after_calculate_taxes', array( $this, 'order_item_after_calculate_taxes' ) );
+    add_action ( 'woocommerce_order_item_shipping_after_calculate_taxes', array( $this, 'order_item_after_calculate_taxes' ) );
+    add_action ( 'woocommerce_order_item_fee_after_calculate_taxes', array( $this, 'order_item_after_calculate_taxes' ) );
 
     $this->register_additional_fields();
     $this->unregister_emails();

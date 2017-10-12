@@ -1,3 +1,6 @@
+= 0.4.15 - 2017/10/12 =
+* WC 3.2 compatibility: fix tax calculation
+
 = 0.4.14 - 2017/08/03 =
 * Urgent Fix: bug fix for browsers crashes affecting some users
 
