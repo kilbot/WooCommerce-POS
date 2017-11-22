@@ -7,6 +7,7 @@
 
 var bb = require('backbone');
 var Radio = require('backbone.radio');
+var _ = require('lodash');
 bb.idbSync = require('./idb/src/sync');
 bb.ajaxSync = bb.sync;
 
@@ -62,6 +63,49 @@ bb.sync = function(method, entity, options) {
     }
     if(sale_price !== undefined) {
       entity.set({ 'sale_price': sale_price + '' }, {silent: true});
+    }
+
+    // hack for WP 4.9 compat
+    var line_items = entity.get('line_items');
+    if( line_items !== undefined ) {
+      var items = [];
+      _.each(line_items, function(line_item){
+        _.set(line_item, 'price', _.get(line_item, 'price') + '');
+        _.set(line_item, 'subtotal', _.get(line_item, 'subtotal') + '');
+        _.set(line_item, 'subtotal_tax', _.get(line_item, 'subtotal_tax') + '');
+        _.set(line_item, 'total_tax', _.get(line_item, 'total_tax') + '');
+        _.set(line_item, 'total', _.get(line_item, 'total') + '');
+        items.push( line_item );
+      });
+      entity.set({ 'line_items': items }, {silent: true});
+    }
+
+    var shipping_lines = entity.get('shipping_lines');
+    if( shipping_lines !== undefined ) {
+      var items = [];
+      _.each(shipping_lines, function(shipping_line){
+        _.set(shipping_line, 'price', _.get(shipping_line, 'price') + '');
+        _.set(shipping_line, 'subtotal', _.get(shipping_line, 'subtotal') + '');
+        _.set(shipping_line, 'subtotal_tax', _.get(shipping_line, 'subtotal_tax') + '');
+        _.set(shipping_line, 'total_tax', _.get(shipping_line, 'total_tax') + '');
+        _.set(shipping_line, 'total', _.get(shipping_line, 'total') + '');
+        items.push( shipping_line );
+      });
+      entity.set({ 'shipping_lines': items }, {silent: true});
+    }
+
+    var fee_lines = entity.get('fee_lines');
+    if( fee_lines !== undefined ) {
+      var items = [];
+      _.each(fee_lines, function(fee_line){
+        _.set(fee_line, 'price', _.get(fee_line, 'price') + '');
+        _.set(fee_line, 'subtotal', _.get(fee_line, 'subtotal') + '');
+        _.set(fee_line, 'subtotal_tax', _.get(fee_line, 'subtotal_tax') + '');
+        _.set(fee_line, 'total_tax', _.get(fee_line, 'total_tax') + '');
+        _.set(fee_line, 'total', _.get(fee_line, 'total') + '');
+        items.push( fee_line );
+      });
+      entity.set({ 'fee_lines': items }, {silent: true});
     }
   }
   // hack for updating products

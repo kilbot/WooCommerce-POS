@@ -186,6 +186,8 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
    */
   public function pre_insert_shop_order_object( $order, $request, $creating ) {
 
+      $break = '';
+
     /**
      * Transpose legacy api data to WC API v2
      */

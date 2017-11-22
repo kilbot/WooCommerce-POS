@@ -20,6 +20,7 @@ class WC_POS_APIv2 {
       return;
 
     add_filter( 'rest_dispatch_request', array( $this, 'rest_dispatch_request' ), 10, 4 );
+    add_filter( 'rest_pre_dispatch', array( $this, 'rest_pre_dispatch' ), 10, 3 );
     add_filter( 'rest_request_before_callbacks', array( $this, 'rest_request_before_callbacks' ), 10, 3 );
   }
 
@@ -136,6 +137,17 @@ class WC_POS_APIv2 {
 
     }
 
+    return $halt;
+  }
+
+
+  /**
+   * @param null $halt
+   * @param $request
+   * @param $server
+   * @return mixed
+   */
+  public function rest_pre_dispatch( $halt, $server, $request ) {
     return $halt;
   }
 

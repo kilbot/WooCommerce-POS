@@ -1,3 +1,6 @@
+= 0.4.16 - 2017/11/22 =
+* WP 4.9 compatibility fix for 'rest_invalid_param'
+
 = 0.4.15 - 2017/10/12 =
 * WC 3.2 compatibility: fix tax calculation
 
