@@ -323,6 +323,11 @@ class WC_POS_i18n {
         'customers'     => __( 'Customers', 'woocommerce' ),
         /* translators: woocommerce */
         'fee'           => __( 'Fee', 'woocommerce' ),
+        /* translators: woocommerce */
+        'billing'           => __( 'Change Billing Address', 'woocommerce' ),
+        /* translators: woocommerce */
+        'billing_error'           => __( 'Error with billing address', 'woocommerce' ),
+        /* translators: woocommerce */
         'hotkeys'       => _x( 'HotKeys', 'keyboard shortcuts', 'woocommerce-pos' ),
         /* translators: woocommerce */
         'order'         => __( 'Order', 'woocommerce' ),
@@ -358,6 +363,8 @@ class WC_POS_i18n {
         /* translators: woocommerce */
         'fee'             => __( 'Fee', 'woocommerce' ),
         /* translators: woocommerce */
+        'billing'             => __( 'Address', 'woocommerce' ),
+        /* translators: woocommerce */
         'new-order'       => __( 'New Order', 'woocommerce' ),
         /* translators: woocommerce */
         'note'            => __( 'Note', 'woocommerce' ),
@@ -386,6 +393,8 @@ class WC_POS_i18n {
         'choose'      => __( 'Choose an option', 'woocommerce' ),
         /* translators: woocommerce */
         'error'       => __( 'Sorry, there has been an error.', 'woocommerce' ),
+        /* translators: woocommerce */
+        'billing_mandatory'       => __( 'Not all mandatory fields are filled.', 'woocommerce' ),
         /* translators: woocommerce */
         'loading'     => __( 'Loading ...' ),
         /* translators: woocommerce */

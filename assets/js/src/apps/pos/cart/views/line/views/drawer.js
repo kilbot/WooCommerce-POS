@@ -31,7 +31,9 @@ module.exports = FormView.extend({
     'click @ui.addMeta'     : 'addMetaFields',
     'click @ui.removeMeta'  : 'removeMetaFields',
     'blur @ui.metaLabel'    : 'updateMeta',
-    'blur @ui.metaValue'    : 'updateMeta'
+    'blur @ui.metaValue'    : 'updateMeta',
+    'blur input[id^=billing_]' : 'saveBilling',
+    'blur select[id^=billing_]': 'saveBilling'
   },
 
   modelEvents: {
@@ -78,6 +80,14 @@ module.exports = FormView.extend({
   },
 
   onShow: function() {
+    var el = $(this.$el);
+
+    for (var key in this.model.attributes) {
+      if (key.indexOf('billing_') !== -1) {
+        el.find('#' + key).val(this.model.attributes[key]);
+      }
+    }
+
     this.$el.hide().slideDown(250);
   },
 
@@ -91,6 +101,32 @@ module.exports = FormView.extend({
     if(type === 'remove'){
       return this.$el.slideUp(250);
     }
+  },
+
+  saveBilling: function (e) {
+    if (e.target.name.indexOf('billing_') !== -1) {
+      this.model.save(e.target.name, e.target.value);
+      this.calculateMandatory();
+    }
+  },
+
+  calculateMandatory: function () {
+    var el = $(this.$el).find("input[id^=billing_]");
+    var valid = true;
+    for ( var i = 0 ; i < el.length ; i++ ) {
+      var e=el.get(i);
+
+      if ( $(e).hasClass('required') && e.value==='') {
+        valid = false;
+        break;
+      }
+      // Check email address (which might not be mandatory)
+      if (e.validity.valid === false) {
+        valid = false;
+        break;
+      }
+    }
+    this.model.save("$valid", valid);
   },
 
   updateMeta: function(e) {

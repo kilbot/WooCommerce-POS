@@ -1,3 +1,50 @@
+{{#is type 'billing'}}
+    <?php
+            $checkout = WC_Checkout::instance();
+			$fields = $checkout->get_checkout_fields( 'billing' );
+			$f = 0;
+			foreach ( $fields as $key => $field ) {
+
+				$field['input_class']=['form-control'];
+				if (($f % 3) == 0 ) {
+                    ?>
+                    <div class="list-row">
+                    <?php
+				}
+
+				$val = null;
+
+                $label = $field['label'];
+                $field['label']='';
+
+
+                if ( $field['required'] ) {
+                    $val = $checkout->get_value( $key );
+                    array_push($field['input_class'], "required");
+                    $label = $label . "&nbsp;*";
+                    $field['custom_attributes']['required']='true';
+                }
+
+                echo "<div>" . $label . "</div>";
+				woocommerce_form_field( $key, $field, $val);
+
+				if (($f % 3) == 2 ) {
+                    ?>
+                    </div>
+                    <?php
+				}
+				$f++;
+			}
+
+			if ((($f-1) % 3) != 2 ) {
+                    ?>
+                    </div>
+                    <?php
+			}
+
+		?>
+{{/is}}
+{{#compare type '!==' 'billing'}}
 {{#if product_id}}
 <div class="list-row">
   <div><?php /* translators: woocommerce */ _e( 'Regular price', 'woocommerce' ); ?>:</div>
@@ -46,3 +93,4 @@
   </div>
 </div>
 {{/if}}
+{{/compare}}
