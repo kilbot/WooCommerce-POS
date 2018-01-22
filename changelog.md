@@ -1,3 +1,6 @@
+= 0.4.17 - 2017/11/24 =
+* WP 4.9 compatibility fix for decimal quantities
+
 = 0.4.16 - 2017/11/22 =
 * WP 4.9 compatibility fix for 'rest_invalid_param'
 

@@ -37,6 +37,7 @@ class WC_POS_Products {
     if( wc_pos_get_option( 'general', 'decimal_qty' ) ){
       remove_filter('woocommerce_stock_amount', 'intval');
       add_filter( 'woocommerce_stock_amount', 'floatval' );
+      add_filter( 'woocommerce_rest_shop_order_schema', array( $this, 'rest_shop_order_schema' ) );
     }
 
   }
@@ -61,6 +62,17 @@ class WC_POS_Products {
       'post_modified'     => $post_modified,
       'post_modified_gmt' => $post_modified_gmt
     ));
+  }
+
+
+  /**
+   *
+   */
+  public function rest_shop_order_schema( array $properties ) {
+    if( isset( $properties['line_items']['items']['properties']['quantity']['type'] ) ) {
+      $properties['line_items']['items']['properties']['quantity']['type'] = 'float';
+    }
+    return $properties;
   }
 
 }
