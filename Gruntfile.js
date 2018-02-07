@@ -6,6 +6,8 @@ module.exports = function(grunt) {
 
   var pkg = grunt.file.readJSON('package.json');
 
+  var path = require('path');
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
@@ -155,7 +157,7 @@ module.exports = function(grunt) {
             radio: 'backbone.radio',
             underscore: 'lodash'
           },
-          modulesDirectories: ['node_modules', './<%= app.js.src %>']
+          modules: ['node_modules', './<%= app.js.src %>']
         },
         externals: {
           jquery: 'jQuery',
@@ -172,22 +174,20 @@ module.exports = function(grunt) {
           select2: 'select2',
           'idb-wrapper': 'IDBStore'
         },
-        cache: true,
-        watch: true
+        cache: true
       },
       dev: {
         output: {
-          path: './<%= app.js.build %>/',
+          path: path.resolve(__dirname, '<%= app.js.build %>/'),
           filename: '[name].build.js',
           pathinfo: true,
           library: 'POS'
         },
-        devtool: 'eval-source-map',
-        debug: true
+        devtool: 'eval-source-map'
       },
       deploy: {
         output: {
-          path: './<%= app.js.build %>/',
+          path: path.resolve(__dirname, '<%= app.js.build %>'),
           filename: '[name].build.js',
           library: 'POS'
         }
