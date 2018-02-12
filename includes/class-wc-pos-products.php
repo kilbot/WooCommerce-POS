@@ -51,10 +51,11 @@ class WC_POS_Products {
     $post_modified     = current_time( 'mysql' );
     $post_modified_gmt = current_time( 'mysql', 1 );
 
+
     if( version_compare( WC()->version, '3', '<' ) ) {
       $id = $product->id;
     } else {
-      $id = $product->get_id();
+      $id = $product->is_type('variation') ? $product->get_parent_id() : $product->get_id();
     }
 
     wp_update_post( array(

@@ -1,3 +1,6 @@
+= 0.4.18 = - 2018/02/12
+* Fix: Product variation stock adjustment
+
 = 0.4.17 - 2017/11/24 =
 * WP 4.9 compatibility fix for decimal quantities
 
