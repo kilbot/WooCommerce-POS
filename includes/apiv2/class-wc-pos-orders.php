@@ -270,7 +270,17 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
     // hack: fix line_items.meta
     if( is_array( $data['line_items'] ) ) : foreach( $data['line_items'] as &$line_item ) :
-      $line_item['meta'] = $line_item['meta_data'];
+      // remove hidden line item meta
+      $line_item['meta'] = array();
+      if( isset( $line_item['meta_data'] ) && is_array( $line_item['meta_data'] ) ) : foreach ( $line_item['meta_data'] as $meta_data ) :
+        // check key
+        $_data = $meta_data->get_data();
+        if( isset( $_data['key'] ) && substr($_data['key'],0,1) != '_' ) {
+          $line_item['meta'][] = $meta_data;
+        }
+      endforeach; endif;
+      $line_item['meta_data'] = $line_item['meta'];
+
     endforeach; endif;
 
     $response->set_data($data);

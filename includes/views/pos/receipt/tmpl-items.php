@@ -6,7 +6,7 @@
     {{#with meta}}
     <dl class="meta">
       {{#each []}}
-      <dt>{{label}}:</dt>
+      <dt>{{#if label}}{{label}}{{else}}{{key}}{{/if}}:</dt>
       <dd>{{value}}</dd>
       {{/each}}
     </dl>
