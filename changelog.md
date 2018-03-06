@@ -1,6 +1,8 @@
 = 0.4.18 = - 2018/02/12
 * Fix: Product variation stock adjustment
 * Fix: Prevent display of hidden order item meta
+* Fix: POS flag on Orders list page
+* Fix: Add payment method to Orders list page
 
 = 0.4.17 - 2017/11/24 =
 * WP 4.9 compatibility fix for decimal quantities

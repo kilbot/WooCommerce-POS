@@ -36,6 +36,9 @@ class WC_POS_Admin_Orders {
     add_filter( 'post_class', array( $this, 'post_class' ), 10, 3 );
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 
+    // display payment method for Guest
+    add_filter( 'woocommerce_order_formatted_billing_address', array( $this, 'formatted_billing_address' ), 10, 2 );
+
   }
 
   /**
@@ -179,16 +182,35 @@ class WC_POS_Admin_Orders {
    */
   public function enqueue_admin_styles() {
     $css = '
-      .widefat .type-wc_pos_order .column-order_status {
-        background: url( '. WC_POS_PLUGIN_URL .'assets/logo.svg ) no-repeat 75% 9px;
-        background-size: 18px;
-        fill: #94d31b;
-      }
-      .widefat .type-wc_pos_order .column-order_status mark {
-        margin: 0 auto 0 0;
+      .widefat .type-wc_pos_order .column-order_number a strong {
+        background: url( '. WC_POS_PLUGIN_URL .'assets/logo.svg ) no-repeat 100% 1px;
+        background-size: 16px;
+        padding-right: 25px;
       }
     ';
     wp_add_inline_style( 'wp-admin', $css );
+  }
+
+
+  /**
+   * @param $address
+   * @param $order
+   * @return array
+   */
+  public function formatted_billing_address( $address, $order ) {
+
+    $customer_id = method_exists( $order, 'get_customer_id' ) ? $order->get_customer_id() : null ;
+    $pos = method_exists( $order, 'get_meta' ) ? $order->get_meta('_pos') : null ;
+
+    // if POS order and user_id = 0
+    if( $customer_id == 0 && $pos == 1 ) {
+      $address = array(
+        'first_name' => __( 'Guest', 'woocommerce' )
+      );
+    }
+
+    return $address;
+
   }
 
 }
