@@ -3,6 +3,7 @@
 * Fix: Prevent display of hidden order item meta
 * Fix: POS flag on Orders list page
 * Fix: Add payment method to Orders list page
+* Fix: Printing in Chrome 46+
 
 = 0.4.17 - 2017/11/24 =
 * WP 4.9 compatibility fix for decimal quantities

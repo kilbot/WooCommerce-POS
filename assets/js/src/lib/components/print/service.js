@@ -32,7 +32,9 @@ module.exports = Service.extend({
     this.deferred = $.Deferred();
 
     // insert template
+    iframe.document.open();
     iframe.document.write(template);
+    iframe.document.close();
 
     // print once loaded
     var loaded = function(){
@@ -58,14 +60,6 @@ module.exports = Service.extend({
    * returns a reference to the iframe window
    */
   init: function(){
-    if(this.iframe){
-      this.iframe.remove();
-    }
-
-    this.iframe = $('<iframe>')
-      .attr('name', 'iframe')
-      .css({visibility:'hidden',position:'-fixed',right:'0',bottom:'0'})
-      .appendTo('body');
 
     // print events for Chrome 9+ & Safari 5.1+
     if (frames['iframe'].matchMedia) {
@@ -91,8 +85,6 @@ module.exports = Service.extend({
   },
 
   afterPrint: function(){
-    this.iframe.remove();
-    this.iframe = undefined;
     debug('printing finished');
     this.deferred.resolve();
   },

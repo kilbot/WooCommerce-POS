@@ -50,5 +50,6 @@
 ?>
 <script>POS.start(<?php echo json_encode($options) ?>);</script>
 
+<iframe name="iframe" style="visibility: hidden; right: 0px; bottom: 0px;"></iframe>
 </body>
 </html>
