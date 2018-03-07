@@ -85,7 +85,12 @@ var methods = {
 
   _array: function(arr, value){
     return _.any(arr, function(elem){
-      return elem.toLowerCase() === value;
+      if( _.isString(elem) ) {
+        return elem.toLowerCase() === value;
+      }
+      if( _.isObject(elem) && elem.hasOwnProperty('slug') ) {
+        return elem.slug.toLowerCase() === value;
+      }
     });
   }
 

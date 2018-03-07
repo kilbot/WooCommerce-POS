@@ -105,6 +105,15 @@ class WC_POS_APIv2 {
         $request->set_param('featured', $featured);
       }
 
+      if( isset($filter['categories']) ) {
+        $category = get_term_by( 'slug', $filter['categories'], 'product_cat' );
+        if($category) {
+          $request->set_param('category', strval($category->term_id) );
+        } else {
+          $request->set_param('include', array( 0 ) );
+        }
+      }
+
       /**
        * Special case for on_sale
        * post__in trumps post__not_in

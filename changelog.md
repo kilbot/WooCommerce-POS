@@ -1,5 +1,6 @@
 = 0.4.18 = - 2018/02/12
 * Fix: Product variation stock adjustment
+* Fix: Category search for products
 * Fix: Prevent display of hidden order item meta
 * Fix: POS flag on Orders list page
 * Fix: Add payment method to Orders list page
