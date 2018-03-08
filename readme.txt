@@ -3,7 +3,7 @@ Contributors: kilbot
 Tags: cart, e-commerce, ecommerce, inventory, point-of-sale, pos, sales, sell, shop, shopify, store, vend, woocommerce,  wordpress-ecommerce
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 0.4.17
+Stable tag: 0.4.18
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,14 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 1. WooCommerce POS main screen
 
 == Changelog ==
+
+= 0.4.18 = - 2018/03/08
+* Fix: Product variation stock adjustment
+* Fix: Category search for products
+* Fix: Prevent display of hidden order item meta
+* Fix: POS flag on Orders list page
+* Fix: Add payment method to Orders list page
+* Fix: Printing in Chrome 46+
 
 = 0.4.17 - 2017/11/24 =
 * WP 4.9 compatibility fix for decimal quantities
