@@ -1,6 +1,9 @@
-[submodule "styleguide"]
-	path = styleguide
-	url = https://github.com/kilbot/WooCommerce-POS-StyleGuide.git
 [submodule ".docker"]
 	path = .docker
 	url = https://github.com/kilbot/WooCommerce-Dev-Docker.git
+[submodule "client"]
+	path = client
+	url = https://github.com/kilbot/woocommerce-pos-client.git
+[submodule "server"]
+	path = server
+	url = https://github.com/kilbot/woocommerce-pos-mock-api.git

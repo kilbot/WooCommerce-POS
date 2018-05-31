@@ -1,9 +1,0 @@
-@mixin form-control-focus() {
-  &:focus,
-  &.pseudo-class-focus {
-    border-color: $input-border-focus;
-    outline: none;
-    $shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px $input-box-shadow-focus;
-    @include box-shadow($shadow);
-  }
-}
