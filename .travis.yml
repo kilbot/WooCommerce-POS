@@ -30,7 +30,7 @@ before_install:
   - docker -v
 
 install:
-  - npm install && node_modules/.bin/grunt build --force
+#  - npm install && node_modules/.bin/grunt build --force
   - npm run start:${PHP_VERSION}
 
 before_script:
@@ -39,7 +39,7 @@ before_script:
   - docker exec woocommerce-pos-app-${PHP_VERSION} wp plugin list --allow-root --status=active
 
 script:
-  - npm run unit-test:js
-  - if ["${PHP_VERSION}" == "php70"] && ["${WC_VERSION}" == "latest"]; then npm run integration-test:js ; fi
+#  - npm run unit-test:js
+#  - if ["${PHP_VERSION}" == "php70"] && ["${WC_VERSION}" == "latest"]; then npm run integration-test:js ; fi
   - npm run unit-test:${PHP_VERSION}
   - npm run integration-test:${PHP_VERSION}
