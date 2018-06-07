@@ -2,10 +2,27 @@
   "name": "woocommerce-pos",
   "description": "A simple front-end for taking WooCommerce orders at the Point of Sale.",
   "version": "0.5.0-beta-2",
+  "private": true,
+  "author": "kilbot",
+  "license": "GPL-3.0+",
+  "homepage": "http://wcpos.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kilbot/WooCommerce-POS.git"
+  },
+  "keywords": [
+    "wordpress",
+    "woocommerce",
+    "ecommerce",
+    "point-of-sale"
+  ],
+  "bugs": {
+    "url": "https://github.com/kilbot/WooCommerce-POS/issues"
+  },
   "scripts": {
     "client": "cd client && yarn start",
     "server": "cd server && nodemon server",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "build": "docker-compose -f .docker/docker.yml build",
     "start": "docker-compose -f .docker/docker.yml up -d",
     "start:php54": "docker-compose -f .docker/docker-php54.yml up -d",
@@ -26,24 +43,6 @@
     "integration-test:php56": "docker exec woocommerce-pos-app-php56 phpunit -c wp-content/plugins/woocommerce-pos/tests/integration/php/phpunit.xml",
     "integration-test:php70": "docker exec woocommerce-pos-app-php70 phpunit -c wp-content/plugins/woocommerce-pos/tests/integration/php/phpunit.xml",
     "teardown-docker": "npm run stop && docker rm $(docker ps -a -q) && rm -rf .data && rm -rf .html"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kilbot/WooCommerce-POS.git"
-  },
-  "keywords": [
-    "wordpress",
-    "woocommerce",
-    "ecommerce",
-    "point-of-sale",
-    "backbone",
-    "marionette"
-  ],
-  "author": "kilbot",
-  "license": "GPL-3.0+",
-  "homepage": "http://woopos.com.au",
-  "bugs": {
-    "url": "https://github.com/kilbot/WooCommerce-POS/issues"
   },
   "dependencies": {},
   "devDependencies": {

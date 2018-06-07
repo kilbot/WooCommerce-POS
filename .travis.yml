@@ -14,6 +14,10 @@ env:
     - PHP_VERSION=php55 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
     - PHP_VERSION=php56 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
     - PHP_VERSION=php70 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php54 WC_VERSION=2.6.14 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php55 WC_VERSION=2.6.14 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php56 WC_VERSION=2.6.14 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=php70 WC_VERSION=2.6.14 WP_VERSION=latest WP_MULTISITE=0
     - PHP_VERSION=php54 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
     - PHP_VERSION=php55 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
     - PHP_VERSION=php56 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
@@ -21,7 +25,7 @@ env:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install docker-engine --no-install-recommends -y -o Dpkg::Options::="--force-confmiss" -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew"
+  - sudo apt-get install docker-ce --no-install-recommends -y -o Dpkg::Options::="--force-confmiss" -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew"
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
