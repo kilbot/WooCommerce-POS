@@ -21,7 +21,7 @@
   },
   "scripts": {
     "client": "cd client && yarn start",
-    "server": "cd server && nodemon server",
+    "server": "cd server && yarn start",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "build": "docker-compose -f .docker/docker.yml build",
     "start": "docker-compose -f .docker/docker.yml up -d",
@@ -46,6 +46,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "concurrently": "^3.5.1"
+    "concurrently": "^4.0.1"
   }
 }
