@@ -1,7 +1,7 @@
 {
   "name": "woocommerce-pos",
   "description": "A simple front-end for taking WooCommerce orders at the Point of Sale.",
-  "version": "0.5-beta.2",
+  "version": "0.5.0-beta.2",
   "private": true,
   "author": "kilbot",
   "license": "GPL-3.0+",
