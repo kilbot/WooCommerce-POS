@@ -9,19 +9,23 @@ services:
   - docker
 
 env:
+  global:
+    - MYSQL_VERSION=8.0
+    - WP_MULTISITE=0
+    - WP_VERSION=latest
   matrix:
-    - PHP_VERSION=php54 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php55 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php56 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php70 WC_VERSION=latest WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php54 WC_VERSION=2.6.14 WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php55 WC_VERSION=2.6.14 WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php56 WC_VERSION=2.6.14 WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php70 WC_VERSION=2.6.14 WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php54 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php55 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php56 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
-    - PHP_VERSION=php70 WC_VERSION=2.5.5 WP_VERSION=latest WP_MULTISITE=0
+    - PHP_VERSION=5.6 WC_VERSION=3.2.6
+    - PHP_VERSION=5.6 WC_VERSION=3.3.5
+    - PHP_VERSION=5.6 WC_VERSION=3.4.4
+    - PHP_VERSION=5.6 WC_VERSION=latest
+    - PHP_VERSION=7.0 WC_VERSION=3.2.6
+    - PHP_VERSION=7.0 WC_VERSION=3.3.5
+    - PHP_VERSION=7.0 WC_VERSION=3.4.4
+    - PHP_VERSION=7.0 WC_VERSION=latest
+    - PHP_VERSION=7.2 WC_VERSION=3.2.6
+    - PHP_VERSION=7.2 WC_VERSION=3.3.5
+    - PHP_VERSION=7.2 WC_VERSION=3.4.4
+    - PHP_VERSION=7.2 WC_VERSION=latest
 
 git:
   submodules:
@@ -33,23 +37,18 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install docker-ce --no-install-recommends -y -o Dpkg::Options::="--force-confmiss" -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew"
   - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin/
   - docker-compose -v
   - docker -v
 
 install:
-#  - npm install && node_modules/.bin/grunt build --force
-  - npm run start:${PHP_VERSION}
+  - npm run start
 
 before_script:
-  - sleep 60
-  - docker exec woocommerce-pos-app-${PHP_VERSION} wp core version --allow-root
-  - docker exec woocommerce-pos-app-${PHP_VERSION} wp plugin list --allow-root --status=active
+  - echo "Bootstrap test environment"
+  - until curl --silent -XGET --fail http://localhost; do printf '.'; sleep 1; done
 
 script:
-#  - npm run unit-test:js
-#  - if ["${PHP_VERSION}" == "php70"] && ["${WC_VERSION}" == "latest"]; then npm run integration-test:js ; fi
-  - npm run unit-test:${PHP_VERSION}
-  - npm run integration-test:${PHP_VERSION}
+  - npm run tests

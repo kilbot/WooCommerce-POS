@@ -10,6 +10,7 @@
 /build
 
 # misc
+launch.json
 .idea
 .data
 .html
