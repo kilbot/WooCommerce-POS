@@ -25,12 +25,12 @@
     "build": "docker-compose -f .docker/docker-compose.yml build",
     "start": "docker-compose -f .docker/docker-compose.yml up -d",
     "stop": "docker-compose -f .docker/docker-compose.yml kill",
-    "unit-test:php-5.6": "docker exec woocommerce-pos-php-5.6 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
-    "unit-test:php-7.0": "docker exec woocommerce-pos-php-7.0 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
-    "unit-test:php-7.2": "docker exec woocommerce-pos-php-7.2 phpunit -c wp-content/plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
-    "integration-test:php-5.6": "docker exec woocommerce-pos-php-5.6 phpunit -c wp-content/plugins/woocommerce-pos/tests/integration/php/phpunit.xml",
-    "integration-test:php-7.0": "docker exec woocommerce-pos-php-7.0 phpunit -c wp-content/plugins/woocommerce-pos/tests/integration/php/phpunit.xml",
-    "integration-test:php-7.2": "docker exec woocommerce-pos-php-7.2 phpunit -c wp-content/plugins/woocommerce-pos/tests/integration/php/phpunit.xml"
+    "unit-test:php-5.6": "docker exec woocommerce-pos-php-5.6 phpunit -c plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
+    "unit-test:php-7.0": "docker exec woocommerce-pos-php-7.0 phpunit -c plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
+    "unit-test:php-7.2": "docker exec woocommerce-pos-php-7.2 phpunit -c plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
+    "integration-test:php-5.6": "docker exec woocommerce-pos-php-5.6 phpunit -c plugins/woocommerce-pos/tests/integration/php/phpunit.xml",
+    "integration-test:php-7.0": "docker exec woocommerce-pos-php-7.0 phpunit -c plugins/woocommerce-pos/tests/integration/php/phpunit.xml",
+    "integration-test:php-7.2": "docker exec woocommerce-pos-php-7.2 phpunit -c plugins/woocommerce-pos/tests/integration/php/phpunit.xml"
   },
   "dependencies": {},
   "devDependencies": {

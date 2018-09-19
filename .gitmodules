@@ -4,6 +4,3 @@
 [submodule "client"]
 	path = client
 	url = https://github.com/kilbot/woocommerce-pos-client.git
-[submodule "server"]
-	path = server
-	url = https://github.com/kilbot/woocommerce-pos-mock-api.git

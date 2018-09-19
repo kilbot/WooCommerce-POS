@@ -15,16 +15,6 @@ Development repository for WooCommerce POS - the Point of Sale plugin for [WooCo
   <img src="http://wcpos.com/wp-content/uploads/2015/05/pos-sale-lg.gif" alt="Screenshot"/>
 </p>
 
-## Browser Compatibility
-
-<p align="center">
-  <img src="http://wcpos.com/wp-content/uploads/2015/06/compatibility-chart.jpg" alt="Browser Compatibility"/>
-</p>
-
-<p align="center">
-  [![Selenium Test Status](https://saucelabs.com/browser-matrix/wcpos.svg)](https://saucelabs.com/u/wcpos)
-</p>
-
 ## Report a bug
 
 Please report all bugs [here](https://github.com/kilbot/WooCommerce-POS/issues) or contact support via [support@wcpos.com](mailto:support@wcpos.com)
@@ -35,7 +25,7 @@ If you would like to help translate WooCommerce POS into your language please ch
 
 ## Developing locally
 
-WooCommerce POS is a WordPress plugin which requires [WordPress](http://wordpress.org) 3.8+ and [WooCommerce](wordpress.org/plugins/woocommerce) 2.2+.
+WooCommerce POS is a WordPress plugin which requires [WordPress](http://wordpress.org) 3.8+ and [WooCommerce](wordpress.org/plugins/woocommerce) 3.2.6+.
 
 This project includes configuration files for creating a consistent development environment for WooCommerce plugins. 
 
@@ -65,24 +55,12 @@ cd woocommerce-pos && npm run build
 Now, get a coffee :coffee:
 
 The first build will take some time as it prepares the virtual server. 
-While waiting for the first build to complete, add the following domains to your `/etc/hosts` file.
-
-```sh
-# /etc/hosts
-127.0.0.1   php54.local
-127.0.0.1   php55.local
-127.0.0.1   php56.local
-127.0.0.1   php70.local
-```
-
-Once the build is complete you can start the virtual server using:
 
 ```
 npm run start
 ```
 
-Open your browser and navigate to `http://php56.local`, you should see a WordPress + WooCommerce + WooCommerce POS site running on PHP 5.6.x. 
-Login with `admin/password` to access the WordPress admin.
+Open your browser and navigate to http://localhost and use `admin/password` to access the WordPress admin.
 
 ### Developing and Deploying
 
