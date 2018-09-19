@@ -12,7 +12,7 @@ class Coupons extends TestCase {
   public function test_get_valid_response() {
     $response = $this->client->get('coupons');
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('coupons', $data);
   }
 
@@ -38,7 +38,7 @@ class Coupons extends TestCase {
         'filter[qFields]' => 'code'
       ]
     ]);
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
 
     $this->assertCount(1, $data['coupons']);
     $this->assertEquals($new_coupon_id, $data['coupons'][0]['id']);

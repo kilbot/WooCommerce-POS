@@ -13,7 +13,7 @@ class CustomersTest extends TestCase {
   public function test_get_valid_response() {
     $response = $this->client->get('customers');
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('customers', $data);
   }
 
@@ -27,7 +27,7 @@ class CustomersTest extends TestCase {
     update_option( $option_key, array('customer_roles' => array('all')) );
 
     $response = $this->client->get('customers');
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('customers', $data);
 
     $this->assertEquals('administrator', $data['customers'][0]['role']); // admin
@@ -36,7 +36,7 @@ class CustomersTest extends TestCase {
     update_option( $option_key, array('customer_roles' => array('subscriber')) );
 
     $response = $this->client->get('customers');
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
 
     $this->assertEquals('subscriber', $data['customers'][0]['role']);
 
@@ -65,7 +65,7 @@ class CustomersTest extends TestCase {
         'filter[qFields]' => 'username'
       ]
     ]);
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
 
     $this->assertCount(1, $data['customers']);
     $this->assertEquals($customer_id, $data['customers'][0]['id']);
@@ -93,7 +93,7 @@ class CustomersTest extends TestCase {
         'filter[qFields]' => 'email'
       ]
     ]);
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
 
     $this->assertCount(1, $data['customers']);
     $this->assertEquals($customer_id, $data['customers'][0]['id']);
@@ -120,7 +120,7 @@ class CustomersTest extends TestCase {
         'filter[qFields]' => 'first_name'
       ]
     ]);
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
 
     $this->assertCount(1, $data['customers']);
     $this->assertEquals($customer_id, $data['customers'][0]['id']);
@@ -146,7 +146,7 @@ class CustomersTest extends TestCase {
         'filter[qFields]' => 'last_name'
       ]
     ]);
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
 
     $this->assertCount(1, $data['customers']);
     $this->assertEquals($customer_id, $data['customers'][0]['id']);
@@ -173,7 +173,7 @@ class CustomersTest extends TestCase {
         'filter[qFields]' => 'billing_address.company'
       ]
     ]);
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
 
     $this->assertCount(1, $data['customers']);
     $this->assertEquals($customer_id, $data['customers'][0]['id']);
@@ -200,7 +200,7 @@ class CustomersTest extends TestCase {
         'filter[qFields]' => 'billing_address.phone'
       ]
     ]);
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
 
     $this->assertCount(1, $data['customers']);
     $this->assertEquals($customer_id, $data['customers'][0]['id']);
@@ -229,7 +229,7 @@ class CustomersTest extends TestCase {
         )
       ]
     ]);
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
 
     $this->assertCount(1, $data['customers']);
     $this->assertEquals($customer_id, $data['customers'][0]['id']);

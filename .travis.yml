@@ -9,7 +9,9 @@ services:
   - docker
 
 env:
+
   global:
+    - DOCKER_COMPOSE_VERSION=1.22.0
     - MYSQL_VERSION=8.0
     - WP_MULTISITE=0
     - WP_VERSION=latest
@@ -32,16 +34,25 @@ git:
     false
 
 before_install:
+  # first, stop any existing mysql services due to port conflict
+  - sudo service mysql stop
+  # git submodules
   - echo -e "machine github.com\n  login $CI_USER_TOKEN" >> ~/.netrc
   - git submodule update --init --recursive
-  - sudo apt-get update -qq
-  - sudo apt-get install docker-ce --no-install-recommends -y -o Dpkg::Options::="--force-confmiss" -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew"
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin/
-  - docker-compose -v
+  # update docker
   - docker -v
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y install docker-ce
+  - docker -v
+  # update docker-compose
+  - docker-compose -v
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker-compose -v
 
 install:
   - npm run start
@@ -51,4 +62,5 @@ before_script:
   - until curl --silent -XGET --fail http://localhost; do printf '.'; sleep 1; done
 
 script:
-  - npm run tests
+  - npm run unit-test:php-${PHP_VERSION}
+  - npm run integration-test:php-${PHP_VERSION}

@@ -5,11 +5,17 @@
  */
 
 namespace WC_POS\Framework;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\HandlerStack;
+use Psr\Http\Message\RequestInterface;
 
 class TestCase extends \PHPUnit_Framework_TestCase {
 
+  /**
+   * global Guzzle instance
+   */
   protected $client;
 
   /**
@@ -18,10 +24,15 @@ class TestCase extends \PHPUnit_Framework_TestCase {
   public function setUp() {
     parent::setUp();
 
-    $this->login();
+//    $this->login();
 
     $this->client = new Client([
-      'base_url' => get_woocommerce_api_url( '' ),
+      'base_uri' => str_replace('localhost', 'static', get_woocommerce_api_url( '' )),
+      'proxy' => [
+        'http'  => 'http://static:80', // Use this proxy with "http"
+        'https' => 'https://static:443', // Use this proxy with "https",
+//        'no' => ['.mit.edu', 'foo.com']    // Don't use a proxy with these
+      ],
       'defaults' => [
         'exceptions' => false,
         'cookies' => true,
@@ -115,6 +126,13 @@ class TestCase extends \PHPUnit_Framework_TestCase {
    */
   protected function print_response_body( $response ) {
     echo $response->getBody();
+  }
+
+  /**
+   * @param $response
+   */
+  protected function parseBodyAsJSON( $response ) {
+    return json_decode($response->getBody(), true);
   }
 
 }

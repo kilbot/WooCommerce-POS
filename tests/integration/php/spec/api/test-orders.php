@@ -52,7 +52,7 @@ class OrdersTest extends TestCase {
   public function test_get_valid_response() {
     $response = $this->client->get('orders');
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('orders', $data);
   }
 
@@ -67,7 +67,7 @@ class OrdersTest extends TestCase {
     ));
     // 201 = created
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $order_id = $data['order']['id'];
     $this->assertEquals(1, get_post_meta( $order_id, '_pos', true ) );
@@ -79,7 +79,7 @@ class OrdersTest extends TestCase {
   public function test_edit_order(){
     // get last order
     $response = $this->client->get('orders');
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $order_id = $data['orders'][0]['id'];
 
     // update note
@@ -92,7 +92,7 @@ class OrdersTest extends TestCase {
     ));
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals('updated', $data['order']['note']);
   }
@@ -118,7 +118,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(1, $data['order']['total_line_items_quantity']);
   }
@@ -155,7 +155,7 @@ class OrdersTest extends TestCase {
 //    ));
 //
 //    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
+//    $data = $this->parseBodyAsJSON($response);
 //    $this->assertArrayHasKey('order', $data);
 //    $this->assertEquals(1, $data['order']['total_line_items_quantity']);
 //  }
@@ -192,7 +192,7 @@ class OrdersTest extends TestCase {
     ));
 
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(1, $data['order']['total_line_items_quantity']);
     $this->assertEquals(2, get_post_meta($product['product_id'], '_stock', true) );
@@ -239,7 +239,7 @@ class OrdersTest extends TestCase {
     ));
 
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals($random_qty, $data['order']['total_line_items_quantity']);
     $this->assertEquals($random_stock - $random_qty, get_post_meta($product['product_id'], '_stock', true) );
@@ -272,7 +272,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals($regular_price - $price, $data['order']['total_discount']);
 
@@ -299,7 +299,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
 
     // note: product goes in as 'title', comes out as 'name'
@@ -332,7 +332,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(2, $data['order']['total_tax']);
   }
@@ -363,7 +363,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(0, $data['order']['total_tax']);
   }
@@ -395,7 +395,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(0.5, $data['order']['total_tax']);
     $this->assertEquals('reduced-rate', $data['order']['line_items'][0]['tax_class']);
@@ -424,7 +424,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(10, $data['order']['total']);
     $this->assertEquals('Foo', $data['order']['fee_lines'][0]['title']);
@@ -458,7 +458,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(12, $data['order']['total']);
     $this->assertEquals(2, $data['order']['total_tax']);
@@ -492,7 +492,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(10.5, $data['order']['total']);
     $this->assertEquals(0.5, $data['order']['total_tax']);
@@ -522,7 +522,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(-10, $data['order']['total']);
   }
@@ -554,7 +554,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(-12, $data['order']['total']);
     $this->assertEquals(-2, $data['order']['total_tax']);
@@ -598,7 +598,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(7, $data['order']['total']);
     $this->assertEquals(2, $data['order']['total_tax']);
@@ -631,7 +631,7 @@ class OrdersTest extends TestCase {
     ));
 
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(10, $data['order']['total_shipping']);
     $this->assertEquals('Bar', $data['order']['shipping_methods']);
@@ -669,7 +669,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(10, $data['order']['total_shipping']);
     $this->assertEquals(2, $data['order']['shipping_tax']);
@@ -709,7 +709,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals(10, $data['order']['total_shipping']);
     $this->assertEquals(0.5, $data['order']['shipping_tax']);
@@ -735,7 +735,7 @@ class OrdersTest extends TestCase {
       )
     ));
     $this->assertEquals(201, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('order', $data);
     $this->assertEquals($taxes, $data['order']['pos_taxes']);
   }
@@ -770,7 +770,7 @@ class OrdersTest extends TestCase {
 //      )
 //    ));
 //    $this->assertEquals(201, $response->getStatusCode());
-//    $data = $response->json();
+//    $data = $this->parseBodyAsJSON($response);
 //    $this->assertArrayHasKey('order', $data);
 //    $this->assertEquals(0, $data['order']['total_tax']);
 //

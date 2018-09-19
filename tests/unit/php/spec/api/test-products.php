@@ -42,7 +42,7 @@ class ProductsTest extends WP_UnitTestCase {
    *
    */
   function test_product_response(){
-    $response = $this->products_api->product_response(array('id' => $this->product->id), $this->product, null, null);
+    $response = $this->products_api->product_response(array('id' => $this->product->get_id()), $this->product, null, null);
 //    $this->assertEquals(0.25, $response['stock_quantity']);
     $this->assertEquals( $this->sku, $response['barcode'] );
     $this->assertEquals( wc_placeholder_img_src(), $response['featured_src'] );

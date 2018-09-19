@@ -5,10 +5,8 @@ namespace WC_POS;
 class Integration_Tests {
 
   public function __construct(){
-
-    ini_set( 'display_errors','on' );
-    error_reporting( E_ALL );
-
+//    ini_set( 'display_errors','on' );
+//    error_reporting( E_ALL );
     $this->includes();
     register_shutdown_function( array( $this, 'shutdown' ) );
   }
@@ -18,7 +16,8 @@ class Integration_Tests {
    * include composer autoloader
    */
   public function includes(){
-    require_once( __DIR__.'/../../../../../../wp-load.php' );
+    $wp_path = dirname(shell_exec('wp config path --allow-root'));
+    require_once( $wp_path.'/wp-load.php' );
     require_once '/root/.composer/vendor/autoload.php'; // required to load Guzzle
     require_once 'framework/testcase.php';
   }

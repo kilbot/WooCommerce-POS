@@ -14,7 +14,7 @@ class ProductsTest extends TestCase {
   public function test_get_valid_response() {
     $response = $this->client->get('products');
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
   }
 
@@ -29,7 +29,7 @@ class ProductsTest extends TestCase {
       ]
     ]);
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(1, $data['products']);
 
@@ -47,7 +47,7 @@ class ProductsTest extends TestCase {
   public function test_get_single_simple_product() {
     $response = $this->client->get('products/99');
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('product', $data);
   }
 
@@ -68,7 +68,7 @@ class ProductsTest extends TestCase {
     // update product and check response
     $response = $this->client->get('products/99');
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('product', $data);
     $this->assertEquals( $random_qty, $data['product']['stock_quantity'] );
   }
@@ -79,7 +79,7 @@ class ProductsTest extends TestCase {
   public function test_get_single_variable_product() {
     $response = $this->client->get('products/41');
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('product', $data);
     $this->assertEquals( 'variation', $data['product']['type'] );
   }
@@ -100,7 +100,7 @@ class ProductsTest extends TestCase {
 
     // also need to check the parent output
     $response = $this->client->get('products/40');
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $parent = $data['product'];
     $this->assertArrayHasKey('variations', $parent);
     $product = '';
@@ -166,7 +166,7 @@ class ProductsTest extends TestCase {
 
     // get all product ids
     $response = $this->client->get('products/ids');
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertGreaterThan(10, count($data['products']));
     $ids = wp_list_pluck( $data['products'], 'id' );
     $this->assertNotContains( $product_id, $ids );
@@ -198,7 +198,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(2, $data['products']);
 
@@ -213,14 +213,14 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(0, $data['products']);
 
   }
 
   /**
-   * 
+   *
    */
   public function test_id_search(){
     $product_id = $this->get_random_product_id();
@@ -237,7 +237,7 @@ class ProductsTest extends TestCase {
       )
     ]);
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(1, $data['products']);
     $this->assertEquals($product_id, $data['products'][0]['id']);
@@ -263,7 +263,7 @@ class ProductsTest extends TestCase {
       )
     ]);
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(0, $data['products']);
 
@@ -273,7 +273,7 @@ class ProductsTest extends TestCase {
    *
    */
   public function test_featured_search(){
-    
+
     global $wpdb;
 
     // store downloadable ids
@@ -298,7 +298,7 @@ class ProductsTest extends TestCase {
       )
     ]);
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(0, $data['products']);
 
@@ -319,7 +319,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(1, $data['products']);
 
@@ -364,7 +364,7 @@ class ProductsTest extends TestCase {
       )
     ]);
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(0, $data['products']);
 
@@ -385,7 +385,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(1, $data['products']);
 
@@ -421,7 +421,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(1, $data['products']);
     $this->assertEquals($product_id, $data['products'][0]['id']);
@@ -458,7 +458,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(1, $data['products']);
     $this->assertEquals($product_id, $data['products'][0]['id']);
@@ -509,7 +509,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $on_sale_response = array_keys( wp_list_pluck( $data['products'], 'on_sale', 'id' ) );
     $this->assertEquals( count($on_sale_products), count($on_sale_response) );
@@ -523,7 +523,7 @@ class ProductsTest extends TestCase {
         'filter[limit]' => -1
       )
     ]);
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $all_products = wp_list_pluck( $data['products'], 'id' );
 
     $not_on_sale_products = array_diff( $all_products, wc_get_product_ids_on_sale() );
@@ -545,7 +545,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $not_on_sale_response = wp_list_pluck( $data['products'], 'id' );
     $this->assertEquals( count($not_on_sale_products), count($not_on_sale_response) );
@@ -585,7 +585,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
 
     $this->assertEquals($music_category, $data);
@@ -625,7 +625,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
 
     $this->assertEquals($music_category, $data);
@@ -669,7 +669,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertEquals($tagged_product, $data);
 
@@ -712,7 +712,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertEquals($ninja_posters, $data);
 
@@ -730,7 +730,7 @@ class ProductsTest extends TestCase {
         )
       )
     ]);
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $target_ids = wp_list_pluck( $data['products'], 'id' );
     $rand_key = array_rand($target_ids, 1);
@@ -757,7 +757,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $result_ids = wp_list_pluck( $data['products'], 'id' );
     $this->assertEquals(array_values($target_ids), $result_ids);
@@ -787,7 +787,7 @@ class ProductsTest extends TestCase {
     ] );
 
     $this->assertEquals( 200, $response->getStatusCode() );
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey( 'products', $data );
     $this->assertCount(2, $data['products']);
 
@@ -815,7 +815,7 @@ class ProductsTest extends TestCase {
     ] );
 
     $this->assertEquals( 200, $response->getStatusCode() );
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey( 'products', $data );
     $this->assertCount(3, $data['products']);
 
@@ -833,7 +833,7 @@ class ProductsTest extends TestCase {
         )
       )
     ]);
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $target_ids = wp_list_pluck( $data['products'], 'id' );
 
@@ -857,7 +857,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $result_ids = wp_list_pluck( $data['products'], 'id' );
     $this->assertEquals(array(), $result_ids); //
@@ -877,7 +877,7 @@ class ProductsTest extends TestCase {
         )
       )
     ));
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $key = array_rand( $data['products'] );
     $product = $data['products'][$key];
     $product_id = $product['id'];
@@ -900,7 +900,7 @@ class ProductsTest extends TestCase {
     ]);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = $response->json();
+    $data = $this->parseBodyAsJSON($response);
     $this->assertArrayHasKey('products', $data);
     $this->assertCount(1, $data['products']);
     $this->assertEquals($product_id, $data['products'][0]['id']);
