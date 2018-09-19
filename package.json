@@ -20,11 +20,14 @@
     "url": "https://github.com/kilbot/WooCommerce-POS/issues"
   },
   "scripts": {
+    "build": "docker-compose -f .docker/docker-compose.yml build",
     "client": "cd client && yarn start",
     "dev": "concurrently --kill-others-on-fail \"yarn start\" \"yarn client\"",
-    "build": "docker-compose -f .docker/docker-compose.yml build",
+    "start:client": "cd client && yarn start",
+    "start:server": "docker-compose -f .docker/docker-compose.yml up -d",
     "start": "docker-compose -f .docker/docker-compose.yml up -d",
     "stop": "docker-compose -f .docker/docker-compose.yml kill",
+    "unit-test:client": "cd client && yarn test",
     "unit-test:php-5.6": "docker exec woocommerce-pos-php-5.6 phpunit -c plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
     "unit-test:php-7.0": "docker exec woocommerce-pos-php-7.0 phpunit -c plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
     "unit-test:php-7.2": "docker exec woocommerce-pos-php-7.2 phpunit -c plugins/woocommerce-pos/tests/unit/php/phpunit.xml",
