@@ -19,6 +19,7 @@ class WC_POS_Gateways {
     add_action( 'woocommerce_payment_gateways', array( $this, 'payment_gateways' ) );
     add_action( 'woocommerce_pos_load_gateway', array( $this, 'load_gateway' ) );
     add_filter( 'woocommerce_get_sections_checkout', array( $this, 'get_sections_checkout' ) );
+    add_filter( 'woocommerce_get_settings_', array( $this, 'get_sections_checkout' ) );
   }
 
   /**
@@ -37,14 +38,20 @@ class WC_POS_Gateways {
    * @return array
    */
   public function payment_gateways( array $gateways ) {
-    // don't show POS gateways on online checkout
-    if( !is_admin() && !is_pos() ){
+    $woocommerce_settings = false;
+    // early exit
+    if(is_admin() && function_exists('get_current_screen')) {
+      $screen = get_current_screen();
+      $woocommerce_settings = $screen && $screen->id == 'woocommerce_page_wc-settings';
+    }
+
+    if( !is_admin() && !is_pos() || $woocommerce_settings ){
       return $gateways;
     }
 
     // prevent WorldPay from loading, it breaks the POS
-    if( is_pos() && ( $key = array_search('WC_Gateway_Worldpay_Form', $gateways) ) !== false ) {
-      unset( $gateways[$key] );
+    if( is_pos() && in_array('WC_Gateway_Worldpay_Form', $gateways) ) {
+      unset( $gateways['WC_Gateway_Worldpay_Form'] );
     }
 
     // else add default POS gateways

@@ -116,10 +116,10 @@ class WC_POS_Admin_Settings {
 
     // register
     $external_libs = WC_POS_Template::get_external_js_libraries();
-    wp_register_script( 'lodash', $external_libs[ 'lodash' ], array( 'jquery' ), null, true );
-    wp_register_script( 'backbone', $external_libs[ 'backbone' ], array( 'jquery', 'lodash' ), null, true );
-    wp_register_script( 'backbone.radio', $external_libs[ 'radio' ], array( 'jquery', 'backbone', 'lodash' ), null, true );
-    wp_register_script( 'marionette', $external_libs[ 'marionette' ], array( 'jquery', 'backbone', 'lodash' ), null, true );
+    wp_register_script( 'wcpos-lodash', $external_libs[ 'lodash' ], array( 'jquery' ), null, true );
+    wp_register_script( 'backbone', $external_libs[ 'backbone' ], array( 'jquery', 'wcpos-lodash' ), null, true );
+    wp_register_script( 'backbone.radio', $external_libs[ 'radio' ], array( 'jquery', 'backbone', 'wcpos-lodash' ), null, true );
+    wp_register_script( 'marionette', $external_libs[ 'marionette' ], array( 'jquery', 'backbone', 'wcpos-lodash' ), null, true );
     wp_register_script( 'handlebars', $external_libs[ 'handlebars' ], false, null, true );
     wp_register_script( 'moment', $external_libs[ 'moment' ], false, null, true );
     wp_register_script( 'accounting', $external_libs[ 'accounting' ], false, null, true );

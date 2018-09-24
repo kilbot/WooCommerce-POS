@@ -76,7 +76,7 @@ class WC_POS_Admin_Orders {
     $loaded_gateways = array();
 
     foreach($gateways as $Gateway){
-      $gateway = new $Gateway();
+      $gateway = is_string( $Gateway ) ? new $Gateway() : $Gateway;
       if( in_array( $gateway->id, $enabled_ids ) ){
         $gateway->enabled = 'yes';
       }

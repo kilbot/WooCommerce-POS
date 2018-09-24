@@ -13,10 +13,10 @@ Finally, a Point of Sale plugin for WooCommerce! Sell online and in your physica
 
 WooCommerce POS is a simple interface for taking orders at the Point of Sale using your [WooCommerce](http://www.woothemes.com/woocommerce/) store. WooCommerce POS provides an alternative to Vend or Shopify POS - no need to sync inventory and no monthly subscription fees.
 
-= DEMO = 
+= DEMO =
 You can see a demo of the WooCommerce POS plugin in action by going to [http://demo.wcpos.com/pos](http://demo.wcpos.com/pos) with `login/pass` : `demo/demo`
 
-= MORE INFO = 
+= MORE INFO =
 * Website: [http://wcpos.com](http://wcpos.com)
 * Roadmap: [http://wcpos.com/roadmap](http://wcpos.com/roadmap)
 * GitHub: [https://github.com/kilbot/WooCommerce-POS](https://github.com/kilbot/WooCommerce-POS)
@@ -31,13 +31,13 @@ You can see a demo of the WooCommerce POS plugin in action by going to [http://d
 
 == Installation ==
 
-= Automatic installation = 
+= Automatic installation =
 1. Go to Plugins screen and select Add New.
 2. Search for "WooCommerce POS" in the WordPress Plugin Directory.
 3. Install the plugin
 4. Click Activate Plugin to activate it.
 
-= Pro installation = 
+= Pro installation =
 If you have purchased a license for [WooCommerce POS Pro](http://wcpos.com/pro) please follow the steps below to install and activate the plugin:
 
 1. Go to: http://wcpos.com/my-account/
@@ -46,7 +46,7 @@ If you have purchased a license for [WooCommerce POS Pro](http://wcpos.com/pro) 
 4. Upload the plugin zip file from your desktop and activate.
 5. Next, go to the POS Settings page and enter your License Key and License Email to complete the activation.
 
-= Manual installation = 
+= Manual installation =
 To install a WordPress Plugin manually:
 
 1. Download the WooCommerce POS plugin to your desktop.
@@ -78,6 +78,11 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 1. WooCommerce POS main screen
 
 == Changelog ==
+
+= 0.4.19 = - 2018/09/24
+* Fix: Gutenberg conflict causing error on POS settings page
+* Fix: remove customer meta for POS
+* Fix: tweak payment options on Order edit page
 
 = 0.4.18 = - 2018/03/08
 * Fix: Product variation stock adjustment

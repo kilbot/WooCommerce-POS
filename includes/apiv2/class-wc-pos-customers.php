@@ -129,6 +129,11 @@ class WC_POS_APIv2_Customers extends WC_POS_API_Abstract {
   public function customer_response( $response, $user_data, $request  ){
     $data = $response->get_data();
 
+    // remove meta_data ... causing problems for some users
+    if( isset($data['meta_data']) ) {
+      $data['meta_data'] = array();
+    }
+
     // backwards compat
     if( isset($data['date_modified']) ) {
       $data['updated_at'] = $data['date_modified'];
