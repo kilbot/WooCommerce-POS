@@ -281,7 +281,12 @@ class WC_POS_APIv2_Products extends WC_POS_APIv2_Abstract {
     // - note, this uses the same method as WC REST API fields parameter
     // - this doesn't speed up queries as it should
     // - when WC REST API properly filters requests POS should use fields param
-    return array_intersect_key( $data, array_flip( $this->whitelist ) );
+    $data = array_intersect_key( $data, array_flip( $this->whitelist ) );
+
+    // allow adding custom data to product data
+    $data = apply_filters( 'woocommerce_pos_product_data', $data, $id );
+
+    return $data;
   }
 
   /**
