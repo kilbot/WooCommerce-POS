@@ -259,7 +259,7 @@ class Products extends WC_API_Resource {
     $id = isset( $data['id'] ) ? $data['id'] : '';
     $barcode = get_post_meta( $id, $this->barcode_meta_key, true );
 
-    $data['featured_src'] = $this->get_thumbnail( $id );
+    $data['featured_src'] = apply_filters( 'woocommerce_pos_product_thumbnail', $this->get_thumbnail( $id ), $id );
     $data['barcode'] = apply_filters( 'woocommerce_pos_product_barcode', $barcode, $id );
 
     // allow decimal stock quantities, fixed in WC 2.4
