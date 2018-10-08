@@ -15,7 +15,7 @@ class Activator {
 
   // minimum requirements
   const WC_MIN_VERSION = '2.3.7';
-  const PHP_MIN_VERSION = '5.4';
+  const PHP_MIN_VERSION = '5.6';
 
   /**
    *
@@ -44,7 +44,7 @@ class Activator {
       // resolve plugin plugins
       $this->plugin_check();
 
-      new Setup();
+      new Load();
     }
   }
 

@@ -17,23 +17,39 @@ class API {
    *
    */
   public function __construct() {
+    $this->init();
+    add_filter('http_request_args', array($this, 'http_request_args'), 10, 2);
 
-    // remove wc api authentication
-    // - relies on ->api and ->authentication being publicly accessible
-    if( isset( WC()->api ) && isset( WC()->api->authentication ) ){
-      remove_filter( 'woocommerce_api_check_authentication', array( WC()->api->authentication, 'authenticate' ), 0 );
-    }
 
-    // support for X-HTTP-Method-Override for WC < 2.4
-    if( version_compare( WC()->version, '2.4', '<' ) && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) ){
-      $_GET['_method'] = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
-    }
+    remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
+    add_filter( 'rest_pre_serve_request', function( $value ) {
+      header( 'Access-Control-Allow-Origin: *' );
+      header( 'Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE' );
+      header( 'Access-Control-Allow-Credentials: true' );
+      header( 'Access-Control-Allow-Headers: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, X-WC-POS, Authorization' );
+      return $value;
+    });
 
-    add_filter( 'woocommerce_api_classes', array( $this, 'api_classes' ) );
-    add_filter( 'woocommerce_api_check_authentication', array( $this, 'wc_api_authentication' ), 10, 0 );
-    add_filter( 'woocommerce_api_dispatch_args', array( $this, 'dispatch_args'), 10, 2 );
-    add_filter( 'woocommerce_api_query_args', array( $this, 'woocommerce_api_query_args' ), 10, 2 );
+//    add_filter( 'woocommerce_api_classes', array( $this, 'api_classes' ) );
+//    add_filter( 'woocommerce_api_dispatch_args', array( $this, 'dispatch_args'), 10, 2 );
+//    add_filter( 'woocommerce_api_query_args', array( $this, 'woocommerce_api_query_args' ), 10, 2 );
   }
+
+
+  /**
+   *
+   */
+  private function init() {
+    $controllers = array(
+      '\WC_POS\API\v1\Users',
+    );
+
+    foreach ( $controllers as $controller ) {
+      $controller = new $controller();
+      $controller->register_routes();
+    }
+  }
+
 
   /**
    * Load API classes
@@ -46,13 +62,13 @@ class API {
     // common classes
     array_push(
       $classes,
-      '\WC_POS\API\Products',
-      '\WC_POS\API\Orders',
-      '\WC_POS\API\Customers',
       '\WC_POS\API\Coupons',
-      '\WC_POS\API\Payload',
-      '\WC_POS\API\Params',
+      '\WC_POS\API\Customers',
       '\WC_POS\API\i18n',
+      '\WC_POS\API\Orders',
+      '\WC_POS\API\Params',
+      '\WC_POS\API\Payload',
+      '\WC_POS\API\Products',
       '\WC_POS\API\Templates'
     );
 
@@ -71,27 +87,6 @@ class API {
 
 
   /**
-   * Bypass authentication for WC REST API
-   * @todo use OAuth, how to handle manage no access?
-   *
-   * @return WP_User object
-   */
-  public function wc_api_authentication() {
-    global $current_user;
-    $user = $current_user;
-
-    if( user_can( $user->ID, 'access_woocommerce_pos' ) ) {
-      return $user;
-    }
-
-    return new \WP_Error(
-      'woocommerce_pos_authentication_error',
-      __( 'User not authorized to access WooCommerce POS', 'woocommerce-pos' ),
-      array( 'status' => 401 )
-    );
-  }
-
-  /**
    * @todo this is a total hack, need to customise bb remote sync
    *
    * @param $args
@@ -105,6 +100,7 @@ class API {
 
     return $args;
   }
+
 
   /**
    * - this filter was introduced in WC 2.3
@@ -132,6 +128,7 @@ class API {
 
     return $args;
   }
+
 
   /**
    * Raw payload

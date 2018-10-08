@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The main POS Class
+ * Load required classes
  *
  * @class     WC_POS
  * @package   WooCommerce POS
@@ -11,7 +11,7 @@
 
 namespace WC_POS;
 
-class Setup {
+class Load {
 
   /**
    * Constructor
@@ -22,9 +22,8 @@ class Setup {
     require_once PLUGIN_PATH . 'includes/wc-pos-functions.php';
 
     add_action( 'init', array( $this, 'init' ) );
-    add_action( 'woocommerce_api_loaded', array( $this, 'load_woocommerce_pos_api') );
-    do_action( 'woocommerce_pos_loaded' );
-
+    add_action( 'rest_api_init', array( $this, 'rest_api_init' ), 20 );
+    add_filter( 'http_request_args', array($this, 'http_request_args'), 10, 2 );
   }
 
   /**
@@ -58,14 +57,16 @@ class Setup {
 
   }
 
+
   /**
    * Loads the POS API and patches to the WC REST API
    */
-  public function load_woocommerce_pos_api(){
+  public function rest_api_init(){
     if( is_pos() ){
       new API();
     }
   }
+
 
   /**
    * Loads POS integrations with third party plugins
@@ -79,4 +80,17 @@ class Setup {
 
   }
 
+  public function http_request_args($r, $url) {
+    if( is_pos() ) {
+      $headers = array(
+        'X-WC-POS' => 1
+      );
+      $r['headers'] = is_array($r['headers']) ? array_merge($r['headers'], $headers) : $headers;
+      // self-signed certificates
+      if( $url == rest_url('wcpos/v1/user') ) {
+        $r['sslverify'] = false;
+      }
+    }
+    return $r;
+  }
 }

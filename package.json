@@ -20,9 +20,11 @@
     "url": "https://github.com/kilbot/WooCommerce-POS/issues"
   },
   "scripts": {
-    "build": "docker-compose -f .docker/docker-compose.yml build",
-    "client": "cd client && yarn start",
-    "dev": "concurrently --kill-others-on-fail \"yarn start\" \"yarn client\"",
+    "build": "concurrently --kill-others-on-fail \"yarn build:client\" \"yarn build:server\"",
+    "build:client": "cd client && yarn build",
+    "build:server": "docker-compose -f .docker/docker-compose.yml build",
+    "dev": "concurrently --kill-others-on-fail \"yarn start\" \"yarn start:client\"",
+    "prettier": "prettier",
     "start:client": "cd client && yarn start",
     "start:server": "docker-compose -f .docker/docker-compose.yml up -d",
     "start": "docker-compose -f .docker/docker-compose.yml up -d",
@@ -37,6 +39,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "concurrently": "^4.0.1"
+    "@prettier/plugin-php": "^0.8.0",
+    "concurrently": "^4.0.1",
+    "prettier": "^1.14.3"
   }
 }
