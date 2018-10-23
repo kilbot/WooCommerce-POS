@@ -1,9 +1,12 @@
-= 0.4.19 = - 2018/09/24
+= 0.4.20 - 2018/10/24 = 
+* WC 3.5 compatibility: POS will use WC REST API v3 
+
+= 0.4.19 - 2018/09/24 =
 * Fix: Gutenberg conflict causing error on POS settings page
 * Fix: remove customer meta for POS
 * Fix: tweak payment options on Order edit page
 
-= 0.4.18 = - 2018/02/12
+= 0.4.18 - 2018/02/12 =
 * Fix: Product variation stock adjustment
 * Fix: Category search for products
 * Fix: Prevent display of hidden order item meta
