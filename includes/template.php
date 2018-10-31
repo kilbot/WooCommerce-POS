@@ -3,232 +3,246 @@
 /**
  * Responsible for the POS front-end
  *
- * @class    WC_POS_Template
- * @package  WooCommerce POS
+ * @package    WCPOS\Template
  * @author   Paul Kilmurray <paul@kilbot.com.au>
  * @link     http://www.wcpos.com
  */
 
-namespace WC_POS;
+namespace WCPOS;
 
 class Template {
 
-  /** @var POS url slug */
-  private $slug;
+	/** @var POS url slug */
+	private $slug;
 
-  /** @var regex match for rewite_rule */
-  private $regex;
+	/** @var regex match for rewite_rule */
+	private $regex;
 
-  /** @var WC_POS_Params instance */
-  public $params;
+	/** @var WCPOS_Params instance */
+	public $params;
 
-  /** @var array external libraries */
-  static public $external_libs = array(
-    'min'   => array(
-      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js',
-      'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js',
-      'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js',
-      'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/2.0.0/backbone.radio.min.js',
-      'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.7/backbone.marionette.min.js',
-      'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js',
-      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js',
-      'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
-      'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js',
-    ),
-    'debug' => array(
-      'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js',
-      'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js',
-      'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone.js',
-      'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/2.0.0/backbone.radio.js',
-      'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.7/backbone.marionette.js',
-      'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js',
-      'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js',
-      'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.js',
-      'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.js',
-    )
-  );
+	/** @var array external libraries */
+	static public $external_libs = array(
+		'min'   => array(
+			'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js',
+			'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js',
+			'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js',
+			'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/2.0.0/backbone.radio.min.js',
+			'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.7/backbone.marionette.min.js',
+			'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js',
+			'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js',
+			'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
+			'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js',
+		),
+		'debug' => array(
+			'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js',
+			'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js',
+			'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone.js',
+			'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/2.0.0/backbone.radio.js',
+			'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.7/backbone.marionette.js',
+			'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js',
+			'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js',
+			'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.js',
+			'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.js',
+		)
+	);
 
-  /**
-   * Constructor
-   */
-  public function __construct() {
-    $this->slug = Admin\Permalink::get_slug();
-    $this->regex = '^' . $this->slug . '/?$';
 
-    add_rewrite_tag( '%pos%', '([^&]+)' );
-    add_rewrite_rule( $this->regex, 'index.php?pos=1', 'top' );
-    add_filter( 'option_rewrite_rules', array( $this, 'rewrite_rules' ), 1 );
-    add_action( 'template_redirect', array( $this, 'template_redirect' ), 1 );
-  }
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->slug  = Admin\Permalink::get_slug();
+		$this->regex = '^' . $this->slug . '/?$';
 
-  /**
-   * Make sure cache contains POS rewrite rule
-   *
-   * @param $rules
-   * @return bool
-   */
-  public function rewrite_rules( $rules ) {
-    return isset( $rules[ $this->regex ] ) ? $rules : false;
-  }
+		add_rewrite_tag( '%pos%', '([^&]+)' );
+		add_rewrite_rule( $this->regex, 'index.php?pos=1', 'top' );
+		add_filter( 'option_rewrite_rules', array( $this, 'rewrite_rules' ), 1 );
+		add_action( 'template_redirect', array( $this, 'template_redirect' ), 1 );
+	}
 
-  /**
-   * Output the POS template
-   */
-  public function template_redirect() {
-    // check is pos
-    if ( !is_pos( 'template' ) )
-      return;
 
-    // force ssl
-    if(!is_ssl() && wc_pos_get_option('general', 'force_ssl')){
-      wp_safe_redirect( wc_pos_url() );
-      exit;
-    }
+	/**
+	 * Make sure cache contains POS rewrite rule
+	 *
+	 * @param $rules
+	 * @return bool
+	 */
+	public function rewrite_rules( $rules ) {
+		return isset( $rules[ $this->regex ] ) ? $rules : false;
+	}
 
-    // check auth
-    if ( !is_user_logged_in() ) {
-      add_filter( 'login_url', array( $this, 'login_url' ) );
-      auth_redirect();
-    }
 
-    // check privileges
-    if ( !current_user_can( 'access_woocommerce_pos' ) )
-      /* translators: wordpress */
-      wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	/**
+	 * Output the POS template
+	 */
+	public function template_redirect() {
+		// check is pos
+		if ( ! is_pos( 'template' ) ) {
+			return;
+		}
 
-    // disable cache plugins
-    $this->no_cache();
+		// force ssl
+		if ( ! is_ssl() && wcpos_get_option( 'general', 'force_ssl' ) ) {
+			wp_safe_redirect( wcpos_url() );
+			exit;
+		}
 
-    // last chance before template is rendered
-    do_action( 'woocommerce_pos_template_redirect' );
+		// check auth
+		if ( ! is_user_logged_in() ) {
+			add_filter( 'login_url', array( $this, 'login_url' ) );
+			auth_redirect();
+		}
 
-    // add head & footer actions
-    add_action( 'woocommerce_pos_head', array( $this, 'head' ) );
-    add_action( 'woocommerce_pos_footer', array( $this, 'footer' ) );
+		// check privileges
+		if ( ! current_user_can( 'access_woocommerce_pos' ) ) /* translators: wordpress */ {
+			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+		}
 
-    // now show the page
-    include 'views/main.php';
-    exit;
+		// disable cache plugins
+		$this->no_cache();
 
-  }
+		// last chance before template is rendered
+		do_action( 'woocommerce_pos_template_redirect' );
 
-  /**
-   * Add variable to login url to signify POS login
-   *
-   * @param $login_url
-   * @return mixed
-   */
-  public function login_url( $login_url ) {
-    return add_query_arg( 'pos', '1', $login_url );
-  }
+		// add head & footer actions
+		add_action( 'woocommerce_pos_head', array( $this, 'head' ) );
+		add_action( 'woocommerce_pos_footer', array( $this, 'footer' ) );
 
-  /**
-   * Disable caching conflicts
-   */
-  private function no_cache() {
+		// now show the page
+		include 'views/main.php';
+		exit;
 
-    // disable W3 Total Cache minify
-    if ( !defined( 'DONOTMINIFY' ) )
-      define( "DONOTMINIFY", "true" );
+	}
 
-    // disable WP Super Cache
-    if ( !defined( 'DONOTCACHEPAGE' ) )
-      define( "DONOTCACHEPAGE", "true" );
-  }
 
-  /**
-   * @return array
-   */
-  static public function get_external_js_libraries() {
-    $libs = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? self::$external_libs[ 'debug' ] : self::$external_libs[ 'min' ];
+	/**
+	 * Add variable to login url to signify POS login
+	 *
+	 * @param $login_url
+	 * @return mixed
+	 */
+	public function login_url( $login_url ) {
+		return add_query_arg( 'pos', '1', $login_url );
+	}
 
-    // add moment js locale if available
-    $moment_locale_js = i18n::get_external_library_locale_js('moment', '2.17.1');
 
-    if($moment_locale_js){
-      $libs['moment-locale'] = $moment_locale_js;
-    }
+	/**
+	 * Disable caching conflicts
+	 */
+	private function no_cache() {
+		// disable W3 Total Cache minify
+		if ( ! defined( 'DONOTMINIFY' ) ) {
+			define( "DONOTMINIFY", "true" );
+		}
 
-    return apply_filters('woocommerce_pos_external_js_libraries', $libs);
-  }
+		// disable WP Super Cache
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+			define( "DONOTCACHEPAGE", "true" );
+		}
+	}
 
-  /**
-   * Output the head scripts
-   */
-  public function head() {
 
-    // enqueue and print javascript
-    $styles = apply_filters( 'woocommerce_pos_enqueue_head_css', array(
-      'pos-css'   => PLUGIN_URL . 'assets/css/pos.min.css?ver=' . VERSION
-    ) );
+	/**
+	 * @return array
+	 */
+	static public function get_external_js_libraries() {
+		$libs = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? self::$external_libs['debug'] : self::$external_libs['min'];
 
-    foreach ( $styles as $style ) {
-      echo $this->format_css( trim( $style ) ) . "\n";
-    }
+		// add moment js locale if available
+		$moment_locale_js = i18n::get_external_library_locale_js( 'moment', '2.17.1' );
 
-    // enqueue and print javascript
-    $js = array(
-      'modernizr' => PLUGIN_URL . 'assets/js/vendor/modernizr.custom.min.js?ver=' . VERSION,
-    );
+		if ( $moment_locale_js ) {
+			$libs['moment-locale'] = $moment_locale_js;
+		}
 
-    $scripts = apply_filters( 'woocommerce_pos_enqueue_head_js', $js );
-    foreach ( $scripts as $script ) {
-      echo $this->format_js( trim( $script ) ) . "\n";
-    }
-  }
+		return apply_filters( 'woocommerce_pos_external_js_libraries', $libs );
+	}
 
-  /**
-   * Output the footer scripts
-   */
-  public function footer() {
-    $build = defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ? 'build' : 'min';
 
-    $js = self::get_external_js_libraries();
+	/**
+	 * Output the head scripts
+	 */
+	public function head() {
 
-    // add qz-tray?
-    $receipt_options = wc_pos_get_option('receipts', 'receipt_options');
-    if(isset($receipt_options['print_method']) && $receipt_options['print_method'] == 'qz-tray'){
-      $js['qz-tray'] = PLUGIN_URL . '/assets/js/vendor/qz-tray.' . $build . '.js';
-    }
+		// enqueue and print javascript
+		$styles = apply_filters( 'woocommerce_pos_enqueue_head_css', array() );
 
-    $js[ 'app' ] = PLUGIN_URL . 'assets/js/app.' . $build . '.js?ver=' . VERSION;
-    $scripts = apply_filters( 'woocommerce_pos_enqueue_footer_js', $js );
+		foreach ( $styles as $style ) {
+			echo $this->format_css( trim( $style ) ) . "\n";
+		}
 
-    foreach ( $scripts as $script ) {
-      echo $this->format_js( trim( $script ) ) . "\n";
-    }
-  }
+		// enqueue and print javascript
+		$js = array(//			'modernizr' => PLUGIN_URL . 'assets/js/vendor/modernizr.custom.min.js?ver=' . VERSION,
+		);
 
-  /**
-   * Makes sure css is in the right format for template
-   *
-   * @param $style
-   * @return string
-   */
-  private function format_css( $style ) {
-    if ( substr( $style, 0, 5 ) === '<link' )
-      return $style;
+		$scripts = apply_filters( 'woocommerce_pos_enqueue_head_js', $js );
+		foreach ( $scripts as $script ) {
+			echo $this->format_js( trim( $script ) ) . "\n";
+		}
+	}
 
-    if ( substr( $style, 0, 4 ) === 'http' )
-      return '<link rel="stylesheet" href="' . $style . '" type="text/css" />';
 
-    return '<style>' . $style . '</style>';
-  }
+	/**
+	 * Output the footer scripts
+	 */
+	public function footer() {
+//		$build = defined('\SCRIPT_DEBUG') && \SCRIPT_DEBUG ? 'build' : 'min';
 
-  /**
-   * Makes sure javascript is in the right format for template
-   *
-   * @param $script
-   * @return string
-   */
-  private function format_js( $script ) {
-    if ( substr( $script, 0, 7 ) === '<script' )
-      return $script;
+//		$js = self::get_external_js_libraries();
 
-    if ( substr( $script, 0, 4 ) === 'http' )
-      return '<script src="' . $script . '"></script>';
+		// add qz-tray?
+//		$receipt_options = wcpos_get_option('receipts', 'receipt_options');
+//		if (isset($receipt_options['print_method']) && $receipt_options['print_method'] == 'qz-tray') {
+//			$js['qz-tray'] = PLUGIN_URL . '/assets/js/vendor/qz-tray.' . $build . '.js';
+//		}
 
-    return '<script>' . $script . '</script>';
-  }
+		$js['runtime'] = PLUGIN_URL . 'assets/js/runtime.js?ver=' . VERSION;
+		$js['vendor']  = PLUGIN_URL . 'assets/js/vendor.js?ver=' . VERSION;
+		$js['app']     = PLUGIN_URL . 'assets/js/app.js?ver=' . VERSION;
+		$scripts       = apply_filters( 'woocommerce_pos_enqueue_footer_js', $js );
+
+		foreach ( $scripts as $script ) {
+			echo $this->format_js( trim( $script ) ) . "\n";
+		}
+	}
+
+
+	/**
+	 * Makes sure css is in the right format for template
+	 *
+	 * @param $style
+	 * @return string
+	 */
+	private function format_css( $style ) {
+		if ( substr( $style, 0, 5 ) === '<link' ) {
+			return $style;
+		}
+
+		if ( substr( $style, 0, 4 ) === 'http' ) {
+			return '<link rel="stylesheet" href="' . $style . '" type="text/css" />';
+		}
+
+		return '<style>' . $style . '</style>';
+	}
+
+
+	/**
+	 * Makes sure javascript is in the right format for template
+	 *
+	 * @param $script
+	 * @return string
+	 */
+	private function format_js( $script ) {
+		if ( substr( $script, 0, 7 ) === '<script' ) {
+			return $script;
+		}
+
+		if ( substr( $script, 0, 4 ) === 'http' ) {
+			return '<script src="' . $script . '"></script>';
+		}
+
+		return '<script>' . $script . '</script>';
+	}
 
 }

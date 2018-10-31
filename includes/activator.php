@@ -3,271 +3,273 @@
 /**
  * Activation checks and set up
  *
- * @class     WC_POS_Activator
- * @package   WooCommerce POS
+ * @package   WCPOS\Activator
  * @author    Paul Kilmurray <paul@kilbot.com.au>
  * @link      http://www.wcpos.com
  */
 
-namespace WC_POS;
+namespace WCPOS;
 
 class Activator {
 
-  // minimum requirements
-  const WC_MIN_VERSION = '2.3.7';
-  const PHP_MIN_VERSION = '5.6';
+	// minimum requirements
+	const WC_MIN_VERSION = '2.3.7';
+	const PHP_MIN_VERSION = '5.6';
 
-  /**
-   *
-   */
-  public function __construct() {
-    register_activation_hook( PLUGIN_FILE, array( $this, 'activate' ) );
-    add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
-    add_action( 'plugins_loaded', array( $this, 'run' ) );
-  }
+	/**
+	 *
+	 */
+	public function __construct() {
+		register_activation_hook( PLUGIN_FILE, array( $this, 'activate' ) );
+		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
+		add_action( 'plugins_loaded', array( $this, 'init' ) );
+	}
 
-  /**
-   * Checks for valid install and begins execution of the plugin.
-   */
-  public function run(){
-    // Check for min requirements to run
-    if( $this->php_check() && $this->woocommerce_check() ){
+	/**
+	 * Checks for valid install and begins execution of the plugin.
+	 */
+	public function init() {
+		// Check for min requirements to run
+		if ( $this->php_check() && $this->woocommerce_check() ) {
 
-      // check permalinks
-      if( is_admin() && (!defined('\DOING_AJAX') || !\DOING_AJAX) ){
-        $this->permalink_check();
-      }
+			// check permalinks
+			if ( is_admin() && ( ! defined( '\DOING_AJAX' ) || ! \DOING_AJAX ) ) {
+				$this->permalink_check();
+			}
 
-      // Run update script if required
-      $this->version_check();
-      
-      // resolve plugin plugins
-      $this->plugin_check();
+			// Run update script if required
+			$this->version_check();
 
-      new Load();
-    }
-  }
+			// resolve plugin plugins
+			$this->plugin_check();
 
-  /**
-   * Fired when the plugin is activated.
-   *
-   * @param $network_wide
-   */
-  public function activate( $network_wide ) {
-    if ( function_exists( 'is_multisite' ) && is_multisite() ) {
+			new Start();
+		}
+	}
 
-      if ( $network_wide  ) {
+	/**
+	 * Fired when the plugin is activated.
+	 *
+	 * @param $network_wide
+	 */
+	public function activate( $network_wide ) {
+		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
-        // Get all blog ids
-        $blog_ids = $this->get_blog_ids();
+			if ( $network_wide ) {
 
-        foreach ( $blog_ids as $blog_id ) {
+				// Get all blog ids
+				$blog_ids = $this->get_blog_ids();
 
-          switch_to_blog( $blog_id );
-          $this->single_activate();
+				foreach ( $blog_ids as $blog_id ) {
 
-          restore_current_blog();
-        }
+					switch_to_blog( $blog_id );
+					$this->single_activate();
 
-      } else {
-        self::single_activate();
-      }
+					restore_current_blog();
+				}
 
-    } else {
-      self::single_activate();
-    }
-  }
+			} else {
+				self::single_activate();
+			}
 
-  /**
-   * Fired when a new site is activated with a WPMU environment.
-   *
-   * @param $blog_id
-   */
-  public function activate_new_site( $blog_id ) {
+		} else {
+			self::single_activate();
+		}
+	}
 
-    if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
-      return;
-    }
+	/**
+	 * Fired when a new site is activated with a WPMU environment.
+	 *
+	 * @param $blog_id
+	 */
+	public function activate_new_site( $blog_id ) {
 
-    switch_to_blog( $blog_id );
-    $this->single_activate();
-    restore_current_blog();
+		if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
+			return;
+		}
 
-  }
+		switch_to_blog( $blog_id );
+		$this->single_activate();
+		restore_current_blog();
 
-  /**
-   * Get all blog ids of blogs in the current network that are:
-   * - not archived
-   * - not spam
-   * - not deleted
-   */
-  private function get_blog_ids() {
+	}
 
-    global $wpdb;
+	/**
+	 * Get all blog ids of blogs in the current network that are:
+	 * - not archived
+	 * - not spam
+	 * - not deleted
+	 */
+	private function get_blog_ids() {
 
-    // get an array of blog ids
-    $sql = "SELECT blog_id FROM $wpdb->blogs
+		global $wpdb;
+
+		// get an array of blog ids
+		$sql = "SELECT blog_id FROM $wpdb->blogs
       WHERE archived = '0' AND spam = '0'
       AND deleted = '0'";
 
-    return $wpdb->get_col( $sql );
+		return $wpdb->get_col( $sql );
 
-  }
+	}
 
-  /**
-   * Fired when the plugin is activated.
-   */
-  public function single_activate() {
+	/**
+	 * Fired when the plugin is activated.
+	 */
+	public function single_activate() {
 
-    // create POS specific roles
-    $this->create_pos_roles();
+		// create POS specific roles
+		$this->create_pos_roles();
 
-    // add pos capabilities to non POS roles
-    $this->add_pos_capability([
-      'administrator' => ['manage_woocommerce_pos', 'access_woocommerce_pos'],
-      'shop_manager' => ['manage_woocommerce_pos', 'access_woocommerce_pos'],
-    ]);
+		// add pos capabilities to non POS roles
+		$this->add_pos_capability( [
+			'administrator' => [ 'manage_woocommerce_pos', 'access_woocommerce_pos' ],
+			'shop_manager'  => [ 'manage_woocommerce_pos', 'access_woocommerce_pos' ],
+		] );
 
-    // set the auto redirection on next page load
-    //set_transient( 'woocommere_pos_welcome', 1, 30 );
-  }
+		// set the auto redirection on next page load
+		//set_transient( 'woocommere_pos_welcome', 1, 30 );
+	}
 
-  /**
-   * add POS specific roles
-   */
-  private function create_pos_roles() {
+	/**
+	 * add POS specific roles
+	 */
+	private function create_pos_roles() {
 
-    // Cashier role
-    $cashier_capabilities = [
-      'read' => true,
-      'read_private_products' => true, 
-      'read_private_shop_orders' => true, 
-      'publish_shop_orders' => true, 
-      'list_users' => true, 
-      'read_private_shop_coupons' => true, 
-    ];
+		// Cashier role
+		$cashier_capabilities = [
+			'read'                      => true,
+			'read_private_products'     => true,
+			'read_private_shop_orders'  => true,
+			'publish_shop_orders'       => true,
+			'list_users'                => true,
+			'read_private_shop_coupons' => true,
+		];
 
-    add_role(
-      'cashier',
-      __( 'Cashier', 'woocommerce-pos' ),
-      $cashier_capabilities
-    );
+		add_role(
+			'cashier',
+			__( 'Cashier', 'woocommerce-pos' ),
+			$cashier_capabilities
+		);
 
-    $this->add_pos_capability([
-      'cashier' => ['access_woocommerce_pos'],
-    ]);
+		$this->add_pos_capability( [
+			'cashier' => [ 'access_woocommerce_pos' ],
+		] );
 
-  }
+	}
 
-  /**
-   * add default pos capabilities to administrator and
-   * shop_manager roles
-   * @param $roles - an array of arrays representing the roles and their POS capabilities
-   */
-  private function add_pos_capability($roles) {
+	/**
+	 * add default pos capabilities to administrator and
+	 * shop_manager roles
+	 * @param $roles - an array of arrays representing the roles and their POS capabilities
+	 */
+	private function add_pos_capability( $roles ) {
 
-    foreach($roles as $slug => $caps) {
-      $role = get_role($slug);
-      if($role) {
-        foreach($caps as $cap) {
-          $role->add_cap($cap);
-        }
-      }
-    }
+		foreach ( $roles as $slug => $caps ) {
+			$role = get_role( $slug );
+			if ( $role ) {
+				foreach ( $caps as $cap ) {
+					$role->add_cap( $cap );
+				}
+			}
+		}
 
-  }
+	}
 
-  /**
-   * Check version number, runs every admin page load
-   */
-  private function version_check(){
-    $old = Admin\Settings::get_db_version();
-    if( version_compare( $old, VERSION, '<' ) ){
-      Admin\Settings::bump_versions();
-      $this->db_upgrade( $old, VERSION );
-    }
-  }
+	/**
+	 * Check version number, runs every admin page load
+	 */
+	private function version_check() {
+		$old = Admin\Settings::get_db_version();
+		if ( version_compare( $old, VERSION, '<' ) ) {
+			Admin\Settings::bump_versions();
+			$this->db_upgrade( $old, VERSION );
+		}
+	}
 
-  /**
-   * Upgrade database
-   * @param $old
-   * @param $current
-   */
-  private function db_upgrade( $old, $current ) {
-    $db_updates = array(
-      '0.4'   => 'updates/update-0.4.php',
-      '0.4.6' => 'updates/update-0.4.6.php',
-      '0.5.0-beta' => 'updates/update-0.5.php',
-      '0.5.0' => 'updates/update-0.5.php'
-    );
-    foreach ( $db_updates as $version => $updater ) {
-      if ( version_compare( $version, $old, '>' ) &&
-        version_compare( $version, $current, '<=' ) ) {
-        include( $updater );
-      }
-    }
-  }
+	/**
+	 * Upgrade database
+	 * @param $old
+	 * @param $current
+	 */
+	private function db_upgrade( $old, $current ) {
+		$db_updates = array(
+			'0.4'        => 'updates/update-0.4.php',
+			'0.4.6'      => 'updates/update-0.4.6.php',
+			'0.5.0-beta' => 'updates/update-0.5.php',
+			'0.5.0'      => 'updates/update-0.5.php'
+		);
+		foreach ( $db_updates as $version => $updater ) {
+			if ( version_compare( $version, $old, '>' ) &&
+			     version_compare( $version, $current, '<=' ) ) {
+				include( $updater );
+			}
+		}
+	}
 
-  /**
-   * Check min version of WooCommerce installed
-   */
-  private function woocommerce_check() {
-    if( class_exists( '\WooCommerce' ) && version_compare( WC()->version, self::WC_MIN_VERSION, '>=' ) )
-      return true;
+	/**
+	 * Check min version of WooCommerce installed
+	 */
+	private function woocommerce_check() {
+		if ( class_exists( '\WooCommerce' ) && version_compare( WC()->version, self::WC_MIN_VERSION, '>=' ) ) {
+			return true;
+		}
 
-    $message = sprintf(
-      __('<strong>WooCommerce POS</strong> requires <a href="%s">WooCommerce %s or higher</a>. Please <a href="%s">install and activate WooCommerce</a>', 'woocommerce-pos' ),
-      'http://wordpress.org/plugins/woocommerce/',
-      self::WC_MIN_VERSION,
-      admin_url('plugins.php')
-    ) . ' &raquo;';
-    
-    Admin\Notices::add( $message );
-  }
+		$message = sprintf(
+			           __( '<strong>WooCommerce POS</strong> requires <a href="%s">WooCommerce %s or higher</a>. Please <a href="%s">install and activate WooCommerce</a>', 'woocommerce-pos' ),
+			           'http://wordpress.org/plugins/woocommerce/',
+			           self::WC_MIN_VERSION,
+			           admin_url( 'plugins.php' )
+		           ) . ' &raquo;';
 
-  /**
-   * Check min version of PHP
-   */
-  private function php_check(){
-    $php_version = phpversion();
-    if( version_compare( $php_version, self::PHP_MIN_VERSION, '>' ) )
-      return true;
+		Admin\Notices::add( $message );
+	}
 
-    $message = sprintf(
-      __('<strong>WooCommerce POS</strong> requires PHP %s or higher. Read more information about <a href="%s">how you can update</a>', 'woocommerce-pos' ),
-      self::PHP_MIN_VERSION,
-      'http://www.wpupdatephp.com/update/'
-    ) . ' &raquo;';
-    
-    Admin\Notices::add( $message );
-  }
+	/**
+	 * Check min version of PHP
+	 */
+	private function php_check() {
+		$php_version = phpversion();
+		if ( version_compare( $php_version, self::PHP_MIN_VERSION, '>' ) ) {
+			return true;
+		}
 
-  /**
-   * POS Frontend will give 404 if pretty permalinks not active
-   * - requires autoloader, ie: WC_POS()
-   */
-  private function permalink_check(){
-    $fail = Status::permalinks_disabled();
-    if( $fail ){
-      $message = $fail['message'] . '. ';
-      $message .= sprintf( '<a href="%s">%s</a>', $fail['buttons'][0]['href'], $fail['buttons'][0]['prompt'] ) . ' &raquo;';
-      
-      Admin\Notices::add( $message );
-    }
-  }
+		$message = sprintf(
+			           __( '<strong>WooCommerce POS</strong> requires PHP %s or higher. Read more information about <a href="%s">how you can update</a>', 'woocommerce-pos' ),
+			           self::PHP_MIN_VERSION,
+			           'http://www.wpupdatephp.com/update/'
+		           ) . ' &raquo;';
 
-  /**
-   * Plugin conflicts
-   *
-   * - NextGEN Gallery is a terrible plugin. It buffers all content on 'init' action, priority -1 and inserts junk code.
-   *
-   */
-  private function plugin_check(){
+		Admin\Notices::add( $message );
+	}
 
-    // disable NextGEN Gallery resource manager
-    if( !defined('NGG_DISABLE_RESOURCE_MANAGER') )
-      define( 'NGG_DISABLE_RESOURCE_MANAGER', true );
+	/**
+	 * POS Frontend will give 404 if pretty permalinks not active
+	 * - requires autoloader, ie: WCPOS()
+	 */
+	private function permalink_check() {
+		$fail = Status::permalinks_disabled();
+		if ( $fail ) {
+			$message = $fail['message'] . '. ';
+			$message .= sprintf( '<a href="%s">%s</a>', $fail['buttons'][0]['href'], $fail['buttons'][0]['prompt'] ) . ' &raquo;';
 
-  }
+			Admin\Notices::add( $message );
+		}
+	}
+
+	/**
+	 * Plugin conflicts
+	 *
+	 * - NextGEN Gallery is a terrible plugin. It buffers all content on 'init' action, priority -1 and inserts junk code.
+	 *
+	 */
+	private function plugin_check() {
+
+		// disable NextGEN Gallery resource manager
+		if ( ! defined( 'NGG_DISABLE_RESOURCE_MANAGER' ) ) {
+			define( 'NGG_DISABLE_RESOURCE_MANAGER', true );
+		}
+
+	}
 
 }

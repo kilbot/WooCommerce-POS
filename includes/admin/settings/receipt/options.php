@@ -3,31 +3,30 @@
 /**
  * Receipt Settings Class
  *
- * @class    WC_POS_Admin_Settings_Receipt_Options
- * @package  WooCommerce POS
+ * @package    WCPOS\Admin_Settings_Receipt_Options
  * @author   Paul Kilmurray <paul@kilbot.com.au>
  * @link     http://www.wcpos.com
  */
 
-namespace WC_POS\Admin\Settings\Receipt;
+namespace WCPOS\Admin\Settings\Receipt;
 
-use WC_POS\Admin\Settings\Page;
+use WCPOS\Admin\Settings\Page;
 
 class Options extends Page {
 
-  protected static $instance;
+	protected static $instance;
 
-  /**
-   * @param
-   */
-  public function __construct() {
-    $this->id = 'receipt_options';
-    $this->label = __( 'Receipt Options', 'woocommerce-pos' );
+	/**
+	 * @param
+	 */
+	public function __construct() {
+		$this->id    = 'receipt_options';
+		$this->label = __( 'Receipt Options', 'woocommerce-pos' );
 
-    $this->defaults = array(
-      'print_method'     => 'browser',
-      'template_language' => 'html'
-    );
-  }
+		$this->defaults = array(
+			'print_method'      => 'browser',
+			'template_language' => 'html'
+		);
+	}
 
 }

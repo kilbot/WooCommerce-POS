@@ -4,30 +4,29 @@
  * POS Product Admin Class
  * - pos only products
  *
- * @class    WC_POS_Admin_Products
- * @package  WooCommerce POS
+ * @package    WCPOS\Admin_Products
  * @author   Paul Kilmurray <paul@kilbot.com.au>
  * @link     http://www.wcpos.com
  */
 
-namespace WC_POS\Admin;
+namespace WCPOS\Admin;
 
 class Products {
 
-  /**
-   * Constructor
-   */
-  public function __construct() {
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
 
-    $this->init();
-  }
+		$this->init();
+	}
 
-  /**
-   * Load admin subclasses
-   */
-  private function init() {
+	/**
+	 * Load admin subclasses
+	 */
+	private function init() {
 
-    // pos only products
-  }
+		// pos only products
+	}
 
 }

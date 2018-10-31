@@ -4,50 +4,60 @@
  * Admin Notices
  * - add notices via static method or filter
  *
- * @class    WC_POS_Admin_Notices
- * @package  WooCommerce POS
+ * @package    WCPOS\Admin_Notices
  * @author   Paul Kilmurray <paul@kilbot.com.au>
  * @link     http://www.wcpos.com
  */
 
-namespace WC_POS\Admin;
+namespace WCPOS\Admin;
 
 class Notices {
 
-  /* @var */
-  static private $notices = array();
+	/* @var */
+	static private $notices = array();
 
-  /**
-   * Constructor
-   */
-  public function __construct () {
-    add_action( 'admin_notices', array( $this, 'admin_notices' ) );
-  }
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+	}
 
-  /**
-   * @param $type
-   * @param $message
-   */
-  static public function add ( $message, $type = 'error' ) {
-    self::$notices[] = array(
-      'type' => $type,
-      'message' => $message
-    );
-  }
+	/**
+	 * Add a message for display
+	 *
+	 * @param string $message
+	 * @param string $type (error | warning | success | info)
+	 * @param bool $dismissable
+	 */
+	static public function add( $message = '', $type = 'error', $dismissable = true ) {
+		self::$notices[] = array(
+			'type'        => $type,
+			'message'     => $message,
+			'dismissable' => $dismissable
+		);
+	}
 
-  /**
-   * Display the admin notices
-   */
-  public function admin_notices () {
-    $notices = apply_filters( 'woocommerce_pos_admin_notices', self::$notices );
+	/**
+	 * Display the admin notices
+	 */
+	public function admin_notices() {
+		$notices = apply_filters( 'woocommerce_pos_admin_notices', self::$notices );
+		if ( empty( $notices ) ) {
+			return;
+		}
 
-    if ( !empty( $notices ) ) {
-      foreach ( $notices as $notice ) {
-        echo '<div class="' . esc_attr( $notice[ 'type' ] ) . '">
-          <p>' . wp_kses( $notice[ 'message' ], wp_kses_allowed_html( 'post' ) ) . '</p>
-          </div>';
-      }
-    }
-  }
+		foreach ( $notices as $notice ):
+			$classes = 'notice notice-' . $notice['type'];
+			if ( $notice['dismissable'] ) {
+				$classes .= ' is-dismissable';
+			}
+			if ( $notice['message'] ) {
+				echo '<div class="' . $classes . '><p>' .
+				     wp_kses( $notice['message'], wp_kses_allowed_html( 'post' ) ) .
+				     '</p></div>';
+			}
+		endforeach;
+	}
 
 }

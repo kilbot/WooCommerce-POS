@@ -3,26 +3,25 @@
 /**
  * Receipt Template Class
  *
- * @class    WC_POS_Admin_Settings_Receipt_Template
- * @package  WooCommerce POS
+ * @package    WCPOS\Admin_Settings_Receipt_Template
  * @author   Paul Kilmurray <paul@kilbot.com.au>
  * @link     http://www.wcpos.com
  */
 
-namespace WC_POS\Admin\Settings\Receipt;
+namespace WCPOS\Admin\Settings\Receipt;
 
-use WC_POS\Admin\Settings\Page;
+use WCPOS\Admin\Settings\Page;
 
 class Template extends Page {
 
-  protected static $instance;
+	protected static $instance;
 
-  /**
-   * @param
-   */
-  public function __construct() {
-    $this->id = 'receipt_template';
-    $this->label = __( 'Receipt Template', 'woocommerce-pos' );
-  }
+	/**
+	 * @param
+	 */
+	public function __construct() {
+		$this->id    = 'receipt_template';
+		$this->label = __( 'Receipt Template', 'woocommerce-pos' );
+	}
 
 }

@@ -2,158 +2,162 @@
 /**
  *
  *
- * @class    WC_POS_Status
- * @package  WooCommerce POS
+ * @package    WCPOS\Status
  * @author   Paul Kilmurray <paul@kilbot.com.au>
  * @link     http://www.wcpos.com
  */
 
-namespace WC_POS;
+namespace WCPOS;
 
 class Status {
 
-  public function output() {
-    $results = array(
-      $this->test_wc_version(),
-      $this->test_php_version(),
-      $this->test_wc_rest_api()
-    );
-    return $results;
-  }
+	public function output() {
+		$results = array(
+			$this->test_wc_version(),
+			$this->test_php_version(),
+			$this->test_wc_rest_api()
+		);
 
-  /**
-   * Test WC >= $wc_min_version
-   * @return boolean
-   */
-  private function test_wc_version() {
-    $result = array(
-      'title'   => __( 'WC Version', 'woocommerce-pos' ),
-      'pass'    => version_compare( WC()->version, Activator::WC_MIN_VERSION, '>=' ),
-      'message' => esc_html( WC()->version )
-    );
+		return $results;
+	}
 
-    if( ! $result['pass'] ){
-      $result = array_merge( $result, array(
-        'message' => sprintf( __( 'WooCommerce >= %s required', 'woocommerce-pos' ), Activator::WC_MIN_VERSION),
-        'buttons' => array(
-          array(
-            'href'  => admin_url( 'update-core.php' ),
-            /* translators: wordpress */
-            'prompt'  => __( 'Update' )
-          )
-        )
-      ));
-    }
+	/**
+	 * Test WC >= $wc_min_version
+	 * @return boolean
+	 */
+	private function test_wc_version() {
+		$result = array(
+			'title'   => __( 'WC Version', 'woocommerce-pos' ),
+			'pass'    => version_compare( WC()->version, Activator::WC_MIN_VERSION, '>=' ),
+			'message' => esc_html( WC()->version )
+		);
 
-    return $result;
-  }
+		if ( ! $result['pass'] ) {
+			$result = array_merge( $result, array(
+				'message' => sprintf( __( 'WooCommerce >= %s required', 'woocommerce-pos' ), Activator::WC_MIN_VERSION ),
+				'buttons' => array(
+					array(
+						'href'   => admin_url( 'update-core.php' ),
+						/* translators: wordpress */
+						'prompt' => __( 'Update' )
+					)
+				)
+			) );
+		}
 
-  /**
-   * Test PHP >= $php_min_version
-   * @return boolean
-   */
-  private function test_php_version() {
-    if( ! function_exists('phpversion') )
-      return;
+		return $result;
+	}
 
-    $php_version = phpversion();
+	/**
+	 * Test PHP >= $php_min_version
+	 * @return boolean
+	 */
+	private function test_php_version() {
+		if ( ! function_exists( 'phpversion' ) ) {
+			return;
+		}
 
-    $result = array(
-      'title'   => /* translators: woocommerce */ __( 'PHP Version', 'woocommerce' ),
-      'pass'    => version_compare( $php_version, Activator::PHP_MIN_VERSION, '>' ),
-      'message' => esc_html( $php_version )
-    );
+		$php_version = phpversion();
 
-    if( ! $result['pass'] ){
-      $result = array_merge( $result, array(
-        'message' => sprintf( __( 'PHP >= %s required', 'woocommerce-pos' ), Activator::PHP_MIN_VERSION ),
-        'buttons' => array(
-          array(
-            'href'  => 'http://docs.woothemes.com/document/how-to-update-your-php-version/',
-            /* translators: wordpress */
-            'prompt'  => __( 'Update' )
-          )
-        )
-      ));
-    }
+		$result = array(
+			'title'   => /* translators: woocommerce */
+				__( 'PHP Version', 'woocommerce' ),
+			'pass'    => version_compare( $php_version, Activator::PHP_MIN_VERSION, '>' ),
+			'message' => esc_html( $php_version )
+		);
 
-    return $result;
-  }
+		if ( ! $result['pass'] ) {
+			$result = array_merge( $result, array(
+				'message' => sprintf( __( 'PHP >= %s required', 'woocommerce-pos' ), Activator::PHP_MIN_VERSION ),
+				'buttons' => array(
+					array(
+						'href'   => 'http://docs.woothemes.com/document/how-to-update-your-php-version/',
+						/* translators: wordpress */
+						'prompt' => __( 'Update' )
+					)
+				)
+			) );
+		}
 
-  /**
-   * Test WC REST API is accessible using RESTful HTTP methods
-   * @return array
-   */
-  private function test_wc_rest_api() {
-    $result = array(
-      'pass'    => true,
-      'title'   => __( 'WC REST API', 'woocommerce-pos' ),
-      'message' => __( 'API is active', 'woocommerce-pos' )
-    );
+		return $result;
+	}
 
-    if( $fail = self::permalinks_disabled() )
-      return array_merge( $result, $fail );
+	/**
+	 * Test WC REST API is accessible using RESTful HTTP methods
+	 * @return array
+	 */
+	private function test_wc_rest_api() {
+		$result = array(
+			'pass'    => true,
+			'title'   => __( 'WC REST API', 'woocommerce-pos' ),
+			'message' => __( 'API is active', 'woocommerce-pos' )
+		);
 
-    if( $fail = self::wc_rest_api_disabled() )
-      return array_merge( $result, $fail );
+		if ( $fail = self::permalinks_disabled() ) {
+			return array_merge( $result, $fail );
+		}
 
-    return $result;
-  }
+		if ( $fail = self::wc_rest_api_disabled() ) {
+			return array_merge( $result, $fail );
+		}
 
-  /**
-   * Option for to emulate RESTful HTTP requests
-   */
-  static public function toggle_legacy_server(){
-    if( isset($_GET['enable']) && $_GET['enable'] === 'true' ) {
-      update_option( 'woocommerce_pos_emulateHTTP', true );
-    } else {
-      delete_option( 'woocommerce_pos_emulateHTTP' );
-    }
-  }
+		return $result;
+	}
 
-  /**
-   * @return array
-   */
-  static public function wc_rest_api_disabled(){
-    if( get_option('woocommerce_api_enabled') !== 'yes' ) {
+	/**
+	 * Option for to emulate RESTful HTTP requests
+	 */
+	static public function toggle_legacy_server() {
+		if ( isset( $_GET['enable'] ) && $_GET['enable'] === 'true' ) {
+			update_option( 'woocommerce_pos_emulateHTTP', true );
+		} else {
+			delete_option( 'woocommerce_pos_emulateHTTP' );
+		}
+	}
 
-      // api settings changes in WC 2.4
-      $href = admin_url('admin.php?page=wc-settings');
-      if( version_compare( WC()->version, '2.4', '>=' ) ){
-        $href .= '&tab=api';
-      }
+	/**
+	 * @return array
+	 */
+	static public function wc_rest_api_disabled() {
+		if ( get_option( 'woocommerce_api_enabled' ) !== 'yes' ) {
 
-      return array(
-        'pass' => false,
-        'message' => __('Access to the REST API is required', 'woocommerce-pos'),
-        'buttons' => array(
-          array(
-            'href' => $href,
-            /* translators: woocommerce */
-            'prompt' => __('Enable the REST API', 'woocommerce')
-          )
-        )
-      );
-    }
-  }
+			// api settings changes in WC 2.4
+			$href = admin_url( 'admin.php?page=wc-settings' );
+			if ( version_compare( WC()->version, '2.4', '>=' ) ) {
+				$href .= '&tab=api';
+			}
 
-  /**
-   * @return array
-   */
-  static public function permalinks_disabled(){
-    $permalinks = get_option('permalink_structure');
-    if( empty( $permalinks ) ) {
-      return array(
-        'pass'    => false,
-        'message' => __( '<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks to work correctly', 'woocommerce-pos' ),
-        'buttons' => array(
-          array(
-            'href'  => admin_url('options-permalink.php'),
-            'prompt'  => __( 'Enable permalinks', 'woocommerce-pos' )
-          )
-        )
-      );
-    }
-  }
+			return array(
+				'pass'    => false,
+				'message' => __( 'Access to the REST API is required', 'woocommerce-pos' ),
+				'buttons' => array(
+					array(
+						'href'   => $href,
+						/* translators: woocommerce */
+						'prompt' => __( 'Enable the REST API', 'woocommerce' )
+					)
+				)
+			);
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	static public function permalinks_disabled() {
+		$permalinks = get_option( 'permalink_structure' );
+		if ( empty( $permalinks ) ) {
+			return array(
+				'pass'    => false,
+				'message' => __( '<strong>WooCommerce REST API</strong> requires <em>pretty</em> permalinks to work correctly', 'woocommerce-pos' ),
+				'buttons' => array(
+					array(
+						'href'   => admin_url( 'options-permalink.php' ),
+						'prompt' => __( 'Enable permalinks', 'woocommerce-pos' )
+					)
+				)
+			);
+		}
+	}
 
 }

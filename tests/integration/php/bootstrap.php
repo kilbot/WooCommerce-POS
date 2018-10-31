@@ -17,7 +17,7 @@ class Integration_Tests {
    */
   public function includes(){
     $wp_path = dirname(shell_exec('wp config path --allow-root'));
-    require_once( $wp_path.'/wp-load.php' );
+    require_once( $wp_path.'/wp-start.php' );
     require_once '/root/.composer/vendor/autoload.php'; // required to load Guzzle
     require_once 'framework/testcase.php';
   }
