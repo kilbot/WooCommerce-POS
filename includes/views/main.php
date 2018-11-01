@@ -3,12 +3,14 @@
  * Main POS template
  */
 ?>
-<html class="no-js">
+<!DOCTYPE html>
+<html>
 <head>
 	<title><?php _e( 'Point of Sale', 'woocommerce-pos' ) ?> - <?php bloginfo( 'name' ) ?></title>
-	<meta charset="UTF-8"/>
+	<meta charset="utf-8"/>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="theme-color" content="#000000">
 	<meta name="apple-mobile-web-app-capable" content="yes"/>
 
 	<!-- For iPad with high-resolution Retina display running iOS ≥ 7: -->

@@ -21,32 +21,6 @@ class Template {
 	/** @var WCPOS_Params instance */
 	public $params;
 
-	/** @var array external libraries */
-	static public $external_libs = array(
-		'min'   => array(
-			'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js',
-			'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js',
-			'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js',
-			'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/2.0.0/backbone.radio.min.js',
-			'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.7/backbone.marionette.min.js',
-			'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js',
-			'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js',
-			'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js',
-			'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js',
-		),
-		'debug' => array(
-			'jquery'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js',
-			'lodash'       => 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js',
-			'backbone'     => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone.js',
-			'radio'        => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/2.0.0/backbone.radio.js',
-			'marionette'   => 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.7/backbone.marionette.js',
-			'handlebars'   => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js',
-			'moment'       => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js',
-			'accounting'   => 'https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.js',
-			'jquery.color' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.js',
-		)
-	);
-
 
 	/**
 	 * Constructor
@@ -83,7 +57,8 @@ class Template {
 		}
 
 		// force ssl
-		if ( ! is_ssl() && wcpos_get_option( 'general', 'force_ssl' ) ) {
+//		if ( ! is_ssl() && wcpos_get_option( 'general', 'force_ssl' ) ) {
+		if ( ! is_ssl() ) {
 			wp_safe_redirect( wcpos_url() );
 			exit;
 		}
@@ -196,6 +171,8 @@ class Template {
 //		if (isset($receipt_options['print_method']) && $receipt_options['print_method'] == 'qz-tray') {
 //			$js['qz-tray'] = PLUGIN_URL . '/assets/js/vendor/qz-tray.' . $build . '.js';
 //		}
+
+
 
 		$js['runtime'] = PLUGIN_URL . 'assets/js/runtime.js?ver=' . VERSION;
 		$js['vendor']  = PLUGIN_URL . 'assets/js/vendor.js?ver=' . VERSION;

@@ -29,8 +29,7 @@ env:
     - PHP_VERSION=7.2 WC_VERSION=latest
 
 git:
-  submodules:
-    false
+  submodules: false
 
 before_install:
   # first, stop any existing mysql services due to port conflict
@@ -54,21 +53,21 @@ before_install:
   - docker-compose -v
 
 install:
-  - npm install && cd client && npm install
-  - npm run build
-  - npm run start
+  - yarn install && cd client && yarn install
+  - yarn build
+  - yarn start
 
 before_script:
   - echo "Bootstrap test environment"
   - until curl --silent -XGET --fail http://localhost; do printf '.'; sleep 1; done
 
 script:
-  - npm run unit-test:client -- --coverage
-  - npm run unit-test:php-${PHP_VERSION}
-  - npm run integration-test:php-${PHP_VERSION}
+  - yarn unit-test:client -- --coverage
+  - yarn unit-test:php-${PHP_VERSION}
+  - yarn integration-test:php-${PHP_VERSION}
 
 cache:
   - yarn
-  
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
