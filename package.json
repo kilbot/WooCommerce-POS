@@ -21,9 +21,10 @@
   },
   "scripts": {
     "build": "concurrently --kill-others-on-fail \"yarn build:client\" \"yarn build:server\"",
-    "build:client": "cd client && yarn build",
+    "build:client": "cd client && yarn build --force",
     "build:server": "docker-compose -f .docker/docker-compose.yml build",
     "dev": "concurrently --kill-others-on-fail \"yarn start\" \"yarn start:client\"",
+    "log": "docker-compose -f .docker/docker-compose.yml logs -f --tail=10",
     "prettier": "prettier",
     "start:client": "cd client && yarn start",
     "start:server": "docker-compose -f .docker/docker-compose.yml up -d",
