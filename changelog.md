@@ -1,3 +1,6 @@
+= 0.4.21 - 2018/11/27 = 
+* WP 5 compatibility: fix custom order fields
+
 = 0.4.20 - 2018/10/24 = 
 * WC 3.5 compatibility: POS will use WC REST API v3 
 

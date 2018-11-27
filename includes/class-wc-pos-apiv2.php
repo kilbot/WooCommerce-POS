@@ -9,34 +9,37 @@
  * @link     http://www.woopos.com.au
  */
 
-class WC_POS_APIv2 {
+class WC_POS_APIv2
+{
 
 
   /**
    *
    */
-  public function __construct() {
-    if( ! is_pos() )
+  public function __construct()
+  {
+    if (!is_pos())
       return;
 
-    add_filter( 'rest_dispatch_request', array( $this, 'rest_dispatch_request' ), 10, 4 );
-    add_filter( 'rest_pre_dispatch', array( $this, 'rest_pre_dispatch' ), 10, 3 );
-    add_filter( 'rest_request_before_callbacks', array( $this, 'rest_request_before_callbacks' ), 10, 3 );
+    add_filter('rest_dispatch_request', array($this, 'rest_dispatch_request'), 10, 4);
+    add_filter('rest_pre_dispatch', array($this, 'rest_pre_dispatch'), 10, 3);
+    add_filter('rest_request_before_callbacks', array($this, 'rest_request_before_callbacks'), 10, 3);
   }
 
   /**
    * Bypass authentication for WC REST API
    * @return WP_User object
    */
-  public function wc_api_authentication() {
+  public function wc_api_authentication()
+  {
     global $current_user;
     $user = $current_user;
 
-    if( ! user_can( $user->ID, 'access_woocommerce_pos' ) )
+    if (!user_can($user->ID, 'access_woocommerce_pos'))
       $user = new WP_Error(
         'woocommerce_pos_authentication_error',
-        __( 'User not authorized to access WooCommerce POS', 'woocommerce-pos' ),
-        array( 'status' => 401 )
+        __('User not authorized to access WooCommerce POS', 'woocommerce-pos'),
+        array('status' => 401)
       );
 
     return $user;
@@ -49,10 +52,11 @@ class WC_POS_APIv2 {
    * @param $request
    * @return mixed
    */
-  public function rest_request_before_callbacks( $response, $handler, $request ) {
+  public function rest_request_before_callbacks($response, $handler, $request)
+  {
     $wc_api_handler = get_class($handler['callback'][0]);
 
-    switch($wc_api_handler) {
+    switch ($wc_api_handler) {
       case 'WC_REST_Products_Controller':
         $break = '';
         new WC_POS_APIv2_Products();
@@ -79,38 +83,39 @@ class WC_POS_APIv2 {
    * @param $handler
    * @return mixed
    */
-  public function rest_dispatch_request( $halt, $request, $route, $handler ) {
+  public function rest_dispatch_request($halt, $request, $route, $handler)
+  {
 
-    if( isset($request['filter']) ) {
+    if (isset($request['filter'])) {
       $filter = $request['filter'];
 
-      if( isset($filter['q'])  ) {
+      if (isset($filter['q'])) {
         $request->set_param('search', $filter['q']);
       }
 
-      if( isset($filter['limit']) ) {
+      if (isset($filter['limit'])) {
         $request->set_param('per_page', $filter['limit']);
       }
 
-      if( isset($filter['in']) ) {
-        $request->set_param('include', array_map( 'intval', explode( ',', $filter['in'] )) );
+      if (isset($filter['in'])) {
+        $request->set_param('include', array_map('intval', explode(',', $filter['in'])));
       }
 
-      if( isset($filter['not_in']) ) {
-        $request->set_param('exclude', array_map( 'intval', explode( ',', $filter['not_in'] )) );
+      if (isset($filter['not_in'])) {
+        $request->set_param('exclude', array_map('intval', explode(',', $filter['not_in'])));
       }
 
-      if( isset($filter['featured']) ) {
+      if (isset($filter['featured'])) {
         $featured = $filter['featured'] === 'true';
         $request->set_param('featured', $featured);
       }
 
-      if( isset($filter['categories']) ) {
-        $category = get_term_by( 'slug', $filter['categories'], 'product_cat' );
-        if($category) {
-          $request->set_param('category', strval($category->term_id) );
+      if (isset($filter['categories'])) {
+        $category = get_term_by('slug', $filter['categories'], 'product_cat');
+        if ($category) {
+          $request->set_param('category', strval($category->term_id));
         } else {
-          $request->set_param('include', array( 0 ) );
+          $request->set_param('include', array(0));
         }
       }
 
@@ -118,26 +123,26 @@ class WC_POS_APIv2 {
        * Special case for on_sale
        * post__in trumps post__not_in
        */
-      if( isset($filter['on_sale']) ) {
+      if (isset($filter['on_sale'])) {
 
-        $sale_ids = array_filter( wc_get_product_ids_on_sale() );
-        $in       = $request->get_param('include');
-        $not_in   = $request->get_param('exclude');
+        $sale_ids = array_filter(wc_get_product_ids_on_sale());
+        $in = $request->get_param('include');
+        $not_in = $request->get_param('exclude');
 
-        if($filter['on_sale'] == 'true'){
+        if ($filter['on_sale'] == 'true') {
 
           $post__in = array_diff($sale_ids, $not_in);
-          if(!empty($in)){
+          if (!empty($in)) {
             $post__in = array_intersect($in, $post__in);
           }
-          if(empty($post__in)){
+          if (empty($post__in)) {
             $post__in = array(0); // no posts
           }
           $request->set_param('include', $post__in);
 
-        } elseif($filter['on_sale'] == 'false') {
+        } elseif ($filter['on_sale'] == 'false') {
 
-          $post__not_in = array_unique( array_merge($sale_ids, $not_in) );
+          $post__not_in = array_unique(array_merge($sale_ids, $not_in));
           $request->set_param('exclude', $post__not_in);
 
         }
@@ -156,7 +161,8 @@ class WC_POS_APIv2 {
    * @param $server
    * @return mixed
    */
-  public function rest_pre_dispatch( $halt, $server, $request ) {
+  public function rest_pre_dispatch($halt, $server, $request)
+  {
     return $halt;
   }
 
@@ -165,20 +171,21 @@ class WC_POS_APIv2 {
    * Get all the ids for a given post_type
    * @return json
    */
-  static public function get_all_ids() {
+  static public function get_all_ids()
+  {
     $entity = isset($_REQUEST['type']) ? $_REQUEST['type'] : false;
     $updated_at_min = isset($_REQUEST['updated_at_min']) ? $_REQUEST['updated_at_min'] : false;
-    $class_name = 'WC_POS_APIv2_' . ucfirst( $entity );
+    $class_name = 'WC_POS_APIv2_' . ucfirst($entity);
     $handler = new $class_name();
 
-    if(method_exists($handler, 'get_ids')){
+    if (method_exists($handler, 'get_ids')) {
       $result = call_user_func(array($handler, 'get_ids'), $updated_at_min);
     } else {
       $result = new WP_Error(
         'woocommerce_pos_get_ids_error',
         /* translators: woocommerce */
-        sprintf( __( 'There was an error calling %s::%s', 'woocommerce' ), 'WC_POS_API', $entity ),
-        array( 'status' => 500 )
+        sprintf(__('There was an error calling %s::%s', 'woocommerce'), 'WC_POS_API', $entity),
+        array('status' => 500)
       );
     }
 

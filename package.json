@@ -1,15 +1,15 @@
 {
   "name": "woocommerce-pos",
   "description": "A simple front-end for taking WooCommerce orders at the Point of Sale.",
-  "version": "0.4.19",
+  "version": "0.4.21",
   "scripts": {
     "build": "npm install && node_modules/.bin/grunt build --force && docker-compose -f .docker/docker.yml build",
-    "start": "docker-compose -f .docker/docker.yml up -d",
+    "start": "docker-compose -f .docker/docker-compose.yml up -d",
     "start:php54": "docker-compose -f .docker/docker-php54.yml up -d",
     "start:php55": "docker-compose -f .docker/docker-php55.yml up -d",
     "start:php56": "docker-compose -f .docker/docker-php56.yml up -d",
     "start:php70": "docker-compose -f .docker/docker-php70.yml up -d",
-    "stop": "docker-compose -f .docker/docker.yml kill",
+    "stop": "docker-compose -f .docker/docker-compose.yml kill",
     "stop:php54": "docker-compose -f .docker/docker-php54.yml kill",
     "stop:php55": "docker-compose -f .docker/docker-php55.yml kill",
     "stop:php56": "docker-compose -f .docker/docker-php56.yml kill",
