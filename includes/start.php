@@ -21,10 +21,10 @@ class Start {
 
 		// allow requests from wcpos app
 		add_filter( 'rest_pre_serve_request', array( $this, 'rest_pre_serve_request' ), 5, 3 );
+		add_action( 'send_headers', array( $this, 'send_headers' ) );
 
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'rest_api_init', array( $this, 'rest_api_init' ), 20 );
-//		add_filter( 'http_request_args', array( $this, 'http_request_args' ), 10, 2 );
 
 	}
 
@@ -79,7 +79,7 @@ class Start {
 
 
 	/**
-	 * Add Access Control Allow Headers for pos app
+	 * Add Access Control Allow Headers for POS app
 	 *
 	 * @param \WP_HTTP_Response $result Result to send to the client. Usually a WP_REST_Response.
 	 * @param \WP_REST_Server $server Server instance.
@@ -87,26 +87,20 @@ class Start {
 	 * @return mixed $result
 	 */
 	public function rest_pre_serve_request( $result, $server, $request ) {
-		if ( $request->get_method() == 'OPTIONS' || $request->get_header( 'x_wcpos' ) == 1 ) {
+		if ( $request->get_method() == 'OPTIONS' || is_pos() ) {
+			header( "Access-Control-Allow-Origin: *" );
 			header( 'Access-Control-Allow-Headers: Authorization, X-WCPOS' );
 		}
 
 		return $result;
 	}
 
-
-	public function http_request_args( $r, $url ) {
-		if ( is_pos() ) {
-			$headers      = array(
-				'X-WC-POS' => 1
-			);
-			$r['headers'] = is_array( $r['headers'] ) ? array_merge( $r['headers'], $headers ) : $headers;
-			// self-signed certificates
-			if ( $url == rest_url( 'wcpos/v1/user' ) ) {
-				$r['sslverify'] = false;
-			}
-		}
-
-		return $r;
+	/**
+	 * Allow WP API Discovery from the homepage
+	 */
+	public function send_headers() {
+		header( "Access-Control-Allow-Origin: *" );
+		header( "Access-Control-Expose-Headers: Link" );
 	}
+
 }
