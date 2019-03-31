@@ -234,7 +234,7 @@ class Visibility {
 		}
 
 		if ( defined( '\SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ) {
-			$script = \WCPOS\PLUGIN_URL . 'assets/js/src/products.php';
+			$script = \WCPOS\PLUGIN_URL . 'assets/js/src/products.js';
 		} else {
 			$script = \WCPOS\PLUGIN_URL . 'assets/js/products.min.js';
 		}
