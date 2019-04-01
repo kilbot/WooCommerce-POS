@@ -26,32 +26,45 @@ if ( ! function_exists( 'wcpos_url' ) ) {
 }
 
 /**
+ * getallheaders() is an alias of apache_response_headers()
+ * This function provides compatibility for nginx servers
+ */
+if ( ! function_exists( 'getallheaders' ) ) {
+	function getallheaders() {
+		$headers = array();
+		foreach ( $_SERVER as $name => $value ) {
+			/* RFC2616 (HTTP/1.1) defines header fields as case-insensitive entities. */
+			if ( strtolower( substr( $name, 0, 5 ) ) == 'http_' ) {
+				$headers[ str_replace( ' ', '-', ucwords( strtolower( str_replace( '_', ' ', substr( $name, 5 ) ) ) ) ) ] = $value;
+			}
+		}
+
+		return $headers;
+	}
+}
+
+/**
  * Test for POS requests to the server
  *
- * @param $type
+ * @param $type : 'query_var' | 'header' | 'all'
  *
  * @return bool
  */
 if ( ! function_exists( 'is_pos' ) ) {
-	function is_pos( $type = false ) {
+	function is_pos( $type = 'all' ) {
 
-		// test for template requests, ie: matched rewrite rule
-		// also matches $_GET & $_POST for pos=1
-		if ( $type == 'template' || ! $type ) {
+		// check query_vars, eg: ?wcpos=1 or /pos rewrite rule
+		if ( $type == 'all' || $type == 'query_var' ) {
 			global $wp;
-			if ( isset( $wp->query_vars['pos'] ) && $wp->query_vars['pos'] == 1 ) {
+			if ( isset( $wp->query_vars['wcpos'] ) && $wp->query_vars['wcpos'] == 1 ) {
 				return true;
 			}
 		}
 
-		// test for WC REST API requests, ie: matched request header
-		if ( $type == 'ajax' || ! $type ) {
-			// check server global first
-			if ( isset( $_SERVER['HTTP_X_WCPOS'] ) && $_SERVER['HTTP_X_WCPOS'] == 1 ) {
-				return true;
-			}
-			// backup check getallheaders() - can cause problems
-			if ( function_exists( 'getallheaders' ) && is_array( getallheaders() ) && array_key_exists( 'X-WCPOS', getallheaders() ) ) {
+		// check headers, eg: from ajax request
+		if ( $type == 'all' || $type == 'header' ) {
+			$headers = array_change_key_case( getallheaders() ); // convert headers to lowercase
+			if ( isset( $headers['x-wcpos'] ) && $headers['x-wcpos'] == 1 ) {
 				return true;
 			}
 		}

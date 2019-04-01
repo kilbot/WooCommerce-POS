@@ -16,7 +16,7 @@ class Template {
 	private $slug;
 
 	/** @var regex match for rewite_rule */
-	private $regex;
+	private $rewrite_regex;
 
 	/** @var WCPOS_Params instance */
 	public $params;
@@ -26,11 +26,11 @@ class Template {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->slug  = Admin\Permalink::get_slug();
-		$this->regex = '^' . $this->slug . '/?$';
+		$this->slug          = Admin\Permalink::get_slug();
+		$this->rewrite_regex = '^' . $this->slug . '/?$';
 
-		add_rewrite_tag( '%pos%', '([^&]+)' );
-		add_rewrite_rule( $this->regex, 'index.php?pos=1', 'top' );
+		add_rewrite_tag( '%wcpos%', '([^&]+)' );
+		add_rewrite_rule( $this->rewrite_regex, 'index.php?wcpos=1', 'top' );
 		add_filter( 'option_rewrite_rules', array( $this, 'rewrite_rules' ), 1 );
 		add_action( 'template_redirect', array( $this, 'template_redirect' ), 1 );
 	}
@@ -43,7 +43,7 @@ class Template {
 	 * @return bool
 	 */
 	public function rewrite_rules( $rules ) {
-		return isset( $rules[ $this->regex ] ) ? $rules : false;
+		return isset( $rules[ $this->rewrite_regex ] ) ? $rules : false;
 	}
 
 
@@ -52,7 +52,7 @@ class Template {
 	 */
 	public function template_redirect() {
 		// check is pos
-		if ( ! is_pos( 'template' ) ) {
+		if ( ! is_pos( 'query_var' ) ) {
 			return;
 		}
 
@@ -171,7 +171,6 @@ class Template {
 //		if (isset($receipt_options['print_method']) && $receipt_options['print_method'] == 'qz-tray') {
 //			$js['qz-tray'] = PLUGIN_URL . '/assets/js/vendor/qz-tray.' . $build . '.js';
 //		}
-
 
 
 		$js['runtime'] = PLUGIN_URL . 'assets/js/runtime.js?ver=' . VERSION;

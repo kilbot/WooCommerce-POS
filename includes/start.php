@@ -25,6 +25,7 @@ class Start {
 
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'rest_api_init', array( $this, 'rest_api_init' ), 20 );
+		add_filter( 'query_vars', array( $this, 'query_vars' ) );
 
 	}
 
@@ -48,6 +49,7 @@ class Start {
 			new Admin();
 		} // frontend only
 		else {
+			new Auth();
 			new Template();
 		}
 
@@ -101,6 +103,15 @@ class Start {
 	public function send_headers() {
 		header( "Access-Control-Allow-Origin: *" );
 		header( "Access-Control-Expose-Headers: Link" );
+	}
+
+	/**
+	 *
+	 */
+	public function query_vars( $query_vars ) {
+		$query_vars[] = 'wcpos';
+
+		return $query_vars;
 	}
 
 }
