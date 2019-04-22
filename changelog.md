@@ -1,3 +1,6 @@
+= 0.4.23 - 2019/04/22 = 
+* WC 3.6 compatibility: more fatal errors on processing orders
+
 = 0.4.22 - 2019/04/19 = 
 * WC 3.6 compatibility: fatal error on processing orders
   

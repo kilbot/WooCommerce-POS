@@ -176,6 +176,8 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 		$gateways = $settings->load_enabled_gateways();
 
 		// process payment
+		add_filter( 'woocommerce_is_rest_api_request', __return_false() );
+		WC()->init();
 		do_action( 'woocommerce_pos_process_payment', $payment_details, $order );
 		$response = $gateways[ $payment_method ]->process_payment( $order->get_id() );
 
