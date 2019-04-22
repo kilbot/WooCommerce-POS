@@ -1,3 +1,6 @@
+= 0.4.22 - 2019/04/19 = 
+* WC 3.6 compatibility: fatal error on processing orders
+  
 = 0.4.21 - 2018/11/27 = 
 * WP 5 compatibility: fix custom order fields
 

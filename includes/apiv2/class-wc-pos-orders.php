@@ -201,7 +201,9 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 		wp_set_current_user( $logged_in_user );
 
 		// clear any payment gateway messages
-		wc_clear_notices();
+		if ( function_exists( 'wc_clear_notices' ) ) {
+			wc_clear_notices();
+		}
 
 	}
 

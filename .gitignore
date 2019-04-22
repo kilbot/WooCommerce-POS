@@ -21,3 +21,4 @@ coverage
 assets/js/templates.js
 .data
 .html
+.DS_Store
