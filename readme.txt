@@ -79,6 +79,9 @@ Bugs can be reported on the [WooCommerce POS GitHub repository](https://github.c
 
 == Changelog ==
 
+= 0.4.24 - 2019/08/13 =
+* WC 3.7 compatibility: fix "The site is experiencing technical difficulties" error.
+
 = 0.4.23 - 2019/04/22 =
 * WC 3.6 compatibility: more fatal errors on processing orders
 

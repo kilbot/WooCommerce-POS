@@ -408,11 +408,9 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 	 * @param $response
 	 */
 	private function payment_failure( $gateway_id, $order, $response ) {
-		$response['messages'] = isset( $response['messages'] ) ? $response['messages'] : wc_get_notices( 'error' );
-
 		// if messages empty give generic response
 		if ( empty( $response['messages'] ) ) {
-			$response['messages'] = __( 'There was an error processing the payment', 'woocommerce-pos' );
+			$response['messages'] = function_exists( 'wc_get_notices' ) ? wc_get_notices( 'error' ) : __( 'There was an error processing the payment', 'woocommerce-pos' );
 		}
 
 		update_post_meta( $order->get_id(), '_pos_payment_result', 'failure' );
