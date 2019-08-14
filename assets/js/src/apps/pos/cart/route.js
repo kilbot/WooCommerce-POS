@@ -126,6 +126,7 @@ var CartRoute = Route.extend({
     var view = new Buttons({
       buttons: [
         {action: 'void',      className: 'btn-danger pull-left'},
+        {action: 'billing',   className: 'btn-primary'},
         {action: 'fee',       className: 'btn-primary'},
         {action: 'shipping',  className: 'btn-primary'},
         //{action: 'discount',  className: 'btn-primary'},
@@ -163,7 +164,23 @@ var CartRoute = Route.extend({
           method_id   : _.first(method_ids) || ''
         });
       },
-      'action:checkout': function(){
+      'action:billing': function () {
+        if (!this.order.cart.findWhere({type: 'billing'})) {
+          this.order.cart.addToCart({
+            type: 'billing',
+            method_title: polyglot.t('titles.billing')
+          });
+        }
+      },
+      'action:checkout': function () {
+        var billing = this.order.cart.findWhere({type: 'billing'});
+        if (!billing.attributes['$valid']) {
+          Radio.trigger('global', 'error', {
+            status: polyglot.t('titles.billing_error'),
+            message: polyglot.t('messages.billing_mandatory')
+          });
+          return;
+        }
         this.navigate('checkout/' + this.order.id, { trigger: true });
       }
     });

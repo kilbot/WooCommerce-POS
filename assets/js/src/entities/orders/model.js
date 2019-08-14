@@ -249,10 +249,13 @@ var Model = DualModel.extend({
 
     this.cart.each(function(model){
       var type = model.get('type');
-      if(type !== 'shipping' && type !== 'fee'){
-        type = 'product';
+
+      if ( type !== 'billing') {
+        if(type !== 'shipping' && type !== 'fee'){
+          type = 'product';
+        }
+        obj[type].push( model.toJSON() );
       }
-      obj[type].push( model.toJSON() );
     });
 
     // set

@@ -88,6 +88,23 @@ var CheckoutRoute = Route.extend({
       },
       'action:process-payment': function(btn){
         btn.trigger('state', 'loading');
+
+        var billing = this.order.cart.findWhere({ type: 'billing'});
+        if ( billing ) {
+            for ( var key in billing.attributes) {
+              if (key.indexOf('billing_') !== -1 &&
+                billing.attributes[key] !== '') {
+                if (!this.order.attributes.billing) {
+                  this.order.attributes.billing={};
+                }
+
+                this.order.attributes.billing[key.substring(8)]=
+                  billing.attributes[key];
+              }
+            }
+        }
+
+
         this.order.process()
           .always(function(){
             btn.trigger('state', 'reset');

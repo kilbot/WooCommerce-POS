@@ -51,6 +51,10 @@ module.exports = LayoutView.extend({
     this.listenTo( view, 'drawer:close', this.closeDrawer );
     this.listenTo( view, 'drawer:toggle', this.toggleDrawer );
 
+    if(this.model.attributes.type === 'billing') {
+      this.openDrawer();
+    }
+
     this.getRegion('item').show(view);
   },
 
