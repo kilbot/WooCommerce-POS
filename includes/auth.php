@@ -17,6 +17,7 @@ class Auth {
 	/**
 	 * Authentication for POS app using default WC Auth
 	 * @TODO - move to OAuth 2.0 or JWT when part of WordPress Core
+	 *
 	 */
 	public function __construct() {
 		add_filter( 'rest_index', array( $this, 'rest_index' ) );
@@ -42,10 +43,10 @@ class Auth {
 
 	/**
 	 * Add flag for WCPOS
-	 * @param  string $url Endpoint url.
-	 * @param  string $endpoint Endpoint slug.
-	 * @param  string $value Query param value.
-	 * @param  string $permalink Permalink.
+	 * @param string $url Endpoint url.
+	 * @param string $endpoint Endpoint slug.
+	 * @param string $value Query param value.
+	 * @param string $permalink Permalink.
 	 * @return string
 	 */
 	public function woocommerce_get_endpoint_url( $url, $endpoint, $value, $permalink ) {
@@ -90,7 +91,7 @@ class Auth {
 		}
 
 		$user = array(
-			'id'           => $current_user->ID,
+			'remote_id'    => $current_user->ID,
 			'username'     => $current_user->user_login,
 			'first_name'   => $current_user->user_firstname,
 			'last_name'    => $current_user->user_lastname,
@@ -98,24 +99,45 @@ class Auth {
 			'email'        => $current_user->user_email
 		);
 
-		echo '<script>window.parent && window.parent.postMessage(' . json_encode( $user ) . ', "*")</script>';
+		echo $this->post_message_script( $user );
 	}
 
 	/**
 	 * Send auth info to POS app
+	 * @param false|array|WP_Error $pre Whether to preempt an HTTP request's return value. Default false.
+	 * @param array $request HTTP request arguments.
+	 * @param string $url The request URL.
+	 * @return array|false|WP_Error
 	 */
 	public function pre_http_request( $pre, $request, $url ) {
 		if ( $url == 'https://client.wcpos.com' ) {
 			echo
 				'<html>
 					<body>
-						<script>window.parent && window.parent.postMessage(' . $request['body'] . ', "*")</script>
+						' . $this->post_message_script( json_decode( $request['body'], true ) ) . '
 					</body>
 				</html>';
 			exit;
 		} else {
 			return $pre;
 		}
+	}
+
+	/**
+	 * Construct script tag for postMessage
+	 * @param array $payload
+	 * @return string
+	 */
+	private function post_message_script( array $payload ) {
+		$message = array(
+			'payload' => $payload,
+			'source'  => 'wcpos'
+		);
+
+		return '<script>
+			window.parent && window.parent.postMessage(' . json_encode( $message ) . ', "*");
+			window.ReactNativeWebView && window.ReactNativeWebView.postMessage(\'' . json_encode( $message ) . '\');
+		</script>';
 	}
 
 }

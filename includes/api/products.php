@@ -71,7 +71,7 @@ class Products {
 	 * @return string
 	 */
 	private function get_thumbnail( $id ) {
-		$image = false;
+		$image    = false;
 		$thumb_id = get_post_thumbnail_id( $id );
 
 		if ( $thumb_id ) {
@@ -83,5 +83,42 @@ class Products {
 		}
 
 		return wc_placeholder_img_src();
+	}
+
+	/**
+	 * Returns array of all product ids
+	 *
+	 * @param array $filter
+	 * @return array|void
+	 */
+	public function get_all_ids( $filter = array() ) {
+		$args = array(
+			'post_type'      => array( 'product' ),
+			'post_status'    => array( 'publish' ),
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'order'          => isset( $filter['order'] ) ? $filter['order'] : 'ASC',
+			'orderby'        => isset( $filter['orderby'] ) ? $filter['orderby'] : 'title'
+		);
+
+		if ( isset( $filter['after'] ) ) {
+			$args['date_query'][] = array(
+				'column'    => 'post_modified_gmt',
+				'after'     => $filter['after'],
+				'inclusive' => false
+			);
+		}
+
+		$query = new \WP_Query( $args );
+
+		return array_map( array( $this, 'format_id' ), $query->posts );
+	}
+
+	/**
+	 * @param $id
+	 * @return array
+	 */
+	private function format_id( $id ) {
+		return array( 'id' => (int) $id );
 	}
 }
