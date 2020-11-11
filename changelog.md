@@ -1,3 +1,6 @@
+= 0.4.25 - 2020/11/11 =
+* WC 4.7 compatibility: fatal error on processing orders
+
 = 0.4.24 - 2019/08/13 = 
 * WC 3.7 compatibility: fix "The site is experiencing technical difficulties" error.
 

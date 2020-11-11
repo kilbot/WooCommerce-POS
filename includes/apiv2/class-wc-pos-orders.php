@@ -177,6 +177,7 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 
 		// process payment
 		add_filter( 'woocommerce_is_rest_api_request', __return_false() );
+		add_filter( 'woocommerce_payment_complete_order_status', array( $this, 'return_pending_status' ) );
 		WC()->init();
 		do_action( 'woocommerce_pos_process_payment', $payment_details, $order );
 		$response = $gateways[ $payment_method ]->process_payment( $order->get_id() );
@@ -207,6 +208,10 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 			wc_clear_notices();
 		}
 
+	}
+
+	public function return_pending_status() {
+		return 'wc-pending';
 	}
 
 	/**
@@ -304,7 +309,7 @@ class WC_POS_APIv2_Orders extends WC_POS_APIv2_Abstract {
 			$line_item['meta'] = array();
 			if ( isset( $line_item['meta_data'] ) && is_array( $line_item['meta_data'] ) ) : foreach ( $line_item['meta_data'] as $meta_data ) :
 				// check key
-				$_data = $meta_data->get_data();
+				$_data = is_array( $meta_data ) ? $meta_data : $meta_data->get_data();
 				if ( isset( $_data['key'] ) && substr( $_data['key'], 0, 1 ) != '_' ) {
 					$line_item['meta'][] = $meta_data;
 				}
