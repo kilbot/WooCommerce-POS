@@ -336,7 +336,7 @@ class WC_POS_Template {
   static public function locate_template_files( $partials_dir = '' ) {
     $files = array();
     foreach ( self::locate_default_template_files( $partials_dir ) as $slug => $path ) {
-      $files[ $slug ] = self::locate_template_file( $path );
+      $files[ $slug ] = self::locate_template_file( $path, $partials_dir );
     };
 
     return $files;
@@ -348,8 +348,8 @@ class WC_POS_Template {
    * @param string $default_path
    * @return string
    */
-  static public function locate_template_file( $default_path = '' ) {
-    $custom_path1 = str_replace( self::get_template_dir(), 'woocommerce-pos', $default_path );
+  static public function locate_template_file( $default_path = '', $partials_dir = '' ) {
+    $custom_path1 = str_replace( $partials_dir ?: self::get_template_dir(), 'woocommerce-pos', $default_path );
     $custom_path2 = str_replace( 'tmpl-', '', $custom_path1 );
     $custom = locate_template( array( $custom_path1, $custom_path2 ) );
 
