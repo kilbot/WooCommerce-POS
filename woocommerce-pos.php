@@ -4,7 +4,7 @@
  * Plugin Name:       WooCommerce POS
  * Plugin URI:        https://wordpress.org/plugins/woocommerce-pos/
  * Description:       A simple front-end for taking WooCommerce orders at the Point of Sale. Requires <a href="http://wordpress.org/plugins/woocommerce/">WooCommerce</a>.
- * Version:           0.4.25
+ * Version:           0.4.26
  * Author:            kilbot
  * Author URI:        http://woopos.com.au
  * Text Domain:       woocommerce-pos
@@ -12,7 +12,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
  * WC requires at least: 2.3.7
- * WC tested up to: 4.7
+ * WC tested up to: 5.1
  *
  * @package   WooCommerce POS
  * @author    Paul Kilmurray <paul@kilbot.com.au>
@@ -28,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Define plugin constants.
  */
-define( 'WC_POS_VERSION', '0.4.25' );
+define( 'WC_POS_VERSION', '0.4.26' );
 define( 'WC_POS_PLUGIN_NAME', 'woocommerce-pos' );
 define( 'WC_POS_PLUGIN_FILE', plugin_basename( __FILE__ ) ); // 'woocommerce-pos/woocommerce-pos.php'
 define( 'WC_POS_PLUGIN_PATH', trailingslashit( plugin_dir_path( __FILE__ ) ) );
