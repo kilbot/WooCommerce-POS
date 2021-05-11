@@ -1,3 +1,6 @@
+> :warning: **WooCommerce POS is currently undergoing a complete rewrite**<br />
+> This repository will be archived soon and all future work will continue at https://github.com/wcpos
+
 # [WooCommerce POS](http://wcpos.com) 
 [![Build Status](https://travis-ci.org/kilbot/WooCommerce-POS.svg)](https://travis-ci.org/kilbot/WooCommerce-POS) 
 [![Code Climate](https://codeclimate.com/github/kilbot/WooCommerce-POS/badges/gpa.svg)](https://codeclimate.com/github/kilbot/WooCommerce-POS)
