@@ -22,6 +22,7 @@ var Actions = View.extend({
       products.once('paginated:change:page', function(){
         self.triggerMethod('clear');
         self.ui.searchField.blur();
+        self.ui.searchField.focus();
       });
       Radio.request('router', 'add:to:cart', model);
     });
