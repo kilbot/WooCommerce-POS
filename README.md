@@ -1,5 +1,6 @@
-> :warning: **WooCommerce POS is currently undergoing a complete rewrite**<br />
-> This repository will be archived soon and all future work will continue at https://github.com/wcpos
+<p align="center">
+  <a href="https://github.com/wcpos"><img src="archive-notice.svg" alt=""/></a>
+</p>
 
 # [WooCommerce POS](http://wcpos.com) 
 [![Build Status](https://travis-ci.org/kilbot/WooCommerce-POS.svg)](https://travis-ci.org/kilbot/WooCommerce-POS) 
