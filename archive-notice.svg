@@ -1,0 +1,73 @@
+<svg fill="none" viewBox="0 0 800 100" width="800" height="100" xmlns="http://www.w3.org/2000/svg">
+    <foreignObject width="100%" height="100%">
+        <div xmlns="http://www.w3.org/1999/xhtml">
+            <style>
+                .container {
+                    border-radius: 2px;
+                    padding: 16px 16px;
+                    background-color: #BDE5F8;
+                    border: 1px solid rgba(0, 82, 155, 0.2);
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+                }
+                .container svg {
+                    width: 16px;
+                    height: 16px;
+                    vertical-align: text-top;
+                }
+                .container .message {
+                    color: #00529B;
+                    font-size: 1.2rem;
+                    margin-left: 1rem;
+                }
+            </style>
+            <div class="container">
+                <div class="header">
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#00529B" viewBox="0 0 512 512"
+                        style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                        <g>
+                            <g>
+                                <path d="M437.02,74.98C388.667,26.629,324.38,0,256,0S123.333,26.629,74.98,74.98C26.629,123.333,0,187.62,0,256
+			s26.629,132.667,74.98,181.02C123.333,485.371,187.62,512,256,512s132.667-26.629,181.02-74.98
+			C485.371,388.667,512,324.38,512,256S485.371,123.333,437.02,74.98z M256,70c30.327,0,55,24.673,55,55c0,30.327-24.673,55-55,55
+			c-30.327,0-55-24.673-55-55C201,94.673,225.673,70,256,70z M326,420H186v-30h30V240h-30v-30h110v180h30V420z" />
+                            </g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                    </svg>
+                    <span class="message"><b>WooCommerce POS is currently undergoing a complete rewrite</b><br/>
+                    This repository will be archived soon and all future work will continue at https://github.com/wcpos</span>
+                </div>
+            </div>
+        </div>
+    </foreignObject>
+</svg>
