@@ -21,7 +21,7 @@ module.exports = FormView.extend({
   templateHelpers: function(){
     var type = this.model.get('type');
     return {
-      product: (type !== 'shipping' && type !== 'fee')
+      product: (type !== 'billing' && type !== 'shipping' && type !== 'fee')
     };
   },
 
