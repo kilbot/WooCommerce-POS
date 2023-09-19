@@ -1,6 +1,4 @@
-<p align="center">
-  <a href="https://github.com/wcpos"><img src="archive-notice.svg" alt=""/></a>
-</p>
+# :bangbang: All development now at https://github.com/wcpos.
 
 # [WooCommerce POS](http://wcpos.com) 
 [![Build Status](https://travis-ci.org/kilbot/WooCommerce-POS.svg)](https://travis-ci.org/kilbot/WooCommerce-POS) 
